@@ -6,7 +6,7 @@
  * @package segue.display
  * @author Adam Franco
  * @access public
- * @version $Id: SegueMenuGenerator.class.php,v 1.1 2004/05/27 17:47:34 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.1.1.1 2004/05/27 17:47:34 adamfranco Exp $
  */
 
 class SegueMenuGenerator {
