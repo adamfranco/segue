@@ -1,5 +1,5 @@
 <?
-// :: Version: $Id: harmoni.inc.php,v 1.1 2004/05/27 17:47:33 adamfranco Exp $
+// :: Version: $Id: harmoni.inc.php,v 1.2 2004/05/29 13:40:21 gabeschine Exp $
 
 
 // :: set up the $harmoni object :: 
@@ -18,20 +18,17 @@
 		return $harmoni->pathInfoParts[0] . "." . $harmoni->pathInfoParts[1];
 	}
 	$harmoni->setActionCallbackFunction( "callback_action" );
-	$harmoni->ActionHandler->setModulesLocation( realpath(MYDIR."/main/modules"), MODULES_FOLDERS );
-	$harmoni->ActionHandler->setActionsType( ACTIONS_FLATFILES, ".act.php" );
-	$harmoni->ActionHandler->addModulesLocation( realpath(POLYPHONY."/main/modules"), MODULES_FOLDERS );
-	$harmoni->ActionHandler->setActionsTypeForModulesLocation( realpath(POLYPHONY."/main/modules"), ACTIONS_FLATFILES, ".act.php" );
-	
+	$harmoni->ActionHandler->addActionSource( new FlatFileActionSource( realpath(MYDIR."/main/modules"), ".act.php"));
+	$harmoni->ActionHandler->addActionSource( new FlatFileActionSource( realpath(POLYPHONY."/main/modules"), ".act.php"));
 
 // :: Set up the database connection ::
 	$dbHandler=&Services::requireService("DBHandler");
-	$dbID = $dbHandler->addDatabase( new MySQLDatabase("localhost","adam_concerto","test","test") );
+	$dbID = $dbHandler->addDatabase( new MySQLDatabase("localhost","segue2","test","test") );
 	$dbHandler->pConnect($dbID);
 	unset($dbHandler); // done with that for now
 
 // :: Set up the SharedManager as this is required for the ID service ::
-	Services::startService("Shared", $dbID, "adam_concerto");
+	Services::startService("Shared", $dbID, "segue2");
 
 
 // :: Set up the Authentication and Login Handlers ::
@@ -49,7 +46,7 @@
 	
 	//printpre($GLOBALS);
 	
-	Services::startService("AuthN", $dbID,"adam_segue");
+	Services::startService("AuthN", $dbID,"segue2");
 	
 	#########################
 	# HANDLE AUTHENTICATION #
@@ -67,11 +64,11 @@
 	// :: set up the DBAuthenticationMethod options ::
 	$options =& new DBMethodOptions;
 	$options->set("databaseIndex",$dbID);
-	$options->set("tableName", "adam_concerto.auth_db_user");
+	$options->set("tableName", "segue2.auth_n_user");
 	$options->set("usernameField", "username");
 	$options->set("passwordField", "password");
-	$options->set("passwordFieldEncrypted", TRUE);
-	$options->set("passwordFieldEncryptionType", "databaseMD5");
+	$options->set("passwordFieldEncrypted", FALSE);
+//	$options->set("passwordFieldEncryptionType", "databaseMD5");
 	
 	// :: create the DBAuthenticationMethod with the above options ::
 	$dbAuthMethod =& new DBAuthenticationMethod($options);
@@ -123,7 +120,7 @@
 
 // :: Set up the DigitalRepositoryManager ::
 	$configuration = array(
-		"hierarchyId" => "3",
+		"hierarchyId" => "1",
 		"versionControlAll" => TRUE
 	);
 	
