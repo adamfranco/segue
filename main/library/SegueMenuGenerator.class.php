@@ -6,7 +6,7 @@
  * @package segue.display
  * @author Adam Franco
  * @access public
- * @version $Id: SegueMenuGenerator.class.php,v 1.1 2004/05/27 17:47:34 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.2 2004/08/26 15:12:27 adamfranco Exp $
  */
 
 class SegueMenuGenerator {
@@ -17,7 +17,7 @@ class SegueMenuGenerator {
 	 *		"module.action" .
 	 * @return object MenuLayout
 	 */
-	function & generateMainMenu($actionString) {
+	function &generateMainMenu($actionString) {
 		$parts = explode(".", $actionString);
 		$module = $parts[0];
 		$action = $parts[1];
