@@ -27,11 +27,6 @@ require_once "main/library/SegueMenuGenerator.class.php";
  ******************************************************************************/
 require_once(HARMONI."themeHandler/themes/SimpleLines.theme.php");
 
-/******************************************************************************
- * Create the Harmoni object - required
- ******************************************************************************/
-$harmoni =& new Harmoni();
-
 
 /******************************************************************************
  * Start the session so that we can use the session for storage.
