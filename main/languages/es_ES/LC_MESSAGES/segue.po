@@ -1,0 +1,287 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2004-05-26 18:15-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /www/afranco/concerto/main/modules/home/welcome.act.php:17
+msgid "Welcome to Concerto"
+msgstr "Bienvenido a Concerto"
+
+#: /www/afranco/concerto/main/modules/home/welcome.act.php:24
+msgid ""
+"<strong>Concerto</strong> is a digital assets management tool developed at "
+"Middlebury College."
+msgstr "<strong>Concerto</strong>  está una herramienta para gestión de Recursos Digitales, desarrollando a Middlebury College."
+
+#: /www/afranco/concerto/main/modules/home/welcome.act.php:26
+msgid ""
+"The two main parts of <strong>Concerto</strong> are the <em>Collections</em> "
+"of digital <em>Assets</em> and the <em>Exhibitions</em> of <em>Slide-Shows</"
+"em>. Click on the links to the left to start exploring <strong>Concerto</"
+"strong>."
+msgstr "Los dos partes principales de <strong>Concerto</strong> sonos los " "<em>Colecciónes</em> de <em>Recursos</em> digitales y los <em>Exposiciónes</em> "
+"de <em>Diapositivas</em>. Hacé clic en los enlaces a la izquierda para "
+"comenzar su exploración de <strong>Concerto</strong>."
+
+#: /www/afranco/concerto/main/modules/home/welcome.act.php:28
+#: /www/afranco/concerto/main/modules/collections/main.act.php:33
+#: /www/afranco/concerto/main/modules/collections/namebrowse.act.php:23
+#: /www/afranco/concerto/main/modules/collections/typebrowse.act.php:23
+msgid ""
+"Some <em>Collections</em>, <em>Exhibitions</em>, <em>Assets</em>, and "
+"<em>Slide-Shows</em> may be restricted to certain users or groups of users. "
+"Log in above to ensure your greatest access to all parts of the system."
+msgstr "Posiblemente, unos <em>Colecciónes</em>, <em>Exposiciónes</em>, " "<em>Recursos</em>, y <em>Diapositivas</em> tienen restricciónes a "
+"algunos usarios. Entré en sessión arriba para asegurar su acceso más grande "
+"en todo de la sistema."
+
+#: /www/afranco/concerto/main/modules/window/screen.act.php:53
+msgid "Current User: "
+msgstr "Usario Actual: "
+
+#: /www/afranco/concerto/main/modules/window/screen.act.php:58
+msgid "Log Out"
+msgstr "Salir"
+
+#: /www/afranco/concerto/main/modules/window/screen.act.php:60
+msgid "anonymous"
+msgstr "anónimo"
+
+#: /www/afranco/concerto/main/modules/window/screen.act.php:63
+msgid "Log In"
+msgstr "Entré en sessión"
+
+#: /www/afranco/concerto/main/modules/window/screen.act.php:80
+msgid "credits"
+msgstr "méritos"
+
+#: /www/afranco/concerto/main/modules/collections/main.act.php:17
+#: /www/afranco/concerto/main/modules/collection/create.act.php:47
+#: /www/afranco/concerto/main/library/ConcertoMenuGenerator.class.php:38
+msgid "Collections"
+msgstr "Colecciónes"
+
+#: /www/afranco/concerto/main/modules/collections/main.act.php:24
+msgid ""
+"<em>Collections</em> are containers for <em>Assets</em>. <em>Assets</em> can "
+"in turn contain other Assets. Each collection can have its own cataloging "
+"schema."
+msgstr "<em>Colecciónes</em> son recipiente para <em>Recursos</em>."
+"Es posible para <em>Recursos</em> contener otros <em>Recursos</em>."
+"Todos los <em>Colecciónes</em> tiene su propio esquema de catalogar."
+
+#: /www/afranco/concerto/main/modules/collections/main.act.php:27
+msgid "Browse <em>Collections</em> by Name"
+msgstr "Navegé los <em>Colecciónes</em> por Nombre"
+
+#: /www/afranco/concerto/main/modules/collections/main.act.php:30
+msgid "Browse <em>Collections</em> by Type"
+msgstr "Navegé los <em>Colecciónes</em> por Tipo"
+
+#: /www/afranco/concerto/main/modules/collections/main.act.php:39
+msgid "Create a new <em>Collection</em>"
+msgstr "Creé un <em>Colección</em> nuevo"
+
+#: /www/afranco/concerto/main/modules/collections/namebrowse.act.php:16
+#: /www/afranco/concerto/main/modules/collections/typebrowse.act.php:16
+msgid "Browse Collections By Name"
+msgstr "Navegé los Colecciónes por Nombre"
+
+#: /www/afranco/concerto/main/modules/collections/namebrowse.act.php:21
+msgid "Below are listed the availible <em>Collections</em>, organized by name."
+msgstr "Debajo son los <em>Colecciónes</em> disponibles, organizado por nombre."
+
+#: /www/afranco/concerto/main/modules/collections/namebrowse.act.php:53
+#: /www/afranco/concerto/main/modules/collections/typebrowse.act.php:71
+msgid "ID#"
+msgstr "ID#"
+
+#: /www/afranco/concerto/main/modules/collections/namebrowse.act.php:64
+#: /www/afranco/concerto/main/modules/collections/typebrowse.act.php:82
+msgid "browse"
+msgstr "navegé"
+
+#: /www/afranco/concerto/main/modules/collections/namebrowse.act.php:67
+#: /www/afranco/concerto/main/modules/collections/typebrowse.act.php:85
+msgid "search"
+msgstr "busqué"
+
+#: /www/afranco/concerto/main/modules/collections/namebrowse.act.php:70
+#: /www/afranco/concerto/main/modules/collections/typebrowse.act.php:88
+msgid "edit"
+msgstr "revisé"
+
+#: /www/afranco/concerto/main/modules/collections/namebrowse.act.php:77
+#: /www/afranco/concerto/main/modules/collections/typebrowse.act.php:101
+msgid "No <em>Collections</em> are availible."
+msgstr "Ningunos <em>Colecciónes</em> son disponible."
+
+#: /www/afranco/concerto/main/modules/collections/typebrowse.act.php:21
+msgid ""
+"Below are listed the availible <em>Collections</em>, organized by type, then "
+"name."
+msgstr "Debajo son los <em>Colecciónes</em> disponibles, organizado por tipo, "
+"pues nombre."
+
+#: /www/afranco/concerto/main/modules/collections/typebrowse.act.php:95
+msgid "No <em>Collections</em> are availible for this type."
+msgstr "Ningunos <em>Colecciónes</em> son disponible para este tipo."
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:17
+msgid "Create a Collection"
+msgstr "Creé un Colección"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:21
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:25
+#: /www/afranco/concerto/main/modules/schema/create.act.php:25
+msgid "Name & Description"
+msgstr "Nombre & Descripción"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:26
+msgid "Default Collection Name"
+msgstr "Nombre de Colección por omisión"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:30
+msgid "Default Collection description."
+msgstr "Descripción de Colección por omisión"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:33
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:37
+#: /www/afranco/concerto/main/modules/schema/create.act.php:37
+msgid "Name"
+msgstr "Nombre"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:34
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:38
+msgid "The Name for this <em>Collection</em>: "
+msgstr "El Nombre por esta <em>Colección</em>: "
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:36
+#: /www/afranco/concerto/main/modules/collection/create.act.php:84
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:40
+#: /www/afranco/concerto/main/modules/schema/create.act.php:40
+msgid "Description"
+msgstr "Descripción"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:37
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:41
+msgid "The Description for this <em>Collection</em>: "
+msgstr "El Descripción por esta <em>Colección</em>: "
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:43
+#: /www/afranco/concerto/main/modules/collection/create.act.php:62
+msgid "Type"
+msgstr "Tipo"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:51
+msgid "Concerto"
+msgstr "Concerto"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:55
+msgid "Generic Collection"
+msgstr "Colección Genérico"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:59
+msgid "This is a <em>Collection</em> of unspecified type."
+msgstr "Esta es un <em>Colección</em> sin tipo."
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:63
+msgid ""
+"All <em>Collections</em> have an immutable type. This type can be used to "
+"catagorize <em>Collections</em>, but is not necessary."
+msgstr "Todos <em>Colecciónes</em> tiene un tipo sin variación."
+"Es possible, pero no necesario, usar este tipo para categorización de <em>Colecciónes</em>."
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:66
+msgid "Domain"
+msgstr "Dominio"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:72
+msgid "Authority"
+msgstr "Autoridad"
+
+#: /www/afranco/concerto/main/modules/collection/create.act.php:78
+msgid "Keyword"
+msgstr "Palabra de Llave"
+
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:21
+msgid "Edit a Collection"
+msgstr "Revisé un Colección"
+
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:48
+msgid "Schema Selection"
+msgstr "Selección de Esesquema"
+
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:53
+msgid "Select Cataloging Schemata"
+msgstr "Elegí Esesquemas de Catalogar"
+
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:54
+msgid ""
+"Select which cataloging schemata you wish to appear during <em>Asset</em> "
+"creation and editing. <em>Assets</em> can hold data in any of the schemata, "
+"but only the ones selected here will be availible when adding new data."
+msgstr "Elegí los esesqemas que desea aparecer durrante la creación y revisión "
+"de <em>Recursos</em>. <em>Recursos</em> tiene datos en cualquier esesquema, "
+"pero solo estas fue disponible cuando agregar datos nuevos."
+
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:55
+#: /www/afranco/concerto/main/modules/schema/create.act.php:55
+msgid ""
+"If none of the schemata listed below fit your needs, please click the button "
+"below to save your changes and create a new schema."
+msgstr "Si ningunas de las esesquemas abajo trabja por su necesidades, "
+"porfavor hacé clic abajo para guardar los variaciónes y crear una esesquema nueva."
+
+#: /www/afranco/concerto/main/modules/collection/edit.act.php:56
+#: /www/afranco/concerto/main/modules/schema/create.act.php:56
+msgid "Save Changes and Create a new Schema"
+msgstr "Guardé Variaciónes y Creé una Esesquema Nueva"
+
+#: /www/afranco/concerto/main/modules/schema/create.act.php:21
+msgid "Create a Schema"
+msgstr " Creé una Esesquema Nueva"
+
+#: /www/afranco/concerto/main/modules/schema/create.act.php:38
+msgid "The Name for this Schema: "
+msgstr "El Nombre de esta Esesquema: "
+
+#: /www/afranco/concerto/main/modules/schema/create.act.php:41
+msgid "The Description for this Schema: "
+msgstr "El Descripción de esta Esesquema: "
+
+#: /www/afranco/concerto/main/modules/schema/create.act.php:48
+msgid "Add Elements"
+msgstr "Agregé Elementos"
+
+#: /www/afranco/concerto/main/modules/schema/create.act.php:53
+msgid "Add a new Element"
+msgstr "Agregé un Elemento nuevo"
+
+#: /www/afranco/concerto/main/library/ConcertoMenuGenerator.class.php:29
+msgid "Home"
+msgstr "La Casa"
+
+#: /www/afranco/concerto/main/library/ConcertoMenuGenerator.class.php:49
+msgid "By Name"
+msgstr "Por Nombre"
+
+#: /www/afranco/concerto/main/library/ConcertoMenuGenerator.class.php:56
+msgid "By Type"
+msgstr "Por Tip"
+
+#: /www/afranco/concerto/main/library/ConcertoMenuGenerator.class.php:65
+msgid "Exhibitions"
+msgstr "Exposiciónes"
