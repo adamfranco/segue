@@ -1,5 +1,5 @@
 <?
-// :: Version: $Id: harmoni.inc.php,v 1.2 2004/05/29 13:40:21 gabeschine Exp $
+// :: Version: $Id: harmoni.inc.php,v 1.3 2004/05/31 20:33:52 gabeschine Exp $
 
 
 // :: set up the $harmoni object :: 
@@ -26,6 +26,7 @@
 	$dbID = $dbHandler->addDatabase( new MySQLDatabase("localhost","segue2","test","test") );
 	$dbHandler->pConnect($dbID);
 	unset($dbHandler); // done with that for now
+	define("DBID",$dbID);
 
 // :: Set up the SharedManager as this is required for the ID service ::
 	Services::startService("Shared", $dbID, "segue2");
@@ -91,8 +92,6 @@
 //	$langLoc->setLanguage("es_ES");
 //	$langLoc->setLanguage("en_US");
 	$languages =& $langLoc->getLanguages();
-//  printpre($languages);
-
 
 // :: Set up the DataManager ::
 	HarmoniDataManager::setup($dbID);
