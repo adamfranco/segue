@@ -2,12 +2,12 @@
 /**
  * This is the main control script for the application.
  *
- * @package concerto
+ * @package segue
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.3 2006/01/13 18:30:22 adamfranco Exp $
+ * @version $Id: index.php,v 1.4 2006/01/13 18:51:16 adamfranco Exp $
  */
 
 /*********************************************************

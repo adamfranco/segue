@@ -5,12 +5,12 @@
  *
  * USAGE: Copy this file to gui.conf.php to set custom values.
  *
- * @package concerto.config
+ * @package segue.config
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: gui_default.conf.php,v 1.1 2006/01/13 18:30:22 adamfranco Exp $
+ * @version $Id: gui_default.conf.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../themes/SimpleTheme/SimpleTheme.class.php");

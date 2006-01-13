@@ -2,12 +2,12 @@
 /**
  * Include the libraries and define constants for our application
  *
- * @package concerto
+ * @package segue
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: libraries.inc.php,v 1.1 2006/01/13 18:36:32 adamfranco Exp $
+ * @version $Id: libraries.inc.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
  */
 
 /******************************************************************************
@@ -39,11 +39,8 @@ require_once (POLYPHONY_DIR."/polyphony.inc.php");
 /******************************************************************************
  * Include our libraries
  ******************************************************************************/
-require_once(MYDIR."/main/library/ConcertoMenuGenerator.class.php");
-require_once(MYDIR."/main/library/printers/AssetPrinter.static.php");
-require_once(MYDIR."/main/library/printers/RepositoryPrinter.static.php");
-require_once(MYDIR."/main/library/Wizard/SlideOrderedRepeatableComponentCollection.class.php");
-require_once(MYDIR."/main/library/Wizard/AssetComponent.class.php");
+require_once(MYDIR."/main/library/SegueMenuGenerator.class.php");
+
 
 /******************************************************************************
  * Include any theme classes we want to use. They need to be included prior

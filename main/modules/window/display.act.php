@@ -1,11 +1,11 @@
 <?php
 /**
- * @package concerto.modules.window
+ * @package segue.modules.window
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.1 2006/01/13 18:36:32 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.2 2006/01/13 18:51:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -14,12 +14,12 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
 /**
  * build the frame of the window
  * 
- * @package concerto.modules.window
+ * @package segue.modules.window
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.1 2006/01/13 18:36:32 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.2 2006/01/13 18:51:18 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -35,12 +35,12 @@ class displayAction
 	 */
 	function execute ( &$harmoni ) {
 		/**
-		 * @package concerto.display
+		 * @package segue.display
 		 * 
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.1 2006/01/13 18:36:32 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.2 2006/01/13 18:51:18 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -68,7 +68,7 @@ class displayAction
 		
 		// The logo
 		$logo =& new Component("\n<a href='".MYPATH."/'> <img src='".LOGO_URL."' 
-							style='border: 0px;' alt='"._("Concerto Logo'"). "/> </a>", BLANK, 1);
+							style='border: 0px;' alt='"._("Segue Logo'"). "/> </a>", BLANK, 1);
 		$headRow->add($logo, null, null, LEFT, TOP);
 		
 		// Language Bar
@@ -165,7 +165,7 @@ class displayAction
 		$mainScreen->add($centerPane,"100%",null, LEFT, TOP);		
 		
 		// Main menu
-		$mainMenu =& ConcertoMenuGenerator::generateMainMenu($harmoni);
+		$mainMenu =& SegueMenuGenerator::generateMainMenu($harmoni);
 		$centerPane->add($mainMenu,"140px",null, LEFT, TOP);
 		
 		// use the result from previous actions
@@ -196,7 +196,7 @@ class displayAction
 		$helpText .= "'>"._("Help")."</a>";
 		$footer->add(new UnstyledBlock($helpText), "50%", null, LEFT, BOTTOM);
 		
-		$footerText = "Concerto v.2.0-Beta &copy;2004 Middlebury College: <a href=''>";
+		$footerText = "Segue v.2.0-Beta &copy;2004 Middlebury College: <a href=''>";
 		$footerText .= _("credits");
 		$footerText .= "</a>";
 		$footer->add(new UnstyledBlock($footerText), "50%", null, RIGHT, BOTTOM);

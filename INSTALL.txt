@@ -1,62 +1,62 @@
 /**
- * @package concerto.install
+ * @package segue.install
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: INSTALL.txt,v 1.1 2006/01/13 18:30:22 adamfranco Exp $
+ * @version $Id: INSTALL.txt,v 1.2 2006/01/13 18:51:16 adamfranco Exp $
  */
 
-------Concerto Installation-------
+------Segue Installation-------
 
 ----------------------------------
 Bundle Installation:
 
-These instructions assume that you have downloaded the Concerto bundle
+These instructions assume that you have downloaded the Segue bundle
 (which includes the Harmoni, Polyphony, and DOMIT libraries as well as the
-Concerto viewer).
+Segue viewer).
 
 Dependencies:
 	- a MySql database
 	- imagemagick
 
-Setting up Concerto:
-	1) Create a MySQL database for Concerto to use.
+Setting up Segue:
+	1) Create a MySQL database for Segue to use.
 		A) create the database
 		B) give a database user full permission to that database.
 
 	2) Create your database config
 		A) copy 
-				concerto/config/database_default.conf.php
+				segue/config/database_default.conf.php
 			to
-				concerto/config/database.conf.php
+				segue/config/database.conf.php
 	
 		B) Modify your database config and change the database connection entry 
 		   in the config to reflect the database that you just created.
 	
 	3) Create your Image Processor config
 		A) copy 
-				concerto/config/imageprocessor_default.conf.php
+				segue/config/imageprocessor_default.conf.php
 			to
-				concerto/config/imageprocessor.conf.php
+				segue/config/imageprocessor.conf.php
 	
 		B) Modify the 'imagemagick_path' property in theImage Processor config 
 			to be the location in which ImageMagick is installed
 		 
 	4) (Optional) Set up LDAP authentication
 		A) copy 
-				concerto/config/authentication_default.conf.php
+				segue/config/authentication_default.conf.php
 			to
-				concerto/config/authentication.conf.php
+				segue/config/authentication.conf.php
 		
 		B) comment-in and modify the LDAP authentication piece in
-				concerto/config/authentication.conf
+				segue/config/authentication.conf
 			to fit your envirnment.
 	
-	5) Go to Concerto in your browser. The default administrator account is:
+	5) Go to Segue in your browser. The default administrator account is:
 			Username: jadministrator
 			Password: password
-		Use the Concerto Admin tools to create a new admin account and delete
+		Use the Segue Admin tools to create a new admin account and delete
 		the default one.
 
 ----------------------------------

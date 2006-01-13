@@ -4,12 +4,12 @@
  * Run some post-configuration setup.
  *
  *
- * @package concerto.config
+ * @package segue.config
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.1 2006/01/13 18:30:22 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
  */
 
 if (!isset($_SESSION['post_config_setup_complete'])) {
@@ -17,7 +17,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
 	$repositoryManager =& Services::getService("Repository");
 	$idManager =& Services::getService("Id");
-	$exhibitionRepositoryId =& $idManager->getId("edu.middlebury.concerto.exhibition_repository");
+	$exhibitionRepositoryId =& $idManager->getId("edu.middlebury.segue.exhibition_repository");
 
 	$repositories =& $repositoryManager->getRepositories();
 	$exhibitionRepositoryExists = FALSE;
@@ -33,17 +33,17 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 
 		$exhibitionRepositoryType =& new Type (
 						'System Repositories', 
-						'edu.middlebury.concerto', 
+						'edu.middlebury.segue', 
 						'Exhibitions',
 						'A Repository for holding Exhibitions, their Slide-Shows and Slides');
 		$repository =& $repositoryManager->createRepository(
 								  "All Exhibitions",
-								  "This is a Repository that holds all of the Exhibitions in Concerto.",
+								  "This is a Repository that holds all of the Exhibitions in Segue.",
 								  $exhibitionRepositoryType,
 								  $exhibitionRepositoryId);
 
 
-		$slideSchemaId =& $idManager->getId("edu.middlebury.concerto.slide_record_structure");
+		$slideSchemaId =& $idManager->getId("edu.middlebury.segue.slide_record_structure");
 		$slideSchema =& $repository->createRecordStructure(
 							"Slide Schema", 
 							"This is the schema used for exhibition slides.", 
@@ -57,7 +57,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 							false, 
 							false, 
 							false,
-							$idManager->getId("edu.middlebury.concerto.slide_record_structure.target_id"));
+							$idManager->getId("edu.middlebury.segue.slide_record_structure.target_id"));
 		$slideSchema->createPartStructure(
 							"text position", 
 							"The location of any text presented in the slide. (bottom, top, left, right)", 
@@ -65,7 +65,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 							false, 
 							false, 
 							false,
-							$idManager->getId("edu.middlebury.concerto.slide_record_structure.text_position"));
+							$idManager->getId("edu.middlebury.segue.slide_record_structure.text_position"));
 		$slideSchema->createPartStructure(
 							"display metadata", 
 							"Whether or not to display the metadata of the associated asset referenced by target id.", 
@@ -73,7 +73,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 							false, 
 							false, 
 							false,
-							$idManager->getId("edu.middlebury.concerto.slide_record_structure.display_metadata"));
+							$idManager->getId("edu.middlebury.segue.slide_record_structure.display_metadata"));
 
 
 	}

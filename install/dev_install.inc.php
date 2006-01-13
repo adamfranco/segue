@@ -1,11 +1,11 @@
 <?php
 /**
- * @package concerto.install
+ * @package segue.install
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.1 2006/01/13 18:36:32 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
  */
 
 /*********************************************************
@@ -29,7 +29,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 	$result =& $genericResult->returnAsSelectQueryResult();
 	if ($result->hasNext()) {
 		print "<h2>Tables exist in the database. Not creating tables.</h2>";
-		print "<h2>If you have just run the installer, comment out it's line in the config to start using Concerto.</h2>";
+		print "<h2>If you have just run the installer, comment out it's line in the config to start using Segue.</h2>";
 		$_SESSION['table_setup_complete'] = TRUE;
 	
 		RequestContext::locationHeader($_SERVER['PHP_SELF']);
@@ -68,16 +68,16 @@ if (!isset($_SESSION['table_setup_complete'])) {
 			$nodeTypes = array();
 			$authorizationHierarchyId =& $idManager->getId("edu.middlebury.authorization.hierarchy");
 			$authorizationHierarchy =& $hierarchyManager->createHierarchy(
-				"Concerto Qualifier Hierarchy", 
+				"Segue Qualifier Hierarchy", 
 				$nodeTypes,
-				"A Hierarchy to hold all Qualifiers known to Concerto.",
+				"A Hierarchy to hold all Qualifiers known to Segue.",
 				TRUE,
 				FALSE,
 				$authorizationHierarchyId);
 	
 			// Create nodes for Qualifiers
-			$allOfConcertoId =& $idManager->getId("edu.middlebury.authorization.root");
-			$authorizationHierarchy->createRootNode($allOfConcertoId, new DefaultQualifierType, "All of Concerto", "The top level of all of Concerto.");
+			$allOfSegueId =& $idManager->getId("edu.middlebury.authorization.root");
+			$authorizationHierarchy->createRootNode($allOfSegueId, new DefaultQualifierType, "All of Segue", "The top level of all of Segue.");
 			
 	
 	
@@ -85,8 +85,8 @@ if (!isset($_SESSION['table_setup_complete'])) {
 	 * Script for setting up the RepositoryManager Hierarchy
 	 *********************************************************/	
 			// Create nodes for Qualifiers
-			$collectionsId =& $idManager->getId("edu.middlebury.concerto.collections_root");
-			$authorizationHierarchy->createNode($collectionsId, $allOfConcertoId, new DefaultQualifierType, "Concerto Collections", "All Collections in Concerto.");
+			$collectionsId =& $idManager->getId("edu.middlebury.segue.collections_root");
+			$authorizationHierarchy->createNode($collectionsId, $allOfSegueId, new DefaultQualifierType, "Segue Collections", "All Collections in Segue.");
 	
 	/*********************************************************
 	 * Script for setting up the AgentManager Hierarchy
@@ -95,7 +95,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 			$systemAgentType =& new Type ("Agents", "edu.middlebury.harmoni", "System", "Agents/Groups required by the Agent system.");
 			
 			$everyoneId =& $idManager->getId("edu.middlebury.agents.everyone");
-			$authorizationHierarchy->createNode($everyoneId, $allOfConcertoId, $systemAgentType, "Everyone", "All Agents and Groups in the system.");
+			$authorizationHierarchy->createNode($everyoneId, $allOfSegueId, $systemAgentType, "Everyone", "All Agents and Groups in the system.");
 			
 			$allGroupsId =& $idManager->getId("edu.middlebury.agents.all_groups");
 			$authorizationHierarchy->createNode($allGroupsId, $everyoneId, $systemAgentType, "All Groups", "All Groups in the system.");
@@ -131,7 +131,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 			
 			// default administrator account
 			$authNMethodManager =& Services::getService("AuthNMethodManager");
-			$dbAuthType =& new Type ("Authentication", "edu.middlebury.harmoni", "Concerto DB");
+			$dbAuthType =& new Type ("Authentication", "edu.middlebury.harmoni", "Segue DB");
 			$dbAuthMethod =& $authNMethodManager->getAuthNMethodForType($dbAuthType);
 			// Create the representation
 			
@@ -208,7 +208,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 			}
 	
 	/*********************************************************
-	 * Script for setting up the AuthorizationFunctions that Concerto will use
+	 * Script for setting up the AuthorizationFunctions that Segue will use
 	 *********************************************************/
 	 
 			 if (file_exists(MYDIR.'/config/authorization.conf.php'))
@@ -227,15 +227,15 @@ if (!isset($_SESSION['table_setup_complete'])) {
 		
 			$id =& $idManager->getId("edu.middlebury.authorization.access");
 			$function =& $authZManager->createFunction($id, "Access", "Access a qualifier.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 			
 			$id =& $idManager->getId("edu.middlebury.authorization.view");
 			$function =& $authZManager->createFunction($id, "View", "View a qualifier.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 			
 			$id =& $idManager->getId("edu.middlebury.authorization.comment");
 			$function =& $authZManager->createFunction($id, "Comment", "Comment on a qualifier.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 			
 			
 		// Editing Functions
@@ -243,19 +243,19 @@ if (!isset($_SESSION['table_setup_complete'])) {
 		
 			$id =& $idManager->getId("edu.middlebury.authorization.modify");
 			$function =& $authZManager->createFunction($id, "Modify", "Modify a qualifier.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 			
 			$id =& $idManager->getId("edu.middlebury.authorization.delete");
 			$function =& $authZManager->createFunction($id, "Delete", "Delete a qualifier.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 			
 			$id =& $idManager->getId("edu.middlebury.authorization.add_children");
 			$function =& $authZManager->createFunction($id, "Add Children", "Add children to this qualifier.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 			
 			$id =& $idManager->getId("edu.middlebury.authorization.remove_children");
 			$function =& $authZManager->createFunction($id, "Remove Children", "Remove children from this qualifier.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 			
 			
 		// Administration Functions
@@ -263,41 +263,41 @@ if (!isset($_SESSION['table_setup_complete'])) {
 		
 			$id =& $idManager->getId("edu.middlebury.authorization.view_authorizations");
 			$function =& $authZManager->createFunction($id, "View Authorizations", "View Authorizations at a qualifier.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 			
 			$id =& $idManager->getId("edu.middlebury.authorization.modify_authorizations");
 			$function =& $authZManager->createFunction($id, "Modify Authorizations", "Modify Authorizations at qualifier.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 
 		// Administration Functions
 			$type =& new Type ("Authorization", "edu.middlebury.harmoni", "User Administration", "Functions for administering users.");
 
 			$id =& $idManager->getId("edu.middlebury.authorization.create_agent");
 			$function =& $authZManager->createFunction($id, "Create Agents", "Add Agents to the system.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 
 			$id =& $idManager->getId("edu.middlebury.authorization.delete_agent");
 			$function =& $authZManager->createFunction($id, "Delete Agents", "Remove Agents from the system.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 
 			$id =& $idManager->getId("edu.middlebury.authorization.modify_agent");
 			$function =& $authZManager->createFunction($id, "Modify Agents", "Modify Agent properties.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 
 		// Administration Functions
 			$type =& new Type ("Authorization", "edu.middlebury.harmoni", "Group Administration", "Functions for administering groups.");
 
 			$id =& $idManager->getId("edu.middlebury.authorization.create_group");
 			$function =& $authZManager->createFunction($id, "Create Groups", "Add Groups to the system.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 
 			$id =& $idManager->getId("edu.middlebury.authorization.delete_group");
 			$function =& $authZManager->createFunction($id, "Delete Groups", "Remove Groups from the system.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 
 			$id =& $idManager->getId("edu.middlebury.authorization.modify_group_membership");
 			$function =& $authZManager->createFunction($id, "Modify Group Membership", "Modify Group membership.", $type, $qualifierHierarchyId);
-			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfConcertoId);	
+			$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);	
 
 	print "\n<br> ...done";
 	$_SESSION['table_setup_complete'] = TRUE;

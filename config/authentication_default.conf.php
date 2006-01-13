@@ -5,18 +5,18 @@
  *
  * USAGE: Copy this file to authentication.conf.php to set custom values.
  *
- * @package concerto.config
+ * @package segue.config
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: authentication_default.conf.php,v 1.1 2006/01/13 18:30:22 adamfranco Exp $
+ * @version $Id: authentication_default.conf.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
  */
  
 // :: Start the AuthenticationManager OSID Impl.
 	$configuration =& new ConfigurationProperties;
 	$tokenCollectors = array(
-		serialize(new Type ("Authentication", "edu.middlebury.harmoni", "Concerto DB")) 
+		serialize(new Type ("Authentication", "edu.middlebury.harmoni", "Segue DB")) 
 			=> new FormActionNamePassTokenCollector($harmoni->request->quickURL("auth","username_password_form")),
 // 		serialize(new Type ("Authentication", "edu.middlebury.harmoni", "Middlebury LDAP")) 
 // 			=> new FormActionNamePassTokenCollector($harmoni->request->quickURL("auth","username_password_form")),
@@ -31,7 +31,7 @@
 		// set up a Database Authentication Method
 		require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/SQLDatabaseAuthNMethod.class.php");
 		require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/SQLDatabaseMD5UsernamePasswordAuthNTokens.class.php");
-		$dbAuthType =& new Type ("Authentication", "edu.middlebury.harmoni", "Concerto DB");
+		$dbAuthType =& new Type ("Authentication", "edu.middlebury.harmoni", "Segue DB");
 		$dbMethodConfiguration =& new ConfigurationProperties;
 		$dbMethodConfiguration->addProperty('tokens_class', $arg0 = 'SQLDatabaseMD5UsernamePasswordAuthNTokens');
 		$dbMethodConfiguration->addProperty('database_id', $dbID);

@@ -1,11 +1,11 @@
 <?php
 /**
- * @package concerto.modules.home
+ * @package segue.modules.home
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: welcome.act.php,v 1.3 2006/01/13 18:36:32 adamfranco Exp $
+ * @version $Id: welcome.act.php,v 1.4 2006/01/13 18:51:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -13,12 +13,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
 /**
  * 
  * 
- * @package concerto.modules.home
+ * @package segue.modules.home
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: welcome.act.php,v 1.3 2006/01/13 18:36:32 adamfranco Exp $
+ * @version $Id: welcome.act.php,v 1.4 2006/01/13 18:51:18 adamfranco Exp $
  */
 class welcomeAction 
 	extends MainWindowAction
@@ -42,7 +42,7 @@ class welcomeAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Welcome to Concerto");
+		return _("Welcome to Segue");
 	}
 	
 	/**
@@ -56,12 +56,8 @@ class welcomeAction
 		$actionRows =& $this->getActionRows();
 		ob_start();
 		print "<p>";
-		print _("<strong>Concerto</strong> is a digital assets management tool developed at Middlebury College.");
+		print _("<strong>Segue</strong> is a collaborative learning tool developed at Middlebury College.");
 		print "</p>\n<p>";
-		print _("The two main parts of <strong>Concerto</strong> are the <em>Collections</em> of digital <em>Assets</em> and the <em>Exhibitions</em> of <em>Slide-Shows</em>. Click on the links to the left to start exploring <strong>Concerto</strong>.");
-		print "</p>\n<p>";
-		print _("Some <em>Collections</em>, <em>Exhibitions</em>, <em>Assets</em>, and <em>Slide-Shows</em> may be restricted to certain users or groups of users. Log in above to ensure your greatest access to all parts of the system.");
-		print "</p>";
 		
 		$actionRows->add(
 			new Block(ob_get_contents(), STANDARD_BLOCK), 

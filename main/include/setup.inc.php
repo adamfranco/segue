@@ -2,12 +2,12 @@
 /**
  * This is the main control script for the application.
  *
- * @package concerto
+ * @package segue
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: setup.inc.php,v 1.1 2006/01/13 18:36:32 adamfranco Exp $
+ * @version $Id: setup.inc.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
  */
 
 /*********************************************************
@@ -22,7 +22,7 @@ $harmoni->startSession();
 
 
 /*********************************************************
- * If we pressed a button to reset concerto, clear the session
+ * If we pressed a button to reset segue, clear the session
  * and delete our tables.
  *********************************************************/
 if (file_exists(MYDIR.'/config/debug.conf.php'))
@@ -30,7 +30,7 @@ if (file_exists(MYDIR.'/config/debug.conf.php'))
 else
 	require_once (MYDIR.'/config/debug_default.conf.php');
 		
-if (isset($_REQUEST["reset_concerto"]) 
+if (isset($_REQUEST["reset_segue"]) 
 	&& defined('ENABLE_RESET') 
 	&& ENABLE_RESET) 
 {
