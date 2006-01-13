@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.9 2006/01/13 22:21:18 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.10 2006/01/13 22:37:12 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.9 2006/01/13 22:21:18 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.10 2006/01/13 22:37:12 cws-midd Exp $
  */
 class Plugin {
  	
@@ -332,7 +332,7 @@ class Plugin {
 	function _loadData () {
 		
 		// one array for the data, a second for the persistence of ids
-		$this->_data = array();
+		$this->data = array();
 		$this->_data_ids = array();
 		
 		// get all the records for this asset
@@ -343,15 +343,15 @@ class Plugin {
 			// for each new recordstructure add an array for holding instances
 			$recordStructure =& $record->getRecordStructure();
 			$rsName = $recordStructure->getDisplayName();
-			if (!in_array($rsName, array_keys($this->_data))) {
-				$this->_data[$rsName] = array();
+			if (!in_array($rsName, array_keys($this->data))) {
+				$this->data[$rsName] = array();
 				$this->_data_ids[$rsName] = array();
 			}
 			
 			// each instance itself should be acessible via index (1,2,3...)
-			$this->_data[$rsName][] = array();
+			$this->data[$rsName][] = array();
 			$this->_data_ids[$rsName][] = array();
-			$instance = count($this->_data[$rsName]) - 1; // current instance
+			$instance = count($this->data[$rsName]) - 1; // current instance
 
 			// each instance populates its parts like the records
 			$parts =& $record->getParts();
@@ -362,21 +362,22 @@ class Plugin {
 				$partStructure =& $part->getPartStructure();
 				$psName = $partStructure->getDisplayName();
 				if (!in_array($psName, 	
-						array_keys($this->_data[$rsName][$instance]))) {
-					$this->_data[$rsName][$instance][$psName] = array();
+						array_keys($this->data[$rsName][$instance]))) {
+					$this->data[$rsName][$instance][$psName] = array();
 					$this->_data_ids[$rsName][$instance][$psName] = array();
 				}
 				
 				// again with the instances
-				$this->_data[$rsName][$instance][$psName][] =& 
-					$part->getValue();
+				$partValue =& $part->getValue();
+				$this->data[$rsName][$instance][$psName][] = 
+					$partValue->asString();
 				$this->_data_ids[$rsName][$instance][$psName][] =&
 					$part->getId();
 			}
 		}
 		
 		// possible modification check.
-		$this->_loadedData = $this->_data;
+		$this->_loadedData = $this->data;
 	}
 	
 	/**
@@ -393,7 +394,7 @@ class Plugin {
 			$changes = array();	// array for storing a part id and its new value
 			
 			// go through all recordstructures
-			foreach ($this->_data as $rs => $instances) {
+			foreach ($this->data as $rs => $instances) {
 				
 				// go through each instance of the recordstructure
 				foreach ($instances as $instance => $record) {
@@ -417,7 +418,7 @@ class Plugin {
 		// make them changes
 		foreach ($changes as $id => $value) {
 			$part =& $this->_asset->getPart($id);
-			$part->updateValue($value);
+			$part->updateValueFromString($value);
 		}
 	}
 	
@@ -430,7 +431,7 @@ class Plugin {
 	 */
 	function _dataChanged () {
 		// @todo test different implementations of this function
-		$new = serialize($this->_data);
+		$new = serialize($this->data);
 		$old = serialize($this->_loadedData);
 		if ($old == $new)
 			return false;
