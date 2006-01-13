@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.2 2006/01/13 18:51:18 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.3 2006/01/13 19:51:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.2 2006/01/13 18:51:18 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.3 2006/01/13 19:51:18 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.2 2006/01/13 18:51:18 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.3 2006/01/13 19:51:18 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -165,7 +165,7 @@ class displayAction
 		$mainScreen->add($centerPane,"100%",null, LEFT, TOP);		
 		
 		// Main menu
-		$mainMenu =& SegueMenuGenerator::generateMainMenu($harmoni);
+		$mainMenu =& SegueMenuGenerator::generateMainMenu($harmoni->getCurrentAction());
 		$centerPane->add($mainMenu,"140px",null, LEFT, TOP);
 		
 		// use the result from previous actions
