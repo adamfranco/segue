@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.1 2006/01/12 22:16:16 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.2 2006/01/13 17:00:05 adamfranco Exp $
  */ 
 
 /**
@@ -18,12 +18,28 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.1 2006/01/12 22:16:16 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.2 2006/01/13 17:00:05 adamfranco Exp $
  */
 class Plugin {
+ 	
+/*********************************************************
+ * Instance Methods - API
+ *
+ * These are the methods that plugins can and should use 
+ * to interact with their environment. 
+ * 		Valid additional APIs outside of the methods below:
+ *			- OSID interfaces (accessed through Plugin->getManager($managerName))
+ *
+ * To preserve portability, plugins should not access 
+ * other Harmoni APIs, constants, global variables, or
+ * the super-globals $_GET, $_POST, $_REQUEST, $_COOKIE.
+ *********************************************************/
 
 /*********************************************************
- * Instance Methods - Override in Children
+ * Instance Methods - API - Override in Children
+ *
+ * Override these methods to implement the functionality of
+ * a plugin.
  *********************************************************/
  	
  	/**
@@ -66,6 +82,43 @@ class Plugin {
  	function getMarkup () {
  		return "<p>Override this method to display your pluggin.</p>";
  	}
+ 	
+/*********************************************************
+ * Instance Methods - API
+ *
+ * Use these methods in your plugin as needed, but do not 
+ * override them.
+ *********************************************************/
+	
+	/**
+	 * Answer a Url string with the array values added as parameters.
+	 * 
+	 * @param array $parameters Associative array ('name' => 'value')
+	 * @return string
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function getUrl ( $parameters ) {
+		ArgumentValidator::validate($parameters, ArrayValidatorRule::getRule());
+		
+		$url =& $this->_baseUrl->deepCopy();
+		$url->setValues($parameters);
+		return $url->write();
+	}
+	
+	/**
+	 * Answer the name-spaced field-name for a given name.
+	 * This method MUST be used in form inputs for their values to be
+	 * accessible to the plugin.
+	 * 
+	 * @param string $name
+	 * @return string
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function getFieldName ( $name ) {
+		return RequestContext::name($name);
+	}
 		
 /*********************************************************
  * Class Methods - Instance Creation
@@ -117,7 +170,7 @@ class Plugin {
 	}
 	
 /*********************************************************
- * Instance Methods - Initialization
+ * Instance Methods
  *********************************************************/
 	
 	/**
@@ -157,6 +210,24 @@ class Plugin {
 	}
 	
 	/**
+	 * Execute the plugin and return its markup.
+	 * 
+	 * @param object URLWriter $baseUrl
+	 * @return string
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function executeAndGetMarkup ($baseUrl) {
+		ArgumentValidator::validate($baseUrl, ExtendsValidatorRule::getRule('URLWriter'));
+		
+		$this->_baseUrl =& $baseUrl;
+		$this->update();
+		$markup = $this->getMarkup();
+		$this->_storeData();
+		return $markup;
+	}
+	
+	/**
 	 * Load our data from our Asset
 	 * 
 	 * @return void
@@ -165,6 +236,30 @@ class Plugin {
 	 */
 	function _loadData () {
 		// @todo Pull data from asset and put into wrapped/easy format
+	}
+	
+	/**
+	 * Store and changes to our data set to our Asset
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function _storeData () {
+		if ($this->_dataChanged()) {
+			// @todo Put wrapped/easy format changes into Asset Records
+		}
+	}
+	
+	/**
+	 * Answer true if our data has been modified
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function _dataChanged () {
+		// @todo implement
 	}
 }
 
