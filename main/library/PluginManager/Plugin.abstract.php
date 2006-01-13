@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.7 2006/01/13 21:31:47 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.8 2006/01/13 21:34:21 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.7 2006/01/13 21:31:47 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.8 2006/01/13 21:34:21 adamfranco Exp $
  */
 class Plugin {
  	
@@ -310,7 +310,7 @@ class Plugin {
 			
 			// each instance itself should be acessible via index (1,2,3...)
 			$this->_data[$rsName][] = array();
-			$this->_data_ids[$rsName][] = $record->getId();
+			$this->_data_ids[$rsName][] = array();
 			$instance = count($this->_data[$rsName]) - 1; // current instance
 
 			// each instance populates its parts like the records
