@@ -1,53 +1,66 @@
-<?
+<?php
+/**
+ * This is the main control script for the application.
+ *
+ * @package concerto
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: index.php,v 1.3 2006/01/13 18:30:22 adamfranco Exp $
+ */
 
-// Define a Constant reference to this application directory.
+/*********************************************************
+ * Define a Constant reference to this application directory.
+ *********************************************************/
+
 define("MYDIR",dirname(__FILE__));
-define("MYPATH",str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__)));
-define("MYURL",str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__))."/index.php");
 
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
+	$protocol = 'https';
+else
+	$protocol = 'http';
 
-/******************************************************************************
- * Include Harmoni - required
- ******************************************************************************/
-require_once "../harmoni/harmoni.inc.php";
+define("MYPATH", $protocol."://".$_SERVER['HTTP_HOST'].str_replace(
+												"\\", "/", 
+												dirname($_SERVER['PHP_SELF'])));
+define("MYURL", MYPATH."/index.php");
 
-/******************************************************************************
- * Include Polyphony
- ******************************************************************************/
-require_once "../polyphony/polyphony.inc.php";
+define("LOAD_GUI", true);
 
-/******************************************************************************
+/*********************************************************
  * Include our libraries
- ******************************************************************************/
-require_once "main/library/SegueMenuGenerator.class.php";
+ *********************************************************/
+require_once(dirname(__FILE__)."/main/include/libraries.inc.php");
 
-/******************************************************************************
- * Include any theme classes we want to use. They need to be included prior
- * to starting the session so that they can be restored properly.
- ******************************************************************************/
-require_once(HARMONI."themeHandler/themes/SimpleLines.theme.php");
+/*********************************************************
+ * Include our configuration and setup scripts
+ *********************************************************/
+require_once(dirname(__FILE__)."/main/include/setup.inc.php");
 
-
-/******************************************************************************
- * Start the session so that we can use the session for storage.
- ******************************************************************************/
-$harmoni->startSession();
-//printpre($_SESSION);
-
-/******************************************************************************
- * Include our configs
- ******************************************************************************/
-require_once "config/harmoni.inc.php";
-
-
-/******************************************************************************
- * 	Execute our actions
- ******************************************************************************/
+/*********************************************************
+ * Execute our actions
+ *********************************************************/
+if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
+	require_once(HARMONI."/utilities/Timer.class.php");
+	$execTimer =& new Timer;
+	$execTimer->start();
+}
 
 $harmoni->execute();
 
-// printpre($_SESSION);
-// debug::output(session_id());
-// Debug::printAll();
+if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
+	$execTimer->end();
+	print "\n<table>\n<tr><th align='right'>Execution Time:</th>\n<td align='right'><pre>";
+	printf("%1.6f", $execTimer->printTime());
+	print "</pre></td></tr>\n</table>";
+	
+	$dbhandler =& Services::getService("DBHandler");
+	printpre("NumQueries: ".$dbhandler->getTotalNumberOfQueries());
+	
+	// printpre($_SESSION);
+	// debug::output(session_id());
+	// Debug::printAll();
+}
 
 ?>
