@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.4 2006/01/13 19:19:38 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.5 2006/01/13 19:34:29 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.4 2006/01/13 19:19:38 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.5 2006/01/13 19:34:29 cws-midd Exp $
  */
 class Plugin {
  	
@@ -141,7 +141,7 @@ class Plugin {
 	 * @since 1/13/06
 	 */
 	function getData () {
-		<##>
+		// @todo implement this
 	}
 		
 /*********************************************************
@@ -306,6 +306,9 @@ class Plugin {
 					$part->getId();
 			}
 		}
+		
+		// possible modification check.
+		$this->_loadedData = serialize($this->_data);
 	}
 	
 	/**
@@ -318,6 +321,7 @@ class Plugin {
 	function _storeData () {
 		if ($this->_dataChanged()) {
 			// @todo Put wrapped/easy format changes into Asset Records
+			
 		}
 	}
 	
@@ -330,6 +334,11 @@ class Plugin {
 	 */
 	function _dataChanged () {
 		// @todo implement
+		$new = serialize($this->_data);
+		
+		if ($this->_loadedData == $new)
+			return false;
+		return true;
 	}
 }
 
