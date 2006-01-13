@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.3 2006/01/13 22:21:18 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.4 2006/01/13 22:33:06 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.3 2006/01/13 22:21:18 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.4 2006/01/13 22:33:06 adamfranco Exp $
  */
 class SegueTextBlockPlugin
 	extends Plugin
@@ -69,16 +69,17 @@ class SegueTextBlockPlugin
  		
  		if ($this->getFieldValue('edit')) {
  			print "\n<form action='".$this->url()."' method='post'>";
- 			print "\n\t<input type='text' name='".$this->getFieldName('title')
- 				."' value='".$this->getTitle()."' size='50'/>";
+ 			
+ 			print "\n\t<input type='text' name='".$this->getFieldName('title')."' value='".$this->getTitle()."' size='50'/>";
+ 			
  			print "\n\t<br/>";
- 			print "\n\t<textarea name='".$this->getFieldName('content')
- 				."' rows='5' cols='50'>"
- 				.$this->getContent()."</textarea>";
+ 			print "\n\t<textarea name='".$this->getFieldName('content')."' rows='5' cols='50'>".$this->getContent()."</textarea>";
+ 			
  			print "\n\t<br/>";
- 			print "\n\t<input type='submit' value='"._('Submit')
- 				."' name='".$this->getFieldName('submit')."'/>";
+ 			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
+ 			
  			print "\n\t<input type='button' value='"._('Cancel')."' onclick='window.location=\"".$this->url()."\"'/>";
+ 			
  			print "\n</form>";
  		} else {
 	 		print "\n".$this->getContent();
