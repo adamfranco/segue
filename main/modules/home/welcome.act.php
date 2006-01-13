@@ -1,33 +1,76 @@
-<?
+<?php
+/**
+ * @package concerto.modules.home
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: welcome.act.php,v 1.3 2006/01/13 18:36:32 adamfranco Exp $
+ */ 
 
-// Get the Layout compontents. See core/modules/moduleStructure.txt
-// for more info. 
-$harmoni->ActionHandler->execute("window", "screen");
-$mainScreen =& $harmoni->getAttachedData('mainScreen');
-$statusBar =& $harmoni->getAttachedData('statusBar');
-$centerPane =& $harmoni->getAttachedData('centerPane');
- 
+require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 
-// Our
-$actionRows =& new RowLayout();
-$centerPane->addComponent($actionRows, TOP, CENTER);
+/**
+ * 
+ * 
+ * @package concerto.modules.home
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: welcome.act.php,v 1.3 2006/01/13 18:36:32 adamfranco Exp $
+ */
+class welcomeAction 
+	extends MainWindowAction
+{
+	/**
+	 * Check Authorizations
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 4/26/05
+	 */
+	function isAuthorizedToExecute () {
+		return TRUE;
+	}
+	
+	/**
+	 * Return the heading text for this action, or an empty string.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/26/05
+	 */
+	function getHeadingText () {
+		return _("Welcome to Concerto");
+	}
+	
+	/**
+	 * Build the content for this action
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 4/26/05
+	 */
+	function buildContent () {
+		$actionRows =& $this->getActionRows();
+		ob_start();
+		print "<p>";
+		print _("<strong>Concerto</strong> is a digital assets management tool developed at Middlebury College.");
+		print "</p>\n<p>";
+		print _("The two main parts of <strong>Concerto</strong> are the <em>Collections</em> of digital <em>Assets</em> and the <em>Exhibitions</em> of <em>Slide-Shows</em>. Click on the links to the left to start exploring <strong>Concerto</strong>.");
+		print "</p>\n<p>";
+		print _("Some <em>Collections</em>, <em>Exhibitions</em>, <em>Assets</em>, and <em>Slide-Shows</em> may be restricted to certain users or groups of users. Log in above to ensure your greatest access to all parts of the system.");
+		print "</p>";
+		
+		$actionRows->add(
+			new Block(ob_get_contents(), STANDARD_BLOCK), 
+			"100%", 
+			null, 
+			CENTER, 
+			CENTER);
+		ob_end_clean();
+	}	
+}
 
-// Intro
-$introHeader =& new SingleContentLayout(HEADING_WIDGET, 2);
-$introHeader->addComponent(new Content(_("Welcome to Segue")));
-$actionRows->addComponent($introHeader);
-
-$introText =& new SingleContentLayout(TEXT_BLOCK_WIDGET, 2);
-$text = "";
-$text .= "<p>";
-$text .= _("<strong>Segue</strong> is a digital Content Management System developed at Middlebury College.");
-$text .= "</p>\n<p>";
-$text .= _("The two main parts of <strong>Segue</strong> are the creation and modification of complex websites and the collaborative functionality of a very advanced granular permissions structure, allowing multiple users to work together to create and publish content online.");
-$text .= "</p>\n<p>";
-$text .= _("Some sites may be restricted to certains users or groups of users. Log in above to ensure your greatest access to all parts of this system.");
-$text .= "</p>";
-$introText->addComponent(new Content($text));
-$actionRows->addComponent($introText);
-
-// return the main layout.
-return $mainScreen;
+?>

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.2 2006/01/13 17:00:05 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.3 2006/01/13 18:36:32 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.2 2006/01/13 17:00:05 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.3 2006/01/13 18:36:32 adamfranco Exp $
  */
 class Plugin {
  	
@@ -118,6 +118,30 @@ class Plugin {
 	 */
 	function getFieldName ( $name ) {
 		return RequestContext::name($name);
+	}
+	
+	/**
+	 * Answer the value of a submitted/requested field (i.e. GET, POST, REQUEST)
+	 * 
+	 * @param string $name
+	 * @return string
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function getFieldValue ( $name ) {
+		return RequestContext::value($name);
+	}
+	
+	/**
+	 * Answer the persisted data of this plugin. Changes to this data will be
+	 * persisted
+	 * 
+	 * @return <##>
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function getData () {
+		<##>
 	}
 		
 /*********************************************************

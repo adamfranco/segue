@@ -1,0 +1,73 @@
+/**
+ * @package concerto.install
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: INSTALL-DEVELOPERS.txt,v 1.1 2006/01/13 18:36:32 adamfranco Exp $
+ */
+
+Concerto Developer Install instructions:
+
+1) Obtain Concerto, Harmoni, and Polyphony
+	A) If you downloaded the concerto bundle, unzip it to a web accessible directory
+	
+	B)	a) Check out from CVS or download the following packages
+			- Concerto (this package that contains this file):
+				http://sf.net/projects/concerto/
+				CVS: http://sourceforge.net/cvs/?group_id=88266
+				Files: http://sourceforge.net/project/showfiles.php?group_id=88266
+			- The Harmoni Framework
+				http://sf.net/projects/concerto/
+				CVS: http://sourceforge.net/cvs/?group_id=82873
+				Files: http://sourceforge.net/project/showfiles.php?group_id=82873
+			- Polyphony
+				(Part of the Harmoni project)
+			- DOMIT! XML parser
+				http://www.engageinteractive.com/domit/
+				
+		b) Place Concerto, Harmoni, Polyphony, and DOMIT! in the same web accessible 
+		directory
+	
+2) Create a MySQL database for Concerto to use.
+	A) create the database
+	B) give a database user full permission to that database.
+
+
+3) Create your database config
+	A) copy 
+			concerto/config/database_default.conf.php
+		to
+			concerto/config/database.conf.php
+
+	B) Modify your database config
+		a) change the database connection entry in the config to reflect the database that
+			you just created.
+		b) comment-in and modify the LDAP authentication piece in
+				concerto/config/authentication.conf
+			if you wish to use that.
+
+
+4) Go to Concerto. 
+	The installer script will automatically run for the first page load of each
+	browser session. If you need to force the installer script to run again,
+	clear your browser's Concerto session cookie and refresh the concerto page.
+
+
+6) If desired, load the sample collection:
+	A) In Concerto, go to 
+			AdminTools --> Import
+		and select "XML" from the import-type menu.
+	B) Click the Browse... button and select the following file:
+		concerto/sampledata/SampleCollection.xml
+	C) Click the "Import".
+		The import may take several minutes due to the need to download the sample
+		data from SourceForge.
+	D) Once the import has finished, click "Cancel" to exit the Import wizard
+		and return to Concerto. You should now see "Sample Media Collection" under
+		"Collections".
+
+
+7) To reset the Concerto databases to their freshly-installed state, deleting all data,
+	go to:
+		AdminTools --> RefreshConcerto
