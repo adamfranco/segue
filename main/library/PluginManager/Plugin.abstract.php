@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.5 2006/01/13 19:34:29 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.6 2006/01/13 21:10:17 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.5 2006/01/13 19:34:29 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.6 2006/01/13 21:10:17 cws-midd Exp $
  */
 class Plugin {
  	
@@ -259,9 +259,6 @@ class Plugin {
 	 * @since 1/12/06
 	 */
 	function _loadData () {
-		// @todo Pull data from asset and put into wrapped/easy format
-		// @todo get recordstructures, associative arrays
-		// @todo DONT FORGET TO MAINTAIN PARTS (multiple of same PS w/ id's)
 		
 		// one array for the data, a second for the persistence of ids
 		$this->_data = array();
@@ -308,7 +305,7 @@ class Plugin {
 		}
 		
 		// possible modification check.
-		$this->_loadedData = serialize($this->_data);
+		$this->_loadedData = $this->_data;
 	}
 	
 	/**
@@ -319,9 +316,37 @@ class Plugin {
 	 * @since 1/13/06
 	 */
 	function _storeData () {
+	
+		// only change things when you must
 		if ($this->_dataChanged()) {
-			// @todo Put wrapped/easy format changes into Asset Records
+			$changes = array();	// array for storing a part id and its new value
 			
+			// go through all recordstructures
+			foreach ($this->_data as $rs => $instances) {
+				
+				// go through each instance of the recordstructure
+				foreach ($instances as $instance => $record) {
+				
+					// for each array of part values find out which have changed
+					foreach ($record as $ps => $values) {
+						$differences = array_diff_assoc(
+							$values, $this->_loadedData[$rs][$instance][$ps]);
+						
+						// add each change to the array of changes
+						if (count($differences) > 0) {
+							foreach ($differences as $key => $value) {
+								$changes[$this->_data_ids[$rs][$instance][$ps][$key]] = $value;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		// make them changes
+		foreach ($changes as $id => $value) {
+			$part =& $this->_asset->getPart($id);
+			$part->updateValue($value);
 		}
 	}
 	
@@ -333,10 +358,10 @@ class Plugin {
 	 * @since 1/13/06
 	 */
 	function _dataChanged () {
-		// @todo implement
+		// @todo test different implementations of this function
 		$new = serialize($this->_data);
-		
-		if ($this->_loadedData == $new)
+		$old = serialize($this->_loadedData);
+		if ($old == $new)
 			return false;
 		return true;
 	}
