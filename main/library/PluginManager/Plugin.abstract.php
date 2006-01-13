@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.3 2006/01/13 18:36:32 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.4 2006/01/13 19:19:38 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.3 2006/01/13 18:36:32 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.4 2006/01/13 19:19:38 cws-midd Exp $
  */
 class Plugin {
  	
@@ -260,6 +260,52 @@ class Plugin {
 	 */
 	function _loadData () {
 		// @todo Pull data from asset and put into wrapped/easy format
+		// @todo get recordstructures, associative arrays
+		// @todo DONT FORGET TO MAINTAIN PARTS (multiple of same PS w/ id's)
+		
+		// one array for the data, a second for the persistence of ids
+		$this->_data = array();
+		$this->_data_ids = array();
+		
+		// get all the records for this asset
+		$records =& $this->_asset->getRecords();
+		while ($records->hasNext()) {
+			$record =& $records->next();
+			
+			// for each new recordstructure add an array for holding instances
+			$recordStructure =& $record->getRecordStructure();
+			$rsName = $recordStructure->getDisplayName();
+			if (!in_array($rsName, array_keys($this->_data))) {
+				$this->_data[$rsName] = array();
+				$this->_data_ids[$rsName] = array();
+			}
+			
+			// each instance itself should be acessible via index (1,2,3...)
+			$this->_data[$rsName][] = array();
+			$this->_data_ids[$rsName][] = $record->getId();
+			$instance = count($this->_data[$rsName]) - 1; // current instance
+
+			// each instance populates its parts like the records
+			$parts =& $record->getParts();
+			while ($parts->hasNext()) {
+				$part =& $parts->next();
+				
+				// for each new partstructure add an array for holding instances
+				$partStructure =& $part->getPartStructure();
+				$psName = $partStructure->getDisplayName();
+				if (!in_array($psName, 	
+						array_keys($this->_data[$rsName][$instance]))) {
+					$this->_data[$rsName][$instance][$psName] = array();
+					$this->_data_ids[$rsName][$instance][$psName] = array();
+				}
+				
+				// again with the instances
+				$this->_data[$rsName][$instance][$psName][] =& 
+					$part->getValue();
+				$this->_data_ids[$rsName][$instance][$psName][] =&
+					$part->getId();
+			}
+		}
 	}
 	
 	/**
