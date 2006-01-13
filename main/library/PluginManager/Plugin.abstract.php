@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.8 2006/01/13 21:34:21 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.9 2006/01/13 22:21:18 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.8 2006/01/13 21:34:21 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.9 2006/01/13 22:21:18 adamfranco Exp $
  */
 class Plugin {
  	
@@ -98,11 +98,13 @@ class Plugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getUrl ( $parameters ) {
-		ArgumentValidator::validate($parameters, ArrayValidatorRule::getRule());
+	function url ( $parameters = array() ) {
+		ArgumentValidator::validate($parameters, 
+			OptionalRule::getRule(ArrayValidatorRule::getRule()));
 		
 		$url =& $this->_baseUrl->deepCopy();
-		$url->setValues($parameters);
+		if (is_array($parameters))
+			$url->setValues($parameters);
 		return $url->write();
 	}
 	
@@ -133,6 +135,29 @@ class Plugin {
 	}
 	
 	/**
+	 * Answer the persisted 'title' value of this plugin.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function getTitle () {
+		return $this->_asset->getDisplayName();
+	}
+	
+	/**
+	 * Set the persisted 'title' value of this plugin.
+	 * 
+	 * @param string $title
+	 * @return void
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function setTitle ( $title ) {
+		$this->_asset->updateDisplayName($title);
+	}
+	
+	/**
 	 * Answer the persisted 'content' of this plugin.
 	 * Content is a single persisted string that can be used if the complexity of
 	 * 'dataRecords' is not needed.
@@ -157,7 +182,7 @@ class Plugin {
 	 * @since 1/13/06
 	 */
 	function setContent ( $content ) {
-		$string =& String::withValue($string);
+		$string =& Blob::withValue($content);
 		$this->_asset->updateContent($string);
 	}
 	
@@ -276,10 +301,25 @@ class Plugin {
 		ArgumentValidator::validate($baseUrl, ExtendsValidatorRule::getRule('URLWriter'));
 		
 		$this->_baseUrl =& $baseUrl;
-		$this->update();
+		
+		$this->update($this->_getRequestData());
+		
 		$markup = $this->getMarkup();
+		
 		$this->_storeData();
+		
 		return $markup;
+	}
+	
+	/**
+	 * Answer the REQUEST data for this plugin instance.
+	 * 
+	 * @return array
+	 * @access private
+	 * @since 1/13/06
+	 */
+	function _getRequestData () {
+		return array();
 	}
 	
 	/**

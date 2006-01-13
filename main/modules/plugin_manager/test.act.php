@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.2 2006/01/13 21:31:47 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.3 2006/01/13 22:21:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.2 2006/01/13 21:31:47 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.3 2006/01/13 22:21:18 adamfranco Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -71,7 +71,11 @@ class testAction
 		if (!is_object($plugin)) {
 			print $plugin;
 		} else {
-			print $plugin->getMarkup();
+			$harmoni =& Harmoni::instance();
+			$harmoni->request->startNamespace('SegueTextBlockPlugin:dev_id-20');
+			$baseUrl =& $harmoni->request->mkURL();
+			print $plugin->executeAndGetMarkup($baseUrl);
+			$harmoni->request->endNamespace();
 		}
 		
 		$actionRows->add(
