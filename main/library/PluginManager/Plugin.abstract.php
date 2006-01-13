@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.6 2006/01/13 21:10:17 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.7 2006/01/13 21:31:47 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.6 2006/01/13 21:10:17 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.7 2006/01/13 21:31:47 adamfranco Exp $
  */
 class Plugin {
  	
@@ -133,6 +133,35 @@ class Plugin {
 	}
 	
 	/**
+	 * Answer the persisted 'content' of this plugin.
+	 * Content is a single persisted string that can be used if the complexity of
+	 * 'dataRecords' is not needed.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function getContent () {
+		$content =& $this->_asset->getContent();
+		return $content->asString();
+	}
+	
+	/**
+	 * Set the persisted 'content' of this plugin.
+	 * Content is a single persisted string that can be used if the complexity of
+	 * 'dataRecords' is not needed.
+	 * 
+	 * @param string $content
+	 * @return void
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function setContent ( $content ) {
+		$string =& String::withValue($string);
+		$this->_asset->updateContent($string);
+	}
+	
+	/**
 	 * Answer the persisted data of this plugin. Changes to this data will be
 	 * persisted
 	 * 
@@ -140,7 +169,7 @@ class Plugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getData () {
+	function getDataRecords () {
 		// @todo implement this
 	}
 		
@@ -152,14 +181,16 @@ class Plugin {
 	 * 
 	 * @param object Asset $asset
 	 * @param object ConfigurationProperties $configuration
-	 * @return object Plugin OR FALSE on error.
+	 * @return object Plugin OR string (error string) on error.
 	 * @access public
 	 * @since 1/12/06
 	 */
 	function &newInstance ( &$asset, &$configuration ) {
+		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
+		ArgumentValidator::validate($configuration, ExtendsValidatorRule::getRule("Properties"));
 		$false = false;
 		
-		$type =& $asset->getType();
+		$type =& $asset->getAssetType();
 		$pluginDir = $configuration->getProperty("plugin_dir")."/".
 						$type->getAuthority()."/".$type->getKeyword()."/";
 		$pluginClass = $type->getAuthority().$type->getKeyword()."Plugin";
@@ -168,18 +199,18 @@ class Plugin {
 		
 		// Check for the file
 		if (!file_exists($pluginFile))	
-			return $false;
+			return _("Error: Plugin not found at '$pluginFile'.");
 		
 		require_once($pluginFile);
 		
 		
 		// Check for the class
 		if (!class_exists($pluginClass)) 
-			return $false;
+			return _("Error: Plugin class, '$pluginClass', not found.");
 		
 		// Ensure that the plugin writer didn't override the constructor
 		if (in_array($pluginClass, get_class_methods($pluginClass)))
-			return $false;
+			return _("Error: Plugin class should not have a constructor method, '$pluginClass'.");
 		
 		// Instantiate the plugin
 		$plugin =& new $pluginClass;
@@ -226,8 +257,8 @@ class Plugin {
 		
 		$this->_asset =& $asset;
 		
-		$type =& $this->_asset->getType();
-		$this->_pluginDir = $configuration->getProperty("plugin_dir")."/".
+		$type =& $this->_asset->getAssetType();
+		$this->_pluginDir = $this->_configuration->getProperty("plugin_dir")."/".
 						$type->getAuthority()."/".$type->getKeyword()."/";
 		
 		$this->_loadData();

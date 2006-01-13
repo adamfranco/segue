@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.1 2006/01/13 20:54:33 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.2 2006/01/13 21:31:47 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.1 2006/01/13 20:54:33 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.2 2006/01/13 21:31:47 adamfranco Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -53,9 +53,26 @@ class testAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
+		$repositoryManager =& Services::getService("Repository");
+		$idManager =& Services::getService("Id");
+		$repository =& $repositoryManager->getRepository($idManager->getId("dev_id-19"));
+		$asset =& $repository->getAsset($idManager->getId("dev_id-20"));
+		
+		$configuration =& new ConfigurationProperties;
+		$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");
+		
+		
+		$plugin =& Plugin::newInstance($asset, $configuration);
+		
+		
 		$actionRows =& $this->getActionRows();
 		ob_start();
 		
+		if (!is_object($plugin)) {
+			print $plugin;
+		} else {
+			print $plugin->getMarkup();
+		}
 		
 		$actionRows->add(
 			new Block(ob_get_clean(), STANDARD_BLOCK), 
