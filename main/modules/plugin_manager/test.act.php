@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.4 2006/01/16 20:12:03 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.5 2006/01/16 20:29:44 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.4 2006/01/16 20:12:03 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.5 2006/01/16 20:29:44 adamfranco Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -63,9 +63,27 @@ class testAction
 // 					new Type("Plugins", "Segue", "TextBlock", "TextBlock plugins display a block of text."));
 // 		printpre($asset->getId());
 // 		exit;
+
+
+		$this->displayPlugin('dev_id-28');
+		$this->displayPlugin('dev_id-32');
+	}
+	
+	/**
+	 * Display a plugin.
+	 * 
+	 * @param string $id
+	 * @return void
+	 * @access public
+	 * @since 1/16/06
+	 */
+	function displayPlugin ($id) {
+		$repositoryManager =& Services::getService("Repository");
+		$idManager =& Services::getService("Id");
+		$repository =& $repositoryManager->getRepository(
+			$idManager->getId("edu.middlebury.segue.sites_repository"));
 		
-		
-		$asset =& $repository->getAsset($idManager->getId("dev_id-28"));
+		$asset =& $repository->getAsset($idManager->getId($id));
 		
 		$configuration =& new ConfigurationProperties;
 		$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");
@@ -81,7 +99,7 @@ class testAction
 			print $plugin;
 		} else {
 			$harmoni =& Harmoni::instance();
-			$harmoni->request->startNamespace('SegueTextBlockPlugin:dev_id-20');
+			$harmoni->request->startNamespace('SegueTextBlockPlugin:'.$id);
 			$baseUrl =& $harmoni->request->mkURL();
 			print $plugin->executeAndGetMarkup($baseUrl);
 			$harmoni->request->endNamespace();
@@ -93,7 +111,7 @@ class testAction
 			null, 
 			CENTER, 
 			CENTER);
-	}	
+	}
 }
 
 ?>
