@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.3 2006/01/13 22:21:18 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.4 2006/01/16 20:12:03 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.3 2006/01/13 22:21:18 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.4 2006/01/16 20:12:03 adamfranco Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -55,8 +55,17 @@ class testAction
 	function buildContent () {
 		$repositoryManager =& Services::getService("Repository");
 		$idManager =& Services::getService("Id");
-		$repository =& $repositoryManager->getRepository($idManager->getId("dev_id-19"));
-		$asset =& $repository->getAsset($idManager->getId("dev_id-20"));
+		$repository =& $repositoryManager->getRepository(
+			$idManager->getId("edu.middlebury.segue.sites_repository"));
+		
+		
+// 		$asset =& $repository->createAsset("My node", "My node description.",
+// 					new Type("Plugins", "Segue", "TextBlock", "TextBlock plugins display a block of text."));
+// 		printpre($asset->getId());
+// 		exit;
+		
+		
+		$asset =& $repository->getAsset($idManager->getId("dev_id-28"));
 		
 		$configuration =& new ConfigurationProperties;
 		$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");

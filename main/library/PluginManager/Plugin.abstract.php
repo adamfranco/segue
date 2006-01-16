@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.10 2006/01/13 22:37:12 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.11 2006/01/16 20:12:03 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.10 2006/01/13 22:37:12 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.11 2006/01/16 20:12:03 adamfranco Exp $
  */
 class Plugin {
  	
@@ -197,7 +197,51 @@ class Plugin {
 	function getDataRecords () {
 		// @todo implement this
 	}
-		
+
+	/**
+	 * Answer TRUE if the current user is authorized to modify this plugin instance.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/16/06
+	 */
+	function canModify () {
+		$azManager =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		return $azManager->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.modify"),
+				$this->_asset->getId());
+	}
+	
+	/**
+	 * Answer TRUE if the current user is authorized to view this plugin instance.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/16/06
+	 */
+	function canView () {
+		$azManager =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		return $azManager->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.view"),
+				$this->_asset->getId());
+	}
+
+
+
+/*********************************************************
+ *********************************************************
+ *********************************************************
+ *********************************************************
+ * Non-API vars/methods
+ * 
+ * The variables and methods listed below are not part of the
+ * plugin API and should never be called by plugins. Their
+ * functionality is used by the plugin system internally
+ *
+ *********************************************************/
+
 /*********************************************************
  * Class Methods - Instance Creation
  *********************************************************/
@@ -250,7 +294,7 @@ class Plugin {
 	}
 	
 /*********************************************************
- * Instance Methods
+ * Instance Methods - Non-API
  *********************************************************/
 	
 	/**

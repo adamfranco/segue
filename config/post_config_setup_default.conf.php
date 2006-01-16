@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.3 2006/01/16 20:12:03 adamfranco Exp $
  */
 
 if (!isset($_SESSION['post_config_setup_complete'])) {
@@ -17,63 +17,63 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
 	$repositoryManager =& Services::getService("Repository");
 	$idManager =& Services::getService("Id");
-	$exhibitionRepositoryId =& $idManager->getId("edu.middlebury.segue.exhibition_repository");
+	$siteRepositoryId =& $idManager->getId("edu.middlebury.segue.sites_repository");
 
 	$repositories =& $repositoryManager->getRepositories();
-	$exhibitionRepositoryExists = FALSE;
+	$siteRepositoryExists = FALSE;
 	while ($repositories->hasNext()) {
 		$repository =& $repositories->next();
-		if ($exhibitionRepositoryId->isEqual($repository->getId())) {
-			$exhibitionRepositoryExists = TRUE;
+		if ($siteRepositoryId->isEqual($repository->getId())) {
+			$siteRepositoryExists = TRUE;
 			break;
 		}
 	}
 	
-	if (!$exhibitionRepositoryExists) {
+	if (!$siteRepositoryExists) {
 
-		$exhibitionRepositoryType =& new Type (
+		$siteRepositoryType =& new Type (
 						'System Repositories', 
 						'edu.middlebury.segue', 
-						'Exhibitions',
-						'A Repository for holding Exhibitions, their Slide-Shows and Slides');
+						'Site',
+						'A Repository for holding the sites of Segue');
 		$repository =& $repositoryManager->createRepository(
-								  "All Exhibitions",
-								  "This is a Repository that holds all of the Exhibitions in Segue.",
-								  $exhibitionRepositoryType,
-								  $exhibitionRepositoryId);
+								  "All Sites",
+								  "This is a Repository that holds all of the Sites in Segue.",
+								  $siteRepositoryType,
+								  $siteRepositoryId);
 
 
-		$slideSchemaId =& $idManager->getId("edu.middlebury.segue.slide_record_structure");
-		$slideSchema =& $repository->createRecordStructure(
-							"Slide Schema", 
-							"This is the schema used for exhibition slides.", 
+		$navNodeSchemaId =& $idManager->getId("edu.middlebury.segue.nav_nod_rs");
+		$navNodeSchema =& $repository->createRecordStructure(
+							"Navigational-Node RecordStructure", 
+							"This is the RecordStruction used for navigational-nodes.", 
 							"text/plain", 
 							"", 
-							$slideSchemaId);
-		$slideSchema->createPartStructure(
-							"target id", 
-							"The Id of the asset that this slide is referencing.", 
+							$navNodeSchemaId);
+		$navNodeSchema->createPartStructure(
+							"num_cells", 
+							"The number of cells that this node's children will be arranged in.", 
+							new HarmoniType("Repository", "edu.middlebury.harmoni", "integer"), 
+							false, 
+							false, 
+							false,
+							$idManager->getId("edu.middlebury.segue.nav_nod_rs.num_cells"));
+		$navNodeSchema->createPartStructure(
+							"layout_arrangement", 
+							"The arrangement of the layout of this navigational-node: rows, columns, nested", 
 							new HarmoniType("Repository", "edu.middlebury.harmoni", "string"), 
 							false, 
 							false, 
 							false,
-							$idManager->getId("edu.middlebury.segue.slide_record_structure.target_id"));
-		$slideSchema->createPartStructure(
-							"text position", 
-							"The location of any text presented in the slide. (bottom, top, left, right)", 
-							new HarmoniType("Repository", "edu.middlebury.harmoni", "string"), 
+							$idManager->getId("edu.middlebury.segue.nav_nod_rs.layout_arrangement"));
+		$navNodeSchema->createPartStructure(
+							"target_override", 
+							"The cell-number to use to use for the target for this node and descendent nodes: 1 to 'num_cells'.", 
+							new HarmoniType("Repository", "edu.middlebury.harmoni", "integer"), 
 							false, 
 							false, 
 							false,
-							$idManager->getId("edu.middlebury.segue.slide_record_structure.text_position"));
-		$slideSchema->createPartStructure(
-							"display metadata", 
-							"Whether or not to display the metadata of the associated asset referenced by target id.", 
-							new HarmoniType("Repository", "edu.middlebury.harmoni", "boolean"), 
-							false, 
-							false, 
-							false,
-							$idManager->getId("edu.middlebury.segue.slide_record_structure.display_metadata"));
+							$idManager->getId("edu.middlebury.segue.nav_nod_rs.target_override"));
 
 
 	}

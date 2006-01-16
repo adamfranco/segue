@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.4 2006/01/13 22:33:06 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.5 2006/01/16 20:12:03 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.4 2006/01/13 22:33:06 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.5 2006/01/16 20:12:03 adamfranco Exp $
  */
 class SegueTextBlockPlugin
 	extends Plugin
@@ -67,7 +67,7 @@ class SegueTextBlockPlugin
  	function getMarkup () {
  		ob_start();
  		
- 		if ($this->getFieldValue('edit')) {
+ 		if ($this->getFieldValue('edit') && $this->canModify()) {
  			print "\n<form action='".$this->url()."' method='post'>";
  			
  			print "\n\t<input type='text' name='".$this->getFieldName('title')."' value='".$this->getTitle()."' size='50'/>";
@@ -81,11 +81,13 @@ class SegueTextBlockPlugin
  			print "\n\t<input type='button' value='"._('Cancel')."' onclick='window.location=\"".$this->url()."\"'/>";
  			
  			print "\n</form>";
- 		} else {
+ 		} else if ($this->canView()) {
 	 		print "\n".$this->getContent();
-	 		print "\n<div style='text-align: right'>";
-	 		print "\n\t<a href='".$this->url(array('edit' => 'true'))."'>edit</a>";
-	 		print "\n</div>";
+	 		if ($this->canModify()) {
+				print "\n<div style='text-align: right'>";
+				print "\n\t<a href='".$this->url(array('edit' => 'true'))."'>edit</a>";
+				print "\n</div>";
+			}
  		}
  		
  		return ob_get_clean();

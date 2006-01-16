@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.3 2006/01/16 20:12:03 adamfranco Exp $
  */
 
 /*********************************************************
@@ -86,7 +86,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 	 *********************************************************/	
 			// Create nodes for Qualifiers
 			$collectionsId =& $idManager->getId("edu.middlebury.segue.collections_root");
-			$authorizationHierarchy->createNode($collectionsId, $allOfSegueId, new DefaultQualifierType, "Segue Collections", "All Collections in Segue.");
+			$authorizationHierarchy->createNode($collectionsId, $allOfSegueId, new DefaultQualifierType, "Segue Repositories", "All Repositories in Segue.");
 	
 	/*********************************************************
 	 * Script for setting up the AgentManager Hierarchy
