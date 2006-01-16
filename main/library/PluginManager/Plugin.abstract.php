@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.11 2006/01/16 20:12:03 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.12 2006/01/16 22:27:10 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.11 2006/01/16 20:12:03 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.12 2006/01/16 22:27:10 adamfranco Exp $
  */
 class Plugin {
  	
@@ -98,14 +98,32 @@ class Plugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function url ( $parameters = array() ) {
+	function url ( $parameters = array() ) {		
 		ArgumentValidator::validate($parameters, 
 			OptionalRule::getRule(ArrayValidatorRule::getRule()));
 		
 		$url =& $this->_baseUrl->deepCopy();
-		if (is_array($parameters))
+		if (is_array($parameters) && count($parameters))
 			$url->setValues($parameters);
 		return $url->write();
+	}
+	
+	/**
+	 * Answer a Javascript command to send the window to a url with the parameters
+	 * passed.
+	 *
+	 * Use this method, e.g.:
+	 *		"onclick=".$this->locationSend(array('item' => 123))
+	 * instead of the following:
+	 * 		"onclick='window.location=\"".$this->url(array('item' => 123))."\"'"
+	 * 
+	 * @param array $parameters Associative array ('name' => 'value')
+	 * @return string
+	 * @access public
+	 * @since 1/16/06
+	 */
+	function locationSend ( $parameters = array() ) {		
+		return "'window.location=\"".$this->url($parameters)."\"'";
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.5 2006/01/16 20:12:03 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.6 2006/01/16 22:27:11 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.5 2006/01/16 20:12:03 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.6 2006/01/16 22:27:11 adamfranco Exp $
  */
 class SegueTextBlockPlugin
 	extends Plugin
@@ -78,7 +78,7 @@ class SegueTextBlockPlugin
  			print "\n\t<br/>";
  			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
  			
- 			print "\n\t<input type='button' value='"._('Cancel')."' onclick='window.location=\"".$this->url()."\"'/>";
+ 			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSend()."/>";
  			
  			print "\n</form>";
  		} else if ($this->canView()) {
