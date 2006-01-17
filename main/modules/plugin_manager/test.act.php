@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.8 2006/01/17 21:20:14 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.9 2006/01/17 21:30:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.8 2006/01/17 21:20:14 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.9 2006/01/17 21:30:58 adamfranco Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -98,19 +98,21 @@ class testAction
 		
 		print AjaxPlugin::getPluginSystemJavascript();
 		
-		print "\n<div id='plugin:".$id."'>";
-		
 		if (!is_object($plugin)) {
 			print $plugin;
 		} else {
+			print "\n<div id='plugin:".$plugin->getId()."'>";
+			
 			$harmoni =& Harmoni::instance();
-			$harmoni->request->startNamespace('SegueTextBlockPlugin:'.$id);
+			$harmoni->request->startNamespace(get_class($plugin).':'.$id);
 			$baseUrl =& $harmoni->request->mkURL();
 			print $plugin->executeAndGetMarkup($baseUrl);
 			$harmoni->request->endNamespace();
+			
+			print "\n</div>";
 		}
 		
-		print "\n</div>";
+		
 		$actionRows->add(
 			new Block(ob_get_clean(), STANDARD_BLOCK), 
 			"100%", 

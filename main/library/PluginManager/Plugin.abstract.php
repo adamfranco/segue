@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.14 2006/01/17 21:20:14 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.15 2006/01/17 21:30:58 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.14 2006/01/17 21:20:14 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.15 2006/01/17 21:30:58 adamfranco Exp $
  */
 class Plugin {
  	
@@ -294,7 +294,7 @@ class Plugin {
 		return $this->_id;			
 	}
 
-
+	
 
 /*********************************************************
  *********************************************************

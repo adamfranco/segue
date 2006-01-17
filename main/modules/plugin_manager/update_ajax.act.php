@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.1 2006/01/17 20:12:25 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.2 2006/01/17 21:30:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.1 2006/01/17 20:12:25 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.2 2006/01/17 21:30:58 adamfranco Exp $
  */
 class update_ajaxAction 
 	extends Action
@@ -63,7 +63,7 @@ class update_ajaxAction
 		
 		$plugin =& Plugin::newInstance($asset, $configuration);
 		
-		$harmoni->request->startNamespace('SegueTextBlockPlugin:'.$id);
+		$harmoni->request->startNamespace(get_class($plugin).':'.$id);
 		if (!is_object($plugin)) {
 			print $plugin;
 		} else {
