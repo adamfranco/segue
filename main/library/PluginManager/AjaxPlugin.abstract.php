@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AjaxPlugin.abstract.php,v 1.1 2006/01/17 20:12:24 adamfranco Exp $
+ * @version $Id: AjaxPlugin.abstract.php,v 1.2 2006/01/17 21:20:14 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AjaxPlugin.abstract.php,v 1.1 2006/01/17 20:12:24 adamfranco Exp $
+ * @version $Id: AjaxPlugin.abstract.php,v 1.2 2006/01/17 21:20:14 adamfranco Exp $
  */
 class AjaxPlugin 
 	extends Plugin
@@ -56,8 +56,25 @@ class AjaxPlugin
 		ArgumentValidator::validate($parameters, 
 			OptionalRule::getRule(ArrayValidatorRule::getRule()));
 		
-// 		return "'".$this->_ajaxUrl($parameters)."'";
 		return "'Javascript:updateAjaxPlugin(\"".$this->getId()."\", \"".$this->_ajaxUrl($parameters)."\")'";
+	}
+	
+	/**
+	 * Answer a Javascript command to send the window to a url with the parameters
+	 * passed.
+	 *
+	 * Use this method, e.g.:
+	 *		"onclick=".$this->locationSend(array('item' => 123))
+	 * instead of the following:
+	 * 		"onclick='window.location=\"".$this->url(array('item' => 123))."\"'"
+	 * 
+	 * @param array $parameters Associative array ('name' => 'value')
+	 * @return string
+	 * @access public
+	 * @since 1/16/06
+	 */
+	function locationSend ( $parameters = array() ) {		
+		return $this->url($parameters);
 	}
 	
 	/**
@@ -79,27 +96,13 @@ class AjaxPlugin
 		// If this is a multipart form, we must do a normal 'submit'
 		// that includes a page refresh.
 		if ($isMultipart) {
-			$this->_inAjaxForm = false;
 			return "<form action='".$this->_url($parameters)."' method='post' enctype='multipart/form-data'>";
 		} 
 		// If the form is not a multipart form with file uploads, then we can
 		// override the submit with an AJAX GET submission instead. (if implemented).
 		else {
-			$this->_inAjaxForm = true;
 			return "<form onsubmit='submitAjaxPluginForm(\"".$this->getId()."\", this, \"".$this->_ajaxUrl($parameters)."\");' action='Javascript: var nullVal = null;' method='post'>";
 		}
-	}
-	
-	/**
-	 * Answer the form end tag.
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 1/17/06
-	 */
-	function formEndTag () {
-		$this->_inAjaxForm = false;
-		return "</form>";
 	}
 
 
@@ -122,8 +125,13 @@ class AjaxPlugin
 			/*<![CDATA[*/
 			
 			function submitAjaxPluginForm( pluginId, form, destination ) {
-				alert (form);
-				alert (destination);
+				for (var i = 0; i < form.elements.length; i++) {
+					destination += '&amp;' + escape(form.elements[i].name) + '=' + escape(form.elements[i].value);
+				}
+				var regex = /&amp;/gi;
+				destination = destination.replace(regex, '&');
+				
+				updateAjaxPlugin(pluginId, destination);
 			}
 			
 			function updateAjaxPlugin( pluginId, destination ) {
@@ -153,7 +161,7 @@ class AjaxPlugin
 							if (req.status == 200) {
 								pluginElement.innerHTML = req.responseText;
 							} else {
-								alert("There was a problem retrieving the XML data:\n" +
+								alert("There was a problem retrieving the XML data:\\n" +
 									req.statusText);
 							}
 						}
@@ -162,6 +170,25 @@ class AjaxPlugin
 					req.open("GET", destination, true);
 					req.send(null);
 				}
+			}
+			
+			/**
+			 * Answer the element of the document by id.
+			 * 
+			 * @param string id
+			 * @return object The html element
+			 * @access public
+			 * @since 8/25/05
+			 */
+			function getElementFromDocument(id) {
+				// Gecko, KHTML, Opera, IE6+
+				if (document.getElementById) {
+					return document.getElementById(id);
+				}
+				// IE 4-5
+				if (document.all) {
+					return document.all[id];
+				}			
 			}
 			
 			/*]]>*/

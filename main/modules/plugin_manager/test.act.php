@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.7 2006/01/17 20:12:25 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.8 2006/01/17 21:20:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.7 2006/01/17 20:12:25 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.8 2006/01/17 21:20:14 adamfranco Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -67,6 +67,7 @@ class testAction
 
 		$this->displayPlugin('dev_id-28');
 		$this->displayPlugin('dev_id-32');
+		$this->displayPlugin('dev_id-52');
 	}
 	
 	/**
@@ -97,7 +98,7 @@ class testAction
 		
 		print AjaxPlugin::getPluginSystemJavascript();
 		
-		print "\n<div id='".$id."'>";
+		print "\n<div id='plugin:".$id."'>";
 		
 		if (!is_object($plugin)) {
 			print $plugin;

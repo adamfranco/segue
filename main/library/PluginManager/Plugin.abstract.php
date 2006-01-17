@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.13 2006/01/17 20:12:24 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.14 2006/01/17 21:20:14 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.13 2006/01/17 20:12:24 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.14 2006/01/17 21:20:14 adamfranco Exp $
  */
 class Plugin {
  	
@@ -124,6 +124,39 @@ class Plugin {
 	 */
 	function locationSend ( $parameters = array() ) {		
 		return "'window.location=\"".$this->url($parameters)."\"'";
+	}
+	
+	/**
+	 * Answer a url with the parameters passed, for a form. As well, specify
+	 * an optional boolean second parameter, 'isMultipart' if this is a multipart
+	 * form with file uploads.
+	 *
+	 * Use this method, e.g.:
+	 *		$this->formTagWithAction(array('item' => 123), false);
+	 * instead of the following:
+	 * 		"<form action='".$this->url(array('item' => 123))."' method='post>";
+	 *
+	 * Usage of this method instead of manually writing the form start tag
+	 * is optional, but will allow the plugin to more easily be ported to being
+	 * an 'AjaxPlugin' later on as the AjaxPlugin redefines the behavior of
+	 * this method.
+	 * 
+	 * @param array $parameters Associative array ('name' => 'value')
+	 * @return string
+	 * @access public
+	 * @since 1/16/06
+	 */
+	function formStartTagWithAction ( $parameters = array(), $isMultipart = false ) {		
+		// If this is a multipart form, we must do a normal 'submit'
+		// that includes a page refresh.
+		if ($isMultipart) {
+			return "<form action=".$this->url($parameters)." method='post' enctype='multipart/form-data'>";
+		} 
+		// If the form is not a multipart form with file uploads, then we
+		// don't ned the enctype parameter.
+		else {
+			return "<form action=".$this->url($parameters)." method='post'>";
+		}
 	}
 	
 	/**
