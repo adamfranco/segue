@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.6 2006/01/16 22:27:11 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.7 2006/01/17 20:12:25 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.6 2006/01/16 22:27:11 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.7 2006/01/17 20:12:25 adamfranco Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -94,6 +94,9 @@ class testAction
 		
 		$actionRows =& $this->getActionRows();
 		ob_start();
+		
+		print AjaxPlugin::getPluginSystemJavascript();
+		
 		print "\n<div id='".$id."'>";
 		
 		if (!is_object($plugin)) {

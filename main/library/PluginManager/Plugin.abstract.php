@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.12 2006/01/16 22:27:10 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.13 2006/01/17 20:12:24 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.12 2006/01/16 22:27:10 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.13 2006/01/17 20:12:24 adamfranco Exp $
  */
 class Plugin {
  	
@@ -105,7 +105,7 @@ class Plugin {
 		$url =& $this->_baseUrl->deepCopy();
 		if (is_array($parameters) && count($parameters))
 			$url->setValues($parameters);
-		return $url->write();
+		return "'".$url->write()."'";
 	}
 	
 	/**
@@ -245,6 +245,21 @@ class Plugin {
 				$idManager->getId("edu.middlebury.authorization.view"),
 				$this->_asset->getId());
 	}
+	
+	/**
+	 * Answer the string Id of this plugin
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/17/06
+	 */
+	function getId () {
+		if (!$this->_id) {
+			$id =&$this->_asset->getId();
+			$this->_id = $id->getIdString();
+		}
+		return $this->_id;			
+	}
 
 
 
@@ -310,6 +325,16 @@ class Plugin {
 		
 		return $plugin;
 	}
+	
+/*********************************************************
+ * Object Properties - Non-API
+ *********************************************************/
+	/**
+	 * @var string $_id; The string Id of the Plugin/Asset 
+	 * @access private
+	 * @since 1/17/06
+	 */
+	var $_id;
 	
 /*********************************************************
  * Instance Methods - Non-API
@@ -478,9 +503,11 @@ class Plugin {
 		}
 		
 		// make them changes
-		foreach ($changes as $id => $value) {
-			$part =& $this->_asset->getPart($id);
-			$part->updateValueFromString($value);
+		if (isset($changes)) {
+			foreach ($changes as $id => $value) {
+				$part =& $this->_asset->getPart($id);
+				$part->updateValueFromString($value);
+			}
 		}
 	}
 	
