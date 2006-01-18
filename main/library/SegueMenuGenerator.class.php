@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.5 2006/01/16 20:12:03 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.6 2006/01/18 22:52:38 adamfranco Exp $
  */
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.5 2006/01/16 20:12:03 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.6 2006/01/18 22:52:38 adamfranco Exp $
  */
 
 class SegueMenuGenerator {
@@ -39,18 +39,24 @@ class SegueMenuGenerator {
 		$mainMenu =& new Menu(new YLayout(), 1);
 
 	// :: Home ::
-		$mainMenu_item1 =& new MenuItemLink(
+		$mainMenu_item =& new MenuItemLink(
 			_("Home"), 
 			$harmoni->request->quickURL("home", "welcome"), 
 			($module == "home" && $action == "welcome")?TRUE:FALSE, 1);
-		$mainMenu->add($mainMenu_item1, "100%", null, LEFT, CENTER);
+		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);
 
 
-		$mainMenu_item2 =& new MenuItemLink(
+		$mainMenu_item =& new MenuItemLink(
 			_("Plugin Tests"),
 			$harmoni->request->quickURL("plugin_manager", "test"), 
 			($module == "plugin_manager")?TRUE:FALSE,1);
-		$mainMenu->add($mainMenu_item2, "100%", null, LEFT, CENTER);
+		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);
+		
+		$mainMenu_item =& new MenuItemLink(
+			_("Site List"),
+			$harmoni->request->quickURL("site", "list"), 
+			($module == "site" && $action == 'list')?TRUE:FALSE,1);
+		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);
 	
 		
 		
