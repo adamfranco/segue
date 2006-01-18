@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.15 2006/01/17 21:30:58 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.16 2006/01/18 23:01:15 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.15 2006/01/17 21:30:58 adamfranco Exp $
+ * @version $Id: Plugin.abstract.php,v 1.16 2006/01/18 23:01:15 cws-midd Exp $
  */
 class Plugin {
  	
@@ -45,7 +45,8 @@ class Plugin {
  	/**
  	 * Initialize this Plugin. 
  	 * Plugin writers should override this method with their own functionality
- 	 * as needed.
+ 	 * as needed.  This is where you would make more complex data that your 
+ 	 * plugin needs.
  	 * 
  	 * @return void
  	 * @access public
@@ -70,7 +71,7 @@ class Plugin {
  	}
  	
  	/**
- 	 * Update from environmental ($_REQUEST) data.
+ 	 * Return the markup that represents the plugin.
  	 * Plugin writers should override this method with their own functionality
  	 * as needed.
  	 * 
@@ -241,12 +242,38 @@ class Plugin {
 	 * Answer the persisted data of this plugin. Changes to this data will be
 	 * persisted
 	 * 
-	 * @return <##>
+	 * The data array returned from this function is a 4-dimensional array of 
+	 * the following organization:
+	 * level 1: associative array using the record name as the 'key' and an 
+	 * array of instances of the record as the 'value'
+	 * level 2: array of instances of the record, each index (0,1,...) maps to 
+	 * an associative array of the fields in the record
+	 * level 3: associative array using the field name as the 'key' and an array
+	 * of instances of the fields as the 'value'
+	 * level 4: array of instances of the field, each index (0,1,...) maps to
+	 * the actual value for its instance of this field in this record
+	 * Example: to get a value you will need to access the data array with 4
+	 * indices; $pluginData['recordName'][0]['fieldName'][3] would return the 
+	 * fourth instance of 'fieldName' in the first instance of 'recordName'
+	 * NOTE: you can also just access this data array through $this->data
+	 *
+	 * @return array this is the data array for your plugin
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getDataRecords () {
-		// @todo implement this
+	function &getDataRecords () {
+		return $this->data;
+	}
+
+	/**
+	 * Automagically updates any changed data in the data array
+	 *
+	 * @return void
+	 * @access public
+	 * @since 1/18/06
+	 */
+	function updateDataRecords () {
+		$this->_storeData();
 	}
 
 	/**
@@ -287,8 +314,8 @@ class Plugin {
 	 * @since 1/17/06
 	 */
 	function getId () {
-		if (!$this->_id) {
-			$id =&$this->_asset->getId();
+		if (!isset($this->_id)) {
+			$id =& $this->_asset->getId();
 			$this->_id = $id->getIdString();
 		}
 		return $this->_id;			
@@ -450,7 +477,7 @@ class Plugin {
 	 * @since 1/12/06
 	 */
 	function _loadData () {
-		
+	// @todo file handling
 		// one array for the data, a second for the persistence of ids
 		$this->data = array();
 		$this->_data_ids = array();
@@ -481,7 +508,11 @@ class Plugin {
 				// for each new partstructure add an array for holding instances
 				$partStructure =& $part->getPartStructure();
 				$psName = $partStructure->getDisplayName();
-				if (!in_array($psName, 	
+				if (($rsName == "FILE") && (($psName == "FILE_DATA") 
+						|| ($psName == "FILE_THUMBNAIL_DATA"))) {
+					// don't touch the data, just the file name (location)
+				}
+				else if (!in_array($psName, 	
 						array_keys($this->data[$rsName][$instance]))) {
 					$this->data[$rsName][$instance][$psName] = array();
 					$this->_data_ids[$rsName][$instance][$psName] = array();
@@ -496,7 +527,7 @@ class Plugin {
 			}
 		}
 		
-		// possible modification check.
+		// keep original data for modification check.
 		$this->_loadedData = $this->data;
 	}
 	
@@ -560,5 +591,4 @@ class Plugin {
 		return true;
 	}
 }
-
 ?>
