@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.9 2006/01/17 21:30:58 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.10 2006/01/18 19:16:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.9 2006/01/17 21:30:58 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.10 2006/01/18 19:16:10 adamfranco Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -65,9 +65,10 @@ class testAction
 // 		exit;
 
 
+		$this->displayPlugin('dev_id-27');
 		$this->displayPlugin('dev_id-28');
-		$this->displayPlugin('dev_id-32');
-		$this->displayPlugin('dev_id-52');
+		$this->displayPlugin('dev_id-29');
+		$this->displayPlugin('dev_id-30');
 	}
 	
 	/**

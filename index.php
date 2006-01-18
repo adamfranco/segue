@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.4 2006/01/13 18:51:16 adamfranco Exp $
+ * @version $Id: index.php,v 1.5 2006/01/18 19:16:09 adamfranco Exp $
  */
 
 /*********************************************************
@@ -58,7 +58,7 @@ if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
 	$dbhandler =& Services::getService("DBHandler");
 	printpre("NumQueries: ".$dbhandler->getTotalNumberOfQueries());
 	
-	// printpre($_SESSION);
+// 	printpreArrayExcept($_SESSION, array('__temporarySets'));
 	// debug::output(session_id());
 	// Debug::printAll();
 }

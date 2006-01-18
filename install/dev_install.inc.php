@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.3 2006/01/16 20:12:03 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.4 2006/01/18 19:16:09 adamfranco Exp $
  */
 
 /*********************************************************
@@ -131,7 +131,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 			
 			// default administrator account
 			$authNMethodManager =& Services::getService("AuthNMethodManager");
-			$dbAuthType =& new Type ("Authentication", "edu.middlebury.harmoni", "Segue DB");
+			$dbAuthType =& new Type ("Authentication", "edu.middlebury.harmoni", "Harmoni DB");
 			$dbAuthMethod =& $authNMethodManager->getAuthNMethodForType($dbAuthType);
 			// Create the representation
 			

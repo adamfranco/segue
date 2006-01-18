@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.5 2006/01/17 20:08:18 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.6 2006/01/18 19:16:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.5 2006/01/17 20:08:18 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.6 2006/01/18 19:16:10 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.5 2006/01/17 20:08:18 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.6 2006/01/18 19:16:10 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -197,7 +197,7 @@ class displayAction
 		$helpText .= "'>"._("Help")."</a>";
 		$footer->add(new UnstyledBlock($helpText), "50%", null, LEFT, BOTTOM);
 		
-		$footerText = "Segue v.2.0-Beta &copy;2004 Middlebury College: <a href=''>";
+		$footerText = "Segue v.2.0-Alpha &copy;2006 Middlebury College: <a href=''>";
 		$footerText .= _("credits");
 		$footerText .= "</a>";
 		$footer->add(new UnstyledBlock($footerText), "50%", null, RIGHT, BOTTOM);

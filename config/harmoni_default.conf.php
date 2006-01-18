@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: harmoni_default.conf.php,v 1.3 2006/01/18 14:56:37 adamfranco Exp $
+ * @version $Id: harmoni_default.conf.php,v 1.4 2006/01/18 19:16:09 adamfranco Exp $
  */
 
 // :: set up the $harmoni object :: 
@@ -31,10 +31,8 @@
 	$postProcessIgnoreList = array(
 									"language.*",
 									"repository.*",
-									"help.*",
-									
-									// and our special no-theme action
-									"example.no_theme"
+									"site.view",
+									"help.*"
 								);
 	
 	$harmoni->setPostProcessAction("window.display", $postProcessIgnoreList);
