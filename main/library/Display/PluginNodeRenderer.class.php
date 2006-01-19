@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.2 2006/01/19 20:50:40 cws-midd Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.3 2006/01/19 20:57:20 cws-midd Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.2 2006/01/19 20:50:40 cws-midd Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.3 2006/01/19 20:57:20 cws-midd Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
@@ -54,6 +54,10 @@ class PluginNodeRenderer
 			$harmoni->request->startNamespace(
 				get_class($plugin).':'.$assetId->getIdString());
 			$baseUrl =& $harmoni->request->mkURL();
+			print '<div align="right" > <img src="'
+				.$plugin->getPluginPath()
+				.'pluginimage.jpg" alt="Plugin Image" title="Plugin Image"'
+				.' height="50" width="70"></div>';
 			print $plugin->executeAndGetMarkup($baseUrl);
 			$harmoni->request->endNamespace();
 			

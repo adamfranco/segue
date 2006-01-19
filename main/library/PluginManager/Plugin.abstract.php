@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.19 2006/01/19 20:50:41 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.20 2006/01/19 20:57:20 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.19 2006/01/19 20:50:41 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.20 2006/01/19 20:57:20 cws-midd Exp $
  */
 class Plugin {
  	
@@ -350,7 +350,7 @@ class Plugin {
 		$path .= $type->getAuthority()."/";
 		$path .= $type->getKeyword()."/";
 
-		return $dir;
+		return $path;
 	}
 
 /*********************************************************
