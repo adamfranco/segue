@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.1 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.2 2006/01/19 21:31:50 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.1 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.2 2006/01/19 21:31:50 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -85,29 +85,31 @@ class NavigationNodeRenderer
 		// Add our cells
 		$cells = array();
 		for ($i = 1; $i <= $numCells; $i++) {
-			$cells[$i] =& $container->add(
+			$cell =& $container->add(
 							new Container($cellLayout, BLANK, 1), 
 							$cellWidth, $cellHeight, CENTER, TOP);
+			
 			if ($i == $targetOverride)
-				$targetCell =& $cells[$i];
+				$targetCell =& $cell;
+			else
+				$cells[$i] =& $cell;
 		}
 		
 		
 		// Add our children to our cells
 		$children =& $this->_asset->getAssets();
 		if (!$children->hasNext()) {
-			for ($i = 1; $i <= $numCells; $i++) {
-				if ($i == $targetOverride)
-					$cells[$i]->add(
-						new Block("[debug: no children]<br/>[Cell[$i]=target]", 
-							EMPHASIZED_BLOCK),
-						null, null, CENTER, TOP);
-				else
-					$cells[$i]->add(
-						new Block("[debug: no children]<br/>[Cell[$i]]", 
-							EMPHASIZED_BLOCK),
-						null, null, CENTER, TOP);
+			for ($i = 1; $i < $numCells; $i++) {
+				$cells[$i]->add(
+					new Block("[debug: no children]<br/>[Cell[$i]]", 
+						EMPHASIZED_BLOCK),
+					null, null, CENTER, TOP);
 			}
+			
+			$targetCell->add(
+				new Block("[debug: no children]<br/>[Cell[$i]=target]", 
+					EMPHASIZED_BLOCK),
+				null, null, CENTER, TOP);
 		} else {
 			while ($children->hasNext()) {
 				$childRenderer =& NodeRenderer::forAsset($children->next());
@@ -116,8 +118,14 @@ class NavigationNodeRenderer
 					$childCell = 1;
 				
 				$cells[$childCell]->add(
-					$childRenderer->renderTargetComponent(),
+					$childRenderer->renderNavComponent(),
 					null, null, CENTER, TOP);
+				
+				if ($childRenderer->isActive()) {
+					$targetCell->add(
+						$childRenderer->renderTargetComponent(),
+						null, null, CENTER, TOP);
+				}
 			}
 		}
 		

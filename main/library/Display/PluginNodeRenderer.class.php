@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.3 2006/01/19 20:57:20 cws-midd Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.4 2006/01/19 21:31:50 adamfranco Exp $
  */ 
 
 /**
@@ -19,11 +19,24 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.3 2006/01/19 20:57:20 cws-midd Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.4 2006/01/19 21:31:50 adamfranco Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
 {
+	
+	/**
+	 * Answer the GUI component for the navegational item.
+	 * 
+	 * @param integer $level The Navigational level to use, 1=big, >1=smaller
+	 * @return object Component
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function &renderNavComponent ($level = 1) {
+		return $this->renderTargetComponent($level);
+	}
+	
 	/**
 	 * Answer the GUI component for target area
 	 * 

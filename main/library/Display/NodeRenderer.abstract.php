@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.1 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.2 2006/01/19 21:31:50 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/GenericNodeRenderer.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.1 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.2 2006/01/19 21:31:50 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -64,7 +64,35 @@ class NodeRenderer {
 		
 		$renderer->_setAsset($asset);
 		
+		$assetId =& $asset->getId();
+		if (in_array($assetId->getIdString(), NodeRenderer::getActiveNodes()))
+			$renderer->setActive(true);
+		
 		return $renderer;
+	}
+
+/*********************************************************
+ * Class Methods - other
+ *********************************************************/
+	
+	/**
+	 * Answer an array of active Nodes
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function getActiveNodes () {
+		if (!isset($GLOBALS['active_nodes'])) {
+			$GLOBALS['active_nodes'] = array();
+			if (isset($_REQUEST['node']) && $_REQUEST['node']) {
+				$GLOBALS['active_nodes'][] = $_REQUEST['node'];
+			} else {
+				
+			}
+		}
+		
+		return $GLOBALS['active_nodes'];
 	}
 
 /*********************************************************
@@ -99,6 +127,17 @@ class NodeRenderer {
 	 */
 	function setActive ( $isActive = true ) {
 		$this->_active = $isActive;
+	}
+	
+	/**
+	 * Get the active-state of the Renderer.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function isActive () {
+		return $this->_active;
 	}
 	
 	/**
@@ -142,7 +181,8 @@ class NodeRenderer {
 		$id =& $this->_asset->getId();
 		$harmoni =& Harmoni::instance();
 		return $harmoni->request->quickURL('site', 'view', 
-					array('node', $id->getIdString()));
+					array(	'site_id' => RequestContext::value('site_id'),
+							'node' => $id->getIdString()));
 	}
 	
 	/**
