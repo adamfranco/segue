@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: libraries.inc.php,v 1.4 2006/01/17 20:12:24 adamfranco Exp $
+ * @version $Id: libraries.inc.php,v 1.5 2006/01/19 20:46:51 adamfranco Exp $
  */
 
 /******************************************************************************
@@ -42,6 +42,7 @@ require_once (POLYPHONY_DIR."/polyphony.inc.php");
 require_once(MYDIR."/main/library/SegueMenuGenerator.class.php");
 require_once(MYDIR."/main/library/PluginManager/Plugin.abstract.php");
 require_once(MYDIR."/main/library/PluginManager/AjaxPlugin.abstract.php");
+require_once(MYDIR."/main/library/Display/NodeRenderer.abstract.php");
 
 
 /******************************************************************************
