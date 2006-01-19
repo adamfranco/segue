@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.20 2006/01/19 20:57:20 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.21 2006/01/19 21:39:25 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.20 2006/01/19 20:57:20 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.21 2006/01/19 21:39:25 cws-midd Exp $
  */
 class Plugin {
  	
@@ -541,10 +541,10 @@ class Plugin {
 				$partStructure =& $part->getPartStructure();
 				$psName = $partStructure->getDisplayName();
 // 				if (($rsName == "FILE") && (($psName == "FILE_DATA") 
-// 						|| ($psName == "FILE_THUMBNAIL_DATA"))) {
+// 						|| ($psName == "THUMBNAIL_DATA"))) {
 // 					// don't touch the data, just the file name (location)
 // 				}
-//				else
+// 				else
 				if (!in_array($psName, 	
 						array_keys($this->data[$rsName][$instance]))) {
 					$this->data[$rsName][$instance][$psName] = array();

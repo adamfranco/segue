@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.11 2006/01/19 20:41:27 cws-midd Exp $
+ * @version $Id: test.act.php,v 1.12 2006/01/19 21:39:25 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.11 2006/01/19 20:41:27 cws-midd Exp $
+ * @version $Id: test.act.php,v 1.12 2006/01/19 21:39:25 cws-midd Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -142,7 +142,6 @@ class testAction
 			$harmoni =& Harmoni::instance();
 			$harmoni->request->startNamespace(get_class($plugin).':'.$id);
 			$baseUrl =& $harmoni->request->mkURL();
-			print '<div align="right" > <img src="'.$configuration->getProperty('plugin_path').'/pluginimage.jpg" alt="Plugin Image" title="Plugin Image" height="50" width="70"></div>';
 			print $plugin->executeAndGetMarkup($baseUrl);
 			$harmoni->request->endNamespace();
 			

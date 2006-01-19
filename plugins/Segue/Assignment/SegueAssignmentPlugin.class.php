@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.1 2006/01/19 20:41:27 cws-midd Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.2 2006/01/19 21:39:25 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.1 2006/01/19 20:41:27 cws-midd Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.2 2006/01/19 21:39:25 cws-midd Exp $
  */
 class SegueAssignmentPlugin
 	extends AjaxPlugin
@@ -87,7 +87,7 @@ class SegueAssignmentPlugin
  	 */
  	function getMarkup () {
 	// @todo add student field to response array...
- 		$data = $this->getDataRecords();
+//  		$data = $this->getDataRecords();
  		ob_start();
 
  		// if the user wants to change the plugin
@@ -95,7 +95,7 @@ class SegueAssignmentPlugin
 			print "\n".$this->formStartTagWithAction();
  			
 			// print each assignment and editable responses
-			foreach ($data['SegueAssignment'] as $i => $assignment) {
+			foreach ($this->data['SegueAssignment'] as $i => $assignment) {
 				print "\n<div><h2>Assignment ".$i."</h2>";
 				
 				// are there reading assignments if so put a header
@@ -106,7 +106,7 @@ class SegueAssignmentPlugin
 				foreach ($assignment['SegueAssignmentReading'] as $j => $read) {
 					print "\n<input type='checkbox'
 						name='".$this->getFieldName('reading-'.$i.'_'.$j)."'";
-					if ($data['SegueResponse'][$i]['SegueResponseReading'][$j] == "true")
+					if ($this->data['SegueResponse'][$i]['SegueResponseReading'][$j] == "true")
 						print " checked='true'";
 					print "/>".$read."<br/>";
 				}
@@ -122,9 +122,9 @@ class SegueAssignmentPlugin
 					print "\n<textarea name='".$this->getFieldName('quest-'.$i.'_'.$j)
 						."' rows='5' cols='50'";
 					if (isset(
-				$data['SegueResponse'][$i]['SegueResponseAnswer'][$j])) {
+				$this->data['SegueResponse'][$i]['SegueResponseAnswer'][$j])) {
 						print ">"
-					.$data['SegueResponse'][$i]['SegueResponseAnswer'][$j]
+					.$this->data['SegueResponse'][$i]['SegueResponseAnswer'][$j]
 					."</textarea><br/>";
 					} else 
 						print "/><br/>";
@@ -141,7 +141,7 @@ class SegueAssignmentPlugin
  		} else if ($this->canView()) {
 
 			// print each reading selection and it's current state for the user
-			foreach ($data['SegueAssignment'] as $i => $assignment) {
+			foreach ($this->data['SegueAssignment'] as $i => $assignment) {
 				print "\n<div><h2>Assignment ".$i."</h2>";
 
 				// are there reading assignments if so put a header
@@ -152,7 +152,7 @@ class SegueAssignmentPlugin
 				foreach ($assignment['SegueAssignmentReading'] as $j => $read) {
 					print "\n".$this->formStartTagWithAction();
 					print "\n <input type='checkbox' ";
-					if ($data['SegueResponse'][$i]['SegueResponseReading'][$j] == "true")
+					if ($this->data['SegueResponse'][$i]['SegueResponseReading'][$j] == "true")
 						print " checked='true'";
 					print "disabled='true'/>";
 					print "\n".$read;
@@ -166,9 +166,9 @@ class SegueAssignmentPlugin
 				// write each question and the current answer
 				foreach ($assignment['SegueAssignmentQuestion'] as $j => $quest) {
 					print "\n".$quest."<br/>";
-					if (isset($data['SegueResponse'][$i]['SegueResponseAnswer'][$j])) {
+					if (isset($this->data['SegueResponse'][$i]['SegueResponseAnswer'][$j])) {
 						print "\n Answer: </br>";
-						print "\n".$data['SegueResponse'][$i]['SegueResponseAnswer'][$j]."<br/>";
+						print "\n".$this->data['SegueResponse'][$i]['SegueResponseAnswer'][$j]."<br/>";
 					}
 				}
 				print "\n</div>";
