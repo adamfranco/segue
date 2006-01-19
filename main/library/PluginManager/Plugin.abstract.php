@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.16 2006/01/18 23:01:15 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.17 2006/01/19 20:41:27 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.16 2006/01/18 23:01:15 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.17 2006/01/19 20:41:27 cws-midd Exp $
  */
 class Plugin {
  	
@@ -261,7 +261,7 @@ class Plugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function &getDataRecords () {
+	function getDataRecords () {
 		return $this->data;
 	}
 
@@ -321,7 +321,19 @@ class Plugin {
 		return $this->_id;			
 	}
 
-	
+	/**
+	 * Answer the filesystem filepath for the plugin
+	 * 
+	 * @param <##>
+	 * @return string the filesystem path to this plugin directory
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function getPluginDir () {
+		$dir = $this->_configuration->getProperty('plugin_dir')."/";
+		$type =& $this->_asset->getAssetType();
+		$dir .= $type->getAuthority()."/"
+	}
 
 /*********************************************************
  *********************************************************
@@ -479,6 +491,8 @@ class Plugin {
 	function _loadData () {
 	// @todo file handling
 		// one array for the data, a second for the persistence of ids
+		if (isset($this->data))
+			unset($this->data, $this->_data_ids);
 		$this->data = array();
 		$this->_data_ids = array();
 		
@@ -504,15 +518,16 @@ class Plugin {
 			$parts =& $record->getParts();
 			while ($parts->hasNext()) {
 				$part =& $parts->next();
-				
+
 				// for each new partstructure add an array for holding instances
 				$partStructure =& $part->getPartStructure();
 				$psName = $partStructure->getDisplayName();
-				if (($rsName == "FILE") && (($psName == "FILE_DATA") 
-						|| ($psName == "FILE_THUMBNAIL_DATA"))) {
-					// don't touch the data, just the file name (location)
-				}
-				else if (!in_array($psName, 	
+// 				if (($rsName == "FILE") && (($psName == "FILE_DATA") 
+// 						|| ($psName == "FILE_THUMBNAIL_DATA"))) {
+// 					// don't touch the data, just the file name (location)
+// 				}
+//				else
+				if (!in_array($psName, 	
 						array_keys($this->data[$rsName][$instance]))) {
 					$this->data[$rsName][$instance][$psName] = array();
 					$this->_data_ids[$rsName][$instance][$psName] = array();
@@ -520,9 +535,12 @@ class Plugin {
 				
 				// again with the instances
 				$partValue =& $part->getValue();
-				$this->data[$rsName][$instance][$psName][] = 
+				$id =& $part->getId();
+				$idString = $id->getIdString();
+				$idArray = explode("::", $idString);
+				$this->data[$rsName][$instance][$psName][$idArray[2]] = 
 					$partValue->asString();
-				$this->_data_ids[$rsName][$instance][$psName][] =&
+				$this->_data_ids[$rsName][$instance][$psName][$idArray[2]] =&
 					$part->getId();
 			}
 		}
@@ -539,7 +557,8 @@ class Plugin {
 	 * @since 1/13/06
 	 */
 	function _storeData () {
-	
+		if (isset($changes))
+			unset($changes);
 		// only change things when you must
 		if ($this->_dataChanged()) {
 			$changes = array();	// array for storing a part id and its new value
@@ -558,7 +577,7 @@ class Plugin {
 						// add each change to the array of changes
 						if (count($differences) > 0) {
 							foreach ($differences as $key => $value) {
-								$changes[$this->_data_ids[$rs][$instance][$ps][$key]] = $value;
+								$changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 							}
 						}
 					}
@@ -568,10 +587,13 @@ class Plugin {
 		
 		// make them changes
 		if (isset($changes)) {
-			foreach ($changes as $id => $value) {
+		$idManager =& Services::getService("Id");
+			foreach ($changes as $idString => $value) {
+				$id =& $idManager->getId($idString);
 				$part =& $this->_asset->getPart($id);
 				$part->updateValueFromString($value);
 			}
+ 		$this->_loadedData = $this->data;
 		}
 	}
 	

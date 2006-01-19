@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.10 2006/01/18 19:16:10 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.11 2006/01/19 20:41:27 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.10 2006/01/18 19:16:10 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.11 2006/01/19 20:41:27 cws-midd Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -61,14 +61,49 @@ class testAction
 		
 // 		$asset =& $repository->createAsset("My node", "My node description.",
 // 					new Type("Plugins", "Segue", "TextBlock", "TextBlock plugins display a block of text."));
+
+// Assignment testing
+// the asset
+// 		$asset =& $repository->createAsset("My node", "My node description.",
+// 					new Type("Plugins", "Segue", "Assignment", "Assignment plugins allow for online assignments."));
+// // the assignment record structure and part structures
+// 		$A_rs =& $repository->createRecordStructure("SegueAssignment", "for Segue Assignment Plugin", "plugin", "");
+// 		$A_R_ps =& $A_rs->createPartStructure("SegueAssignmentReading", "reading entry for Segue Assignment Plugin", new Type("Plugins", "Segue", "string", "a reading assignment instance"), false, true, false);
+// 		$A_Q_ps =& $A_rs->createPartStructure("SegueAssignmentQuestion", "question entry for Segue Assignment Plugin", new Type("Plugins", "Segue", "string", "a question assignment instance"), false, true, false);
+// // the response record structure and part structures
+// 		$R_rs =& $repository->createRecordStructure("SegueResponse", "for Segue Assignment Plugin", "plugin", "");
+// 		$R_R_ps =& $R_rs->createPartStructure("SegueResponseReading", "reading status for Segue Assignment Plugin", new Type("Plugins", "Segue", "boolean", "a reading status instance"), false, true, false);
+// 		$R_A_ps =& $R_rs->createPartStructure("SegueResponseAnswer", "Answer entry for Segue Assignment Plugin", new Type("Plugins", "Segue", "string", "answer to assignment question instance"), false, true, false);
+// // the records
+// 		$A_r =& $asset->createRecord($A_rs->getId());
+// 		$R_r =& $asset->createRecord($R_rs->getId());
+// // the parts
+// 		$A_r->createPart($A_R_ps->getId(), String::withValue("Chapter 2"));
+// 		$A_r->createPart($A_R_ps->getId(), String::withValue("Chapter 3"));
+// 		$A_r->createPart($A_R_ps->getId(), String::withValue("Chapter 4"));
+// 
+// 		$A_r->createPart($A_Q_ps->getId(), String::withValue("What is your favorite color?"));
+// 		$A_r->createPart($A_Q_ps->getId(), String::withValue("What is your quest"));
+// 		$A_r->createPart($A_Q_ps->getId(), String::withValue("What did chapter 4 talk about that neither chapter 3 nor chapter 2 stated explicitly, but may well have implied?"));
+// 
+// 		$R_r->createPart($R_R_ps->getId(), Boolean::withValue("false"));
+// 		$R_r->createPart($R_R_ps->getId(), Boolean::withValue("false"));
+// 		$R_r->createPart($R_R_ps->getId(), Boolean::withValue("false"));
+// 
+// 		$R_r->createPart($R_A_ps->getId(), String::withValue("Chapter 2"));
+// 		$R_r->createPart($R_A_ps->getId(), String::withValue("Chapter 2"));
+// 		$R_r->createPart($R_A_ps->getId(), String::withValue("Chapter 2"));
+// 
 // 		printpre($asset->getId());
 // 		exit;
+
 
 
 		$this->displayPlugin('dev_id-27');
 		$this->displayPlugin('dev_id-28');
 		$this->displayPlugin('dev_id-29');
 		$this->displayPlugin('dev_id-30');
+		$this->displayPlugin('dev_id-73');
 	}
 	
 	/**
@@ -89,7 +124,7 @@ class testAction
 		
 		$configuration =& new ConfigurationProperties;
 		$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");
-		
+		$configuration->addProperty('plugin_path', $path = MYPATH."/plugins");
 		
 		$plugin =& Plugin::newInstance($asset, $configuration);
 		
@@ -107,6 +142,7 @@ class testAction
 			$harmoni =& Harmoni::instance();
 			$harmoni->request->startNamespace(get_class($plugin).':'.$id);
 			$baseUrl =& $harmoni->request->mkURL();
+			print '<div align="right" > <img src="'.$configuration->getProperty('plugin_path').'/pluginimage.jpg" alt="Plugin Image" title="Plugin Image" height="50" width="70"></div>';
 			print $plugin->executeAndGetMarkup($baseUrl);
 			$harmoni->request->endNamespace();
 			
