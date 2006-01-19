@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.2 2006/01/19 21:31:50 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.3 2006/01/19 22:04:44 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/GenericNodeRenderer.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.2 2006/01/19 21:31:50 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.3 2006/01/19 22:04:44 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -84,15 +84,75 @@ class NodeRenderer {
 	 */
 	function getActiveNodes () {
 		if (!isset($GLOBALS['active_nodes'])) {
+			$idManager =& Services::getService("Id");
+			$repositoryManager =& Services::getService("Repository");
+			$repository =& $repositoryManager->getRepository(
+			$idManager->getId("edu.middlebury.segue.sites_repository"));
+			
+			
 			$GLOBALS['active_nodes'] = array();
 			if (isset($_REQUEST['node']) && $_REQUEST['node']) {
 				$GLOBALS['active_nodes'][] = $_REQUEST['node'];
+				$asset =& $repository->getAsset($idManager->getId($_REQUEST['node']));
+				NodeRenderer::traverseActiveUp($asset);
+				NodeRenderer::traverseActiveDown($asset);
 			} else {
-				
+				$asset =& $repository->getAsset($idManager->getId($_REQUEST['site_id']));
+				NodeRenderer::traverseActiveDown($asset);
 			}
 		}
 		
 		return $GLOBALS['active_nodes'];
+	}
+	
+	/**
+	 * Add parents to the active nodes array
+	 * 
+	 * @param object Asset $asset
+	 * @return void
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function traverseActiveUp ($asset) {
+		$type =& $asset->getAssetType();
+		$siteType =&  new Type('site_components', 
+								'edu.middlebury.segue', 
+								'site');
+		$id =& $asset->getId();
+		$GLOBALS['active_nodes'][] = $id->getIdString();
+		
+		if ($type->isEqual($siteType))
+			return;
+		
+		$parents =& $asset->getParents();
+		while ($parents->hasNext())
+			NodeRenderer::traverseActiveUp($parents->next());
+	}
+	
+	/**
+	 * Add first children to the active nodes array
+	 * 
+	 * @param object Asset $asset
+	 * @return void
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function traverseActiveDown ($asset) {
+		$type =& $asset->getAssetType();
+		$navType =&  new Type('site_components', 
+								'edu.middlebury.segue', 
+								'navigation');
+								
+		if (!$type->isEqual($navType))
+			return;
+			
+		$id =& $asset->getId();
+		$GLOBALS['active_nodes'][] = $id->getIdString();
+		
+		// Traverse down just the first children
+		$children =& $asset->getAssets();
+		if ($children->hasNext())
+			NodeRenderer::traverseActiveDown($children->next());
 	}
 
 /*********************************************************
