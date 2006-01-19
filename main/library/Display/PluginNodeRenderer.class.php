@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.1 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.2 2006/01/19 20:50:40 cws-midd Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.1 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.2 2006/01/19 20:50:40 cws-midd Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
@@ -35,7 +35,8 @@ class PluginNodeRenderer
 	function &renderTargetComponent ($level = 1) {
 		$configuration =& new ConfigurationProperties;
 		$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");
-		
+		$configuration->addProperty('plugin_path', $path = MYPATH."/plugins");
+
 		$plugin =& Plugin::newInstance($this->_asset, $configuration);
 		
 		$assetId =& $this->_asset->getId();

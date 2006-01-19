@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.18 2006/01/19 20:43:03 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.19 2006/01/19 20:50:41 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.18 2006/01/19 20:43:03 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.19 2006/01/19 20:50:41 cws-midd Exp $
  */
 class Plugin {
  	
@@ -321,19 +321,37 @@ class Plugin {
 		return $this->_id;			
 	}
 
-// 	/**
-// 	 * Answer the filesystem filepath for the plugin
-// 	 * 
-// 	 * @param <##>
-// 	 * @return string the filesystem path to this plugin directory
-// 	 * @access public
-// 	 * @since 1/19/06
-// 	 */
-// 	function getPluginDir () {
-// 		$dir = $this->_configuration->getProperty('plugin_dir')."/";
-// 		$type =& $this->_asset->getAssetType();
-// 		$dir .= $type->getAuthority()."/"
-// 	}
+	/**
+	 * Answer the filesystem filepath for the plugin
+	 * 
+	 * @return string the filesystem path to this plugin directory
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function getPluginDir () {
+		$dir = $this->_configuration->getProperty('plugin_dir')."/";
+		$type =& $this->_asset->getAssetType();
+		$dir .= $type->getAuthority()."/";
+		$dir .= $type->getKeyword()."/";
+
+		return $dir;
+	}
+
+	/**
+	 * Answer the filesystem filepath for the plugin
+	 * 
+	 * @return string the filesystem path to this plugin directory
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function getPluginPath () {
+		$path = $this->_configuration->getProperty('plugin_path')."/";
+		$type =& $this->_asset->getAssetType();
+		$path .= $type->getAuthority()."/";
+		$path .= $type->getKeyword()."/";
+
+		return $dir;
+	}
 
 /*********************************************************
  *********************************************************
