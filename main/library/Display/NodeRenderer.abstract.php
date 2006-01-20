@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.4 2006/01/20 20:53:25 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.5 2006/01/20 21:37:02 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.4 2006/01/20 20:53:25 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.5 2006/01/20 21:37:02 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -101,6 +101,10 @@ class NodeRenderer {
 				$asset =& $repository->getAsset($idManager->getId($_REQUEST['site_id']));
 				NodeRenderer::traverseActiveDown($asset);
 			}
+			
+			$GLOBALS['active_nodes'] = array_unique($GLOBALS['active_nodes']);
+			
+// 			printpre($GLOBALS['active_nodes']);
 		}
 		
 		return $GLOBALS['active_nodes'];
@@ -134,7 +138,7 @@ class NodeRenderer {
 	 * Add first children to the active nodes array
 	 * 
 	 * @param object Asset $asset
-	 * @return void
+	 * @return boolean true if this node is a navigation node.
 	 * @access public
 	 * @since 1/19/06
 	 */
@@ -145,15 +149,18 @@ class NodeRenderer {
 								'navigation');
 								
 		if (!$type->isEqual($navType))
-			return;
+			return false;
 			
 		$id =& $asset->getId();
 		$GLOBALS['active_nodes'][] = $id->getIdString();
 		
 		// Traverse down just the first children
 		$children =& $asset->getAssets();
-		if ($children->hasNext())
-			NodeRenderer::traverseActiveDown($children->next());
+		$childNavFound = false;
+		while ($children->hasNext() && !$childNavFound) {
+			$childNavFound = NodeRenderer::traverseActiveDown($children->next());
+		}
+		return true;
 	}
 
 /*********************************************************
