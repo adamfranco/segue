@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GenericNodeRenderer.class.php,v 1.1 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: GenericNodeRenderer.class.php,v 1.2 2006/01/20 20:53:25 adamfranco Exp $
  */ 
 
 /**
@@ -19,11 +19,28 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GenericNodeRenderer.class.php,v 1.1 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: GenericNodeRenderer.class.php,v 1.2 2006/01/20 20:53:25 adamfranco Exp $
  */
 class GenericNodeRenderer
 	extends NodeRenderer
 {
+	
+	/**
+	 * Answer the GUI component for the navegational item.
+	 * 
+	 * @param integer $level The Navigational level to use, 1=big, >1=smaller
+	 * @return object Component
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function &renderNavComponent ($level = 1) {
+		$component =& new MenuItem(
+						$this->getText(),
+						$level);
+						
+		return $component;
+	}
+	
 	/**
 	 * Answer the GUI component for target area
 	 * 
@@ -32,7 +49,22 @@ class GenericNodeRenderer
 	 * @access public
 	 * @since 1/19/06
 	 */
-	function &renderTargetComponent ($level = 1) {
+	function &renderTargetComponent ($level = 1) {		
+		$component =& new Block(
+						$this->getText(),
+						STANDARD_BLOCK);
+						
+		return $component;
+	}
+	
+	/**
+	 * Answer the text for this node
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/20/06
+	 */
+	function getText () {
 		ob_start();
 		
 		print "<table>";
@@ -68,8 +100,7 @@ class GenericNodeRenderer
 		print "\n\t</tr>";
 		
 		print "</table>";
-				
-		$component =& new Block(ob_get_clean(), STANDARD_BLOCK);
-		return $component;
+		
+		return ob_get_clean();
 	}
 }

@@ -6,13 +6,14 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.3 2006/01/19 22:04:44 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.4 2006/01/20 20:53:25 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
 require_once(dirname(__FILE__)."/SiteNodeRenderer.class.php");
 require_once(dirname(__FILE__)."/PluginNodeRenderer.class.php");
 require_once(dirname(__FILE__)."/GenericNodeRenderer.class.php");
+require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
 
 
 /**
@@ -25,7 +26,7 @@ require_once(dirname(__FILE__)."/GenericNodeRenderer.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.3 2006/01/19 22:04:44 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.4 2006/01/20 20:53:25 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -209,13 +210,7 @@ class NodeRenderer {
 	 * @since 1/19/06
 	 */
 	function &renderNavComponent ($level = 1) {
-		$component =& new MenuItemLink(
-						$this->_asset->getDisplayName(), 
-						$this->getMyUrl(), 
-						$this->_active,
-						$level);
-						
-		return $component;
+		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."); 
 	}
 	
 	/**
@@ -243,17 +238,6 @@ class NodeRenderer {
 		return $harmoni->request->quickURL('site', 'view', 
 					array(	'site_id' => RequestContext::value('site_id'),
 							'node' => $id->getIdString()));
-	}
-	
-	/**
-	 * Answer the desired cell in which to place this asset's navegation component
-	 * 
-	 * @return integer
-	 * @access public
-	 * @since 1/19/06
-	 */
-	function getDestination () {
-		return 1;
 	}
 	
 /*********************************************************

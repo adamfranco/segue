@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.2 2006/01/19 21:31:50 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.3 2006/01/20 20:53:25 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.2 2006/01/19 21:31:50 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.3 2006/01/20 20:53:25 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -54,6 +54,24 @@ class NavigationNodeRenderer
  *********************************************************/
 	
 	/**
+	 * Answer the GUI component for the navegational item.
+	 * 
+	 * @param integer $level The Navigational level to use, 1=big, >1=smaller
+	 * @return object Component
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function &renderNavComponent ($level = 1) { 
+		$component =& new MenuItemLink(
+						$this->_asset->getDisplayName(), 
+						$this->getMyUrl(), 
+						$this->_active,
+						$level);
+						
+		return $component;
+	}
+	
+	/**
 	 * Answer the GUI component for target area
 	 * 
 	 * @param integer $level The Navigational level to use, 1=big, >1=smaller
@@ -65,71 +83,125 @@ class NavigationNodeRenderer
 		$layoutArrangement = $this->getLayoutArrangement();
 		$numCells = $this->getNumCells();
 		$targetOverride = $this->getTargetOverride();
-		
-		// Make our container
+		if (!$targetOverride || $targetOverride > $numCells)
+			throwError(new Error("$targetOverride overflows number of cells, $numCells.", __FILE__, TRUE));		
 		$xLayout =& new XLayout();
 		$yLayout =& new YLayout();
-		if ($layoutArrangement == 'columns') {
-			$layout =& $xLayout;
-			$cellLayout =& $yLayout;
-			$cellWidth = '200px';
-			$cellHeight = NULL;
-		} else {
-			$layout =& $yLayout;
-			$cellLayout =& $xLayout;
-			$cellWidth = NULL;
-			$cellHeight = NULL;
-		}
-		$container =& new Container($layout, BLANK, 1);
+		$children =& $this->getOrderedChildren();
 		
-		// Add our cells
-		$cells = array();
-		for ($i = 1; $i <= $numCells; $i++) {
-			$cell =& $container->add(
-							new Container($cellLayout, BLANK, 1), 
-							$cellWidth, $cellHeight, CENTER, TOP);
-			
-			if ($i == $targetOverride)
-				$targetCell =& $cell;
-			else
-				$cells[$i] =& $cell;
-		}
-		
-		
-		// Add our children to our cells
-		$children =& $this->_asset->getAssets();
-		if (!$children->hasNext()) {
-			for ($i = 1; $i < $numCells; $i++) {
-				$cells[$i]->add(
-					new Block("[debug: no children]<br/>[Cell[$i]]", 
-						EMPHASIZED_BLOCK),
-					null, null, CENTER, TOP);
-			}
-			
-			$targetCell->add(
-				new Block("[debug: no children]<br/>[Cell[$i]=target]", 
-					EMPHASIZED_BLOCK),
-				null, null, CENTER, TOP);
-		} else {
-			while ($children->hasNext()) {
-				$childRenderer =& NodeRenderer::forAsset($children->next());
-				$childCell = $childRenderer->getDestination();
-				if (!isset($cells[$childCell]))
-					$childCell = 1;
-				
-				$cells[$childCell]->add(
-					$childRenderer->renderNavComponent(),
-					null, null, CENTER, TOP);
-				
-				if ($childRenderer->isActive()) {
-					$targetCell->add(
+		// In single-cell arrangement, each child will be given its own
+		// target with which it can subdivide if necessary for any of its
+		// children.
+		if ($numCells <= 1) {
+			$container =& new Container($yLayout, BLANK, 1);
+			for ($i = 0; $i < count($children); $i++) {
+				$childRenderer =& NodeRenderer::forAsset($children[$i]);
+				$container->add(
 						$childRenderer->renderTargetComponent(),
 						null, null, CENTER, TOP);
+			}
+		}
+		
+		// In multi-cell arrangements the child navigational components will
+		// be rendered in all cells but the one designated as the 'target'.
+		// The 'active' child is given the 'target' cell in which to render
+		// its children.
+		else {
+		
+			// Make our container
+			if ($layoutArrangement == 'columns') {
+				$layout =& $xLayout;
+				$cellLayout =& $yLayout;
+				$cellWidth = '200px';
+				$cellHeight = NULL;
+			} else {
+				$layout =& $yLayout;
+				$cellLayout =& $xLayout;
+				$cellWidth = NULL;
+				$cellHeight = NULL;
+			}
+			$container =& new Container($layout, BLANK, 1);
+			
+			
+			// Add our cells
+			$cells = array();
+			$overallCellNumber = 1;
+			$cellIndex = 1;
+			while ($overallCellNumber <= $numCells) {
+				if ($overallCellNumber == $targetOverride) {
+					$targetCell =& $container->add(
+								new Container($yLayout, BLANK, 1), 
+								$cellWidth, $cellHeight, CENTER, TOP);
+				} else {
+					$cells[$cellIndex] =& $container->add(
+								new Menu($cellLayout, $level), 
+								$cellWidth, $cellHeight, CENTER, TOP);
+					$cellIndex++;
+				}
+				$overallCellNumber++;
+			}
+			
+			
+			// Add our children to our cells
+			if (!count($children)) {
+				for ($i = 1; $i < $numCells; $i++) {
+					$cells[$i]->add(
+						new MenuItem("[debug: no children]<br/>[Cell[$i]]", 
+							$level),
+						null, null, CENTER, TOP);
+				}
+				
+				$targetCell->add(
+					new Block("[debug: no children]<br/>[Cell[$i]=target]", 
+						EMPHASIZED_BLOCK),
+					null, null, CENTER, TOP);
+			} else {
+				for ($i = 0; $i < count($children); $i++) {
+					$childRenderer =& NodeRenderer::forAsset($children[$i]);
+					$childCell = $this->getDestinationForAsset($children[$i]);
+					
+					$cells[$childCell]->add(
+						$childRenderer->renderNavComponent(),
+						null, null, CENTER, TOP);
+					
+					if ($childRenderer->isActive()) {
+						$targetCell->add(
+							$childRenderer->renderTargetComponent(),
+							null, null, CENTER, TOP);
+					}
 				}
 			}
 		}
 		
 		return $container;
+	}
+	
+	/**
+	 * Answer an ordered array of children
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 1/20/06
+	 */
+	function &getOrderedChildren () {
+		$orderedChildren = array();
+		$unorderedChildren = array();
+		$children =& $this->_asset->getAssets();
+		while ($children->hasNext()) {
+			$child =& $children->next();
+			$childId =& $child->getId();
+			
+			if (false) {
+				// @todo add order checking
+			} else {
+				$unorderedChildren[] =& $child;
+			}
+		}
+		
+		for ($i = 0; $i < count($unorderedChildren); $i++)
+			$orderedChildren[] =& $unorderedChildren[$i];
+		
+		return $orderedChildren;
 	}
 	
 	/**
@@ -172,6 +244,19 @@ class NavigationNodeRenderer
 			$this->_loadNavRecord();
 		
 		return $this->_targetOverride;
+	}
+	
+	/**
+	 * Answer the desired cell in which to place the asset's navegation component
+	 * 
+	 * @param object Asset $asset
+	 * @return integer
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function getDestinationForAsset ( &$asset ) {
+		// @todo implement
+		return 1;
 	}
 	
 /*********************************************************

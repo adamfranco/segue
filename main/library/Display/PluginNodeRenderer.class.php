@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.5 2006/01/19 21:39:25 cws-midd Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.6 2006/01/20 20:53:25 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.5 2006/01/19 21:39:25 cws-midd Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.6 2006/01/20 20:53:25 adamfranco Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
@@ -34,7 +34,11 @@ class PluginNodeRenderer
 	 * @since 1/19/06
 	 */
 	function &renderNavComponent ($level = 1) {
-		return $this->renderTargetComponent($level);
+		$component =& new MenuItem(
+						$this->getPluginText(),
+						$level);
+						
+		return $component;
 	}
 	
 	/**
@@ -46,6 +50,19 @@ class PluginNodeRenderer
 	 * @since 1/19/06
 	 */
 	function &renderTargetComponent ($level = 1) {
+		$component =& new Block($this->getPluginText(), STANDARD_BLOCK);
+		return $component;
+	}
+	
+	/**
+	 * Answer the XHTML text of the plugin
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/20/06
+	 */
+	function getPluginText () {
+		ob_start();
 		$configuration =& new ConfigurationProperties;
 		$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");
 		$configuration->addProperty('plugin_path', $path = MYPATH."/plugins");
@@ -54,7 +71,7 @@ class PluginNodeRenderer
 		
 		$assetId =& $this->_asset->getId();
 		
-		ob_start();
+		
 		
 		print AjaxPlugin::getPluginSystemJavascript();
 		
@@ -72,8 +89,6 @@ class PluginNodeRenderer
 			
 			print "\n</div>";
 		}
-				
-		$component =& new Block(ob_get_clean(), STANDARD_BLOCK);
-		return $component;
+		return ob_get_clean();
 	}
 }
