@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.5 2006/01/20 21:37:02 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.6 2006/01/20 22:17:30 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.5 2006/01/20 21:37:02 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.6 2006/01/20 22:17:30 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -230,6 +230,17 @@ class NodeRenderer {
 	 */
 	function &renderTargetComponent ($level = 1) {
 		die ("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class."); 
+	}
+	
+	/**
+	 * Answer the title that should be displayed for this node.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function getTitle () {
+		return $this->_asset->getDisplayName();
 	}
 	
 	/**

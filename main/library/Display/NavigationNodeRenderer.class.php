@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.3 2006/01/20 20:53:25 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.4 2006/01/20 22:17:30 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.3 2006/01/20 20:53:25 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.4 2006/01/20 22:17:30 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -96,6 +96,15 @@ class NavigationNodeRenderer
 			$container =& new Container($yLayout, BLANK, 1);
 			for ($i = 0; $i < count($children); $i++) {
 				$childRenderer =& NodeRenderer::forAsset($children[$i]);
+				
+				// print a heading if availible
+				if ($childRenderer->getTitle()) {
+					$container->add(
+							new Heading($childRenderer->getTitle(), 2),
+							null, null, CENTER, TOP);
+				}
+				
+				// print the content
 				$container->add(
 						$childRenderer->renderTargetComponent(),
 						null, null, CENTER, TOP);

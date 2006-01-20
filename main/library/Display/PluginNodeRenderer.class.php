@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.6 2006/01/20 20:53:25 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.7 2006/01/20 22:17:30 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.6 2006/01/20 20:53:25 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.7 2006/01/20 22:17:30 adamfranco Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
@@ -34,8 +34,12 @@ class PluginNodeRenderer
 	 * @since 1/19/06
 	 */
 	function &renderNavComponent ($level = 1) {
+		if ($this->getTitle())
+			$title = "<div style='font-size: larger; font-weight: bold; border-bottom: 1px solid; margin-bottom: 5px;'>".$this->getTitle()."</div>\n";
+		else
+			$title = "";
 		$component =& new MenuItem(
-						$this->getPluginText(),
+						$title.$this->getPluginText(),
 						$level);
 						
 		return $component;
