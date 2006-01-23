@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.3 2006/01/16 20:12:03 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.4 2006/01/23 17:43:59 adamfranco Exp $
  */
 
 if (!isset($_SESSION['post_config_setup_complete'])) {
@@ -44,12 +44,14 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 
 
 		$navNodeSchemaId =& $idManager->getId("edu.middlebury.segue.nav_nod_rs");
+		
 		$navNodeSchema =& $repository->createRecordStructure(
 							"Navigational-Node RecordStructure", 
 							"This is the RecordStruction used for navigational-nodes.", 
 							"text/plain", 
 							"", 
 							$navNodeSchemaId);
+							
 		$navNodeSchema->createPartStructure(
 							"num_cells", 
 							"The number of cells that this node's children will be arranged in.", 
@@ -58,6 +60,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 							false, 
 							false,
 							$idManager->getId("edu.middlebury.segue.nav_nod_rs.num_cells"));
+							
 		$navNodeSchema->createPartStructure(
 							"layout_arrangement", 
 							"The arrangement of the layout of this navigational-node: rows, columns, nested", 
@@ -66,6 +69,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 							false, 
 							false,
 							$idManager->getId("edu.middlebury.segue.nav_nod_rs.layout_arrangement"));
+							
 		$navNodeSchema->createPartStructure(
 							"target_override", 
 							"The cell-number to use to use for the target for this node and descendent nodes: 1 to 'num_cells'.", 
@@ -74,6 +78,15 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 							false, 
 							false,
 							$idManager->getId("edu.middlebury.segue.nav_nod_rs.target_override"));
+							
+		$navNodeSchema->createPartStructure(
+							"child_order", 
+							"The order of the children of this node", 
+							new HarmoniType("Repository", "edu.middlebury.harmoni", "string"), 
+							false, 
+							false, 
+							false,
+							$idManager->getId("edu.middlebury.segue.nav_nod_rs.child_order"));
 
 
 	}

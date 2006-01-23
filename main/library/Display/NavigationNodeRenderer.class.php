@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.4 2006/01/20 22:17:30 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.5 2006/01/23 17:43:59 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.4 2006/01/20 22:17:30 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.5 2006/01/23 17:43:59 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -192,7 +192,7 @@ class NavigationNodeRenderer
 	 * @access public
 	 * @since 1/20/06
 	 */
-	function &getOrderedChildren () {
+	function &getOrderedChildren () {		
 		$orderedChildren = array();
 		$unorderedChildren = array();
 		$children =& $this->_asset->getAssets();
@@ -200,15 +200,19 @@ class NavigationNodeRenderer
 			$child =& $children->next();
 			$childId =& $child->getId();
 			
-			if (false) {
-				// @todo add order checking
+			$key = array_search($childId->getIdString(), $this->_childOrder);
+			if ($key !== false) {
+				$orderedChildren[$key] =& $child;
 			} else {
 				$unorderedChildren[] =& $child;
 			}
 		}
-		
+		ksort($orderedChildren);
 		for ($i = 0; $i < count($unorderedChildren); $i++)
 			$orderedChildren[] =& $unorderedChildren[$i];
+		
+		if (count($unorderedChildren))
+			$this->_updateChildOrder($orderedChildren);
 		
 		return $orderedChildren;
 	}
@@ -289,6 +293,7 @@ class NavigationNodeRenderer
 				.'::edu.middlebury.segue.nav_nod_rs'));
 		$navRecord =& $navRecords->next();
 		
+		
 		$parts =& $navRecord->getPartsByPartStructure(
 			$idManager->getId(
 				'Repository::edu.middlebury.segue.sites_repository'
@@ -296,6 +301,7 @@ class NavigationNodeRenderer
 		$part =& $parts->next();
 		$value =& $part->getValue();
 		$this->_layoutArrangement = $value->asString();
+		
 		
 		$parts =& $navRecord->getPartsByPartStructure(
 			$idManager->getId(
@@ -305,12 +311,64 @@ class NavigationNodeRenderer
 		$value =& $part->getValue();
 		$this->_numCells = $value->value();
 		
+		
 		$parts =& $navRecord->getPartsByPartStructure(
 			$idManager->getId(
 				'Repository::edu.middlebury.segue.sites_repository'
 				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.target_override'));
 		$part =& $parts->next();
+		$value =& $part->getValue();
 		$this->_targetOverride = $value->value();
+		
+		
+		$parts =& $navRecord->getPartsByPartStructure(
+			$idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.child_order'));
+		if ($parts->hasNext()) {
+			$part =& $parts->next();
+			$value =& $part->getValue();
+			$this->_childOrder = explode("\t", $value->asString());
+		} else {
+			$this->_childOrder = array();
+		}
+	}
+	
+	/**
+	 * Update the order of our children
+	 * 
+	 * @param ref array $orderedChildren
+	 * @return void
+	 * @access private
+	 * @since 1/23/06
+	 */
+	function _updateChildOrder ( &$orderedChildren ) {
+		$childIds = array();
+		foreach(array_keys($orderedChildren) as $key) {
+			$child =& $orderedChildren[$key];
+			$childId =& $child->getId();
+			$childIds[] = $childId->getIdString();
+		}
+		$valueObj =& String::withValue(implode("\t", $childIds));
+		
+		// Get the nav info
+		$idManager =& Services::getService("Id");
+		$navRecords =& $this->_asset->getRecordsByRecordStructure(
+			$idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs'));
+		$navRecord =& $navRecords->next();
+		
+		// Order part
+		$partId =& $idManager->getId('Repository::edu.middlebury.segue.sites_repository'
+			.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.child_order');
+		$parts =& $navRecord->getPartsByPartStructure($partId);
+		if ($parts->hasNext()) {
+			$part =& $parts->next();
+			$part->updateValue($valueObj);
+		} else {
+			$navRecord->createPart($partId, $valueObj);
+		}
 	}
 	
 }

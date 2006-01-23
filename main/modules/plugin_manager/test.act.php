@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.12 2006/01/19 21:39:25 cws-midd Exp $
+ * @version $Id: test.act.php,v 1.13 2006/01/23 17:43:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.12 2006/01/19 21:39:25 cws-midd Exp $
+ * @version $Id: test.act.php,v 1.13 2006/01/23 17:43:59 adamfranco Exp $
  */
 class testAction 
 	extends MainWindowAction
@@ -58,6 +58,17 @@ class testAction
 		$repository =& $repositoryManager->getRepository(
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
 		
+// 		$navNodeSchema =& $repository->getRecordStructure(
+// 				$idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.nav_nod_rs"));
+// 		$navNodeSchema->createPartStructure(
+// 					"child_order", 
+// 					"The order of the children of this node", 
+// 					new HarmoniType("Repository", "edu.middlebury.harmoni", "string"), 
+// 					false, 
+// 					false, 
+// 					false,
+// 					$idManager->getId("edu.middlebury.segue.nav_nod_rs.child_order"));
+// 		exit;
 		
 // 		$asset =& $repository->createAsset("My node", "My node description.",
 // 					new Type("Plugins", "Segue", "TextBlock", "TextBlock plugins display a block of text."));
