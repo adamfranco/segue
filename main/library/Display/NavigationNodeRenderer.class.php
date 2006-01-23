@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.5 2006/01/23 17:43:59 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.6 2006/01/23 20:34:24 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.5 2006/01/23 17:43:59 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.6 2006/01/23 20:34:24 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -95,7 +95,7 @@ class NavigationNodeRenderer
 		if ($numCells <= 1) {
 			$container =& new Container($yLayout, BLANK, 1);
 			for ($i = 0; $i < count($children); $i++) {
-				$childRenderer =& NodeRenderer::forAsset($children[$i]);
+				$childRenderer =& NodeRenderer::forAsset($children[$i], $this);
 				
 				// print a heading if availible
 				if ($childRenderer->getTitle()) {
@@ -166,7 +166,7 @@ class NavigationNodeRenderer
 					null, null, CENTER, TOP);
 			} else {
 				for ($i = 0; $i < count($children); $i++) {
-					$childRenderer =& NodeRenderer::forAsset($children[$i]);
+					$childRenderer =& NodeRenderer::forAsset($children[$i], $this);
 					$childCell = $this->getDestinationForAsset($children[$i]);
 					
 					$cells[$childCell]->add(
@@ -192,29 +192,52 @@ class NavigationNodeRenderer
 	 * @access public
 	 * @since 1/20/06
 	 */
-	function &getOrderedChildren () {		
-		$orderedChildren = array();
-		$unorderedChildren = array();
-		$children =& $this->_asset->getAssets();
-		while ($children->hasNext()) {
-			$child =& $children->next();
-			$childId =& $child->getId();
-			
-			$key = array_search($childId->getIdString(), $this->_childOrder);
-			if ($key !== false) {
-				$orderedChildren[$key] =& $child;
-			} else {
-				$unorderedChildren[] =& $child;
+	function &getOrderedChildren () {
+		if (!isset($this->_orderedChildren)) {
+			$orderedChildren = array();
+			$orderedChildIds = array();
+			$unorderedChildren = array();
+			$unorderedChildIds = array();
+			$children =& $this->_asset->getAssets();
+			while ($children->hasNext()) {
+				$child =& $children->next();
+				$childId =& $child->getId();
+				
+				$key = array_search($childId->getIdString(), $this->_childOrder);
+				if ($key !== false) {
+					$orderedChildren[$key] =& $child;
+					$orderedChildIds[$key] = $childId->getIdString();
+				} else {
+					$unorderedChildren[] =& $child;
+					$unorderedChildIds[] = $childId->getIdString();
+				}
 			}
-		}
-		ksort($orderedChildren);
-		for ($i = 0; $i < count($unorderedChildren); $i++)
-			$orderedChildren[] =& $unorderedChildren[$i];
-		
-		if (count($unorderedChildren))
-			$this->_updateChildOrder($orderedChildren);
-		
-		return $orderedChildren;
+			ksort($orderedChildren);
+			for ($i = 0; $i < count($unorderedChildren); $i++) {
+				$orderedChildren[] =& $unorderedChildren[$i];
+				$orderedChildIds[] =& $unorderedChildIds[$i];
+			}
+			
+			if (count($unorderedChildren))
+				$this->_updateChildOrder($orderedChildren);
+				
+			$this->_orderedChildren =& $orderedChildren;
+			$this->_orderedChildIds =& $orderedChildIds;
+		}		
+		return $this->_orderedChildren;
+	}
+	
+	/**
+	 * Answer an ordered array of child Ids
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 1/23/06
+	 */
+	function getOrderedChildIds () {
+		if (!isset($this->_orderedChildIds))
+			$this->getOrderChildren();
+		return $this->_orderedChildIds;
 	}
 	
 	/**

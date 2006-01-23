@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.3 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.4 2006/01/23 20:34:24 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.3 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.4 2006/01/23 20:34:24 adamfranco Exp $
  */
 class viewAction 
 	extends Action
@@ -74,7 +74,7 @@ class viewAction
 		
 		
 		// Add the rendered site.
-		$siteRenderer =& NodeRenderer::forAsset($asset);
+		$siteRenderer =& NodeRenderer::forAsset($asset, $null = null);
 		$mainScreen->add(
 			$siteRenderer->renderTargetComponent(),
 			"100%", null, CENTER, TOP);

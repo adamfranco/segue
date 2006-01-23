@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.8 2006/01/23 15:58:58 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.9 2006/01/23 20:34:24 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.8 2006/01/23 15:58:58 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.9 2006/01/23 20:34:24 adamfranco Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
@@ -45,7 +45,7 @@ class PluginNodeRenderer
 		else
 			$title = "";
 		$component =& new MenuItem(
-						$title.$this->getPluginText(),
+						$title.$this->getPluginText().$this->getSettingsForm(),
 						$level);
 						
 		return $component;
@@ -60,7 +60,8 @@ class PluginNodeRenderer
 	 * @since 1/19/06
 	 */
 	function &renderTargetComponent ($level = 1) {
-		$component =& new Block($this->getPluginText(), STANDARD_BLOCK);
+		$component =& new Block($this->getPluginText().$this->getSettingsForm(),
+						STANDARD_BLOCK);
 		return $component;
 	}
 	
