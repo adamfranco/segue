@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.21 2006/01/19 21:39:25 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.22 2006/01/23 15:58:59 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.21 2006/01/19 21:39:25 cws-midd Exp $
+ * @version $Id: Plugin.abstract.php,v 1.22 2006/01/23 15:58:59 adamfranco Exp $
  */
 class Plugin {
  	
@@ -481,11 +481,33 @@ class Plugin {
 		
 		$this->update($this->_getRequestData());
 		
-		$markup = $this->getMarkup();
+		$markup = $this->getPluginMarkup();
 		
 		$this->_storeData();
 		
 		return $markup;
+	}
+	
+	/**
+	 * Answer the markup for this plugin
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/20/06
+	 */
+	function getPluginMarkup () {
+		return $this->getMarkup();
+	}
+	
+	/**
+	 * Answer the markup for the pluginTitle
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/20/06
+	 */
+	function getPluginTitleMarkup () {
+		return $this->getTitle();
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.7 2006/01/20 22:17:30 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.8 2006/01/23 15:58:58 adamfranco Exp $
  */ 
 
 /**
@@ -19,11 +19,17 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.7 2006/01/20 22:17:30 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.8 2006/01/23 15:58:58 adamfranco Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
 {
+	/**
+	 * @var object Plugin $_plugin;  
+	 * @access private
+	 * @since 1/20/06
+	 */
+	var $_plugin;
 	
 	/**
 	 * Answer the GUI component for the navegational item.
@@ -35,7 +41,7 @@ class PluginNodeRenderer
 	 */
 	function &renderNavComponent ($level = 1) {
 		if ($this->getTitle())
-			$title = "<div style='font-size: larger; font-weight: bold; border-bottom: 1px solid; margin-bottom: 5px;'>".$this->getTitle()."</div>\n";
+			$title = "\n<div style='font-size: larger; font-weight: bold; border-bottom: 1px solid; margin-bottom: 5px;'>".$this->getTitle()."</div>";
 		else
 			$title = "";
 		$component =& new MenuItem(
@@ -67,14 +73,9 @@ class PluginNodeRenderer
 	 */
 	function getPluginText () {
 		ob_start();
-		$configuration =& new ConfigurationProperties;
-		$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");
-		$configuration->addProperty('plugin_path', $path = MYPATH."/plugins");
-
-		$plugin =& Plugin::newInstance($this->_asset, $configuration);
+		$plugin =& $this->getPlugin();
 		
 		$assetId =& $this->_asset->getId();
-		
 		
 		
 		print AjaxPlugin::getPluginSystemJavascript();
@@ -82,17 +83,46 @@ class PluginNodeRenderer
 		if (!is_object($plugin)) {
 			print $plugin;
 		} else {
-			print "\n<div id='plugin:".$plugin->getId()."'>";
-			
 			$harmoni =& Harmoni::instance();
 			$harmoni->request->startNamespace(
 				get_class($plugin).':'.$assetId->getIdString());
 			$baseUrl =& $harmoni->request->mkURL();
 			print $plugin->executeAndGetMarkup($baseUrl);
 			$harmoni->request->endNamespace();
-			
-			print "\n</div>";
 		}
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the plugin
+	 * 
+	 * @return object Plugin
+	 * @access public
+	 * @since 1/20/06
+	 */
+	function &getPlugin () {
+		if (!is_object($this->_plugin)) {
+			$configuration =& new ConfigurationProperties;
+			$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");
+			$configuration->addProperty('plugin_path', $path = MYPATH."/plugins");
+	
+			$this->_plugin =& Plugin::newInstance($this->_asset, $configuration);
+		}
+		return $this->_plugin;
+	}
+	
+	/**
+	 * Answer the title that should be displayed for this node.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function getTitle () {
+		$plugin =& $this->getPlugin();
+		if ($plugin->getPluginTitleMarkup())
+			return $plugin->getPluginTitleMarkup();
+		else
+			return "";
 	}
 }

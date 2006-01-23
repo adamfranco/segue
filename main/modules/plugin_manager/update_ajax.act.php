@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.2 2006/01/17 21:30:58 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.3 2006/01/23 15:58:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.2 2006/01/17 21:30:58 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.3 2006/01/23 15:58:59 adamfranco Exp $
  */
 class update_ajaxAction 
 	extends Action
@@ -64,12 +64,25 @@ class update_ajaxAction
 		$plugin =& Plugin::newInstance($asset, $configuration);
 		
 		$harmoni->request->startNamespace(get_class($plugin).':'.$id);
+		header("Content-type: text/xml");
+		print "<plugin>\n";
 		if (!is_object($plugin)) {
+			print "\t<title></title>\n";
+			print "\t<markup>\n\t\t<![CDATA[";
 			print $plugin;
+			print "]]>\n\t</markup>\n";
 		} else {
 			$baseUrl =& $harmoni->request->mkURL();
-			print $plugin->executeAndGetMarkup($baseUrl);
+			$markup = $plugin->executeAndGetMarkup($baseUrl);
+			print "\t<title>\n\t\t<![CDATA[";
+			print $plugin->getPluginTitleMarkup();
+			print "]]>\n\t</title>\n";
+			print "\t<markup>\n\t\t<![CDATA[";
+			print $markup;
+			print "]]>\n\t</markup>\n";
+			
 		}
+		print "</plugin>";
 		$harmoni->request->endNamespace();
 		
 		exit();
