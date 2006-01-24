@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.4 2006/01/23 20:34:24 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.5 2006/01/24 17:59:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.4 2006/01/23 20:34:24 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.5 2006/01/24 17:59:51 adamfranco Exp $
  */
 class viewAction 
 	extends Action
@@ -56,6 +56,18 @@ class viewAction
 		$assetIdString = RequestContext::value('site_id');
 		$assetId =& $idManager->getId($assetIdString);
 		$asset =& $repository->getAsset($assetId);
+		
+		
+		$harmoni =& Harmoni::instance();
+		$outputHandler =& $harmoni->getOutputHandler();
+		$head = $outputHandler->getHead();
+		if (preg_match('/<title>.*<\/title>/', $head))
+			$head = preg_replace('/<title>.*<\/title>/', 
+				'<title>'.$asset->getDisplayName().'</title>', $head);
+		else
+			$head .= "<title>".$asset->getDisplayName()."</title>";
+		$outputHandler->setHead($head);
+		
 				
 		$xLayout =& new XLayout();
 		$yLayout =& new YLayout();

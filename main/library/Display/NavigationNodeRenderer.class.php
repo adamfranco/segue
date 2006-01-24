@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.6 2006/01/23 20:34:24 adamfranco Exp $
- */ 
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.7 2006/01/24 17:59:51 adamfranco Exp $
+ */
+ 
+require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
 
 /**
  * The NodeRenderer class takes an Asset and renders its navegational item,
@@ -19,7 +21,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.6 2006/01/23 20:34:24 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.7 2006/01/24 17:59:51 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -62,11 +64,15 @@ class NavigationNodeRenderer
 	 * @since 1/19/06
 	 */
 	function &renderNavComponent ($level = 1) { 
-		$component =& new MenuItemLink(
+		$component =& new MenuItemLinkWithAdditionalHtml(
 						$this->_asset->getDisplayName(), 
 						$this->getMyUrl(), 
 						$this->_active,
-						$level);
+						$level,
+						null,
+						null,
+						null,
+						$this->getSettingsForm());
 						
 		return $component;
 	}
@@ -121,7 +127,7 @@ class NavigationNodeRenderer
 			if ($layoutArrangement == 'columns') {
 				$layout =& $xLayout;
 				$cellLayout =& $yLayout;
-				$cellWidth = '200px';
+				$cellWidth = '250px';
 				$cellHeight = NULL;
 			} else {
 				$layout =& $yLayout;
@@ -140,7 +146,7 @@ class NavigationNodeRenderer
 				if ($overallCellNumber == $targetOverride) {
 					$targetCell =& $container->add(
 								new Container($yLayout, BLANK, 1), 
-								$cellWidth, $cellHeight, CENTER, TOP);
+								NULL, $cellHeight, CENTER, TOP);
 				} else {
 					$cells[$cellIndex] =& $container->add(
 								new Menu($cellLayout, $level), 
@@ -238,6 +244,24 @@ class NavigationNodeRenderer
 		if (!isset($this->_orderedChildIds))
 			$this->getOrderChildren();
 		return $this->_orderedChildIds;
+	}
+	
+	/**
+	 * Answer the destination cell of a child Id
+	 * 
+	 * @param object Id $childId
+	 * @return integer
+	 * @access public
+	 * @since 1/23/06
+	 */
+	function getDestinationCell ( &$childId ) {
+		$idString = $childId->getIdString();
+		foreach($this->_childCells as $cell => $cellList) {
+			if (array_search($idString, $cellList) !== false)
+				return $cell;
+		}
+		// default to 1
+		return 1;
 	}
 	
 	/**
@@ -355,6 +379,32 @@ class NavigationNodeRenderer
 		} else {
 			$this->_childOrder = array();
 		}
+		
+		$parts =& $navRecord->getPartsByPartStructure(
+			$idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.child_cells'));
+		$this->_childCells = array();
+		if ($parts->hasNext()) {
+			$part =& $parts->next();
+			$value =& $part->getValue();
+			$storedCells = explode("\n", $value->asString());
+		} else {
+			$storedCells = array();
+		}
+		$this->_childCells = array();
+		for ($i = 1; $i <= $this->_numCells; $i++) {
+			if (isset($storedCells[$i-1]))
+				$this->_childCells[$i] = explode("\t", $storedCells[$i-1]);
+			else
+				$this->_childCells[$i] = array();
+		}
+		
+// 		for ($i = $this->_numCells; $i < count($storedCells); $i++) {
+// 			$this->_childCells[$this->_numCells] = array_merge(
+// 											$this->_childCells[$this->_numCells],
+// 											explode("\t", $storedCells[$i]));
+// 		}
 	}
 	
 	/**

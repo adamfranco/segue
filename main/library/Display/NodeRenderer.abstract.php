@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.7 2006/01/23 20:34:24 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.8 2006/01/24 17:59:51 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.7 2006/01/23 20:34:24 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.8 2006/01/24 17:59:51 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -380,6 +380,27 @@ class NodeRenderer {
 		}
 		
 		/*********************************************************
+		 * Cell position
+		 *********************************************************/
+		$layout = $this->_parent->getLayoutArrangement();
+		if ($layout == 'columns')
+			print "\n\t\t\t<br/>Column: &nbsp;";
+		if ($layout == 'rows')
+			print "\n\t\t\t<br/>Row: &nbsp;";
+			
+		if ($layout == 'columns' || $layout == 'rows') {
+			$currentColumn = $this->_parent->getDestinationCell($id);
+			print "\n\t\t\t<select onchange='if (this.value != ".$currentColumn.") {alert(this.value);} else {alert(\""._("Already in this position.")."\");}'>";
+			for ($i = 1; $i <= $this->_parent->getNumCells(); $i++) {
+				print "\n\t\t\t\t<option";
+				if ($currentColumn == $i)
+					print " style='background-color: #ddd;'";
+				print " value='".$i."'>".$i."</option>";
+			}
+			print "\n\t\t\t</select>";
+		}
+		
+		/*********************************************************
 		 * Other links
 		 *********************************************************/
 		$links[_('settings')] = $harmoni->request->quickURL('site', 'edit', 
@@ -425,4 +446,4 @@ class NodeRenderer {
 	}
 }
 
-?>
+?><style type="text/css">
