@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.10 2006/01/24 18:45:07 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.11 2006/01/24 20:04:35 cws-midd Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.10 2006/01/24 18:45:07 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.11 2006/01/24 20:04:35 cws-midd Exp $
  */
 class NodeRenderer {
 
@@ -47,6 +47,8 @@ class NodeRenderer {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
 		ArgumentValidator::validate($parentId, OptionalRule::getRule(
 			ExtendsValidatorRule::getRule("Id")));
+
+		$plugs =& Services::getService("Plugs");
 		
 		$type =& $asset->getAssetType();
 		$siteType =&  new Type('site_components', 
@@ -60,7 +62,7 @@ class NodeRenderer {
 			$renderer =& new SiteNodeRenderer;
 		else if ($type->isEqual($navType))
 			$renderer =& new NavigationNodeRenderer;
-		else if (strtolower($type->getDomain()) == 'plugins')
+		else if ($plugs->isPluginDomain($type->getDomain()))
 			$renderer =& new PluginNodeRenderer;
 		else
 			$renderer =& new GenericNodeRenderer;

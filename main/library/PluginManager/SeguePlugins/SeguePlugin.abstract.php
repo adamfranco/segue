@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.22 2006/01/23 15:58:59 adamfranco Exp $
+ * @version $Id: SeguePlugin.abstract.php,v 1.1 2006/01/24 20:04:35 cws-midd Exp $
  */ 
 
 /**
@@ -18,9 +18,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Plugin.abstract.php,v 1.22 2006/01/23 15:58:59 adamfranco Exp $
+ * @version $Id: SeguePlugin.abstract.php,v 1.1 2006/01/24 20:04:35 cws-midd Exp $
  */
-class Plugin {
+class SeguePlugin {
  	
 /*********************************************************
  * Instance Methods - API
@@ -331,6 +331,7 @@ class Plugin {
 	function getPluginDir () {
 		$dir = $this->_configuration->getProperty('plugin_dir')."/";
 		$type =& $this->_asset->getAssetType();
+		$dir .= $type->getDomain()."/";
 		$dir .= $type->getAuthority()."/";
 		$dir .= $type->getKeyword()."/";
 
@@ -347,6 +348,7 @@ class Plugin {
 	function getPluginPath () {
 		$path = $this->_configuration->getProperty('plugin_path')."/";
 		$type =& $this->_asset->getAssetType();
+		$path .= $type->getDomain()."/";
 		$path .= $type->getAuthority()."/";
 		$path .= $type->getKeyword()."/";
 
@@ -384,7 +386,8 @@ class Plugin {
 		
 		$type =& $asset->getAssetType();
 		$pluginDir = $configuration->getProperty("plugin_dir")."/".
-						$type->getAuthority()."/".$type->getKeyword()."/";
+			$type->getDomain()."/".$type->getAuthority().
+			"/".$type->getKeyword()."/";
 		$pluginClass = $type->getAuthority().$type->getKeyword()."Plugin";
 		$pluginFile = $pluginDir.$pluginClass.".class.php";
 		
@@ -460,7 +463,7 @@ class Plugin {
 		$this->_asset =& $asset;
 		
 		$type =& $this->_asset->getAssetType();
-		$this->_pluginDir = $this->_configuration->getProperty("plugin_dir")."/".
+		$this->_pluginDir = $this->_configuration->getProperty("plugin_dir")."/".$type->getDomain()."/".
 						$type->getAuthority()."/".$type->getKeyword()."/";
 		
 		$this->_loadData();
@@ -481,33 +484,11 @@ class Plugin {
 		
 		$this->update($this->_getRequestData());
 		
-		$markup = $this->getPluginMarkup();
+		$markup = $this->getMarkup();
 		
 		$this->_storeData();
 		
 		return $markup;
-	}
-	
-	/**
-	 * Answer the markup for this plugin
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 1/20/06
-	 */
-	function getPluginMarkup () {
-		return $this->getMarkup();
-	}
-	
-	/**
-	 * Answer the markup for the pluginTitle
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 1/20/06
-	 */
-	function getPluginTitleMarkup () {
-		return $this->getTitle();
 	}
 	
 	/**

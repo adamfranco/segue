@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AjaxPlugin.abstract.php,v 1.3 2006/01/23 15:58:59 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.1 2006/01/24 20:04:35 cws-midd Exp $
  */ 
 
 /**
@@ -18,10 +18,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AjaxPlugin.abstract.php,v 1.3 2006/01/23 15:58:59 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.1 2006/01/24 20:04:35 cws-midd Exp $
  */
 class AjaxPlugin 
-	extends Plugin
+	extends SeguePlugin
 {
  	
 /*********************************************************
@@ -146,40 +146,23 @@ class AjaxPlugin
 				
 				if (req) {
 					req.onreadystatechange = function () {
+						// For some reason IE6 fails if the 'var' is not
+						// placed before working.
 						var pluginElement = getElementFromDocument('plugin:' + pluginId);
-						
 						if (req.readyState > 0 && req.readyState < 4) {
 							pluginElement.innerHTML = '<div>Loading...</div>';
 						} else {
 							pluginElement.innerHTML = '<div>Loaded</div>';
-									
-							// only if req shows "loaded"
-							if (req.readyState == 4) {
-								// only if we get a good load should we continue.
-								if (req.status == 200) {
-									//get the plugin element
-									var pluginResponseElement = req.responseXML.firstChild;
-									
-									// Title
-									var elements = pluginResponseElement.getElementsByTagName("title");								
-									if (elements.length > 0 && elements[0].textContent)
-										var title = elements[0].textContent;
-									else
-										var title = '';
-										
-									var elements = pluginResponseElement.getElementsByTagName("markup");
-									if (elements.length > 0 && elements[0].textContent)
-										var markup = elements[0].textContent;
-									else
-										var markup = '';
-									
-									var pluginTitleElement = getElementFromDocument('plugin-title:' + pluginId);
-									pluginTitleElement.innerHTML = title;
-									pluginElement.innerHTML = markup;
-								} else {
-									alert("There was a problem retrieving the XML data:\\n" +
-										req.statusText);
-								}
+						}
+								
+						// only if req shows "loaded"
+						if (req.readyState == 4) {
+							// only if we get a good load should we continue.
+							if (req.status == 200) {
+								pluginElement.innerHTML = req.responseText;
+							} else {
+								alert("There was a problem retrieving the XML data:\\n" +
+									req.statusText);
 							}
 						}
 					}
@@ -219,34 +202,6 @@ END;
 /*********************************************************
  * Instance Methods - Not in API
  *********************************************************/
- 	
- 	/**
-	 * Answer the markup for this plugin
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 1/20/06
-	 */
-	function getPluginMarkup () {
-		$markup = "\n<div id='plugin:".$this->getId()."'>\n";
-		$markup .= $this->getMarkup();
-		$markup .= "\n</div>"; 
-		return $markup;
-	}
- 	
- 	/**
-	 * Answer the markup for the pluginTitle
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 1/20/06
-	 */
-	function getPluginTitleMarkup () {
-		$markup = "\n<div id='plugin-title:".$this->getId()."'>";
-		$markup .= $this->getTitle();
-		$markup .= "</div>"; 
-		return $markup;
-	}
 	
 	/**
 	 * Answer a Url string with the array values added as parameters.

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.9 2006/01/23 20:34:24 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.10 2006/01/24 20:04:35 cws-midd Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.9 2006/01/23 20:34:24 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.10 2006/01/24 20:04:35 cws-midd Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
@@ -44,8 +44,9 @@ class PluginNodeRenderer
 			$title = "\n<div style='font-size: larger; font-weight: bold; border-bottom: 1px solid; margin-bottom: 5px;'>".$this->getTitle()."</div>";
 		else
 			$title = "";
+		$plugs =& Services::getService("Plugs");
 		$component =& new MenuItem(
-						$title.$this->getPluginText().$this->getSettingsForm(),
+						$title.$plugs->getPluginText($this->_asset).$this->getSettingsForm(),
 						$level);
 						
 		return $component;
@@ -60,8 +61,11 @@ class PluginNodeRenderer
 	 * @since 1/19/06
 	 */
 	function &renderTargetComponent ($level = 1) {
-		$component =& new Block($this->getPluginText().$this->getSettingsForm(),
-						STANDARD_BLOCK);
+		$plugs =& Services::getService("Plugs");
+
+		$component =& new Block(
+			$plugs->getPluginText($this->_asset).$this->getSettingsForm(),
+			STANDARD_BLOCK);
 		return $component;
 	}
 	
