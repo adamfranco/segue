@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.9 2006/01/24 18:18:35 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.10 2006/01/24 18:45:07 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.9 2006/01/24 18:18:35 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.10 2006/01/24 18:45:07 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -152,8 +152,11 @@ class NodeRenderer {
 		$navType =&  new Type('site_components', 
 								'edu.middlebury.segue', 
 								'navigation');
+		$siteType =&  new Type('site_components', 
+								'edu.middlebury.segue', 
+								'site');
 								
-		if (!$type->isEqual($navType))
+		if (!$type->isEqual($navType) && !$type->isEqual($siteType))
 			return false;
 			
 		$id =& $asset->getId();
@@ -276,13 +279,14 @@ class NodeRenderer {
 	}
 	
 	/**
-	 * Answer a string of links to modify this node
+	 * Answer a html block to modify this node. Pass array of extra links to print
 	 * 
+	 * @param array $links Name => URL
 	 * @return string
 	 * @access public
 	 * @since 1/23/06
 	 */
-	function getSettingsForm () {
+	function getSettingsForm ($links = array()) {
 		$harmoni = Harmoni::instance();
 		$id =& $this->getId();
 		$idString = $id->getIdString();
@@ -318,7 +322,8 @@ class NodeRenderer {
 		 *********************************************************/
 		$siblingIds = $this->_parent->getOrderedChildIds();
 		$myPosition = array_search($idString, $siblingIds);
-		print "\n\t\t\t"._('Order: ')." &nbsp;";
+		print "\n\t\t\t"._('Order: ')." ";
+		print "\n\t\t<span style='white-space: nowrap; padding-left: 5px; padding-right: 5px;'>";
 		// Move 1 previous
 		if ($myPosition > 0) {
 			print "\n\t\t\t<a href='";
@@ -378,6 +383,7 @@ class NodeRenderer {
 		} else {
 			print "\n\t\t\t--&gt;";
 		}
+		print "\n\t\t</span>";
 		
 		/*********************************************************
 		 * Cell position

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNodeRenderer.class.php,v 1.1 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: SiteNodeRenderer.class.php,v 1.2 2006/01/24 18:45:07 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -21,10 +21,10 @@ require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNodeRenderer.class.php,v 1.1 2006/01/19 20:46:51 adamfranco Exp $
+ * @version $Id: SiteNodeRenderer.class.php,v 1.2 2006/01/24 18:45:07 adamfranco Exp $
  */
 class SiteNodeRenderer
 	extends NavigationNodeRenderer
 {
-
+	
 }

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.7 2006/01/24 17:59:51 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.8 2006/01/24 18:45:07 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.7 2006/01/24 17:59:51 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.8 2006/01/24 18:45:07 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -64,6 +64,12 @@ class NavigationNodeRenderer
 	 * @since 1/19/06
 	 */
 	function &renderNavComponent ($level = 1) { 
+		$links = array();
+		$harmoni =& Harmoni::instance();
+		$id =& $this->getId();
+		$links[_('add child')] = $harmoni->request->quickURL('site', 'add', 
+									array('parent_id' => $id->getIdString()));
+		
 		$component =& new MenuItemLinkWithAdditionalHtml(
 						$this->_asset->getDisplayName(), 
 						$this->getMyUrl(), 
@@ -72,7 +78,7 @@ class NavigationNodeRenderer
 						null,
 						null,
 						null,
-						$this->getSettingsForm());
+						$this->getSettingsForm($links));
 						
 		return $component;
 	}
