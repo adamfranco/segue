@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.6 2006/01/18 19:16:10 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.7 2006/01/24 19:42:48 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.6 2006/01/18 19:16:10 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.7 2006/01/24 19:42:48 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.6 2006/01/18 19:16:10 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.7 2006/01/24 19:42:48 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -100,12 +100,13 @@ class displayAction
 		ob_start();
 		$authN =& Services::getService("AuthN");
 		$agentM =& Services::getService("Agent");
+		$idM =& Services::getService("Id");
 		$authTypes =& $authN->getAuthenticationTypes();
 		$users = '';
 		while ($authTypes->hasNext()) {
 			$authType =& $authTypes->next();
 			$id =& $authN->getUserId($authType);
-			if ("edu.middlebury.agents.anonymous" != $id->getIdString()) {
+			if (!$id->isEqual($idM->getId('edu.middlebury.agents.anonymous'))) {
 				$agent =& $agentM->getAgent($id);
 				$exists = false;
 				foreach (explode("+", $users) as $user) {

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.8 2006/01/24 18:45:07 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.9 2006/01/24 19:42:48 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.8 2006/01/24 18:45:07 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.9 2006/01/24 19:42:48 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -113,13 +113,13 @@ class NavigationNodeRenderer
 				if ($childRenderer->getTitle()) {
 					$container->add(
 							new Heading($childRenderer->getTitle(), 2),
-							null, null, CENTER, TOP);
+							null, null, LEFT, TOP);
 				}
 				
 				// print the content
 				$container->add(
 						$childRenderer->renderTargetComponent(),
-						null, null, CENTER, TOP);
+						null, null, LEFT, TOP);
 			}
 		}
 		
@@ -152,11 +152,11 @@ class NavigationNodeRenderer
 				if ($overallCellNumber == $targetOverride) {
 					$targetCell =& $container->add(
 								new Container($yLayout, BLANK, 1), 
-								NULL, $cellHeight, CENTER, TOP);
+								NULL, $cellHeight, LEFT, TOP);
 				} else {
 					$cells[$cellIndex] =& $container->add(
 								new Menu($cellLayout, $level), 
-								$cellWidth, $cellHeight, CENTER, TOP);
+								$cellWidth, $cellHeight, LEFT, TOP);
 					$cellIndex++;
 				}
 				$overallCellNumber++;
@@ -183,12 +183,12 @@ class NavigationNodeRenderer
 					
 					$cells[$childCell]->add(
 						$childRenderer->renderNavComponent(),
-						null, null, CENTER, TOP);
+						null, null, LEFT, TOP);
 					
 					if ($childRenderer->isActive()) {
 						$targetCell->add(
 							$childRenderer->renderTargetComponent(),
-							null, null, CENTER, TOP);
+							null, null, LEFT, TOP);
 					}
 				}
 			}
@@ -344,6 +344,8 @@ class NavigationNodeRenderer
 			$idManager->getId(
 				'Repository::edu.middlebury.segue.sites_repository'
 				.'::edu.middlebury.segue.nav_nod_rs'));
+		if (!$navRecords->hasNext())
+			throwError(new Error("Manditory Navegation data missing.", __FILE__, TRUE));		
 		$navRecord =& $navRecords->next();
 		
 		

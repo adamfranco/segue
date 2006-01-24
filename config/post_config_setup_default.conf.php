@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.4 2006/01/23 17:43:59 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.5 2006/01/24 19:42:48 adamfranco Exp $
  */
 
 if (!isset($_SESSION['post_config_setup_complete'])) {
@@ -87,6 +87,15 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 							false, 
 							false,
 							$idManager->getId("edu.middlebury.segue.nav_nod_rs.child_order"));
+
+		$navNodeSchema->createPartStructure(
+							"child_cells", 
+							"The destination cells of the children of this node", 
+							new HarmoniType("Repository", "edu.middlebury.harmoni", "string"), 
+							false, 
+							false, 
+							false,
+							$idManager->getId("edu.middlebury.segue.nav_nod_rs.child_cells"));
 
 
 	}
