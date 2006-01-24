@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.10 2006/01/24 20:04:35 cws-midd Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.11 2006/01/24 21:33:40 cws-midd Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.10 2006/01/24 20:04:35 cws-midd Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.11 2006/01/24 21:33:40 cws-midd Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
@@ -107,11 +107,9 @@ class PluginNodeRenderer
 	 */
 	function &getPlugin () {
 		if (!is_object($this->_plugin)) {
-			$configuration =& new ConfigurationProperties;
-			$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");
-			$configuration->addProperty('plugin_path', $path = MYPATH."/plugins");
-	
-			$this->_plugin =& Plugin::newInstance($this->_asset, $configuration);
+			$plugs =& Services::getService("Plugs");
+			
+			$this->_plugin =& $plugs->getPlugin($this->_asset);
 		}
 		return $this->_plugin;
 	}
@@ -124,7 +122,8 @@ class PluginNodeRenderer
 	 * @since 1/19/06
 	 */
 	function getTitle () {
-		$plugin =& $this->getPlugin();
+		$plugs =& Services::getService("Plugs");
+		$plugin =& $plugs->getPlugin($this->_asset);
 		if ($plugin->getPluginTitleMarkup())
 			return $plugin->getPluginTitleMarkup();
 		else

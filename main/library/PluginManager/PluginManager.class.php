@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.2 2006/01/24 20:11:06 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.3 2006/01/24 21:33:40 cws-midd Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.2 2006/01/24 20:11:06 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.3 2006/01/24 21:33:40 cws-midd Exp $
  */
 class PluginManager {
 		
@@ -82,7 +82,7 @@ class PluginManager {
 	 * @since 1/24/06
 	 */
 	function isPluginDomain ($domain) {
-		return in_array($domain, $this->_pluginDomains);
+		return in_array(strtolower($domain), $this->_pluginDomains);
 	}
 
 	/**
@@ -93,12 +93,18 @@ class PluginManager {
 	 * @since 1/20/06
 	 */
 	function findPluginDomains () {
-		$dir = openDir(MYDIR."/main/library/PluginManager");
+		$dir = MYDIR."/main/library/PluginManager";
+		$dirHandle = openDir($dir);
 		
-		while ($file = readdir($dir)) {
-			if (is_dir($file) && $file != "." && $file != ".." 
-					&& $file != "CVS")
-				$this->_pluginDomains[] = $file;
+		$ignore = array(".", "..", "CVS");
+		
+		while ($file = readdir($dirHandle)) {
+			$path = $dir."/".$file;
+			
+			if (is_dir($path) && !in_array($file, $ignore)
+					&& ereg("^[a-zA-Z0-9_]+$", $file)) {
+				$this->_pluginDomains[] = strtolower($file);
+			}
 		}
 	}
 
@@ -110,14 +116,23 @@ class PluginManager {
 	 * @access public
 	 * @since 1/24/06
 	 */
-	function getPlugin ( &$asset ) {
+	function &getPlugin ( &$asset ) {
 		$type =& $asset->getAssetType();
 		$domain = $type->getDomain();
+		$authority = $type->getAuthority();
+		$keyword = $type->getKeyword();
 		
-		if (in_array($domain, $this->_pluginDomains)) {
-			require_once(MYDIR."/main/library/PluginManager/".$domain."/".$domain."Plugin.abstract.php");
-			require_once(MYDIR."/main/library/PluginManager/".$domain."/".$domain."AjaxPlugin.abstract.php");
-			$plugin = eval($domain."Plugin::newInstance($asset, $this->_configuration)");
+		if ($this->isPluginDomain($domain)) {
+			require_once(MYDIR."/main/library/PluginManager/"
+				.$domain."/".$domain."Plugin.abstract.php");
+			require_once(MYDIR."/main/library/PluginManager/"
+				.$domain."/".$domain."AjaxPlugin.abstract.php");
+			require_once(MYDIR."/plugins/".$domain."/"
+				.$authority."/".$keyword."/"
+				.$authority.$keyword."Plugin.class.php");
+
+
+	eval('$plugin =& '.$authority.$keyword.'Plugin::newInstance($asset, $this->_configuration);');
 		}
 		
 		return $plugin;
@@ -136,7 +151,7 @@ class PluginManager {
 		
 		$assetId =& $asset->getId();
 		
-		print AjaxPlugin::getPluginSystemJavascript();
+		print SeguePluginsAjaxPlugin::getPluginSystemJavascript();
 		
 		if (!is_object($plugin)) {
 			print $plugin;
