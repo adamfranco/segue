@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.1 2006/01/24 20:04:35 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.2 2006/01/24 20:11:06 cws-midd Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.1 2006/01/24 20:04:35 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.2 2006/01/24 20:11:06 cws-midd Exp $
  */
 class PluginManager {
 		
@@ -115,6 +115,8 @@ class PluginManager {
 		$domain = $type->getDomain();
 		
 		if (in_array($domain, $this->_pluginDomains)) {
+			require_once(MYDIR."/main/library/PluginManager/".$domain."/".$domain."Plugin.abstract.php");
+			require_once(MYDIR."/main/library/PluginManager/".$domain."/".$domain."AjaxPlugin.abstract.php");
 			$plugin = eval($domain."Plugin::newInstance($asset, $this->_configuration)");
 		}
 		
