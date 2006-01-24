@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.9 2006/01/24 19:42:48 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.10 2006/01/24 20:19:19 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.9 2006/01/24 19:42:48 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.10 2006/01/24 20:19:19 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -179,8 +179,7 @@ class NavigationNodeRenderer
 			} else {
 				for ($i = 0; $i < count($children); $i++) {
 					$childRenderer =& NodeRenderer::forAsset($children[$i], $this);
-					$childCell = $this->getDestinationForAsset($children[$i]);
-					
+					$childCell = $this->getDestinationCell($childRenderer->getId());
 					$cells[$childCell]->add(
 						$childRenderer->renderNavComponent(),
 						null, null, LEFT, TOP);
@@ -261,7 +260,11 @@ class NavigationNodeRenderer
 	 * @since 1/23/06
 	 */
 	function getDestinationCell ( &$childId ) {
+		if (!isset($this->_childCells)) 
+			$this->_loadNavRecord();
+			
 		$idString = $childId->getIdString();
+		
 		foreach($this->_childCells as $cell => $cellList) {
 			if (array_search($idString, $cellList) !== false)
 				return $cell;
@@ -312,18 +315,6 @@ class NavigationNodeRenderer
 		return $this->_targetOverride;
 	}
 	
-	/**
-	 * Answer the desired cell in which to place the asset's navegation component
-	 * 
-	 * @param object Asset $asset
-	 * @return integer
-	 * @access public
-	 * @since 1/19/06
-	 */
-	function getDestinationForAsset ( &$asset ) {
-		// @todo implement
-		return 1;
-	}
 	
 /*********************************************************
  * Instance Methods - Private
