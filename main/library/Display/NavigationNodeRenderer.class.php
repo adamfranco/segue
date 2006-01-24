@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.10 2006/01/24 20:19:19 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.11 2006/01/24 20:25:23 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.10 2006/01/24 20:19:19 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.11 2006/01/24 20:25:23 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -121,6 +121,13 @@ class NavigationNodeRenderer
 						$childRenderer->renderTargetComponent(),
 						null, null, LEFT, TOP);
 			}
+			
+			if (!count($children)) {
+				$container->add(
+						new Block("[debug: no children]<br/>[Cell[$i]=target]", 
+							EMPHASIZED_BLOCK),
+						null, null, CENTER, TOP);
+			}
 		}
 		
 		// In multi-cell arrangements the child navigational components will
@@ -177,9 +184,11 @@ class NavigationNodeRenderer
 						EMPHASIZED_BLOCK),
 					null, null, CENTER, TOP);
 			} else {
+				$cellsWithContent = array();
 				for ($i = 0; $i < count($children); $i++) {
 					$childRenderer =& NodeRenderer::forAsset($children[$i], $this);
 					$childCell = $this->getDestinationCell($childRenderer->getId());
+					$cellsWithContent[] = $childCell;
 					$cells[$childCell]->add(
 						$childRenderer->renderNavComponent(),
 						null, null, LEFT, TOP);
@@ -188,6 +197,15 @@ class NavigationNodeRenderer
 						$targetCell->add(
 							$childRenderer->renderTargetComponent(),
 							null, null, LEFT, TOP);
+					}
+				}
+				$cellsWithContent = array_unique($cellsWithContent);
+				for ($i = 1; $i < $numCells; $i++) {
+					if (!in_array($i, $cellsWithContent)) {
+						$cells[$i]->add(
+							new MenuItem("[debug: no children]<br/>[Cell[$i]]", 
+								$level),
+							null, null, CENTER, TOP);
 					}
 				}
 			}
