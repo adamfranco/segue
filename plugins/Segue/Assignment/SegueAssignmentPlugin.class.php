@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.4 2006/01/24 20:04:35 cws-midd Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.5 2006/01/24 21:34:48 cws-midd Exp $
  */ 
 
 /**
@@ -18,10 +18,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.4 2006/01/24 20:04:35 cws-midd Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.5 2006/01/24 21:34:48 cws-midd Exp $
  */
 class SegueAssignmentPlugin
-	extends SegueAjaxPlugin
+	extends SeguePluginsAjaxPlugin
 {
 		
 	/**
