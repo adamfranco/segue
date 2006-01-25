@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.13 2006/01/25 20:03:23 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.14 2006/01/25 20:21:34 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.13 2006/01/25 20:03:23 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.14 2006/01/25 20:21:34 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -89,8 +89,7 @@ class NodeRenderer {
 			$GLOBALS['node_renderers'][$id->getIdString()] =& $renderer;
 			
 			
-			if (in_array($id->getIdString(), NodeRenderer::getActiveNodes()))
-				$renderer->setActive(true);
+			NodeRenderer::getActiveNodes();
 		}
 		
 		return $GLOBALS['node_renderers'][$id->getIdString()];
@@ -108,19 +107,17 @@ class NodeRenderer {
 	 * @since 1/19/06
 	 */
 	function getActiveNodes () {
-		if (!isset($GLOBALS['active_nodes'])) {
+		if (!isset($GLOBALS['active_traversed'])) {
 			$idManager =& Services::getService("Id");
 			$repositoryManager =& Services::getService("Repository");
 			$repository =& $repositoryManager->getRepository(
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
 			
 			
-			$GLOBALS['active_nodes'] = array();
 			if (isset($_REQUEST['node']) && $_REQUEST['node']) {
-				$GLOBALS['active_nodes'][] = $_REQUEST['node'];
 				$asset =& $repository->getAsset($idManager->getId($_REQUEST['node']));
-				NodeRenderer::traverseActiveUp($asset);
 				$renderer =& NodeRenderer::forAsset($asset, $null = null);
+				$renderer->traverseActiveUp();
 				$renderer->traverseActiveDown();
 			} else {
 				$asset =& $repository->getAsset($idManager->getId($_REQUEST['site_id']));
@@ -128,38 +125,10 @@ class NodeRenderer {
 				$renderer->traverseActiveDown();
 			}
 			
-			$GLOBALS['active_nodes'] = array_unique($GLOBALS['active_nodes']);
-			
-// 			printpre($GLOBALS['active_nodes']);
+			$GLOBALS['active_traversed'] = true;
 		}
-		
-		return $GLOBALS['active_nodes'];
 	}
 	
-	/**
-	 * Add parents to the active nodes array
-	 * 
-	 * @param object Asset $asset
-	 * @return void
-	 * @access public
-	 * @since 1/19/06
-	 * @static
-	 */
-	function traverseActiveUp ($asset) {
-		$type =& $asset->getAssetType();
-		$siteType =&  new Type('site_components', 
-								'edu.middlebury.segue', 
-								'site');
-		$id =& $asset->getId();
-		$GLOBALS['active_nodes'][] = $id->getIdString();
-		
-		if ($type->isEqual($siteType))
-			return;
-		
-		$parents =& $asset->getParents();
-		while ($parents->hasNext())
-			NodeRenderer::traverseActiveUp($parents->next());
-	}
 
 /*********************************************************
  * Object properties
@@ -186,6 +155,7 @@ class NodeRenderer {
 	 */
 	var $_childRenderers = array();
 
+
 /*********************************************************
  * Instance Methods - Public
  *********************************************************/
@@ -202,10 +172,35 @@ class NodeRenderer {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
 		
 		$id =& $asset->getId();
-// 		if (!isset($this->_childRenderers[$id->getIdString()]))
+		if (!isset($this->_childRenderers[$id->getIdString()]))
 			$this->_childRenderers[$id->getIdString()] =& NodeRenderer::forAsset($asset, $this);
 		
 		return $this->_childRenderers[$id->getIdString()];
+	}
+	
+	/**
+	 * Add parents to the active nodes array
+	 * 
+	 * @param object Asset $asset
+	 * @return void
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function traverseActiveUp () {
+		$type =& $this->_asset->getAssetType();
+		$siteType =&  new Type('site_components', 
+								'edu.middlebury.segue', 
+								'site');
+		$this->setActive();
+		
+		if ($type->isEqual($siteType))
+			return;
+		
+		$parents =& $this->_asset->getParents();
+		while ($parents->hasNext()) {
+			$parentRenderer =& NodeRenderer::forAsset($parents->next(), $null = null);
+			$parentRenderer->traverseActiveUp();
+		}
 	}
 	
 	/**
@@ -228,8 +223,7 @@ class NodeRenderer {
 		if (!$type->isEqual($navType) && !$type->isEqual($siteType))
 			return false;
 			
-		$id =& $this->getId();
-		$GLOBALS['active_nodes'][] = $id->getIdString();
+		$this->setActive();		
 		
 		// Traverse down just the first children
 		$orderedChildren =& $this->getOrderedChildren();
