@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.14 2006/01/25 20:21:34 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.15 2006/01/25 22:04:24 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.14 2006/01/25 20:21:34 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.15 2006/01/25 22:04:24 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -403,7 +403,7 @@ class NodeRenderer {
 			print ">";
 			if ($thisNum === $i) 
 				print "*";			
-			print $i.": ".$renderer->getTitle();
+			print $i.": ".strip_tags($renderer->getTitle());
 			print "</option>";
 			$i++;
 		}

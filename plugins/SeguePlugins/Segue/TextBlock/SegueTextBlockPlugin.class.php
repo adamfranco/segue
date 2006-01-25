@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.1 2006/01/24 22:04:55 adamfranco Exp $
- */ 
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.2 2006/01/25 22:04:25 adamfranco Exp $
+ */
+
+require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 
 /**
  * A Simple Plugin for making editable blocks of text
@@ -18,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.1 2006/01/24 22:04:55 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.2 2006/01/25 22:04:25 adamfranco Exp $
  */
 class SegueTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -50,8 +52,14 @@ class SegueTextBlockPlugin
  	 */
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) {
- 			$this->setTitle($this->getFieldValue('title'));
- 			$this->setContent($this->getFieldValue('content'));
+ 			$title =& HtmlString::withValue($this->getFieldValue('title'));
+ 			$title->clean();
+ 			
+ 			$content =& HtmlString::withValue($this->getFieldValue('content'));
+ 			$content->clean();
+ 			
+ 			$this->setTitle($title->asString());
+ 			$this->setContent($content->asString());
  		}
  	}
  	
