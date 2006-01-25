@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.11 2006/01/24 20:25:23 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.12 2006/01/25 20:03:23 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.11 2006/01/24 20:25:23 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.12 2006/01/25 20:03:23 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -107,7 +107,7 @@ class NavigationNodeRenderer
 		if ($numCells <= 1) {
 			$container =& new Container($yLayout, BLANK, 1);
 			for ($i = 0; $i < count($children); $i++) {
-				$childRenderer =& NodeRenderer::forAsset($children[$i], $this);
+				$childRenderer =& $children[$i];
 				
 				// print a heading if availible
 				if ($childRenderer->getTitle()) {
@@ -186,7 +186,7 @@ class NavigationNodeRenderer
 			} else {
 				$cellsWithContent = array();
 				for ($i = 0; $i < count($children); $i++) {
-					$childRenderer =& NodeRenderer::forAsset($children[$i], $this);
+					$childRenderer =& $children[$i];
 					$childCell = $this->getDestinationCell($childRenderer->getId());
 					$cellsWithContent[] = $childCell;
 					$cells[$childCell]->add(
@@ -217,19 +217,21 @@ class NavigationNodeRenderer
 	/**
 	 * Answer an ordered array of children
 	 * 
-	 * @return array
+	 * @return array of NodeRenderer objects
 	 * @access public
 	 * @since 1/20/06
 	 */
 	function &getOrderedChildren () {
 		if (!isset($this->_orderedChildren)) {
+			if (!isset($this->_childOrder))
+				$this->_loadNavRecord();
 			$orderedChildren = array();
 			$orderedChildIds = array();
 			$unorderedChildren = array();
 			$unorderedChildIds = array();
 			$children =& $this->_asset->getAssets();
 			while ($children->hasNext()) {
-				$child =& $children->next();
+				$child =& $this->getRendererForChildAsset($children->next());
 				$childId =& $child->getId();
 				
 				$key = array_search($childId->getIdString(), $this->_childOrder);
@@ -265,7 +267,7 @@ class NavigationNodeRenderer
 	 */
 	function getOrderedChildIds () {
 		if (!isset($this->_orderedChildIds))
-			$this->getOrderChildren();
+			$this->getOrderedChildren();
 		return $this->_orderedChildIds;
 	}
 	

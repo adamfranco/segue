@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.12 2006/01/24 21:33:40 cws-midd Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.13 2006/01/25 20:03:23 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.12 2006/01/24 21:33:40 cws-midd Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.13 2006/01/25 20:03:23 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -39,44 +39,61 @@ class NodeRenderer {
 	 * '$obj =& new nodeRenderer()'
 	 * 
 	 * @param object Asset $asset
+	 * @param object NavigationNodeRenderer $parent
 	 * @return object NodeRenderer
 	 * @access public
 	 * @since 1/19/06
 	 */
 	function &forAsset ( &$asset, &$parent ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
-		ArgumentValidator::validate($parentId, OptionalRule::getRule(
-			ExtendsValidatorRule::getRule("Id")));
+		ArgumentValidator::validate($parent, OptionalRule::getRule(
+			ExtendsValidatorRule::getRule("NavigationNodeRenderer")));
 
-		$plugs =& Services::getService("Plugs");
-		
-		$type =& $asset->getAssetType();
-		$siteType =&  new Type('site_components', 
-								'edu.middlebury.segue', 
-								'site');
-		$navType =&  new Type('site_components', 
-								'edu.middlebury.segue', 
-								'navigation');
-		
-		if ($type->isEqual($siteType))
-			$renderer =& new SiteNodeRenderer;
-		else if ($type->isEqual($navType))
-			$renderer =& new NavigationNodeRenderer;
-		else if ($plugs->isPluginDomain(strtolower($type->getDomain())))
-			$renderer =& new PluginNodeRenderer;
-		else
-			$renderer =& new GenericNodeRenderer;
-		
-		$renderer->_setAsset($asset);
-		if ($parent !== null) {
-			$renderer->_setParent($parent);
+		$id =& $asset->getId();
+		if (!isset($GLOBALS['node_renderers'][$id->getIdString()])) {
+			$plugs =& Services::getService("Plugs");
+			
+			$type =& $asset->getAssetType();
+			$siteType =&  new Type('site_components', 
+									'edu.middlebury.segue', 
+									'site');
+			$navType =&  new Type('site_components', 
+									'edu.middlebury.segue', 
+									'navigation');
+			
+			if ($type->isEqual($siteType))
+				$renderer =& new SiteNodeRenderer;
+			else if ($type->isEqual($navType))
+				$renderer =& new NavigationNodeRenderer;
+			else if ($plugs->isPluginDomain(strtolower($type->getDomain())))
+				$renderer =& new PluginNodeRenderer;
+			else
+				$renderer =& new GenericNodeRenderer;
+			
+			$renderer->_setAsset($asset);
+			
+			// Get the parent if we weren't passed it.
+			// Note that this implies a single-parent hierarchy
+			if ($parent === null && !$type->isEqual($siteType)) {
+				$parents =& $asset->getParents();
+				if ($parents->hasNext())
+					$parent =& NodeRenderer::forAsset($parents->next(), $null = null);
+			}
+			
+			if ($parent !== null)
+				$renderer->_setParent($parent);
+			
+			if (!isset($GLOBALS['node_renderers']))
+				$GLOBALS['node_renderers'] = array();
+				
+			$GLOBALS['node_renderers'][$id->getIdString()] =& $renderer;
+			
+			
+			if (in_array($id->getIdString(), NodeRenderer::getActiveNodes()))
+				$renderer->setActive(true);
 		}
 		
-		$assetId =& $asset->getId();
-		if (in_array($assetId->getIdString(), NodeRenderer::getActiveNodes()))
-			$renderer->setActive(true);
-		
-		return $renderer;
+		return $GLOBALS['node_renderers'][$id->getIdString()];
 	}
 
 /*********************************************************
@@ -103,10 +120,12 @@ class NodeRenderer {
 				$GLOBALS['active_nodes'][] = $_REQUEST['node'];
 				$asset =& $repository->getAsset($idManager->getId($_REQUEST['node']));
 				NodeRenderer::traverseActiveUp($asset);
-				NodeRenderer::traverseActiveDown($asset);
+				$renderer =& NodeRenderer::forAsset($asset, $null = null);
+				$renderer->traverseActiveDown();
 			} else {
 				$asset =& $repository->getAsset($idManager->getId($_REQUEST['site_id']));
-				NodeRenderer::traverseActiveDown($asset);
+				$renderer =& NodeRenderer::forAsset($asset, $null = null);
+				$renderer->traverseActiveDown();
 			}
 			
 			$GLOBALS['active_nodes'] = array_unique($GLOBALS['active_nodes']);
@@ -124,6 +143,7 @@ class NodeRenderer {
 	 * @return void
 	 * @access public
 	 * @since 1/19/06
+	 * @static
 	 */
 	function traverseActiveUp ($asset) {
 		$type =& $asset->getAssetType();
@@ -139,38 +159,6 @@ class NodeRenderer {
 		$parents =& $asset->getParents();
 		while ($parents->hasNext())
 			NodeRenderer::traverseActiveUp($parents->next());
-	}
-	
-	/**
-	 * Add first children to the active nodes array
-	 * 
-	 * @param object Asset $asset
-	 * @return boolean true if this node is a navigation node.
-	 * @access public
-	 * @since 1/19/06
-	 */
-	function traverseActiveDown ($asset) {
-		$type =& $asset->getAssetType();
-		$navType =&  new Type('site_components', 
-								'edu.middlebury.segue', 
-								'navigation');
-		$siteType =&  new Type('site_components', 
-								'edu.middlebury.segue', 
-								'site');
-								
-		if (!$type->isEqual($navType) && !$type->isEqual($siteType))
-			return false;
-			
-		$id =& $asset->getId();
-		$GLOBALS['active_nodes'][] = $id->getIdString();
-		
-		// Traverse down just the first children
-		$children =& $asset->getAssets();
-		$childNavFound = false;
-		while ($children->hasNext() && !$childNavFound) {
-			$childNavFound = NodeRenderer::traverseActiveDown($children->next());
-		}
-		return true;
 	}
 
 /*********************************************************
@@ -190,10 +178,69 @@ class NodeRenderer {
 	 * @since 1/19/06
 	 */
 	var $_active = false;
+	
+	/**
+	 * @var array $_childRenderers;  
+	 * @access private
+	 * @since 1/25/06
+	 */
+	var $_childRenderers = array();
 
 /*********************************************************
  * Instance Methods - Public
  *********************************************************/
+ 	
+ 	/**
+	 * Create a NodeRenderer instance for a child asset
+	 * 
+	 * @param object Asset $asset
+	 * @return object NodeRenderer
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function &getRendererForChildAsset ( &$asset ) {
+		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
+		
+		$id =& $asset->getId();
+// 		if (!isset($this->_childRenderers[$id->getIdString()]))
+			$this->_childRenderers[$id->getIdString()] =& NodeRenderer::forAsset($asset, $this);
+		
+		return $this->_childRenderers[$id->getIdString()];
+	}
+	
+	/**
+	 * Add first children to the active nodes array
+	 * 
+	 * @param object Asset $asset
+	 * @return boolean true if this node is a navigation node.
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function traverseActiveDown () {
+		$type =& $this->_asset->getAssetType();
+		$navType =&  new Type('site_components', 
+								'edu.middlebury.segue', 
+								'navigation');
+		$siteType =&  new Type('site_components', 
+								'edu.middlebury.segue', 
+								'site');
+								
+		if (!$type->isEqual($navType) && !$type->isEqual($siteType))
+			return false;
+			
+		$id =& $this->getId();
+		$GLOBALS['active_nodes'][] = $id->getIdString();
+		
+		// Traverse down just the first children
+		$orderedChildren =& $this->getOrderedChildren();
+		$childNavFound = false;
+		foreach (array_keys($orderedChildren) as $key) {
+			$childNavFound = $orderedChildren[$key]->traverseActiveDown();
+			if ($childNavFound)
+				break;
+		}
+		return true;
+	}
 	
 	/**
 	 * Set the active-state of the Renderer.
@@ -322,6 +369,8 @@ class NodeRenderer {
 		/*********************************************************
 		 * Order buttons
 		 *********************************************************/
+		printpre(get_class($this));
+		printpre('parent: '.get_class($this->_parent));
 		$siblingIds = $this->_parent->getOrderedChildIds();
 		$myPosition = array_search($idString, $siblingIds);
 		print "\n\t\t\t"._('Order: ')." ";
@@ -345,8 +394,8 @@ class NodeRenderer {
 		$i = 1;
 		$thisNum = false;
 		foreach (array_keys($parentsChildren) as $key) {
-			$asset =& $parentsChildren[$key];
-			$assetId =& $asset->getId();
+			$renderer =& $parentsChildren[$key];
+			$assetId =& $renderer->getId();
 			$idString = $assetId->getIdString();
 			
 			if ($assetId->isEqual($this->getId()))
@@ -360,7 +409,7 @@ class NodeRenderer {
 			print ">";
 			if ($thisNum === $i) 
 				print "*";			
-			print $i.": ".$asset->getDisplayName();
+			print $i.": ".$renderer->getTitle();
 			print "</option>";
 			$i++;
 		}
