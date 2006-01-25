@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.12 2006/01/25 20:03:23 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.13 2006/01/25 20:32:57 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.12 2006/01/25 20:03:23 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.13 2006/01/25 20:32:57 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -91,8 +91,67 @@ class NavigationNodeRenderer
 	 * @access public
 	 * @since 1/19/06
 	 */
-	function &renderTargetComponent ($level = 1) {
-		$layoutArrangement = $this->getLayoutArrangement();
+	function &renderTargetComponent ($level = 1) {		
+		// In single-cell arrangement, each child will be given its own
+		// target with which it can subdivide if necessary for any of its
+		// children.
+		if ($this->getNumCells() <= 1)
+			return $this->renderSingleCellTarget();
+		
+		// In multi-cell arrangements the child navigational components will
+		// be rendered in all cells but the one designated as the 'target'.
+		// The 'active' child is given the 'target' cell in which to render
+		// its children.
+		else
+			return $this->renderMultiCellTarget($level);
+	}
+	
+	/**
+	 * Render the single-cell target for this node
+	 * 
+	 * @param integer $level The Navigational level to use, 1=big, >1=smaller
+	 * @return object Container
+	 * @access public
+	 * @since 1/25/06
+	 */
+	function &renderSingleCellTarget ($level = 1) {
+		$container =& new Container(new YLayout, BLANK, 1);
+		
+		$children =& $this->getOrderedChildren();
+		for ($i = 0; $i < count($children); $i++) {
+			$childRenderer =& $children[$i];
+			
+			// print a heading if availible
+			if ($childRenderer->getTitle()) {
+				$container->add(
+						new Heading($childRenderer->getTitle(), 2),
+						null, null, LEFT, TOP);
+			}
+			
+			// print the content
+			$container->add(
+					$childRenderer->renderTargetComponent(),
+					null, null, LEFT, TOP);
+		}
+		
+		if (!count($children)) {
+			$container->add(
+					new Block("[debug: no children]<br/>[Cell[$i]=target]", 
+						EMPHASIZED_BLOCK),
+					null, null, CENTER, TOP);
+		}
+		return $container;
+	}
+	
+	/**
+	 * Render Multi-celled target
+	 * 
+	 * @param integer $level The Navigational level to use, 1=big, >1=smaller
+	 * @return object Container
+	 * @access public
+	 * @since 1/25/06
+	 */
+	function &renderMultiCellTarget ($level = 1) {
 		$numCells = $this->getNumCells();
 		$targetOverride = $this->getTargetOverride();
 		if (!$targetOverride || $targetOverride > $numCells)
@@ -100,113 +159,77 @@ class NavigationNodeRenderer
 		$xLayout =& new XLayout();
 		$yLayout =& new YLayout();
 		$children =& $this->getOrderedChildren();
+	
+		// Make our container
+		if ($this->getLayoutArrangement() == 'columns') {
+			$layout =& $xLayout;
+			$cellLayout =& $yLayout;
+			$cellWidth = '250px';
+			$cellHeight = NULL;
+		} else {
+			$layout =& $yLayout;
+			$cellLayout =& $xLayout;
+			$cellWidth = NULL;
+			$cellHeight = NULL;
+		}
+		$container =& new Container($layout, BLANK, 1);
 		
-		// In single-cell arrangement, each child will be given its own
-		// target with which it can subdivide if necessary for any of its
-		// children.
-		if ($numCells <= 1) {
-			$container =& new Container($yLayout, BLANK, 1);
-			for ($i = 0; $i < count($children); $i++) {
-				$childRenderer =& $children[$i];
-				
-				// print a heading if availible
-				if ($childRenderer->getTitle()) {
-					$container->add(
-							new Heading($childRenderer->getTitle(), 2),
-							null, null, LEFT, TOP);
-				}
-				
-				// print the content
-				$container->add(
-						$childRenderer->renderTargetComponent(),
-						null, null, LEFT, TOP);
+		
+		// Add our cells
+		$cells = array();
+		$overallCellNumber = 1;
+		$cellIndex = 1;
+		while ($overallCellNumber <= $numCells) {
+			if ($overallCellNumber == $targetOverride) {
+				$targetCell =& $container->add(
+							new Container($yLayout, BLANK, 1), 
+							NULL, $cellHeight, LEFT, TOP);
+			} else {
+				$cells[$cellIndex] =& $container->add(
+							new Menu($cellLayout, $level), 
+							$cellWidth, $cellHeight, LEFT, TOP);
+				$cellIndex++;
 			}
-			
-			if (!count($children)) {
-				$container->add(
-						new Block("[debug: no children]<br/>[Cell[$i]=target]", 
-							EMPHASIZED_BLOCK),
-						null, null, CENTER, TOP);
-			}
+			$overallCellNumber++;
 		}
 		
-		// In multi-cell arrangements the child navigational components will
-		// be rendered in all cells but the one designated as the 'target'.
-		// The 'active' child is given the 'target' cell in which to render
-		// its children.
-		else {
 		
-			// Make our container
-			if ($layoutArrangement == 'columns') {
-				$layout =& $xLayout;
-				$cellLayout =& $yLayout;
-				$cellWidth = '250px';
-				$cellHeight = NULL;
-			} else {
-				$layout =& $yLayout;
-				$cellLayout =& $xLayout;
-				$cellWidth = NULL;
-				$cellHeight = NULL;
+		// Add our children to our cells
+		if (!count($children)) {
+			for ($i = 1; $i < $numCells; $i++) {
+				$cells[$i]->add(
+					new MenuItem("[debug: no children]<br/>[Cell[$i]]", 
+						$level),
+					null, null, CENTER, TOP);
 			}
-			$container =& new Container($layout, BLANK, 1);
 			
-			
-			// Add our cells
-			$cells = array();
-			$overallCellNumber = 1;
-			$cellIndex = 1;
-			while ($overallCellNumber <= $numCells) {
-				if ($overallCellNumber == $targetOverride) {
-					$targetCell =& $container->add(
-								new Container($yLayout, BLANK, 1), 
-								NULL, $cellHeight, LEFT, TOP);
-				} else {
-					$cells[$cellIndex] =& $container->add(
-								new Menu($cellLayout, $level), 
-								$cellWidth, $cellHeight, LEFT, TOP);
-					$cellIndex++;
+			$targetCell->add(
+				new Block("[debug: no children]<br/>[Cell[$i]=target]", 
+					EMPHASIZED_BLOCK),
+				null, null, CENTER, TOP);
+		} else {
+			$cellsWithContent = array();
+			for ($i = 0; $i < count($children); $i++) {
+				$childRenderer =& $children[$i];
+				$childCell = $this->getDestinationCell($childRenderer->getId());
+				$cellsWithContent[] = $childCell;
+				$cells[$childCell]->add(
+					$childRenderer->renderNavComponent(),
+					null, null, LEFT, TOP);
+				
+				if ($childRenderer->isActive()) {
+					$targetCell->add(
+						$childRenderer->renderTargetComponent(),
+						null, null, LEFT, TOP);
 				}
-				$overallCellNumber++;
 			}
-			
-			
-			// Add our children to our cells
-			if (!count($children)) {
-				for ($i = 1; $i < $numCells; $i++) {
+			$cellsWithContent = array_unique($cellsWithContent);
+			for ($i = 1; $i < $numCells; $i++) {
+				if (!in_array($i, $cellsWithContent)) {
 					$cells[$i]->add(
 						new MenuItem("[debug: no children]<br/>[Cell[$i]]", 
 							$level),
 						null, null, CENTER, TOP);
-				}
-				
-				$targetCell->add(
-					new Block("[debug: no children]<br/>[Cell[$i]=target]", 
-						EMPHASIZED_BLOCK),
-					null, null, CENTER, TOP);
-			} else {
-				$cellsWithContent = array();
-				for ($i = 0; $i < count($children); $i++) {
-					$childRenderer =& $children[$i];
-					$childCell = $this->getDestinationCell($childRenderer->getId());
-					$cellsWithContent[] = $childCell;
-					$cells[$childCell]->add(
-						$childRenderer->renderNavComponent(),
-						null, null, LEFT, TOP);
-					
-					if ($childRenderer->isActive()) {
-						$targetCell->add(
-							$childRenderer->renderTargetComponent(),
-							null, null, LEFT, TOP);
-					}
-				}
-				$cellsWithContent = array_unique($cellsWithContent);
-				for ($i = 1; $i < $numCells; $i++) {
-					if (!in_array($i, $cellsWithContent)) {
-						$cells[$i]->add(
-							new MenuItem("[debug: no children]<br/>[Cell[$i]]", 
-								$level),
-							null, null, CENTER, TOP);
-					}
 				}
 			}
 		}
