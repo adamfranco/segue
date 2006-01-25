@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.3 2006/01/23 15:58:59 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.4 2006/01/25 20:02:13 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.3 2006/01/23 15:58:59 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.4 2006/01/25 20:02:13 adamfranco Exp $
  */
 class update_ajaxAction 
 	extends Action
@@ -57,11 +57,8 @@ class update_ajaxAction
 		
 		$asset =& $repository->getAsset($idManager->getId($id));
 		
-		$configuration =& new ConfigurationProperties;
-		$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");
-		
-		
-		$plugin =& Plugin::newInstance($asset, $configuration);
+		$pluginManager =& Services::getService("Plugs");
+		$plugin =& $pluginManager->getPlugin($asset);
 		
 		$harmoni->request->startNamespace(get_class($plugin).':'.$id);
 		header("Content-type: text/xml");

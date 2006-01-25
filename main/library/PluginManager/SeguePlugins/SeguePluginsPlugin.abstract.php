@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.1 2006/01/24 21:33:40 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.2 2006/01/25 20:02:12 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.1 2006/01/24 21:33:40 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.2 2006/01/25 20:02:12 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -609,18 +609,22 @@ class SeguePluginsPlugin {
 			// go through all recordstructures
 			foreach ($this->data as $rs => $instances) {
 				
-				// go through each instance of the recordstructure
-				foreach ($instances as $instance => $record) {
-				
-					// for each array of part values find out which have changed
-					foreach ($record as $ps => $values) {
-						$differences = array_diff_assoc(
-							$values, $this->_loadedData[$rs][$instance][$ps]);
+				if (is_array($instances)) {
+					// go through each instance of the recordstructure
+					foreach ($instances as $instance => $record) {
 						
-						// add each change to the array of changes
-						if (count($differences) > 0) {
-							foreach ($differences as $key => $value) {
-								$changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
+						if (is_array($record)) {
+							// for each array of part values find out which have changed
+							foreach ($record as $ps => $values) {
+								$differences = array_diff_assoc(
+									$values, $this->_loadedData[$rs][$instance][$ps]);
+								
+								// add each change to the array of changes
+								if (count($differences) > 0) {
+									foreach ($differences as $key => $value) {
+										$changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
+									}
+								}
 							}
 						}
 					}
