@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.2 2006/01/25 22:04:25 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.3 2006/01/26 18:51:41 adamfranco Exp $
  */
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.2 2006/01/25 22:04:25 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.3 2006/01/26 18:51:41 adamfranco Exp $
  */
 class SegueTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -51,15 +51,9 @@ class SegueTextBlockPlugin
  	 * @since 1/12/06
  	 */
  	function update ( $request ) {
- 		if ($this->getFieldValue('submit')) {
- 			$title =& HtmlString::withValue($this->getFieldValue('title'));
- 			$title->clean();
- 			
- 			$content =& HtmlString::withValue($this->getFieldValue('content'));
- 			$content->clean();
- 			
- 			$this->setTitle($title->asString());
- 			$this->setContent($content->asString());
+ 		if ($this->getFieldValue('submit')) { 			
+ 			$this->setTitle($this->cleanHTML($this->getFieldValue('title')));
+ 			$this->setContent($this->cleanHTML($this->getFieldValue('content')));
  		}
  	}
  	
