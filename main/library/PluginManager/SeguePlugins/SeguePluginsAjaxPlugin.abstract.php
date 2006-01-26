@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.2 2006/01/26 16:55:28 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.3 2006/01/26 19:42:07 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.2 2006/01/26 16:55:28 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.3 2006/01/26 19:42:07 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -161,18 +161,40 @@ class SeguePluginsAjaxPlugin
 									var pluginResponseElement = req.responseXML.firstChild;
 									
 									// Title
-									var elements = pluginResponseElement.getElementsByTagName("title");								
-									if (elements.length > 0 && elements[0].textContent)
-										var title = elements[0].textContent;
-									else
-										var title = '';
-										
-									var elements = pluginResponseElement.getElementsByTagName("markup");
-									if (elements.length > 0 && elements[0].textContent)
-										var markup = elements[0].textContent;
-									else
-										var markup = '';
+									var elements = pluginResponseElement.getElementsByTagName("title");
+									var title = '';
+									if (elements.length > 0 && elements[0]) {
+										if (elements[0].textContent)
+											title = elements[0].textContent;
+										else if (true) {
+											for (var i = 0; i < elements[0].childNodes.length; i++) {
+												if (elements[0].childNodes[i].nodeType == 4) {
+													title = elements[0].childNodes[i].data;
+												}
+											}
+										}
+									} else {
+										alert("Error: No valid <title> was found in\\n\\n" + req.responseText);	
+									}
 									
+									// Markup
+									var elements = pluginResponseElement.getElementsByTagName("markup");
+									var markup = '';
+									if (elements.length > 0 && elements[0]) {
+										if (elements[0].textContent)
+											markup = elements[0].textContent;
+										else if (true) {
+											for (var i = 0; i < elements[0].childNodes.length; i++) {
+												if (elements[0].childNodes[i].nodeType == 4) {
+													markup = elements[0].childNodes[i].data;
+												}
+											}
+										}
+									} else {
+										alert("Error: No valid <markup> was found in\\n\\n" + req.responseText);	
+									}
+									
+									// Place the new values in the page
 									var pluginTitleElement = getElementFromDocument('plugin-title:' + pluginId);
 									pluginTitleElement.innerHTML = title;
 									pluginElement.innerHTML = markup.replace(/}}>/g, ']]>');
