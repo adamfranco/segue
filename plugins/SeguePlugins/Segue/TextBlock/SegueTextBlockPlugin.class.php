@@ -6,10 +6,8 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.3 2006/01/26 18:51:41 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.4 2006/01/26 18:52:13 adamfranco Exp $
  */
-
-require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 
 /**
  * A Simple Plugin for making editable blocks of text
@@ -20,7 +18,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.3 2006/01/26 18:51:41 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.4 2006/01/26 18:52:13 adamfranco Exp $
  */
 class SegueTextBlockPlugin
 	extends SeguePluginsAjaxPlugin

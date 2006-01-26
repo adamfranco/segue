@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.2 2006/01/25 20:02:12 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.3 2006/01/26 18:51:41 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.2 2006/01/25 20:02:12 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.3 2006/01/26 18:51:41 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -274,6 +274,54 @@ class SeguePluginsPlugin {
 	 */
 	function updateDataRecords () {
 		$this->_storeData();
+	}
+	
+	/**
+	 * Answer a valid XHTML with any tag or special-character errors fixed.
+	 * 
+	 * @param string $htmlString
+	 * @return string
+	 * @access public
+	 * @since 1/26/06
+	 */
+	function cleanHTML ($htmlString) {
+		$htmlStringObj =& HtmlString::withValue($htmlString);
+ 		$htmlStringObj->clean();
+ 		return $htmlStringObj->asString();
+	}
+	
+	/**
+	 * Answer a valid XHTML string trimmed to the specified word length. Cleans
+	 * the syntax as well.
+	 * 
+	 * @param string $htmlString
+	 * @param integer $maxWords
+	 * @param optional boolean $addElipses Add elipses when trimming.
+	 * @return string
+	 * @access public
+	 * @since 1/26/06
+	 */
+	function trimHTML ($htmlString, $maxWords, $addElipses = true) {
+		$htmlStringObj =& HtmlString::withValue($htmlString);
+ 		$htmlStringObj->trim($maxWords, $addElipses);
+ 		return $htmlStringObj->asString();
+	}
+	
+	/**
+	 * Answer a string trimmed to the specified word length. Strips html tags
+	 * as well
+	 * 
+	 * @param string $htmlString
+	 * @param integer $maxWords
+	 * @param optional boolean $addElipses Add elipses when trimming.
+	 * @return string
+	 * @access public
+	 * @since 1/26/06
+	 */
+	function stripTagsAndTrim ($htmlString, $maxWords, $addElipses = true) {
+		$htmlStringObj =& HtmlString::withValue($htmlString);
+ 		$htmlStringObj->stripTagsAndTrim($maxWords, $addElipses);
+ 		return $htmlStringObj->asString();
 	}
 
 	/**
