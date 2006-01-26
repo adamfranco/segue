@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.4 2006/01/25 20:02:13 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.5 2006/01/26 14:49:31 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.4 2006/01/25 20:02:13 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.5 2006/01/26 14:49:31 adamfranco Exp $
  */
 class update_ajaxAction 
 	extends Action
@@ -72,10 +72,14 @@ class update_ajaxAction
 			$baseUrl =& $harmoni->request->mkURL();
 			$markup = $plugin->executeAndGetMarkup($baseUrl);
 			print "\t<title>\n\t\t<![CDATA[";
-			print $plugin->getPluginTitleMarkup();
+			// CDATA sections cannot contain ']]>' and therefor cannot be nested
+			// get around this by replacing the ']]>' tags in the markup.
+			print preg_replace('/\]\]>/', '}}>', $plugin->getPluginTitleMarkup());
 			print "]]>\n\t</title>\n";
 			print "\t<markup>\n\t\t<![CDATA[";
-			print $markup;
+			// CDATA sections cannot contain ']]>' and therefor cannot be nested
+			// get around this by replacing the ']]>' tags in the markup.
+			print preg_replace('/\]\]>/', '}}>', $markup);
 			print "]]>\n\t</markup>\n";
 			
 		}

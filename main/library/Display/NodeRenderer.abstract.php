@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.15 2006/01/25 22:04:24 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.16 2006/01/26 14:49:31 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.15 2006/01/25 22:04:24 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.16 2006/01/26 14:49:31 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -363,8 +363,6 @@ class NodeRenderer {
 		/*********************************************************
 		 * Order buttons
 		 *********************************************************/
-		printpre(get_class($this));
-		printpre('parent: '.get_class($this->_parent));
 		$siblingIds = $this->_parent->getOrderedChildIds();
 		$myPosition = array_search($idString, $siblingIds);
 		print "\n\t\t\t"._('Order: ')." ";
