@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.1 2006/01/24 21:33:40 cws-midd Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.2 2006/01/26 16:55:28 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.1 2006/01/24 21:33:40 cws-midd Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.2 2006/01/26 16:55:28 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -175,7 +175,7 @@ class SeguePluginsAjaxPlugin
 									
 									var pluginTitleElement = getElementFromDocument('plugin-title:' + pluginId);
 									pluginTitleElement.innerHTML = title;
-									pluginElement.innerHTML = markup;
+									pluginElement.innerHTML = markup.replace(/}}>/g, ']]>');
 								} else {
 									alert("There was a problem retrieving the XML data:\\n" +
 										req.statusText);
