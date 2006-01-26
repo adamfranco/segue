@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.1 2006/01/24 22:04:55 adamfranco Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.2 2006/01/26 19:21:13 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.1 2006/01/24 22:04:55 adamfranco Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.2 2006/01/26 19:21:13 cws-midd Exp $
  */
 class SegueAssignmentPlugin
 	extends SeguePluginsAjaxPlugin
@@ -48,8 +48,12 @@ class SegueAssignmentPlugin
  	 */
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) {
-			$this->updateDataArray();
-			$this->updateDataRecords();
+			$title =& HtmlString::withValue($this->getFieldValue('title'));
+ 			$title->clean();
+ 			$this->setTitle($title->asString());
+
+  			$this->updateDataArray();
+  			$this->updateDataRecords();
  		}
  	}
 
@@ -57,21 +61,20 @@ class SegueAssignmentPlugin
 	// @todo update the assignment array
 
 		// for each response array
-		foreach ($this->data['SegueResponse'] as $i => $response) {
+		$response =& $this->data['SegueResponse'][0];
 
 			// check all of the reading 
 			foreach ($response['SegueResponseReading'] as $j => $read) {
-				$this->data['SegueResponse'][$i]['SegueResponseReading'][$j] = 
-					(($this->getFieldValue('reading-'.$i.'_'.$j) == 
+				$this->data['SegueResponse'][0]['SegueResponseReading'][$j] = 
+					(($this->getFieldValue('reading-'.$j) == 
 					"on")?"true":"0");
 			}
 
 			// check all of the questions
 			foreach ($response['SegueResponseAnswer'] as $j => $quest) {
-				$this->data['SegueResponse'][$i]['SegueResponseAnswer'][$j] =
-					$this->getFieldValue('quest-'.$i.'_'.$j);
+				$this->data['SegueResponse'][0]['SegueResponseAnswer'][$j] =
+					$this->getFieldValue('quest-'.$j);
 			}
-		}
 	}
  	
  	/**
@@ -86,17 +89,20 @@ class SegueAssignmentPlugin
  	 */
  	function getMarkup () {
 	// @todo add student field to response array...
-//  		$data = $this->getDataRecords();
  		ob_start();
 
- 		// if the user wants to change the plugin
+		//if the user wants to change the plugin
  		if ($this->getFieldValue('edit') && $this->canModify()) {
 			print "\n".$this->formStartTagWithAction();
  			
-			// print each assignment and editable responses
-			foreach ($this->data['SegueAssignment'] as $i => $assignment) {
-				print "\n<div><h2>Assignment ".$i."</h2>";
-				
+			// if there is an assignment print it
+			if (isset($this->data['SegueAssignment'])) {
+				$assignment =& $this->data['SegueAssignment'][0];
+			
+	 			print "\n\t<input type='text' name='"
+		 			.$this->getFieldName('title')."' value='".$this->getTitle()
+ 					."' size='50'/>";
+
 				// are there reading assignments if so put a header
 				if (isset($assignment['SegueAssignmentReading'][0]))
 					print "\n<h3>Reading:</h3>";
@@ -104,8 +110,8 @@ class SegueAssignmentPlugin
 				// write each reading selection and a checkbox for status
 				foreach ($assignment['SegueAssignmentReading'] as $j => $read) {
 					print "\n<input type='checkbox'
-						name='".$this->getFieldName('reading-'.$i.'_'.$j)."'";
-					if ($this->data['SegueResponse'][$i]['SegueResponseReading'][$j] == "true")
+						name='".$this->getFieldName('reading-'.$j)."'";
+					if (isset($this->data['SegueResponse']) && ($this->data['SegueResponse'][0]['SegueResponseReading'][$j] == "true"))
 						print " checked='true'";
 					print "/>".$read."<br/>";
 				}
@@ -118,19 +124,18 @@ class SegueAssignmentPlugin
 				foreach ($assignment['SegueAssignmentQuestion'] as $j => $quest) {
 					print "\n".$quest."<br/>";
 					print "\n Answer: </br>";
-					print "\n<textarea name='".$this->getFieldName('quest-'.$i.'_'.$j)
+					print "\n<textarea name='".$this->getFieldName('quest-'.$j)
 						."' rows='5' cols='50'";
 					if (isset(
-				$this->data['SegueResponse'][$i]['SegueResponseAnswer'][$j])) {
+				$this->data['SegueResponse'][0]['SegueResponseAnswer'][$j])) {
 						print ">"
-					.$this->data['SegueResponse'][$i]['SegueResponseAnswer'][$j]
+					.$this->data['SegueResponse'][0]['SegueResponseAnswer'][$j]
 					."</textarea><br/>";
 					} else 
-						print "/><br/>";
+						print '></textarea><br/>';
 				}
-				print "\n</div>";
 			}
-			
+			// print the submit and cancel buttons
  			print "\n\t<br/>";
  			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
  			
@@ -139,9 +144,9 @@ class SegueAssignmentPlugin
 			print "\n</form>";
  		} else if ($this->canView()) {
 
-			// print each reading selection and it's current state for the user
-			foreach ($this->data['SegueAssignment'] as $i => $assignment) {
-				print "\n<div><h2>Assignment ".$i."</h2>";
+			// if there is an assignment print it
+			if (isset($this->data['SegueAssignment'][0])) {
+				$assignment =& $this->data['SegueAssignment'][0];
 
 				// are there reading assignments if so put a header
 				if (isset($assignment['SegueAssignmentReading'][0]))
@@ -149,13 +154,11 @@ class SegueAssignmentPlugin
 					
 				// write each reading assignment with its status
 				foreach ($assignment['SegueAssignmentReading'] as $j => $read) {
-					print "\n".$this->formStartTagWithAction();
 					print "\n <input type='checkbox' ";
-					if ($this->data['SegueResponse'][$i]['SegueResponseReading'][$j] == "true")
+					if (isset($this->data['SegueResponse']) && ($this->data['SegueResponse'][0]['SegueResponseReading'][$j] == "true"))
 						print " checked='true'";
 					print "disabled='true'/>";
 					print "\n".$read;
-					print "\n</form>";
 				}
 				
 				// are there questions if so put a header
@@ -165,13 +168,12 @@ class SegueAssignmentPlugin
 				// write each question and the current answer
 				foreach ($assignment['SegueAssignmentQuestion'] as $j => $quest) {
 					print "\n".$quest."<br/>";
-					if (isset($this->data['SegueResponse'][$i]['SegueResponseAnswer'][$j])) {
+					if (isset($this->data['SegueResponse'][0]['SegueResponseAnswer'][$j])) {
 						print "\n Answer: </br>";
-						print "\n".$this->data['SegueResponse'][$i]['SegueResponseAnswer'][$j]."<br/>";
+						print "\n".$this->data['SegueResponse'][0]['SegueResponseAnswer'][$j]."<br/>";
 					}
 				}
-				print "\n</div>";
-			}
+ 			}
 			
 			// the edit link only if they can edit
 	 		if ($this->canModify()) {
