@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.3 2006/01/26 18:51:41 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.4 2006/01/26 18:52:12 adamfranco Exp $
  */ 
+
+require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 
 /**
  * Abstract class that all Plugins must extend
@@ -18,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.3 2006/01/26 18:51:41 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.4 2006/01/26 18:52:12 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
