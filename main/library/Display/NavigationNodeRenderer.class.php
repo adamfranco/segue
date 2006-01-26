@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.13 2006/01/25 20:32:57 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.14 2006/01/26 21:15:18 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.13 2006/01/25 20:32:57 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.14 2006/01/26 21:15:18 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -56,6 +56,28 @@ class NavigationNodeRenderer
  *********************************************************/
 	
 	/**
+	 * Add first children to the active nodes array
+	 * 
+	 * @param object Asset $asset
+	 * @return boolean true if this node is a navigation node.
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function traverseActiveDown () {
+		$this->setActive();		
+		
+		// Traverse down just the first children
+		$orderedChildren =& $this->getOrderedChildren();
+		$childNavFound = false;
+		foreach (array_keys($orderedChildren) as $key) {
+			$childNavFound = $orderedChildren[$key]->traverseActiveDown();
+			if ($childNavFound)
+				break;
+		}
+		return true;
+	}
+	
+	/**
 	 * Answer the GUI component for the navegational item.
 	 * 
 	 * @param integer $level The Navigational level to use, 1=big, >1=smaller
@@ -73,7 +95,7 @@ class NavigationNodeRenderer
 		$component =& new MenuItemLinkWithAdditionalHtml(
 						$this->_asset->getDisplayName(), 
 						$this->getMyUrl(), 
-						$this->_active,
+						$this->isActive(),
 						$level,
 						null,
 						null,
@@ -91,7 +113,7 @@ class NavigationNodeRenderer
 	 * @access public
 	 * @since 1/19/06
 	 */
-	function &renderTargetComponent ($level = 1) {		
+	function &renderTargetComponent ($level = 1) {	
 		// In single-cell arrangement, each child will be given its own
 		// target with which it can subdivide if necessary for any of its
 		// children.

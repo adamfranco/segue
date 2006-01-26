@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.16 2006/01/26 14:49:31 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.17 2006/01/26 21:15:18 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.16 2006/01/26 14:49:31 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.17 2006/01/26 21:15:18 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -85,11 +85,8 @@ class NodeRenderer {
 			
 			if (!isset($GLOBALS['node_renderers']))
 				$GLOBALS['node_renderers'] = array();
-				
+			
 			$GLOBALS['node_renderers'][$id->getIdString()] =& $renderer;
-			
-			
-			NodeRenderer::getActiveNodes();
 		}
 		
 		return $GLOBALS['node_renderers'][$id->getIdString()];
@@ -106,26 +103,18 @@ class NodeRenderer {
 	 * @access public
 	 * @since 1/19/06
 	 */
-	function getActiveNodes () {
+	function getActiveNodes () {		
 		if (!isset($GLOBALS['active_traversed'])) {
+			$GLOBALS['active_traversed'] = true;
 			$idManager =& Services::getService("Id");
 			$repositoryManager =& Services::getService("Repository");
 			$repository =& $repositoryManager->getRepository(
-			$idManager->getId("edu.middlebury.segue.sites_repository"));
+			$idManager->getId("edu.middlebury.segue.sites_repository"));			
 			
-			
-			if (isset($_REQUEST['node']) && $_REQUEST['node']) {
-				$asset =& $repository->getAsset($idManager->getId($_REQUEST['node']));
-				$renderer =& NodeRenderer::forAsset($asset, $null = null);
-				$renderer->traverseActiveUp();
-				$renderer->traverseActiveDown();
-			} else {
-				$asset =& $repository->getAsset($idManager->getId($_REQUEST['site_id']));
-				$renderer =& NodeRenderer::forAsset($asset, $null = null);
-				$renderer->traverseActiveDown();
-			}
-			
-			$GLOBALS['active_traversed'] = true;
+			$asset =& $repository->getAsset($idManager->getId($_REQUEST['node']));
+			$renderer =& NodeRenderer::forAsset($asset, $null = null);
+			$renderer->traverseActiveUp();
+			$renderer->traverseActiveDown();
 		}
 	}
 	
@@ -171,11 +160,7 @@ class NodeRenderer {
 	function &getRendererForChildAsset ( &$asset ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
 		
-		$id =& $asset->getId();
-		if (!isset($this->_childRenderers[$id->getIdString()]))
-			$this->_childRenderers[$id->getIdString()] =& NodeRenderer::forAsset($asset, $this);
-		
-		return $this->_childRenderers[$id->getIdString()];
+		return NodeRenderer::forAsset($asset, $this);
 	}
 	
 	/**
@@ -187,14 +172,7 @@ class NodeRenderer {
 	 * @since 1/19/06
 	 */
 	function traverseActiveUp () {
-		$type =& $this->_asset->getAssetType();
-		$siteType =&  new Type('site_components', 
-								'edu.middlebury.segue', 
-								'site');
 		$this->setActive();
-		
-		if ($type->isEqual($siteType))
-			return;
 		
 		$parents =& $this->_asset->getParents();
 		while ($parents->hasNext()) {
@@ -212,28 +190,7 @@ class NodeRenderer {
 	 * @since 1/19/06
 	 */
 	function traverseActiveDown () {
-		$type =& $this->_asset->getAssetType();
-		$navType =&  new Type('site_components', 
-								'edu.middlebury.segue', 
-								'navigation');
-		$siteType =&  new Type('site_components', 
-								'edu.middlebury.segue', 
-								'site');
-								
-		if (!$type->isEqual($navType) && !$type->isEqual($siteType))
-			return false;
-			
-		$this->setActive();		
-		
-		// Traverse down just the first children
-		$orderedChildren =& $this->getOrderedChildren();
-		$childNavFound = false;
-		foreach (array_keys($orderedChildren) as $key) {
-			$childNavFound = $orderedChildren[$key]->traverseActiveDown();
-			if ($childNavFound)
-				break;
-		}
-		return true;
+		return false;
 	}
 	
 	/**
@@ -256,6 +213,7 @@ class NodeRenderer {
 	 * @since 1/19/06
 	 */
 	function isActive () {
+		NodeRenderer::getActiveNodes();
 		return $this->_active;
 	}
 	
@@ -317,8 +275,42 @@ class NodeRenderer {
 		$id =& $this->_asset->getId();
 		$harmoni =& Harmoni::instance();
 		return $harmoni->request->quickURL('site', 'view', 
-					array(	'site_id' => RequestContext::value('site_id'),
-							'node' => $id->getIdString()));
+					array('node' => $id->getIdString()));
+	}
+	
+	/**
+	 * Answer the GUI component for the contents of the site that this node
+	 * is in.
+	 * 
+	 * @return object Component
+	 * @access public
+	 * @since 1/26/06
+	 */
+	function &renderSite () {
+		return $this->_parent->renderSite();
+	}
+	
+	/**
+	 * Answer the site title is in.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/26/06
+	 */
+	function getSiteTitle () {
+		return $this->_parent->getSiteTitle();
+	}
+	
+	/**
+	 * Answer the top-level NodeRenderer
+	 * 
+	 * @return object NodeRenderer
+	 * @access public
+	 * @since 1/26/06
+	 */
+	function &getSiteRenderer () {
+		$siteRenderer =& $this->_parent->getSiteRenderer();
+		return $siteRenderer;
 	}
 	
 	/**
@@ -453,8 +445,7 @@ class NodeRenderer {
 		 * Other links
 		 *********************************************************/
 		$links[_('settings')] = $harmoni->request->quickURL('site', 'edit', 
-								array('site_id' => RequestContext::value('site_id'),
-									'node' => $id->getIdString()));
+								array('node' => $id->getIdString()));
 		array_walk($links, 
 			create_function('&$url,$name', '$url = "<a href=\'$url\'>$name</a>";'));
 		

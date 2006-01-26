@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.1 2006/01/18 22:52:38 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.2 2006/01/26 21:15:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.1 2006/01/18 22:52:38 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.2 2006/01/26 21:15:19 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -121,7 +121,7 @@ function printSiteShort(& $asset, &$harmoni, $num) {
 	
 	ob_start();
 	$assetId =& $asset->getId();
-	print "\n\t<a href='".$harmoni->request->quickURL('site', 'view', array('site_id' => $assetId->getIdString()))."'>";
+	print "\n\t<a href='".$harmoni->request->quickURL('site', 'view', array('node' => $assetId->getIdString()))."'>";
 	print "\n\t<strong>".htmlspecialchars($asset->getDisplayName())."</strong>";
 	print "\n\t</a>";
 	print "\n\t<br/>"._("ID#").": ".$assetId->getIdString();

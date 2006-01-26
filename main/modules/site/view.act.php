@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.5 2006/01/24 17:59:51 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.6 2006/01/26 21:15:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.5 2006/01/24 17:59:51 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.6 2006/01/26 21:15:19 adamfranco Exp $
  */
 class viewAction 
 	extends Action
@@ -53,9 +53,10 @@ class viewAction
 		$repository =& $repositoryManager->getRepository(
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
 			
-		$assetIdString = RequestContext::value('site_id');
+		$assetIdString = RequestContext::value('node');
 		$assetId =& $idManager->getId($assetIdString);
 		$asset =& $repository->getAsset($assetId);
+		$nodeRenderer =& NodeRenderer::forAsset($asset, $null = null);
 		
 		
 		$harmoni =& Harmoni::instance();
@@ -63,7 +64,7 @@ class viewAction
 		$head = $outputHandler->getHead();
 		if (preg_match('/<title>.*<\/title>/', $head))
 			$head = preg_replace('/<title>.*<\/title>/', 
-				'<title>'.$asset->getDisplayName().'</title>', $head);
+				'<title>'.$nodeRenderer->getSiteTitle().'</title>', $head);
 		else
 			$head .= "<title>".$asset->getDisplayName()."</title>";
 		$outputHandler->setHead($head);
@@ -80,15 +81,14 @@ class viewAction
 			new Container($xLayout, HEADER, 1), 
 			"100%", null, CENTER, TOP);
 		
-		$headRow->add(new UnstyledBlock("<h1>".$asset->getDisplayName()."</h1>"), 
+		$headRow->add(new UnstyledBlock("<h1>".$nodeRenderer->getSiteTitle()."</h1>"), 
 			null, null, LEFT, TOP);
 			
 		
 		
 		// Add the rendered site.
-		$siteRenderer =& NodeRenderer::forAsset($asset, $null = null);
 		$mainScreen->add(
-			$siteRenderer->renderTargetComponent(),
+			$nodeRenderer->renderSite(),
 			"100%", null, CENTER, TOP);
 		
 		

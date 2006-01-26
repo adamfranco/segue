@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.4 2006/01/26 18:52:13 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.5 2006/01/26 21:15:19 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.4 2006/01/26 18:52:13 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.5 2006/01/26 21:15:19 adamfranco Exp $
  */
 class SegueTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -74,7 +74,7 @@ class SegueTextBlockPlugin
  			print "\n\t<input type='text' name='".$this->getFieldName('title')."' value='".$this->getTitle()."' size='50'/>";
  			
  			print "\n\t<br/>";
- 			print "\n\t<textarea name='".$this->getFieldName('content')."' rows='5' cols='50'>".$this->getContent()."</textarea>";
+ 			print "\n\t<textarea name='".$this->getFieldName('content')."' rows='10' cols='50'>".$this->getContent()."</textarea>";
  			
  			print "\n\t<br/>";
  			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
