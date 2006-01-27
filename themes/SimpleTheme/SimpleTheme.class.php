@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/DisplaySP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleTheme.class.php,v 1.1 2006/01/13 18:55:23 adamfranco Exp $
+ * @version $Id: SimpleTheme.class.php,v 1.2 2006/01/27 22:15:13 adamfranco Exp $
  */
 class SimpleTheme extends Theme {
 
@@ -280,6 +280,56 @@ class SimpleTheme extends Theme {
 		$menuLink1_selected->addSP(new PaddingSP("5px"));
 		$menuLink1_selected->addSP(new MarginLeftSP("10px"));
 		$this->addStyleForComponentType($menuLink1_selected, MENU_ITEM_LINK_SELECTED, 2);
+		
+		
+		// =====================================================================
+		// Menu Unselected Link 3 style
+		$menuLink1_unselected =& new StyleCollection("*.menuLink3_unselected a", "menuLink3_unselected", "Unselected Menu Link ", "A 3rd level unselected menu link.");
+		$menuLink1_unselected->addSP(new DisplaySP("block"));
+		$menuLink1_unselected->addSP(new BackgroundColorSP("#FD9453"));
+		$menuLink1_unselected->addSP(new ColorSP("#FFF"));
+		$menuLink1_unselected->addSP(new PaddingSP("5px"));
+		$menuLink1_unselected->addSP(new MarginLeftSP("20px"));
+		$this->addStyleForComponentType($menuLink1_unselected, MENU_ITEM_LINK_UNSELECTED, 3);
+		
+		$menuLink1_hover =& new StyleCollection("*.menuLink3_hover a:hover", "menuLink3_hover", "Menu Link 3 Hover", "A 3nd level menu link hover behavior.");
+		$menuLink1_hover->addSP(new BackgroundColorSP("#C77441"));
+		$this->addStyleForComponentType($menuLink1_hover, MENU_ITEM_LINK_UNSELECTED, 3);
+		
+		// =====================================================================
+		// Menu Selected Link 3 style
+		$menuLink1_selected =& new StyleCollection("*.menuLink3_selected a", "menuLink3_selected", "Selected Menu Link 3", "A 3rd level selected menu link.");
+		$menuLink1_selected->addSP(new DisplaySP("block"));
+		$menuLink1_selected->addSP(new BackgroundColorSP("#C77441"));
+		$menuLink1_selected->addSP(new ColorSP("#FFF"));
+		$menuLink1_selected->addSP(new PaddingSP("5px"));
+		$menuLink1_selected->addSP(new MarginLeftSP("20px"));
+		$this->addStyleForComponentType($menuLink1_selected, MENU_ITEM_LINK_SELECTED, 3);
+		
+		
+		// =====================================================================
+		// Menu Unselected Link 4 style
+		$menuLink1_unselected =& new StyleCollection("*.menuLink4_unselected a", "menuLink4_unselected", "Unselected Menu Link ", "A 4th level unselected menu link.");
+		$menuLink1_unselected->addSP(new DisplaySP("block"));
+		$menuLink1_unselected->addSP(new BackgroundColorSP("#FD9454"));
+		$menuLink1_unselected->addSP(new ColorSP("#FFF"));
+		$menuLink1_unselected->addSP(new PaddingSP("5px"));
+		$menuLink1_unselected->addSP(new MarginLeftSP("30px"));
+		$this->addStyleForComponentType($menuLink1_unselected, MENU_ITEM_LINK_UNSELECTED, 4);
+		
+		$menuLink1_hover =& new StyleCollection("*.menuLink4_hover a:hover", "menuLink4_hover", "Menu Link 4 Hover", "A 4nd level menu link hover behavior.");
+		$menuLink1_hover->addSP(new BackgroundColorSP("#C77441"));
+		$this->addStyleForComponentType($menuLink1_hover, MENU_ITEM_LINK_UNSELECTED, 4);
+		
+		// =====================================================================
+		// Menu Selected Link 4 style
+		$menuLink1_selected =& new StyleCollection("*.menuLink4_selected a", "menuLink4_selected", "Selected Menu Link 4", "A 4nd level selected menu link.");
+		$menuLink1_selected->addSP(new DisplaySP("block"));
+		$menuLink1_selected->addSP(new BackgroundColorSP("#C77441"));
+		$menuLink1_selected->addSP(new ColorSP("#FFF"));
+		$menuLink1_selected->addSP(new PaddingSP("5px"));
+		$menuLink1_selected->addSP(new MarginLeftSP("30px"));
+		$this->addStyleForComponentType($menuLink1_selected, MENU_ITEM_LINK_SELECTED, 4);
 	}
 
 

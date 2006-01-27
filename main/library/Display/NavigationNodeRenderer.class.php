@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.14 2006/01/26 21:15:18 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.15 2006/01/27 22:15:12 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.14 2006/01/26 21:15:18 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.15 2006/01/27 22:15:12 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -101,8 +101,23 @@ class NavigationNodeRenderer
 						null,
 						null,
 						$this->getSettingsForm($links));
-						
-		return $component;
+		
+		
+		if ($this->getLayoutArrangement() != 'nested' || !$this->isActive()) {
+			return $component;
+		} else {
+			$allComponents = array();
+			$allComponents[] =& $component;
+			
+			$children =& $this->getOrderedChildren();
+			for ($i = 0; $i < count($children); $i++) {
+				$childRenderer =& $children[$i];
+				if($this->getDestinationCell($childRenderer->getId()) == 1)
+					$allComponents[] =& $childRenderer->renderNavComponent($level + 1);
+			}
+			
+			return $allComponents;
+		}
 	}
 	
 	/**
@@ -176,6 +191,7 @@ class NavigationNodeRenderer
 	function &renderMultiCellTarget ($level = 1) {
 		$numCells = $this->getNumCells();
 		$targetOverride = $this->getTargetOverride();
+		$layoutArrangement = $this->getLayoutArrangement();
 		if (!$targetOverride || $targetOverride > $numCells)
 			throwError(new Error("$targetOverride overflows number of cells, $numCells.", __FILE__, TRUE));		
 		$xLayout =& new XLayout();
@@ -183,15 +199,15 @@ class NavigationNodeRenderer
 		$children =& $this->getOrderedChildren();
 	
 		// Make our container
-		if ($this->getLayoutArrangement() == 'columns') {
-			$layout =& $xLayout;
-			$cellLayout =& $yLayout;
-			$cellWidth = '250px';
-			$cellHeight = NULL;
-		} else {
+		if ($layoutArrangement == 'rows') {
 			$layout =& $yLayout;
 			$cellLayout =& $xLayout;
 			$cellWidth = NULL;
+			$cellHeight = NULL;
+		} else {
+			$layout =& $xLayout;
+			$cellLayout =& $yLayout;
+			$cellWidth = '250px';
 			$cellHeight = NULL;
 		}
 		$container =& new Container($layout, BLANK, 1);
@@ -206,6 +222,8 @@ class NavigationNodeRenderer
 				$targetCell =& $container->add(
 							new Container($yLayout, BLANK, 1), 
 							NULL, $cellHeight, LEFT, TOP);
+			} else if ($layoutArrangement == 'nested' && $overallCellNumber == 1) {
+				$cellIndex++;
 			} else {
 				$cells[$cellIndex] =& $container->add(
 							new Menu($cellLayout, $level), 
@@ -213,8 +231,7 @@ class NavigationNodeRenderer
 				$cellIndex++;
 			}
 			$overallCellNumber++;
-		}
-		
+		}		
 		
 		// Add our children to our cells
 		if (!count($children)) {
@@ -235,9 +252,12 @@ class NavigationNodeRenderer
 				$childRenderer =& $children[$i];
 				$childCell = $this->getDestinationCell($childRenderer->getId());
 				$cellsWithContent[] = $childCell;
-				$cells[$childCell]->add(
-					$childRenderer->renderNavComponent(),
-					null, null, LEFT, TOP);
+				
+				if (!($layoutArrangement == 'nested' && $childCell == 1)) {
+					$this->addChildNavToCell(
+						$childRenderer->renderNavComponent(), 
+						$cells[$childCell]);
+				}
 				
 				if ($childRenderer->isActive()) {
 					$targetCell->add(
@@ -257,6 +277,29 @@ class NavigationNodeRenderer
 		}
 		
 		return $container;
+	}
+	
+	/**
+	 * Add child Nav components to a cell
+	 * 
+	 * @param mixed $itemOrArray array OR object Component
+	 * @param object Component $cell
+	 * @return void
+	 * @access public
+	 * @since 1/27/06
+	 */
+	function addChildNavToCell ( &$itemOrArray, &$cell ) {
+		// If the child is nested add all rendered elements
+			if (is_array($itemOrArray)) {
+				for ($i = 0; $i < count($itemOrArray); $i++)
+				$this->addChildNavToCell($itemOrArray[$i], $cell);
+			}
+			// Otherwise just add the component
+			else {
+				$cell->add(
+					$itemOrArray,
+					null, null, LEFT, TOP);
+			}
 	}
 	
 	/**
