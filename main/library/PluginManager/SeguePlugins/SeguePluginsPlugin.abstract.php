@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.6 2006/01/27 22:28:08 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.7 2006/01/27 22:34:05 cws-midd Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.6 2006/01/27 22:28:08 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.7 2006/01/27 22:34:05 cws-midd Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -145,11 +145,15 @@ class SeguePluginsPlugin {
 	 * this method.
 	 * 
 	 * @param array $parameters Associative array ('name' => 'value')
+	 * @param string $method post OR get
+	 * @param boolean $isMultipart
 	 * @return string
 	 * @access public
 	 * @since 1/16/06
 	 */
-	function formStartTagWithAction ( $parameters = array(), $isMultipart = false ) {		
+	function formStartTagWithAction ( $parameters = array(), $method = 'post', 
+		$isMultipart = false ) 
+	{
 		// If this is a multipart form, we must do a normal 'submit'
 		// that includes a page refresh.
 		if ($isMultipart) {
@@ -158,7 +162,11 @@ class SeguePluginsPlugin {
 		// If the form is not a multipart form with file uploads, then we
 		// don't ned the enctype parameter.
 		else {
-			return "<form action=".$this->url($parameters)." method='post'>";
+			if (strtolower($method) == 'get')
+				$method = 'get';
+			else
+				$method = 'post';
+			return "<form action=".$this->url($parameters)." method='".$method."'>";
 		}
 	}
 	
