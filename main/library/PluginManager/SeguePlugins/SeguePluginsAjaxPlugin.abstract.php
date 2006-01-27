@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.3 2006/01/26 19:42:07 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.4 2006/01/27 16:32:33 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.3 2006/01/26 19:42:07 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.4 2006/01/27 16:32:33 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -88,11 +88,15 @@ class SeguePluginsAjaxPlugin
 	 * 		"<form action='".$this->url(array('item' => 123))."' method='post>";
 	 * 
 	 * @param array $parameters Associative array ('name' => 'value')
+	 * @param string $method post OR get
+	 * @param boolean $isMultipart
 	 * @return string
 	 * @access public
 	 * @since 1/16/06
 	 */
-	function formStartTagWithAction ( $parameters = array(), $isMultipart = false ) {		
+	function formStartTagWithAction ( $parameters = array(), $method = 'post', 
+		$isMultipart = false ) 
+	{
 		// If this is a multipart form, we must do a normal 'submit'
 		// that includes a page refresh.
 		if ($isMultipart) {
@@ -101,7 +105,11 @@ class SeguePluginsAjaxPlugin
 		// If the form is not a multipart form with file uploads, then we can
 		// override the submit with an AJAX GET submission instead. (if implemented).
 		else {
-			return "<form onsubmit='submitAjaxPluginForm(\"".$this->getId()."\", this, \"".$this->_ajaxUrl($parameters)."\");' action='Javascript: var nullVal = null;' method='post'>";
+			if (strtolower($method) == 'get')
+				$method = 'get';
+			else
+				$method = 'post';
+			return "<form onsubmit='submitAjaxPluginForm(\"".$this->getId()."\", this, \"".$this->_ajaxUrl($parameters)."\");' action='Javascript: var nullVal = null;' method='".$method."'>";
 		}
 	}
 
@@ -122,19 +130,39 @@ class SeguePluginsAjaxPlugin
 		print<<<END
 		
 		<script type='text/javascript'>
-			/*<![CDATA[*/
+			/* <![CDATA[ */
 			
 			function submitAjaxPluginForm( pluginId, form, destination ) {
-				for (var i = 0; i < form.elements.length; i++) {
-					destination += '&amp;' + escape(form.elements[i].name) + '=' + escape(form.elements[i].value);
-				}
-				var regex = /&amp;/gi;
-				destination = destination.replace(regex, '&');
+				/*********************************************************
+				 * Thanks to 'execute' at http://www.designplanet.biz/tutorials-15.htm
+				 * for info on how to do post forms with AJAX.
+				 *********************************************************/
+				// Ensure that the form is only submitted once
+				if (form.wasSubmitted)
+					return;
 				
-				updateAjaxPlugin(pluginId, destination);
+				// Ensure that we have a non-escaped url
+				destination = destination.replace(/&amp;/gi, '&');
+				
+				// Build a "name1=val1&name2=val2..." string
+				var fields = new Array();
+				for (var i = 0; i < form.elements.length; i++)
+					fields.push(escape(form.elements[i].name) + '=' + escape(form.elements[i].value));
+				var data = fields.join('&');
+				
+				
+				if (form.method.toUpperCase() == 'POST')
+					updateAjaxPlugin(pluginId, destination, 'POST', data);
+				else
+					updateAjaxPlugin(pluginId, destination + '&' + data, 'GET', null);
 			}
 			
-			function updateAjaxPlugin( pluginId, destination ) {
+			function updateAjaxPlugin( pluginId, destination, method, data ) {
+				if (method == null) {
+					method = 'GET';
+					data = null;
+				}
+				
 				// branch for native XMLHttpRequest object (Mozilla, Safari, etc)
 				if (window.XMLHttpRequest)
 					var req = new XMLHttpRequest();
@@ -197,7 +225,7 @@ class SeguePluginsAjaxPlugin
 									// Place the new values in the page
 									var pluginTitleElement = getElementFromDocument('plugin-title:' + pluginId);
 									pluginTitleElement.innerHTML = title;
-									pluginElement.innerHTML = markup.replace(/}}>/g, ']]>');
+									pluginElement.innerHTML = markup.replace(/}}>/g, ']'+']'+'>');
 								} else {
 									alert("There was a problem retrieving the XML data:\\n" +
 										req.statusText);
@@ -206,8 +234,14 @@ class SeguePluginsAjaxPlugin
 						}
 					}
 					
-					req.open("GET", destination, true);
-					req.send(null);
+					if (method.toUpperCase() == 'POST') {
+						req.open("POST", destination, true);
+						req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+						req.send(data);
+					} else {
+						req.open("GET", destination, true);
+						req.send(null);
+					}
 				}
 			}
 			
@@ -230,7 +264,7 @@ class SeguePluginsAjaxPlugin
 				}			
 			}
 			
-			/*]]>*/
+			/* ]]> */
 		</script>
 
 END;
