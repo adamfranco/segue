@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.2 2006/01/26 19:21:13 cws-midd Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.3 2006/01/27 22:28:08 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.2 2006/01/26 19:21:13 cws-midd Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.3 2006/01/27 22:28:08 cws-midd Exp $
  */
 class SegueAssignmentPlugin
 	extends SeguePluginsAjaxPlugin
@@ -88,7 +88,8 @@ class SegueAssignmentPlugin
  	 * @since 1/12/06
  	 */
  	function getMarkup () {
-	// @todo add student field to response array...
+	// @todo add student field to response array for multiple responses
+	// 
  		ob_start();
 
 		//if the user wants to change the plugin

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.5 2006/01/27 16:32:33 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.6 2006/01/27 22:28:08 cws-midd Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.5 2006/01/27 16:32:33 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.6 2006/01/27 22:28:08 cws-midd Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -145,15 +145,11 @@ class SeguePluginsPlugin {
 	 * this method.
 	 * 
 	 * @param array $parameters Associative array ('name' => 'value')
-	 * @param string $method post OR get
-	 * @param boolean $isMultipart
 	 * @return string
 	 * @access public
 	 * @since 1/16/06
 	 */
-	function formStartTagWithAction ( $parameters = array(), $method = 'post', 
-		$isMultipart = false ) 
-	{
+	function formStartTagWithAction ( $parameters = array(), $isMultipart = false ) {		
 		// If this is a multipart form, we must do a normal 'submit'
 		// that includes a page refresh.
 		if ($isMultipart) {
@@ -162,11 +158,7 @@ class SeguePluginsPlugin {
 		// If the form is not a multipart form with file uploads, then we
 		// don't ned the enctype parameter.
 		else {
-			if (strtolower($method) == 'get')
-				$method = 'get';
-			else
-				$method = 'post';
-			return "<form action=".$this->url($parameters)." method='".$method."'>";
+			return "<form action=".$this->url($parameters)." method='post'>";
 		}
 	}
 	
@@ -263,15 +255,17 @@ class SeguePluginsPlugin {
 	 * level 4: array of instances of the field, each index (0,1,...) maps to
 	 * the actual value for its instance of this field in this record
 	 * Example: to get a value you will need to access the data array with 4
-	 * indices; $pluginData['recordName'][0]['fieldName'][3] would return the 
+	 * indices; $myDataArray['recordName'][0]['fieldName'][3] would return the 
 	 * fourth instance of 'fieldName' in the first instance of 'recordName'
+	 * NOTE: Files are accessible through $myDataArray['FILE'][?] where the
+	 * field names are: FILE_NAME DIMENSIONS FILE_SIZE MIME_TYPE 
 	 * NOTE: you can also just access this data array through $this->data
 	 *
 	 * @return array this is the data array for your plugin
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getDataRecords () {
+	function &getDataRecords () {
 		return $this->data;
 	}
 
@@ -411,6 +405,47 @@ class SeguePluginsPlugin {
 		$path .= $type->getKeyword()."/";
 
 		return $path;
+	}
+
+	/**
+	 * Answer the URL for the file 
+	 * 
+	 * @param string $idString of the 'associated file'
+	 * @return string
+	 * @access public
+	 * @since 1/26/06
+	 */
+	function getFileURL ($idString) {
+		$harmoni =& Harmoni::Instance();
+		$idManager =& Services::getService("Id");
+		$repositoryId =& $idManager->getId(
+			"edu.middlebury.segue.sites_repository");
+		$assetId =& $this->_asset->getId();
+		
+		
+		return $harmoni->request->quickURL("repository", "viewfile", 
+			array(
+			"repository_id" => $repositoryId->getIdString(),
+			"asset_id" => $assetId->getIdString(),
+			"record_id" => $id->getIdString()));
+	}
+
+	/**
+	 * Answer the file data for the file
+	 * 
+	 * @param string $idString of the 'associated file'
+	 * @return blob
+	 * @access public
+	 * @since 1/26/06
+	 */
+	function getFileData ($idString) {
+		// @todo return the filedata.
+		$idManager =& Services::getService("Id");
+		$id =& $idManager->getId($idString);
+		$fileRS =& $this->_asset->getRecord($id);
+		$data_id =& $idManager->getId("FILE_DATA");
+
+		return $fileRS->getPart($data_id);
 	}
 
 /*********************************************************
@@ -585,6 +620,7 @@ class SeguePluginsPlugin {
 	/**
 	 * Load our data from our Asset
 	 * 
+	 * NOTE: Part Id's are used to maintain order in the part array
 	 * @return void
 	 * @access private
 	 * @since 1/12/06
@@ -596,7 +632,6 @@ class SeguePluginsPlugin {
 			unset($this->data, $this->_data_ids);
 		$this->data = array();
 		$this->_data_ids = array();
-		
 		// get all the records for this asset
 		$records =& $this->_asset->getRecords();
 		while ($records->hasNext()) {
@@ -604,46 +639,47 @@ class SeguePluginsPlugin {
 			
 			// for each new recordstructure add an array for holding instances
 			$recordStructure =& $record->getRecordStructure();
-			$rsName = $recordStructure->getDisplayName();
-			if (!in_array($rsName, array_keys($this->data))) {
-				$this->data[$rsName] = array();
-				$this->_data_ids[$rsName] = array();
-			}
-			
-			// each instance itself should be acessible via index (1,2,3...)
-			$this->data[$rsName][] = array();
-			$this->_data_ids[$rsName][] = array();
-			$instance = count($this->data[$rsName]) - 1; // current instance
-
-			// each instance populates its parts like the records
-			$parts =& $record->getParts();
-			while ($parts->hasNext()) {
-				$part =& $parts->next();
-
-				// for each new partstructure add an array for holding instances
-				$partStructure =& $part->getPartStructure();
-				$psName = $partStructure->getDisplayName();
-// 				if (($rsName == "FILE") && (($psName == "FILE_DATA") 
-// 						|| ($psName == "THUMBNAIL_DATA"))) {
-// 					// don't touch the data, just the file name (location)
-// 				}
-// 				else
-				if (!in_array($psName, 	
-						array_keys($this->data[$rsName][$instance]))) {
-					$this->data[$rsName][$instance][$psName] = array();
-					$this->_data_ids[$rsName][$instance][$psName] = array();
+			$rsId =& $recordStructure->getId();
+			$rsIdString = $rsId->getIdString();
+			if ($rsIdString != "FILE") {
+				$rsName = $recordStructure->getDisplayName();
+				if (!in_array($rsName, array_keys($this->data))) {
+					$this->data[$rsName] = array();
+					$this->_data_ids[$rsName] = array();
 				}
 				
-				// again with the instances
-				$partValue =& $part->getValue();
-				$id =& $part->getId();
-				$idString = $id->getIdString();
-				$idArray = explode("::", $idString);
-				$this->data[$rsName][$instance][$psName][$idArray[2]] = 
-					$partValue->asString();
-				$this->_data_ids[$rsName][$instance][$psName][$idArray[2]] =&
-					$part->getId();
+				// each instance itself should be acessible via index (1,2,3...)
+				$this->data[$rsName][] = array();
+				$this->_data_ids[$rsName][] = array();
+				$instance = count($this->data[$rsName]) - 1; // current instance
+	
+				// each instance populates its parts like the records
+				$parts =& $record->getParts();
+				while ($parts->hasNext()) {
+					$part =& $parts->next();
+	
+				// for each new partstructure add an array for holding instances
+					$partStructure =& $part->getPartStructure();
+					$psName = $partStructure->getDisplayName();
+					if (!in_array($psName, 	
+							array_keys($this->data[$rsName][$instance]))) {
+						$this->data[$rsName][$instance][$psName] = array();
+						$this->_data_ids[$rsName][$instance][$psName] = array();
+					}
+					
+					// again with the instances
+					$partValue =& $part->getValue();
+					$id =& $part->getId();
+					$idString = $id->getIdString();
+					$idArray = explode("::", $idString);
+					$this->data[$rsName][$instance][$psName][$idArray[2]] = 
+						$partValue->asString();
+					$this->_data_ids[$rsName][$instance][$psName][$idArray[2]]
+						=& $part->getId();
+				}
 			}
+			// this call does all FILE records information
+			$this->_populateFileInfo();
 		}
 		
 		// keep original data for modification check.
@@ -667,12 +703,13 @@ class SeguePluginsPlugin {
 			// go through all recordstructures
 			foreach ($this->data as $rs => $instances) {
 				
-				if (is_array($instances)) {
+				if (is_array($instances) && ($rs != 'FILE')) {
 					// go through each instance of the recordstructure
 					foreach ($instances as $instance => $record) {
 						
 						if (is_array($record)) {
-							// for each array of part values find out which have changed
+
+					// for each array of part values find out which have changed
 							foreach ($record as $ps => $values) {
 								$differences = array_diff_assoc(
 									$values, $this->_loadedData[$rs][$instance][$ps]);
@@ -689,6 +726,10 @@ class SeguePluginsPlugin {
 				}
 			}
 		}
+		if ($this->_fileDataChanged()) {
+			// handle all file data changes
+			$this->_changeFileInfo();
+		}
 		
 		// make them changes
 		if (isset($changes)) {
@@ -703,6 +744,119 @@ class SeguePluginsPlugin {
 	}
 	
 	/**
+	 * Changes the stored file information
+	 *
+	 * All changes to files are done here (even deletion) 
+	 * @return void
+	 * @access private
+	 * @since 1/27/06
+	 */
+	function _changeFileInfo () {
+	// @todo determine the order in which to do the if statements
+		$idManager =& Services::getService("Id");
+		$changes = array();
+		foreach ($this->data['FILE'] as $instance => $file) {
+			$fpids =& $this->_data_ids['FILE'][$instance];
+			$lfile =& $this->_loadedData['FILE'][$instance];
+			$frecord =& $this->_asset->getRecord(
+				$idManager->getId($file['assoc_file_id']));
+		
+			// FILE_NAME can change
+			if ($file['FILE_NAME'][0] != $lfile['FILE_NAME'][0]) {
+				$fpart =& $this->_asset->getPart(
+					$idManager->getId(
+					$fpids['FILE_NAME'][0]));
+				$fpart->updateValueFromString($file['FILE_NAME'][0]);
+			}
+			
+			// FILE_SIZE can't change
+			if ($file['FILE_SIZE'][0] != $lfile['FILE_SIZE'][0])
+				$file['FILE_SIZE'][0] = $lfile['FILE_SIZE'][0];
+			
+			// DIMENSIONS can't change
+			if ($file['DIMENSIONS'][0] != $lfile['DIMENSIONS'][0])
+				$file['DIMENSIONS'][0] = $lfile['DIMENSIONS'][0];
+			
+			// MIME_TYPE can't change
+			if ($file['MIME_TYPE'][0] != $lfile['MIME_TYPE'][0])
+				$file['MIME_TYPE'][0] = $lfile['MIME_TYPE'][0];
+			
+			// assoc_file_id can't change
+			if ($file['assoc_file_id'][0] != $lfile['assoc_file_id'][0])
+				$file['assoc_file_id'][0] = $lfile['assoc_file_id'][0];
+			
+			// new_file_path can change
+			if ($file['new_file_path'][0] != $lfile['new_file_path'][0]) {
+				$fparts =& $this->_asset->getPartsByPartStructure(
+					$idManager->getId('FILE_DATA'));
+				$fpart =& $fparts->next();
+				$fpart->updateValue(
+					file_get_contents($file['new_file_path'][0]));
+			}
+			
+			// delete_file can change
+			if ($file['delete_file'][0] != $lfile['delete_file'][0]) {
+				$this->_asset->deleteRecord($idManager->getId(
+					$file['assoc_file_id']));
+				unset($file, $lfile, $fpids);
+			}
+		}	
+			$this->_populateFileInfo(); // currently doesn't maintain order
+	}
+
+	/**
+	 * Populates the data array with usable file information
+	 *
+	 * Plugins get only minimal access to file information and handling
+	 * @return void
+	 * @access private
+	 * @since 1/27/06
+	 */
+	function _populateFileInfo () {
+		// plugins get specific file information, can request URL or 
+		// data via functions defined above
+		$idManager =& Services::getService("Id");
+		$frecords =& $this->_asset->getRecordsByRecordStructure(
+			$idManager->getId("FILE"));
+		$farray = array("FILE_DATA", "THUMBNAIL_DATA", "THUMBNAIL_MIME_TYPE", 
+			"THUMBNAIL_DIMENSIONS");
+
+		// always reset the data
+		$this->data['FILE'] = array();
+		$this->_data_ids['FILE'] = array();
+
+		while ($frecords->hasNext()) {
+			$frecord =& $frecords->next();
+			
+			$this->data['FILE'][] = array();
+			$this->_data_ids['FILE'][] = array();
+			
+			$instance = count($this->data['FILE']) - 1;
+			$file =& $this->data['FILE'][$instance];
+			$file_ids =& $this->_data_ids['FILE'][$instance];
+
+			$parts =& $frecord->getParts();
+			while ($parts->hasNext()) {
+				$part =& $parts->next();
+				$id =& $part->getId();
+				$ps =& $part->getPartStructure();
+				$psid =& $ps->getId();
+				$psidString = $psid->getIdString();
+				// plugin safe parts
+				if (!in_array($psidString, $farray)) {
+					$partValue =& $part->getValue();
+					$file[$psidString] = $partValue->asString();
+					$file_ids[$psidString] = $id->getIdString();
+				}
+			}
+			$frid =& $frecord->getId();
+			$file['assoc_file_id'] = $frid->getIdString();
+			$file['new_file_path'] = '';
+			$file['delete_file'] = '';
+		}
+	}
+	
+	/**
 	 * Answer true if our data has been modified
 	 * 
 	 * @return boolean
@@ -713,6 +867,22 @@ class SeguePluginsPlugin {
 		// @todo test different implementations of this function
 		$new = serialize($this->data);
 		$old = serialize($this->_loadedData);
+		if ($old == $new)
+			return false;
+		return true;
+	}
+	
+	/**
+	 * Answer true if our data has been modified
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function _fileDataChanged () {
+		// @todo test different implementations of this function
+		$new = serialize($this->data['FILE']);
+		$old = serialize($this->_loadedData['FILE']);
 		if ($old == $new)
 			return false;
 		return true;
