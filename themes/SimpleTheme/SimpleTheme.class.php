@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/DisplaySP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleTheme.class.php,v 1.2 2006/01/27 22:15:13 adamfranco Exp $
+ * @version $Id: SimpleTheme.class.php,v 1.3 2006/01/27 22:35:46 adamfranco Exp $
  */
 class SimpleTheme extends Theme {
 
@@ -290,6 +290,7 @@ class SimpleTheme extends Theme {
 		$menuLink1_unselected->addSP(new ColorSP("#FFF"));
 		$menuLink1_unselected->addSP(new PaddingSP("5px"));
 		$menuLink1_unselected->addSP(new MarginLeftSP("20px"));
+		$menuLink1_unselected->addSP(new FontSizeSP("smaller"));
 		$this->addStyleForComponentType($menuLink1_unselected, MENU_ITEM_LINK_UNSELECTED, 3);
 		
 		$menuLink1_hover =& new StyleCollection("*.menuLink3_hover a:hover", "menuLink3_hover", "Menu Link 3 Hover", "A 3nd level menu link hover behavior.");
@@ -304,6 +305,7 @@ class SimpleTheme extends Theme {
 		$menuLink1_selected->addSP(new ColorSP("#FFF"));
 		$menuLink1_selected->addSP(new PaddingSP("5px"));
 		$menuLink1_selected->addSP(new MarginLeftSP("20px"));
+		$menuLink1_selected->addSP(new FontSizeSP("smaller"));
 		$this->addStyleForComponentType($menuLink1_selected, MENU_ITEM_LINK_SELECTED, 3);
 		
 		
@@ -315,6 +317,7 @@ class SimpleTheme extends Theme {
 		$menuLink1_unselected->addSP(new ColorSP("#FFF"));
 		$menuLink1_unselected->addSP(new PaddingSP("5px"));
 		$menuLink1_unselected->addSP(new MarginLeftSP("30px"));
+		$menuLink1_unselected->addSP(new FontSizeSP("smaller"));
 		$this->addStyleForComponentType($menuLink1_unselected, MENU_ITEM_LINK_UNSELECTED, 4);
 		
 		$menuLink1_hover =& new StyleCollection("*.menuLink4_hover a:hover", "menuLink4_hover", "Menu Link 4 Hover", "A 4nd level menu link hover behavior.");
@@ -329,6 +332,7 @@ class SimpleTheme extends Theme {
 		$menuLink1_selected->addSP(new ColorSP("#FFF"));
 		$menuLink1_selected->addSP(new PaddingSP("5px"));
 		$menuLink1_selected->addSP(new MarginLeftSP("30px"));
+		$menuLink1_selected->addSP(new FontSizeSP("smaller"));
 		$this->addStyleForComponentType($menuLink1_selected, MENU_ITEM_LINK_SELECTED, 4);
 	}
 
