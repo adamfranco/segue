@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.15 2006/01/27 22:15:12 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.16 2006/01/30 16:19:22 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.15 2006/01/27 22:15:12 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.16 2006/01/30 16:19:22 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -313,35 +313,31 @@ class NavigationNodeRenderer
 		if (!isset($this->_orderedChildren)) {
 			if (!isset($this->_childOrder))
 				$this->_loadNavRecord();
-			$orderedChildren = array();
-			$orderedChildIds = array();
+			
+			$this->_orderedChildren = array();
 			$unorderedChildren = array();
-			$unorderedChildIds = array();
+			
 			$children =& $this->_asset->getAssets();
 			while ($children->hasNext()) {
 				$child =& $this->getRendererForChildAsset($children->next());
 				$childId =& $child->getId();
 				
-				$key = array_search($childId->getIdString(), $this->_childOrder);
-				if ($key !== false) {
-					$orderedChildren[$key] =& $child;
-					$orderedChildIds[$key] = $childId->getIdString();
+				$position = $this->_childOrder->getPosition($childId);
+				if ($position !== false) {
+					$this->_orderedChildren[$position] =& $child;
 				} else {
 					$unorderedChildren[] =& $child;
-					$unorderedChildIds[] = $childId->getIdString();
 				}
 			}
-			ksort($orderedChildren);
+			ksort($this->_orderedChildren);
 			for ($i = 0; $i < count($unorderedChildren); $i++) {
-				$orderedChildren[] =& $unorderedChildren[$i];
-				$orderedChildIds[] =& $unorderedChildIds[$i];
+				$this->_orderedChildren[] =& $unorderedChildren[$i];
+				$this->_childOrder->addItem($unorderedChildren[$i]->getId());
 			}
 			
 			if (count($unorderedChildren))
-				$this->_updateChildOrder($orderedChildren);
+				$this->_saveChildOrder();
 				
-			$this->_orderedChildren =& $orderedChildren;
-			$this->_orderedChildIds =& $orderedChildIds;
 		}		
 		return $this->_orderedChildren;
 	}
@@ -353,10 +349,10 @@ class NavigationNodeRenderer
 	 * @access public
 	 * @since 1/23/06
 	 */
-	function getOrderedChildIds () {
-		if (!isset($this->_orderedChildIds))
+	function &getChildOrder () {
+		if (!isset($this->_orderedChildren))
 			$this->getOrderedChildren();
-		return $this->_orderedChildIds;
+		return $this->_childOrder;
 	}
 	
 	/**
@@ -474,7 +470,8 @@ class NavigationNodeRenderer
 		$value =& $part->getValue();
 		$this->_targetOverride = $value->value();
 		
-		
+		$sets =& Services::getService("Sets");
+		$this->_childOrder =& $sets->getTemporarySet($this->getId());
 		$parts =& $navRecord->getPartsByPartStructure(
 			$idManager->getId(
 				'Repository::edu.middlebury.segue.sites_repository'
@@ -482,9 +479,7 @@ class NavigationNodeRenderer
 		if ($parts->hasNext()) {
 			$part =& $parts->next();
 			$value =& $part->getValue();
-			$this->_childOrder = explode("\t", $value->asString());
-		} else {
-			$this->_childOrder = array();
+			$this->_childOrder->initializeWithData($value->asString());
 		}
 		
 		$parts =& $navRecord->getPartsByPartStructure(
@@ -522,14 +517,8 @@ class NavigationNodeRenderer
 	 * @access private
 	 * @since 1/23/06
 	 */
-	function _updateChildOrder ( &$orderedChildren ) {
-		$childIds = array();
-		foreach(array_keys($orderedChildren) as $key) {
-			$child =& $orderedChildren[$key];
-			$childId =& $child->getId();
-			$childIds[] = $childId->getIdString();
-		}
-		$valueObj =& String::withValue(implode("\t", $childIds));
+	function _saveChildOrder () {
+		$valueObj =& String::withValue($this->_childOrder->toDataString());
 		
 		// Get the nav info
 		$idManager =& Services::getService("Id");
