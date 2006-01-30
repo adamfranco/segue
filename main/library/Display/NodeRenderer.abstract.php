@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.19 2006/01/30 16:19:22 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.20 2006/01/30 19:08:09 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.19 2006/01/30 16:19:22 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.20 2006/01/30 19:08:09 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -364,8 +364,7 @@ class NodeRenderer {
 				function goToValueInserted(url, value) {
 					url = url.replace(/&amp;/gi, '&');
 					url = url.replace(/______/gi, escape(value));
-					alert("Value: " + value + "\\nUrl:\\n" + url);
-					//window.location = url;
+					window.location = url;
 				}
 				
 				
@@ -409,7 +408,7 @@ END;
 		foreach (array_keys($parentsChildren) as $key) {
 			$renderer =& $parentsChildren[$key];
 			$assetId =& $renderer->getId();
-			$idString = $assetId->getIdString();
+			$beforeIdString = $assetId->getIdString();
 			
 			if ($assetId->isEqual($this->getId()))
 				$thisNum = $i;
@@ -418,7 +417,7 @@ END;
 			if ($thisNum === $i || $thisNum === $i-1)
 				print " value='' style='background-color: #ddd;'";
 			else
-				print " value='".$idString."'";
+				print " value='".$beforeIdString."'";
 			print ">";
 			if ($thisNum === $i) 
 				print "*";			
@@ -435,7 +434,9 @@ END;
 		// Move 1 next
 		if ($myPosition < ($siblingSet->count() - 1)) {
 			$nextId =& $siblingSet->atPosition($myPosition + 2);
-			if (!$nextId)
+			if ($nextId)
+				$nextId = $nextId->getIdString();
+			else
 				$nextId = 'end';
 			print "\n\t\t\t<a href='";
 			print $harmoni->request->quickURL('site', 'reorder', 
@@ -452,20 +453,26 @@ END;
 		/*********************************************************
 		 * Cell position
 		 *********************************************************/
+		$url = $harmoni->request->quickURL('site', 'change_column', 
+								array('parent_id' => $parentIdString,
+									'node' => $idString,
+									'cell' => '______',
+									'return_node' => RequestContext::value('node')));
 		$layout = $this->_parent->getLayoutArrangement();
-		if ($layout == 'columns')
-			print "\n\t\t\t<br/>Column: &nbsp;";
 		if ($layout == 'rows')
 			print "\n\t\t\t<br/>Row: &nbsp;";
+		else
+			print "\n\t\t\t<br/>Column: &nbsp;";
 			
-		if ($layout == 'columns' || $layout == 'rows') {
+		if ($this->_parent->getNumCells() > 1) {
 			$currentColumn = $this->_parent->getDestinationCell($id);
-			print "\n\t\t\t<select onchange='if (this.value != ".$currentColumn.") {alert(this.value);} else {alert(\""._("Already in this position.")."\");}'>";
-			for ($i = 1; $i <= $this->_parent->getNumCells(); $i++) {
+			print "\n\t\t\t<select onchange='if (this.value == ".$currentColumn.") {alert(\""._("Already in this cell.")."\");} else {goToValueInserted(\"".$url."\", this.value);}'>";
+			for ($i = 1; $i < $this->_parent->getNumCells(); $i++) {
 				print "\n\t\t\t\t<option";
 				if ($currentColumn == $i)
-					print " style='background-color: #ddd;'";
-				print " value='".$i."'>".$i."</option>";
+					print " style='background-color: #ddd;' selected='selected'";
+				print " value='".$i."'";
+				print ">".$i."</option>";
 			}
 			print "\n\t\t\t</select>";
 		}

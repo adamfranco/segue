@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/DisplaySP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleTheme.class.php,v 1.3 2006/01/27 22:35:46 adamfranco Exp $
+ * @version $Id: SimpleTheme.class.php,v 1.4 2006/01/30 19:08:11 adamfranco Exp $
  */
 class SimpleTheme extends Theme {
 
@@ -232,6 +232,38 @@ class SimpleTheme extends Theme {
 		$menuHeading1->addSP(new PaddingSP("5px"));
 		//$menuHeading1->addSP(new FontWeightSP("bold"));
 		$this->addStyleForComponentType($menuHeading1, MENU_ITEM_HEADING, 1);
+		
+		// =====================================================================
+		// Menu Heading 2 style
+		$menuHeading2 =& new StyleCollection("*.menuHeading2", "menuHeading2", "Menu Heading 2", "A 2nd level menu heading.");
+		$menuHeading2->addSP(new DisplaySP("block"));
+		$menuHeading2->addSP(new BackgroundColorSP("#FD9453"));
+		$menuHeading2->addSP(new PaddingSP("5px"));
+		//$menuHeading2->addSP(new FontWeightSP("bold"));
+		$menuHeading2->addSP(new MarginLeftSP("10px"));
+		$this->addStyleForComponentType($menuHeading2, MENU_ITEM_HEADING, 2);
+		
+		// =====================================================================
+		// Menu Heading 3 style
+		$menuHeading3 =& new StyleCollection("*.menuHeading3", "menuHeading3", "Menu Heading 3", "A 3st level menu heading.");
+		$menuHeading3->addSP(new DisplaySP("block"));
+		$menuHeading3->addSP(new BackgroundColorSP("#FD9453"));
+		$menuHeading3->addSP(new PaddingSP("5px"));
+		//$menuHeading3->addSP(new FontWeightSP("bold"));
+		$menuHeading3->addSP(new MarginLeftSP("20px"));
+		$menuHeading3->addSP(new FontSizeSP("smaller"));
+		$this->addStyleForComponentType($menuHeading3, MENU_ITEM_HEADING, 3);
+		
+		// =====================================================================
+		// Menu Heading 4 style
+		$menuHeading4 =& new StyleCollection("*.menuHeading4", "menuHeading4", "Menu Heading 4", "A 4th level menu heading.");
+		$menuHeading4->addSP(new DisplaySP("block"));
+		$menuHeading4->addSP(new BackgroundColorSP("#FD9453"));
+		$menuHeading4->addSP(new PaddingSP("5px"));
+		//$menuHeading4->addSP(new FontWeightSP("bold"));
+		$menuHeading4->addSP(new MarginLeftSP("30px"));
+		$menuHeading3->addSP(new FontSizeSP("smaller"));
+		$this->addStyleForComponentType($menuHeading4, MENU_ITEM_HEADING, 4);
 		
 		// =====================================================================
 		// Menu Unselected Link 1 style

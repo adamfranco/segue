@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.16 2006/01/30 16:19:22 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.17 2006/01/30 19:08:09 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.16 2006/01/30 16:19:22 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.17 2006/01/30 19:08:09 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -289,6 +289,7 @@ class NavigationNodeRenderer
 	 * @since 1/27/06
 	 */
 	function addChildNavToCell ( &$itemOrArray, &$cell ) {
+		ArgumentValidator::validate($cell, ExtendsValidatorRule::getRule("Container"));
 		// If the child is nested add all rendered elements
 			if (is_array($itemOrArray)) {
 				for ($i = 0; $i < count($itemOrArray); $i++)
@@ -336,7 +337,7 @@ class NavigationNodeRenderer
 			}
 			
 			if (count($unorderedChildren))
-				$this->_saveChildOrder();
+				$this->saveChildOrder();
 				
 		}		
 		return $this->_orderedChildren;
@@ -370,8 +371,12 @@ class NavigationNodeRenderer
 		$idString = $childId->getIdString();
 		
 		foreach($this->_childCells as $cell => $cellList) {
-			if (array_search($idString, $cellList) !== false)
-				return $cell;
+			if (array_search($idString, $cellList) !== false) {
+				if ($cell < $this->getNumCells())	
+					return $cell;
+				else
+					return 1;
+			}
 		}
 		// default to 1
 		return 1;
@@ -495,9 +500,9 @@ class NavigationNodeRenderer
 			$storedCells = array();
 		}
 		$this->_childCells = array();
-		for ($i = 1; $i <= $this->_numCells; $i++) {
+		for ($i = 1; $i < $this->_numCells; $i++) {
 			if (isset($storedCells[$i-1]))
-				$this->_childCells[$i] = explode("\t", $storedCells[$i-1]);
+				$this->_childCells[$i] = array_unique(explode("\t", $storedCells[$i-1]));
 			else
 				$this->_childCells[$i] = array();
 		}
@@ -514,10 +519,10 @@ class NavigationNodeRenderer
 	 * 
 	 * @param ref array $orderedChildren
 	 * @return void
-	 * @access private
+	 * @access public
 	 * @since 1/23/06
 	 */
-	function _saveChildOrder () {
+	function saveChildOrder () {
 		$valueObj =& String::withValue($this->_childOrder->toDataString());
 		
 		// Get the nav info
@@ -531,6 +536,69 @@ class NavigationNodeRenderer
 		// Order part
 		$partId =& $idManager->getId('Repository::edu.middlebury.segue.sites_repository'
 			.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.child_order');
+		$parts =& $navRecord->getPartsByPartStructure($partId);
+		if ($parts->hasNext()) {
+			$part =& $parts->next();
+			$part->updateValue($valueObj);
+		} else {
+			$navRecord->createPart($partId, $valueObj);
+		}
+	}
+	
+	/**
+	 * Update the destination cell of a child
+	 * 
+	 * @param object Id $id
+	 * @param integer $cell
+	 * @return void
+	 * @access public
+	 * @since 1/30/06
+	 */
+	function updateChildCell ( &$id, $cell ) {
+		if (!isset($this->_childCells)) {
+			$this->_loadNavRecord();
+		}
+		
+		if ($cell < 1 || $cell > $this->_numCells)
+			return;
+		
+		$idString = $id->getIdString();
+		
+		for ($i = 1; $i < $this->_numCells; $i++) {
+			// Add the child to the new cell.
+			if ($i == $cell) {
+				$this->_childCells[$i][] = $idString;
+			}
+			// remove the child from is previous cell.
+			else {
+				$key = array_search($idString, $this->_childCells[$i]);
+				if ($key !== false)
+					unset($this->_childCells[$i][$key]);
+			}
+		}
+		
+		// implode our data to save it.
+		$data = array();
+		for ($i = 1; $i < $this->_numCells; $i++) {
+			$data[] = implode("\t", $this->_childCells[$i]);
+		}
+		$data = implode("\n", $data);
+		
+		
+		// Save our data
+		$valueObj =& String::withValue($data);
+		
+		// Get the nav info
+		$idManager =& Services::getService("Id");
+		$navRecords =& $this->_asset->getRecordsByRecordStructure(
+			$idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs'));
+		$navRecord =& $navRecords->next();
+		
+		// Order part
+		$partId =& $idManager->getId('Repository::edu.middlebury.segue.sites_repository'
+			.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.child_cells');
 		$parts =& $navRecord->getPartsByPartStructure($partId);
 		if ($parts->hasNext()) {
 			$part =& $parts->next();
