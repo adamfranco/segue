@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.20 2006/01/30 19:08:09 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.21 2006/01/30 19:11:42 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.20 2006/01/30 19:08:09 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.21 2006/01/30 19:11:42 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -453,18 +453,18 @@ END;
 		/*********************************************************
 		 * Cell position
 		 *********************************************************/
-		$url = $harmoni->request->quickURL('site', 'change_column', 
-								array('parent_id' => $parentIdString,
-									'node' => $idString,
-									'cell' => '______',
-									'return_node' => RequestContext::value('node')));
-		$layout = $this->_parent->getLayoutArrangement();
-		if ($layout == 'rows')
-			print "\n\t\t\t<br/>Row: &nbsp;";
-		else
+		if ($this->_parent->getNumCells() > 2) {
+			$url = $harmoni->request->quickURL('site', 'change_column', 
+									array('parent_id' => $parentIdString,
+										'node' => $idString,
+										'cell' => '______',
+										'return_node' => RequestContext::value('node')));
+			$layout = $this->_parent->getLayoutArrangement();
+			if ($layout == 'rows')
+				print "\n\t\t\t<br/>Row: &nbsp;";
+			else
 			print "\n\t\t\t<br/>Column: &nbsp;";
-			
-		if ($this->_parent->getNumCells() > 1) {
+		
 			$currentColumn = $this->_parent->getDestinationCell($id);
 			print "\n\t\t\t<select onchange='if (this.value == ".$currentColumn.") {alert(\""._("Already in this cell.")."\");} else {goToValueInserted(\"".$url."\", this.value);}'>";
 			for ($i = 1; $i < $this->_parent->getNumCells(); $i++) {
