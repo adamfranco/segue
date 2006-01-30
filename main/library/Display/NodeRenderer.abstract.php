@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.17 2006/01/26 21:15:18 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.18 2006/01/30 15:06:51 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.17 2006/01/26 21:15:18 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.18 2006/01/30 15:06:51 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -334,9 +334,10 @@ class NodeRenderer {
 		print " style='text-align: right;'>";
 		
 		print "\n\t<div";
-		print " onclick='this.nextSibling.nextSibling.style.display=\"block\"; this.style.display=\"none\";'";
-		print "style='text-align: right; padding: 3px; position: relative'>";
-		print "\n\t\t<div style='border: 1px solid; text-align: center; width: 15px; height: 15px; position: absolute; right: 2px; cursor: pointer; cursor: hand;'";
+		print " style='text-align: right; padding: 3px; position: relative'>";
+		print "\n\t\t<div";
+		print " onclick='this.parentNode.nextSibling.nextSibling.style.display=\"block\"; this.parentNode.style.display=\"none\";'";
+		print  " style='border: 1px solid; text-align: center; width: 15px; height: 15px; position: absolute; right: 2px; cursor: pointer; cursor: hand;'";
 		print " title='"._('show options')."'";
 		print ">";
 		print _('+');
