@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.17 2006/01/30 19:08:09 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.18 2006/01/30 20:37:52 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.17 2006/01/30 19:08:09 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.18 2006/01/30 20:37:52 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -106,6 +106,7 @@ class NavigationNodeRenderer
 		if ($this->getLayoutArrangement() != 'nested' || !$this->isActive()) {
 			return $component;
 		} else {
+			$component->setId($id->getIdString()."-cell-1");
 			$allComponents = array();
 			$allComponents[] =& $component;
 			
@@ -217,6 +218,8 @@ class NavigationNodeRenderer
 		$cells = array();
 		$overallCellNumber = 1;
 		$cellIndex = 1;
+		$id =& $this->getId();
+		$idString = $id->getIdString();
 		while ($overallCellNumber <= $numCells) {
 			if ($overallCellNumber == $targetOverride) {
 				$targetCell =& $container->add(
@@ -228,6 +231,7 @@ class NavigationNodeRenderer
 				$cells[$cellIndex] =& $container->add(
 							new Menu($cellLayout, $level), 
 							$cellWidth, $cellHeight, LEFT, TOP);
+				$cells[$cellIndex]->setId($idString."-cell-".$cellIndex);
 				$cellIndex++;
 			}
 			$overallCellNumber++;

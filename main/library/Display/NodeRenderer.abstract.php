@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.21 2006/01/30 19:11:42 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.22 2006/01/30 20:37:53 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.21 2006/01/30 19:11:42 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.22 2006/01/30 20:37:53 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -356,17 +356,61 @@ class NodeRenderer {
 		/*********************************************************
 		 * Javascript
 		 *********************************************************/
+		$cellConfirmMessage = _('Do you want to move this item to this cell?');
 		print<<<END
 
 			<script type='text/javascript'>
 			/* <![CDATA[ */
 				
 				function goToValueInserted(url, value) {
-					url = url.replace(/&amp;/gi, '&');
+					var url = url.replace(/&amp;/gi, '&');
 					url = url.replace(/______/gi, escape(value));
 					window.location = url;
 				}
 				
+				function changeCell(url, selectElement, currentCell, parentId) {
+					var destinationId = parentId + '-cell-' + selectElement.value;
+					var destinationElement = getElementFromDocument(destinationId);
+					var flash = new BorderFlash(destinationElement);
+					flash.start();
+					
+					if (confirm("$cellConfirmMessage")) {
+						//flash.stop();
+						goToValueInserted(url, selectElement.value);
+					} else {
+						flash.stop();
+						for (var i = 0; i < selectElement.options.length; i++) {
+							if (selectElement.options[i].value == currentCell) {
+								selectElement.selectedIndex = i;
+								break;
+							}
+						}
+					}
+				}
+				
+				function BorderFlash (element) {
+					this.element = element;
+					this.oldBorder = this.element.style.border;
+					
+					BorderFlash.prototype.start = function () {
+						this.intervalId = setInterval(
+							'BorderFlash.doFlash("' + this.element.id + '");',
+							500);
+					}
+					
+					BorderFlash.doFlash = function (elementId) {
+						element = getElementFromDocument(elementId);
+						if (element.style.border == '2px solid red')
+							element.style.border = '2px dotted red';
+						else
+							element.style.border = '2px solid red';
+					}
+					
+					BorderFlash.prototype.stop  = function () {
+						clearInterval(this.intervalId);
+						this.element.style.border = this.oldBorder;
+					}
+				}
 				
 			/* ]]> */
 			</script>
@@ -400,7 +444,7 @@ END;
 									'node' => $idString,
 									'before' => '______',
 									'return_node' => RequestContext::value('node')));
-		print "\n\t\t\t<select onchange='if (this.value) {goToValueInserted(\"".$url."\", this.value);} else {alert(\""._("Already in this position.")."\");}'>";
+		print "\n\t\t\t<select onchange='if (this.value) {goToValueInserted(\"".$url."\", this);} else {alert(\""._("Already in this position.")."\");}'>";
 		print "\n\t\t\t\t<option value=''>"._("Position Before...")."</option>";
 		$parentsChildren =& $this->_parent->getOrderedChildren();
 		$i = 1;
@@ -455,10 +499,11 @@ END;
 		 *********************************************************/
 		if ($this->_parent->getNumCells() > 2) {
 			$url = $harmoni->request->quickURL('site', 'change_column', 
-									array('parent_id' => $parentIdString,
-										'node' => $idString,
-										'cell' => '______',
-										'return_node' => RequestContext::value('node')));
+								array('parent_id' => $parentIdString,
+									'node' => $idString,
+									'cell' => '______',
+									'return_node' => RequestContext::value('node')));
+									
 			$layout = $this->_parent->getLayoutArrangement();
 			if ($layout == 'rows')
 				print "\n\t\t\t<br/>Row: &nbsp;";
@@ -466,7 +511,7 @@ END;
 			print "\n\t\t\t<br/>Column: &nbsp;";
 		
 			$currentColumn = $this->_parent->getDestinationCell($id);
-			print "\n\t\t\t<select onchange='if (this.value == ".$currentColumn.") {alert(\""._("Already in this cell.")."\");} else {goToValueInserted(\"".$url."\", this.value);}'>";
+			print "\n\t\t\t<select onchange='if (this.value == ".$currentColumn.") {alert(\""._("Already in this cell.")."\");} else {changeCell(\"".$url."\", this, ".$currentColumn.", \"".$parentIdString."\");}'>";
 			for ($i = 1; $i < $this->_parent->getNumCells(); $i++) {
 				print "\n\t\t\t\t<option";
 				if ($currentColumn == $i)
