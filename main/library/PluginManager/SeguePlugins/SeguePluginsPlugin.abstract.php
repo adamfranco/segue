@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.7 2006/01/27 22:34:05 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.8 2006/01/31 15:49:47 cws-midd Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.7 2006/01/27 22:34:05 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.8 2006/01/31 15:49:47 cws-midd Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -419,23 +419,55 @@ class SeguePluginsPlugin {
 	 * Answer the URL for the file 
 	 * 
 	 * @param string $idString of the 'associated file'
+	 * @param string $fname the 'FILE_NAME'
 	 * @return string
 	 * @access public
 	 * @since 1/26/06
 	 */
-	function getFileURL ($idString) {
+	function getThumbnailURL ($idString, $fname) {
 		$harmoni =& Harmoni::Instance();
 		$idManager =& Services::getService("Id");
 		$repositoryId =& $idManager->getId(
 			"edu.middlebury.segue.sites_repository");
 		$assetId =& $this->_asset->getId();
-		
-		
-		return $harmoni->request->quickURL("repository", "viewfile", 
+
+		$harmoni->request->StartNamespace('polyphony-repository');
+		$url = $harmoni->request->quickURL("repository", "viewthumbnail", 
 			array(
 			"repository_id" => $repositoryId->getIdString(),
 			"asset_id" => $assetId->getIdString(),
-			"record_id" => $id->getIdString()));
+			"record_id" => $idString,
+			"thumbnail_name" => $fname));
+		$harmoni->request->endNamespace();
+		
+		return $url;	}
+
+	/**
+	 * Answer the URL for the file 
+	 * 
+	 * @param string $idString of the 'associated file'
+	 * @param string $fname the 'FILE_NAME'
+	 * @return string
+	 * @access public
+	 * @since 1/26/06
+	 */
+	function getFileURL ($idString, $fname) {
+		$harmoni =& Harmoni::Instance();
+		$idManager =& Services::getService("Id");
+		$repositoryId =& $idManager->getId(
+			"edu.middlebury.segue.sites_repository");
+		$assetId =& $this->_asset->getId();
+
+		$harmoni->request->StartNamespace('polyphony-repository');
+		$url = $harmoni->request->quickURL("repository", "viewfile", 
+			array(
+			"repository_id" => $repositoryId->getIdString(),
+			"asset_id" => $assetId->getIdString(),
+			"record_id" => $idString,
+			"file_name" => $fname));
+		$harmoni->request->endNamespace();
+		
+		return $url;		
 	}
 
 	/**
@@ -447,13 +479,15 @@ class SeguePluginsPlugin {
 	 * @since 1/26/06
 	 */
 	function getFileData ($idString) {
-		// @todo return the filedata.
 		$idManager =& Services::getService("Id");
 		$id =& $idManager->getId($idString);
 		$fileRS =& $this->_asset->getRecord($id);
 		$data_id =& $idManager->getId("FILE_DATA");
-
-		return $fileRS->getPart($data_id);
+		$data =& $fileRS->getPartsByPartStructure($data_id);
+		if ($data->hasNext())
+			$datum =& $data->next();
+			
+		return $datum;
 	}
 
 /*********************************************************
@@ -634,7 +668,6 @@ class SeguePluginsPlugin {
 	 * @since 1/12/06
 	 */
 	function _loadData () {
-	// @todo file handling
 		// one array for the data, a second for the persistence of ids
 		if (isset($this->data))
 			unset($this->data, $this->_data_ids);
@@ -642,8 +675,22 @@ class SeguePluginsPlugin {
 		$this->_data_ids = array();
 		// get all the records for this asset
 		$records =& $this->_asset->getRecords();
+
+// maintain record order
+		$sets =& Services::getService("Sets");
+		$recordOrder =& $sets->getPersistentSet($this->_asset->getId());
+		$ordered = array();
+		
 		while ($records->hasNext()) {
 			$record =& $records->next();
+			$rid =& $record->getId();
+			if (!$recordOrder->isInSet($rid))
+				$recordOrder->addItem($rid);
+			$ordered[$recordOrder->getPosition($rid)] = $rid;
+		}
+
+		foreach ($ordered as $rid) {
+			$record =& $this->_asset->getRecord($rid);
 			
 			// for each new recordstructure add an array for holding instances
 			$recordStructure =& $record->getRecordStructure();
@@ -705,7 +752,7 @@ class SeguePluginsPlugin {
 		if (isset($changes))
 			unset($changes);
 		// only change things when you must
-		if ($this->_dataChanged()/*@todo lose warnings when no data is here*/) {
+		if (isset($this->data) && $this->_dataChanged()) {
 			$changes = array();	// array for storing a part id and its new value
 			
 			// go through all recordstructures
@@ -734,7 +781,7 @@ class SeguePluginsPlugin {
 				}
 			}
 		}
-		if ($this->_fileDataChanged()) {
+		if ((count($this->data['FILE']) > 0) && $this->_fileDataChanged()) {
 			// handle all file data changes
 			$this->_changeFileInfo();
 		}
@@ -760,7 +807,6 @@ class SeguePluginsPlugin {
 	 * @since 1/27/06
 	 */
 	function _changeFileInfo () {
-	// @todo determine the order in which to do the if statements
 		$idManager =& Services::getService("Id");
 		$changes = array();
 		foreach ($this->data['FILE'] as $instance => $file) {
@@ -769,45 +815,46 @@ class SeguePluginsPlugin {
 			$frecord =& $this->_asset->getRecord(
 				$idManager->getId($file['assoc_file_id']));
 		
-			// FILE_NAME can change
-			if ($file['FILE_NAME'][0] != $lfile['FILE_NAME'][0]) {
-				$fpart =& $this->_asset->getPart(
-					$idManager->getId(
-					$fpids['FILE_NAME'][0]));
-				$fpart->updateValueFromString($file['FILE_NAME'][0]);
-			}
-			
-			// FILE_SIZE can't change
-			if ($file['FILE_SIZE'][0] != $lfile['FILE_SIZE'][0])
-				$file['FILE_SIZE'][0] = $lfile['FILE_SIZE'][0];
-			
-			// DIMENSIONS can't change
-			if ($file['DIMENSIONS'][0] != $lfile['DIMENSIONS'][0])
-				$file['DIMENSIONS'][0] = $lfile['DIMENSIONS'][0];
-			
-			// MIME_TYPE can't change
-			if ($file['MIME_TYPE'][0] != $lfile['MIME_TYPE'][0])
-				$file['MIME_TYPE'][0] = $lfile['MIME_TYPE'][0];
-			
-			// assoc_file_id can't change
-			if ($file['assoc_file_id'][0] != $lfile['assoc_file_id'][0])
-				$file['assoc_file_id'][0] = $lfile['assoc_file_id'][0];
-			
-			// new_file_path can change
-			if ($file['new_file_path'][0] != $lfile['new_file_path'][0]) {
-				$fparts =& $this->_asset->getPartsByPartStructure(
-					$idManager->getId('FILE_DATA'));
-				$fpart =& $fparts->next();
-				$fpart->updateValue(
-					file_get_contents($file['new_file_path'][0]));
-			}
-			
 			// delete_file can change
 			if ($file['delete_file'][0] != $lfile['delete_file'][0]) {
 				$this->_asset->deleteRecord($idManager->getId(
 					$file['assoc_file_id']));
 				unset($file, $lfile, $fpids);
-			}
+				if (count($this->data['FILE']) == 0)
+					unset($this->data['FILE']);
+			} else {
+				// new_file_path can change
+				if ($file['new_file_path'][0] != $lfile['new_file_path'][0]) { 
+					$fparts =& $this->_asset->getPartsByPartStructure(
+						$idManager->getId('FILE_DATA'));
+					$fpart =& $fparts->next();
+					$fpart->updateValue(
+						file_get_contents($file['new_file_path'][0]));
+				}
+				if ($file['FILE_NAME'][0] != $lfile['FILE_NAME'][0]) {
+				// FILE_NAME can change
+					$fpart =& $this->_asset->getPart(
+						$idManager->getId(
+						$fpids['FILE_NAME'][0]));
+					$fpart->updateValueFromString($file['FILE_NAME'][0]);
+				}
+				
+				// FILE_SIZE can't change
+				if ($file['FILE_SIZE'][0] != $lfile['FILE_SIZE'][0])
+					$file['FILE_SIZE'][0] = $lfile['FILE_SIZE'][0];
+				
+				// DIMENSIONS can't change
+				if ($file['DIMENSIONS'][0] != $lfile['DIMENSIONS'][0])
+					$file['DIMENSIONS'][0] = $lfile['DIMENSIONS'][0];
+				
+				// MIME_TYPE can't change
+				if ($file['MIME_TYPE'][0] != $lfile['MIME_TYPE'][0])
+					$file['MIME_TYPE'][0] = $lfile['MIME_TYPE'][0];
+				
+				// assoc_file_id can't change
+				if ($file['assoc_file_id'][0] != $lfile['assoc_file_id'][0])
+					$file['assoc_file_id'][0] = $lfile['assoc_file_id'][0];
+			}			
 		}	
 			$this->_populateFileInfo(); // currently doesn't maintain order
 	}
@@ -833,8 +880,21 @@ class SeguePluginsPlugin {
 		$this->data['FILE'] = array();
 		$this->_data_ids['FILE'] = array();
 
+// maintain record order
+		$sets =& Services::getService("Sets");
+		$recordOrder =& $sets->getPersistentSet($this->_asset->getId());
+		$fordered = array();
+		
 		while ($frecords->hasNext()) {
 			$frecord =& $frecords->next();
+			$frid =& $frecord->getId();
+			if (!$recordOrder->isInSet($frid))
+				$recordOrder->addItem($frid);
+			$fordered[$recordOrder->getPosition($frid)] = $frid;
+		}
+		
+		foreach ($fordered as $frid) {
+			$frecord =& $this->_asset->getRecord($frid);
 			
 			$this->data['FILE'][] = array();
 			$this->_data_ids['FILE'][] = array();
@@ -852,15 +912,16 @@ class SeguePluginsPlugin {
 				$psidString = $psid->getIdString();
 				// plugin safe parts
 				if (!in_array($psidString, $farray)) {
-					$partValue =& $part->getValue();
-					$file[$psidString] = $partValue->asString();
-					$file_ids[$psidString] = $id->getIdString();
+					$file[$psidString] = array();
+					$file_ids[$psidString] = array();
+					$file[$psidString][] = $part->getValue();
+					$file_ids[$psidString][] = $id->getIdString();
 				}
 			}
 			$frid =& $frecord->getId();
-			$file['assoc_file_id'] = $frid->getIdString();
-			$file['new_file_path'] = '';
-			$file['delete_file'] = '';
+			$file['assoc_file_id'][] = $frid->getIdString();
+			$file['new_file_path'][] = '';
+			$file['delete_file'][] = '';
 		}
 	}
 	
