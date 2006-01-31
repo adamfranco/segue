@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.22 2006/01/30 20:37:53 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.23 2006/01/31 21:36:34 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.22 2006/01/30 20:37:53 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.23 2006/01/31 21:36:34 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -330,28 +330,6 @@ class NodeRenderer {
 			
 		
 		ob_start();
-		print "\n<div id='options:".$id->getIdString()."'";
-		print " style='text-align: right;'>";
-		
-		print "\n\t<div";
-		print " style='text-align: right; padding: 3px; position: relative'>";
-		print "\n\t\t<div";
-		print " onclick='this.parentNode.nextSibling.nextSibling.style.display=\"block\"; this.parentNode.style.display=\"none\";'";
-		print  " style='border: 1px solid; text-align: center; width: 15px; height: 15px; position: absolute; right: 2px; cursor: pointer; cursor: hand;'";
-		print " title='"._('show options')."'";
-		print ">";
-		print _('+');
-		print "</div> &nbsp;";
-		print "</div>";
-		
-		print "\n\t<div style='border: 1px solid; padding: 2px; text-align: left; display: none; position: relative'>";
-		print "\n\t\t<div style='border: 1px solid; text-align: center; width: 15px; height: 15px; position: absolute; right: 2px; cursor: pointer; cursor: hand;'";
-		print " onclick='this.parentNode.previousSibling.previousSibling.style.display=\"block\"; this.parentNode.style.display=\"none\";'";
-		print " title='"._('close options')."'";
-		print ">";
-		print _('x');
-		print "</div> ";
-		print "\n\t\t<div >";
 		
 		/*********************************************************
 		 * Javascript
@@ -361,6 +339,23 @@ class NodeRenderer {
 
 			<script type='text/javascript'>
 			/* <![CDATA[ */
+			
+				function showOptions (id) {
+					var optionsForm = getElementFromDocument('options_form:' + id);
+					var optionsButton = getElementFromDocument('options_button:' + id);
+// 					alert('optionsForm.style.display = ' + optionsForm.style.display);
+// 					alert('optionsForm.innerHTML = ' + optionsForm.innerHTML);
+					optionsForm.style.display = 'block';
+// 					alert('optionsForm.style.display = ' + optionsForm.style.display);
+					optionsButton.style.display = 'none';
+				}
+				
+				function hideOptions (id) {
+					var optionsForm = getElementFromDocument('options_form:' + id);
+					var optionsButton = getElementFromDocument('options_button:' + id);
+					optionsForm.style.display = 'none';
+					optionsButton.style.display = 'block';
+				}
 				
 				function goToValueInserted(url, value) {
 					var url = url.replace(/&amp;/gi, '&');
@@ -393,23 +388,57 @@ class NodeRenderer {
 					this.oldBorder = this.element.style.border;
 					
 					BorderFlash.prototype.start = function () {
+						BorderFlash.doFlash(this.element.id);
 						this.intervalId = setInterval(
 							'BorderFlash.doFlash("' + this.element.id + '");',
 							500);
 					}
 					
 					BorderFlash.doFlash = function (elementId) {
-						element = getElementFromDocument(elementId);
-						if (element.style.border == '2px solid red')
-							element.style.border = '2px dotted red';
-						else
-							element.style.border = '2px solid red';
+						var element = getElementFromDocument(elementId);
+						switch (element.flashStep) {
+							case 1:
+								element.style.border = '2px dotted red';
+								element.flashStep = 2;
+								break;
+							case 2:
+								element.style.border = '2px dashed red';
+								element.flashStep = 1;
+								break;
+							default:
+								element.style.border = '2px solid red';
+								element.flashStep = 1;
+						}
 					}
 					
 					BorderFlash.prototype.stop  = function () {
 						clearInterval(this.intervalId);
-						this.element.style.border = this.oldBorder;
+						if (this.oldBorder)
+							this.element.style.border = this.oldBorder;
+						else
+							this.element.style.border = '0px';
+						
+						element.flashStep = null;
 					}
+				}
+				
+				/**
+				 * Answer the element of the document by id.
+				 * 
+				 * @param string id
+				 * @return object The html element
+				 * @access public
+				 * @since 8/25/05
+				 */
+				function getElementFromDocument(id) {
+					// Gecko, KHTML, Opera, IE6+
+					if (document.getElementById) {
+						return document.getElementById(id);
+					}
+					// IE 4-5
+					if (document.all) {
+						return document.all[id];
+					}			
 				}
 				
 			/* ]]> */
@@ -417,13 +446,37 @@ class NodeRenderer {
 			
 END;
 		
+		print "\n<div id='options:".$id->getIdString()."'";
+		print " style='text-align: right;'>";
+		
+		print "\n\t<div id='options_button:".$id->getIdString()."'";
+		print " style='text-align: right; padding: 3px; position: relative'>";
+		print "\n\t\t<div";
+		print " onclick='showOptions(\"".$id->getIdString()."\")'";
+		print  " style='border: 1px solid; text-align: center; width: 15px; height: 15px; position: absolute; right: 2px; cursor: pointer; cursor: hand;'";
+		print " title='"._('show options')."'";
+		print ">";
+		print _('+');
+		print "</div>\n\t\t&nbsp;";
+		print "\n\t</div>";
+		
+		print "\n\t<div id='options_form:".$id->getIdString()."'";
+		print " style='border: 1px solid; padding: 2px; text-align: left; display: none; position: relative'>";
+		print "\n\t\t<div style='border: 1px solid; text-align: center; width: 15px; height: 15px; position: absolute; right: 2px; cursor: pointer; cursor: hand;'";
+		print " onclick='hideOptions(\"".$id->getIdString()."\")'";
+		print " title='"._('close options')."'";
+		print ">";
+		print _('x');
+		print "</div> ";
+		print "\n\t\t<div >";
+		
 		/*********************************************************
 		 * Order buttons
 		 *********************************************************/
 		$siblingSet = $this->_parent->getChildOrder();
 		$myPosition = $siblingSet->getPosition($id);
 		print "\n\t\t\t"._('Order: ')." ";
-		print "\n\t\t<span style='white-space: nowrap; padding-left: 5px; padding-right: 5px;'>";
+		print "\n\t\t<div style='white-space: nowrap; padding-left: 5px; padding-right: 5px;'>";
 		// Move 1 previous
 		if ($myPosition > 0) {
 			$previousId =& $siblingSet->atPosition($myPosition - 1);
@@ -492,7 +545,7 @@ END;
 		} else {
 			print "\n\t\t\t--&gt;";
 		}
-		print "\n\t\t</span>";
+		print "\n\t\t</div>";
 		
 		/*********************************************************
 		 * Cell position
@@ -506,9 +559,9 @@ END;
 									
 			$layout = $this->_parent->getLayoutArrangement();
 			if ($layout == 'rows')
-				print "\n\t\t\t<br/>Row: &nbsp;";
+				print "\n\t\t\tRow: &nbsp;";
 			else
-			print "\n\t\t\t<br/>Column: &nbsp;";
+			print "\n\t\t\tColumn: &nbsp;";
 		
 			$currentColumn = $this->_parent->getDestinationCell($id);
 			print "\n\t\t\t<select onchange='if (this.value == ".$currentColumn.") {alert(\""._("Already in this cell.")."\");} else {changeCell(\"".$url."\", this, ".$currentColumn.", \"".$parentIdString."\");}'>";
