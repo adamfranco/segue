@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.8 2006/01/31 15:49:47 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.9 2006/02/01 17:23:05 cws-midd Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.8 2006/01/31 15:49:47 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.9 2006/02/01 17:23:05 cws-midd Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -440,7 +440,49 @@ class SeguePluginsPlugin {
 			"thumbnail_name" => $fname));
 		$harmoni->request->endNamespace();
 		
-		return $url;	}
+		return $url;
+	}
+
+	/**
+	 * Returns the HTML string for viewing files associated with your plugin
+	 *
+	 * Choose which information to print by passing two arrays, one that is the
+	 * file record array from your plugin data, and the other that is an array
+	 * of the data part keys (chosen from {"FILE_NAME", "FILE_SIZE",
+	 * "DIMENSIONS", "MIME_TYPE", "FILE"} having "FILE" in the array will print
+	 * the thumbnail for the file record.
+	 *
+	 * @param array $fileData array referencing the file record
+	 * @param array $parts array listing parts to print 
+	 * @return string 
+	 * @access public
+	 * @since 1/31/06
+	 */
+// 	function printFileRecord(&$fileData, &$parts) {
+// 		$idManager =& Services::getService("Id");
+// 		$moduleManager =& Services::getService("InOutModules");
+// 		
+// 		$repositoryId =& $idManager->getId(
+// 			"edu.middlebury.segue.sites_repository");
+// 		$assetId =& $this->_asset->getId();
+// 		$rid =& $idManager->getId($fileData['assoc_file_id'][0]);
+// 		$record =& $this->_asset->getRecord($rid);
+// 		$rs =& $record->getRecordStructure();
+// 		
+// 		$setArray = array("FILE_NAME", "FILE_SIZE", "DIMENSIONS", 
+// 			"MIME_TYPE", "FILE");
+// 		$newArray = array_intersect($setArray, $parts);
+// 		$partStructureArray = array();
+// 		
+// 		// @todo map parts from array to PS
+// 		foreach ($newArray as $part) {
+// 			if ($part != "FILE") {
+// 			$partStructureArray[] =& $part->getPartStructure();
+// 		}
+// 
+// 		print $moduleManager->generateDisplayForPartStructures(
+// 			$repositoryId, $assetId, $record, $partStructureArray);
+// 	}
 
 	/**
 	 * Answer the URL for the file 
@@ -519,6 +561,8 @@ class SeguePluginsPlugin {
 		ArgumentValidator::validate($configuration, ExtendsValidatorRule::getRule("Properties"));
 		$false = false;
 		
+
+
 		$type =& $asset->getAssetType();
 		$pluginDir = $configuration->getProperty("plugin_dir")."/".
 			$type->getDomain()."/".$type->getAuthority().
@@ -596,8 +640,11 @@ class SeguePluginsPlugin {
 			throwError(new Error("Asset already set.", "Plugin.abstract", true));
 		
 		$this->_asset =& $asset;
-		
+
+
+
 		$type =& $this->_asset->getAssetType();
+
 		$this->_pluginDir = $this->_configuration->getProperty("plugin_dir")."/".$type->getDomain()."/".
 						$type->getAuthority()."/".$type->getKeyword()."/";
 		
@@ -668,6 +715,7 @@ class SeguePluginsPlugin {
 	 * @since 1/12/06
 	 */
 	function _loadData () {
+
 		// one array for the data, a second for the persistence of ids
 		if (isset($this->data))
 			unset($this->data, $this->_data_ids);
@@ -676,7 +724,8 @@ class SeguePluginsPlugin {
 		// get all the records for this asset
 		$records =& $this->_asset->getRecords();
 
-// maintain record order
+
+		// maintain record order
 		$sets =& Services::getService("Sets");
 		$recordOrder =& $sets->getPersistentSet($this->_asset->getId());
 		$ordered = array();
@@ -686,11 +735,11 @@ class SeguePluginsPlugin {
 			$rid =& $record->getId();
 			if (!$recordOrder->isInSet($rid))
 				$recordOrder->addItem($rid);
-			$ordered[$recordOrder->getPosition($rid)] = $rid;
+			$ordered[$recordOrder->getPosition($rid)] =& $rid;
 		}
 
-		foreach ($ordered as $rid) {
-			$record =& $this->_asset->getRecord($rid);
+		foreach ($ordered as $key => $recid) {
+			$record =& $this->_asset->getRecord($recid);
 			
 			// for each new recordstructure add an array for holding instances
 			$recordStructure =& $record->getRecordStructure();
@@ -781,7 +830,7 @@ class SeguePluginsPlugin {
 				}
 			}
 		}
-		if ((count($this->data['FILE']) > 0) && $this->_fileDataChanged()) {
+		if (isset($this->data['FILE']) && (count($this->data['FILE']) > 0) && $this->_fileDataChanged()) {
 			// handle all file data changes
 			$this->_changeFileInfo();
 		}
@@ -813,12 +862,12 @@ class SeguePluginsPlugin {
 			$fpids =& $this->_data_ids['FILE'][$instance];
 			$lfile =& $this->_loadedData['FILE'][$instance];
 			$frecord =& $this->_asset->getRecord(
-				$idManager->getId($file['assoc_file_id']));
+				$idManager->getId($file['assoc_file_id'][0]));
 		
 			// delete_file can change
 			if ($file['delete_file'][0] != $lfile['delete_file'][0]) {
 				$this->_asset->deleteRecord($idManager->getId(
-					$file['assoc_file_id']));
+					$file['assoc_file_id'][0]));
 				unset($file, $lfile, $fpids);
 				if (count($this->data['FILE']) == 0)
 					unset($this->data['FILE']);
@@ -880,11 +929,12 @@ class SeguePluginsPlugin {
 		$this->data['FILE'] = array();
 		$this->_data_ids['FILE'] = array();
 
-// maintain record order
+		// maintain record order
 		$sets =& Services::getService("Sets");
 		$recordOrder =& $sets->getPersistentSet($this->_asset->getId());
 		$fordered = array();
-		
+
+
 		while ($frecords->hasNext()) {
 			$frecord =& $frecords->next();
 			$frid =& $frecord->getId();
@@ -893,8 +943,8 @@ class SeguePluginsPlugin {
 			$fordered[$recordOrder->getPosition($frid)] = $frid;
 		}
 		
-		foreach ($fordered as $frid) {
-			$frecord =& $this->_asset->getRecord($frid);
+		foreach ($fordered as $frecid) {
+			$frecord =& $this->_asset->getRecord($frecid);
 			
 			$this->data['FILE'][] = array();
 			$this->_data_ids['FILE'][] = array();
@@ -918,8 +968,7 @@ class SeguePluginsPlugin {
 					$file_ids[$psidString][] = $id->getIdString();
 				}
 			}
-			$frid =& $frecord->getId();
-			$file['assoc_file_id'][] = $frid->getIdString();
+			$file['assoc_file_id'][] = $frecid->getIdString();
 			$file['new_file_path'][] = '';
 			$file['delete_file'][] = '';
 		}
