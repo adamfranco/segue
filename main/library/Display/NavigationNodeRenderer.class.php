@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.19 2006/02/01 17:18:49 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.20 2006/02/01 17:29:46 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.19 2006/02/01 17:18:49 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.20 2006/02/01 17:29:46 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -468,7 +468,7 @@ class NavigationNodeRenderer
 		// domain for SeguePlugins. 
 		print "\n\t\t\t\t\t<option value='SeguePlugins::Segue::TextBlock'>"._("Text Block")."</option>";
 		print "\n\t\t\t\t\t<option value='SeguePlugins::Segue::Assignment'>"._("Assignment")."</option>";
-		print "</select>";
+		print "\n\t\t\t\t</select>";
 		print "\n\t\t\t</div>";
 	}
 	

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.24 2006/02/01 17:18:49 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.25 2006/02/01 17:29:46 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.24 2006/02/01 17:18:49 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.25 2006/02/01 17:29:46 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -371,11 +371,11 @@ class NodeRenderer {
 								array('node' => $id->getIdString(),
 									'return_node' => RequestContext::value('node')));
 		array_walk($links, 
-			create_function('&$url,$name', '$url = "<a href=\'$url\'>$name</a>";'));
+			create_function('&$url,$name', '$url = "\n\t\t\t\t<a href=\'$url\'>$name</a>";'));
 		
 		print "\n\t\t\t<div>";
-		print implode("\n\t\t | ", $links);
-		print "\n\t\t\t<div>";
+		print implode(" | ", $links);
+		print "\n\t\t\t</div>";
 		print "\n\t\t</div>";
 		print "\n\t</div>";
 		
@@ -521,11 +521,11 @@ END;
 		$siblingSet = $this->_parent->getChildOrder();
 		$myPosition = $siblingSet->getPosition($id);
 		print "\n\t\t\t"._('Order: ')." ";
-		print "\n\t\t<div style='white-space: nowrap; padding-left: 5px; padding-right: 5px;'>";
+		print "\n\t\t\t<div style='white-space: nowrap; padding-left: 5px; padding-right: 5px;'>";
 		// Move 1 previous
 		if ($myPosition > 0) {
 			$previousId =& $siblingSet->atPosition($myPosition - 1);
-			print "\n\t\t\t<a href='";
+			print "\n\t\t\t\t<a href='";
 			print $harmoni->request->quickURL('site', 'reorder', 
 								array('parent_id' => $parentIdString,
 									'node' => $idString,
@@ -533,7 +533,7 @@ END;
 									'return_node' => RequestContext::value('node')));
 			print "'>&lt;--</a>";
 		} else {
-			print "\n\t\t\t&lt;--";
+			print "\n\t\t\t\t&lt;--";
 		}
 		
 		// Reorder select field
@@ -542,7 +542,7 @@ END;
 									'node' => $idString,
 									'before' => '______',
 									'return_node' => RequestContext::value('node')));
-		print "\n\t\t\t<select onchange='if (this.value) {goToValueInserted(\"".$url."\", this);} else {alert(\""._("Already in this position.")."\");}'>";
+		print "\n\t\t\t\t<select onchange='if (this.value) {goToValueInserted(\"".$url."\", this);} else {alert(\""._("Already in this position.")."\");}'>";
 		print "\n\t\t\t\t<option value=''>"._("Position Before...")."</option>";
 		$parentsChildren =& $this->_parent->getOrderedChildren();
 		$i = 1;
@@ -555,7 +555,7 @@ END;
 			if ($assetId->isEqual($this->getId()))
 				$thisNum = $i;
 			
-			print "\n\t\t\t\t<option";
+			print "\n\t\t\t\t\t<option";
 			if ($thisNum === $i || $thisNum === $i-1)
 				print " value='' style='background-color: #ddd;'";
 			else
@@ -568,10 +568,10 @@ END;
 			$i++;
 		}
 		if ($thisNum === $i || $thisNum === $i-1)
-			print "\n\t\t\t\t<option value='' style='background-color: #ddd;'>"._("At End")."</option>";
+			print "\n\t\t\t\t\t<option value='' style='background-color: #ddd;'>"._("At End")."</option>";
 		else
-			print "\n\t\t\t\t<option value='end'>"._("At End")."</option>";
-		print "\n\t\t\t</select>";
+			print "\n\t\t\t\t\t<option value='end'>"._("At End")."</option>";
+		print "\n\t\t\t\t</select>";
 		
 		// Move 1 next
 		if ($myPosition < ($siblingSet->count() - 1)) {
@@ -580,7 +580,7 @@ END;
 				$nextId = $nextId->getIdString();
 			else
 				$nextId = 'end';
-			print "\n\t\t\t<a href='";
+			print "\n\t\t\t\t<a href='";
 			print $harmoni->request->quickURL('site', 'reorder', 
 								array('parent_id' => $parentIdString,
 									'node' => $idString,
@@ -588,9 +588,9 @@ END;
 									'return_node' => RequestContext::value('node')));
 			print "'>--&gt;</a>";
 		} else {
-			print "\n\t\t\t--&gt;";
+			print "\n\t\t\t\t--&gt;";
 		}
-		print "\n\t\t</div>";
+		print "\n\t\t\t</div>";
 	}
 	
 	/**
