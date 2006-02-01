@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.23 2006/01/31 21:36:34 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.24 2006/02/01 17:18:49 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.23 2006/01/31 21:36:34 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.24 2006/02/01 17:18:49 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -331,9 +331,66 @@ class NodeRenderer {
 		
 		ob_start();
 		
+		$this->printOptionJS();
+		
+		print "\n<div id='options:".$id->getIdString()."'";
+		print " style='text-align: right;'>";
+		
+		print "\n\t<div id='options_button:".$id->getIdString()."'";
+		print " style='text-align: right; padding: 3px; position: relative'>";
+		print "\n\t\t<div";
+		print " onclick='showOptions(\"".$id->getIdString()."\")'";
+		print  " style='border: 1px solid; text-align: center; width: 15px; height: 15px; position: absolute; right: 2px; cursor: pointer; cursor: hand;'";
+		print " title='"._('show options')."'";
+		print ">";
+		print _('+');
+		print "</div>\n\t\t&nbsp;";
+		print "\n\t</div>";
+		
+		print "\n\t<div id='options_form:".$id->getIdString()."'";
+		print " style='border: 1px solid; padding: 2px; text-align: left; display: none; position: relative'>";
+		print "\n\t\t<div style='border: 1px solid; text-align: center; width: 15px; height: 15px; position: absolute; right: 2px; cursor: pointer; cursor: hand;'";
+		print " onclick='hideOptions(\"".$id->getIdString()."\")'";
+		print " title='"._('close options')."'";
+		print ">";
+		print _('x');
+		print "</div> ";
+		print "\n\t\t<div >";
+		
+		
+		$this->printOptionOrderForm();
+		
+		$this->printOptionCellPositionForm();
+		
+		$this->printOptionAddChildForm();
+		
 		/*********************************************************
-		 * Javascript
+		 * Other links
 		 *********************************************************/
+		$links[_('settings')] = $harmoni->request->quickURL('site', 'edit', 
+								array('node' => $id->getIdString(),
+									'return_node' => RequestContext::value('node')));
+		array_walk($links, 
+			create_function('&$url,$name', '$url = "<a href=\'$url\'>$name</a>";'));
+		
+		print "\n\t\t\t<div>";
+		print implode("\n\t\t | ", $links);
+		print "\n\t\t\t<div>";
+		print "\n\t\t</div>";
+		print "\n\t</div>";
+		
+		print "\n</div>";
+		return ob_get_clean();
+	}
+	
+	/**
+	 * print the Javascript for the Options form
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/31/06
+	 */
+	function printOptionJS () {
 		$cellConfirmMessage = _('Do you want to move this item to this cell?');
 		print<<<END
 
@@ -445,34 +502,22 @@ class NodeRenderer {
 			</script>
 			
 END;
+	}
+	
+	/**
+	 * print the order form elements
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/31/06
+	 */
+	function printOptionOrderForm () {
+		$harmoni = Harmoni::instance();
+		$id =& $this->getId();
+		$idString = $id->getIdString();
+		$parentId =& $this->_parent->getId();
+		$parentIdString = $parentId->getIdString();
 		
-		print "\n<div id='options:".$id->getIdString()."'";
-		print " style='text-align: right;'>";
-		
-		print "\n\t<div id='options_button:".$id->getIdString()."'";
-		print " style='text-align: right; padding: 3px; position: relative'>";
-		print "\n\t\t<div";
-		print " onclick='showOptions(\"".$id->getIdString()."\")'";
-		print  " style='border: 1px solid; text-align: center; width: 15px; height: 15px; position: absolute; right: 2px; cursor: pointer; cursor: hand;'";
-		print " title='"._('show options')."'";
-		print ">";
-		print _('+');
-		print "</div>\n\t\t&nbsp;";
-		print "\n\t</div>";
-		
-		print "\n\t<div id='options_form:".$id->getIdString()."'";
-		print " style='border: 1px solid; padding: 2px; text-align: left; display: none; position: relative'>";
-		print "\n\t\t<div style='border: 1px solid; text-align: center; width: 15px; height: 15px; position: absolute; right: 2px; cursor: pointer; cursor: hand;'";
-		print " onclick='hideOptions(\"".$id->getIdString()."\")'";
-		print " title='"._('close options')."'";
-		print ">";
-		print _('x');
-		print "</div> ";
-		print "\n\t\t<div >";
-		
-		/*********************************************************
-		 * Order buttons
-		 *********************************************************/
 		$siblingSet = $this->_parent->getChildOrder();
 		$myPosition = $siblingSet->getPosition($id);
 		print "\n\t\t\t"._('Order: ')." ";
@@ -546,11 +591,24 @@ END;
 			print "\n\t\t\t--&gt;";
 		}
 		print "\n\t\t</div>";
+	}
+	
+	/**
+	 * print the cell position form elements
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/31/06
+	 */
+	function printOptionCellPositionForm () {
+		$harmoni = Harmoni::instance();
+		$id =& $this->getId();
+		$idString = $id->getIdString();
+		$parentId =& $this->_parent->getId();
+		$parentIdString = $parentId->getIdString();
 		
-		/*********************************************************
-		 * Cell position
-		 *********************************************************/
 		if ($this->_parent->getNumCells() > 2) {
+			print "\n\t\t<div>";
 			$url = $harmoni->request->quickURL('site', 'change_column', 
 								array('parent_id' => $parentIdString,
 									'node' => $idString,
@@ -573,24 +631,19 @@ END;
 				print ">".$i."</option>";
 			}
 			print "\n\t\t\t</select>";
+			print "\n\t\t</div>";
 		}
+	}
+	
+	/**
+	 * Print the form for adding child nodes
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/31/06
+	 */
+	function printOptionAddChildForm () {
 		
-		/*********************************************************
-		 * Other links
-		 *********************************************************/
-		$links[_('settings')] = $harmoni->request->quickURL('site', 'edit', 
-								array('node' => $id->getIdString(),
-									'return_node' => RequestContext::value('node')));
-		array_walk($links, 
-			create_function('&$url,$name', '$url = "<a href=\'$url\'>$name</a>";'));
-		
-		print "\n\t\t\t<br/>";
-		print implode("\n\t\t | ", $links);
-		print "\n\t\t</div>";
-		print "\n\t</div>";
-		
-		print "\n</div>";
-		return ob_get_clean();
 	}
 	
 /*********************************************************

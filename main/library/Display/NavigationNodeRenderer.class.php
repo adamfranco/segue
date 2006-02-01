@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.18 2006/01/30 20:37:52 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.19 2006/02/01 17:18:49 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.18 2006/01/30 20:37:52 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.19 2006/02/01 17:18:49 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -426,6 +426,50 @@ class NavigationNodeRenderer
 			$this->_loadNavRecord();
 		
 		return $this->_targetOverride;
+	}
+	
+	/**
+	 * Print the form for adding child nodes
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/31/06
+	 */
+	function printOptionAddChildForm () {
+		$harmoni = Harmoni::instance();
+		$id =& $this->getId();
+		$idString = $id->getIdString();
+		
+		$navUrl = $harmoni->request->quickURL('site', 'addnav', 
+								array('parent_id' => $idString,
+									'return_node' => RequestContext::value('node')));
+		$pluginUrl = $harmoni->request->quickURL('site', 'addplugin', 
+								array('parent_id' => $idString,
+									'type' => '______',
+									'return_node' => RequestContext::value('node')));
+		
+		print "\n\t\t\t<div>";
+// 		print "\n\t\t\t\t"._("New child node: ");
+		print "\n\t\t\t\t<select";
+		print " onchange='";
+		print "if (this.value) {";
+		print 	"if (this.value == \"nav\") {";
+		print 		"goToValueInserted(\"".$navUrl."\", \"\");";
+		print 	"} else {";
+		print		"goToValueInserted(\"".$pluginUrl."\", this.value);";
+		print 	"}";
+		print "}";
+		print "'";
+		print ">";
+		print "\n\t\t\t\t\t<option>"._("Add a new child element...")."</option>";
+		print "\n\t\t\t\t\t<option value='nav'>"._("Navigational Container")."</option>";
+		
+		// Loop through all plugins. don't print Authority for any, don't print
+		// domain for SeguePlugins. 
+		print "\n\t\t\t\t\t<option value='SeguePlugins::Segue::TextBlock'>"._("Text Block")."</option>";
+		print "\n\t\t\t\t\t<option value='SeguePlugins::Segue::Assignment'>"._("Assignment")."</option>";
+		print "</select>";
+		print "\n\t\t\t</div>";
 	}
 	
 	
