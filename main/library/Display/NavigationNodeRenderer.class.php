@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.20 2006/02/01 17:29:46 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.21 2006/02/02 21:11:20 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.20 2006/02/01 17:29:46 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.21 2006/02/02 21:11:20 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -101,7 +101,7 @@ class NavigationNodeRenderer
 						null,
 						null,
 						$this->getSettingsForm($links));
-		
+		$component->setId($id->getIdString()."-nav");
 		
 		if ($this->getLayoutArrangement() != 'nested' || !$this->isActive()) {
 			return $component;
@@ -134,14 +134,18 @@ class NavigationNodeRenderer
 		// target with which it can subdivide if necessary for any of its
 		// children.
 		if ($this->getNumCells() <= 1)
-			return $this->renderSingleCellTarget();
+			$target =& $this->renderSingleCellTarget();
 		
 		// In multi-cell arrangements the child navigational components will
 		// be rendered in all cells but the one designated as the 'target'.
 		// The 'active' child is given the 'target' cell in which to render
 		// its children.
 		else
-			return $this->renderMultiCellTarget($level);
+			$target =& $this->renderMultiCellTarget($level);
+		
+		$id =& $this->getId();
+		$target->setId($id->getIdString()."-target");
+		return $target;
 	}
 	
 	/**
@@ -161,9 +165,11 @@ class NavigationNodeRenderer
 			
 			// print a heading if availible
 			if ($childRenderer->getTitle()) {
-				$container->add(
-						new Heading($childRenderer->getTitle(), 2),
-						null, null, LEFT, TOP);
+				$title =& $container->add(
+							new Heading($childRenderer->getTitle(), 2),
+							null, null, LEFT, TOP);
+				$childId =& $childRenderer->getId();
+				$title->setId($childId->getIdString()."-title");
 			}
 			
 			// print the content
@@ -656,4 +662,28 @@ class NavigationNodeRenderer
 		}
 	}
 	
+	/**
+	 * Answer the delete confirm message
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/2/06
+	 */
+	function getDeleteConfirmMessage () {
+		return _('Are you sure that you wish to delete this node\nand its children?');
+	}
+	
+	/**
+	 * Answer the elements to flash on delete.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/2/06
+	 */
+	function getElementsToFlashOnDelete () {
+		$id =& $this->getId();
+		$idString = $id->getIdString();
+		$ids = array('"'.$idString.'-nav"', '"'.$idString.'-target"', '"'.$idString.'-target"');
+		return 'new Array('.implode(", ", $ids).')';
+	}
 }

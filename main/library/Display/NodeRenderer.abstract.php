@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.25 2006/02/01 17:29:46 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.26 2006/02/02 21:11:20 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.25 2006/02/01 17:29:46 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.26 2006/02/02 21:11:20 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -367,11 +367,15 @@ class NodeRenderer {
 		/*********************************************************
 		 * Other links
 		 *********************************************************/
-		$links[_('settings')] = $harmoni->request->quickURL('site', 'edit', 
-								array('node' => $id->getIdString(),
-									'return_node' => RequestContext::value('node')));
 		array_walk($links, 
 			create_function('&$url,$name', '$url = "\n\t\t\t\t<a href=\'$url\'>$name</a>";'));
+			
+		$url = $harmoni->request->quickURL('site', 'edit', 
+								array('node' => $id->getIdString(),
+									'return_node' => RequestContext::value('node')));
+		$links[_('settings')] = "\n\t\t\t\t<a href='".$url."'>"._("settings")."</a>";
+		
+		$links[_('delete')] = "\n\t\t\t\t<a href='Javascript:deleteNode(\"".$id->getIdString()."\", ".$this->getElementsToFlashOnDelete().", \"".$this->getDeleteConfirmMessage()."\");' >"._("delete")."</a>";
 		
 		print "\n\t\t\t<div>";
 		print implode(" | ", $links);
@@ -392,6 +396,9 @@ class NodeRenderer {
 	 */
 	function printOptionJS () {
 		$cellConfirmMessage = _('Do you want to move this item to this cell?');
+		
+		$deleteJS = $this->getDeleteJS();
+		
 		print<<<END
 
 			<script type='text/javascript'>
@@ -479,6 +486,8 @@ class NodeRenderer {
 					}
 				}
 				
+				$deleteJS;				
+				
 				/**
 				 * Answer the element of the document by id.
 				 * 
@@ -502,6 +511,91 @@ class NodeRenderer {
 			</script>
 			
 END;
+	}
+	
+	/**
+	 * Answer the Javascript for deleting this node.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/2/06
+	 */
+	function getDeleteJS () {
+		$harmoni = Harmoni::instance();
+		$id =& $this->getId();
+		$idString = $id->getIdString();
+		
+		$deleteUrl = $harmoni->request->quickURL('site', 'delete_node', 
+								array('node' => $idString,
+									'return_node' => RequestContext::value('node')));
+		
+		ob_start();
+		print <<<END
+				
+				/**
+				 * Alert the user to what they will be deleting and do the delete
+				 * if confirmed
+				 * 
+				 * @param string id
+				 * @return void
+				 * @access public
+				 * @since 2/2/06
+				 */
+				function deleteNode (id, elementsToFlash, message) {
+//					if (confirm(message)) {
+//						goToValueInserted('$deleteUrl');
+//					}
+//					
+//					return;
+					
+					var flashes = new Array();
+					var j = 0;
+					for (var i = 0; i < elementsToFlash.length; i++) {
+						var destinationElement = getElementFromDocument(elementsToFlash[i]);
+						if (destinationElement) {
+							flashes[j] = new BorderFlash(destinationElement);
+							flashes[j].start();
+							j++;
+						}
+					}
+					
+					if (confirm(message)) {
+						//flash.stop();
+						goToValueInserted('$deleteUrl');
+					} else {
+						for (var i = 0; i < flashes.length; i++) {
+							flashes[i].stop();
+						}
+					}
+				}
+				
+END;
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the delete confirm message
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/2/06
+	 */
+	function getDeleteConfirmMessage () {
+		return _('Are you sure that you wish to delete this node?');
+	}
+	
+	/**
+	 * Answer the elements to flash on delete.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/2/06
+	 */
+	function getElementsToFlashOnDelete () {
+		$id =& $this->getId();
+		$idString = $id->getIdString();
+		$ids = array('"'.$idString.'-nav"', '"'.$idString.'-target"', '"'.$idString.'-title"');
+		return 'new Array('.implode(", ", $ids).')';
 	}
 	
 	/**

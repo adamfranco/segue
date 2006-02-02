@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.11 2006/01/24 21:33:40 cws-midd Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.12 2006/02/02 21:11:20 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.11 2006/01/24 21:33:40 cws-midd Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.12 2006/02/02 21:11:20 adamfranco Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
@@ -48,7 +48,9 @@ class PluginNodeRenderer
 		$component =& new MenuItem(
 						$title.$plugs->getPluginText($this->_asset).$this->getSettingsForm(),
 						$level);
-						
+		
+		$id =& $this->getId();
+		$component->setId($id->getIdString()."-nav");
 		return $component;
 	}
 	
@@ -66,6 +68,9 @@ class PluginNodeRenderer
 		$component =& new Block(
 			$plugs->getPluginText($this->_asset).$this->getSettingsForm(),
 			STANDARD_BLOCK);
+			
+		$id =& $this->getId();
+		$component->setId($id->getIdString()."-target");
 		return $component;
 	}
 	
