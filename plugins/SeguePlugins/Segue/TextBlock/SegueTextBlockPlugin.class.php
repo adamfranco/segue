@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.5 2006/01/26 21:15:19 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.6 2006/02/08 20:18:41 cws-midd Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.5 2006/01/26 21:15:19 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.6 2006/02/08 20:18:41 cws-midd Exp $
  */
 class SegueTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -86,7 +86,7 @@ class SegueTextBlockPlugin
 	 		print "\n".$this->getContent();
 	 		if ($this->canModify()) {
 				print "\n<div style='text-align: right'>";
-				print "\n\t<a href=".$this->url(array('edit' => 'true')).">edit</a>";
+				print "\n\t<a href=".$this->url(array('edit' => 'true')).">"._("edit")."</a>";
 				print "\n</div>";
 			}
  		}

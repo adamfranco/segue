@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueDownloadPlugin.class.php,v 1.1 2006/01/31 15:49:47 cws-midd Exp $
+ * @version $Id: SegueDownloadPlugin.class.php,v 1.2 2006/02/08 20:18:41 cws-midd Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueDownloadPlugin.class.php,v 1.1 2006/01/31 15:49:47 cws-midd Exp $
+ * @version $Id: SegueDownloadPlugin.class.php,v 1.2 2006/02/08 20:18:41 cws-midd Exp $
  */
 class SegueDownloadPlugin
 	extends SeguePluginsAjaxPlugin
@@ -68,9 +68,12 @@ class SegueDownloadPlugin
  	 * @since 1/20/06
  	 */
  	function updateDataArray() {
+
+	// ===== whether or not to delete the stored file ===== //
  		$this->data['FILE'][0]['delete_file'][0] = 
  			(($this->getFieldValue('delete') == "on")?"true":"0");
- 			
+
+	// ===== whether or not to change the stored file ===== //
  		$this->data['FILE'][0]['new_file_path'][0] = 
  			$this->getFieldValue('FILE');
  	}
@@ -86,27 +89,42 @@ class SegueDownloadPlugin
  	 * @since 1/12/06
  	 */
  	function getMarkup () {
- 		$FILE =& $this->data['FILE'][0];
+ 		// Assuming only one file download per plugin
+ 		// @todo support multiple file downloads from a single plugin
+		if (!isset($this->data['FILE'])) {
+			return "NO FILES FOR DOWNLOAD AVAILABLE";
+ 		} else {
+ 		$FILE =& $this->data['FILE'];
  		ob_start();
  		
+// ===== What to print when editing ===== //
  		if ($this->getFieldValue('edit') && $this->canModify()) {
 			print "\n".$this->formStartTagWithAction();
- 			print "This Box Changes The Plugin Title: ";
- 			print "\n\t<input type='text' name='".$this->getFieldName('title')."' value='".$this->getTitle()."' size='50'/>";
- 			
- 			print "\n\t<br/>";
 
-			print "Only Enter Text Into This Box If You Want A Different File For Download From This Plugin:";
-			print "\n\t<input type='text' name='".$this->getFieldName('FILE')
-				."' value='' size='50'/>";
+// ===== Start Table for form ===== //
+			print "\n\t<table border='0' cols='2'>";
 
-			print "\n<input type='checkbox'
-				name='".$this->getFieldName('delete')."'";
-				print " checked='false'";
-			print "/>Check this box to delete this file from the plugin.<br/>";
-			
- 			print "\n\t<br/>";
-	
+// ===== Title Block Editing ===== //
+ 			print "<tr><td>"._("This Box Changes The Plugin Title:")." </td>";
+ 			print "\n\t<input type='text' name='".$this->getFieldName('title')."' value='".$this->getTitle()."' size='50'/></td></tr>";
+ 			print "\n\t<br/><br/>";
+
+// ===== Data Records Editing ===== //
+			// for changing what file is being served for download
+			foreach ($FILE as $instance => $data) {
+				print "\n<h4>"._("File")." ".$instance.":</h4>";
+				print "\n\t\t<tr><td>"._("Change File For Download To:")
+					."</td>";
+				print "<td><input type='text' name='"
+					.$this->getFieldName('FILE')."' value='' size='30'/></td></tr>";
+				
+				// for completely removing the file from the system
+				print "<tr><td>"._("Check this box to delete this file from the plugin.")."</td>";
+				print "\n\t<td><input type='checkbox'
+					name='".$this->getFieldName('delete')."'/></td></tr><hr/>";
+			}
+			print "</table>";
+// ===== End of Form Submit or Cancel ===== //
  			print "\n\t<br/>";
  			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
  			
@@ -114,29 +132,23 @@ class SegueDownloadPlugin
  			
 			print "\n</form>";
  		} else if ($this->canView()) {
-	 		
-			print "<img src='"
-				.$this->getThumbnailURL($FILE['assoc_file_id'][0],
-				$FILE['FILE_NAME'][0])."'/>";
-			print "<br/>";
-			
-			print "\n<a href='"
-				.$this->getFileURL($FILE['assoc_file_id'][0],
-				$FILE['FILE_NAME'][0])."'";
-			print " target='_blank'>";
-
-			print "Download This File</a>\n";
-	 		
+// ===== What to print when viewing/downloading ===== //
+			$printArray = array("FILE_NAME", "FILE_DATA", "FILE_SIZE");
+			foreach ($FILE as $instance => $data) {
+				$fileHTML = $this->printFileRecord($data, $printArray);				
+				print $fileHTML."<hr/><br/>";
+	 		}
+	 		// can this agent edit the plugin?
 	 		if ($this->canModify()) {
 				print "\n<div style='text-align: right'>";
-				print "\n\t<a href=".$this->url(array('edit' => 'true')).">edit</a>";
+				print "\n\t<a href=".$this->url(array('edit' => 'true')).">"._("edit")."</a>";
 				print "\n</div>";
 			}
  		}
- 		
  		return ob_get_clean();
+		}
  	}
-	
+
 }
 
 ?>

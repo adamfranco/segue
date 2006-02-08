@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.3 2006/01/27 22:28:08 cws-midd Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.4 2006/02/08 20:18:41 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.3 2006/01/27 22:28:08 cws-midd Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.4 2006/02/08 20:18:41 cws-midd Exp $
  */
 class SegueAssignmentPlugin
 	extends SeguePluginsAjaxPlugin
@@ -106,7 +106,7 @@ class SegueAssignmentPlugin
 
 				// are there reading assignments if so put a header
 				if (isset($assignment['SegueAssignmentReading'][0]))
-					print "\n<h3>Reading:</h3>";
+					print "\n<h3>"._("Reading:")."</h3>";
 
 				// write each reading selection and a checkbox for status
 				foreach ($assignment['SegueAssignmentReading'] as $j => $read) {
@@ -119,12 +119,12 @@ class SegueAssignmentPlugin
 				
 				// are there questions if so put a header
 				if (isset($assignment['SegueAssignmentQuestion'][0]))
-					print "\n<h3>Questions:</h3>";
+					print "\n<h3>"._("Questions:")."</h3>";
 
 				// write each question with the editable textarea answer
 				foreach ($assignment['SegueAssignmentQuestion'] as $j => $quest) {
 					print "\n".$quest."<br/>";
-					print "\n Answer: </br>";
+					print "\n "._("Answer:")." </br>";
 					print "\n<textarea name='".$this->getFieldName('quest-'.$j)
 						."' rows='5' cols='50'";
 					if (isset(
@@ -151,7 +151,7 @@ class SegueAssignmentPlugin
 
 				// are there reading assignments if so put a header
 				if (isset($assignment['SegueAssignmentReading'][0]))
-					print "\n<h3>Reading:</h3>";
+					print "\n<h3>"._("Reading:")."</h3>";
 					
 				// write each reading assignment with its status
 				foreach ($assignment['SegueAssignmentReading'] as $j => $read) {
@@ -164,13 +164,13 @@ class SegueAssignmentPlugin
 				
 				// are there questions if so put a header
 				if (isset($assignment['SegueAssignmentQuestion'][0]))
-					print "\n<h3>Questions:</h3>";
+					print "\n<h3>"._("Questions:")."</h3>";
 					
 				// write each question and the current answer
 				foreach ($assignment['SegueAssignmentQuestion'] as $j => $quest) {
 					print "\n".$quest."<br/>";
 					if (isset($this->data['SegueResponse'][0]['SegueResponseAnswer'][$j])) {
-						print "\n Answer: </br>";
+						print "\n "._("Answer:")." </br>";
 						print "\n".$this->data['SegueResponse'][0]['SegueResponseAnswer'][$j]."<br/>";
 					}
 				}
@@ -179,7 +179,7 @@ class SegueAssignmentPlugin
 			// the edit link only if they can edit
 	 		if ($this->canModify()) {
 				print "\n<div style='text-align: right'>";
-				print "\n\t<a href=".$this->url(array('edit' => 'true')).">edit</a>";
+				print "\n\t<a href=".$this->url(array('edit' => 'true')).">"._("edit")."</a>";
 				print "\n</div>";
 			}
  		}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.9 2006/02/01 17:23:05 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.10 2006/02/08 20:18:41 cws-midd Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.9 2006/02/01 17:23:05 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.10 2006/02/08 20:18:41 cws-midd Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -449,8 +449,8 @@ class SeguePluginsPlugin {
 	 * Choose which information to print by passing two arrays, one that is the
 	 * file record array from your plugin data, and the other that is an array
 	 * of the data part keys (chosen from {"FILE_NAME", "FILE_SIZE",
-	 * "DIMENSIONS", "MIME_TYPE", "FILE"} having "FILE" in the array will print
-	 * the thumbnail for the file record.
+	 * "DIMENSIONS", "MIME_TYPE", "FILE_DATA"} having "FILE_DATA" in the array 
+	 * will print the thumbnail for the file record.
 	 *
 	 * @param array $fileData array referencing the file record
 	 * @param array $parts array listing parts to print 
@@ -458,31 +458,31 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/31/06
 	 */
-// 	function printFileRecord(&$fileData, &$parts) {
-// 		$idManager =& Services::getService("Id");
-// 		$moduleManager =& Services::getService("InOutModules");
-// 		
-// 		$repositoryId =& $idManager->getId(
-// 			"edu.middlebury.segue.sites_repository");
-// 		$assetId =& $this->_asset->getId();
-// 		$rid =& $idManager->getId($fileData['assoc_file_id'][0]);
-// 		$record =& $this->_asset->getRecord($rid);
-// 		$rs =& $record->getRecordStructure();
-// 		
-// 		$setArray = array("FILE_NAME", "FILE_SIZE", "DIMENSIONS", 
-// 			"MIME_TYPE", "FILE");
-// 		$newArray = array_intersect($setArray, $parts);
-// 		$partStructureArray = array();
-// 		
-// 		// @todo map parts from array to PS
-// 		foreach ($newArray as $part) {
-// 			if ($part != "FILE") {
-// 			$partStructureArray[] =& $part->getPartStructure();
-// 		}
-// 
-// 		print $moduleManager->generateDisplayForPartStructures(
-// 			$repositoryId, $assetId, $record, $partStructureArray);
-// 	}
+	function printFileRecord(&$fileData, &$parts) {
+		$idManager =& Services::getService("Id");
+		$moduleManager =& Services::getService("InOutModules");
+		
+		$repositoryId =& $idManager->getId(
+			"edu.middlebury.segue.sites_repository");
+		$assetId =& $this->_asset->getId();
+		$rid =& $idManager->getId($fileData['assoc_file_id'][0]);
+		$record =& $this->_asset->getRecord($rid);
+		$rs =& $record->getRecordStructure();
+		
+		$setArray = array("FILE_NAME", "FILE_SIZE", "DIMENSIONS", 
+			"MIME_TYPE", "FILE_DATA");
+		$newArray = array_intersect($setArray, $parts);
+		$partStructureArray = array();
+		
+		// @todo map parts from array to PS
+		foreach ($newArray as $part) {
+				$partStructureArray[] =& $rs->getPartStructure(
+					$idManager->getId($part));
+		}
+
+		return $moduleManager->generateDisplayForPartStructures(
+			$repositoryId, $assetId, $record, $partStructureArray);
+	}
 
 	/**
 	 * Answer the URL for the file 
