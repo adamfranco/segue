@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: reorder.act.php,v 1.1 2006/01/30 19:08:11 adamfranco Exp $
+ * @version $Id: reorder.act.php,v 1.2 2006/02/16 00:06:25 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: reorder.act.php,v 1.1 2006/01/30 19:08:11 adamfranco Exp $
+ * @version $Id: reorder.act.php,v 1.2 2006/02/16 00:06:25 adamfranco Exp $
  */
 class reorderAction 
 	extends MainWindowAction
@@ -71,6 +71,8 @@ class reorderAction
 		$parentRenderer =& NodeRenderer::forAsset($parentAsset, $null = null);
 		$orderedSet =& $parentRenderer->getChildOrder();
 		
+		printpre($orderedSet);
+		
 		$before = RequestContext::value('before');
 		if ($before == 'end')
 			$orderedSet->moveToEnd($childId);
@@ -78,8 +80,13 @@ class reorderAction
 			$orderedSet->moveToBeginning($childId);
 		else {
 			$beforeId =& $idManager->getId($before);
-			$orderedSet->moveToPosition($childId, $orderedSet->getPosition($beforeId));
+			if ($orderedSet->getPosition($beforeId) > 0)
+				$orderedSet->moveToPosition($childId, $orderedSet->getPosition($beforeId) - 1);
+			else
+				$orderedSet->moveToPosition($childId, 0);
 		}
+		
+		printpre($orderedSet);
 		
 		$parentRenderer->saveChildOrder();
 		

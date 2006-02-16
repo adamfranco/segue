@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.21 2006/02/02 21:11:20 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.22 2006/02/16 00:06:24 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.21 2006/02/02 21:11:20 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.22 2006/02/16 00:06:24 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -78,6 +78,17 @@ class NavigationNodeRenderer
 	}
 	
 	/**
+	 * Answer the title that should be displayed in a heading for this node.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function getHeading () {
+		return $this->getTitle().$this->getSettingsForm();
+	}
+	
+	/**
 	 * Answer the GUI component for the navegational item.
 	 * 
 	 * @param integer $level The Navigational level to use, 1=big, >1=smaller
@@ -89,8 +100,6 @@ class NavigationNodeRenderer
 		$links = array();
 		$harmoni =& Harmoni::instance();
 		$id =& $this->getId();
-		$links[_('add child')] = $harmoni->request->quickURL('site', 'add', 
-									array('parent_id' => $id->getIdString()));
 		
 		$component =& new MenuItemLinkWithAdditionalHtml(
 						$this->_asset->getDisplayName(), 
@@ -164,9 +173,9 @@ class NavigationNodeRenderer
 			$childRenderer =& $children[$i];
 			
 			// print a heading if availible
-			if ($childRenderer->getTitle()) {
+			if ($childRenderer->getHeading()) {
 				$title =& $container->add(
-							new Heading($childRenderer->getTitle(), 2),
+							new Heading($childRenderer->getHeading(), 2),
 							null, null, LEFT, TOP);
 				$childId =& $childRenderer->getId();
 				$title->setId($childId->getIdString()."-title");
@@ -326,6 +335,7 @@ class NavigationNodeRenderer
 				$this->_loadNavRecord();
 			
 			$this->_orderedChildren = array();
+			$orderedChildren = array();
 			$unorderedChildren = array();
 			
 			$children =& $this->_asset->getAssets();
@@ -335,18 +345,28 @@ class NavigationNodeRenderer
 				
 				$position = $this->_childOrder->getPosition($childId);
 				if ($position !== false) {
-					$this->_orderedChildren[$position] =& $child;
+					$orderedChildren[$position] =& $child;
 				} else {
 					$unorderedChildren[] =& $child;
 				}
 			}
-			ksort($this->_orderedChildren);
+			ksort($orderedChildren);
 			for ($i = 0; $i < count($unorderedChildren); $i++) {
-				$this->_orderedChildren[] =& $unorderedChildren[$i];
+				$orderedChildren[] =& $unorderedChildren[$i];
 				$this->_childOrder->addItem($unorderedChildren[$i]->getId());
 			}
 			
-			if (count($unorderedChildren))
+			// ensure that children are keyed from zero straight up.
+			$save = false;
+			$i = 0;
+			foreach (array_keys($orderedChildren) as $key) {
+				$this->_orderedChildren[$i] =& $orderedChildren[$key];
+				if ($i != $key)
+					$save = true;
+				$i++;
+			}
+			
+			if (count($unorderedChildren) || $save)
 				$this->saveChildOrder();
 				
 		}		
@@ -446,6 +466,17 @@ class NavigationNodeRenderer
 		$id =& $this->getId();
 		$idString = $id->getIdString();
 		
+		// Check Authorization
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.add_children"), $id))
+		{
+			$enabled = true;
+		} else
+			$enabled = false;
+		
+		
 		$navUrl = $harmoni->request->quickURL('site', 'addnav', 
 								array('parent_id' => $idString,
 									'return_node' => RequestContext::value('node')));
@@ -457,15 +488,19 @@ class NavigationNodeRenderer
 		print "\n\t\t\t<div>";
 // 		print "\n\t\t\t\t"._("New child node: ");
 		print "\n\t\t\t\t<select";
-		print " onchange='";
-		print "if (this.value) {";
-		print 	"if (this.value == \"nav\") {";
-		print 		"goToValueInserted(\"".$navUrl."\", \"\");";
-		print 	"} else {";
-		print		"goToValueInserted(\"".$pluginUrl."\", this.value);";
-		print 	"}";
-		print "}";
-		print "'";
+		if ($enabled) {
+			print " onchange='";
+			print "if (this.value) {";
+			print 	"if (this.value == \"nav\") {";
+			print 		"goToValueInserted(\"".$navUrl."\", \"\");";
+			print 	"} else {";
+			print		"goToValueInserted(\"".$pluginUrl."\", this.value);";
+			print 	"}";
+			print "}";
+			print "'";
+		} else {
+			print " disabled='disabled'";
+		}
 		print ">";
 		print "\n\t\t\t\t\t<option>"._("Add a new child element...")."</option>";
 		print "\n\t\t\t\t\t<option value='nav'>"._("Navigational Container")."</option>";
@@ -530,7 +565,7 @@ class NavigationNodeRenderer
 		$this->_targetOverride = $value->value();
 		
 		$sets =& Services::getService("Sets");
-		$this->_childOrder =& $sets->getTemporarySet($this->getId());
+		$this->_childOrder =& new OrderedSet($this->getId());
 		$parts =& $navRecord->getPartsByPartStructure(
 			$idManager->getId(
 				'Repository::edu.middlebury.segue.sites_repository'

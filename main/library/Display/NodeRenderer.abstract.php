@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.26 2006/02/02 21:11:20 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.27 2006/02/16 00:06:24 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.26 2006/02/02 21:11:20 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.27 2006/02/16 00:06:24 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -242,6 +242,17 @@ class NodeRenderer {
 	}
 	
 	/**
+	 * Answer the title that should be displayed in a heading for this node.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/19/06
+	 */
+	function getHeading () {
+		return $this->getTitle();
+	}
+	
+	/**
 	 * Answer the title that should be displayed for this node.
 	 * 
 	 * @return string
@@ -323,6 +334,9 @@ class NodeRenderer {
 	 */
 	function getSettingsForm ($links = array()) {
 		$harmoni = Harmoni::instance();
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+				
 		$id =& $this->getId();
 		$idString = $id->getIdString();
 		$parentId =& $this->_parent->getId();
@@ -334,7 +348,7 @@ class NodeRenderer {
 		$this->printOptionJS();
 		
 		print "\n<div id='options:".$id->getIdString()."'";
-		print " style='text-align: right;'>";
+		print " style='text-align: right; font-size: medium; font-weight: normal; font-style: normal'>";
 		
 		print "\n\t<div id='options_button:".$id->getIdString()."'";
 		print " style='text-align: right; padding: 3px; position: relative'>";
@@ -373,9 +387,21 @@ class NodeRenderer {
 		$url = $harmoni->request->quickURL('site', 'edit', 
 								array('node' => $id->getIdString(),
 									'return_node' => RequestContext::value('node')));
-		$links[_('settings')] = "\n\t\t\t\t<a href='".$url."'>"._("settings")."</a>";
+		if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.modify"), $id))
+		{
+			$links[_('settings')] = "\n\t\t\t\t<a href='".$url."'>"._("settings")."</a>";
+		} else {
+			$links[_('settings')] = "\n\t\t\t\t"._("settings");
+		}
 		
-		$links[_('delete')] = "\n\t\t\t\t<a href='Javascript:deleteNode(\"".$id->getIdString()."\", ".$this->getElementsToFlashOnDelete().", \"".$this->getDeleteConfirmMessage()."\");' >"._("delete")."</a>";
+		if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.delete"), $id))
+		{
+			$links[_('delete')] = "\n\t\t\t\t<a href='Javascript:deleteNode(\"".$id->getIdString()."\", ".$this->getElementsToFlashOnDelete().", \"".$this->getDeleteConfirmMessage()."\");' >"._("delete")."</a>";
+		} else {
+			$links[_('delete')] = "\n\t\t\t\t"._("delete");
+		}
 		
 		print "\n\t\t\t<div>";
 		print implode(" | ", $links);
@@ -607,17 +633,29 @@ END;
 	 */
 	function printOptionOrderForm () {
 		$harmoni = Harmoni::instance();
+		
 		$id =& $this->getId();
 		$idString = $id->getIdString();
 		$parentId =& $this->_parent->getId();
 		$parentIdString = $parentId->getIdString();
+		
+		// Check Authorization
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.modify"), $parentId))
+		{
+			$enabled = true;
+		} else {
+			$enabled = false;
+		}
 		
 		$siblingSet = $this->_parent->getChildOrder();
 		$myPosition = $siblingSet->getPosition($id);
 		print "\n\t\t\t"._('Order: ')." ";
 		print "\n\t\t\t<div style='white-space: nowrap; padding-left: 5px; padding-right: 5px;'>";
 		// Move 1 previous
-		if ($myPosition > 0) {
+		if ($myPosition > 0 && $enabled) {
 			$previousId =& $siblingSet->atPosition($myPosition - 1);
 			print "\n\t\t\t\t<a href='";
 			print $harmoni->request->quickURL('site', 'reorder', 
@@ -636,7 +674,13 @@ END;
 									'node' => $idString,
 									'before' => '______',
 									'return_node' => RequestContext::value('node')));
-		print "\n\t\t\t\t<select onchange='if (this.value) {goToValueInserted(\"".$url."\", this);} else {alert(\""._("Already in this position.")."\");}'>";
+		print "\n\t\t\t\t<select ";
+		if ($enabled) {
+			print "onchange='if (this.value) {goToValueInserted(\"".$url."\", this.value);} else {alert(\""._("Already in this position.")."\");}'";
+		} else {
+			print " disabled='disabled'";
+		}
+		print ">";
 		print "\n\t\t\t\t<option value=''>"._("Position Before...")."</option>";
 		$parentsChildren =& $this->_parent->getOrderedChildren();
 		$i = 1;
@@ -668,7 +712,7 @@ END;
 		print "\n\t\t\t\t</select>";
 		
 		// Move 1 next
-		if ($myPosition < ($siblingSet->count() - 1)) {
+		if ($myPosition < ($siblingSet->count() - 1) && $enabled) {
 			$nextId =& $siblingSet->atPosition($myPosition + 2);
 			if ($nextId)
 				$nextId = $nextId->getIdString();
@@ -701,6 +745,17 @@ END;
 		$parentId =& $this->_parent->getId();
 		$parentIdString = $parentId->getIdString();
 		
+		// Check Authorization
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.modify"), $parentId))
+		{
+			$enabled = true;
+		} else {
+			$enabled = false;
+		}
+		
 		if ($this->_parent->getNumCells() > 2) {
 			print "\n\t\t<div>";
 			$url = $harmoni->request->quickURL('site', 'change_column', 
@@ -716,7 +771,12 @@ END;
 			print "\n\t\t\tColumn: &nbsp;";
 		
 			$currentColumn = $this->_parent->getDestinationCell($id);
-			print "\n\t\t\t<select onchange='if (this.value == ".$currentColumn.") {alert(\""._("Already in this cell.")."\");} else {changeCell(\"".$url."\", this, ".$currentColumn.", \"".$parentIdString."\");}'>";
+			print "\n\t\t\t<select";
+			if ($enabled)
+				print " onchange='if (this.value == ".$currentColumn.") {alert(\""._("Already in this cell.")."\");} else {changeCell(\"".$url."\", this, ".$currentColumn.", \"".$parentIdString."\");}'";
+			else
+				print " disabled='disabled'";
+			print ">";
 			for ($i = 1; $i < $this->_parent->getNumCells(); $i++) {
 				print "\n\t\t\t\t<option";
 				if ($currentColumn == $i)
