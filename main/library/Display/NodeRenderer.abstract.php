@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.27 2006/02/16 00:06:24 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.28 2006/02/16 22:06:56 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.27 2006/02/16 00:06:24 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.28 2006/02/16 22:06:56 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -384,7 +384,7 @@ class NodeRenderer {
 		array_walk($links, 
 			create_function('&$url,$name', '$url = "\n\t\t\t\t<a href=\'$url\'>$name</a>";'));
 			
-		$url = $harmoni->request->quickURL('site', 'edit', 
+		$url = $harmoni->request->quickURL('site', 'nav_settings', 
 								array('node' => $id->getIdString(),
 									'return_node' => RequestContext::value('node')));
 		if ($authZ->isUserAuthorized(
