@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.22 2006/02/16 00:06:24 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.23 2006/02/16 00:17:00 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.22 2006/02/16 00:06:24 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.23 2006/02/16 00:17:00 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -359,15 +359,19 @@ class NavigationNodeRenderer
 			// ensure that children are keyed from zero straight up.
 			$save = false;
 			$i = 0;
+			$newChildOrder =& new OrderedSet($this->getId());
 			foreach (array_keys($orderedChildren) as $key) {
 				$this->_orderedChildren[$i] =& $orderedChildren[$key];
+				$newChildOrder->addItem($this->_orderedChildren[$i]->getId());
 				if ($i != $key)
 					$save = true;
 				$i++;
 			}
 			
-			if (count($unorderedChildren) || $save)
+			if (count($unorderedChildren) || $save) {
+				$this->_childOrder =& $newChildOrder;
 				$this->saveChildOrder();
+			}
 				
 		}		
 		return $this->_orderedChildren;
