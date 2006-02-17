@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.4 2006/02/17 21:15:00 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.5 2006/02/17 22:25:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.4 2006/02/17 21:15:00 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.5 2006/02/17 22:25:37 adamfranco Exp $
  */
 class nav_settingsAction 
 	extends MainWindowAction
@@ -181,11 +181,11 @@ class nav_settingsAction
 		print "\n\t</table>";
 		print "\n</td><td valign='top'>";
 		
-		print "\n\t<table>";
 		$sampleText = _('This is some sample text. ');
 		$linkText = -('link');
 		$targetText = _('Target:<br/>Where links will be displayed.');
 		$formName = $this->_cacheName."_form";
+		$errorText = _('Error: Javascript is required to display this interface. Please enable javascript in your browser.');
 		print<<<END
 
 <script type='text/javascript'>
@@ -620,7 +620,7 @@ class nav_settingsAction
 /* ]]> */
 </script>
 
-<div id='layout_display'></div>
+<div id='layout_display'>$errorText</div>
 
 </td></tr></table>
 
@@ -684,75 +684,37 @@ END;
 		
 		// Make sure we have a valid Repository
 		$idManager =& Services::getService("Id");
-		$authZ =& Services::getService("AuthZ");
-	
-		$repository =& $this->getRepository();
+		$repositoryManager =& Services::getService("Repository");
+		$repository =& $repositoryManager->getRepository(
+			$idManager->getId("edu.middlebury.segue.sites_repository"));
+		$asset =& $repository->getAsset($idManager->getId(RequestContext::value('node')));
+		$null = null;
+		$renderer =& NodeRenderer::forAsset($asset, $null);
 		
 		$properties =& $wizard->getAllValues();
 		
-		// First, verify that we chose a parent that we can add children to.
-		if (!$properties['parentstep']['parent'] 
-			|| $properties['parentstep']['parent'] == 'NONE'
-			|| ($parentId =& $idManager->getId($properties['parentstep']['parent'])
-				&& $authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.add_children"), $parentId)))
-		{
-			
-			// Get the type from the select if one is specified
-			if ($properties['typestep']['option_type'] != 'NONE') {
-				$typeString = urldecode($properties['typestep']['option_type']);
-				$assetType = HarmoniType::stringToType($typeString);
-			} 
-			// Otherwise, Generate the type from the specified fields
-			else {
-				$domain = $properties['typestep']['type_domain'];
-				$authority = $properties['typestep']['type_authority'];
-				$keyword = $properties['typestep']['type_keyword'];
-				$description = $properties['typestep']['type_description'];
-				if (!($domain && $authority && $keyword)) {
-					$wizard->setStep("typestep");
-					return false;
-				}
-				$assetType = new HarmoniType($domain, 
-											$authority, 
-											$keyword, 
-											$description);
-			}
-			
-			$asset =& $repository->createAsset($properties['namedescstep']['display_name'], 
-										$properties['namedescstep']['description'], 
-										$assetType);
-										
-			$assetId =& $asset->getId();
-			$this->_assetId =& $assetId;
-			
-			$content =& Blob::withValue($properties['contentstep']['content']);
-			$asset->updateContent($content);
-			
-			// Update the effective/expiration dates
-			if ($properties['datestep']['effective_date'])
-				$asset->updateEffectiveDate(
-					DateAndTime::fromString($properties['datestep']['effective_date']));
-			if ($properties['datestep']['expiration_date'])
-				$asset->updateExpirationDate(
-					DateAndTime::fromString($properties['datestep']['expiration_date']));
-			
-			// Add our parent if we have specified one.
-			if ($properties['parentstep']['parent'] 
-				&& $properties['parentstep']['parent'] != 'NONE') 
-			{
-				$parentId =& $idManager->getId($properties['parentstep']['parent']);
-				$parentAsset =& $repository->getAsset($parentId);
-				$parentAsset->addAsset($assetId);
-			}
-			
-			return TRUE;
-		} 
-		// If we don't have authorization to add to the picked parent, send us back to
-		// that step.
-		else {
-			$wizard->setStep("parentstep");
-			return FALSE;
-		}
+		// Name and description
+		$asset->updateDisplayName($properties['namedescstep']['display_name']);
+		$asset->updateDescription($properties['namedescstep']['description']);
+		
+		$part =& $renderer->getNumCellsPart();
+		$part->updateValue(Integer::withValue($properties['layoutstep']['cells']));
+		
+		$part =& $renderer->getLayoutArrangementPart();
+		$part->updateValue(String::withValue($properties['layoutstep']['arrangement']));
+		
+		$part =& $renderer->getTargetOverridePart();
+		$part->updateValue(Integer::withValue($properties['layoutstep']['targetoverride']));
+		
+		// Update the effective/expiration dates
+// 		if ($properties['datestep']['effective_date'])
+// 			$asset->updateEffectiveDate(
+// 				DateAndTime::fromString($properties['datestep']['effective_date']));
+// 		if ($properties['datestep']['expiration_date'])
+// 			$asset->updateExpirationDate(
+// 				DateAndTime::fromString($properties['datestep']['expiration_date']));
+		
+		return TRUE;
 	}
 	
 	/**

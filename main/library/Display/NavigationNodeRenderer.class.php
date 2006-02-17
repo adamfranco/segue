@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.23 2006/02/16 00:17:00 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.24 2006/02/17 22:25:37 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.23 2006/02/16 00:17:00 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.24 2006/02/17 22:25:37 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -255,10 +255,11 @@ class NavigationNodeRenderer
 		// Add our children to our cells
 		if (!count($children)) {
 			for ($i = 1; $i < $numCells; $i++) {
-				$cells[$i]->add(
-					new MenuItem("[debug: no children]<br/>[Cell[$i]]", 
-						$level),
-					null, null, CENTER, TOP);
+				if (isset($cells[$i]))
+					$cells[$i]->add(
+						new MenuItem("[debug: no children]<br/>[Cell[$i]]", 
+							$level),
+						null, null, CENTER, TOP);
 			}
 			
 			$targetCell->add(
@@ -533,40 +534,19 @@ class NavigationNodeRenderer
 		$idManager =& Services::getService("Id");
 		
 		// Get the nav info
-		$navRecords =& $this->_asset->getRecordsByRecordStructure(
-			$idManager->getId(
-				'Repository::edu.middlebury.segue.sites_repository'
-				.'::edu.middlebury.segue.nav_nod_rs'));
-		if (!$navRecords->hasNext())
-			throwError(new Error("Manditory Navegation data missing.", __FILE__, TRUE));		
-		$navRecord =& $navRecords->next();
-		
-		
-		$parts =& $navRecord->getPartsByPartStructure(
-			$idManager->getId(
-				'Repository::edu.middlebury.segue.sites_repository'
-				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.layout_arrangement'));
-		$part =& $parts->next();
+		$part =& $this->getLayoutArrangementPart();
 		$value =& $part->getValue();
 		$this->_layoutArrangement = $value->asString();
 		
-		
-		$parts =& $navRecord->getPartsByPartStructure(
-			$idManager->getId(
-				'Repository::edu.middlebury.segue.sites_repository'
-				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.num_cells'));
-		$part =& $parts->next();
+		$part =& $this->getNumCellsPart();
 		$value =& $part->getValue();
 		$this->_numCells = $value->value();
 		
-		
-		$parts =& $navRecord->getPartsByPartStructure(
-			$idManager->getId(
-				'Repository::edu.middlebury.segue.sites_repository'
-				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.target_override'));
-		$part =& $parts->next();
+		$part =& $this->getTargetOverridePart();
 		$value =& $part->getValue();
 		$this->_targetOverride = $value->value();
+		
+		$navRecord =& $this->getNavRecord();
 		
 		$sets =& Services::getService("Sets");
 		$this->_childOrder =& new OrderedSet($this->getId());
@@ -605,6 +585,75 @@ class NavigationNodeRenderer
 // 											$this->_childCells[$this->_numCells],
 // 											explode("\t", $storedCells[$i]));
 // 		}
+	}
+	
+	/**
+	 * Answer the nav Record for this asset
+	 * 
+	 * @return object Record
+	 * @access public
+	 * @since 2/17/06
+	 */
+	function &getNavRecord () {
+		$idManager =& Services::getService("Id");
+		$navRecords =& $this->_asset->getRecordsByRecordStructure(
+			$idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs'));
+		if (!$navRecords->hasNext())
+			throwError(new Error("Manditory Navegation data missing.", __FILE__, TRUE));		
+		return $navRecords->next();
+	}
+	
+	/**
+	 * Answer the num_cells nav part
+	 * 
+	 * @return object Part
+	 * @access public
+	 * @since 2/17/06
+	 */
+	function &getNumCellsPart () {
+		$idManager =& Services::getService("Id");
+		$navRecord =& $this->getNavRecord();
+		$parts =& $navRecord->getPartsByPartStructure(
+			$idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.num_cells'));
+		return $parts->next();
+	}
+	
+	/**
+	 * Answer the target override nav part
+	 * 
+	 * @return object Part
+	 * @access public
+	 * @since 2/17/06
+	 */
+	function &getTargetOverridePart () {
+		$idManager =& Services::getService("Id");
+		$navRecord =& $this->getNavRecord();
+		$parts =& $navRecord->getPartsByPartStructure(
+			$idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.target_override'));
+		return $parts->next();
+	}
+	
+	/**
+	 * Answer the layout arrangement nav part
+	 * 
+	 * @return object Part
+	 * @access public
+	 * @since 2/17/06
+	 */
+	function &getLayoutArrangementPart () {
+		$idManager =& Services::getService("Id");
+		$navRecord =& $this->getNavRecord();
+		$parts =& $navRecord->getPartsByPartStructure(
+			$idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.layout_arrangement'));
+		return $parts->next();
 	}
 	
 	/**
