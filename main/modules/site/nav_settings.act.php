@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.2 2006/02/17 16:29:37 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.3 2006/02/17 20:06:38 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.2 2006/02/17 16:29:37 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.3 2006/02/17 20:06:38 adamfranco Exp $
  */
 class nav_settingsAction 
 	extends MainWindowAction
@@ -218,6 +218,12 @@ class nav_settingsAction
 			}
 		}
 		
+	// Error Checking
+		// Nested must have at least two cells
+		if (arrangementInput.value == 'nested' && numCellsInput.value < 2)
+			numCellsInput.value = 2;
+		
+		// Override must be in bounds.
 		if (targetOverrideInput.value > numCellsInput.value && numCellsInput.value > 1)
 			targetOverrideInput.value = numCellsInput.value;
 		
@@ -295,7 +301,7 @@ class nav_settingsAction
 					renderSelectedColumn(column);
 					selectedRendered = true;
 				} else
-					renderColumn(column, false);
+					renderColumn(column);
 				column.style.backgroundColor = '#aaf';
 				column.style.width = '200px';
 			}
@@ -404,7 +410,7 @@ class nav_settingsAction
 					renderSelectedRow(column);
 					selectedRendered = true;
 				} else
-					renderRow(column, false);
+					renderRow(column);
 				column.style.backgroundColor = '#aaf';
 // 				column.style.width = '200px';
 			}
@@ -475,6 +481,106 @@ class nav_settingsAction
 			col.style.padding = '3px';
 			col.style.backgroundColor = '#99f';
 		}
+	}
+	
+	/**
+	 * Render the the rows and columns of a 'columns' display
+	 * 
+	 * @param node table
+	 * @param integer numCells
+	 * @param integer targetOverride
+	 * @return void
+	 * @access public
+	 * @since 2/16/06
+	 */
+	function renderNestedDisplay ( table, numCells, targetOverride ) {
+		var row = document.createElement('tr');
+		table.appendChild(row);
+		
+		var selectedRendered = false;
+		for (var i = 1; i <= numCells; i++) {
+			var column = document.createElement('td');
+			row.appendChild(column);
+			
+			column.style.verticalAlign = 'top';
+			
+			if (i == 1) {
+				column.style.backgroundColor = '#faa';
+				column.style.width = '200px';
+				renderNestedColumn(column);			
+			} else if (i == targetOverride) {
+				column.style.backgroundColor = '#afa';
+				column.style.width = '400px';
+				column.innerHTML = '$targetText';
+				column.style.verticalAlign = 'top';
+				column.style.padding = '10px';
+			} else {
+				renderColumn(column);
+				column.style.backgroundColor = '#aaf';
+				column.style.width = '200px';
+			}
+		}
+	}
+	
+	/**
+	 * Render a column with link and text blocks
+	 * 
+	 * @param node column
+	 * @return void
+	 * @access public
+	 * @since 2/16/06
+	 */
+	function renderNestedColumn ( column, num ) {
+		if (!num)
+			var num = 3;
+		
+		var table = document.createElement('table');
+		column.appendChild(table);
+		
+		for (var i = 0; i < num; i++) {
+			var row = document.createElement('tr');
+			table.appendChild(row);
+			var col = document.createElement('td');
+			row.appendChild(col);
+			col.innerHTML = '&lt; link &gt;';
+			col.style.border = '1px dotted';
+			col.style.margin = '5px';
+			col.style.padding = '3px';
+			if (i == 1) {
+				col.style.backgroundColor = '#f77';
+				
+				var row = document.createElement('tr');
+				table.appendChild(row);
+				var col = document.createElement('td');
+				row.appendChild(col);
+// 				col.style.border = '1px dotted';
+				col.style.margin = '5px';
+				col.style.padding = '3px';
+				col.style.paddingLeft = '15px';
+				col.style.backgroundColor = '#faa';
+				
+				// box for the children to sit in.
+				var box = document.createElement('div');
+				col.appendChild(box);
+				box.style.border = '1px dotted';
+				box.style.backgroundColor = '#aaf';
+				
+				renderSelectedColumn(box);
+			} else
+				col.style.backgroundColor = '#f99';
+		}
+		
+		var row = document.createElement('tr');
+		table.appendChild(row);
+		var col = document.createElement('td');
+		row.appendChild(col);
+		col.innerHTML += "$sampleText";
+		col.innerHTML += "$sampleText";
+		col.innerHTML += "$sampleText";
+		col.innerHTML += "$sampleText";
+		col.style.border = '1px dotted';
+		col.style.margin = '3px';
+		col.style.backgroundColor = '#f99';
 	}
 	
 	/**
