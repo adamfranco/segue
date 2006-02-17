@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.1 2006/02/16 22:06:57 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.2 2006/02/17 16:29:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.1 2006/02/16 22:06:57 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.2 2006/02/17 16:29:37 adamfranco Exp $
  */
 class nav_settingsAction 
 	extends MainWindowAction
@@ -157,7 +157,10 @@ class nav_settingsAction
 		$property->setValue($arrangement);
 		$property->setOnChange("updateLayoutDisplay(this, 'arrangement');");
 		
-		$property =& $step->addComponent("targetoverride", new WTextField());		
+		$property =& $step->addComponent("targetoverride", new WSelectList());
+		for ($i = 1; $i <= 4; $i++) {
+			$property->addOption($i, $i);
+		}
 		$property->setValue($targetOverride);
 		$property->setOnChange("updateLayoutDisplay(this, 'targetoverride');");
 		
@@ -175,7 +178,9 @@ class nav_settingsAction
 		print "\n</td><td valign='top'>";
 		
 		
-		$sampleText = _('This is some sample text.');
+		$sampleText = _('This is some sample text. ');
+		$linkText = -('link');
+		$targetText = _('Target:<br/>Where links will be displayed.');
 		print<<<END
 
 <script type='text/javascript'>
@@ -202,18 +207,21 @@ class nav_settingsAction
 		for (var i = 0; i < inputs.length; i++) {
 			switch (inputs[i].name) {
 				case numCellsName:
-					var numCells = inputs[i].value;
+					var numCellsInput = inputs[i];
 					break;
 				case arrangementName:
-					var arrangement = inputs[i].value;
+					var arrangementInput = inputs[i];
 					break;
 				case targetOverrideName:
-					var targetOverride = inputs[i].value;
+					var targetOverrideInput = inputs[i];
 					break;
 			}
 		}
 		
-		renderLayoutDisplay(numCells, arrangement, targetOverride);
+		if (targetOverrideInput.value > numCellsInput.value && numCellsInput.value > 1)
+			targetOverrideInput.value = numCellsInput.value;
+		
+		renderLayoutDisplay(numCellsInput.value, arrangementInput.value, targetOverrideInput.value);
 	}
 	
 	/**
@@ -236,10 +244,16 @@ class nav_settingsAction
 		
 		switch (arrangement) {
 			case 'columns':
-				renderColumnDisplay(table, numCells, targetOverride);
+				if (numCells == 1)
+					renderColumn(table, 5);
+				else
+					renderColumnDisplay(table, numCells, targetOverride);
 				break;
 			case 'rows':
-				renderRowDisplay(table, numCells, targetOverride);
+				if (numCells == 1)
+					renderColumn(table, 5);
+				else
+					renderRowDisplay(table, numCells, targetOverride);
 				break;
 			case 'nested':
 				renderNestedDisplay(table, numCells, targetOverride);
@@ -273,6 +287,9 @@ class nav_settingsAction
 			if (i == targetOverride) {
 				column.style.backgroundColor = '#afa';
 				column.style.width = '400px';
+				column.innerHTML = '$targetText';
+				column.style.verticalAlign = 'top';
+				column.style.padding = '10px';
 			} else {
 				if (!selectedRendered) {
 					renderSelectedColumn(column);
@@ -293,11 +310,14 @@ class nav_settingsAction
 	 * @access public
 	 * @since 2/16/06
 	 */
-	function renderSelectedColumn ( column ) {
+	function renderSelectedColumn ( column, num ) {
+		if (!num)
+			var num = 3;
+		
 		var table = document.createElement('table');
 		column.appendChild(table);
 		
-		for (var i = 0; i < 5; i++) {
+		for (var i = 0; i < num; i++) {
 			var row = document.createElement('tr');
 			table.appendChild(row);
 			var col = document.createElement('td');
@@ -333,11 +353,14 @@ class nav_settingsAction
 	 * @access public
 	 * @since 2/16/06
 	 */
-	function renderColumn ( column ) {
+	function renderColumn ( column, num ) {
+		if (!num)
+			var num = 3;
+			
 		var table = document.createElement('table');
 		column.appendChild(table);
 		
-		for (var i = 0; i < 4; i++) {
+		for (var i = 0; i < num; i++) {
 			var row = document.createElement('tr');
 			table.appendChild(row);
 			var col = document.createElement('td');
@@ -409,6 +432,7 @@ class nav_settingsAction
 			col.style.border = '1px dotted';
 			col.style.margin = '5px';
 			col.style.padding = '3px';
+			col.style.whiteSpace = 'nowrap';
 			if (i == 0)
 				col.style.backgroundColor = '#77f';
 			else
@@ -440,7 +464,7 @@ class nav_settingsAction
 		var row = document.createElement('tr');
 		table.appendChild(row);
 		
-		for (var i = 0; i < 4; i++) {
+		for (var i = 0; i < 3; i++) {
 			var col = document.createElement('td');
 			row.appendChild(col);
 			text = "$sampleText";
