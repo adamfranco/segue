@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.3 2006/02/17 20:06:38 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.4 2006/02/17 21:15:00 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.3 2006/02/17 20:06:38 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.4 2006/02/17 21:15:00 adamfranco Exp $
  */
 class nav_settingsAction 
 	extends MainWindowAction
@@ -66,9 +66,9 @@ class nav_settingsAction
 		
 		$id =& $idManager->getId(RequestContext::value('node'));
 		
-		$cacheName = 'nav_settings_'.$id->getIdString();
+		$this->_cacheName = 'nav_settings_'.$id->getIdString();
 		
-		$this->runWizard ( $cacheName, $this->getActionRows() );
+		$this->runWizard ( $this->_cacheName, $this->getActionRows() );
 	}
 		
 	/**
@@ -148,43 +148,66 @@ class nav_settingsAction
 			$property->addOption($i, $i);
 		}
 		$property->setValue($numCells);
-		$property->setOnChange("updateLayoutDisplay(this, 'cells');");
+		$property->setOnChange("updateLayoutDisplay(this.form);");
+		
 		
 		$property =& $step->addComponent("arrangement", new WSelectList());
 		$property->addOption('columns', 'Columns');
 		$property->addOption('rows', 'Rows');
 		$property->addOption('nested', 'Nested');
 		$property->setValue($arrangement);
-		$property->setOnChange("updateLayoutDisplay(this, 'arrangement');");
+		$property->setOnChange("updateLayoutDisplay(this.form);");
 		
 		$property =& $step->addComponent("targetoverride", new WSelectList());
 		for ($i = 1; $i <= 4; $i++) {
 			$property->addOption($i, $i);
 		}
 		$property->setValue($targetOverride);
-		$property->setOnChange("updateLayoutDisplay(this, 'targetoverride');");
+		$property->setOnChange("updateLayoutDisplay(this.form);");
 		
 		// create the text
 		ob_start();
 		print "\n<table><tr><td valign='top'>";
-		print "\n<h2>"._("Arrangement")."</h2>";
-		print "\n[[arrangement]]";
-		print "\n<br />";
-		print "\n<h2>"._("Number of Cells")."</h2>";
-		print "\n[[cells]]";
-		print "\n<br />";
-		print "\n<h2>"._("Target")."</h2>";
-		print "\n[[targetoverride]]";
+		print "\n\t<table>";
+		print "\n\t\t<tr><th valign='top'>"._("Arrangement")."</th></tr>";
+		print "\n\t\t<tr><td valign='top' style='padding-bottom: 15px'>[[arrangement]]</td></tr>";
+		
+		print "\n\t\t<tr><th valign='top' style='white-space: nowrap'>"._("Number of Cells")."</th></tr>";
+		print "\n\t\t<tr><td valign='top' style='padding-bottom: 15px'>[[cells]]</td></tr>";
+		
+		print "\n\t\t<tr><th valign='top'>"._("Target")."</th></tr>";
+		print "\n\t\t<tr><td valign='top' style='padding-bottom: 15px'>[[targetoverride]]</td></tr>";
+		
+		print "\n\t</table>";
 		print "\n</td><td valign='top'>";
 		
-		
+		print "\n\t<table>";
 		$sampleText = _('This is some sample text. ');
 		$linkText = -('link');
 		$targetText = _('Target:<br/>Where links will be displayed.');
+		$formName = $this->_cacheName."_form";
 		print<<<END
 
 <script type='text/javascript'>
 /* <![CDATA[ */
+
+	/**
+	 * Inititialize the display based on the form name
+	 * 
+	 * @param string formName
+	 * @return void
+	 * @access public
+	 * @since 2/17/06
+	 */
+	function initializeLayoutDisplay (formName) {
+		for (var i = 0; i < document.forms.length; i++) {
+			if (document.forms[i].name == formName) {
+				var form = document.forms[i];
+				break;
+			}
+		}		
+		updateLayoutDisplay(form);
+	}
 	
 	/**
 	 * Render the layout display.
@@ -195,33 +218,25 @@ class nav_settingsAction
 	 * @access public
 	 * @since 2/16/06
 	 */
-	function updateLayoutDisplay (element, elementKey) {
-		var elementPrefix = element.name.substr(
-								0, 
-								element.name.search(new RegExp(elementKey + "$")));
-		var numCellsName = elementPrefix + "cells";
-		var arrangementName = elementPrefix + "arrangement";
-		var targetOverrideName = elementPrefix + "targetoverride";
-		
-		var inputs = element.form.elements;
+	function updateLayoutDisplay ( form ) {		
+		var inputs = form.elements;
 		for (var i = 0; i < inputs.length; i++) {
-			switch (inputs[i].name) {
-				case numCellsName:
-					var numCellsInput = inputs[i];
-					break;
-				case arrangementName:
-					var arrangementInput = inputs[i];
-					break;
-				case targetOverrideName:
-					var targetOverrideInput = inputs[i];
-					break;
-			}
+			if (inputs[i].name.match(/^.*cells$/))
+				var numCellsInput = inputs[i];
+			else if (inputs[i].name.match(/^.*arrangement$/))
+				var arrangementInput = inputs[i];
+			else if (inputs[i].name.match(/^.*targetoverride$/))
+				var targetOverrideInput = inputs[i];
 		}
 		
 	// Error Checking
 		// Nested must have at least two cells
 		if (arrangementInput.value == 'nested' && numCellsInput.value < 2)
 			numCellsInput.value = 2;
+		
+		// Nested Override cannot be 1.
+		if (arrangementInput.value == 'nested' && targetOverrideInput.value < 2)
+			targetOverrideInput.value = 2;
 		
 		// Override must be in bounds.
 		if (targetOverrideInput.value > numCellsInput.value && numCellsInput.value > 1)
@@ -309,6 +324,42 @@ class nav_settingsAction
 	}
 	
 	/**
+	 * Render the the rows and columns of a 'row' display
+	 * 
+	 * @param node table
+	 * @param integer numCells
+	 * @param integer targetOverride
+	 * @return void
+	 * @access public
+	 * @since 2/16/06
+	 */
+	function renderRowDisplay ( table, numCells, targetOverride ) {
+		
+		var selectedRendered = false;
+		for (var i = 1; i <= numCells; i++) {
+			var row = document.createElement('tr');
+			table.appendChild(row);
+			var column = document.createElement('td');
+			row.appendChild(column);
+			
+			column.style.verticalAlign = 'top';
+			
+			if (i == targetOverride) {
+				column.style.backgroundColor = '#afa';
+				column.style.height = '400px';
+			} else {
+				if (!selectedRendered) {
+					renderSelectedRow(column);
+					selectedRendered = true;
+				} else
+					renderRow(column);
+				column.style.backgroundColor = '#aaf';
+// 				column.style.width = '200px';
+			}
+		}
+	}
+	
+	/**
 	 * Render a column with link and text blocks
 	 * 
 	 * @param node column
@@ -378,42 +429,6 @@ class nav_settingsAction
 			col.style.margin = '5px';
 			col.style.padding = '3px';
 			col.style.backgroundColor = '#99f';
-		}
-	}
-	
-	/**
-	 * Render the the rows and columns of a 'row' display
-	 * 
-	 * @param node table
-	 * @param integer numCells
-	 * @param integer targetOverride
-	 * @return void
-	 * @access public
-	 * @since 2/16/06
-	 */
-	function renderRowDisplay ( table, numCells, targetOverride ) {
-		
-		var selectedRendered = false;
-		for (var i = 1; i <= numCells; i++) {
-			var row = document.createElement('tr');
-			table.appendChild(row);
-			var column = document.createElement('td');
-			row.appendChild(column);
-			
-			column.style.verticalAlign = 'top';
-			
-			if (i == targetOverride) {
-				column.style.backgroundColor = '#afa';
-				column.style.height = '400px';
-			} else {
-				if (!selectedRendered) {
-					renderSelectedRow(column);
-					selectedRendered = true;
-				} else
-					renderRow(column);
-				column.style.backgroundColor = '#aaf';
-// 				column.style.width = '200px';
-			}
 		}
 	}
 	
@@ -613,7 +628,7 @@ class nav_settingsAction
 /* <![CDATA[ */
 
 	// Render the initial display
-	renderLayoutDisplay('$numCells', '$arrangement', '$targetOverride');
+	initializeLayoutDisplay('$formName');
 
 /* ]]> */
 </script>
@@ -647,46 +662,7 @@ END;
 // 		print "\n<br />[[expiration_date]]";
 // 		$step->setContent(ob_get_contents());
 // 		ob_end_clean();
-// 		
-// 		
-// 		
-// 		// :: Parent ::
-// 		$step =& $wizard->addStep("parentstep", new WizardStep());
-// 		$step->setDisplayName(_("Parent")." ("._("optional").")");
-// 		
-// 		// Create the properties.
-// 		$property =& $step->addComponent("parent", new WSelectList());
-// 		$harmoni =& Harmoni::instance();
-// 		
-// 		$property->addOption("NONE", _("None"));
-// 		
-// 		$assets =& $repository->getAssets();
-// 		$authZManager =& Services::getService("AuthZ");
-// 		$idManager =& Services::getService("Id");
-// 		while ($assets->hasNext()) {
-// 			$asset =& $assets->next();
-// 			$assetId =& $asset->getId();
-// 			if ($authZManager->isUserAuthorized(
-// 				$idManager->getId("edu.middlebury.authorization.add_children"),
-// 				$assetId))
-// 			{
-// 				$property->addOption($assetId->getIdString(), $assetId->getIdString()." - ".$asset->getDisplayName());
-// 			}
-// 		}
-// 		
-// 		if (RequestContext::value('parent'))
-// 			$property->setValue(RequestContext::value('parent'));
-// 		else
-// 			$property->setValue("NONE");
-// 				
-// 		// Create the step text
-// 		ob_start();
-// 		print "\n<h2>"._("Parent <em>Asset</em>")."</h2>";
-// 		print "\n"._("Select one of the <em>Assets</em> below if you wish to make this new asset a child of another asset: ");
-// 		print "\n<br />[[parent]]";
-// 		
-// 		$step->setContent(ob_get_contents());
-// 		ob_end_clean();
+
 		
 		return $wizard;
 	}
