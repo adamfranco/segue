@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.25 2006/02/20 17:58:18 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.26 2006/02/20 18:09:50 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.25 2006/02/20 17:58:18 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.26 2006/02/20 18:09:50 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -527,6 +527,20 @@ class NavigationNodeRenderer
 		print "\n\t\t\t</div>";
 	}
 	
+	/**
+	 * Anwser the url for the settings wizard
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/20/06
+	 */
+	function getSettingsUrl () {
+		$harmoni =& Harmoni::instance();
+		$id =& $this->getId();
+		return $harmoni->request->quickURL('site', 'nav_settings', 
+								array('node' => $id->getIdString(),
+									'return_node' => RequestContext::value('node')));;
+	}
 	
 /*********************************************************
  * Instance Methods - Private
