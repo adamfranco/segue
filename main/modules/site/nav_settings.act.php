@@ -5,10 +5,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.5 2006/02/17 22:25:37 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.6 2006/02/20 21:53:09 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(MYDIR."/main/library/Display/LayoutTemplates/AllNestedLayoutTemplateVisitor.class.php");
+require_once(MYDIR."/main/library/Display/LayoutTemplates/AltRowsColumnsLayoutTemplateVisitor.class.php");
+require_once(MYDIR."/main/library/Display/LayoutTemplates/AllColumnsLayoutTemplateVisitor.class.php");
+require_once(MYDIR."/main/library/Display/LayoutTemplates/AllRowsLayoutTemplateVisitor.class.php");
 
 /**
  * 
@@ -18,7 +22,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.5 2006/02/17 22:25:37 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.6 2006/02/20 21:53:09 adamfranco Exp $
  */
 class nav_settingsAction 
 	extends MainWindowAction
@@ -85,7 +89,7 @@ class nav_settingsAction
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
 		$asset =& $repository->getAsset($idManager->getId(RequestContext::value('node')));
 	
-		return _("Settings the ")."<em>".$asset->getDisplayName()."</em> "._("Node");
+		return _("Settings for ")."<em>".$asset->getDisplayName()."</em> ";
 	}
 	
 	/**
@@ -154,7 +158,10 @@ class nav_settingsAction
 		$property =& $step->addComponent("arrangement", new WSelectList());
 		$property->addOption('columns', 'Columns');
 		$property->addOption('rows', 'Rows');
-		$property->addOption('nested', 'Nested');
+		
+		$siteType =& new Type('site_components', 'edu.middlebury.segue', 'site');
+		if (!$siteType->isEqual($asset->getAssetType()))
+			$property->addOption('nested', 'Nested');
 		$property->setValue($arrangement);
 		$property->setOnChange("updateLayoutDisplay(this.form);");
 		
@@ -636,6 +643,27 @@ class nav_settingsAction
 END;
 		
 		$step->setContent(ob_get_clean());
+		
+		
+	// :: Layout Templates ::
+		$step =& $wizard->addStep("layout_template", new WizardStep());
+		$step->setDisplayName(_("Layout Template"));
+		
+		$property =& $step->addComponent("template", new WSelectList());
+		$property->addOption('', _('No Change'));
+		$property->addOption('all_nested', _('All Nested'));
+		$property->addOption('alt_row-column', _('Alternating Rows/Columns'));
+		$property->addOption('all_columns', _('All Columns'));
+		$property->addOption('all_rows', _('All Rows'));
+		
+		ob_start();
+		
+		print "\n<h2>"._("Apply a Layout Template")."</h2>";
+		print "\n"._("A layout template will change the layout arrangements of the nodes inside this site or navigation container.");
+		print "\n<br/>"._("Changes here may override the arrangement on the previous step to ensure compatability.");
+		print "\n<br />[[template]]";
+		
+		$step->setContent(ob_get_clean());
 
 // 		
 // 		// :: Effective/Expiration Dates ::
@@ -662,7 +690,6 @@ END;
 // 		print "\n<br />[[expiration_date]]";
 // 		$step->setContent(ob_get_contents());
 // 		ob_end_clean();
-
 		
 		return $wizard;
 	}
@@ -691,12 +718,15 @@ END;
 		$null = null;
 		$renderer =& NodeRenderer::forAsset($asset, $null);
 		
-		$properties =& $wizard->getAllValues();
+		$properties = $wizard->getAllValues();
+		
 		
 		// Name and description
 		$asset->updateDisplayName($properties['namedescstep']['display_name']);
 		$asset->updateDescription($properties['namedescstep']['description']);
 		
+		
+		// Layout settings
 		$part =& $renderer->getNumCellsPart();
 		$part->updateValue(Integer::withValue($properties['layoutstep']['cells']));
 		
@@ -705,6 +735,27 @@ END;
 		
 		$part =& $renderer->getTargetOverridePart();
 		$part->updateValue(Integer::withValue($properties['layoutstep']['targetoverride']));
+		
+		
+		// Layout template
+		if ($properties['layout_template']['template'] != '') {
+			switch ($properties['layout_template']['template']) {
+				case 'all_nested':
+					$visitor =& new AllNestedLayoutTemplateVisitor;
+					break;
+				case 'alt_row-column':
+					$visitor =& new AltRowsColumnsLayoutTemplateVisitor;
+					break;
+				case 'all_columns':
+					$visitor =& new AllColumnsLayoutTemplateVisitor;
+					break;
+				case 'all_rows':
+					$visitor =& new AllRowsLayoutTemplateVisitor;
+					break;
+			}
+			
+			$renderer->acceptVisitor($visitor);
+		}
 		
 		// Update the effective/expiration dates
 // 		if ($properties['datestep']['effective_date'])

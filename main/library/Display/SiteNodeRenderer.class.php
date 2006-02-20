@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNodeRenderer.class.php,v 1.3 2006/01/26 21:15:18 adamfranco Exp $
+ * @version $Id: SiteNodeRenderer.class.php,v 1.4 2006/02/20 21:53:08 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNodeRenderer.class.php,v 1.3 2006/01/26 21:15:18 adamfranco Exp $
+ * @version $Id: SiteNodeRenderer.class.php,v 1.4 2006/02/20 21:53:08 adamfranco Exp $
  */
 class SiteNodeRenderer
 	extends NavigationNodeRenderer
@@ -37,6 +37,19 @@ class SiteNodeRenderer
 	function traverseActiveUp () {
 		$this->setActive();
 		return;
+	}
+	
+	/**
+	 * Accept a NodeVisitor. This method is part of the "Visitor" design pattern.
+	 * It allows sets of "visitors" to traverse the object tree, acting on each node.
+	 * 
+	 * @param object NodeVisitor $nodeVisitor
+	 * @return void
+	 * @access public
+	 * @since 2/20/06
+	 */
+	function acceptVisitor ( &$nodeVisitor ) {
+		$nodeVisitor->visitSiteNode($this);
 	}
 	
 	/**
@@ -72,4 +85,33 @@ class SiteNodeRenderer
 	function getSiteTitle () {
 		return $this->_asset->getDisplayName();
 	}
+	
+	/**
+	 * Anwser the link for the delete action
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/20/06
+	 */
+	function getDeleteLink () {
+		return '';
+	}
+	
+	/**
+	 * print the order form elements
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/31/06
+	 */
+	function printOptionOrderForm () {}
+	
+	/**
+	 * print the cell position form elements
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/31/06
+	 */
+	function printOptionCellPositionForm () {}
 }

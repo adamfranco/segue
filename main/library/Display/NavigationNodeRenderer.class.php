@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.26 2006/02/20 18:09:50 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.27 2006/02/20 21:53:08 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.26 2006/02/20 18:09:50 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.27 2006/02/20 21:53:08 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -78,6 +78,19 @@ class NavigationNodeRenderer
 	}
 	
 	/**
+	 * Accept a NodeVisitor. This method is part of the "Visitor" design pattern.
+	 * It allows sets of "visitors" to traverse the object tree, acting on each node.
+	 * 
+	 * @param object NodeVisitor $nodeVisitor
+	 * @return void
+	 * @access public
+	 * @since 2/20/06
+	 */
+	function acceptVisitor ( &$nodeVisitor ) {
+		$nodeVisitor->visitNavigationNode($this);
+	}
+	
+	/**
 	 * Answer the title that should be displayed in a heading for this node.
 	 * 
 	 * @return string
@@ -97,7 +110,6 @@ class NavigationNodeRenderer
 	 * @since 1/19/06
 	 */
 	function &renderNavComponent ($level = 1) { 
-		$links = array();
 		$harmoni =& Harmoni::instance();
 		$id =& $this->getId();
 		
@@ -109,7 +121,7 @@ class NavigationNodeRenderer
 						null,
 						null,
 						null,
-						$this->getSettingsForm($links));
+						$this->getSettingsForm());
 		$component->setId($id->getIdString()."-nav");
 		
 		if ($this->getLayoutArrangement() != 'nested' || !$this->isActive()) {
@@ -534,12 +546,23 @@ class NavigationNodeRenderer
 	 * @access public
 	 * @since 2/20/06
 	 */
-	function getSettingsUrl () {
+	function getSettingsLink () {
 		$harmoni =& Harmoni::instance();
 		$id =& $this->getId();
-		return $harmoni->request->quickURL('site', 'nav_settings', 
+		$authZ =& Services::getService('AuthZ');
+		$idManager =& Services::getService('Id');
+		
+		$url = $harmoni->request->quickURL('site', 'nav_settings', 
 								array('node' => $id->getIdString(),
 									'return_node' => RequestContext::value('node')));;
+		
+		if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.modify"), $id))
+		{
+			return "\n\t\t\t\t<a href='".$url."'>"._("settings")."</a>";
+		} else {
+			return "\n\t\t\t\t"._("settings");
+		}
 	}
 	
 /*********************************************************

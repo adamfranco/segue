@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.6 2006/01/26 21:15:19 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.7 2006/02/20 21:53:09 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.6 2006/01/26 21:15:19 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.7 2006/02/20 21:53:09 adamfranco Exp $
  */
 class viewAction 
 	extends Action
@@ -83,6 +83,10 @@ class viewAction
 		
 		$headRow->add(new UnstyledBlock("<h1>".$nodeRenderer->getSiteTitle()."</h1>"), 
 			null, null, LEFT, TOP);
+		
+		$siteRenderer =& $nodeRenderer->getSiteRenderer();
+		$headRow->add(new UnstyledBlock($siteRenderer->getSettingsForm()), 
+			null, null, RIGHT, BOTTOM);
 			
 		
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.30 2006/02/20 18:09:50 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.31 2006/02/20 21:53:08 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.30 2006/02/20 18:09:50 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.31 2006/02/20 21:53:08 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -218,6 +218,22 @@ class NodeRenderer {
 	}
 	
 	/**
+	 * Accept a NodeVisitor. This method is part of the "Visitor" design pattern.
+	 * It allows sets of "visitors" to traverse the object tree, acting on each node.
+	 * 
+	 * @param object NodeVisitor $nodeVisitor
+	 * @return void
+	 * @access public
+	 * @since 2/20/06
+	 */
+	function acceptVisitor ( &$nodeVisitor ) {
+		// The implementation should be something like:
+		$nodeVisitor->visitGenericNode($this);
+		// where "Generic" in the above line is replaced with an appropriate,
+		// distinguisher such as "Site" or "Navigation".
+	}
+	
+	/**
 	 * Answer the GUI component for the navegational item.
 	 * 
 	 * @param integer $level The Navigational level to use, 1=big, >1=smaller
@@ -332,15 +348,13 @@ class NodeRenderer {
 	 * @access public
 	 * @since 1/23/06
 	 */
-	function getSettingsForm ($links = array()) {
+	function getSettingsForm () {
 		$harmoni = Harmoni::instance();
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");
 				
 		$id =& $this->getId();
 		$idString = $id->getIdString();
-		$parentId =& $this->_parent->getId();
-		$parentIdString = $parentId->getIdString();
 			
 		
 		ob_start();
@@ -381,29 +395,14 @@ class NodeRenderer {
 		/*********************************************************
 		 * Other links
 		 *********************************************************/
-		array_walk($links, 
-			create_function('&$url,$name', '$url = "\n\t\t\t\t<a href=\'$url\'>$name</a>";'));
-			
-		if ($this->getSettingsUrl()
-			&& $authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.modify"), $id))
-		{
-			$links[_('settings')] = "\n\t\t\t\t<a href='".$this->getSettingsUrl()."'>"._("settings")."</a>";
-		} else {
-			$links[_('settings')] = "\n\t\t\t\t"._("settings");
-		}
+		$links = $this->getAdditionalSettingsLinks();
 		
-		if ($authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.delete"), $id))
-		{
-			$links[_('delete')] = "\n\t\t\t\t<a href='Javascript:deleteNode(\"".$id->getIdString()."\", ".$this->getElementsToFlashOnDelete().", \"".$this->getDeleteConfirmMessage()."\");' >"._("delete")."</a>";
-		} else {
-			$links[_('delete')] = "\n\t\t\t\t"._("delete");
-		}
+		if (count($links)) {
+			print "\n\t\t\t<div>";
+			print implode(" | ", $links);
+			print "\n\t\t\t</div>";
+		}		
 		
-		print "\n\t\t\t<div>";
-		print implode(" | ", $links);
-		print "\n\t\t\t</div>";
 		print "\n\t\t</div>";
 		print "\n\t</div>";
 		
@@ -412,14 +411,55 @@ class NodeRenderer {
 	}
 	
 	/**
-	 * Anwser the url for the settings wizard
+	 * Anwser the link for the settings wizard
 	 * 
 	 * @return string
 	 * @access public
 	 * @since 2/20/06
 	 */
-	function getSettingsUrl () {
+	function getSettingsLink () {
 		return '';
+	}
+	
+	/**
+	 * Anwser the link for the delete action
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/20/06
+	 */
+	function getDeleteLink () {
+		$harmoni =& Harmoni::instance();
+		$id =& $this->getId();
+		$authZ =& Services::getService('AuthZ');
+		$idManager =& Services::getService('Id');
+		
+		if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.delete"), $id))
+		{
+			return "\n\t\t\t\t<a href='Javascript:deleteNode(\"".$id->getIdString()."\", ".$this->getElementsToFlashOnDelete().", \"".$this->getDeleteConfirmMessage()."\");' >"._("delete")."</a>";
+		} else {
+			return "\n\t\t\t\t"._("delete");
+		}
+	}
+	
+	/**
+	 * Answer Additional links for node settings
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 2/20/06
+	 */
+	function getAdditionalSettingsLinks () {
+		$links = array();
+		
+		if ($link = $this->getSettingsLink())
+			$links[_('settings')] = $link;
+		
+		if ($link = $this->getDeleteLink())
+			$links[_('delete')] = $link;
+		
+		return $links;
 	}
 	
 	/**
