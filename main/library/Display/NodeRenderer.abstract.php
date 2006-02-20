@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.28 2006/02/16 22:06:56 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.29 2006/02/20 16:38:53 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.28 2006/02/16 22:06:56 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.29 2006/02/20 16:38:53 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -552,7 +552,7 @@ END;
 		$idString = $id->getIdString();
 		
 		$deleteUrl = $harmoni->request->quickURL('site', 'delete_node', 
-								array('node' => $idString,
+								array('node' => '______',
 									'return_node' => RequestContext::value('node')));
 		
 		ob_start();
@@ -567,7 +567,7 @@ END;
 				 * @access public
 				 * @since 2/2/06
 				 */
-				function deleteNode (id, elementsToFlash, message) {
+				function deleteNode (id, elementsToFlash, message, url) {
 //					if (confirm(message)) {
 //						goToValueInserted('$deleteUrl');
 //					}
@@ -587,7 +587,7 @@ END;
 					
 					if (confirm(message)) {
 						//flash.stop();
-						goToValueInserted('$deleteUrl');
+						goToValueInserted('$deleteUrl', id);
 					} else {
 						for (var i = 0; i < flashes.length; i++) {
 							flashes[i].stop();

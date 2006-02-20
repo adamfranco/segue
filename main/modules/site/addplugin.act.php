@@ -1,11 +1,11 @@
 <?php
 /**
- * @package segue.modules.asset
+ * @package segue.modules.site
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.1 2006/02/01 17:18:50 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.2 2006/02/20 16:38:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.1 2006/02/01 17:18:50 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.2 2006/02/20 16:38:53 adamfranco Exp $
  */
 class addpluginAction 
 	extends MainWindowAction

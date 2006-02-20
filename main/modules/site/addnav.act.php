@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_column.act.php,v 1.2 2006/02/20 16:38:53 adamfranco Exp $
+ * @version $Id: addnav.act.php,v 1.1 2006/02/20 16:38:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,9 +18,9 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_column.act.php,v 1.2 2006/02/20 16:38:53 adamfranco Exp $
+ * @version $Id: addnav.act.php,v 1.1 2006/02/20 16:38:53 adamfranco Exp $
  */
-class change_columnAction 
+class addnavAction 
 	extends MainWindowAction
 {
 	/**
@@ -36,7 +36,7 @@ class change_columnAction
 		$idManager =& Services::getService("Id");
 		 
 		return $authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"),
+			$idManager->getId("edu.middlebury.authorization.add_children"),
 			$idManager->getId(RequestContext::value('parent_id')));
 	}
 	
@@ -48,7 +48,7 @@ class change_columnAction
 	 * @since 4/26/05
 	 */
 	function getUnauthorizedMessage () {
-		return _("You are not authorized to modify this <em>Node</em>.");
+		return _("You are not authorized to add a child to this <em>Node</em>.");
 	}
 	
 	/**
@@ -61,17 +61,50 @@ class change_columnAction
 	function buildContent () {
 		$harmoni =& Harmoni::instance();
 		$idManager =& Services::getService("Id");
+		
 		$repositoryManager =& Services::getService("Repository");
 		$repository =& $repositoryManager->getRepository(
 				$idManager->getId("edu.middlebury.segue.sites_repository"));
 		
 		$parentAsset =& $repository->getAsset(
 				$idManager->getId(RequestContext::value('parent_id')));
-		$childId =& $idManager->getId(RequestContext::value('node'));
-		$parentRenderer =& NodeRenderer::forAsset($parentAsset, $null = null);
 		
-		$parentRenderer->updateChildCell($childId, RequestContext::value('cell'));
-				
+		$type =& new Type('site_components', 'edu.middlebury.segue', 'navigation', 'Navigational Node');
+		
+		$asset =& $repository->createAsset("Default Title", 
+										"", 
+										$type);
+		
+		$parentAsset->addAsset($asset->getId());
+		
+		
+		// Add a default navigation record structure
+		$navStructId =& $idManager->getId('Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs');
+		$record =& $asset->createRecord($navStructId);
+		
+		// layout_arrangement
+		$partStructId =& $idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.layout_arrangement');
+		$value =& String::withValue('columns');
+		$record->createPart($partStructId, $value);
+		
+		// num_cells
+		$partStructId =& $idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.num_cells');
+		$value =& Integer::withValue(1);
+		$record->createPart($partStructId, $value);
+		
+		// target_override
+		$partStructId =& $idManager->getId(
+				'Repository::edu.middlebury.segue.sites_repository'
+				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.target_override');
+		$value =& Integer::withValue(2);
+		$record->createPart($partStructId, $value);
+		
+		
 		RequestContext::locationHeader($harmoni->request->quickURL(
 			"site", "view",
 			array("node" => RequestContext::value('return_node'))));

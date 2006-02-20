@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_column.act.php,v 1.2 2006/02/20 16:38:53 adamfranco Exp $
+ * @version $Id: delete_node.act.php,v 1.1 2006/02/20 16:38:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,9 +18,9 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_column.act.php,v 1.2 2006/02/20 16:38:53 adamfranco Exp $
+ * @version $Id: delete_node.act.php,v 1.1 2006/02/20 16:38:53 adamfranco Exp $
  */
-class change_columnAction 
+class delete_nodeAction 
 	extends MainWindowAction
 {
 	/**
@@ -36,8 +36,8 @@ class change_columnAction
 		$idManager =& Services::getService("Id");
 		 
 		return $authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"),
-			$idManager->getId(RequestContext::value('parent_id')));
+			$idManager->getId("edu.middlebury.authorization.delete"),
+			$idManager->getId(RequestContext::value('node')));
 	}
 	
 	/**
@@ -48,7 +48,7 @@ class change_columnAction
 	 * @since 4/26/05
 	 */
 	function getUnauthorizedMessage () {
-		return _("You are not authorized to modify this <em>Node</em>.");
+		return _("You are not authorized to delete this <em>Node</em>.");
 	}
 	
 	/**
@@ -65,13 +65,9 @@ class change_columnAction
 		$repository =& $repositoryManager->getRepository(
 				$idManager->getId("edu.middlebury.segue.sites_repository"));
 		
-		$parentAsset =& $repository->getAsset(
-				$idManager->getId(RequestContext::value('parent_id')));
-		$childId =& $idManager->getId(RequestContext::value('node'));
-		$parentRenderer =& NodeRenderer::forAsset($parentAsset, $null = null);
+		$repository->deleteAsset(
+				$idManager->getId(RequestContext::value('node')));
 		
-		$parentRenderer->updateChildCell($childId, RequestContext::value('cell'));
-				
 		RequestContext::locationHeader($harmoni->request->quickURL(
 			"site", "view",
 			array("node" => RequestContext::value('return_node'))));
