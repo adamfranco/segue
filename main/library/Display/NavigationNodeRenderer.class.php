@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.24 2006/02/17 22:25:37 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.25 2006/02/20 17:58:18 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.24 2006/02/17 22:25:37 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.25 2006/02/20 17:58:18 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -482,6 +482,10 @@ class NavigationNodeRenderer
 			$enabled = false;
 		
 		
+		$singNavUrl = $harmoni->request->quickURL('site', 'addnav', 
+								array('parent_id' => $idString,
+									'return_node' => RequestContext::value('node'),
+									'nav_type' => 'single'));
 		$navUrl = $harmoni->request->quickURL('site', 'addnav', 
 								array('parent_id' => $idString,
 									'return_node' => RequestContext::value('node')));
@@ -496,7 +500,9 @@ class NavigationNodeRenderer
 		if ($enabled) {
 			print " onchange='";
 			print "if (this.value) {";
-			print 	"if (this.value == \"nav\") {";
+			print 	"if (this.value == \"single_nav\") {";
+			print 		"goToValueInserted(\"".$singNavUrl."\", \"\");";
+			print 	"}else if (this.value == \"nav\") {";
 			print 		"goToValueInserted(\"".$navUrl."\", \"\");";
 			print 	"} else {";
 			print		"goToValueInserted(\"".$pluginUrl."\", this.value);";
@@ -508,7 +514,10 @@ class NavigationNodeRenderer
 		}
 		print ">";
 		print "\n\t\t\t\t\t<option>"._("Add a new child element...")."</option>";
+		print "\n\t\t\t\t\t<option>------------</option>";
+		print "\n\t\t\t\t\t<option value='single_nav'>"._("Container")."</option>";
 		print "\n\t\t\t\t\t<option value='nav'>"._("Navigational Container")."</option>";
+		print "\n\t\t\t\t\t<option>------------</option>";
 		
 		// Loop through all plugins. don't print Authority for any, don't print
 		// domain for SeguePlugins. 

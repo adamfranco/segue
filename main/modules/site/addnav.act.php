@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addnav.act.php,v 1.1 2006/02/20 16:38:53 adamfranco Exp $
+ * @version $Id: addnav.act.php,v 1.2 2006/02/20 17:58:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addnav.act.php,v 1.1 2006/02/20 16:38:53 adamfranco Exp $
+ * @version $Id: addnav.act.php,v 1.2 2006/02/20 17:58:19 adamfranco Exp $
  */
 class addnavAction 
 	extends MainWindowAction
@@ -77,6 +77,18 @@ class addnavAction
 		
 		$parentAsset->addAsset($asset->getId());
 		
+		// Defaults for navigational layouts
+		switch (RequestContext::value('nav_type')) {
+			case 'single':
+				$arrangement ='columns';
+				$numCells = 1;
+				$targetOverride = 2;
+				break;
+			default:
+				$arrangement ='nested';
+				$numCells = 2;
+				$targetOverride = 2;
+		}		
 		
 		// Add a default navigation record structure
 		$navStructId =& $idManager->getId('Repository::edu.middlebury.segue.sites_repository'
@@ -87,21 +99,21 @@ class addnavAction
 		$partStructId =& $idManager->getId(
 				'Repository::edu.middlebury.segue.sites_repository'
 				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.layout_arrangement');
-		$value =& String::withValue('columns');
+		$value =& String::withValue($arrangement);
 		$record->createPart($partStructId, $value);
 		
 		// num_cells
 		$partStructId =& $idManager->getId(
 				'Repository::edu.middlebury.segue.sites_repository'
 				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.num_cells');
-		$value =& Integer::withValue(1);
+		$value =& Integer::withValue($numCells);
 		$record->createPart($partStructId, $value);
 		
 		// target_override
 		$partStructId =& $idManager->getId(
 				'Repository::edu.middlebury.segue.sites_repository'
 				.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.target_override');
-		$value =& Integer::withValue(2);
+		$value =& Integer::withValue($targetOverride);
 		$record->createPart($partStructId, $value);
 		
 		
