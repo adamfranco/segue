@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.3 2006/02/16 22:06:57 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.4 2006/02/22 20:29:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.3 2006/02/16 22:06:57 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.4 2006/02/22 20:29:56 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -291,7 +291,7 @@ class addAction
 	function getReturnUrl () {
 		$harmoni =& Harmoni::instance();
 		if ($this->_assetId) 
-			return $harmoni->request->quickURL("site", "view", array(
+			return $harmoni->request->quickURL("site", "editview", array(
 				"node" => $this->_assetId->getIdString()));
 		else
 			return $harmoni->request->quickURL();

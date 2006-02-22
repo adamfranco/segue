@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.32 2006/02/22 19:40:45 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.33 2006/02/22 20:29:56 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.32 2006/02/22 19:40:45 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.33 2006/02/22 20:29:56 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -302,8 +302,12 @@ class NodeRenderer {
 	function getMyUrl () {
 		$id =& $this->_asset->getId();
 		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL('site', 'view', 
-					array('node' => $id->getIdString()));
+		if ($this->shouldShowControls())
+			return $harmoni->request->quickURL('site', 'editview', 
+						array('node' => $id->getIdString()));
+		else
+			return $harmoni->request->quickURL('site', 'view', 
+						array('node' => $id->getIdString()));
 	}
 	
 	/**
@@ -520,7 +524,7 @@ class NodeRenderer {
 				}
 				
 				function changeCell(url, selectElement, currentCell, parentId) {
-					var destinationId = parentId + '-cell-' + selectElement.value;
+					var destinationId = 'node:' + parentId + '-cell-' + selectElement.value;
 					var destinationElement = getElementFromDocument(destinationId);
 					var flash = new BorderFlash(destinationElement);
 					flash.start();
@@ -686,7 +690,7 @@ END;
 	function getElementsToFlashOnDelete () {
 		$id =& $this->getId();
 		$idString = $id->getIdString();
-		$ids = array('"'.$idString.'-nav"', '"'.$idString.'-target"', '"'.$idString.'-title"');
+		$ids = array('"node:'.$idString.'-nav"', '"node:'.$idString.'-target"', '"node:'.$idString.'-title"');
 		return 'new Array('.implode(", ", $ids).')';
 	}
 	

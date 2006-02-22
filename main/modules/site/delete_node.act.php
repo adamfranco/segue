@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete_node.act.php,v 1.1 2006/02/20 16:38:53 adamfranco Exp $
+ * @version $Id: delete_node.act.php,v 1.2 2006/02/22 20:29:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete_node.act.php,v 1.1 2006/02/20 16:38:53 adamfranco Exp $
+ * @version $Id: delete_node.act.php,v 1.2 2006/02/22 20:29:56 adamfranco Exp $
  */
 class delete_nodeAction 
 	extends MainWindowAction
@@ -69,7 +69,7 @@ class delete_nodeAction
 				$idManager->getId(RequestContext::value('node')));
 		
 		RequestContext::locationHeader($harmoni->request->quickURL(
-			"site", "view",
+			"site", "editview",
 			array("node" => RequestContext::value('return_node'))));
 	}
 }

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.13 2006/02/22 19:40:45 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.14 2006/02/22 20:29:56 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.13 2006/02/22 19:40:45 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.14 2006/02/22 20:29:56 adamfranco Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
@@ -53,7 +53,7 @@ class PluginNodeRenderer
 						$level);
 		
 		$id =& $this->getId();
-		$component->setId($id->getIdString()."-nav");
+		$component->setId("node:".$id->getIdString()."-nav");
 		return $component;
 	}
 	
@@ -74,7 +74,7 @@ class PluginNodeRenderer
 			STANDARD_BLOCK);
 			
 		$id =& $this->getId();
-		$component->setId($id->getIdString()."-target");
+		$component->setId("node:".$id->getIdString()."-target");
 		return $component;
 	}
 		

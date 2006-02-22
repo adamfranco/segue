@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: reorder.act.php,v 1.3 2006/02/20 16:38:53 adamfranco Exp $
+ * @version $Id: reorder.act.php,v 1.4 2006/02/22 20:29:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: reorder.act.php,v 1.3 2006/02/20 16:38:53 adamfranco Exp $
+ * @version $Id: reorder.act.php,v 1.4 2006/02/22 20:29:56 adamfranco Exp $
  */
 class reorderAction 
 	extends MainWindowAction
@@ -91,7 +91,7 @@ class reorderAction
 		$parentRenderer->saveChildOrder();
 		
 		RequestContext::locationHeader($harmoni->request->quickURL(
-			"site", "view",
+			"site", "editview",
 			array("node" => RequestContext::value('return_node'))));
 	}
 }

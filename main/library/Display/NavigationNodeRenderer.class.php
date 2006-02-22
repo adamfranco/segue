@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.27 2006/02/20 21:53:08 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.28 2006/02/22 20:29:56 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.27 2006/02/20 21:53:08 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.28 2006/02/22 20:29:56 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -122,12 +122,12 @@ class NavigationNodeRenderer
 						null,
 						null,
 						$this->getSettingsForm());
-		$component->setId($id->getIdString()."-nav");
+		$component->setId("node:".$id->getIdString()."-nav");
 		
 		if ($this->getLayoutArrangement() != 'nested' || !$this->isActive()) {
 			return $component;
 		} else {
-			$component->setId($id->getIdString()."-cell-1");
+			$component->setId("node:".$id->getIdString()."-cell-1");
 			$allComponents = array();
 			$allComponents[] =& $component;
 			
@@ -165,7 +165,7 @@ class NavigationNodeRenderer
 			$target =& $this->renderMultiCellTarget($level);
 		
 		$id =& $this->getId();
-		$target->setId($id->getIdString()."-target");
+		$target->setId("node:".$id->getIdString()."-target");
 		return $target;
 	}
 	
@@ -190,7 +190,7 @@ class NavigationNodeRenderer
 							new Heading($childRenderer->getHeading(), 2),
 							null, null, LEFT, TOP);
 				$childId =& $childRenderer->getId();
-				$title->setId($childId->getIdString()."-title");
+				$title->setId("node:".$childId->getIdString()."-title");
 			}
 			
 			// print the content
@@ -258,7 +258,7 @@ class NavigationNodeRenderer
 				$cells[$cellIndex] =& $container->add(
 							new Menu($cellLayout, $level), 
 							$cellWidth, $cellHeight, LEFT, TOP);
-				$cells[$cellIndex]->setId($idString."-cell-".$cellIndex);
+				$cells[$cellIndex]->setId("node:".$idString."-cell-".$cellIndex);
 				$cellIndex++;
 			}
 			$overallCellNumber++;
@@ -817,7 +817,7 @@ class NavigationNodeRenderer
 	function getElementsToFlashOnDelete () {
 		$id =& $this->getId();
 		$idString = $id->getIdString();
-		$ids = array('"'.$idString.'-nav"', '"'.$idString.'-target"', '"'.$idString.'-target"');
+		$ids = array('"node:'.$idString.'-nav"', '"node:'.$idString.'-target"', '"node:'.$idString.'-title"');
 		return 'new Array('.implode(", ", $ids).')';
 	}
 }

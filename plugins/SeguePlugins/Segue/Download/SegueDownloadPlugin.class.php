@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueDownloadPlugin.class.php,v 1.2 2006/02/08 20:18:41 cws-midd Exp $
+ * @version $Id: SegueDownloadPlugin.class.php,v 1.3 2006/02/22 20:29:56 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueDownloadPlugin.class.php,v 1.2 2006/02/08 20:18:41 cws-midd Exp $
+ * @version $Id: SegueDownloadPlugin.class.php,v 1.3 2006/02/22 20:29:56 adamfranco Exp $
  */
 class SegueDownloadPlugin
 	extends SeguePluginsAjaxPlugin
@@ -139,7 +139,7 @@ class SegueDownloadPlugin
 				print $fileHTML."<hr/><br/>";
 	 		}
 	 		// can this agent edit the plugin?
-	 		if ($this->canModify()) {
+	 		if ($this->shouldShowControls()) {
 				print "\n<div style='text-align: right'>";
 				print "\n\t<a href=".$this->url(array('edit' => 'true')).">"._("edit")."</a>";
 				print "\n</div>";

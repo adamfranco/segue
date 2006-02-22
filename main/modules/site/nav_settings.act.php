@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.6 2006/02/20 21:53:09 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.7 2006/02/22 20:29:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/Display/LayoutTemplates/AllRowsLayoutTemplateV
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.6 2006/02/20 21:53:09 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.7 2006/02/22 20:29:56 adamfranco Exp $
  */
 class nav_settingsAction 
 	extends MainWindowAction
@@ -777,7 +777,7 @@ END;
 	 */
 	function getReturnUrl () {
 		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL("site", "view", array(
+		return $harmoni->request->quickURL("site", "editview", array(
 				"node" => RequestContext::value('return_node')));
 	}
 }
