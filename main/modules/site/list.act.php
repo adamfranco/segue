@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.2 2006/01/26 21:15:19 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.3 2006/02/22 22:06:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.2 2006/01/26 21:15:19 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.3 2006/02/22 22:06:14 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -56,11 +56,26 @@ class listAction
 	 */
 	function buildContent () {
 		$actionRows =& $this->getActionRows();
+		$harmoni =& Harmoni::instance();
+		$repositoryManager =& Services::getService("Repository");
+		$idManager =& Services::getService("Id");
+		$authZ =& Services::getService("AuthZ");
+		
+		if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.add_children"),
+				$idManager->getId("edu.middlebury.segue.sites_repository")))
+		{
+			ob_start();
+			print "\n\t<a href='";
+			print $harmoni->request->quickURL("site", "add");
+			print "' style='border: 1px solid; padding: 2px; text-align: center; text-decoration: none; margin: 2px;'>";
+			print _("Create New Site");
+			print "</a>";
+			$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), null, null, RIGHT, CENTER);
+		}
 		
 		$actionRows->add(new Heading(_("All Sites"), 1));
 		
-		$repositoryManager =& Services::getService("Repository");
-		$idManager =& Services::getService("Id");
 		$repository =& $repositoryManager->getRepository(
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
 		

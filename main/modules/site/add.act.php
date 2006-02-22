@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.4 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.5 2006/02/22 22:06:14 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.4 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.5 2006/02/22 22:06:14 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -250,8 +250,36 @@ class addAction
 			$assetId =& $asset->getId();
 			$this->_assetId =& $assetId;
 			
-// 			$content =& Blob::withValue($properties['contentstep']['content']);
-// 			$asset->updateContent($content);
+			// Defaults for navigational layouts
+			$arrangement ='columns';
+			$numCells = 2;
+			$targetOverride = 2;	
+			
+			// Add a default navigation record structure
+			$navStructId =& $idManager->getId('Repository::edu.middlebury.segue.sites_repository'
+					.'::edu.middlebury.segue.nav_nod_rs');
+			$record =& $asset->createRecord($navStructId);
+			
+			// layout_arrangement
+			$partStructId =& $idManager->getId(
+					'Repository::edu.middlebury.segue.sites_repository'
+					.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.layout_arrangement');
+			$value =& String::withValue($arrangement);
+			$record->createPart($partStructId, $value);
+			
+			// num_cells
+			$partStructId =& $idManager->getId(
+					'Repository::edu.middlebury.segue.sites_repository'
+					.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.num_cells');
+			$value =& Integer::withValue($numCells);
+			$record->createPart($partStructId, $value);
+			
+			// target_override
+			$partStructId =& $idManager->getId(
+					'Repository::edu.middlebury.segue.sites_repository'
+					.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.target_override');
+			$value =& Integer::withValue($targetOverride);
+			$record->createPart($partStructId, $value);
 			
 			// Update the effective/expiration dates
 			if ($properties['datestep']['effective_date'])
@@ -294,7 +322,7 @@ class addAction
 			return $harmoni->request->quickURL("site", "editview", array(
 				"node" => $this->_assetId->getIdString()));
 		else
-			return $harmoni->request->quickURL();
+			return $harmoni->request->quickURL("site", "list");
 	}
 }
 
