@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.4 2006/02/08 20:18:41 cws-midd Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.5 2006/02/22 19:40:45 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAssignmentPlugin.class.php,v 1.4 2006/02/08 20:18:41 cws-midd Exp $
+ * @version $Id: SegueAssignmentPlugin.class.php,v 1.5 2006/02/22 19:40:45 adamfranco Exp $
  */
 class SegueAssignmentPlugin
 	extends SeguePluginsAjaxPlugin
@@ -177,7 +177,7 @@ class SegueAssignmentPlugin
  			}
 			
 			// the edit link only if they can edit
-	 		if ($this->canModify()) {
+	 		if ($this->shouldShowControls()) {
 				print "\n<div style='text-align: right'>";
 				print "\n\t<a href=".$this->url(array('edit' => 'true')).">"._("edit")."</a>";
 				print "\n</div>";

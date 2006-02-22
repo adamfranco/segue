@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.31 2006/02/20 21:53:08 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.32 2006/02/22 19:40:45 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.31 2006/02/20 21:53:08 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.32 2006/02/22 19:40:45 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -258,7 +258,8 @@ class NodeRenderer {
 	}
 	
 	/**
-	 * Answer the title that should be displayed in a heading for this node.
+	 * Answer the HTML displayed in a heading for this node. Usually this is
+	 * the title, but it may contain other elements as well.
 	 * 
 	 * @return string
 	 * @access public
@@ -309,12 +310,24 @@ class NodeRenderer {
 	 * Answer the GUI component for the contents of the site that this node
 	 * is in.
 	 * 
+	 * @param boolean $showControls
 	 * @return object Component
 	 * @access public
 	 * @since 1/26/06
 	 */
-	function &renderSite () {
-		return $this->_parent->renderSite();
+	function &renderSite ($showControls = false) {
+		return $this->_parent->renderSite($showControls);
+	}
+	
+	/**
+	 * Answer true if this component should display controls.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 2/22/06
+	 */
+	function shouldShowControls () {
+		return $this->_parent->shouldShowControls();
 	}
 	
 	/**
@@ -349,6 +362,10 @@ class NodeRenderer {
 	 * @since 1/23/06
 	 */
 	function getSettingsForm () {
+		// return an emtpy string if we aren't displaying controls
+		if (!$this->shouldShowControls())
+			return '';
+			
 		$harmoni = Harmoni::instance();
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");

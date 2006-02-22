@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.3 2006/01/24 21:33:40 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.4 2006/02/22 19:40:45 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.3 2006/01/24 21:33:40 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.4 2006/02/22 19:40:45 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -141,13 +141,16 @@ class PluginManager {
 	/**
 	 * Answer the XHTML text of the plugin
 	 * 
+	 * @param object Asset $asset
+	 * @param optional boolean $showControls
 	 * @return string
 	 * @access public
 	 * @since 1/20/06
 	 */
-	function getPluginText ( &$asset ) {
+	function getPluginText ( &$asset, $showControls = false ) {
 		ob_start();
 		$plugin =& $this->getPlugin($asset);
+		$plugin->setShowControls($showControls);
 		
 		$assetId =& $asset->getId();
 		
@@ -164,6 +167,25 @@ class PluginManager {
 			$harmoni->request->endNamespace();
 		}
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the title Markup for this plugin
+	 * 
+	 * @param object Asset $asset
+	 * @param optional boolean $showControls
+	 * @return string
+	 * @access public
+	 * @since 2/22/06
+	 */
+	function getPluginTitleMarkup ( &$asset, $showControls = false ) {
+		$plugin =& $this->getPlugin($asset);
+		$plugin->setShowControls($showControls);
+		
+		if ($plugin->getPluginTitleMarkup())
+			return $plugin->getPluginTitleMarkup();
+		else
+			return "";
 	}
 }
 

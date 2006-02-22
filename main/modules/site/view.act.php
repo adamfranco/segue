@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.7 2006/02/20 21:53:09 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.8 2006/02/22 19:40:45 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,11 +32,18 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.7 2006/02/20 21:53:09 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.8 2006/02/22 19:40:45 adamfranco Exp $
  */
 class viewAction 
 	extends Action
 {
+	/**
+	 * If true, editing controls will be displayed
+	 * @var boolean $_showControls;  
+	 * @access private
+	 * @since 2/22/06
+	 */
+	var $_showControls = false;
 		
 	/**
 	 * Execute the Action
@@ -84,15 +91,34 @@ class viewAction
 		$headRow->add(new UnstyledBlock("<h1>".$nodeRenderer->getSiteTitle()."</h1>"), 
 			null, null, LEFT, TOP);
 		
-		$siteRenderer =& $nodeRenderer->getSiteRenderer();
-		$headRow->add(new UnstyledBlock($siteRenderer->getSettingsForm()), 
-			null, null, RIGHT, BOTTOM);
+		if ($this->_showControls) {
+			$siteRenderer =& $nodeRenderer->getSiteRenderer();
+			$siteRenderer->setShowControls($this->_showControls);
+			
+			ob_start();
+			print "\n\t<a href='";
+			print $harmoni->request->quickURL("site", "view", array('node' => RequestContext::value('node')));
+			print "' style='border: 1px solid; padding: 2px; text-align: center; text-decoration: none; margin: 2px;'>";
+			print _("Hide Controls");
+			print "</a>";
+			$headRow->add(new UnstyledBlock(ob_get_clean().$siteRenderer->getSettingsForm()), 
+				null, null, RIGHT, BOTTOM);
+		} else {
+			ob_start();
+			print "\n\t<a href='";
+			print $harmoni->request->quickURL("site", "editview", array('node' => RequestContext::value('node')));
+			print "' style='border: 1px solid; padding: 2px; text-align: center; text-decoration: none; margin: 2px;'>";
+			print _("Show Controls");
+			print "</a>";
+			$headRow->add(new UnstyledBlock(ob_get_clean()), 
+				null, null, RIGHT, BOTTOM);
+		}
 			
 		
 		
 		// Add the rendered site.
 		$mainScreen->add(
-			$nodeRenderer->renderSite(),
+			$nodeRenderer->renderSite($this->_showControls),
 			"100%", null, CENTER, TOP);
 		
 		

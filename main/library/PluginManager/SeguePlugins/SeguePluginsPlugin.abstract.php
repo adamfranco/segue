@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.10 2006/02/08 20:18:41 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.11 2006/02/22 19:40:45 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.10 2006/02/08 20:18:41 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.11 2006/02/22 19:40:45 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -367,6 +367,22 @@ class SeguePluginsPlugin {
 	}
 	
 	/**
+	 * Answer TRUE if modifycation controls should be displayed, assuming that
+	 * authorization is had as well. This method allows the plugin to operate
+	 * in two modes, hiding editing controls when they are not needed.
+	 *  
+	 * @return boolean
+	 * @access public
+	 * @since 2/22/06
+	 */
+	function shouldShowControls () {
+		if ($this->_showControls && $this->canModify())
+			return true;
+		else
+			return false;
+	}
+	
+	/**
 	 * Answer the string Id of this plugin
 	 * 
 	 * @return string
@@ -608,6 +624,14 @@ class SeguePluginsPlugin {
 	 */
 	var $_id;
 	
+	/**
+	 * If true, editing controls will be displayed (assuming authorization)
+	 * @var boolean $_showControls;  
+	 * @access private
+	 * @since 2/22/06
+	 */
+	var $_showControls = false;
+	
 /*********************************************************
  * Instance Methods - Non-API
  *********************************************************/
@@ -649,6 +673,19 @@ class SeguePluginsPlugin {
 						$type->getAuthority()."/".$type->getKeyword()."/";
 		
 		$this->_loadData();
+	}
+	
+	/**
+	 * Set the status of showControls.
+	 * 
+	 * @param boolean $showControls
+	 * @return void
+	 * @access public
+	 * @since 2/22/06
+	 */
+	function setShowControls ($showControls) {
+		ArgumentValidator::validate($showControls, BooleanValidatorRule::getRule());
+		$this->_showControls = $showControls;
 	}
 	
 	/**

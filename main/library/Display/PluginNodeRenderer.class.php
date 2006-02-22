@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.12 2006/02/02 21:11:20 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.13 2006/02/22 19:40:45 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginNodeRenderer.class.php,v 1.12 2006/02/02 21:11:20 adamfranco Exp $
+ * @version $Id: PluginNodeRenderer.class.php,v 1.13 2006/02/22 19:40:45 adamfranco Exp $
  */
 class PluginNodeRenderer
 	extends NodeRenderer
@@ -46,7 +46,10 @@ class PluginNodeRenderer
 			$title = "";
 		$plugs =& Services::getService("Plugs");
 		$component =& new MenuItem(
-						$title.$plugs->getPluginText($this->_asset).$this->getSettingsForm(),
+						$title
+							.$plugs->getPluginText($this->_asset,
+								$this->shouldShowControls())
+							.$this->getSettingsForm(),
 						$level);
 		
 		$id =& $this->getId();
@@ -66,59 +69,15 @@ class PluginNodeRenderer
 		$plugs =& Services::getService("Plugs");
 
 		$component =& new Block(
-			$plugs->getPluginText($this->_asset).$this->getSettingsForm(),
+			$plugs->getPluginText($this->_asset, $this->shouldShowControls())
+				.$this->getSettingsForm(),
 			STANDARD_BLOCK);
 			
 		$id =& $this->getId();
 		$component->setId($id->getIdString()."-target");
 		return $component;
 	}
-	
-	/**
-	 * Answer the XHTML text of the plugin
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 1/20/06
-	 */
-	function getPluginText () {
-		ob_start();
-		$plugin =& $this->getPlugin();
 		
-		$assetId =& $this->_asset->getId();
-		
-		
-		print AjaxPlugin::getPluginSystemJavascript();
-		
-		if (!is_object($plugin)) {
-			print $plugin;
-		} else {
-			$harmoni =& Harmoni::instance();
-			$harmoni->request->startNamespace(
-				get_class($plugin).':'.$assetId->getIdString());
-			$baseUrl =& $harmoni->request->mkURL();
-			print $plugin->executeAndGetMarkup($baseUrl);
-			$harmoni->request->endNamespace();
-		}
-		return ob_get_clean();
-	}
-	
-	/**
-	 * Answer the plugin
-	 * 
-	 * @return object Plugin
-	 * @access public
-	 * @since 1/20/06
-	 */
-	function &getPlugin () {
-		if (!is_object($this->_plugin)) {
-			$plugs =& Services::getService("Plugs");
-			
-			$this->_plugin =& $plugs->getPlugin($this->_asset);
-		}
-		return $this->_plugin;
-	}
-	
 	/**
 	 * Answer the title that should be displayed for this node.
 	 * 
@@ -128,10 +87,6 @@ class PluginNodeRenderer
 	 */
 	function getTitle () {
 		$plugs =& Services::getService("Plugs");
-		$plugin =& $plugs->getPlugin($this->_asset);
-		if ($plugin->getPluginTitleMarkup())
-			return $plugin->getPluginTitleMarkup();
-		else
-			return "";
+		return $plugs->getPluginTitleMarkup($this->_asset, $this->shouldShowControls());
 	}
 }
