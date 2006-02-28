@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: authentication.conf.php,v 1.3 2006/01/18 19:16:09 adamfranco Exp $
+ * @version $Id: authentication.conf.php,v 1.4 2006/02/28 19:01:08 adamfranco Exp $
  */
  
 // :: Start the AuthenticationManager OSID Impl.
@@ -59,9 +59,10 @@
 		$ldapConfiguration =& new ConfigurationProperties;
 		$ldapConfiguration->addProperty('tokens_class', $arg0 = 'LDAPAuthNTokens');
 		$ldapConfiguration->addProperty("LDAPHost", $arg1 = "ad.middlebury.edu");
-		$ldapConfiguration->addProperty("baseDN", $arg2 = "cn=users,dc=middlebury,dc=edu");
-		$ldapConfiguration->addProperty("bindDN", $arg3 = "juser");
-		$ldapConfiguration->addProperty("bindDNPassword", $arg4 = "poi987");
+		$ldapConfiguration->addProperty("UserBaseDN", $arg2 = "cn=users,dc=middlebury,dc=edu");
+		$ldapConfiguration->addProperty("GroupBaseDN", $arg3 = "ou=groups,dc=middlebury,dc=edu");
+		$ldapConfiguration->addProperty("bindDN", $arg4 = "juser");
+		$ldapConfiguration->addProperty("bindDNPassword", $arg5 = "poi987");
 		$propertiesFields = array (
 			'username' => 'samaccountname',
 			'name' =>  'displayname',
@@ -81,7 +82,7 @@
 
 		$ldapAuthNMethod =& new LDAPAuthNMethod;
 		$ldapAuthNMethod->assignConfiguration($ldapConfiguration);
-		unset($arg0, $arg1, $arg2, $arg3, $arg4, $propertiesFields, $loginFields, $ldapConfiguration);
+		unset($arg0, $arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $propertiesFields, $loginFields, $ldapConfiguration);
 		
 	$configuration->addProperty($ldapAuthType, $ldapAuthNMethod);
 	
