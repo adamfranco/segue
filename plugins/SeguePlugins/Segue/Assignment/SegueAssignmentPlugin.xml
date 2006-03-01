@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pluginData domain='SeguePlugins' authority='Segue' keyword='Assignment'>
+	<record name='Assignment'>
+		<datum name='Reading' type='string'></datum>
+		<datum name='Question' type='string'></datum>
+		<datum name='DueDate' type='datetime'></datum>
+	</record>
+	<record name='Response'>
+		<datum name='Reading' type='boolean'></datum>
+		<datum name='Answer' type='string'></datum>
+		<datum name='Respondent' type='id'></datum>
+		<datum name='Modification' type='datetime'></datum>
+	</record>
+</pluginData>
