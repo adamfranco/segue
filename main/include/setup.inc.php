@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: setup.inc.php,v 1.3 2006/01/24 20:04:35 cws-midd Exp $
+ * @version $Id: setup.inc.php,v 1.4 2006/03/03 17:20:21 adamfranco Exp $
  */
 
 /*********************************************************
@@ -63,6 +63,7 @@ $configs = array(
 					'action',
 					'database',
 					'id',
+					'logging',
 					'authentication',
 					'gui',
 					'language',

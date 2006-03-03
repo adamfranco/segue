@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.4 2006/01/18 19:16:09 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.5 2006/03/03 17:20:20 adamfranco Exp $
  */
 
 /*********************************************************
@@ -49,6 +49,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 		HARMONI_BASE."/SQL/DigitalRepository/MySQL_DigitalRepository.sql",
 		HARMONI_BASE."/SQL/hierarchy/MySQL_hierarchy.sql",
 		HARMONI_BASE."/SQL/Id/MySQL_Id.sql",
+		HARMONI_BASE."/SQL/logging/MySQL_Logging.sql",
 		HARMONI_BASE."/SQL/sets/MySQL_sets.sql",
 		HARMONI_BASE."/SQL/shared/MySQL_shared.sql",
 	);
