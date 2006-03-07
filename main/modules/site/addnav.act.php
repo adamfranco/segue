@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addnav.act.php,v 1.4 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: addnav.act.php,v 1.5 2006/03/07 19:27:27 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addnav.act.php,v 1.4 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: addnav.act.php,v 1.5 2006/03/07 19:27:27 adamfranco Exp $
  */
 class addnavAction 
 	extends MainWindowAction
@@ -130,7 +130,7 @@ class addnavAction
 			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
 							"Normal events.");
 			
-			$item =& new AgentNodeEntryItem("Navigation added");
+			$item =& new AgentNodeEntryItem("Create Node", "Navigation added");
 			$item->addNodeId($asset->getId());
 			$item->addNodeId($parentAsset->getId());
 			$renderer =& NodeRenderer::forAsset($asset);

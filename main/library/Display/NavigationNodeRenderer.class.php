@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.28 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.29 2006/03/07 19:27:23 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.28 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.29 2006/03/07 19:27:23 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -299,7 +299,9 @@ class NavigationNodeRenderer
 			}
 			$cellsWithContent = array_unique($cellsWithContent);
 			for ($i = 1; $i < $numCells; $i++) {
-				if (!in_array($i, $cellsWithContent)) {
+				if (!in_array($i, $cellsWithContent)
+					&& !($layoutArrangement == 'nested' && $i == 1)) 
+				{
 					$cells[$i]->add(
 						new MenuItem("[debug: no children]<br/>[Cell[$i]]", 
 							$level),

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_column.act.php,v 1.4 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: change_column.act.php,v 1.5 2006/03/07 19:27:27 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_column.act.php,v 1.4 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: change_column.act.php,v 1.5 2006/03/07 19:27:27 adamfranco Exp $
  */
 class change_columnAction 
 	extends MainWindowAction
@@ -81,7 +81,7 @@ class change_columnAction
 			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
 							"Normal events.");
 			
-			$item =& new AgentNodeEntryItem("Column/Row changed to ".RequestContext::value('cell'));
+			$item =& new AgentNodeEntryItem("Modify Settings", "Column/Row changed to ".RequestContext::value('cell'));
 			$item->addNodeId($childId);
 			$renderer =& NodeRenderer::forAsset($parentAsset);
 			$siteRenderer =& $renderer->getSiteRenderer();

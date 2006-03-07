@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.12 2006/03/07 15:31:53 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.13 2006/03/07 19:27:26 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.12 2006/03/07 15:31:53 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.13 2006/03/07 19:27:26 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -552,13 +552,15 @@ class SeguePluginsPlugin {
 	 * Log an event. Plugins should log events that involve data modification
 	 * with type 'Event_Notice' and events that involve errors with type 'Error'
 	 * 
+	 * @param string $category
 	 * @param string $description
 	 * @param optional string $type
 	 * @return void
 	 * @access public
 	 * @since 3/6/06
 	 */
-	function logEvent ($description, $type = 'Event_Notice') {
+	function logEvent ($category, $description, $type = 'Event_Notice') {
+		ArgumentValidator::validate($category, StringValidatorRule::getRule());
 		ArgumentValidator::validate($description, StringValidatorRule::getRule());
 		ArgumentValidator::validate($type, ChoiceValidatorRule::getRule('Event_Notice', 'Error'));
 		
@@ -570,7 +572,7 @@ class SeguePluginsPlugin {
 			$priorityType =& new Type("logging", "edu.middlebury", $type,
 							"Normal events.");
 			
-			$item =& new AgentNodeEntryItem($description);
+			$item =& new AgentNodeEntryItem($category, $description);
 			$item->addNodeId($this->_asset->getId());
 			$renderer =& NodeRenderer::forAsset($this->_asset);
 			$siteRenderer =& $renderer->getSiteRenderer();

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete_node.act.php,v 1.3 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: delete_node.act.php,v 1.4 2006/03/07 19:27:27 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete_node.act.php,v 1.3 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: delete_node.act.php,v 1.4 2006/03/07 19:27:27 adamfranco Exp $
  */
 class delete_nodeAction 
 	extends MainWindowAction
@@ -76,7 +76,7 @@ class delete_nodeAction
 							"Normal events.");
 			
 			$asset =& $repository->getAsset($assetId);
-			$item =& new AgentNodeEntryItem("Node deleted: <br/>&nbsp;&nbsp;&nbsp;&nbsp;DisplayName: ".$asset->getDisplayName()."<br/>&nbsp;&nbsp;&nbsp;&nbsp; Id: ".$assetId->getIdString()."<br/>&nbsp;&nbsp;&nbsp;&nbsp;Type: ".Type::typeToString($asset->getAssetType()));
+			$item =& new AgentNodeEntryItem("Delete Node", "Node deleted: <br/>&nbsp;&nbsp;&nbsp;&nbsp;DisplayName: ".$asset->getDisplayName()."<br/>&nbsp;&nbsp;&nbsp;&nbsp; Id: ".$assetId->getIdString()."<br/>&nbsp;&nbsp;&nbsp;&nbsp;Type: ".Type::typeToString($asset->getAssetType()));
 			$item->addNodeId($assetId);
 			$renderer =& NodeRenderer::forAsset($asset);
 			$siteRenderer =& $renderer->getSiteRenderer();

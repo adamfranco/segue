@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.4 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.5 2006/03/07 19:27:27 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.4 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.5 2006/03/07 19:27:27 adamfranco Exp $
  */
 class addpluginAction 
 	extends MainWindowAction
@@ -85,7 +85,7 @@ class addpluginAction
 			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
 							"Normal events.");
 			
-			$item =& new AgentNodeEntryItem("Plugin added: ".Type::typeToString($type));
+			$item =& new AgentNodeEntryItem("Create Content", "Plugin added: ".Type::typeToString($type));
 			$item->addNodeId($asset->getId());
 			$item->addNodeId($parentAsset->getId());
 			$renderer =& NodeRenderer::forAsset($asset);

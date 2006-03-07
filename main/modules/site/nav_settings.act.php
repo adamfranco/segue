@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.8 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.9 2006/03/07 19:27:27 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/Display/LayoutTemplates/AllRowsLayoutTemplateV
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.8 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.9 2006/03/07 19:27:27 adamfranco Exp $
  */
 class nav_settingsAction 
 	extends MainWindowAction
@@ -775,7 +775,7 @@ END;
 			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
 							"Normal events.");
 			
-			$item =& new AgentNodeEntryItem("Navigation settings changed");
+			$item =& new AgentNodeEntryItem("Modify Settings", "Navigation settings changed");
 			$item->addNodeId($asset->getId());
 			$renderer =& NodeRenderer::forAsset($asset);
 			$siteRenderer =& $renderer->getSiteRenderer();
