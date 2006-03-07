@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addnav.act.php,v 1.3 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: addnav.act.php,v 1.4 2006/03/07 15:31:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addnav.act.php,v 1.3 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: addnav.act.php,v 1.4 2006/03/07 15:31:54 adamfranco Exp $
  */
 class addnavAction 
 	extends MainWindowAction
@@ -120,6 +120,25 @@ class addnavAction
 		RequestContext::locationHeader($harmoni->request->quickURL(
 			"site", "editview",
 			array("node" => RequestContext::value('return_node'))));
+		
+		// Log the success or failure
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Segue");
+			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			$item =& new AgentNodeEntryItem("Navigation added");
+			$item->addNodeId($asset->getId());
+			$item->addNodeId($parentAsset->getId());
+			$renderer =& NodeRenderer::forAsset($asset);
+			$siteRenderer =& $renderer->getSiteRenderer();
+			$item->addNodeId($siteRenderer->getId());
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
 	}
 }
 

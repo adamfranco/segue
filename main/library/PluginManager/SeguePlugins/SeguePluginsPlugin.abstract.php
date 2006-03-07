@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.11 2006/02/22 19:40:45 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.12 2006/03/07 15:31:53 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.11 2006/02/22 19:40:45 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.12 2006/03/07 15:31:53 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -546,6 +546,38 @@ class SeguePluginsPlugin {
 			$datum =& $data->next();
 			
 		return $datum;
+	}
+	
+	/**
+	 * Log an event. Plugins should log events that involve data modification
+	 * with type 'Event_Notice' and events that involve errors with type 'Error'
+	 * 
+	 * @param string $description
+	 * @param optional string $type
+	 * @return void
+	 * @access public
+	 * @since 3/6/06
+	 */
+	function logEvent ($description, $type = 'Event_Notice') {
+		ArgumentValidator::validate($description, StringValidatorRule::getRule());
+		ArgumentValidator::validate($type, ChoiceValidatorRule::getRule('Event_Notice', 'Error'));
+		
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Segue");
+			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", $type,
+							"Normal events.");
+			
+			$item =& new AgentNodeEntryItem($description);
+			$item->addNodeId($this->_asset->getId());
+			$renderer =& NodeRenderer::forAsset($this->_asset);
+			$siteRenderer =& $renderer->getSiteRenderer();
+			$item->addNodeId($siteRenderer->getId());
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
 	}
 
 /*********************************************************

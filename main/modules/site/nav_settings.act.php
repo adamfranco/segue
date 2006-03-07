@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.7 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.8 2006/03/07 15:31:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/Display/LayoutTemplates/AllRowsLayoutTemplateV
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.7 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.8 2006/03/07 15:31:54 adamfranco Exp $
  */
 class nav_settingsAction 
 	extends MainWindowAction
@@ -764,6 +764,25 @@ END;
 // 		if ($properties['datestep']['expiration_date'])
 // 			$asset->updateExpirationDate(
 // 				DateAndTime::fromString($properties['datestep']['expiration_date']));
+		
+		
+		// Log the success or failure
+		if (Services::serviceAvailable("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Segue");
+			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			$item =& new AgentNodeEntryItem("Navigation settings changed");
+			$item->addNodeId($asset->getId());
+			$renderer =& NodeRenderer::forAsset($asset);
+			$siteRenderer =& $renderer->getSiteRenderer();
+			$item->addNodeId($siteRenderer->getId());
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
 		
 		return TRUE;
 	}

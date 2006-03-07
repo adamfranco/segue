@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/DisplaySP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleTheme.class.php,v 1.5 2006/03/06 19:19:24 adamfranco Exp $
+ * @version $Id: SimpleTheme.class.php,v 1.6 2006/03/07 15:31:54 adamfranco Exp $
  */
 class SimpleTheme extends Theme {
 
@@ -86,7 +86,7 @@ class SimpleTheme extends Theme {
 // 		$block2->addSP(new BorderSP("1px", "solid", "#000"));
 		$block2->addSP(new PaddingSP("10px"));
 		$block2->addSP(new MarginSP("1px"));
-// 		$block2->addSP(new TextAlignSP("justify"));
+		$block2->addSP(new TextAlignSP("left"));
 		$this->addStyleForComponentType($block2, BLOCK, 2);
 
 		$links =& new StyleCollection("*.block2 a", "block2", "Block 2 Links", "Properties of links");
@@ -107,7 +107,7 @@ class SimpleTheme extends Theme {
 // 		$block3->addSP(new BorderSP("1px", "solid", "#000"));
 		$block3->addSP(new PaddingSP("10px"));
 		$block3->addSP(new MarginSP("1px"));
-// 		$block3->addSP(new TextAlignSP("justify"));
+		$block3->addSP(new TextAlignSP("left"));
 		$this->addStyleForComponentType($block3, BLOCK, 3);
 		
 		
@@ -126,7 +126,7 @@ class SimpleTheme extends Theme {
 // 		$block4->addSP(new BorderSP("1px", "solid", "#000"));
 		$block4->addSP(new PaddingSP("10px"));
 		$block4->addSP(new MarginSP("1px"));
-// 		$block4->addSP(new TextAlignSP("justify"));
+		$block4->addSP(new TextAlignSP("left"));
 		$this->addStyleForComponentType($block4, BLOCK, 4);
 		
 		
@@ -144,7 +144,7 @@ class SimpleTheme extends Theme {
 // 		$heading1->addSP(new BorderSP("1px", "solid", "#000"));
 		$heading1->addSP(new PaddingSP("10px"));
 		$heading1->addSP(new MarginSP("1px"));
-// 		$heading1->addSP(new TextAlignSP("justify"));		
+		$heading1->addSP(new TextAlignSP("left"));		
 		$heading1->addSP(new ColorSP("#fff"));
 		$heading1->addSP(new FontSizeSP("175%"));
 		$this->addStyleForComponentType($heading1, HEADING, 1);
@@ -163,7 +163,7 @@ class SimpleTheme extends Theme {
 // 		$heading2->addSP(new BorderSP("1px", "solid", "#000"));
 		$heading2->addSP(new PaddingSP("10px"));
 		$heading2->addSP(new MarginSP("1px"));
-// 		$heading2->addSP(new TextAlignSP("justify"));		
+		$heading2->addSP(new TextAlignSP("left"));		
 		$heading2->addSP(new ColorSP("#fff"));
 		$heading2->addSP(new FontSizeSP("125%"));
 		$this->addStyleForComponentType($heading2, HEADING, 2);
@@ -182,8 +182,7 @@ class SimpleTheme extends Theme {
 // 		$header1->addSP(new BorderSP("1px", "solid", "#000"));
 		$header1->addSP(new PaddingSP("10px"));
 		$header1->addSP(new MarginSP("1px"));
-// 		$header1->addSP(new TextAlignSP("justify"));
-		
+		$header1->addSP(new TextAlignSP("left"));		
 		$header1->addSP(new ColorSP("#fff"));
 // 		$header1->addSP(new FontSizeSP("200%"));
 		$this->addStyleForComponentType($header1, HEADER, 1);
@@ -221,7 +220,7 @@ class SimpleTheme extends Theme {
 // 		$menu1->addSP(new BorderSP("1px", "solid", "#000"));
 		$menu1->addSP(new PaddingSP("10px"));
 		$menu1->addSP(new MarginSP("1px"));
-// 		$menu1->addSP(new TextAlignSP("justify"));
+		$menu1->addSP(new TextAlignSP("left"));
 		$this->addStyleForComponentType($menu1, MENU, 1);
 		
 		// =====================================================================

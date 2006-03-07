@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.7 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.8 2006/03/07 15:31:54 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.7 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: SegueTextBlockPlugin.class.php,v 1.8 2006/03/07 15:31:54 adamfranco Exp $
  */
 class SegueTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -52,6 +52,7 @@ class SegueTextBlockPlugin
  		if ($this->getFieldValue('submit')) { 			
  			$this->setTitle($this->cleanHTML($this->getFieldValue('title')));
  			$this->setContent($this->cleanHTML($this->getFieldValue('content')));
+ 			$this->logEvent('Content updated');
  		}
  	}
  	
