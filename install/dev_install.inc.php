@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.6 2006/03/08 15:53:50 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.7 2006/03/08 15:57:28 adamfranco Exp $
  */
 
 /*********************************************************
@@ -33,7 +33,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 		
 		print "<h2>Tables exist in the database. Not creating tables.</h2>";
 		print "<h2>If you have just run the installer, comment out it's line in the config to start using Segue.</h2>";
-		exit;
+//		exit;
 	}
 	
 	print "<h1>Creating tables and default data set.</h1>";
