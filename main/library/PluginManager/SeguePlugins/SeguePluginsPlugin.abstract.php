@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.13 2006/03/07 19:27:26 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.14 2006/03/09 20:22:47 cws-midd Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,12 +20,12 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.13 2006/03/07 19:27:26 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.14 2006/03/09 20:22:47 cws-midd Exp $
  */
 class SeguePluginsPlugin {
  	
 /*********************************************************
- * Instance Methods - API
+ * Instance Methods/Variables - API
  *
  * These are the methods that plugins can and should use 
  * to interact with their environment. 
@@ -36,6 +36,15 @@ class SeguePluginsPlugin {
  * other Harmoni APIs, constants, global variables, or
  * the super-globals $_GET, $_POST, $_REQUEST, $_COOKIE.
  *********************************************************/
+/*********************************************************
+ * Object Variables - API
+ *********************************************************/
+	/**
+	 * @var array $data; 4-dimensional array holding plugin data 
+	 * @access private
+	 * @since 3/1/06
+	 */
+	var $data;
 
 /*********************************************************
  * Instance Methods - API - Override in Children
@@ -249,8 +258,8 @@ class SeguePluginsPlugin {
 	}
 	
 	/**
-	 * Answer the persisted data of this plugin. Changes to this data will be
-	 * persisted
+	 * Answer the persisted data of this plugin. Changes to this data can be
+	 * persisted via updateDataRecords()
 	 * 
 	 * The data array returned from this function is a 4-dimensional array of 
 	 * the following organization:
@@ -367,7 +376,7 @@ class SeguePluginsPlugin {
 	}
 	
 	/**
-	 * Answer TRUE if modifycation controls should be displayed, assuming that
+	 * Answer TRUE if modification controls should be displayed, assuming that
 	 * authorization is had as well. This method allows the plugin to operate
 	 * in two modes, hiding editing controls when they are not needed.
 	 *  
@@ -415,9 +424,9 @@ class SeguePluginsPlugin {
 	}
 
 	/**
-	 * Answer the filesystem filepath for the plugin
+	 * Answer the url filepath for the plugin?
 	 * 
-	 * @return string the filesystem path to this plugin directory
+	 * @return string the url path to this plugin directory
 	 * @access public
 	 * @since 1/19/06
 	 */
@@ -466,7 +475,7 @@ class SeguePluginsPlugin {
 	 * file record array from your plugin data, and the other that is an array
 	 * of the data part keys (chosen from {"FILE_NAME", "FILE_SIZE",
 	 * "DIMENSIONS", "MIME_TYPE", "FILE_DATA"} having "FILE_DATA" in the array 
-	 * will print the thumbnail for the file record.
+	 * will print the thumbnail for the file record) that you want printed.
 	 *
 	 * @param array $fileData array referencing the file record
 	 * @param array $parts array listing parts to print 
@@ -490,7 +499,6 @@ class SeguePluginsPlugin {
 		$newArray = array_intersect($setArray, $parts);
 		$partStructureArray = array();
 		
-		// @todo map parts from array to PS
 		foreach ($newArray as $part) {
 				$partStructureArray[] =& $rs->getPartStructure(
 					$idManager->getId($part));
@@ -666,6 +674,55 @@ class SeguePluginsPlugin {
 	 */
 	var $_showControls = false;
 	
+	/**
+	 * @var object URLWriter $_baseURL; URL for the plugin w/o mods
+	 * @access private
+	 * @since 3/1/06
+	 */
+	var $_baseURL;
+	
+	/**
+	 * @var object HarmoniAsset $_asset; the asset that contains the plugin data 
+	 * @access private
+	 * @since 3/1/06
+	 */
+	var $_asset;
+	
+	/**
+	 * @var object HarmoniConfiguration $_configuration; holds config data 
+	 * @access private
+	 * @since 3/1/06
+	 */
+	var $_configuration;
+	
+	/**
+	 * @var string $_pluginDir; filesystem path to appropriate plugin class 
+	 * @access private
+	 * @since 3/1/06
+	 */
+	var $_pluginDir;
+	
+	/**
+	 * @var aray $_data_ids; parallel structure to 'data' w/ part ids
+	 * @access private
+	 * @since 3/1/06
+	 */
+	var $_data_ids;
+	
+	/**
+	 * @var array $_loadedData; the data that persisted since the last change
+	 * @access private
+	 * @since 3/1/06
+	 */
+	var $_loadedData;
+	
+	/**
+	 * @var array $_structures; array mapping 'data' indices to structure ids 
+	 * @access private
+	 * @since 3/1/06
+	 */
+	var $_structures;
+	
 /*********************************************************
  * Instance Methods - Non-API
  *********************************************************/
@@ -786,7 +843,6 @@ class SeguePluginsPlugin {
 	 * @since 1/12/06
 	 */
 	function _loadData () {
-
 		// one array for the data, a second for the persistence of ids
 		if (isset($this->data))
 			unset($this->data, $this->_data_ids);
@@ -794,7 +850,6 @@ class SeguePluginsPlugin {
 		$this->_data_ids = array();
 		// get all the records for this asset
 		$records =& $this->_asset->getRecords();
-
 
 		// maintain record order
 		$sets =& Services::getService("Sets");
@@ -809,7 +864,7 @@ class SeguePluginsPlugin {
 			$ordered[$recordOrder->getPosition($rid)] =& $rid;
 		}
 
-		foreach ($ordered as $key => $recid) {
+		foreach ($ordered as $recid) {
 			$record =& $this->_asset->getRecord($recid);
 			
 			// for each new recordstructure add an array for holding instances
@@ -881,18 +936,19 @@ class SeguePluginsPlugin {
 				if (is_array($instances) && ($rs != 'FILE')) {
 					// go through each instance of the recordstructure
 					foreach ($instances as $instance => $record) {
-						
-						if (is_array($record)) {
-
+						if (!isset($this->_data_ids[$rs][$instance])) 
+							$this->_createInstance($rs, $instance);
+						else if (is_array($record)) {
 					// for each array of part values find out which have changed
 							foreach ($record as $ps => $values) {
 								$differences = array_diff_assoc(
-									$values, $this->_loadedData[$rs][$instance][$ps]);
+									$values, 
+									$this->_loadedData[$rs][$instance][$ps]);
 								
 								// add each change to the array of changes
 								if (count($differences) > 0) {
 									foreach ($differences as $key => $value) {
-										$changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
+$changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 									}
 								}
 							}
@@ -901,7 +957,8 @@ class SeguePluginsPlugin {
 				}
 			}
 		}
-		if (isset($this->data['FILE']) && (count($this->data['FILE']) > 0) && $this->_fileDataChanged()) {
+		if (isset($this->data['FILE']) && (count($this->data['FILE']) > 0) && 
+				$this->_fileDataChanged()) {
 			// handle all file data changes
 			$this->_changeFileInfo();
 		}
@@ -914,7 +971,7 @@ class SeguePluginsPlugin {
 				$part =& $this->_asset->getPart($id);
 				$part->updateValueFromString($value);
 			}
- 		$this->_loadedData = $this->data;
+ 		$this->_loadedData = $this->data;	// new data persisted
 		}
 	}
 	
@@ -939,7 +996,10 @@ class SeguePluginsPlugin {
 			if ($file['delete_file'][0] != $lfile['delete_file'][0]) {
 				$this->_asset->deleteRecord($idManager->getId(
 					$file['assoc_file_id'][0]));
-				unset($file, $lfile, $fpids);
+				// unset the file in the data arrays
+				unset($this->data['FILE'][$instance],
+					$this->_loadedData['FILE'][$instance],
+					$this->_data_ids['FILE'][$isntance]);
 				if (count($this->data['FILE']) == 0)
 					unset($this->data['FILE']);
 			} else {
@@ -976,7 +1036,8 @@ class SeguePluginsPlugin {
 					$file['assoc_file_id'][0] = $lfile['assoc_file_id'][0];
 			}			
 		}	
-			$this->_populateFileInfo(); // currently doesn't maintain order
+		// @todo determine if this is a necessary step	
+		$this->_populateFileInfo();
 	}
 
 	/**
@@ -1005,7 +1066,7 @@ class SeguePluginsPlugin {
 		$recordOrder =& $sets->getPersistentSet($this->_asset->getId());
 		$fordered = array();
 
-
+		// populate fordered array with current file records
 		while ($frecords->hasNext()) {
 			$frecord =& $frecords->next();
 			$frid =& $frecord->getId();
@@ -1013,7 +1074,17 @@ class SeguePluginsPlugin {
 				$recordOrder->addItem($frid);
 			$fordered[$recordOrder->getPosition($frid)] = $frid;
 		}
+
+		// removing outdated id's in the set.		
+		$recordOrder->reset();
+		while ($recordOrder->hasNext()) {
+			$recId =& $recordOrder->next();
+			
+			if (!isset($fordered[$recordOrder->getPosition($recId)]))
+				$recordOrder->removeItem($recId);
+		}
 		
+		// populate the data array with the file data
 		foreach ($fordered as $frecid) {
 			$frecord =& $this->_asset->getRecord($frecid);
 			
@@ -1076,5 +1147,37 @@ class SeguePluginsPlugin {
 			return false;
 		return true;
 	}
+
+// 	/**
+// 	 * Initializes the structures of the Asset to allow for record creation
+// 	 * 
+// 	 * @return void
+// 	 * @access public
+// 	 * @since 3/1/06
+// 	 */
+// 	function getStructuresForPlugin () {
+// 		// @todo access the db and build a list of structures for plugin
+// 		$db =& Services::getService("DBHandler");
+// 		
+// 	}
+// 	
+// @todo implement this shit	
+// 	/**
+// 	 * Creates a new Record for the instance held in $this->data
+// 	 * 
+// 	 * @param string $dname RecordStructure display name
+// 	 * @param integer $instance index in $this->data for record
+// 	 * @access public
+// 	 * @since 3/1/06
+// 	 */
+// 	function _createInstance ($dname, $instance) {
+// 		// @todo take the data in $this->data[$rs][$instance] and create a 
+// 		// proper record for it in the database.
+// 		
+// 		// need: RecordStructureId, asset, data
+// 		
+// 		// first: get the recordstructure via partstructures
+// 		$this->data[
+// 	}
 }
 ?>

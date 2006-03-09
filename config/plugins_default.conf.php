@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: plugins_default.conf.php,v 1.1 2006/01/24 20:04:35 cws-midd Exp $
+ * @version $Id: plugins_default.conf.php,v 1.2 2006/03/09 20:22:46 cws-midd Exp $
  */
  
 	require_once(MYDIR."/main/library/PluginManager/PluginManager.class.php");
@@ -21,4 +21,6 @@
 	$configuration =& new ConfigurationProperties;
 	$configuration->addProperty('plugin_dir', $dir = MYDIR."/plugins");
 	$configuration->addProperty('plugin_path', $path = MYPATH."/plugins");
+	$configuration->addProperty('authN_priority', $prior = 'Middlebury LDAP');
 	Services::startManagerAsService("PluginManager", $context, $configuration);
+	

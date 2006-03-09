@@ -9,11 +9,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.5 2006/01/24 19:42:48 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.6 2006/03/09 20:22:46 cws-midd Exp $
  */
-
 if (!isset($_SESSION['post_config_setup_complete'])) {
-
 	// Exhibition Repository
 	$repositoryManager =& Services::getService("Repository");
 	$idManager =& Services::getService("Id");
@@ -96,10 +94,27 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 							false, 
 							false,
 							$idManager->getId("edu.middlebury.segue.nav_nod_rs.child_cells"));
-
-
 	}
 	
+	// check if Install default plugins
+	$db =& Services::getService("DBHandler");
+	$pm =& Services::getService("Plugs");
+	$query = new SelectQuery();
+	$query->addTable("plugin_manager");
+	$query->addColumn("*");
 	
+	$results =& $db->query($query, IMPORTER_CONNECTION);
+
+	if ($results->getNumberOfRows() == 0) {
+		// install default (registered) plugins
+		$plugins = $pm->getRegisteredPlugins();
+		// iterate through registered plugins and install them
+		foreach ($plugins as $type) {
+			$pm->_installPlugin($type);
+		}
+	}
+	
+	$results->free();
+
 	$_SESSION['post_config_setup_complete'] = TRUE;
 }
