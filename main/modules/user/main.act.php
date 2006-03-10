@@ -1,11 +1,11 @@
 <?php
 /**
- * @package concerto.modules.user
+ * @package segue.modules.user
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.1 2006/03/10 20:50:27 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.2 2006/03/10 20:53:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -15,12 +15,12 @@ require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
 /**
  * 
  * 
- * @package concerto.modules.user
+ * @package segue.modules.user
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.1 2006/03/10 20:50:27 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.2 2006/03/10 20:53:49 adamfranco Exp $
  */
 class mainAction 
 	extends MainWindowAction
@@ -122,7 +122,7 @@ class mainAction
 		print "\n<ul>".
 			"\n\t<li><a href='".
 			$harmoni->request->quickURL("user", "change_password")."'>".
-			_("Change ConcertoDB Password").
+			_("Change 'Harmoni DB' Password").
 			"</li>";
 			
 		$introText =& new Block(ob_get_contents(),2);
