@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.29 2006/03/07 19:27:23 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.30 2006/03/13 16:30:36 adamfranco Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.29 2006/03/07 19:27:23 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.30 2006/03/13 16:30:36 adamfranco Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -527,11 +527,11 @@ class NavigationNodeRenderer
 			print " disabled='disabled'";
 		}
 		print ">";
-		print "\n\t\t\t\t\t<option>"._("Add a new child element...")."</option>";
-		print "\n\t\t\t\t\t<option>------------</option>";
+		print "\n\t\t\t\t\t<option value='' disabled='disabled'>"._("Add a new child element...")."</option>";
+		print "\n\t\t\t\t\t<option value='' disabled='disabled'>------------</option>";
 		print "\n\t\t\t\t\t<option value='single_nav'>"._("Container")."</option>";
 		print "\n\t\t\t\t\t<option value='nav'>"._("Navigational Container")."</option>";
-		print "\n\t\t\t\t\t<option>------------</option>";
+		print "\n\t\t\t\t\t<option value='' disabled='disabled'>------------</option>";
 		
 		// Loop through all plugins. don't print Authority for any, don't print
 		// domain for SeguePlugins. 
