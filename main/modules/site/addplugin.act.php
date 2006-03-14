@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.5 2006/03/07 19:27:27 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.6 2006/03/14 22:13:56 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.5 2006/03/07 19:27:27 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.6 2006/03/14 22:13:56 cws-midd Exp $
  */
 class addpluginAction 
 	extends MainWindowAction
@@ -68,7 +68,7 @@ class addpluginAction
 		$parentAsset =& $repository->getAsset(
 				$idManager->getId(RequestContext::value('parent_id')));
 		
-		$type =& Type::stringToType(urldecode(RequestContext::value('type')));
+		$type =& Type::fromString(urldecode(RequestContext::value('type')));
 		
 		$asset =& $repository->createAsset("Default Title", 
 										"", 

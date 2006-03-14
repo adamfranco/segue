@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.6 2006/03/09 20:22:47 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.7 2006/03/14 22:13:56 cws-midd Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.6 2006/03/09 20:22:47 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.7 2006/03/14 22:13:56 cws-midd Exp $
  */
 class PluginManager {
 		
@@ -113,7 +113,7 @@ class PluginManager {
 		foreach ($this->_arrays as $arrayName) {
 			eval('$array = $this->_'.$arrayName.'Plugins;');
 			foreach ($array as $key => $keystring) {
-				$array[$keystring] =& HarmoniType::stringToType($keystring);
+				$array[$keystring] =& HarmoniType::fromString($keystring);
 				unset($array[$key]);
 			}
 			eval('$this->_'.$arrayName.'Plugins = $array;');
@@ -511,12 +511,39 @@ class PluginManager {
 			$this->_cachePluginArrays();
 		}
 	}
+
+	function _loadPlugins() {
+		// cache the installed plugins
+		$db =& Services::getService("DBHandler");
+		$pm =& Services::getService("Plugs");
+		$query = new SelectQuery();
+		$query->addTable("plugin_type");
+		$query->addColumn("*");
+		
+		$results =& $db->query($query, IMPORTER_CONNECTION);
+		$dis = array();
+		$en = array();
+		while ($results->hasNext()) {
+			$result = $results->next();
+			if ($result['type_enabled'] == 0)
+				$dis[] = $result['type_domain']."::".
+						 $result['type_authority']."::".
+						 $result['type_keyword'];
+			else
+				$en[] =$result['type_domain']."::".
+						 $result['type_authority']."::".
+						 $result['type_keyword'];
+		}
+		$this->_disabledPlugins = $dis;
+		$this->_enabledPlugins = $en;
+		$this->_objectifyArrays();
+		$this->_cachePluginArrays();
+	}
 	
 	/**
 	 * Returns the array containing all the installed plugins
 	 * 
-	 * @param <##>
-	 * @return <##>
+	 * @return array
 	 * @access public
 	 * @since 3/7/06
 	 */

@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.6 2006/03/09 20:22:46 cws-midd Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.7 2006/03/14 22:13:55 cws-midd Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
@@ -100,7 +100,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	$db =& Services::getService("DBHandler");
 	$pm =& Services::getService("Plugs");
 	$query = new SelectQuery();
-	$query->addTable("plugin_manager");
+	$query->addTable("plugin_type");
 	$query->addColumn("*");
 	
 	$results =& $db->query($query, IMPORTER_CONNECTION);
@@ -112,6 +112,8 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 		foreach ($plugins as $type) {
 			$pm->_installPlugin($type);
 		}
+	} else {
+		$pm->_loadPlugins();
 	}
 	
 	$results->free();
