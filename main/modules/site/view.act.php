@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.9 2006/03/16 20:04:20 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.10 2006/03/16 20:47:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -34,10 +34,10 @@ require_once(MYDIR."/main/modules/window/display.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.9 2006/03/16 20:04:20 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.10 2006/03/16 20:47:56 adamfranco Exp $
  */
 class viewAction 
-	extends Action
+	extends displayAction
 {
 	/**
 	 * If true, editing controls will be displayed
@@ -93,6 +93,21 @@ class viewAction
 		$headRow->add(new UnstyledBlock("<h1>".$nodeRenderer->getSiteTitle()."</h1>"), 
 			null, null, LEFT, TOP);
 		
+		$rightHeadColumn =& $headRow->add(
+			new Container($yLayout, BLANK, 1), 
+			null, null, CENTER, TOP);
+		
+		$rightHeadColumn->add($this->getLoginComponent(), 
+				null, null, RIGHT, TOP);
+		
+		ob_start();
+		print "\n<div style='font-size: small; vertical-align: top; text-align: right; height:30px;'>";
+		print "\n\t<a href='".$harmoni->request->quickURL("home", "welcome")."'>";
+		print _("home");
+		print "</a>\n</div>";
+		$rightHeadColumn->add(new UnstyledBlock(ob_get_clean()), 
+				null, null, RIGHT, TOP);
+		
 		if ($this->_showControls) {
 			$siteRenderer =& $nodeRenderer->getSiteRenderer();
 			$siteRenderer->setShowControls($this->_showControls);
@@ -103,7 +118,7 @@ class viewAction
 			print "' style='border: 1px solid; padding: 2px; text-align: center; text-decoration: none; margin: 2px;'>";
 			print _("Hide Controls");
 			print "</a>";
-			$headRow->add(new UnstyledBlock(ob_get_clean().$siteRenderer->getSettingsForm()), 
+			$rightHeadColumn->add(new UnstyledBlock(ob_get_clean().$siteRenderer->getSettingsForm()), 
 				null, null, RIGHT, BOTTOM);
 		} else {
 			ob_start();
@@ -112,7 +127,7 @@ class viewAction
 			print "' style='border: 1px solid; padding: 2px; text-align: center; text-decoration: none; margin: 2px;'>";
 			print _("Show Controls");
 			print "</a>";
-			$headRow->add(new UnstyledBlock(ob_get_clean()), 
+			$rightHeadColumn->add(new UnstyledBlock(ob_get_clean()), 
 				null, null, RIGHT, BOTTOM);
 		}
 			

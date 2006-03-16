@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.8 2006/03/16 20:04:21 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.9 2006/03/16 20:47:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.8 2006/03/16 20:04:21 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.9 2006/03/16 20:47:59 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.8 2006/03/16 20:04:21 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.9 2006/03/16 20:47:59 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -97,8 +97,7 @@ class displayAction
 		$loginRow =& new Container($yLayout, OTHER, 1);
 		$headRow->add($loginRow, null, null, RIGHT, TOP);
 		$loginRow->add($this->getLoginComponent(), null, null, RIGHT, TOP);
-		ob_end_clean();
-		
+				
 		//Add the headerRow to the mainScreen
 		$mainScreen->add($headRow, "100%", null, LEFT, TOP);
 		
@@ -215,7 +214,7 @@ class displayAction
 		}		
 		
 
-		$loginForm =& new Component(ob_get_contents(), BLANK, 2);
+		$loginForm =& new Component(ob_get_clean(), BLANK, 2);
 		
 		return $loginForm;
 	}
