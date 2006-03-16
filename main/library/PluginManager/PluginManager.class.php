@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.7 2006/03/14 22:13:56 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.8 2006/03/16 20:04:19 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.7 2006/03/14 22:13:56 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.8 2006/03/16 20:04:19 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -158,6 +158,7 @@ class PluginManager {
 	 * @since 1/20/06
 	 */
 	function getPluginDomains () {
+		printpre($this->getInstalledPlugins());
 		$domains = array();
 		foreach ($this->getInstalledPlugins() as $pluginType) {
 			if (!in_array(strtolower($pluginType->getDomain()), $domains))

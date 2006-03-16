@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.7 2006/01/24 19:42:48 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.8 2006/03/16 20:04:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.7 2006/01/24 19:42:48 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.8 2006/03/16 20:04:21 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.7 2006/01/24 19:42:48 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.8 2006/03/16 20:04:21 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -96,8 +96,68 @@ class displayAction
 		// Pretty Login Box
 		$loginRow =& new Container($yLayout, OTHER, 1);
 		$headRow->add($loginRow, null, null, RIGHT, TOP);
+		$loginRow->add($this->getLoginComponent(), null, null, RIGHT, TOP);
+		ob_end_clean();
 		
+		//Add the headerRow to the mainScreen
+		$mainScreen->add($headRow, "100%", null, LEFT, TOP);
+		
+	// :: Center Pane ::
+		$centerPane =& new Container($xLayout, OTHER, 1);
+		$mainScreen->add($centerPane,"100%",null, LEFT, TOP);		
+		
+		// Main menu
+		$mainMenu =& SegueMenuGenerator::generateMainMenu($harmoni->getCurrentAction());
+		$centerPane->add($mainMenu,"140px",null, LEFT, TOP);
+		
+		// use the result from previous actions
+		if ($harmoni->printedResult) {
+			$contentDestination =& new Container($yLayout, OTHER, 1);
+			$centerPane->add($contentDestination, null, null, LEFT, TOP);
+			$contentDestination->add(new Block($harmoni->printedResult, 1), null, null, TOP, CENTER);
+			$harmoni->printedResult = '';
+		} else {
+			$contentDestination =& $centerPane;
+		}
+		
+		// use the result from previous actions
+		$contentDestination->add($harmoni->result, null, null, CENTER, TOP); 
+		
+		// Right Column
+		$rightColumn =& $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);
+		// Basket
+		$rightColumn->add(BasketManager::getSmallBasketBlock(), "100%", null, LEFT, TOP);
+		if (ereg("^(collection|asset)\.browse$", $harmoni->getCurrentAction()))
+			$rightColumn->add(AssetPrinter::getMultiEditOptionsBlock(), "100%", null, LEFT, TOP);
+		
+	// :: Footer ::
+		$footer =& new Container (new XLayout, FOOTER, 1);
+		
+		$helpText = "<a target='_blank' href='";
+		$helpText .= $harmoni->request->quickURL("help", "browse_help");
+		$helpText .= "'>"._("Help")."</a>";
+		$footer->add(new UnstyledBlock($helpText), "50%", null, LEFT, BOTTOM);
+		
+		$footerText = "Segue v.2.0-Alpha &copy;2006 Middlebury College: <a href=''>";
+		$footerText .= _("credits");
+		$footerText .= "</a>";
+		$footer->add(new UnstyledBlock($footerText), "50%", null, RIGHT, BOTTOM);
+		
+		$mainScreen->add($footer, "100%", null, RIGHT, BOTTOM);
+
+		return $mainScreen;
+	}
+	
+	/**
+	 * Answer the component containing the login/logout form.
+	 * 
+	 * @return object Component
+	 * @access public
+	 * @since 3/13/06
+	 */
+	function &getLoginComponent () {
 		ob_start();
+		$harmoni =& Harmoni::instance();
 		$authN =& Services::getService("AuthN");
 		$agentM =& Services::getService("Agent");
 		$idM =& Services::getService("Id");
@@ -156,57 +216,9 @@ class displayAction
 		
 
 		$loginForm =& new Component(ob_get_contents(), BLANK, 2);
-		$loginRow->add($loginForm, null, null, RIGHT, TOP);
-		ob_end_clean();
 		
-		//Add the headerRow to the mainScreen
-		$mainScreen->add($headRow, "100%", null, LEFT, TOP);
-		
-	// :: Center Pane ::
-		$centerPane =& new Container($xLayout, OTHER, 1);
-		$mainScreen->add($centerPane,"100%",null, LEFT, TOP);		
-		
-		// Main menu
-		$mainMenu =& SegueMenuGenerator::generateMainMenu($harmoni->getCurrentAction());
-		$centerPane->add($mainMenu,"140px",null, LEFT, TOP);
-		
-		// use the result from previous actions
-		if ($harmoni->printedResult) {
-			$contentDestination =& new Container($yLayout, OTHER, 1);
-			$centerPane->add($contentDestination, null, null, LEFT, TOP);
-			$contentDestination->add(new Block($harmoni->printedResult, 1), null, null, TOP, CENTER);
-			$harmoni->printedResult = '';
-		} else {
-			$contentDestination =& $centerPane;
-		}
-		
-		// use the result from previous actions
-		$contentDestination->add($harmoni->result, null, null, CENTER, TOP); 
-		
-		// Right Column
-		$rightColumn =& $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);
-		// Basket
-		$rightColumn->add(BasketManager::getSmallBasketBlock(), "100%", null, LEFT, TOP);
-		if (ereg("^(collection|asset)\.browse$", $harmoni->getCurrentAction()))
-			$rightColumn->add(AssetPrinter::getMultiEditOptionsBlock(), "100%", null, LEFT, TOP);
-		
-	// :: Footer ::
-		$footer =& new Container (new XLayout, FOOTER, 1);
-		
-		$helpText = "<a target='_blank' href='";
-		$helpText .= $harmoni->request->quickURL("help", "browse_help");
-		$helpText .= "'>"._("Help")."</a>";
-		$footer->add(new UnstyledBlock($helpText), "50%", null, LEFT, BOTTOM);
-		
-		$footerText = "Segue v.2.0-Alpha &copy;2006 Middlebury College: <a href=''>";
-		$footerText .= _("credits");
-		$footerText .= "</a>";
-		$footer->add(new UnstyledBlock($footerText), "50%", null, RIGHT, BOTTOM);
-		
-		$mainScreen->add($footer, "100%", null, RIGHT, BOTTOM);
-
-		return $mainScreen;
-	}	
+		return $loginForm;
+	}
 }
 
 ?>

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.8 2006/02/22 19:40:45 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.9 2006/03/16 20:04:20 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -24,6 +24,8 @@ require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
 
 require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
 
+require_once(MYDIR."/main/modules/window/display.act.php");
+
 /**
  * display the site.
  * 
@@ -32,7 +34,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.8 2006/02/22 19:40:45 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.9 2006/03/16 20:04:20 adamfranco Exp $
  */
 class viewAction 
 	extends Action
