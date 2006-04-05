@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
@@ -37,9 +37,7 @@ class XmlNavBlockSiteComponent
 		$child =& $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'organizer') {
-				$class = "Xml".ucfirst($child->firstChild->nodeName)."SiteComponent";
-				$organizer =& new $class($this->_director, $child->firstChild);
-				return $organizer;
+				return $this->_director->getSiteComponent($child->firstChild);
 			}
 			$child =& $child->nextSibling;
 		}

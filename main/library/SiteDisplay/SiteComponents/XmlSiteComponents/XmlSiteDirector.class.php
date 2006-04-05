@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/XmlMenuOrganizerSiteComponent.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -46,6 +46,7 @@ class XmlSiteDirector
 	function XmlSiteDirector ( $xmlDocument ) {
 		$this->_document =& $xmlDocument;
 		$this->_activeNodes = array();
+		$this->_createdSiteComponents = array();
 	}
 	
 	/**
@@ -143,6 +144,23 @@ class XmlSiteDirector
 	 */
 	function isActive ( $id ) {
 		return in_array($id, $this->_activeNodes);
+	}
+	
+	/**
+	 * Create a child node and register it for later fetching
+	 * 
+	 * @param object DOMIT_Node $element
+	 * @return object
+	 * @access public
+	 * @since 4/5/06
+	 */
+	function &getSiteComponent ( &$element ) {
+		$id = $element->getAttribute('id');
+		if (!isset($this->_createdSiteComponents[$id])) {
+			$class = "Xml".ucfirst($element->nodeName)."SiteComponent";
+			$this->_createdSiteComponents[$id] =& new $class($this, $element);
+		}
+		return $this->_createdSiteComponents[$id];
 	}
 	
 	/**

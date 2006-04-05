@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -181,8 +181,7 @@ class XmlOrganizerSiteComponent
 			while ($child) {
 				if ($child->nodeName == 'cell') {
 					if ($child->firstChild) {
-						$class = "Xml".ucfirst($child->firstChild->nodeName)."SiteComponent";
-						$this->_childComponents[] =& new $class($this->_director, $child->firstChild);
+						$this->_childComponents[] =& $this->_director->getSiteComponent($child->firstChild);
 					} else {
 						$this->_childComponents[] = null;
 					}
