@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.3 2006/04/05 18:15:54 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.4 2006/04/05 21:22:40 cws-midd Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/XmlMenuOrganizerSiteComponent.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.3 2006/04/05 18:15:54 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.4 2006/04/05 21:22:40 cws-midd Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -179,8 +179,8 @@ class XmlSiteDirector
 	/**
 	 * Answer the id of the parent object
 	 * 
-	 * @param object Domit_Node
-	 * @return string
+	 * @param object DOMIT_Node
+	 * @return object DOMIT_Node
 	 * @access public
 	 * @since 4/3/06
 	 */

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -35,7 +35,24 @@ class XmlFixedOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function addSubcomponentToCell ( &$siteComponent, $cellIndex ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		$child =& $this->_element->firstChild;
+		$i = 0;
+		$success = false;
+		while ($child) {
+			// is the cell we want, is empty
+			if ($i == $cellIndex) {
+				if (!$child->hasChildNodes()) {
+					$child->appendChild($siteComponent->getElement());
+					$success = true;
+				} else
+					throwError( new Error("Cell Not Empty", "SiteComponents"));
+			} else {
+				$child =& $child->nextSibling;
+				$i++;
+			}
+		}
+		if (!$success)
+			throwError( new Error("Cell $cellIndex Not Found", "SiteComponents"));
 	}
 	
 	/**
@@ -48,7 +65,20 @@ class XmlFixedOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function swapCells ( $cellOneIndex, $cellTwoIndex ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		// child DOMIT_Elements in an array
+		$children =& $this->_element->childNodes;
+		// components for cells
+		$cell_one_component = $this->getSubcomponentForCell($cellOneIndex);
+		$cell_two_component = $this->getSubcomponentForCell($cellTwoIndex);
+		
+		// third party (temp for a swap)
+		$temp =& $cell_two_component->getElement;
+		$children[$cellTwoIndex]->replaceChild(
+										$cell_one_component->getElement(),
+										$cell_two_component->getElement());
+		$children[$cellOneIndex]->replaceChild(
+										$temp,
+										$cell_one_component->getElement());
 	}
 	
 	/**
@@ -68,7 +98,19 @@ class XmlFixedOrganizerSiteComponent
 		}
 		return $array;
 	}
-	
+
+	/**
+	 * Answer the number of cells in this organizer that are visible (some may
+	 * be empty).
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 3/31/06
+	 */
+	function getNumberOfVisibleCells () {
+		return $this->_getTotalNumberOfCells();
+	}
+		
 	/**
 	 * Accepts a visitor.
 	 * 

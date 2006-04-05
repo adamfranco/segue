@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
  */
 class XmlSiteComponent 
 	// implements SiteComponent
@@ -52,6 +52,17 @@ class XmlSiteComponent
 			return $this->_element->getAttribute('id');
 		else
 			throwError( new Error("No id available", "XmlSiteComponents"));
+	}
+	
+	/**
+	 * Answer the DOMIT_Element associated with this SiteComponent
+	 * 
+	 * @return object DOMIT_Element
+	 * @access public
+	 * @since 4/5/06
+	 */
+	function &getElement () {
+		return $this->_element;
 	}
 	
 	/**

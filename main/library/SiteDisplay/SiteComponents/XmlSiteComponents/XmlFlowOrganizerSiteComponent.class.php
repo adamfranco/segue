@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -51,8 +51,8 @@ class XmlFlowOrganizerSiteComponent
 	 */
 	function getNumberOfVisibleCells () {
 		$max = $this->getMaxVisible();
-		$childComponents = $this->_getChildComponents();
-		return (!$max || count($childComponents) < $max)?count($childComponents):$max;
+		return (!$max || $this->_element->childCount < $max)
+			?$this->_element->childCount:$max;
 	}
 	
 	/**
@@ -80,7 +80,7 @@ class XmlFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateMaxVisible ( $newMaxVisible ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		$this->_element->setAttribute('maxVisible', $newMaxVisible);
 	}
 	
 	/**
@@ -94,7 +94,9 @@ class XmlFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function getOverflowStyle () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		if ($this->_element->hasAttribute("overflowStyle"))
+			return $this->_element->getAttribute("overflowStyle");
+		return "Paginate";
 	}
 	
 	/**
@@ -108,8 +110,8 @@ class XmlFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function updateOverflowStyle () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+	function updateOverflowStyle ( $overflowStyle ) {
+		$this->_element->setAttribute("overflowStyle", $overflowStyle);
 	}
 	
 	/**
@@ -121,7 +123,9 @@ class XmlFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function addSubcomponent ( &$siteComponent ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		$cell =& new DOMIT_Element("cell");
+		$cell->appendChild($siteComponent->getElement());
+		$this->_element->appendNode($cell);
 	}
 	
 	/**
@@ -134,7 +138,18 @@ class XmlFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function moveBefore ( $cellOneIndex, $cellTwoIndex ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		// child DOMIT_Elements in an array
+		// DISCUSS THIS
+		$children =& $this->_element->childNodes;
+
+		$temp =& $children[$cellOneIndex];
+
+		$this->_element->removeChild($children[$cellOneIndex]);
+		
+		if ($cellTwoIndex > 0)
+			$this->_element->insertBefore($temp, $children[$cellTwoIndex - 1]);
+		else
+			$this->_element->insertBefore($temp, $children[0]);
 	}
 	
 	/**
@@ -146,7 +161,9 @@ class XmlFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function moveToEnd ( $cellIndex ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		$temp =& $this->_element->childNodes[$cellIndex];
+		$this->_element->removeChild($temp);
+		$this->_element->appendChild($temp);
 	}
 	
 	/**

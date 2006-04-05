@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.3 2006/04/05 21:22:40 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.3 2006/04/05 21:22:40 cws-midd Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -55,7 +55,7 @@ class XmlOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateNumRows ( $newRows ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		$this->_element->setAttribute('rows', $newRows);
 	}
 
 	/**
@@ -81,7 +81,7 @@ class XmlOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateNumColumns ( $newColumns ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		$this->_element->setAttribute('cols', $newColumns);
 	}
 	
 	/**
@@ -92,7 +92,7 @@ class XmlOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function getTotalNumberOfCells () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		return $this->_element->childCount;
 	}
 	
 	/**
@@ -123,7 +123,9 @@ class XmlOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function getDirection () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		if ($this->_element->hasAttribute('direction'))
+			return $this->_element->getAttribute('direction');
+		return 'Left-Right/Top-Bottom'; // the default direction
 	}
 	
 	/**
@@ -142,7 +144,7 @@ class XmlOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateDirection ( $direction ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		$this->_element->setAttribute('direction', $direction);
 	}
 	
 	/**
