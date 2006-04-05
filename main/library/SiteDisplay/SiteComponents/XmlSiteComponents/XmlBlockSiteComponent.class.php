@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.3 2006/04/05 18:39:53 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.3 2006/04/05 18:39:53 adamfranco Exp $
  */
 class XmlBlockSiteComponent
 	extends XmlSiteComponent
@@ -56,8 +56,8 @@ class XmlBlockSiteComponent
 		$child =& $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'displayName') {
-				printpre($child->getText());
-				
+				$cdata =& $child->ownerDocument->createCDATASection($displayName);
+				$child->replaceChild($cdata, $child->firstChild);				
 				return;	
 			}
 			$child =& $child->nextSibling;
@@ -91,7 +91,15 @@ class XmlBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateDescription ( $description ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		$child =& $this->_element->firstChild;
+		while ($child) {
+			if ($child->nodeName == 'description') {
+				$cdata =& $child->ownerDocument->createCDATASection($description);
+				$child->replaceChild($cdata, $child->firstChild);				
+				return;	
+			}
+			$child =& $child->nextSibling;
+		}
 	}
 	
 	/**
@@ -142,7 +150,15 @@ class XmlBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateContentMarkup ( $contentMarkup ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		$child =& $this->_element->firstChild;
+		while ($child) {
+			if ($child->nodeName == 'contentMarkup') {
+				$cdata =& $child->ownerDocument->createCDATASection($contentMarkup);
+				$child->replaceChild($cdata, $child->firstChild);				
+				return;	
+			}
+			$child =& $child->nextSibling;
+		}
 	}
 	
 	/**
