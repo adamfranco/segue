@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.3 2006/04/05 18:15:54 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/XmlMenuOrganizerSiteComponent.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.3 2006/04/05 18:15:54 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -147,10 +147,23 @@ class XmlSiteDirector
 	}
 	
 	/**
-	 * Create a child node and register it for later fetching
+	 * Answer the component that has a particular Id
+	 * 
+	 * @param string $id
+	 * @return object SiteComponent
+	 * @access public
+	 * @since 4/5/06
+	 */
+	function &getSiteComponentById ( $id ) {
+		$element =& $this->_document->getElementByID($id, false);
+		return $this->getSiteComponent($element);
+	}
+	
+	/**
+	 * Create and/or return the component for an element and register it for later fetching
 	 * 
 	 * @param object DOMIT_Node $element
-	 * @return object
+	 * @return object SiteComponent
 	 * @access public
 	 * @since 4/5/06
 	 */
