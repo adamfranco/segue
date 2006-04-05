@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE import PUBLIC "- //Middlebury College//Segue2_Site//EN" "http://harmoni.sourceforge.net/dtds/harmoni/1.0/Segue2_Site.dtd">
+<segue2>
+	<siteNavBlock id='1'>
+		<displayName>Test Site</displayName>
+		<description>This is an xml test site.</description>
+		<organizer>
+			<fixedOrganizer id='2' rows='2' cols='1' direction='LR/TB'>
+				<cell>
+					<menuOrganizer id='3' rows='1' direction='LR/TB' maxVisible='0'>
+						<cell>
+							<navBlock id='5' target_id='2_cell:1'>
+								<displayName>Four TextBlocks</displayName>
+								<description>Four Friendly text blocks</description>
+								<organizer>
+									<flowOrganizer id='4' cols='2' direction='LR/TB' maxVisible='6'>
+										<cell>
+											<block id='6'>
+												<displayName>TextBlock A</displayName>
+												<description>This is the first text block</description>
+												<contentMarkup>Hello World!!</contentMarkup>
+											</block>
+										</cell>
+										<cell>
+											<block id='7'>
+												<displayName>TextBlock B</displayName>
+												<description>This is the second text block</description>
+												<contentMarkup>Hey I wanted to say Hi!</contentMarkup>
+											</block>
+										</cell>
+										<cell>
+											<block id='8'>
+												<displayName>TextBlock C</displayName>
+												<description>This is the third text block</description>
+												<contentMarkup>Hello Universe!!</contentMarkup>
+											</block>
+										</cell>
+										<cell>
+											<block id='9'>
+												<displayName>TextBlock D</displayName>
+												<description>This is the fourth text block</description>
+												<contentMarkup>Hello, TextBlock C!!</contentMarkup>
+											</block>
+										</cell>
+									</flowOrganizer>
+								</organizer>
+							</navBlock>
+						</cell>
+						<cell>
+							<navBlock id='10' target_id='2_cell:1'>
+								<displayName>One TextBlock</displayName>
+								<description>One ornery text block</description>
+								<organizer>
+									<flowOrganizer id='11' cols='2' direction='LR/TB' maxVisible='0'>
+										<cell>
+											<block id='12'>
+												<displayName>TextBlock Q</displayName>
+												<description>This is the Qth text block</description>
+												<contentMarkup>Goodbye (cruel) World!!</contentMarkup>
+											</block>
+										</cell>
+									</flowOrganizer>
+								</organizer>
+							</navBlock>
+						</cell>
+					</menuOrganizer>
+				</cell>
+				<cell>
+				</cell>
+			</fixedOrganizer>
+		</organizer>
+	</siteNavBlock>
+</segue2>
