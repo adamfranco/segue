@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.3 2006/04/06 14:19:06 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.3 2006/04/06 14:19:06 cws-midd Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -139,17 +139,17 @@ class XmlFlowOrganizerSiteComponent
 	 */
 	function moveBefore ( $cellOneIndex, $cellTwoIndex ) {
 		// child DOMIT_Elements in an array
-		// DISCUSS THIS
 		$children =& $this->_element->childNodes;
 
 		$temp =& $children[$cellOneIndex];
 
 		$this->_element->removeChild($children[$cellOneIndex]);
 		
-		if ($cellTwoIndex > 0)
+		// indices change when child is removed in front of cellTwoIndex
+		if ($cellTwoIndex > $cellOneIndex)
 			$this->_element->insertBefore($temp, $children[$cellTwoIndex - 1]);
 		else
-			$this->_element->insertBefore($temp, $children[0]);
+			$this->_element->insertBefore($temp, $children[$cellTwoIndex]);
 	}
 	
 	/**

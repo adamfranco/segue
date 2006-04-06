@@ -5,15 +5,15 @@
 		<displayName><![CDATA[Test Site]]></displayName>
 		<description><![CDATA[This is an xml test site.]]></description>
 		<organizer>
-			<fixedOrganizer id='2' rows='2' cols='1' direction='LR/TB'>
+			<fixedOrganizer id='2' rows='2' cols='1' direction='Left-Right/Top-Bottom'>
 				<cell>
-					<menuOrganizer id='3' rows='1' direction='LR/TB' maxVisible='0'>
+					<menuOrganizer id='3' rows='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
 						<cell>
 							<navBlock id='5' target_id='2_cell:1'>
 								<displayName><![CDATA[Four TextBlocks]]></displayName>
 								<description><![CDATA[Four Friendly text blocks]]></description>
 								<organizer>
-									<flowOrganizer id='4' cols='2' direction='LR/TB' maxVisible='6'>
+									<flowOrganizer id='4' cols='2' direction='Left-Right/Top-Bottom' maxVisible='6'>
 										<cell>
 											<block id='6'>
 												<displayName><![CDATA[TextBlock A]]></displayName>
@@ -51,7 +51,7 @@
 								<displayName><![CDATA[One TextBlock]]></displayName>
 								<description><![CDATA[One ornery text block]]></description>
 								<organizer>
-									<flowOrganizer id='11' cols='2' direction='LR/TB' maxVisible='0'>
+									<flowOrganizer id='11' cols='2' direction='Left-Right/Top-Bottom' maxVisible='0'>
 										<cell>
 											<block id='12'>
 												<displayName><![CDATA[TextBlock Q]]></displayName>
