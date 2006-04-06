@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.4 2006/04/05 21:22:40 cws-midd Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.5 2006/04/06 16:29:23 cws-midd Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/XmlMenuOrganizerSiteComponent.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.4 2006/04/05 21:22:40 cws-midd Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.5 2006/04/06 16:29:23 cws-midd Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -77,7 +77,7 @@ class XmlSiteDirector
 			$this->_activeNodes[] = $currentElement->getAttribute('id');
 		
 		// Traverse Active Up
-		if ($currentElement->nodeName == 'siteNavBlock') {
+		if ($currentElement->nodeName == 'SiteNavBlock') {
 			$component =& new XmlSiteNavBlockSiteComponent($this, $currentElement);
 			return $component;
 		} else
@@ -189,7 +189,39 @@ class XmlSiteDirector
 			return $element->parentNode;
 		else
 			return $this->_getParentWithId($element->parentNode);
-	}	
+	}
+	
+	/**
+	 * Answer a new Instance of the passed SiteComponent
+	 *
+	 * Note: parameter should have capital first letters of words
+	 * @param string $componentClass just the unique 'FlowOrganizer' etc.
+	 * @return object SiteComponent
+	 * @access public
+	 * @since 4/6/06
+	 */
+	function &createSiteComponent ( $componentClass ) {
+		$class = 'Xml'.$componentClass.'SiteComponent';
+		$this->_newSiteComponent =& new $class($this, 
+			$this->_document->createElement($componentClass));
+		return $this->_newSiteComponent;
+	}
+	
+	/**
+	 * Deletes the passed SiteComponent
+	 * 
+	 * @param object SiteComponent
+	 * @return void
+	 * @access public
+	 * @since 4/6/06
+	 */
+	function deleteSiteComponent ( &$siteComponent ) {
+		$element =& $siteComponent->getElement();
+		$element->delete();
+		
+		unset($this->_createdSiteComponents[$siteComponent->getId()],
+			$siteComponent, $element);
+	}
 }
 
 ?>
