@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.1 2006/04/07 14:07:06 adamfranco Exp $
- */ 
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.2 2006/04/07 15:11:06 adamfranco Exp $
+ */
+
+require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
 
 /**
  * The edit-mode site visitor renders the site for editing, displaying controls.
@@ -18,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.1 2006/04/07 14:07:06 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.2 2006/04/07 15:11:06 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -41,7 +43,7 @@ class EditModeSiteVisitor
 		
 		// Check completeness and render any nodes still waiting for targets
 		foreach (array_keys($this->_missingTargets) as $targetId) {
-			$this->_emptyCells[$targetId]->add($this->_missingTargets[$targetId]);
+			$this->_emptyCells[$targetId]->add($this->_missingTargets[$targetId], null, '100%', null, TOP);
 			unset($this->_emptyCells[$targetId]);
 			unset($this->_missingTargets[$targetId]);
 		}
@@ -49,7 +51,7 @@ class EditModeSiteVisitor
 		// Any further empty cells in fixed organizers should get controls to
 		// add to them.
 		foreach (array_keys($this->_emptyCells) as $id) {
-			$this->_emptyCells[$id]->add(new UnstyledBlock(_('Insert new...')));
+			$this->_emptyCells[$id]->add(new UnstyledBlock(_('Insert new...')), null, '100%', null, TOP);
 			unset($this->_emptyCells[$id]);
 		}
 		
@@ -69,10 +71,10 @@ class EditModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	function &visitBlock ( &$block ) {
-		$guiContainer =& new Container (	new YLayout, BLANK, 1);
+		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
 		
-		$heading =& $guiContainer->add(new Heading($block->getTitleMarkup(), 2));
-		$content =& $guiContainer->add(new Block($block->getContentMarkup(), STANDARD_BLOCK));
+		$heading =& $guiContainer->add(new Heading($block->getTitleMarkup(), 2), null, null, null, TOP);
+		$content =& $guiContainer->add(new Block($block->getContentMarkup(), STANDARD_BLOCK), null, null, null, TOP);
 		
 		$primaryColor = '#090';
 		$secondaryColor = '#9F9';
@@ -160,14 +162,14 @@ class EditModeSiteVisitor
 		foreach ($orderedIndices as $i) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			if (is_object($child)) {
-				$guiContainer->add($child->acceptVisitor($this), null, null, LEFT, TOP);
+				$guiContainer->add($child->acceptVisitor($this), null, null, TOP);
 			} else {
 				// This should be changed to a new container type which
 				// only has one cell and does not add any HTML when rendered.
 				$placeholder =& new Container(new XLayout, BLANK, 1);
 				
 				$this->_emptyCells[$organizer->getId().'_cell:'.$i] =& $placeholder;
-				$guiContainer->add($placeholder, null, '100%', LEFT, TOP);
+				$guiContainer->add($placeholder, null, '100%', null, TOP);
 			}
 		}
 		
@@ -218,8 +220,21 @@ class EditModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	function &visitFlowOrganizer( &$organizer ) {
-		$guiContainer =& parent::visitFlowOrganizer($organizer);
-		$guiContainer->add(new UnstyledBlock(_('Append new...')));
+		$guiContainer =& new Container (	new TableLayout($organizer->getNumColumns(), "border: 1px solid #00F; padding: 6px;"),
+										BLANK,
+										1);
+		
+		// Ordered indicies are to be used in a left-right/top-bottom manner, but
+		// may be returned in various orders to reflect another underlying fill direction.
+		$orderedIndices = $organizer->getVisibleOrderedIndices();
+		
+		foreach ($orderedIndices as $i) {
+			$child =& $organizer->getSubcomponentForCell($i);
+			$guiContainer->add($child->acceptVisitor($this), null, '100%', null, TOP);
+		}
+		
+		
+		$guiContainer->add(new UnstyledBlock(_('Append new...')), null, '100%', null, TOP);
 		
 		$primaryColor = '#00F';
 		$secondaryColor = '#99F';
@@ -241,19 +256,6 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new BorderSP($halfLineWidth, 'solid', $primaryColor));
 		$guiContainer->addStyle($styleCollection);
 		
-		// Wrap the compents in colored borders
-		$styleCollection =& new StyleCollection(
-									'.blue_outline', 
-									'blue_outline', 
-									'Blue Outline', 
-									'A blue outline around components');
-		$styleCollection->addSP(new BorderSP($halfLineWidth, 'solid', $primaryColor));
-		$styleCollection->addSP(new PaddingSP('6px'));
-		
-		$components =& $guiContainer->getComponents();
-		foreach (array_keys($components) as $key)
-			$components[$key]->addStyle($styleCollection);
-		
 		return $guiContainer;
 	}
 	
@@ -268,7 +270,7 @@ class EditModeSiteVisitor
 	 */
 	function &visitMenuOrganizer ( &$organizer ) {	
 		$guiContainer =& parent::visitMenuOrganizer($organizer);
-		$guiContainer->add(new MenuItem(_('Append new...'), 2));
+		$guiContainer->add(new MenuItem(_('Append new...'), 2), null, '100%', null, TOP);
 		
 // 		$primaryColor = '#90C';
 // 		$secondaryColor = '#96C';

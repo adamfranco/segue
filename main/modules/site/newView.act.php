@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.4 2006/04/07 14:07:06 adamfranco Exp $
+ * @version $Id: newView.act.php,v 1.5 2006/04/07 15:11:08 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.4 2006/04/07 14:07:06 adamfranco Exp $
+ * @version $Id: newView.act.php,v 1.5 2006/04/07 15:11:08 adamfranco Exp $
  */
 class newViewAction
 	extends displayAction {
@@ -53,7 +53,7 @@ class newViewAction
 // 		printpre($blockA->_element->toNormalizedString(true));
 		$blockA->updateDisplayName('New TextBlock A displayName');
 		$blockA->updateDescription('My description is the bomb');
-		$blockA->updateContentMarkup('Hello world. I am a banana. Hear me Roar!');
+		$blockA->updateContentMarkup("<p>Hello world. I am a banana. Hear me Roar!</p>\n<p>Wait, bannanas meow....</p>");
 // 		print "<hr/>";
 // 		printpre($blockA->_element->toNormalizedString(true));
 // 		print "<hr/>";

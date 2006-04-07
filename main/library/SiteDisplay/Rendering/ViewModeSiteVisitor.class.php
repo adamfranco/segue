@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.3 2006/04/07 14:24:26 cws-midd Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.4 2006/04/07 15:11:08 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -30,7 +30,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.3 2006/04/07 14:24:26 cws-midd Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.4 2006/04/07 15:11:08 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -64,10 +64,10 @@ class ViewModeSiteVisitor {
 	 * @since 4/3/06
 	 */
 	function &visitBlock ( &$block ) {
-		$guiContainer =& new Container (	new YLayout, BLANK, 1);
+		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
 		
-		$guiContainer->add(new Heading($block->getTitleMarkup(), 2));
-		$guiContainer->add(new Block($block->getContentMarkup(), STANDARD_BLOCK));
+		$guiContainer->add(new Heading($block->getTitleMarkup(), 2), null, null, null, TOP);
+		$guiContainer->add(new Block($block->getContentMarkup(), STANDARD_BLOCK), null, null, null, TOP);
 		
 		return $guiContainer;
 	}
@@ -88,7 +88,7 @@ class ViewModeSiteVisitor {
 			$childGuiComponent =& $childOrganizer->acceptVisitor($this);
 				
 			if (isset($this->_emptyCells[$navBlock->getTargetId()])) {
-				$this->_emptyCells[$navBlock->getTargetId()]->add($childGuiComponent);
+				$this->_emptyCells[$navBlock->getTargetId()]->add($childGuiComponent, null, '100%', null, TOP);
 				unset($this->_emptyCells[$navBlock->getTargetId()]);
 			} else {
 				$this->_missingTargets[$navBlock->getTargetId()] =& $childGuiComponent;
@@ -125,7 +125,7 @@ class ViewModeSiteVisitor {
 		
 		// Check completeness and render any nodes still waiting for targets
 		foreach (array_keys($this->_missingTargets) as $targetId) {
-			$this->_emptyCells[$targetId]->add($this->_missingTargets[$targetId]);
+			$this->_emptyCells[$targetId]->add($this->_missingTargets[$targetId], null, '100%', null, TOP);
 			unset($this->_emptyCells[$targetId]);
 			unset($this->_missingTargets[$targetId]);
 		}
@@ -158,14 +158,14 @@ class ViewModeSiteVisitor {
 		foreach ($orderedIndices as $i) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			if (is_object($child)) {
-				$guiContainer->add($child->acceptVisitor($this), null, null, TOP);
+				$guiContainer->add($child->acceptVisitor($this), null, null, TOP );
 			} else {
 				// This should be changed to a new container type which
 				// only has one cell and does not add any HTML when rendered.
 				$placeholder =& new Container(new XLayout, BLANK, 1);
 				
 				$this->_emptyCells[$organizer->getId().'_cell:'.$i] =& $placeholder;
-				$guiContainer->add($placeholder);
+				$guiContainer->add($placeholder, null, '100%', null, TOP);
 			}
 		}
 		
@@ -190,7 +190,7 @@ class ViewModeSiteVisitor {
 		$orderedIndices = $organizer->getVisibleOrderedIndices();
 		foreach ($orderedIndices as $i) {
 			$child =& $organizer->getSubcomponentForCell($i);
-			$guiContainer->add($child->acceptVisitor($this));
+			$guiContainer->add($child->acceptVisitor($this), null, '100%', null, TOP);
 		}
 		
 		return $guiContainer;
