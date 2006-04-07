@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.5 2006/04/07 14:24:27 cws-midd Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.6 2006/04/07 14:37:43 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.5 2006/04/07 14:24:27 cws-midd Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.6 2006/04/07 14:37:43 cws-midd Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -176,14 +176,7 @@ class XmlOrganizerSiteComponent
 	 * @since 4/3/06
 	 */
 	function deleteSubcomponentInCell ( $i ) {
-		$cell =& $this->_element->firstChild;
-		while ($i) {
-			$cell =& $cell->nextSibling;
-			$i--;
-		}
-		$this->_element->removeChild($cell);
-		$this->_director->deleteSiteComponent($this->getSubcomponentForCell($i));
-		unset($this->_childComponents);
+		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
 	}	
 	
 	/**

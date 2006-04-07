@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.3 2006/04/07 14:37:43 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.3 2006/04/07 14:37:43 cws-midd Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -111,6 +111,25 @@ class XmlFixedOrganizerSiteComponent
 		return $this->_getTotalNumberOfCells();
 	}
 		
+	/**
+	 * Delete the subcomponent located in organizer cell $i
+	 * 
+	 * @param integer $i
+	 * @return void
+	 * @access public
+	 * @since 4/3/06
+	 */
+	function deleteSubcomponentInCell ( $i ) {
+		$cell =& $this->_element->firstChild;
+		while ($i) {
+			$cell =& $cell->nextSibling;
+			$i--;
+		}
+		$cell->removeChild($cell->firstChild);
+		$this->_director->deleteSiteComponent($this->getSubcomponentForCell($i));
+		unset($this->_childComponents);
+	}	
+
 	/**
 	 * Accepts a visitor.
 	 * 
