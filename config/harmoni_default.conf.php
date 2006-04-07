@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: harmoni_default.conf.php,v 1.6 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: harmoni_default.conf.php,v 1.7 2006/04/07 14:07:06 adamfranco Exp $
  */
 
 // :: set up the $harmoni object :: 
@@ -33,6 +33,7 @@
 									"repository.*",
 									"site.view",
 									"site.newView",
+									"site.newEdit",
 									"site.editview",
 									"help.*"
 								);

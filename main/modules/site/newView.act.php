@@ -6,12 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.3 2006/04/05 18:39:54 adamfranco Exp $
+ * @version $Id: newView.act.php,v 1.4 2006/04/07 14:07:06 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.class.php");
 
 /**
  * Test view using new components
@@ -22,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.3 2006/04/05 18:39:54 adamfranco Exp $
+ * @version $Id: newView.act.php,v 1.4 2006/04/07 14:07:06 adamfranco Exp $
  */
 class newViewAction
 	extends displayAction {
@@ -49,14 +50,14 @@ class newViewAction
 		
 		
 		$blockA =& $xmlDirector->getSiteComponentById(6);
-		printpre($blockA->_element->toNormalizedString(true));
+// 		printpre($blockA->_element->toNormalizedString(true));
 		$blockA->updateDisplayName('New TextBlock A displayName');
 		$blockA->updateDescription('My description is the bomb');
 		$blockA->updateContentMarkup('Hello world. I am a banana. Hear me Roar!');
-		print "<hr/>";
-		printpre($blockA->_element->toNormalizedString(true));
-		print "<hr/>";
-		printpre($testDocument->toNormalizedString(true));
+// 		print "<hr/>";
+// 		printpre($blockA->_element->toNormalizedString(true));
+// 		print "<hr/>";
+// 		printpre($testDocument->toNormalizedString(true));
 		
 		
 		if (!$nodeId = RequestContext::value("node"))
@@ -64,7 +65,7 @@ class newViewAction
 		
 		$rootSiteComponent =& $xmlDirector->getRootSiteComponent($nodeId);
 		
-		$visitor =& new ViewModeSiteVisitor();
+		$visitor =& $this->getSiteVisitor();
 		
 		$siteGuiComponent =& $rootSiteComponent->acceptVisitor($visitor);
 		
@@ -129,7 +130,18 @@ class newViewAction
 		
 		return $mainScreen;
 	}
-	
+
+	/**
+	 * Answer the appropriate site visitor for this action
+	 * 
+	 * @return object SiteVisitor
+	 * @access public
+	 * @since 4/6/06
+	 */
+	function &getSiteVisitor () {
+		$visitor =& new ViewModeSiteVisitor();
+		return $visitor;
+	}	
 }
 
 ?>

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.3 2006/04/05 21:22:40 cws-midd Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.4 2006/04/07 14:07:06 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.3 2006/04/05 21:22:40 cws-midd Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.4 2006/04/07 14:07:06 adamfranco Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -42,7 +42,7 @@ class XmlOrganizerSiteComponent
 	function getNumRows () {
 		if ($this->_element->hasAttribute('rows'))
 			return $this->_element->getAttribute('rows');
-		return 1;
+		return 0;
 	}
 	
 	/**
@@ -68,7 +68,7 @@ class XmlOrganizerSiteComponent
 	function getNumColumns () {
 		if ($this->_element->hasAttribute('cols'))
 			return $this->_element->getAttribute('cols');
-		return 1;
+		return 0;
 	}
 	
 	/**
