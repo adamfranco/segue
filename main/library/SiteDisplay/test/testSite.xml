@@ -5,9 +5,9 @@
 		<displayName><![CDATA[Test Site]]></displayName>
 		<description><![CDATA[This is an xml test site.]]></description>
 		<organizer>
-			<FixedOrganizer id='2' rows='2' cols='1' direction='Left-Right/Top-Bottom'>
+			<FixedOrganizer id='2' rows='1' cols='3' direction='Left-Right/Top-Bottom'>
 				<cell>
-					<MenuOrganizer id='3' rows='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
+					<MenuOrganizer id='3' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
 						<cell>
 							<NavBlock id='5' target_id='2_cell:1'>
 								<displayName><![CDATA[Four TextBlocks]]></displayName>
@@ -64,6 +64,8 @@
 							</NavBlock>
 						</cell>
 					</MenuOrganizer>
+				</cell>
+				<cell>
 				</cell>
 				<cell>
 				</cell>

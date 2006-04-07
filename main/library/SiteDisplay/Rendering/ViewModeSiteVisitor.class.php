@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.4 2006/04/07 15:11:08 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.5 2006/04/07 15:16:04 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -30,7 +30,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.4 2006/04/07 15:11:08 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.5 2006/04/07 15:16:04 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -158,7 +158,7 @@ class ViewModeSiteVisitor {
 		foreach ($orderedIndices as $i) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			if (is_object($child)) {
-				$guiContainer->add($child->acceptVisitor($this), null, null, TOP );
+				$guiContainer->add($child->acceptVisitor($this), null, null, null, TOP );
 			} else {
 				// This should be changed to a new container type which
 				// only has one cell and does not add any HTML when rendered.

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.2 2006/04/07 15:11:06 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2006/04/07 15:16:04 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.2 2006/04/07 15:11:06 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2006/04/07 15:16:04 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -151,7 +151,9 @@ class EditModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	function &visitFixedOrganizer ( &$organizer ) {
-		$guiContainer =& new Container (new TableLayout($organizer->getNumColumns()),
+		$guiContainer =& new Container (new TableLayout(
+												$organizer->getNumColumns(), 
+												'border: 1px solid #F00; padding: 6px;'),
 										BLANK,
 										1);
 		
@@ -162,7 +164,7 @@ class EditModeSiteVisitor
 		foreach ($orderedIndices as $i) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			if (is_object($child)) {
-				$guiContainer->add($child->acceptVisitor($this), null, null, TOP);
+				$guiContainer->add($child->acceptVisitor($this), null, null, null, TOP);
 			} else {
 				// This should be changed to a new container type which
 				// only has one cell and does not add any HTML when rendered.
@@ -193,20 +195,6 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new BorderSP($halfLineWidth, 'solid', $primaryColor));
 		$styleCollection->addSP(new HeightSP('100%'));
 		$guiContainer->addStyle($styleCollection);
-		
-		// Wrap the compents in colored borders
-		$styleCollection =& new StyleCollection(
-									'.red_outline', 
-									'red_outline', 
-									'Red Outline', 
-									'A red outline around components');
-		$styleCollection->addSP(new BorderSP($halfLineWidth, 'solid', $primaryColor));
-		$styleCollection->addSP(new PaddingSP('6px'));
-		$styleCollection->addSP(new HeightSP('100%'));
-		
-		$components =& $guiContainer->getComponents();
-		foreach (array_keys($components) as $key)
-			$components[$key]->addStyle($styleCollection);
 		
 		return $guiContainer;
 	}
