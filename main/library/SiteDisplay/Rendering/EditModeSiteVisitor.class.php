@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.6 2006/04/07 20:33:16 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.7 2006/04/07 21:48:27 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.6 2006/04/07 20:33:16 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.7 2006/04/07 21:48:27 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -41,8 +41,16 @@ class EditModeSiteVisitor
 		$outputHandler =& $harmoni->getOutputHandler();
 		$outputHandler->setHead(
 			$outputHandler->getHead()
-			."\n\t\t<script src='".MYPATH."/main/library/SiteDisplay/scriptaculous-js/lib/prototype.js' type='text/javascript'></script>"
-			."\n\t\t<script src='".MYPATH."/main/library/SiteDisplay/scriptaculous-js/src/scriptaculous.js' type='text/javascript'></script>");
+			."
+		<script src='".MYPATH."/main/library/SiteDisplay/scriptaculous-js/lib/prototype.js' type='text/javascript'></script>
+		<script src='".MYPATH."/main/library/SiteDisplay/scriptaculous-js/src/scriptaculous.js' type='text/javascript'></script>
+
+		<style type='text/css'>
+			.drop_hover {
+				border: 4px inset #F00;
+			}
+		</style>
+");
 		
 		// Print out Javascript functions needed by our methods
 		$this->printJavascript();
@@ -310,10 +318,11 @@ class EditModeSiteVisitor
 	 * @since 4/7/06
 	 */
 	function wrapAsDraggable (&$component, $id, $class) {
-		ob_start();
-		print <<<END
-
-<div id='$id' class='$class'>
+		$component->setPreHTML("<div id='$id' class='$class'>".$component->getPreHTML($null = null));	
+		$component->setPostHTML(
+			$component->getPostHTML($null = null)
+			."
+</div>
 
 <script type='text/javascript'>
 /* <![CDATA[ */
@@ -322,12 +331,7 @@ class EditModeSiteVisitor
 
 /* ]]> */
 </script>
-
-END;
-
-		print "";
-		$component->setPreHTML(ob_get_clean().$component->getPreHTML($null = null));
-		$component->setPostHTML($component->getPostHTML($null = null)."</div>");
+");
 	}
 	
 	/**
@@ -340,29 +344,36 @@ END;
 	 * @since 4/7/06
 	 */
 	function wrapAsDroppable (&$component, $id) {
-		ob_start();
-		print <<<END
 
-<div id='$id'>
+		$component->setPreHTML("<div id='$id'>".$component->getPreHTML($null = null));
+		$dropConfirm = _('Are you sure that you want to move this element here?');
+		$component->setPostHTML(
+			$component->getPostHTML($null = null)
+			."
+</div>
 
 <script type='text/javascript'>
 /* <![CDATA[ */
 	
-	new Droppables.add('$id', {
-			accept: {'FlowOrganizer', 'FixedOrganizer'},
-			hoverclass: 'menu_blue_outline',
-			onHover: function (draggable, droppable, overlap) 
-				{alert(draggable + "\\n" + droppable + "\\n" + overlap);}
+	Droppables.add('$id', {
+			accept: new Array('FlowOrganizer', 'FixedOrganizer'),
+			hoverclass: 'drop_hover',
+			onDrop: function (draggableElement, droppableElement) {
+				if (confirm ('$dropConfirm' 
+					+ 'Element, ' + draggableElement.id + ' was dropped on ' 
+					+ droppableElement.id))
+				{
+					alert ('Move will be done.');
+					window.location.reload();
+				} else {
+					window.location.reload();
+				}
+			}
 		});
 
 /* ]]> */
 </script>
-
-END;
-
-		print "";
-		$component->setPreHTML(ob_get_clean().$component->getPreHTML($null = null));
-		$component->setPostHTML($component->getPostHTML($null = null)."</div>");
+");
 	}
 	
 	/**
@@ -430,6 +441,10 @@ END;
 		
 		// if not found, return
 		return false;
+	}
+	
+	function doDrop(draggableElement, droppableElement) {
+		alert ("Element, " + draggableElement.id + " was dropped on " + droppableElement.id);
 	}
 	
 /* ]]> */
