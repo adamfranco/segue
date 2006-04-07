@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2006/04/07 15:16:04 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.4 2006/04/07 19:28:53 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2006/04/07 15:16:04 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.4 2006/04/07 19:28:53 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -36,6 +36,18 @@ class EditModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	function &visitSiteNavBlock ( &$siteNavBlock ) {
+		// enter links in our head to load needed javascript libraries
+		$harmoni =& Harmoni::instance();
+		$outputHandler =& $harmoni->getOutputHandler();
+		$outputHandler->setHead(
+			$outputHandler->getHead()
+			."\n\t\t<script src='".MYPATH."/main/library/scriptaculous-js/lib/prototype.js' type='text/javascript'></script>"
+			."\n\t\t<script src='".MYPATH."/main/library/scriptaculous-js/src/scriptaculous.js' type='text/javascript'></script>");
+		
+		// Print out Javascript functions needed by our methods
+		$this->printJavascript();
+		
+		
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
 		$childOrganizer =& $siteNavBlock->getOrganizer();
@@ -80,17 +92,18 @@ class EditModeSiteVisitor
 		$secondaryColor = '#9F9';
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
-		$heading->setPreHTML("<div style='"
-			."background-color: $secondaryColor; "
-			."border: $lineWidth solid $primaryColor; "
-			."'>"._('Block')."</div>"
-			.$heading->getPreHTML($null = null));
-			
+		
+		ob_start();
+		print "\n\t\t\t\tControls:";
+		$controlsHTML = $this->getControlsHTML(_("Block"), ob_get_clean(), '#090', '#9F9', '#6C6');
+		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
+					
 		$styleCollection =& new StyleCollection(
 									'.block_side_outline', 
 									'block_side_outline', 
 									'Side Outline', 
 									'A side outline around block titles');
+		$styleCollection->addSP(new BorderTopSP($lineWidth, 'solid', $primaryColor));
 		$styleCollection->addSP(new BorderLeftSP($lineWidth, 'solid', $primaryColor));
 		$styleCollection->addSP(new BorderRightSP($lineWidth, 'solid', $primaryColor));
 		$heading->addStyle($styleCollection);
@@ -104,6 +117,8 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new BorderRightSP($lineWidth, 'solid', $primaryColor));
 		$styleCollection->addSP(new BorderBottomSP($lineWidth, 'solid', $primaryColor));
 		$content->addStyle($styleCollection);
+		
+		$this->wrapAsDraggable($guiContainer, $block->getId());
 		
 		return $guiContainer;
 	}
@@ -119,24 +134,20 @@ class EditModeSiteVisitor
 	function &visitNavBlock ( &$navBlock ) {
 		$guiContainer =& parent::visitNavBlock($navBlock);
 		
-		$primaryColor = '#090';
-		$secondaryColor = '#9F9';
-		$halfLineWidth = 1;
-		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
-		$guiContainer->setPreHTML("<div style='"
-			."background-color: $secondaryColor; "
-			."border-top: $lineWidth solid $primaryColor; "
-			."border-left: $lineWidth solid $primaryColor; "
-			."border-right: $lineWidth solid $primaryColor; "
-			."color: #000; "
-// 			."margin-top: 3px; margin-left: 3px; margin-right: 3px; "
-			."'>"._('NavBlock')."</div>"
-			."<div style='"
-			."border: $lineWidth solid $primaryColor; "
-			."'>"
-			.$guiContainer->getPreHTML($null = null));
-		$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>");
+		ob_start();
+		print "\n\t\t\t\tControls:";
+		$controlsHTML = $this->getControlsHTML(_("NavBlock"), ob_get_clean(), '#090', '#9F9', '#6C6');
+		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
+		$styleCollection =& new StyleCollection(
+									'.nav_outline', 
+									'nav_outline', 
+									'Side Outline', 
+									'A side outline around block titles');
+		$styleCollection->addSP(new BorderSP('2px', 'solid', '#090'));
+		$guiContainer->addStyle($styleCollection);
+		
+		$this->wrapAsDraggable($guiContainer, $navBlock->getId());
 		
 		return $guiContainer;
 	}
@@ -175,26 +186,21 @@ class EditModeSiteVisitor
 			}
 		}
 		
-		$primaryColor = '#F00';
-		$secondaryColor = '#F99';
-		$halfLineWidth = 1;
-		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
-		$guiContainer->setPreHTML("<div style='"
-			."background-color: $secondaryColor; "
-			."border-top: $lineWidth solid $primaryColor; "
-			."border-left: $lineWidth solid $primaryColor; "
-			."border-right: $lineWidth solid $primaryColor;"
-			."'>"._("Fixed Organizer")."</div>"
-			.$guiContainer->getPreHTML($null = null));
+		ob_start();
+		print "\n\t\t\t\tControls:";
+		$controlsHTML = $this->getControlsHTML(_("Fixed Organizer"), ob_get_clean(), '#F00', '#F99', '#F66');
+		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(
 									'.org_red_outline', 
 									'org_red_outline', 
 									'Red Outline', 
 									'A red outline around organizers');
-		$styleCollection->addSP(new BorderSP($halfLineWidth, 'solid', $primaryColor));
+		$styleCollection->addSP(new BorderSP('1px', 'solid', '#F00'));
 		$styleCollection->addSP(new HeightSP('100%'));
 		$guiContainer->addStyle($styleCollection);
+		
+		$this->wrapAsDraggable($guiContainer, $organizer->getId());
 		
 		return $guiContainer;
 	}
@@ -224,25 +230,21 @@ class EditModeSiteVisitor
 		
 		$guiContainer->add(new UnstyledBlock(_('Append new...')), null, '100%', null, TOP);
 		
-		$primaryColor = '#00F';
-		$secondaryColor = '#99F';
-		$halfLineWidth = 1;
-		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
-		$guiContainer->setPreHTML("<div style='"
-			."background-color: $secondaryColor; "
-			."border-top: $lineWidth solid $primaryColor; "
-			."border-left: $lineWidth solid $primaryColor; "
-			."border-right: $lineWidth solid $primaryColor;"
-			."'>"._("Flow Organizer")."</div>"
-			.$guiContainer->getPreHTML($null = null));
 		
+		ob_start();
+		print "\n\t\t\t\tControls:";
+		$controlsHTML = $this->getControlsHTML(_("Flow Organizer"), ob_get_clean(), '#00F', '#99F', '#66F');
+		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
+				
 		$styleCollection =& new StyleCollection(
 									'.org_blue_outline', 
 									'org_blue_outline', 
 									'Blue Outline', 
 									'A blue outline around organizers');
-		$styleCollection->addSP(new BorderSP($halfLineWidth, 'solid', $primaryColor));
+		$styleCollection->addSP(new BorderSP('1px', 'solid', '#00F'));
 		$guiContainer->addStyle($styleCollection);
+		
+		$this->wrapAsDraggable($guiContainer, $organizer->getId());
 		
 		return $guiContainer;
 	}
@@ -260,18 +262,7 @@ class EditModeSiteVisitor
 		$guiContainer =& parent::visitMenuOrganizer($organizer);
 		$guiContainer->add(new MenuItem(_('Append new...'), 2), null, '100%', null, TOP);
 		
-// 		$primaryColor = '#90C';
-// 		$secondaryColor = '#96C';
-// 		$halfLineWidth = 1;
-// 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
-// 		$guiContainer->setPreHTML("<div style='"
-// 			."background-color: $secondaryColor; "
-// 			."border-top: $lineWidth solid $primaryColor; "
-// 			."border-left: $lineWidth solid $primaryColor; "
-// 			."border-right: $lineWidth solid $primaryColor;"
-// 			."margin-top: 3px; margin-left: 3px; margin-right: 3px; "
-// 			."'>"._('Menu')."</div>"
-// 			.$guiContainer->getPreHTML($null = null));
+		$this->wrapAsDraggable($guiContainer, $organizer->getId());
 		
 		return $guiContainer;
 	}
@@ -290,6 +281,158 @@ class EditModeSiteVisitor
 	function getUrlForComponent ( $id ) {
 		$harmoni =& Harmoni::instance();
 		return $harmoni->request->quickURL("site", "newEdit", array("node" => $id));
+	}
+	
+	/**
+	 * Wrap the given component as a draggable element
+	 * 
+	 * @param object Component $component
+	 * @param string $id
+	 * @return void
+	 * @access public
+	 * @since 4/7/06
+	 */
+	function wrapAsDraggable (&$component, $id) {
+		ob_start();
+		print <<<END
+
+<div id='$id'>
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+	
+	new Draggable('$id',{revert:true});
+
+/* ]]> */
+</script>
+
+END;
+
+		print "";
+		$component->setPreHTML(ob_get_clean().$component->getPreHTML($null = null));
+		$component->setPostHTML($component->getPostHTML($null = null)."</div>");
+	}
+	
+	/**
+	 * Print javascript requirered by other methods.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/7/06
+	 */
+	function printJavascript () {
+		$showControls = _("Show Controls");
+		$hideControls = _("Hide Controls");
+		print <<<END
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+		
+	function showControlsLink(mainElement) {
+		var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
+		controlsLink.style.visibility = 'visible';
+	}
+	
+	function hideControlsLink(mainElement) {
+		var controls = getDescendentByClassName(mainElement, 'controls');
+		if (controls.style.display != 'block') {
+			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
+			controlsLink.style.visibility = 'hidden';
+		}		
+	}
+	
+	function toggleControls(mainElement) {
+		var controls = getDescendentByClassName(mainElement, 'controls');
+		
+		// if controls aren't show, show them
+		if (controls.style.display != 'block') {
+			controls.style.display = 'block';
+			
+			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
+			controlsLink.style.visibility = 'visible';
+			controlsLink.innerHTML = '$hideControls';
+		}
+		// if they are shown, hide them.
+		else {
+			var controls = getDescendentByClassName(mainElement, 'controls');
+			controls.style.display = 'none';
+			
+			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
+			controlsLink.innerHTML = '$showControls';
+		}
+	}
+	
+	function getDescendentByClassName(element, className) {
+		// base case, we found the element
+		if (element.className == className)
+			return element;
+		
+		// Check our children
+		var child = element.firstChild;
+		while (child) {
+			var foundInChild = getDescendentByClassName(child, className);
+			if (foundInChild)
+				return foundInChild;
+			child = child.nextSibling;
+		}
+		
+		// if not found, return
+		return false;
+	}
+	
+/* ]]> */
+</script>
+
+END;
+	}
+	
+	/**
+	 * Answer the HTML for the controls top-bar
+	 * 
+	 * @param <##>
+	 * @return <##>
+	 * @access public
+	 * @since 4/7/06
+	 */
+	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor) {
+		$halfLineWidth = 1;
+		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
+		ob_start();
+		print "\n<div style='"
+			."color: #000; "
+			."background-color: $backgroundColor; "
+			."border-top: $lineWidth solid $borderColor; "
+			."border-left: $lineWidth solid $borderColor; "
+			."border-right: $lineWidth solid $borderColor;"
+			."'"
+			." onmouseover='showControlsLink(this)'"
+			." onmouseout='hideControlsLink(this)'>";
+		print "\n<table border='0' cellpadding='0' cellspacing='0'"
+			." style='width: 100%; padding: 0px; margin: 0px; cursor: move;'"
+// 			." onmousemove='if(which == 1) { alert(\"dragging\"); drag(this.parentNode, this, screenX, screenY); }'"
+// 			." onmouseup='endDrag(this.parentNode)'"
+			.">";
+		print "\n\t<tr>";
+		print "\n\t\t<td>";
+		print "\n\t\t".$title;
+		print "\n\t\t</td>";
+		print "\n\t\t<td style='text-align: right;'>";
+		print "\n\t\t\t\t<span class='controls_link'"
+			."style='visibility: hidden; cursor: pointer;'"
+			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'>";
+		print "\n\t\t\t"._("Show Controls");
+		print "\n\t\t\t</span>";
+		print "\n\t\t</td>";
+		print "\n\t</tr>";
+		print "\n</table>";
+		
+		print "\n\t\t\t<div class='controls' style='display: none; border-top: 1px solid $dividerColor;'>";
+		print $controlsHTML;
+		print "\n\t\t\t\t</div>";
+		
+		print "\n</div>";
+		
+		return ob_get_clean();
 	}
 }
 
