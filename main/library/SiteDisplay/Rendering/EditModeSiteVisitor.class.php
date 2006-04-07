@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.4 2006/04/07 19:28:53 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.5 2006/04/07 20:30:05 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.4 2006/04/07 19:28:53 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.5 2006/04/07 20:30:05 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -118,7 +118,7 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new BorderBottomSP($lineWidth, 'solid', $primaryColor));
 		$content->addStyle($styleCollection);
 		
-		$this->wrapAsDraggable($guiContainer, $block->getId());
+		$this->wrapAsDraggable($guiContainer, $block->getId(), 'Block');
 		
 		return $guiContainer;
 	}
@@ -147,7 +147,7 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new BorderSP('2px', 'solid', '#090'));
 		$guiContainer->addStyle($styleCollection);
 		
-		$this->wrapAsDraggable($guiContainer, $navBlock->getId());
+		$this->wrapAsDraggable($guiContainer, $navBlock->getId(), 'NavBlock');
 		
 		return $guiContainer;
 	}
@@ -175,7 +175,9 @@ class EditModeSiteVisitor
 		foreach ($orderedIndices as $i) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			if (is_object($child)) {
-				$guiContainer->add($child->acceptVisitor($this), null, null, null, TOP);
+				$childComponent =& $guiContainer->add($child->acceptVisitor($this), 
+														null, null, null, TOP);
+				$this->wrapAsDroppable($childComponent, $organizer->getId()."_cell:".$i);
 			} else {
 				// This should be changed to a new container type which
 				// only has one cell and does not add any HTML when rendered.
@@ -183,6 +185,8 @@ class EditModeSiteVisitor
 				
 				$this->_emptyCells[$organizer->getId().'_cell:'.$i] =& $placeholder;
 				$guiContainer->add($placeholder, null, '100%', null, TOP);
+				
+				$this->wrapAsDroppable($placeholder, $organizer->getId()."_cell:".$i);
 			}
 		}
 		
@@ -200,7 +204,7 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new HeightSP('100%'));
 		$guiContainer->addStyle($styleCollection);
 		
-		$this->wrapAsDraggable($guiContainer, $organizer->getId());
+		$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FixedOrganizer');
 		
 		return $guiContainer;
 	}
@@ -244,7 +248,7 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new BorderSP('1px', 'solid', '#00F'));
 		$guiContainer->addStyle($styleCollection);
 		
-		$this->wrapAsDraggable($guiContainer, $organizer->getId());
+		$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FlowOrganizer');
 		
 		return $guiContainer;
 	}
@@ -262,7 +266,20 @@ class EditModeSiteVisitor
 		$guiContainer =& parent::visitMenuOrganizer($organizer);
 		$guiContainer->add(new MenuItem(_('Append new...'), 2), null, '100%', null, TOP);
 		
-		$this->wrapAsDraggable($guiContainer, $organizer->getId());
+		ob_start();
+		print "\n\t\t\t\tControls:";
+		$controlsHTML = $this->getControlsHTML(_("Menu Organizer"), ob_get_clean(), '#00F', '#99F', '#66F');
+		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
+		
+		$styleCollection =& new StyleCollection(
+									'.menu_blue_outline', 
+									'menu_blue_outline', 
+									'Blue Outline', 
+									'A blue outline around organizers');
+		$styleCollection->addSP(new BorderSP('2px', 'solid', '#00F'));
+		$guiContainer->addStyle($styleCollection);
+		
+		$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FlowOrganizer');
 		
 		return $guiContainer;
 	}
@@ -292,7 +309,37 @@ class EditModeSiteVisitor
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function wrapAsDraggable (&$component, $id) {
+	function wrapAsDraggable (&$component, $id, $class) {
+		ob_start();
+		print <<<END
+
+<div id='$id' class='$class'>
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+	
+	new Draggable('$id',{revert:true});
+
+/* ]]> */
+</script>
+
+END;
+
+		print "";
+		$component->setPreHTML(ob_get_clean().$component->getPreHTML($null = null));
+		$component->setPostHTML($component->getPostHTML($null = null)."</div>");
+	}
+	
+	/**
+	 * Wrap the given component as a droppable element (that can have draggables dropped on it.
+	 * 
+	 * @param object Component $component
+	 * @param string $id
+	 * @return void
+	 * @access public
+	 * @since 4/7/06
+	 */
+	function wrapAsDroppable (&$component, $id) {
 		ob_start();
 		print <<<END
 
@@ -301,7 +348,12 @@ class EditModeSiteVisitor
 <script type='text/javascript'>
 /* <![CDATA[ */
 	
-	new Draggable('$id',{revert:true});
+	new Droppables.add('$id', {
+			accept: {'FlowOrganizer', 'FixedOrganizer'},
+			hoverclass: 'menu_blue_outline',
+			onHover: function (draggable, droppable, overlap) 
+				{alert(draggable + "\\n" + droppable + "\\n" + overlap);}
+		});
 
 /* ]]> */
 </script>
