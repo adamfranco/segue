@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.2 2006/04/07 14:07:06 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.3 2006/04/07 14:24:26 cws-midd Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -30,7 +30,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.2 2006/04/07 14:07:06 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.3 2006/04/07 14:24:26 cws-midd Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -188,7 +188,6 @@ class ViewModeSiteVisitor {
 		// Ordered indicies are to be used in a left-right/top-bottom manner, but
 		// may be returned in various orders to reflect another underlying fill direction.
 		$orderedIndices = $organizer->getVisibleOrderedIndices();
-		
 		foreach ($orderedIndices as $i) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			$guiContainer->add($child->acceptVisitor($this));

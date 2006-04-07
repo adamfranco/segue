@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.4 2006/04/07 14:07:06 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.5 2006/04/07 14:24:27 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.4 2006/04/07 14:07:06 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.5 2006/04/07 14:24:27 cws-midd Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -168,15 +168,35 @@ class XmlOrganizerSiteComponent
 	}
 	
 	/**
+	 * Delete the subcomponent located in organizer cell $i
+	 * 
+	 * @param integer $i
+	 * @return void
+	 * @access public
+	 * @since 4/3/06
+	 */
+	function deleteSubcomponentInCell ( $i ) {
+		$cell =& $this->_element->firstChild;
+		while ($i) {
+			$cell =& $cell->nextSibling;
+			$i--;
+		}
+		$this->_element->removeChild($cell);
+		$this->_director->deleteSiteComponent($this->getSubcomponentForCell($i));
+		unset($this->_childComponents);
+	}	
+	
+	/**
 	 * Load the child elements into an array from the data source
 	 * 
+	 * @param boolean $force true if forcing repopulation (testing)
 	 * @return ref array
 	 * @access public
 	 * @since 4/4/06
 	 */
-	function &_getChildComponents () {
+	function &_getChildComponents ($force = false) {
 		// load the data array
-		if (!is_array($this->_childComponents)) {
+		if ($force || !is_array($this->_childComponents)) {
 			$this->_childComponents = array();
 			
 			$child =& $this->_element->firstChild;

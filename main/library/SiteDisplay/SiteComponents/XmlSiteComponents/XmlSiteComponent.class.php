@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.3 2006/04/07 14:24:27 cws-midd Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.2 2006/04/05 21:22:40 cws-midd Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.3 2006/04/07 14:24:27 cws-midd Exp $
  */
 class XmlSiteComponent 
 	// implements SiteComponent
@@ -35,7 +35,7 @@ class XmlSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function XmlSiteComponent ( &$director, &$element ) {
+	function XmlSiteComponent ( &$director, &$element) {
 		$this->_director =& $director;
 		$this->_element =& $element;
 	}

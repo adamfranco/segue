@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.3 2006/04/07 14:24:27 cws-midd Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.2 2006/04/05 18:03:35 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.3 2006/04/07 14:24:27 cws-midd Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
@@ -53,7 +53,18 @@ class XmlNavBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function setOrganizer ( &$organizer ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+		$orgElement =& $this->_element->ownerDocument->createElement('organizer');
+		$orgElement->appendChild($organizer->getElement());
+		$child =& $this->_element->firstChild;
+		while ($child) {
+			if ($child->nodeName == 'organizer') {
+				$this->_element->replaceChild($orgElement, $child);				
+				return;	
+			}
+			$child =& $child->nextSibling;
+		}
+		// organizer not found... create it
+		$this->_element->appendChild($orgElement);
 	}
 	
 	/**
@@ -69,7 +80,19 @@ class XmlNavBlockSiteComponent
 		else
 			throwError( new Error("No target_id available", "XmlSiteComponents"));
 	}
-		
+	
+	/**
+	 * Update the target Id
+	 * 
+	 * @param string Id
+	 * @return void
+	 * @access public
+	 * @since 3/31/06
+	 */
+	function updateTargetId ($id) {
+		$this->_element->setAttribute('target_id', $id);
+	}
+	
 	/**
 	 * Accepts a visitor.
 	 * 

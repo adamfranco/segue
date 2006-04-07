@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.5 2006/04/06 16:29:23 cws-midd Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.6 2006/04/07 14:24:27 cws-midd Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/XmlMenuOrganizerSiteComponent.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.5 2006/04/06 16:29:23 cws-midd Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.6 2006/04/07 14:24:27 cws-midd Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -202,8 +202,14 @@ class XmlSiteDirector
 	 */
 	function &createSiteComponent ( $componentClass ) {
 		$class = 'Xml'.$componentClass.'SiteComponent';
-		$this->_newSiteComponent =& new $class($this, 
-			$this->_document->createElement($componentClass));
+		$element =& $this->_document->createElement($componentClass);
+		$idManager =& Services::getService('Id');
+		$newId =& $idManager->createId();
+		$element->setAttribute('Id', $newId->getIdString());
+		$this->_newSiteComponent =& new $class($this, $element);
+		
+		// @todo Log SiteComponent creation here
+		
 		return $this->_newSiteComponent;
 	}
 	
@@ -216,11 +222,10 @@ class XmlSiteDirector
 	 * @since 4/6/06
 	 */
 	function deleteSiteComponent ( &$siteComponent ) {
-		$element =& $siteComponent->getElement();
-		$element->delete();
+		// @todo log SiteComponent deletion here
 		
 		unset($this->_createdSiteComponents[$siteComponent->getId()],
-			$siteComponent, $element);
+			$siteComponent);
 	}
 }
 

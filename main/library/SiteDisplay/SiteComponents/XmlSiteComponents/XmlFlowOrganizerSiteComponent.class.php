@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.3 2006/04/06 14:19:06 cws-midd Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.4 2006/04/07 14:24:26 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.3 2006/04/06 14:19:06 cws-midd Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.4 2006/04/07 14:24:26 cws-midd Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -125,7 +125,9 @@ class XmlFlowOrganizerSiteComponent
 	function addSubcomponent ( &$siteComponent ) {
 		$cell =& new DOMIT_Element("cell");
 		$cell->appendChild($siteComponent->getElement());
-		$this->_element->appendNode($cell);
+		$this->_element->appendChild($cell);
+		// this is only for single page load deletes (testing)
+		$this->_getChildComponents(true);
 	}
 	
 	/**
