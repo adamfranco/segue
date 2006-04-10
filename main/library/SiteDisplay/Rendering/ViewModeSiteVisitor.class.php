@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.5 2006/04/07 15:16:04 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.6 2006/04/10 19:51:19 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -30,7 +30,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.5 2006/04/07 15:16:04 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.6 2006/04/10 19:51:19 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -170,6 +170,20 @@ class ViewModeSiteVisitor {
 		}
 		
 		return $guiContainer;
+	}
+	
+	
+	/**
+	 * Visit a fixed organizer and return the GUI component [a container] 
+	 * that corresponds to it. Traverse-to/add child components.
+	 * 
+	 * @param object FixedOrganizerSiteComponent $organizer
+	 * @return object Component
+	 * @access public
+	 * @since 4/3/06
+	 */
+	function &visitNavOrganizer ( &$organizer ) {
+		return $this->visitFixedOrganizer($organizer);
 	}
 	
 	/**

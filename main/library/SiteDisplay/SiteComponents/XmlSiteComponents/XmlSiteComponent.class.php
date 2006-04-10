@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.3 2006/04/07 14:24:27 cws-midd Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.4 2006/04/10 19:51:20 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.3 2006/04/07 14:24:27 cws-midd Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.4 2006/04/10 19:51:20 adamfranco Exp $
  */
 class XmlSiteComponent 
 	// implements SiteComponent
@@ -63,6 +63,19 @@ class XmlSiteComponent
 	 */
 	function &getElement () {
 		return $this->_element;
+	}
+	
+	/**
+	 * Answer the parent component
+	 * 
+	 * @return object SiteComponent
+	 * @access public
+	 * @since 4/10/06
+	 */
+	function &getParentComponent () {
+		return $this->_director->getSiteComponent(
+					$this->_director->_getParentWithId(
+						$this->getElement()));
 	}
 	
 	/**

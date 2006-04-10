@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.6 2006/04/07 14:24:27 cws-midd Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.7 2006/04/10 19:51:20 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -16,6 +16,7 @@ require_once(dirname(__FILE__)."/XmlNavBlockSiteComponent.class.php");
 require_once(dirname(__FILE__)."/XmlSiteNavBlockSiteComponent.class.php");
 require_once(dirname(__FILE__)."/XmlOrganizerSiteComponent.class.php");
 require_once(dirname(__FILE__)."/XmlFixedOrganizerSiteComponent.class.php");
+require_once(dirname(__FILE__)."/XmlNavOrganizerSiteComponent.class.php");
 require_once(dirname(__FILE__)."/XmlFlowOrganizerSiteComponent.class.php");
 require_once(dirname(__FILE__)."/XmlMenuOrganizerSiteComponent.class.php");
 
@@ -29,7 +30,7 @@ require_once(dirname(__FILE__)."/XmlMenuOrganizerSiteComponent.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.6 2006/04/07 14:24:27 cws-midd Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.7 2006/04/10 19:51:20 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.6 2006/04/07 14:37:43 cws-midd Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.7 2006/04/10 19:51:20 adamfranco Exp $
  */ 
 
 /**
@@ -18,12 +18,23 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.6 2006/04/07 14:37:43 cws-midd Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.7 2006/04/10 19:51:20 adamfranco Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
 	// implements OrganizersiteComponent
 {
+	
+	/**
+	 * Answer a displayName for this organizer. (Generally, a type or classification).
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/10/06
+	 */
+	function getDisplayName () {
+		return _("Organizer");
+	}
 	
 	/**
 	 * @var array $_childComponents;  

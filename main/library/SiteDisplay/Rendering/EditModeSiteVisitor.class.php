@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.7 2006/04/07 21:48:27 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.8 2006/04/10 19:51:19 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.7 2006/04/07 21:48:27 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.8 2006/04/10 19:51:19 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -103,7 +103,7 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		$controlsHTML = $this->getControlsHTML(_("Block"), ob_get_clean(), '#090', '#9F9', '#6C6');
+		$controlsHTML = $this->getControlsHTML(_("<em>Block</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 					
 		$styleCollection =& new StyleCollection(
@@ -144,7 +144,7 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		$controlsHTML = $this->getControlsHTML(_("NavBlock"), ob_get_clean(), '#090', '#9F9', '#6C6');
+		$controlsHTML = $this->getControlsHTML($navBlock->getDisplayName()._(" <em>Link</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(
@@ -200,7 +200,7 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		$controlsHTML = $this->getControlsHTML(_("Fixed Organizer"), ob_get_clean(), '#F00', '#F99', '#F66');
+		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#F00', '#F99', '#F66');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(
@@ -215,6 +215,19 @@ class EditModeSiteVisitor
 		$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FixedOrganizer');
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Visit a fixed organizer and return the GUI component [a container] 
+	 * that corresponds to it. Traverse-to/add child components.
+	 * 
+	 * @param object FixedOrganizerSiteComponent $organizer
+	 * @return object Component
+	 * @access public
+	 * @since 4/3/06
+	 */
+	function &visitNavOrganizer ( &$organizer ) {
+		return $this->visitFixedOrganizer($organizer);
 	}
 	
 	/**
@@ -245,7 +258,7 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		$controlsHTML = $this->getControlsHTML(_("Flow Organizer"), ob_get_clean(), '#00F', '#99F', '#66F');
+		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#00F', '#99F', '#66F');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 				
 		$styleCollection =& new StyleCollection(
@@ -276,7 +289,7 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		$controlsHTML = $this->getControlsHTML(_("Menu Organizer"), ob_get_clean(), '#00F', '#99F', '#66F');
+		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#00F', '#99F', '#66F');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(

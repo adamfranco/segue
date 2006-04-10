@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.3 2006/04/07 14:37:43 cws-midd Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.4 2006/04/10 19:51:20 adamfranco Exp $
  */ 
 
 /**
@@ -18,12 +18,23 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.3 2006/04/07 14:37:43 cws-midd Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.4 2006/04/10 19:51:20 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
 	// implements FixedOrganizerSiteComponent
 {
+
+	/**
+	 * Answer a displayName for this organizer. (Generally, a type or classification).
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/10/06
+	 */
+	function getDisplayName () {
+		return _("<em>Fixed Organizer</em>");
+	}
 	
 	/**
 	 * Add a subcomponent to an empty cell
