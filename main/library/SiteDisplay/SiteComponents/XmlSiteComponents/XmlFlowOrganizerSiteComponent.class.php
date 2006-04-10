@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.6 2006/04/10 19:51:20 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.7 2006/04/10 20:59:13 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.6 2006/04/10 19:51:20 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.7 2006/04/10 20:59:13 cws-midd Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -134,7 +134,7 @@ class XmlFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function addSubcomponent ( &$siteComponent ) {
-		$cell =& new DOMIT_Element("cell");
+		$cell =& $this->_element->ownerDocument->createElement('cell');
 		$cell->appendChild($siteComponent->getElement());
 		$this->_element->appendChild($cell);
 		// this is only for single page load deletes (testing)

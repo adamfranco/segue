@@ -4,159 +4,146 @@
 	<SiteNavBlock id='1'>
 		<displayName><![CDATA[Test Site]]></displayName>
 		<description><![CDATA[This is an xml test site.]]></description>
-		<organizer>
-			<NavOrganizer id='2' rows='1' cols='3' direction='Left-Right/Top-Bottom'>
-				<cell>
-					<MenuOrganizer id='3' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
-						<cell>
-							<NavBlock id='5' target_id='2_cell:1'>
-								<displayName><![CDATA[Four TextBlocks]]></displayName>
-								<description><![CDATA[Four Friendly text blocks]]></description>
-								<organizer>
-									<NavOrganizer id='100' rows='1' cols='1' direction='Left-Right/Top-Bottom'>
+		<NavOrganizer id='2' rows='1' cols='3' direction='Left-Right/Top-Bottom'>
+			<cell>
+				<MenuOrganizer id='3' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
+					<cell>
+						<NavBlock id='5' target_id='2_cell:1'>
+							<displayName><![CDATA[Four TextBlocks]]></displayName>
+							<description><![CDATA[Four Friendly text blocks]]></description>
+							<NavOrganizer id='100' rows='1' cols='1' direction='Left-Right/Top-Bottom'>
+								<cell>
+									<FlowOrganizer id='4' cols='2' direction='Left-Right/Top-Bottom' maxVisible='6'>
 										<cell>
-											<FlowOrganizer id='4' cols='2' direction='Left-Right/Top-Bottom' maxVisible='6'>
-												<cell>
-													<Block id='6'>
-														<displayName><![CDATA[TextBlock A]]></displayName>
-														<description><![CDATA[This is the first text block]]></description>
-														<contentMarkup><![CDATA[Hello World!!]]></contentMarkup>
-													</Block>
-												</cell>
-												<cell>
-													<Block id='7'>
-														<displayName><![CDATA[TextBlock B]]></displayName>
-														<description><![CDATA[This is the second text block]]></description>
-														<contentMarkup><![CDATA[Hey I wanted to say Hi!]]></contentMarkup>
-													</Block>
-												</cell>
-												<cell>
-													<Block id='8'>
-														<displayName><![CDATA[TextBlock C]]></displayName>
-														<description><![CDATA[This is the third text block]]></description>
-														<contentMarkup><![CDATA[Hello Universe!!]]></contentMarkup>
-													</Block>
-												</cell>
-												<cell>
-													<Block id='9'>
-														<displayName><![CDATA[TextBlock D]]></displayName>
-														<description><![CDATA[This is the fourth text block]]></description>
-														<contentMarkup><![CDATA[Hello, TextBlock C!!]]></contentMarkup>
-													</Block>
-												</cell>
-											</FlowOrganizer>
+											<Block id='6'>
+												<displayName><![CDATA[TextBlock A]]></displayName>
+												<description><![CDATA[This is the first text block]]></description>
+												<contentMarkup><![CDATA[Hello World!!]]></contentMarkup>
+											</Block>
 										</cell>
-									</NavOrganizer>
-								</organizer>
-							</NavBlock>
-						</cell>
-						<cell>
-							<NavBlock id='10' target_id='2_cell:1'>
-								<displayName><![CDATA[Assignments]]></displayName>
-								<description><![CDATA[Assignments for this course]]></description>
-								<organizer>
-									<NavOrganizer id='20' rows='1' cols='3' direction='Left-Right/Top-Bottom'>
 										<cell>
-
-													<MenuOrganizer id='21' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
+											<Block id='7'>
+												<displayName><![CDATA[TextBlock B]]></displayName>
+												<description><![CDATA[This is the second text block]]></description>
+												<contentMarkup><![CDATA[Hey I wanted to say Hi!]]></contentMarkup>
+											</Block>
+										</cell>
+										<cell>
+											<Block id='8'>
+												<displayName><![CDATA[TextBlock C]]></displayName>
+												<description><![CDATA[This is the third text block]]></description>
+												<contentMarkup><![CDATA[Hello Universe!!]]></contentMarkup>
+											</Block>
+										</cell>
+										<cell>
+											<Block id='9'>
+												<displayName><![CDATA[TextBlock D]]></displayName>
+												<description><![CDATA[This is the fourth text block]]></description>
+												<contentMarkup><![CDATA[Hello, TextBlock C!!]]></contentMarkup>
+											</Block>
+										</cell>
+									</FlowOrganizer>
+								</cell>
+							</NavOrganizer>
+						</NavBlock>
+					</cell>
+					<cell>
+						<NavBlock id='10' target_id='2_cell:1'>
+							<displayName><![CDATA[Assignments]]></displayName>
+							<description><![CDATA[Assignments for this course]]></description>
+							<NavOrganizer id='20' rows='1' cols='3' direction='Left-Right/Top-Bottom'>
+								<cell>
+									<MenuOrganizer id='21' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
+										<cell>
+											<NavBlock id='22' target_id='20_cell:1'>
+												<displayName><![CDATA[Week 1]]></displayName>
+												<description><![CDATA[Assignments for week one.]]></description>
+													<NavOrganizer id='101' rows='1' cols='1' direction='Left-Right/Top-Bottom'>
 														<cell>
-															<NavBlock id='22' target_id='20_cell:1'>
-																<displayName><![CDATA[Week 1]]></displayName>
-																<description><![CDATA[Assignments for week one.]]></description>
-																<organizer>
-																	<NavOrganizer id='101' rows='1' cols='1' direction='Left-Right/Top-Bottom'>
-																		<cell>
-																			<FlowOrganizer id='23' cols='2' direction='Left-Right/Top-Bottom' maxVisible='6'>
-																				<cell>
-																					<Block id='24'>
-																						<displayName><![CDATA[Monday]]></displayName>
-																						<description><![CDATA[]]></description>
-																						<contentMarkup><![CDATA[Read chapter 1.]]></contentMarkup>
-																					</Block>
-																				</cell>
-																				<cell>
-																					<Block id='25'>
-																						<displayName><![CDATA[Wednesday]]></displayName>
-																						<description><![CDATA[]]></description>
-																						<contentMarkup><![CDATA[Read chapter 2.]]></contentMarkup>
-																					</Block>
-																				</cell>
-																				<cell>
-																					<Block id='26'>
-																						<displayName><![CDATA[Friday]]></displayName>
-																						<description><![CDATA[]]></description>
-																						<contentMarkup><![CDATA[Read chapter 3.]]></contentMarkup>
-																					</Block>
-																				</cell>
-																			</FlowOrganizer>
-																		</cell>
-																	</NavOrganizer>
-																</organizer>
-															</NavBlock>
+															<FlowOrganizer id='23' cols='2' direction='Left-Right/Top-Bottom' maxVisible='6'>
+																<cell>
+																	<Block id='24'>
+																		<displayName><![CDATA[Monday]]></displayName>
+																		<description><![CDATA[]]></description>
+																		<contentMarkup><![CDATA[Read chapter 1.]]></contentMarkup>
+																	</Block>
+																</cell>
+																<cell>
+																	<Block id='25'>
+																		<displayName><![CDATA[Wednesday]]></displayName>
+																		<description><![CDATA[]]></description>
+																		<contentMarkup><![CDATA[Read chapter 2.]]></contentMarkup>
+																	</Block>
+																</cell>
+																<cell>
+																	<Block id='26'>
+																		<displayName><![CDATA[Friday]]></displayName>
+																		<description><![CDATA[]]></description>
+																		<contentMarkup><![CDATA[Read chapter 3.]]></contentMarkup>
+																	</Block>
+																</cell>
+															</FlowOrganizer>
 														</cell>
-														<cell>
-															<NavBlock id='30' target_id='20_cell:1'>
-																<displayName><![CDATA[Week 2]]></displayName>
-																<description><![CDATA[Assignments for week two.]]></description>
-																<organizer>
-																	<NavOrganizer id='102' rows='1' cols='1' direction='Left-Right/Top-Bottom'>
-																		<cell>
-																			<FlowOrganizer id='31' cols='2' direction='Left-Right/Top-Bottom' maxVisible='6'>
-																				<cell>
-																					<Block id='32'>
-																						<displayName><![CDATA[Monday]]></displayName>
-																						<description><![CDATA[]]></description>
-																						<contentMarkup><![CDATA[Read chapter 4.]]></contentMarkup>
-																					</Block>
-																				</cell>
-																				<cell>
-																					<Block id='33'>
-																						<displayName><![CDATA[Wednesday]]></displayName>
-																						<description><![CDATA[]]></description>
-																						<contentMarkup><![CDATA[Read chapter 5.]]></contentMarkup>
-																					</Block>
-																				</cell>
-																				<cell>
-																					<Block id='34'>
-																						<displayName><![CDATA[Friday]]></displayName>
-																						<description><![CDATA[]]></description>
-																						<contentMarkup><![CDATA[Read chapter 6.]]></contentMarkup>
-																					</Block>
-																				</cell>
-																			</FlowOrganizer>
-																		</cell>
-																	</NavOrganizer>
-																</organizer>
-															</NavBlock>
-														</cell>
-													</MenuOrganizer>
-												</cell>
-
-										<cell>
+													</NavOrganizer>
+											</NavBlock>
 										</cell>
 										<cell>
-											<FlowOrganizer id='11' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
-												<cell>
-													<Block id='12'>
-														<displayName><![CDATA[Important Information]]></displayName>
-														<description><![CDATA[]]></description>
-														<contentMarkup><![CDATA[All assignments are due in class at the beginning of class.]]></contentMarkup>
-													</Block>
-												</cell>
-											</FlowOrganizer>
+											<NavBlock id='30' target_id='20_cell:1'>
+												<displayName><![CDATA[Week 2]]></displayName>
+												<description><![CDATA[Assignments for week two.]]></description>
+												<NavOrganizer id='102' rows='1' cols='1' direction='Left-Right/Top-Bottom'>
+													<cell>
+														<FlowOrganizer id='31' cols='2' direction='Left-Right/Top-Bottom' maxVisible='6'>
+															<cell>
+																<Block id='32'>
+																	<displayName><![CDATA[Monday]]></displayName>
+																	<description><![CDATA[]]></description>
+																	<contentMarkup><![CDATA[Read chapter 4.]]></contentMarkup>
+																</Block>
+															</cell>
+															<cell>
+																<Block id='33'>
+																	<displayName><![CDATA[Wednesday]]></displayName>
+																	<description><![CDATA[]]></description>
+																	<contentMarkup><![CDATA[Read chapter 5.]]></contentMarkup>
+																</Block>
+															</cell>
+															<cell>
+																<Block id='34'>
+																	<displayName><![CDATA[Friday]]></displayName>
+																	<description><![CDATA[]]></description>
+																	<contentMarkup><![CDATA[Read chapter 6.]]></contentMarkup>
+																</Block>
+															</cell>
+														</FlowOrganizer>
+													</cell>
+												</NavOrganizer>
+											</NavBlock>
 										</cell>
-										
-									</NavOrganizer>
-								</organizer>
-							</NavBlock>
-						</cell>
-					</MenuOrganizer>
-				</cell>
-				<cell>
-				</cell>
-				<cell>
-				</cell>
-			</NavOrganizer>
-		</organizer>
+									</MenuOrganizer>
+								</cell>
+								<cell>
+								</cell>
+								<cell>
+									<FlowOrganizer id='11' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
+										<cell>
+											<Block id='12'>
+												<displayName><![CDATA[Important Information]]></displayName>
+												<description><![CDATA[]]></description>
+												<contentMarkup><![CDATA[All assignments are due in class at the beginning of class.]]></contentMarkup>
+											</Block>
+										</cell>
+									</FlowOrganizer>
+								</cell>
+							</NavOrganizer>
+						</NavBlock>
+					</cell>
+				</MenuOrganizer>
+			</cell>
+			<cell>
+			</cell>
+			<cell>
+			</cell>
+		</NavOrganizer>
 	</SiteNavBlock>
 </Segue2>

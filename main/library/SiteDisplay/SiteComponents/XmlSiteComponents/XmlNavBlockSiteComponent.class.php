@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.3 2006/04/07 14:24:27 cws-midd Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.4 2006/04/10 20:59:14 cws-midd Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.3 2006/04/07 14:24:27 cws-midd Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.4 2006/04/10 20:59:14 cws-midd Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
@@ -36,12 +36,20 @@ class XmlNavBlockSiteComponent
 	function &getOrganizer () {
 		$child =& $this->_element->firstChild;
 		while ($child) {
-			if ($child->nodeName == 'organizer') {
-				return $this->_director->getSiteComponent($child->firstChild);
+			if ($child->nodeName == 'NavOrganizer') {
+				$navOrg =& $child;
+				$navOrgObj =& $this->_director->getSiteComponent($navOrg);
 			}
 			$child =& $child->nextSibling;
 		}
-		throwError( new Error("Organizer not found", "XmlSiteComponents"));
+		if (!isset($navOrgObj)) {
+			$navOrgObj =& $this->_director->createSiteComponent("NavOrganizer");
+			$navOrgObj->updateNumRows('1');
+			$navOrgObj->updateNumColumns('1');
+		}
+		return $navOrgObj;
+		
+		//throwError( new Error("Organizer not found", "XmlSiteComponents"));
 	}
 	
 	/**
@@ -53,11 +61,10 @@ class XmlNavBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function setOrganizer ( &$organizer ) {
-		$orgElement =& $this->_element->ownerDocument->createElement('organizer');
-		$orgElement->appendChild($organizer->getElement());
+		$orgElement =& $organizer->getElement();
 		$child =& $this->_element->firstChild;
 		while ($child) {
-			if ($child->nodeName == 'organizer') {
+			if ($child->nodeName == 'NavOrganizer') {
 				$this->_element->replaceChild($orgElement, $child);				
 				return;	
 			}
