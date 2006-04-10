@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.1 2006/04/10 21:05:55 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.2 2006/04/10 21:14:23 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.1 2006/04/10 21:05:55 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.2 2006/04/10 21:14:23 adamfranco Exp $
  */
 class VisibilitySiteVisitor {
 		
@@ -55,16 +55,15 @@ class VisibilitySiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitNavBlock ( &$navBlock ) {
-		$this->_visibleComponents[] =& $navBlock;
-		
+	function &visitNavBlock ( &$navBlock ) {		
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
 		if ($navBlock->isActive()) {
 			$childOrganizer =& $navBlock->getOrganizer();
 			$childOrganizer->acceptVisitor($this);
 		}
-		return $this->_visibleComponents;
+		
+		return $this->visitBlock($navBlock);
 	}
 	
 	/**
@@ -89,9 +88,7 @@ class VisibilitySiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitFixedOrganizer ( &$organizer ) {
-		$this->_visibleComponents[] =& $organizer;
-		
+	function &visitFixedOrganizer ( &$organizer ) {		
 		// Ordered indicies are to be used in a left-right/top-bottom manner, but
 		// may be returned in various orders to reflect another underlying fill direction.
 		$orderedIndices = $organizer->getVisibleOrderedIndices();
@@ -102,7 +99,7 @@ class VisibilitySiteVisitor {
 				$child->acceptVisitor($this);
 		}
 		
-		return $guiContainer;
+		return $this->visitBlock($organizer);
 	}
 	
 	
