@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.7 2006/04/10 19:51:20 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.8 2006/04/10 21:05:55 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -20,6 +20,9 @@ require_once(dirname(__FILE__)."/XmlNavOrganizerSiteComponent.class.php");
 require_once(dirname(__FILE__)."/XmlFlowOrganizerSiteComponent.class.php");
 require_once(dirname(__FILE__)."/XmlMenuOrganizerSiteComponent.class.php");
 
+require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php");
+
+
 /**
  * The XMLSiteDirector handles the selection of active nodes and acts in the 
  * "Abstract Factor" pattern to create and provide-access to SiteComponents.
@@ -30,7 +33,7 @@ require_once(dirname(__FILE__)."/XmlMenuOrganizerSiteComponent.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.7 2006/04/10 19:51:20 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.8 2006/04/10 21:05:55 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -58,11 +61,15 @@ class XmlSiteDirector
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &getRootSiteComponent ( $id ) {
-		$currentElement =& $this->_document->getElementByID($id, false);
-		
-		$this->activateDefaultsDown($currentElement);
-		return $this->traverseUpToRootSiteComponent($currentElement);
+	function &getRootSiteComponent ( $id = null ) {
+		if (!isset($this->_rootSiteComponent)) {
+			ArgumentValidator::validate($id, StringValidatorRule::getRule());
+			$currentElement =& $this->_document->getElementByID($id, false);
+			
+			$this->activateDefaultsDown($currentElement);
+			$this->_rootSiteComponent =& $this->traverseUpToRootSiteComponent($currentElement);
+		}
+		return $this->_rootSiteComponent;
 	}
 	
 	/**
@@ -175,6 +182,22 @@ class XmlSiteDirector
 			$this->_createdSiteComponents[$id] =& new $class($this, $element);
 		}
 		return $this->_createdSiteComponents[$id];
+	}
+	
+	/**
+	 * Answer an array of the visible site components
+	 * 
+	 * @return ref array
+	 * @access public
+	 * @since 4/10/06
+	 */
+	function &getVisibleComponents () {
+		if (!isset($this->_visibleComponents)) {
+			$visibilityVisitor =& new VisibilitySiteVisitor;
+			$rootSiteComponent =& $this->getRootSiteComponent();
+			$this->_visibleComponents =& $rootSiteComponent->acceptVisitor($visibilityVisitor);
+		}
+		return $this->_visibleComponents;
 	}
 	
 	/**

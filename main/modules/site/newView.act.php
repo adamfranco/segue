@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.5 2006/04/07 15:11:08 adamfranco Exp $
+ * @version $Id: newView.act.php,v 1.6 2006/04/10 21:05:55 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.5 2006/04/07 15:11:08 adamfranco Exp $
+ * @version $Id: newView.act.php,v 1.6 2006/04/10 21:05:55 adamfranco Exp $
  */
 class newViewAction
 	extends displayAction {
@@ -68,8 +68,6 @@ class newViewAction
 		$visitor =& $this->getSiteVisitor();
 		
 		$siteGuiComponent =& $rootSiteComponent->acceptVisitor($visitor);
-		
-		
 
 		
 		
