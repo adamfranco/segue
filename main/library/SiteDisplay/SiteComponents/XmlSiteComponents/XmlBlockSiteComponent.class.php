@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.4 2006/04/07 14:24:26 cws-midd Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.5 2006/04/11 21:06:25 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.4 2006/04/07 14:24:26 cws-midd Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.5 2006/04/11 21:06:25 adamfranco Exp $
  */
 class XmlBlockSiteComponent
 	extends XmlSiteComponent
@@ -208,6 +208,37 @@ class XmlBlockSiteComponent
 	 */
 	function &acceptVisitor ( &$visitor ) {
 		return $visitor->visitBlock($this);
+	}
+	
+	/**
+	 * Answer an array (keyed by Id) of the possible destinations [organizers] that
+	 * this component could be placed in.
+	 * 
+	 * @return ref array
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function &getVisibleDestinationsForPossibleAddition () {
+		$results = array();
+		
+		// If not authorized to remove this item, return an empty array;
+		// @todo
+		if(false) {
+			return $results;
+		}
+		
+		$possibleDestinations =& $this->_director->getVisibleComponents();
+		foreach (array_keys($possibleDestinations) as $id) {
+			switch (strtolower(get_class($possibleDestinations[$id]))) {
+				case 'xmlblocksitecomponent':
+					break;
+				default:
+					$results[$id] =& $possibleDestinations[$id];
+					break;
+			}
+		}
+		
+		return $results;
 	}
 
 }

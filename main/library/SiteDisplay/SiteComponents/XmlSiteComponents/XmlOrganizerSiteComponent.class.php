@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.7 2006/04/10 19:51:20 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.8 2006/04/11 21:06:25 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.7 2006/04/10 19:51:20 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.8 2006/04/11 21:06:25 adamfranco Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -216,6 +216,54 @@ class XmlOrganizerSiteComponent
 			}
 		}
 		return $this->_childComponents;
+	}
+	
+	/**
+	 * Answer an array of the ids of subcomponents not in the given cell
+	 * 
+	 * @param integer $i
+	 * @return array of strings
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function getSubcomponentIdsNotInCell ($i) {
+		$childComponents =& $this->_getChildComponents();
+		$results = array();
+		foreach ($childComponents as $index => $component) {
+			if ($index != $i && is_object($component))
+				$results[] = $component->getId();
+		}
+		return $results;
+	}
+	
+	/**
+	 * Answer an array of the components that could possibly be added to this organizer.
+	 * 
+	 * @return ref array An array keyed by component Id
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function &getVisibleComponentsForPossibleAddition () {
+		$results = array();
+		
+		// If not authorized to add children, return an empty array;
+		// @todo
+		if(false) {
+			return $results;
+		}
+		
+		$visibleComponents =& $this->_director->getVisibleComponents();
+		foreach (array_keys($visibleComponents) as $id) {
+			$possibleDestinations =& $visibleComponents[$id]->getVisibleDestinationsForPossibleAddition();
+			foreach (array_keys($possibleDestinations) as $destId) {
+				if ($destId == $this->getId()) {
+					$results[$id] =& $visibleComponents[$id];
+					break;
+				}
+			}
+		}
+		
+		return $results;
 	}
 }
 

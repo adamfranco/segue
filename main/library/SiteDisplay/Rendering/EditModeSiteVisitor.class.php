@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.8 2006/04/10 19:51:19 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.9 2006/04/11 21:06:24 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.8 2006/04/10 19:51:19 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.9 2006/04/11 21:06:24 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -103,6 +103,8 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
+		printpre("Id: ".$block->getId()."\nAccepts:");
+// 		printpre($droppableIds);
 		$controlsHTML = $this->getControlsHTML(_("<em>Block</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 					
@@ -144,6 +146,8 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
+		printpre("Id: ".$navBlock->getId()."\nAccepts:");
+// 		printpre($droppableIds);
 		$controlsHTML = $this->getControlsHTML($navBlock->getDisplayName()._(" <em>Link</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
@@ -175,6 +179,11 @@ class EditModeSiteVisitor
 												'border: 1px solid #F00; padding: 6px;'),
 										BLANK,
 										1);
+										
+		// Get a list of the ids of all visible components that could be dropped on this
+		// organizer
+		$droppableIds = array_keys($organizer->getVisibleComponentsForPossibleAddition());
+		
 		
 		// Ordered indicies are to be used in a left-right/top-bottom manner, but
 		// may be returned in various orders to reflect another underlying fill direction.
@@ -185,7 +194,9 @@ class EditModeSiteVisitor
 			if (is_object($child)) {
 				$childComponent =& $guiContainer->add($child->acceptVisitor($this), 
 														null, null, null, TOP);
-				$this->wrapAsDroppable($childComponent, $organizer->getId()."_cell:".$i);
+				$this->wrapAsDroppable($childComponent, 
+					$organizer->getId()."_cell:".$i,
+					array_merge($droppableIds, $organizer->getSubcomponentIdsNotInCell($i)));
 			} else {
 				// This should be changed to a new container type which
 				// only has one cell and does not add any HTML when rendered.
@@ -194,12 +205,16 @@ class EditModeSiteVisitor
 				$this->_emptyCells[$organizer->getId().'_cell:'.$i] =& $placeholder;
 				$guiContainer->add($placeholder, null, '100%', null, TOP);
 				
-				$this->wrapAsDroppable($placeholder, $organizer->getId()."_cell:".$i);
+				$this->wrapAsDroppable($placeholder, 
+					$organizer->getId()."_cell:".$i,
+					array_merge($droppableIds, $organizer->getSubcomponentIdsNotInCell($i)));
 			}
 		}
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
+		printpre("Id: ".$organizer->getId()."\nAccepts:");
+		printpre($droppableIds);
 		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#F00', '#F99', '#F66');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
@@ -258,6 +273,8 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
+		printpre("Id: ".$organizer->getId()."\nAccepts:");
+// 		printpre($droppableIds);
 		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#00F', '#99F', '#66F');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 				
@@ -289,6 +306,8 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
+		printpre("Id: ".$organizer->getId()."\nAccepts:");
+// 		printpre($droppableIds);
 		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#00F', '#99F', '#66F');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
@@ -356,7 +375,11 @@ class EditModeSiteVisitor
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function wrapAsDroppable (&$component, $id) {
+	function wrapAsDroppable (&$component, $id, $allowedDraggables) {
+		if (!count($allowedDraggables))
+			return;
+		
+		$draggablesArray = "new Array('".implode("', '", $allowedDraggables)."')";
 
 		$component->setPreHTML("<div id='$id'>".$component->getPreHTML($null = null));
 		$dropConfirm = _('Are you sure that you want to move this element here?');
@@ -369,7 +392,7 @@ class EditModeSiteVisitor
 /* <![CDATA[ */
 	
 	Droppables.add('$id', {
-			accept: new Array('FlowOrganizer', 'FixedOrganizer'),
+			accept: ".$draggablesArray.",
 			hoverclass: 'drop_hover',
 			onDrop: function (draggableElement, droppableElement) {
 				if (confirm ('$dropConfirm' 

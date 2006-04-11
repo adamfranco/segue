@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.4 2006/04/10 19:51:20 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.5 2006/04/11 21:06:25 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.4 2006/04/10 19:51:20 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.5 2006/04/11 21:06:25 adamfranco Exp $
  */
 class XmlSiteComponent 
 	// implements SiteComponent
@@ -98,6 +98,22 @@ class XmlSiteComponent
 	 * @since 4/3/06
 	 */
 	function &acceptVisitor ( &$visitor ) {
+		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay"));
+	}
+	
+/*********************************************************
+ * Drag & Drop destinations
+ *********************************************************/
+	
+	/**
+	 * Answer an array (keyed by Id) of the possible destinations [organizers] that
+	 * this component could be placed in.
+	 * 
+	 * @return ref array
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function &getVisibleDestinationsForPossibleAddition () {
 		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay"));
 	}
 }

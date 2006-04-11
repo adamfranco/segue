@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavOrganizerSiteComponent.class.php,v 1.1 2006/04/10 19:51:48 adamfranco Exp $
+ * @version $Id: XmlNavOrganizerSiteComponent.class.php,v 1.2 2006/04/11 21:06:25 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavOrganizerSiteComponent.class.php,v 1.1 2006/04/10 19:51:48 adamfranco Exp $
+ * @version $Id: XmlNavOrganizerSiteComponent.class.php,v 1.2 2006/04/11 21:06:25 adamfranco Exp $
  */
 class XmlNavOrganizerSiteComponent
 	extends XmlFixedOrganizerSiteComponent 
@@ -47,6 +47,37 @@ class XmlNavOrganizerSiteComponent
 	 */
 	function &acceptVisitor ( &$visitor ) {
 		return $visitor->visitNavOrganizer($this);
+	}
+	
+/*********************************************************
+ * Drag & Drop destinations
+ *********************************************************/
+	
+	/**
+	 * Answer an array (keyed by Id) of the possible destinations [organizers] that
+	 * this component could be placed in.
+	 *
+	 * NavOrganizers cannot be moved.
+	 * 
+	 * @return ref array
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function &getVisibleDestinationsForPossibleAddition () {
+		$results = array();
+		
+		return $results;
+	}
+	
+	/**
+	 * Answer the NavOrganizer above this organizer.
+	 * 
+	 * @return object NavOrganizerSiteComponent
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function &getParentNavOrganizer () {
+		return $this;
 	}
 }
 

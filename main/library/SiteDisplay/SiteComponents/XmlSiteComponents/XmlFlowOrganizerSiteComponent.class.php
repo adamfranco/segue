@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.7 2006/04/10 20:59:13 cws-midd Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.8 2006/04/11 21:06:25 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.7 2006/04/10 20:59:13 cws-midd Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.8 2006/04/11 21:06:25 adamfranco Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -209,6 +209,44 @@ class XmlFlowOrganizerSiteComponent
 	function &acceptVisitor ( &$visitor ) {
 		return $visitor->visitFlowOrganizer($this);
 	}
+	
+/*********************************************************
+ * Drag & Drop destinations
+ *********************************************************/
+	
+	/**
+	 * Answer an array (keyed by Id) of the possible destinations [organizers] that
+	 * this component could be placed in.
+	 *
+	 * For flow organizers the possible destinations are cells in any
+	 * FixedOrganizer or NavOrganizer
+	 * 
+	 * @return ref array
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function &getVisibleDestinationsForPossibleAddition () {
+		$results = array();
+		
+		// If not authorized to remove this item, return an empty array;
+		// @todo
+		if(false) {
+			return $results;
+		}
+		
+		
+		$visibleComponents =& $this->_director->getVisibleComponents();
+		foreach (array_keys($visibleComponents) as $id) {
+			if (strtolower("XmlFixedOrganizerSiteComponent") == strtolower(get_class($visibleComponents[$id]))
+				|| strtolower("XmlNavOrganizerSiteComponent") == strtolower(get_class($visibleComponents[$id])))
+			{
+					$results[$id] =& $visibleComponents[$id];
+			}
+		}
+		
+		return $results;
+	}
+	
 }
 
 ?>
