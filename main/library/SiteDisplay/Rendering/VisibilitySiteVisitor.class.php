@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.2 2006/04/10 21:14:23 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.3 2006/04/11 17:23:50 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.2 2006/04/10 21:14:23 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.3 2006/04/11 17:23:50 adamfranco Exp $
  */
 class VisibilitySiteVisitor {
 		
@@ -43,7 +43,7 @@ class VisibilitySiteVisitor {
 	 * @since 4/3/06
 	 */
 	function &visitBlock ( &$block ) {
-		$this->_visibleComponents[] =& $block;
+		$this->_visibleComponents[$block->getId()] =& $block;
 		return $this->_visibleComponents;
 	}
 	
