@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.7 2006/04/12 21:07:16 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.8 2006/04/12 21:24:13 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.7 2006/04/12 21:07:16 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.8 2006/04/12 21:24:13 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -56,7 +56,7 @@ class XmlFixedOrganizerSiteComponent
 					$child->appendChild($siteComponent->getElement());
 					$success = true;
 				} else
-					throwError( new Error("Cell Not Empty", "SiteComponents"));
+					throwError( new Error("Cell Not Empty".printpre($child->toNormalizedString(true), true), "SiteComponents"));
 			} else {
 				$child =& $child->nextSibling;
 				$i++;
@@ -104,7 +104,7 @@ class XmlFixedOrganizerSiteComponent
 		$cell_two_component = $this->getSubcomponentForCell($cellTwoIndex);
 		
 		// third party (temp for a swap)
-		$temp =& $cell_two_component->getElement;
+		$temp =& $cell_two_component->getElement();
 		$children[$cellTwoIndex]->replaceChild(
 										$cell_one_component->getElement(),
 										$cell_two_component->getElement());
