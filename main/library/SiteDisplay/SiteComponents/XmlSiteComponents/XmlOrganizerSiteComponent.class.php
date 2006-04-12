@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.11 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.12 2006/04/12 21:23:45 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.11 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.12 2006/04/12 21:23:45 cws-midd Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.9 2006/04/12 21:07:16 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.10 2006/04/12 21:23:45 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.9 2006/04/12 21:07:16 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.10 2006/04/12 21:23:45 cws-midd Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -200,6 +200,25 @@ class XmlFlowOrganizerSiteComponent
 		$this->_element->appendChild($temp);
 	}
 
+	/**
+	 * Remove a subcomponent, but don't delete it from the director completely.
+	 * 
+	 * @param object SiteComponent $subcomponent
+	 * @return void
+	 * @access public
+	 * @since 4/12/06
+	 */
+	function detatchSubcomponent ( &$subcomponent ) {
+		$cellIndex = $this->getCellForSubcomponent($subcomponent);
+		
+		$cell =& $this->_element->firstChild;
+		while ($cellIndex) {
+			$cell =& $cell->nextSibling;
+			$cellIndex--;
+		}
+		$this->_element->removeChild($cell);
+	}
+	
 	/**
 	 * Delete the subcomponent located in organizer cell $i
 	 * 
