@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.9 2006/04/12 14:48:46 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.10 2006/04/12 15:50:08 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.9 2006/04/12 14:48:46 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.10 2006/04/12 15:50:08 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -197,7 +197,7 @@ class XmlSiteDirector
 			$rootSiteComponent =& $this->getRootSiteComponent();
 			$visiblityArray =& $rootSiteComponent->acceptVisitor($visibilityVisitor);
 			$this->_visibleComponents =& $visiblityArray['VisibleComponents'];
-			$this->_filledTargetIds =& $visibilityArray['FilledTargetIds'];
+			$this->_filledTargetIds =& $visiblityArray['FilledTargetIds'];
 		}
 		return $this->_visibleComponents;
 	}

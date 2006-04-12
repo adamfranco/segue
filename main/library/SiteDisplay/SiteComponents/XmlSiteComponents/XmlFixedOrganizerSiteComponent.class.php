@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.5 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.6 2006/04/12 15:50:08 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.5 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.6 2006/04/12 15:50:08 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -156,6 +156,29 @@ class XmlFixedOrganizerSiteComponent
 /*********************************************************
  * Drag & Drop destinations
  *********************************************************/
+	
+	/**
+	 * Answer an array of the components that could possibly be added to this organizer.
+	 * 
+	 * @param integer $cellIndex
+	 * @return ref array An array keyed by component Id
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function &getVisibleComponentsForPossibleAdditionToCell ( $cellIndex ) {
+		// If this cell is in use, only reordering of components already
+		// in this organizer is allowed (FixedOrganizer)
+		if (in_array($this->getId().'_cell:'.$cellIndex, $this->_director->getFilledTargetIds())
+			|| is_object($this->getSubcomponentForCell($cellIndex)))
+		{
+			return $this->getSubcomponentsNotInCell($cellIndex);
+		}
+		// If it is empty, then our current subcomponents or any other available
+		// can be added.
+		else {
+			return parent::getVisibleComponentsForPossibleAdditionToCell($cellIndex);
+		}
+	}
 	
 	/**
 	 * Answer an array (keyed by Id) of the possible destinations [organizers] that

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.8 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.9 2006/04/12 15:50:08 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.8 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.9 2006/04/12 15:50:08 adamfranco Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -218,20 +218,47 @@ class XmlOrganizerSiteComponent
 		return $this->_childComponents;
 	}
 	
-	/**
-	 * Answer an array of the ids of subcomponents not in the given cell
+/*********************************************************
+ * Drag & Drop destinations
+ *********************************************************/
+ 	
+ 	/**
+	 * Answer an array of the components that could possibly be added to this organizer.
 	 * 
-	 * @param integer $i
-	 * @return array of strings
+	 * @param integer $cellIndex
+	 * @return ref array An array keyed by component Id
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function getSubcomponentIdsNotInCell ($i) {
+	function &getVisibleComponentsForPossibleAdditionToCell ( $cellIndex ) {
+		// merge our current subcomponents and any other component to be
+		// added. (This is for the Flow/Menu organizers, as well as the
+		// empty case for Fixed organizers.
+		$addableComponents =& $this->getVisibleComponentsForPossibleAddition();
+		$movableSubcomponents =& $this->getSubcomponentsNotInCell($cellIndex);
+		$results = array();
+		foreach (array_keys($addableComponents) as $id)
+			$results[$id] =& $addableComponents[$id];
+		foreach (array_keys($movableSubcomponents) as $id)
+			$results[$id] =& $movableSubcomponents[$id];
+		return $results;
+		
+	}
+	
+	/**
+	 * Answer an array of  the subcomponents not in the given cell
+	 * 
+	 * @param integer $i
+	 * @return ref array Array of component objects keyed by Id
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function &getSubcomponentsNotInCell ($i) {
 		$childComponents =& $this->_getChildComponents();
 		$results = array();
-		foreach ($childComponents as $index => $component) {
-			if ($index != $i && is_object($component))
-				$results[] = $component->getId();
+		foreach (array_keys($childComponents) as $index) {
+			if ($index != $i && is_object($childComponents[$index]))
+				$results[$childComponents[$index]->getId()] =& $childComponents[$index];
 		}
 		return $results;
 	}

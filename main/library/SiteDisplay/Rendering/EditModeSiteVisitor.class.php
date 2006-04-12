@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.10 2006/04/12 14:48:46 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.11 2006/04/12 15:50:07 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.10 2006/04/12 14:48:46 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.11 2006/04/12 15:50:07 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -181,10 +181,6 @@ class EditModeSiteVisitor
 												'border: 1px solid #F00; padding: 6px;'),
 										BLANK,
 										1);
-										
-		// Get a list of the ids of all visible components that could be dropped on this
-		// organizer
-		$droppableIds = array_keys($organizer->getVisibleComponentsForPossibleAddition());
 		
 		
 		// Ordered indicies are to be used in a left-right/top-bottom manner, but
@@ -196,23 +192,18 @@ class EditModeSiteVisitor
 			if (is_object($child)) {
 				$childComponent =& $guiContainer->add($child->acceptVisitor($this), 
 														null, null, null, TOP);
-				$this->wrapAsDroppable($childComponent, 
-					$organizer->getId()."_cell:".$i,
-					// Only subcomponents already in this organizer can swap
-					// with this cell. Others have to be added first.
-					array_merge($organizer->getSubcomponentIdsNotInCell($i)));
 			} else {
 				// This should be changed to a new container type which
 				// only has one cell and does not add any HTML when rendered.
-				$placeholder =& new Container(new XLayout, BLANK, 1);
+				$childComponent =& new Container(new XLayout, BLANK, 1);
 				
-				$this->_emptyCells[$organizer->getId().'_cell:'.$i] =& $placeholder;
-				$guiContainer->add($placeholder, null, '100%', null, TOP);
-				
-				$this->wrapAsDroppable($placeholder, 
-					$organizer->getId()."_cell:".$i,
-					array_merge($droppableIds, $organizer->getSubcomponentIdsNotInCell($i)));
+				$this->_emptyCells[$organizer->getId().'_cell:'.$i] =& $childComponent;
+				$guiContainer->add($childComponent, null, '100%', null, TOP);
 			}
+			
+			$this->wrapAsDroppable($childComponent, 
+				$organizer->getId()."_cell:".$i,
+				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
 		}
 		
 		ob_start();
@@ -269,11 +260,18 @@ class EditModeSiteVisitor
 		
 		foreach ($orderedIndices as $i) {
 			$child =& $organizer->getSubcomponentForCell($i);
-			$guiContainer->add($child->acceptVisitor($this), null, '100%', null, TOP);
+			$childComponent =& $guiContainer->add($child->acceptVisitor($this), null, '100%', null, TOP);
+			
+			$this->wrapAsDroppable($childComponent, 
+				$organizer->getId()."_cell:".$i,
+				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
 		}
 		
-		
-		$guiContainer->add(new UnstyledBlock(_('Append new...')), null, '100%', null, TOP);
+		$i++;
+		$childComponent =& $guiContainer->add(new UnstyledBlock(_('Append new...')), null, '100%', null, TOP);
+		$this->wrapAsDroppable($childComponent, 
+				$organizer->getId()."_cell:".$i,
+				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
 		
 		
 		ob_start();
