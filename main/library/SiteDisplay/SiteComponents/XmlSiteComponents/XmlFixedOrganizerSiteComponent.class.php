@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.8 2006/04/12 21:24:13 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.9 2006/04/12 21:32:20 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.8 2006/04/12 21:24:13 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.9 2006/04/12 21:32:20 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -49,14 +49,15 @@ class XmlFixedOrganizerSiteComponent
 		$child =& $this->_element->firstChild;
 		$i = 0;
 		$success = false;
-		while ($child) {
+		while ($child && !$success) {			
 			// is the cell we want, is empty
 			if ($i == $cellIndex) {
 				if (!$child->hasChildNodes()) {
 					$child->appendChild($siteComponent->getElement());
 					$success = true;
-				} else
-					throwError( new Error("Cell Not Empty".printpre($child->toNormalizedString(true), true), "SiteComponents"));
+				} else {
+					throwError( new Error("Cell Not Empty", "SiteComponents"));
+				}
 			} else {
 				$child =& $child->nextSibling;
 				$i++;
