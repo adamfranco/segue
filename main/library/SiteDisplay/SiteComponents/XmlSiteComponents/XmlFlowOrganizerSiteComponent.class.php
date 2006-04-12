@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.8 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.9 2006/04/12 21:07:16 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.8 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.9 2006/04/12 21:07:16 adamfranco Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -139,6 +139,27 @@ class XmlFlowOrganizerSiteComponent
 		$this->_element->appendChild($cell);
 		// this is only for single page load deletes (testing)
 		$this->_getChildComponents(true);
+	}
+	
+	/**
+	 * Add a subcomponent to a given cell and push the later elements towards the
+	 * end.
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @param integer $cellIndex
+	 * @return void
+	 * @access public
+	 * @since 3/31/06
+	 */
+	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
+		$currentIndex = $this->getCellForSubcomponent($siteComponent);
+		if ($currentIndex === FALSE) {
+			$oldParent =& $siteComponent->getParentComponent();
+			$oldParent->detatchSubcomponent($siteComponent);
+			$this->addSubcomponent($siteComponent);
+		}
+		$currentIndex = $this->getCellForSubcomponent($siteComponent);
+		$this->moveBefore($currentIndex, $cellIndex);
 	}
 	
 	/**

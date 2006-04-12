@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.12 2006/04/12 15:55:02 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.13 2006/04/12 21:07:15 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.12 2006/04/12 15:55:02 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.13 2006/04/12 21:07:15 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -412,6 +412,15 @@ class EditModeSiteVisitor
 
 		$component->setPreHTML("<div id='$id'>".$component->getPreHTML($null = null));
 		$dropConfirm = _('Are you sure that you want to move this element here?');
+		
+		$harmoni =& Harmoni::instance();
+		$url = str_replace("XXXdraggableXXX", "' + draggableElement.id + '",
+					str_replace("XXXdroppableXXX", "' + droppableElement.id + '",
+						str_replace('&amp;', '&', 
+							$harmoni->request->quickUrl('site', 'moveComponent', 
+								array('component' => "XXXdraggableXXX", 
+									'destination' => "XXXdroppableXXX")))));
+		
 		$component->setPostHTML(
 			$component->getPostHTML($null = null)
 			."
@@ -425,11 +434,11 @@ class EditModeSiteVisitor
 			hoverclass: 'drop_hover',
 			onDrop: function (draggableElement, droppableElement) {
 				if (confirm ('$dropConfirm' 
-					+ 'Element, ' + draggableElement.id + ' was dropped on ' 
+					+ \"\\nElement, \" + draggableElement.id + ' was dropped on ' 
 					+ droppableElement.id))
 				{
-					alert ('Move will be done.');
-					window.location.reload();
+					var moveUrl = '".$url."';
+					window.location = moveUrl;
 				} else {
 					window.location.reload();
 				}

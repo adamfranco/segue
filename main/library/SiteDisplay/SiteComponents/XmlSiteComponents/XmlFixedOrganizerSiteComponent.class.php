@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.6 2006/04/12 15:50:08 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.7 2006/04/12 21:07:16 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.6 2006/04/12 15:50:08 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.7 2006/04/12 21:07:16 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -64,6 +64,27 @@ class XmlFixedOrganizerSiteComponent
 		}
 		if (!$success)
 			throwError( new Error("Cell $cellIndex Not Found", "SiteComponents"));
+	}
+	
+	/**
+	 * Put a subcomponent in a given cell if at all possible. If the subcomponent
+	 * is in the organizer, then move/swap-positions/etc to get it there. If is is not,
+	 * add it to the organizer, then move it to that position
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @param integer $cellIndex
+	 * @return void
+	 * @access public
+	 * @since 4/12/06
+	 */
+	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
+		$currentIndex = $this->getCellForSubcomponent($siteComponent);
+		if ($currentIndex === FALSE) {
+			$oldParent =& $siteComponent->getParentComponent();
+			$oldParent->detatchSubcomponent($siteComponent);
+			$this->addSubcomponentToCell($siteComponent, $cellIndex);
+		} else
+			$this->swapCells($currentIndex, $cellIndex);
 	}
 	
 	/**

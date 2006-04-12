@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.9 2006/04/12 15:50:08 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.10 2006/04/12 21:07:16 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.9 2006/04/12 15:50:08 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.10 2006/04/12 21:07:16 adamfranco Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -176,6 +176,53 @@ class XmlOrganizerSiteComponent
 			$null = null;
 			return $null;
 		}
+	}
+	
+	/**
+	 * Answer the index of the component passed.
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @return integer FALSE if not found
+	 * @access public
+	 * @since 4/12/06
+	 */
+	function getCellForSubcomponent ( &$siteComponent ) {
+		$childComponents =& $this->_getChildComponents();
+		foreach($childComponents as $index => $component) {
+			if (is_object($component) && $component->getId() == $siteComponent->getId())
+				return $index;
+		}
+		
+		// if not found, return false
+		return false;
+	}
+	
+	/**
+	 * Put a subcomponent in a given cell if at all possible. If the subcomponent
+	 * is in the organizer, then move/swap-positions/etc to get it there. If is is not,
+	 * add it to the organizer, then move it to that position
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @param integer $cellIndex
+	 * @return void
+	 * @access public
+	 * @since 4/12/06
+	 */
+	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
+		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
+	}
+	
+	/**
+	 * Remove a subcomponent, but don't delete it from the director completely.
+	 * 
+	 * @param object SiteComponent $subcomponent
+	 * @return void
+	 * @access public
+	 * @since 4/12/06
+	 */
+	function detatchSubcomponent ( &$subcomponent ) {
+		$cell = $this->getCellForSubcomponent($subcomponent);
+		
 	}
 	
 	/**
