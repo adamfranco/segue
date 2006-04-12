@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.9 2006/04/12 21:32:20 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.10 2006/04/12 21:36:06 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.9 2006/04/12 21:32:20 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.10 2006/04/12 21:36:06 cws-midd Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -100,18 +100,12 @@ class XmlFixedOrganizerSiteComponent
 	function swapCells ( $cellOneIndex, $cellTwoIndex ) {
 		// child DOMIT_Elements in an array
 		$children =& $this->_element->childNodes;
-		// components for cells
-		$cell_one_component = $this->getSubcomponentForCell($cellOneIndex);
-		$cell_two_component = $this->getSubcomponentForCell($cellTwoIndex);
+		// cells
+		$cell_one = $children[$cellOneIndex];
+		$cell_two = $children[$cellTwoIndex];
 		
-		// third party (temp for a swap)
-		$temp =& $cell_two_component->getElement();
-		$children[$cellTwoIndex]->replaceChild(
-										$cell_one_component->getElement(),
-										$cell_two_component->getElement());
-		$children[$cellOneIndex]->replaceChild(
-										$temp,
-										$cell_one_component->getElement());
+		$this->_element->replaceChild($cell_two, $cell_one);
+		$this->_element->replaceChild($cell_one, $cell_two);
 	}
 	
 	/**
