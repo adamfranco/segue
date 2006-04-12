@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.6 2006/04/12 14:31:06 cws-midd Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.7 2006/04/12 14:42:02 cws-midd Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.6 2006/04/12 14:31:06 cws-midd Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.7 2006/04/12 14:42:02 cws-midd Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
@@ -73,7 +73,19 @@ class XmlNavBlockSiteComponent
 		// organizer not found... create it
 		$this->_element->appendChild($orgElement);
 	}
-		
+	
+	/**
+	 * Answers the target Id for all NavBlocks in the menu
+	 * 
+	 * @return string the target id
+	 * @access public
+	 * @since 4/12/06
+	 */
+	function getTargetId () {
+		$menuOrg =& $this->getParentComponent();
+		return $menuOrg->getTargetId();
+	}
+
 	/**
 	 * Accepts a visitor.
 	 * 

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.7 2006/04/12 14:34:13 cws-midd Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.8 2006/04/12 14:42:02 cws-midd Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -30,7 +30,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.7 2006/04/12 14:34:13 cws-midd Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.8 2006/04/12 14:42:02 cws-midd Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -86,13 +86,12 @@ class ViewModeSiteVisitor {
 		if ($navBlock->isActive()) {
 			$childOrganizer =& $navBlock->getOrganizer();
 			$childGuiComponent =& $childOrganizer->acceptVisitor($this);
-			$menuOrg =& $navBlock->getParentComponent();
 			
-			if (isset($this->_emptyCells[$menuOrg->getTargetId()])) {
-				$this->_emptyCells[$menuOrg->getTargetId()]->add($childGuiComponent, null, '100%', null, TOP);
-				unset($this->_emptyCells[$menuOrg->getTargetId()]);
+			if (isset($this->_emptyCells[$navBlock->getTargetId()])) {
+				$this->_emptyCells[$navBlock->getTargetId()]->add($childGuiComponent, null, '100%', null, TOP);
+				unset($this->_emptyCells[$navBlock->getTargetId()]);
 			} else {
-				$this->_missingTargets[$menuOrg->getTargetId()] =& $childGuiComponent;
+				$this->_missingTargets[$navBlock->getTargetId()] =& $childGuiComponent;
 			}
 		}
 		
