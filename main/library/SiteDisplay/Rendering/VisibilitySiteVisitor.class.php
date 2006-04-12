@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.3 2006/04/11 17:23:50 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.4 2006/04/12 14:48:46 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.3 2006/04/11 17:23:50 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.4 2006/04/12 14:48:46 adamfranco Exp $
  */
 class VisibilitySiteVisitor {
 		
@@ -32,6 +32,7 @@ class VisibilitySiteVisitor {
 	 */
 	function VisibilitySiteVisitor () {
 		$this->_visibleComponents = array();
+		$this->_filledTargetIds = array();
 	}
 	
 	/**
@@ -44,7 +45,10 @@ class VisibilitySiteVisitor {
 	 */
 	function &visitBlock ( &$block ) {
 		$this->_visibleComponents[$block->getId()] =& $block;
-		return $this->_visibleComponents;
+		$results = array();
+		$results['VisibleComponents'] =& $this->_visibleComponents;
+		$results['FilledTargetIds'] =& $this->_filledTargetIds;
+		return $results;
 	}
 	
 	/**
@@ -63,6 +67,8 @@ class VisibilitySiteVisitor {
 			$childOrganizer->acceptVisitor($this);
 		}
 		
+		$this->_filledTargetIds[] = $navBlock->getTargetId();
+		
 		return $this->visitBlock($navBlock);
 	}
 	
@@ -76,7 +82,14 @@ class VisibilitySiteVisitor {
 	 * @since 4/3/06
 	 */
 	function &visitSiteNavBlock ( &$siteNavBlock ) {
-		return $this->visitNavBlock($siteNavBlock);
+		// Traverse our child organizer, and place it in the _missingTargets array
+		// if our target is not available.
+		if ($siteNavBlock->isActive()) {
+			$childOrganizer =& $siteNavBlock->getOrganizer();
+			$childOrganizer->acceptVisitor($this);
+		}
+				
+		return $this->visitBlock($siteNavBlock);
 	}
 
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.8 2006/04/10 21:05:55 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.9 2006/04/12 14:48:46 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.8 2006/04/10 21:05:55 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.9 2006/04/12 14:48:46 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -195,9 +195,25 @@ class XmlSiteDirector
 		if (!isset($this->_visibleComponents)) {
 			$visibilityVisitor =& new VisibilitySiteVisitor;
 			$rootSiteComponent =& $this->getRootSiteComponent();
-			$this->_visibleComponents =& $rootSiteComponent->acceptVisitor($visibilityVisitor);
+			$visiblityArray =& $rootSiteComponent->acceptVisitor($visibilityVisitor);
+			$this->_visibleComponents =& $visiblityArray['VisibleComponents'];
+			$this->_filledTargetIds =& $visibilityArray['FilledTargetIds'];
 		}
 		return $this->_visibleComponents;
+	}
+	
+	/**
+	 * Answer an array of the ids of the cells that are filled/used targets.
+	 * 
+	 * @return ref array
+	 * @access public
+	 * @since 4/10/06
+	 */
+	function getFilledTargetIds () {
+		if (!isset($this->_filledTargetIds)) {
+			$this->getVisibleComponents();
+		}
+		return $this->_filledTargetIds;
 	}
 	
 	/**
@@ -209,6 +225,8 @@ class XmlSiteDirector
 	 * @since 4/3/06
 	 */
 	function &_getParentWithId ( &$element ) {
+		ArgumentValidator::validate($element, ExtendsValidatorRule::getRule("DOMIT_Element"));
+		ArgumentValidator::validate($element->parentNode, ExtendsValidatorRule::getRule("DOMIT_Element"));
 		if ($element->parentNode->hasAttribute('id'))
 			return $element->parentNode;
 		else

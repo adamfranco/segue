@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.9 2006/04/11 21:06:24 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.10 2006/04/12 14:48:46 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.9 2006/04/11 21:06:24 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.10 2006/04/12 14:48:46 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -128,7 +128,8 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new BorderBottomSP($lineWidth, 'solid', $primaryColor));
 		$content->addStyle($styleCollection);
 		
-		$this->wrapAsDraggable($guiContainer, $block->getId(), 'Block');
+		if (count($block->getVisibleDestinationsForPossibleAddition()))
+			$this->wrapAsDraggable($guiContainer, $block->getId(), 'Block');
 		
 		return $guiContainer;
 	}
@@ -159,7 +160,8 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new BorderSP('2px', 'solid', '#090'));
 		$guiContainer->addStyle($styleCollection);
 		
-		$this->wrapAsDraggable($guiContainer, $navBlock->getId(), 'NavBlock');
+		if (count($navBlock->getVisibleDestinationsForPossibleAddition()))
+			$this->wrapAsDraggable($guiContainer, $navBlock->getId(), 'NavBlock');
 		
 		return $guiContainer;
 	}
@@ -196,7 +198,9 @@ class EditModeSiteVisitor
 														null, null, null, TOP);
 				$this->wrapAsDroppable($childComponent, 
 					$organizer->getId()."_cell:".$i,
-					array_merge($droppableIds, $organizer->getSubcomponentIdsNotInCell($i)));
+					// Only subcomponents already in this organizer can swap
+					// with this cell. Others have to be added first.
+					array_merge($organizer->getSubcomponentIdsNotInCell($i)));
 			} else {
 				// This should be changed to a new container type which
 				// only has one cell and does not add any HTML when rendered.
@@ -227,7 +231,8 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new HeightSP('100%'));
 		$guiContainer->addStyle($styleCollection);
 		
-		$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FixedOrganizer');
+		if (count($organizer->getVisibleDestinationsForPossibleAddition()))
+			$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FixedOrganizer');
 		
 		return $guiContainer;
 	}
@@ -286,7 +291,8 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new BorderSP('1px', 'solid', '#00F'));
 		$guiContainer->addStyle($styleCollection);
 		
-		$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FlowOrganizer');
+		if (count($organizer->getVisibleDestinationsForPossibleAddition()))
+			$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FlowOrganizer');
 		
 		return $guiContainer;
 	}
@@ -319,7 +325,8 @@ class EditModeSiteVisitor
 		$styleCollection->addSP(new BorderSP('2px', 'solid', '#00F'));
 		$guiContainer->addStyle($styleCollection);
 		
-		$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FlowOrganizer');
+		if (count($organizer->getVisibleDestinationsForPossibleAddition()))
+			$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FlowOrganizer');
 		
 		return $guiContainer;
 	}
