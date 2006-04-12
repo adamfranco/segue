@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.9 2006/03/16 20:08:40 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.10 2006/04/12 21:19:56 cws-midd Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.9 2006/03/16 20:08:40 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.10 2006/04/12 21:19:56 cws-midd Exp $
  */
 class PluginManager {
 		
@@ -36,6 +36,7 @@ class PluginManager {
 	var $_arrays;
 
 	var $_plugin;
+	var $_plugins = array();
 	
 	/**
 	 * Constructor
@@ -276,27 +277,33 @@ class PluginManager {
 	 * @since 1/24/06
 	 */
 	function &getPlugin ( &$asset ) {
-		$type =& $asset->getAssetType();
-		$domain = $type->getDomain();
-		$authority = $type->getAuthority();
-		$keyword = $type->getKeyword();
-		
-		if ($this->isPluginDomain($domain)) {
-			require_once(MYDIR."/main/library/PluginManager/"
-				.$domain."/".$domain."Plugin.abstract.php");
-			require_once(MYDIR."/main/library/PluginManager/"
-				.$domain."/".$domain."AjaxPlugin.abstract.php");
-			require_once(MYDIR."/plugins/".$domain."/"
-				.$authority."/".$keyword."/"
-				.$authority.$keyword."Plugin.class.php");
-				
-			eval('$plugin =& '.$authority.$keyword.
-				'Plugin::newInstance($asset, $this->_configuration);');
-			return $plugin;
+		$id =& $asset->getId();
+		$idstring = $id->getIdString();
+		if (!isset($this->_plugins[$idstring])) {
+			$type =& $asset->getAssetType();
+			$domain = $type->getDomain();
+			$authority = $type->getAuthority();
+			$keyword = $type->getKeyword();
+			
+			if ($this->isPluginDomain($domain)) {
+				require_once(MYDIR."/main/library/PluginManager/"
+					.$domain."/".$domain."Plugin.abstract.php");
+				require_once(MYDIR."/main/library/PluginManager/"
+					.$domain."/".$domain."AjaxPlugin.abstract.php");
+				require_once(MYDIR."/plugins/".$domain."/"
+					.$authority."/".$keyword."/"
+					.$authority.$keyword."Plugin.class.php");
+					
+				eval('$plugin =& '.$authority.$keyword.
+					'Plugin::newInstance($asset, $this->_configuration);');
+	
+				$this->_plugins[$idstring] = $plugin;
+			} else {
+				throwError(new Error("Plugin Manager", "This asset does not contain a 
+					plugin"));
+			}
 		}
-		
-		throwError(new Error("Plugin Manager", "This asset does not contain a 
-			plugin"));
+		return $this->_plugins[$idstring];
 	}
 
 	/**

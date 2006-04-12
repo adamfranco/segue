@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.4 2006/01/27 16:32:33 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.5 2006/04/12 21:19:56 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.4 2006/01/27 16:32:33 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.5 2006/04/12 21:19:56 cws-midd Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -333,7 +333,7 @@ END;
 	function _ajaxUrl ( $parameters = array() ) {
 		$harmoni =& Harmoni::instance();
 		$url =& $harmoni->request->mkURL('plugin_manager', 'update_ajax');
-		
+	
 		$harmoni->request->startNamespace('plugin_manager');
 		$url->setValue('plugin_id', $this->getId());
 		$harmoni->request->endNamespace();

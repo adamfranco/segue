@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.31 2006/03/28 18:34:20 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.32 2006/04/12 21:19:56 cws-midd Exp $
  */
  
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavigationNodeRenderer.class.php,v 1.31 2006/03/28 18:34:20 adamfranco Exp $
+ * @version $Id: NavigationNodeRenderer.class.php,v 1.32 2006/04/12 21:19:56 cws-midd Exp $
  */
 class NavigationNodeRenderer
 	extends NodeRenderer
@@ -529,6 +529,7 @@ class NavigationNodeRenderer
 		print ">";
 		print "\n\t\t\t\t\t<option value=''>"._("Add a new child element...")."</option>";
 		print "\n\t\t\t\t\t<option value='' disabled='disabled'>------------</option>";
+// because executes on choice, can not choose Container since it is already selected?!?!
 		print "\n\t\t\t\t\t<option value='single_nav'>"._("Container")."</option>";
 		print "\n\t\t\t\t\t<option value='nav'>"._("Navigational Container")."</option>";
 		print "\n\t\t\t\t\t<option value='' disabled='disabled'>------------</option>";
@@ -537,6 +538,7 @@ class NavigationNodeRenderer
 		// domain for SeguePlugins. 
 		print "\n\t\t\t\t\t<option value='SeguePlugins::Segue::TextBlock'>"._("Text Block")."</option>";
 		print "\n\t\t\t\t\t<option value='SeguePlugins::Segue::Assignment'>"._("Assignment")."</option>";
+		print "\n\t\t\t\t\t<option value='SeguePlugins::Segue::Download'>"._("File Downloads")."</option>";
 		print "\n\t\t\t\t</select>";
 		print "\n\t\t\t</div>";
 	}

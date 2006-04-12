@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.7 2006/04/10 21:14:23 adamfranco Exp $
+ * @version $Id: newView.act.php,v 1.8 2006/04/12 21:19:56 cws-midd Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.7 2006/04/10 21:14:23 adamfranco Exp $
+ * @version $Id: newView.act.php,v 1.8 2006/04/12 21:19:56 cws-midd Exp $
  */
 class newViewAction
 	extends displayAction {
@@ -48,17 +48,58 @@ class newViewAction
 
 		$xmlDirector =& new XmlSiteDirector($testDocument);
 		
-		
-		$blockA =& $xmlDirector->getSiteComponentById(6);
+//		$flow =& $xmlDirector->getSiteComponentById(4);
+//		printpre($flow->_element->toNormalizedString(true));
+//		print "<hr/>";
+
+//		$flow->deleteSubcomponentInCell(2);
+//		printpre($flow->_element->toNormalizedString(true));
+//		print "<hr/>";
+// 		$blockA =& $xmlDirector->createSiteComponent('Block');
 // 		printpre($blockA->_element->toNormalizedString(true));
-		$blockA->updateDisplayName('New TextBlock A displayName');
-		$blockA->updateDescription('My description is the bomb');
-		$blockA->updateContentMarkup("<p>Hello world. I am a banana. Hear me Roar!</p>\n<p>Wait, bannanas meow....</p>");
+//		print "<hr/>";
+//		$blockA->updateDisplayName('New Block');
+// 		printpre($blockA->_element->toNormalizedString(true));
+// 		print "<hr/>";
+// 		$blockA->updateDescription("I'm the new block on the kid.");
+// 		printpre($blockA->_element->toNormalizedString(true));
+// 		print "<hr/>";
+//		$blockA->updateTitleMarkup("Where is this printed?");
+// 		printpre($blockA->_element->toNormalizedString(true));
+// 		print "<hr/>";
+// 		$blockA->updateContentMarkup('Hey... Hey... World... Wake up... WAKE UP!\n ps I have id 7');
+// 		printpre($blockA->_element->toNormalizedString(true));
+// 		print "<hr/>";
+//		$flow->addSubcomponent($blockA);
+//		printpre($flow->_element->toNormalizedString(true));
+//		print "<hr/>";
+		
+		
+//		$blockA =& $xmlDirector->getSiteComponentById(6);
+// 		printpre($blockA->_element->toNormalizedString(true));
+//		$blockA->updateDisplayName('New TextBlock A displayName');
+//		$blockA->updateDescription('My description is the bomb');
+//		$blockA->updateContentMarkup('Hello world. I am a banana. Hear me Roar!');
 // 		print "<hr/>";
 // 		printpre($blockA->_element->toNormalizedString(true));
 // 		print "<hr/>";
 // 		printpre($testDocument->toNormalizedString(true));
 		
+//		$flow->moveBefore('0', '3');
+//		printpre($flow->_element->toNormalizedString(true));
+//		print "<hr/>";
+//		$flow->moveToEnd('1');
+//		printpre($flow->_element->toNormalizedString(true));
+//		print "<hr/>";
+
+// 		$fixed =& $xmlDirector->getSiteComponentById();
+// 		$flow->moveBefore('0', '1');
+// 		print "<hr/>";
+// 		printpre($flow->_element->toNormalizedString(true));
+// 		print "<hr/>";
+// 		$flow->moveToEnd('0');
+// 		printpre($flow->_element->toNormalizedString(true));
+// 		print "<hr/>";
 		
 		if (!$nodeId = RequestContext::value("node"))
 			$nodeId = "5";

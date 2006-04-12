@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.6 2006/03/14 22:13:56 cws-midd Exp $
+ * @version $Id: addplugin.act.php,v 1.7 2006/04/12 21:19:56 cws-midd Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.6 2006/03/14 22:13:56 cws-midd Exp $
+ * @version $Id: addplugin.act.php,v 1.7 2006/04/12 21:19:56 cws-midd Exp $
  */
 class addpluginAction 
 	extends MainWindowAction
@@ -41,7 +41,7 @@ class addpluginAction
 	}
 	
 	/**
-	 * Return the "unauthorized" string to pring
+	 * Return the "unauthorized" string to print
 	 * 
 	 * @return string
 	 * @access public

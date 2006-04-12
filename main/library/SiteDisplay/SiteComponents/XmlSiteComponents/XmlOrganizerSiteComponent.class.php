@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.10 2006/04/12 21:07:16 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.11 2006/04/12 21:19:56 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.10 2006/04/12 21:07:16 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.11 2006/04/12 21:19:56 cws-midd Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -221,8 +221,14 @@ class XmlOrganizerSiteComponent
 	 * @since 4/12/06
 	 */
 	function detatchSubcomponent ( &$subcomponent ) {
-		$cell = $this->getCellForSubcomponent($subcomponent);
+		$cellIndex = $this->getCellForSubcomponent($subcomponent);
 		
+		$cell =& $this->_element->firstChild;
+		while ($cellIndex) {
+			$cell =& $cell->nextSibling;
+			$cellIndex--;
+		}
+		$cell->removeChild($subcomponent->getElement());
 	}
 	
 	/**

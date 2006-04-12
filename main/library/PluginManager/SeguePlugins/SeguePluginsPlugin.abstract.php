@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.14 2006/03/09 20:22:47 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.15 2006/04/12 21:19:56 cws-midd Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.14 2006/03/09 20:22:47 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.15 2006/04/12 21:19:56 cws-midd Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -635,7 +635,6 @@ class SeguePluginsPlugin {
 		
 		require_once($pluginFile);
 		
-		
 		// Check for the class
 		if (!class_exists($pluginClass)) 
 			return _("Error: Plugin class, '$pluginClass', not found.");
@@ -756,8 +755,6 @@ class SeguePluginsPlugin {
 		
 		$this->_asset =& $asset;
 
-
-
 		$type =& $this->_asset->getAssetType();
 
 		$this->_pluginDir = $this->_configuration->getProperty("plugin_dir")."/".$type->getDomain()."/".
@@ -848,9 +845,19 @@ class SeguePluginsPlugin {
 			unset($this->data, $this->_data_ids);
 		$this->data = array();
 		$this->_data_ids = array();
+
+		foreach (array_keys($this->getStructuresForPlugin()) as $struct) {
+			$this->data[$struct] = array();
+			$this->_data_ids[$struct] = array();
+		}
+// @todo rework using getStructures...
+// initialize the data array with the structures from getstructures, but do not
+// give any instances to the structures.
+// get the records from the asset.  load 'em up
+
 		// get all the records for this asset
 		$records =& $this->_asset->getRecords();
-
+		
 		// maintain record order
 		$sets =& Services::getService("Sets");
 		$recordOrder =& $sets->getPersistentSet($this->_asset->getId());
@@ -863,6 +870,8 @@ class SeguePluginsPlugin {
 				$recordOrder->addItem($rid);
 			$ordered[$recordOrder->getPosition($rid)] =& $rid;
 		}
+
+// @todo make sure the array exists for each structure, but not an instance yet
 
 		foreach ($ordered as $recid) {
 			$record =& $this->_asset->getRecord($recid);
@@ -908,9 +917,9 @@ class SeguePluginsPlugin {
 						=& $part->getId();
 				}
 			}
-			// this call does all FILE records information
-			$this->_populateFileInfo();
 		}
+		// this call does all FILE records information
+		$this->_populateFileInfo();
 		
 		// keep original data for modification check.
 		$this->_loadedData = $this->data;
@@ -1148,36 +1157,104 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 		return true;
 	}
 
-// 	/**
-// 	 * Initializes the structures of the Asset to allow for record creation
-// 	 * 
-// 	 * @return void
-// 	 * @access public
-// 	 * @since 3/1/06
-// 	 */
-// 	function getStructuresForPlugin () {
-// 		// @todo access the db and build a list of structures for plugin
-// 		$db =& Services::getService("DBHandler");
-// 		
-// 	}
-// 	
-// @todo implement this shit	
-// 	/**
-// 	 * Creates a new Record for the instance held in $this->data
-// 	 * 
-// 	 * @param string $dname RecordStructure display name
-// 	 * @param integer $instance index in $this->data for record
-// 	 * @access public
-// 	 * @since 3/1/06
-// 	 */
-// 	function _createInstance ($dname, $instance) {
-// 		// @todo take the data in $this->data[$rs][$instance] and create a 
-// 		// proper record for it in the database.
-// 		
-// 		// need: RecordStructureId, asset, data
-// 		
-// 		// first: get the recordstructure via partstructures
-// 		$this->data[
-// 	}
+	/**
+	 * Initializes the structures of the Asset to allow for record creation
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 3/1/06
+	 */
+	function getStructuresForPlugin () {
+		if (!isset($this->_structures)) {
+			$db =& Services::getService("DBHandler");
+			
+			$type =& $this->_asset->getAssetType();
+			
+			$query =& new SelectQuery();
+			$query->addTable("plugin_manager");
+			$query->addTable("plugin_type", INNER_JOIN);
+			$query->addWhere("plugin_type.type_id = plugin_manager.FK_plugin_type");
+			$query->addWhere("plugin_type.type_domain = '".
+				addslashes($type->getDomain())."'");
+			$query->addWhere("plugin_type.type_authority = '".
+				addslashes($type->getAuthority())."'");
+			$query->addWhere("plugin_type.type_keyword = '".
+				addslashes($type->getKeyword())."'");
+			$query->addColumn("*");
+			
+			$results =& $db->query($query, IMPORTER_CONNECTION);
+	
+			$id =& Services::getService("Id");
+			$rm =& Services::getService("Repository");
+			$sites_rep =& $rm->getRepository($id->getId(
+				"edu.middlebury.segue.sites_repository"));
+			
+			$structures = array();
+			// populate structures array with displayname to id association
+			while ($results->hasMoreRows()) {
+				$result = $results->next();
+				
+				$rs =& $sites_rep->getRecordStructure($id->getId(
+					$result['plugin_manager.FK_schema']));
+				
+				$structures[$rs->getDisplayName()] =
+					$result['plugin_manager.FK_schema'];
+			}
+			$this->_structures = $structures;
+		}
+
+		return $this->_structures;
+	}
+
+	/**
+	 * Creates a new Record for the instance held in $this->data
+	 * 
+	 * @param string $dname RecordStructure display name
+	 * @param integer $instance index in $this->data for record
+	 * @access public
+	 * @since 3/1/06
+	 */
+	function _createInstance ($dname, $instance) {
+		// @todo take the data in $this->data[$rs][$instance] and create a 
+		// proper record for it in the database.
+		
+		$rm =& Services::getService("Repository");
+		$id =& Services::getService("Id");
+		$pm =& Services::getService("Plugs");
+		$dtm =& Services::getService("DataTypeManager");
+		
+		$sites_rep =& $rm->getRepository($id->getId(
+			"edu.middlebury.segue.sites_repository"));
+
+		// need: RecordStructureId, asset, data
+		$structures = $this->getStructuresForPlugin();
+		$rs =& $sites_rep->getRecordStructure($id->getId($structure[$dname]));
+		$partstructs =& $rs->getPartStructures();
+		
+		$record =& $this->_asset->createRecord($id->getId($structures[$dname]));
+		
+		while ($partstructs->hasNext()) {
+			$partstruct =& $partstructs->next();
+			$type =& $partstruct->getType();
+			// this is the class I need for the part object
+			$class = $dtm->primitiveClassForType($type->getKeyword());
+
+			foreach 
+				($this->data[$dname][$instance][$partstruct->getDisplayName()] 		
+					as $inst => $val) {
+				eval('$object =& '.$class.'::fromString($val);');
+				if (!is_object($object)) {
+					throwError( new Error("PluginManager", "bad part object: creating instance", true));
+					// @todo handle an error here.
+				} else {
+					$part = $record->createPart($partstruct->getId(), $object);
+					$partId =& $part->getId();
+					$this->_data_ids[$dname][$instance] = array();
+					$this->_data_ids[$dname][$instance][$partstruct->getDisplayName()] = array();
+					$this->_data_ids[$dname][$instance][$partstruct->getDisplayName()][$inst] = $partId->getIdString();
+				}
+			}
+		}
+	}
 }
 ?>
