@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.11 2006/04/12 15:50:07 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.12 2006/04/12 15:55:02 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.11 2006/04/12 15:50:07 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.12 2006/04/12 15:55:02 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -305,8 +305,32 @@ class EditModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	function &visitMenuOrganizer ( &$organizer ) {	
-		$guiContainer =& parent::visitMenuOrganizer($organizer);
-		$guiContainer->add(new MenuItem(_('Append new...'), 2), null, '100%', null, TOP);
+		// Choose layout direction based on number of rows
+		if ($organizer->getNumRows() == 1)
+			$layout =& new XLayout();
+		else 
+			$layout =& new YLayout();
+		
+		$guiContainer =& new Menu ( $layout, 1);
+		
+		// Ordered indicies are to be used in a left-right/top-bottom manner, but
+		// may be returned in various orders to reflect another underlying fill direction.
+		$orderedIndices = $organizer->getVisibleOrderedIndices();
+		
+		foreach ($orderedIndices as $i) {
+			$child =& $organizer->getSubcomponentForCell($i);
+			$childComponent =& $guiContainer->add($child->acceptVisitor($this));
+			
+			$this->wrapAsDroppable($childComponent, 
+				$organizer->getId()."_cell:".$i,
+				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
+		}
+		
+		$i++;
+		$childComponent =& $guiContainer->add(new MenuItem(_('Append new...'), 2), null, '100%', null, TOP);
+		$this->wrapAsDroppable($childComponent, 
+				$organizer->getId()."_cell:".$i,
+				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
