@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.5 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.6 2006/04/12 14:31:06 cws-midd Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.5 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.6 2006/04/12 14:31:06 cws-midd Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
@@ -73,33 +73,7 @@ class XmlNavBlockSiteComponent
 		// organizer not found... create it
 		$this->_element->appendChild($orgElement);
 	}
-	
-	/**
-	 * Answer the target Id
-	 * 
-	 * @return string Id
-	 * @access public
-	 * @since 3/31/06
-	 */
-	function getTargetId () {
-		if ($this->_element->hasAttribute('target_id'))
-			return $this->_element->getAttribute('target_id');
-		else
-			throwError( new Error("No target_id available", "XmlSiteComponents"));
-	}
-	
-	/**
-	 * Update the target Id
-	 * 
-	 * @param string Id
-	 * @return void
-	 * @access public
-	 * @since 3/31/06
-	 */
-	function updateTargetId ($id) {
-		$this->_element->setAttribute('target_id', $id);
-	}
-	
+		
 	/**
 	 * Accepts a visitor.
 	 * 

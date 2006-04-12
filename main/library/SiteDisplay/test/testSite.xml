@@ -6,9 +6,9 @@
 		<description><![CDATA[This is an xml test site.]]></description>
 		<NavOrganizer id='2' rows='1' cols='3' direction='Left-Right/Top-Bottom'>
 			<cell>
-				<MenuOrganizer id='3' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
+				<MenuOrganizer id='3' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0' target_id='2_cell:1'>
 					<cell>
-						<NavBlock id='5' target_id='2_cell:1'>
+						<NavBlock id='5' >
 							<displayName><![CDATA[Four TextBlocks]]></displayName>
 							<description><![CDATA[Four Friendly text blocks]]></description>
 							<NavOrganizer id='100' rows='1' cols='1' direction='Left-Right/Top-Bottom'>
@@ -48,14 +48,14 @@
 						</NavBlock>
 					</cell>
 					<cell>
-						<NavBlock id='10' target_id='2_cell:1'>
+						<NavBlock id='10'>
 							<displayName><![CDATA[Assignments]]></displayName>
 							<description><![CDATA[Assignments for this course]]></description>
 							<NavOrganizer id='20' rows='1' cols='3' direction='Left-Right/Top-Bottom'>
 								<cell>
-									<MenuOrganizer id='21' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
+									<MenuOrganizer id='21' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0' target_id='20_cell:1'>
 										<cell>
-											<NavBlock id='22' target_id='20_cell:1'>
+											<NavBlock id='22'>
 												<displayName><![CDATA[Week 1]]></displayName>
 												<description><![CDATA[Assignments for week one.]]></description>
 													<NavOrganizer id='101' rows='1' cols='1' direction='Left-Right/Top-Bottom'>
@@ -88,7 +88,7 @@
 											</NavBlock>
 										</cell>
 										<cell>
-											<NavBlock id='30' target_id='20_cell:1'>
+											<NavBlock id='30'>
 												<displayName><![CDATA[Week 2]]></displayName>
 												<description><![CDATA[Assignments for week two.]]></description>
 												<NavOrganizer id='102' rows='1' cols='1' direction='Left-Right/Top-Bottom'>

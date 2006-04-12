@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.3 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.4 2006/04/12 14:31:06 cws-midd Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.3 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.4 2006/04/12 14:31:06 cws-midd Exp $
  */
 class XmlMenuOrganizerSiteComponent 
 	extends XmlFlowOrganizerSiteComponent
@@ -33,6 +33,32 @@ class XmlMenuOrganizerSiteComponent
 	 */
 	function getDisplayName () {
 		return _("<em>Menu Organizer</em>");
+	}
+	
+	/**
+	 * Answers the target Id for all NavBlocks in the menu
+	 * 
+	 * @return string the target id
+	 * @access public
+	 * @since 4/12/06
+	 */
+	function getTargetId () {
+		if ($this->_element->hasAttribute('target_id'))
+			return $this->_element->getAttribute('target_id');
+
+		throwError( new Error("No target_id available", "XmlSiteComponents"));		
+	}
+
+	/**
+	 * Update the target Id
+	 * 
+	 * @param string Id
+	 * @return void
+	 * @access public
+	 * @since 3/31/06
+	 */
+	function updateTargetId ($id) {
+		$this->_element->setAttribute('target_id', $id);
 	}
 	
 	/**
