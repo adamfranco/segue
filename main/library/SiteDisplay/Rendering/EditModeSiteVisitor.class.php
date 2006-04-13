@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.16 2006/04/13 20:25:26 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.17 2006/04/13 21:07:36 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.16 2006/04/13 20:25:26 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.17 2006/04/13 21:07:36 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -423,7 +423,7 @@ class EditModeSiteVisitor
 <script type='text/javascript'>
 /* <![CDATA[ */
 	
-	new Draggable('$id',{revert:true});
+	new Draggable('$id',{revert:true, ghosting:false});
 
 /* ]]> */
 </script>
@@ -469,12 +469,16 @@ class EditModeSiteVisitor
 			accept: ".$draggablesArray.",
 			hoverclass: 'drop_hover',
 			onDrop: function (draggableElement, droppableElement) {
+				Draggables.deactivate();
+				
 				if (confirm ('$dropConfirm'))
 				{
+					Draggables.drags.each(function(draggable) {draggable.options.revert = false;});
+					
 					var moveUrl = '".$url."';
 					window.location = moveUrl;
 				} else {
-					window.location.reload();
+// 					window.location.reload();
 				}
 			}
 		});
