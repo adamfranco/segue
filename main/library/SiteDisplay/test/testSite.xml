@@ -51,7 +51,7 @@
 						<NavBlock id='10'>
 							<displayName><![CDATA[Assignments]]></displayName>
 							<description><![CDATA[Assignments for this course]]></description>
-							<NavOrganizer id='20' rows='1' cols='3' direction='Left-Right/Top-Bottom'>
+							<NavOrganizer id='20' rows='1' cols='4' direction='Left-Right/Top-Bottom'>
 								<cell>
 									<MenuOrganizer id='21' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0' target_id='20_cell:1'>
 										<cell>
@@ -131,6 +131,17 @@
 												<displayName><![CDATA[Important Information]]></displayName>
 												<description><![CDATA[]]></description>
 												<contentMarkup><![CDATA[All assignments are due in class at the beginning of class.]]></contentMarkup>
+											</Block>
+										</cell>
+									</FlowOrganizer>
+								</cell>
+								<cell>
+									<FlowOrganizer id='36' cols='1' direction='Left-Right/Top-Bottom' maxVisible='0'>
+										<cell>
+											<Block id='37'>
+												<displayName><![CDATA[Other Information]]></displayName>
+												<description><![CDATA[]]></description>
+												<contentMarkup><![CDATA[Classes will be indoors unless it is really nice outside. In the event of really amazingly good weather we will meet on the quad.]]></contentMarkup>
 											</Block>
 										</cell>
 									</FlowOrganizer>
