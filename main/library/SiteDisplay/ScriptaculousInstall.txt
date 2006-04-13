@@ -1,0 +1,20 @@
+  /*********************************************************
+   * Line 70 in scriptaculous-js/src/dragdrop.js has been 
+   * updated to accept based on element id rather than classname
+   *
+   * To install, download scriptaculous from
+   *	http://script.aculo.us/downloads
+   * and unzip it into 
+   * 	main/library/SiteDisplay/scriptaculous-js/
+   * and replace the following method in the droppables class:
+   *********************************************************/
+   
+  isAffected: function(point, element, drop) {
+    return (
+      (drop.element!=element) &&
+      ((!drop._containers) ||
+        this.isContained(element, drop)) &&
+      ((!drop.accept) ||
+        (drop.accept.include(element.id))) &&
+      Position.within(drop.element, point[0], point[1]) );
+  },

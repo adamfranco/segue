@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.4 2006/04/13 19:39:15 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.5 2006/04/13 20:34:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/X
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.4 2006/04/13 19:39:15 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.5 2006/04/13 20:34:54 adamfranco Exp $
  */
 class moveComponentAction 
 	extends MainWindowAction
@@ -124,8 +124,8 @@ class moveComponentAction
 				array("node" => RequestContext::value('returnNode'))));	
 			
 		} else {
+			echo "The file $filename is not writable.<hr/>";
 			printpre($testDocument->toNormalizedString(true));
-			echo "The file $filename is not writable";
 		}
 	}
 }
