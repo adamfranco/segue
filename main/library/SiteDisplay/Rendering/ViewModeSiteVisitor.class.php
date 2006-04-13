@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.8 2006/04/12 14:42:02 cws-midd Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.9 2006/04/13 17:16:30 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -30,7 +30,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.8 2006/04/12 14:42:02 cws-midd Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.9 2006/04/13 17:16:30 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -70,6 +70,25 @@ class ViewModeSiteVisitor {
 		$guiContainer->add(new Block($block->getContentMarkup(), STANDARD_BLOCK), null, null, null, TOP);
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Visit a block and return the resulting GUI component. (A menu item)
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return object MenuItem 
+	 * @access public
+	 * @since 4/3/06
+	 */
+	function &visitBlockInMenu ( &$block ) {
+		// Create and return the component
+		$menuItem =& new MenuItem(
+							"<span style='font-weight: bold; font-size: large;'>"
+							.$block->getTitleMarkup()
+							."</span><br/>"
+							.$block->getContentMarkup(),
+							1);
+		return $menuItem;
 	}
 	
 	/**

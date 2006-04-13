@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.1 2006/04/13 16:00:38 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.2 2006/04/13 17:16:30 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/X
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.1 2006/04/13 16:00:38 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.2 2006/04/13 17:16:30 adamfranco Exp $
  */
 class moveComponentAction 
 	extends MainWindowAction
@@ -82,38 +82,37 @@ class moveComponentAction
 		$newOrganizer =& $xmlDirector->getSiteComponentById($targetOrgId);
 		$newOrganizer->putSubcomponentInCell($component, $targetCell);
 		
-		printpre($testDocument->toNormalizedString(true));
+// 		printpre($testDocument->toNormalizedString(true));
 		$filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
 		$somecontent = $testDocument->toNormalizedString();
 		
 		// Let's make sure the file exists and is writable first.
 		if (is_writable($filename)) {
 		
-		   // In our example we're opening $filename in append mode.
-		   // The file pointer is at the bottom of the file hence
-		   // that's where $somecontent will go when we fwrite() it.
-		   if (!$handle = fopen($filename, 'w')) {
-				 echo "Cannot open file ($filename)";
-				 exit;
-		   }
-		
-		   // Write $somecontent to our opened file.
-		   if (fwrite($handle, $somecontent) === FALSE) {
-			   echo "Cannot write to file ($filename)";
-			   exit;
-		   }
-		  
-		   echo "Success, wrote ($somecontent) to file ($filename)";
-		  
-		   fclose($handle);
-		
+			// In our example we're opening $filename in append mode.
+			// The file pointer is at the bottom of the file hence
+			// that's where $somecontent will go when we fwrite() it.
+			if (!$handle = fopen($filename, 'w')) {
+				echo "Cannot open file ($filename)";
+				exit;
+			}
+			
+			// Write $somecontent to our opened file.
+			if (fwrite($handle, $somecontent) === FALSE) {
+				echo "Cannot write to file ($filename)";
+				exit;
+			}
+			
+			fclose($handle);
+			
+			$harmoni =& Harmoni::instance();
+			RequestContext::locationHeader($harmoni->request->quickURL(
+				"site", "newEdit",
+				array("node" => RequestContext::value('returnNode'))));	
+			
 		} else {
-		   echo "The file $filename is not writable";
+			echo "The file $filename is not writable";
 		}
-		
-// 		RequestContext::locationHeader($harmoni->request->quickURL(
-// 			"site", "newEdit",
-// 			array("node" => RequestContext::value('return_node'))));
 	}
 }
 

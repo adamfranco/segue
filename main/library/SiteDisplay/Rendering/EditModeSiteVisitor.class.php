@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.13 2006/04/12 21:07:15 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.14 2006/04/13 17:16:30 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.13 2006/04/12 21:07:15 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.14 2006/04/13 17:16:30 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -130,6 +130,38 @@ class EditModeSiteVisitor
 		
 		if (count($block->getVisibleDestinationsForPossibleAddition()))
 			$this->wrapAsDraggable($guiContainer, $block->getId(), 'Block');
+		
+		return $guiContainer;
+	}
+	
+	/**
+	 * Visit a block and return the resulting GUI component. (A menu item)
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return object MenuItem 
+	 * @access public
+	 * @since 4/3/06
+	 */
+	function &visitBlockInMenu ( &$block ) {
+		$guiContainer =& parent::visitBlockInMenu($block);
+		
+		ob_start();
+		print "\n\t\t\t\tControls:";
+		printpre("Id: ".$block->getId()."\nAccepts:");
+// 		printpre($droppableIds);
+		$controlsHTML = $this->getControlsHTML($block->getDisplayName()._(" <em>Block</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
+		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
+		
+		$styleCollection =& new StyleCollection(
+									'.nav_outline', 
+									'nav_outline', 
+									'Side Outline', 
+									'A side outline around block titles');
+		$styleCollection->addSP(new BorderSP('2px', 'solid', '#090'));
+		$guiContainer->addStyle($styleCollection);
+		
+		if (count($block->getVisibleDestinationsForPossibleAddition()))
+			$this->wrapAsDraggable($guiContainer, $block->getId(), 'NavBlock');
 		
 		return $guiContainer;
 	}
@@ -319,7 +351,7 @@ class EditModeSiteVisitor
 		
 		foreach ($orderedIndices as $i) {
 			$child =& $organizer->getSubcomponentForCell($i);
-			$childComponent =& $guiContainer->add($child->acceptVisitor($this));
+			$childComponent =& $guiContainer->add($child->acceptVisitor($this, true));
 			
 			$this->wrapAsDroppable($childComponent, 
 				$organizer->getId()."_cell:".$i,
@@ -419,7 +451,8 @@ class EditModeSiteVisitor
 						str_replace('&amp;', '&', 
 							$harmoni->request->quickUrl('site', 'moveComponent', 
 								array('component' => "XXXdraggableXXX", 
-									'destination' => "XXXdroppableXXX")))));
+									'destination' => "XXXdroppableXXX",
+									'returnNode' => RequestContext::value('node'))))));
 		
 		$component->setPostHTML(
 			$component->getPostHTML($null = null)
