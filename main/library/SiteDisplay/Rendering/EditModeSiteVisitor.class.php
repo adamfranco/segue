@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.15 2006/04/13 19:39:15 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.16 2006/04/13 20:25:26 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.15 2006/04/13 19:39:15 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.16 2006/04/13 20:25:26 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -103,8 +103,8 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		printpre("Id: ".$block->getId()."\nAccepts:");
-// 		printpre($droppableIds);
+		
+		
 		$controlsHTML = $this->getControlsHTML(_("<em>Block</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 					
@@ -147,8 +147,8 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		printpre("Id: ".$block->getId()."\nAccepts:");
-// 		printpre($droppableIds);
+
+		
 		$controlsHTML = $this->getControlsHTML($block->getDisplayName()._(" <em>Block</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
@@ -179,8 +179,8 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		printpre("Id: ".$navBlock->getId()."\nAccepts:");
-// 		printpre($droppableIds);
+		
+		
 		$controlsHTML = $this->getControlsHTML($navBlock->getDisplayName()._(" <em>Link</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
@@ -240,8 +240,8 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		printpre("Id: ".$organizer->getId()."\nAccepts:");
-		printpre($droppableIds);
+		
+		
 		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#F00', '#F99', '#F66');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
@@ -311,8 +311,8 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		printpre("Id: ".$organizer->getId()."\nAccepts:");
-// 		printpre($droppableIds);
+		
+		
 		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#00F', '#99F', '#66F');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 				
@@ -369,8 +369,8 @@ class EditModeSiteVisitor
 		
 		ob_start();
 		print "\n\t\t\t\tControls:";
-		printpre("Id: ".$organizer->getId()."\nAccepts:");
-// 		printpre($droppableIds);
+		
+		
 		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#00F', '#99F', '#66F');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
@@ -469,9 +469,7 @@ class EditModeSiteVisitor
 			accept: ".$draggablesArray.",
 			hoverclass: 'drop_hover',
 			onDrop: function (draggableElement, droppableElement) {
-				if (confirm ('$dropConfirm' 
-					+ \"\\nElement, \" + draggableElement.id + ' was dropped on ' 
-					+ droppableElement.id))
+				if (confirm ('$dropConfirm'))
 				{
 					var moveUrl = '".$url."';
 					window.location = moveUrl;

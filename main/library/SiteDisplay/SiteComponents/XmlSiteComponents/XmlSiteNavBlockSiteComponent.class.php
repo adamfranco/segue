@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteNavBlockSiteComponent.class.php,v 1.2 2006/04/12 15:22:17 cws-midd Exp $
+ * @version $Id: XmlSiteNavBlockSiteComponent.class.php,v 1.3 2006/04/13 20:25:28 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteNavBlockSiteComponent.class.php,v 1.2 2006/04/12 15:22:17 cws-midd Exp $
+ * @version $Id: XmlSiteNavBlockSiteComponent.class.php,v 1.3 2006/04/13 20:25:28 adamfranco Exp $
  */
 class XmlSiteNavBlockSiteComponent
 	extends XmlNavBlockSiteComponent
@@ -47,6 +47,19 @@ class XmlSiteNavBlockSiteComponent
 	 */
 	function &acceptVisitor ( &$visitor ) {
 		return $visitor->visitSiteNavBlock($this);
+	}
+	
+	/**
+	 * Answer an array (keyed by Id) of the possible destinations [organizers] that
+	 * this component could be placed in.
+	 * 
+	 * @return ref array
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function &getVisibleDestinationsForPossibleAddition () {
+		$results = array();
+		return $results;
 	}
 }
 

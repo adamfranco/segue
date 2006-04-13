@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.7 2006/04/13 19:39:15 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.8 2006/04/13 20:25:28 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.7 2006/04/13 19:39:15 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.8 2006/04/13 20:25:28 adamfranco Exp $
  */
 class XmlBlockSiteComponent
 	extends XmlSiteComponent
@@ -230,7 +230,11 @@ class XmlBlockSiteComponent
 		}
 		
 		$possibleDestinations =& $this->_director->getVisibleComponents();
+		$parent =& $this->getParentComponent();
 		foreach (array_keys($possibleDestinations) as $id) {
+			if ($id == $parent->getId())
+				continue;
+			
 			switch (strtolower(get_class($possibleDestinations[$id]))) {
 				case 'xmlblocksitecomponent':
 					break;
