@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.3 2006/04/13 18:42:35 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.4 2006/04/13 19:39:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/X
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.3 2006/04/13 18:42:35 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.4 2006/04/13 19:39:15 adamfranco Exp $
  */
 class moveComponentAction 
 	extends MainWindowAction
@@ -71,7 +71,7 @@ class moveComponentAction
 				"<br/>\t meaning: ".$testDocument->getErrorString()."<br/>", "SiteDisplay"));
 		}
 
-		$xmlDirector =& new XmlSiteDirector($testDocument);
+		$director =& new XmlSiteDirector($testDocument);
 		
 		// Get the target organizer's Id & Cell
 		$targetId = RequestContext::value('destination');
@@ -79,16 +79,16 @@ class moveComponentAction
 		$targetOrgId = $matches[1];
 		$targetCell = $matches[2];
 		
-		$component =& $xmlDirector->getSiteComponentById(RequestContext::value('component'));
-		$newOrganizer =& $xmlDirector->getSiteComponentById($targetOrgId);
+		$component =& $director->getSiteComponentById(RequestContext::value('component'));
+		$newOrganizer =& $director->getSiteComponentById($targetOrgId);
 		$oldCellId = $newOrganizer->putSubcomponentInCell($component, $targetCell);
 		
 		// If the targetCell was a target for any menus, change their targets
 		// to the cell just vacated by the component we swapped with
-		if (in_array($targetId, $xmlDirector->getFilledTargetIds($targetOrgId))) {
-			$menuIds = array_keys($xmlDirector->getFilledTargetIds($targetOrgId), $targetId);
+		if (in_array($targetId, $director->getFilledTargetIds($targetOrgId))) {
+			$menuIds = array_keys($director->getFilledTargetIds($targetOrgId), $targetId);
 			foreach ($menuIds as $menuId) {
-				$menuOrganizer =& $xmlDirector->getSiteComponentById($menuId);
+				$menuOrganizer =& $director->getSiteComponentById($menuId);
 				printpre(get_class($menuOrganizer));
 				
 				$menuOrganizer->updateTargetId($oldCellId);
@@ -124,6 +124,7 @@ class moveComponentAction
 				array("node" => RequestContext::value('returnNode'))));	
 			
 		} else {
+			printpre($testDocument->toNormalizedString(true));
 			echo "The file $filename is not writable";
 		}
 	}

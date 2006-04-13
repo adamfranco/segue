@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.14 2006/04/13 17:16:30 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.15 2006/04/13 19:39:15 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.14 2006/04/13 17:16:30 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.15 2006/04/13 19:39:15 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -299,7 +299,10 @@ class EditModeSiteVisitor
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
 		}
 		
-		$i++;
+		if (isset($i))
+			$i++;
+		else
+			$i = 0;
 		$childComponent =& $guiContainer->add(new UnstyledBlock(_('Append new...')), null, '100%', null, TOP);
 		$this->wrapAsDroppable($childComponent, 
 				$organizer->getId()."_cell:".$i,

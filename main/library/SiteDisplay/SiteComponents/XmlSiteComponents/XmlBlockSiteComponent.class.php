@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.6 2006/04/13 17:16:30 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.7 2006/04/13 19:39:15 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.6 2006/04/13 17:16:30 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.7 2006/04/13 19:39:15 adamfranco Exp $
  */
 class XmlBlockSiteComponent
 	extends XmlSiteComponent
@@ -233,6 +233,10 @@ class XmlBlockSiteComponent
 		foreach (array_keys($possibleDestinations) as $id) {
 			switch (strtolower(get_class($possibleDestinations[$id]))) {
 				case 'xmlblocksitecomponent':
+					break;
+				case 'xmlfixedorganizersitecomponent':
+					break;
+				case 'xmlnavorganizersitecomponent':
 					break;
 				default:
 					$results[$id] =& $possibleDestinations[$id];
