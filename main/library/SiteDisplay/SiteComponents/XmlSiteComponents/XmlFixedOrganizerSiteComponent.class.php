@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.11 2006/04/13 18:07:13 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.12 2006/04/13 18:42:35 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.11 2006/04/13 18:07:13 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.12 2006/04/13 18:42:35 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -74,7 +74,7 @@ class XmlFixedOrganizerSiteComponent
 	 * 
 	 * @param object SiteComponent $siteComponent
 	 * @param integer $cellIndex
-	 * @return void
+	 * @return string The Id of the original cell
 	 * @access public
 	 * @since 4/12/06
 	 */
@@ -82,10 +82,17 @@ class XmlFixedOrganizerSiteComponent
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {
 			$oldParent =& $siteComponent->getParentComponent();
+			$oldCell = $oldParent->getCellForSubcomponent($siteComponent);
+			
 			$oldParent->detatchSubcomponent($siteComponent);
 			$this->addSubcomponentToCell($siteComponent, $cellIndex);
-		} else
+			
+			return $oldParent->getId()."_cell:".$oldCell;
+		} else {
 			$this->swapCells($currentIndex, $cellIndex);
+			
+			return $this->getId()."_cell:".$currentIndex;
+		}
 	}
 	
 	/**

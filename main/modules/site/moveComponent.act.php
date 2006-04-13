@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.2 2006/04/13 17:16:30 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.3 2006/04/13 18:42:35 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/X
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.2 2006/04/13 17:16:30 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.3 2006/04/13 18:42:35 adamfranco Exp $
  */
 class moveComponentAction 
 	extends MainWindowAction
@@ -74,13 +74,26 @@ class moveComponentAction
 		$xmlDirector =& new XmlSiteDirector($testDocument);
 		
 		// Get the target organizer's Id & Cell
-		preg_match("/^(.+)_cell:(.+)$/", RequestContext::value('destination'), $matches);
+		$targetId = RequestContext::value('destination');
+		preg_match("/^(.+)_cell:(.+)$/", $targetId, $matches);
 		$targetOrgId = $matches[1];
 		$targetCell = $matches[2];
 		
 		$component =& $xmlDirector->getSiteComponentById(RequestContext::value('component'));
 		$newOrganizer =& $xmlDirector->getSiteComponentById($targetOrgId);
-		$newOrganizer->putSubcomponentInCell($component, $targetCell);
+		$oldCellId = $newOrganizer->putSubcomponentInCell($component, $targetCell);
+		
+		// If the targetCell was a target for any menus, change their targets
+		// to the cell just vacated by the component we swapped with
+		if (in_array($targetId, $xmlDirector->getFilledTargetIds($targetOrgId))) {
+			$menuIds = array_keys($xmlDirector->getFilledTargetIds($targetOrgId), $targetId);
+			foreach ($menuIds as $menuId) {
+				$menuOrganizer =& $xmlDirector->getSiteComponentById($menuId);
+				printpre(get_class($menuOrganizer));
+				
+				$menuOrganizer->updateTargetId($oldCellId);
+			}
+		}
 		
 // 		printpre($testDocument->toNormalizedString(true));
 		$filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";

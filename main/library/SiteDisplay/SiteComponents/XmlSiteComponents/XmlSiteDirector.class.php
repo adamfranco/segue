@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.10 2006/04/12 15:50:08 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.11 2006/04/13 18:42:35 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.10 2006/04/12 15:50:08 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.11 2006/04/13 18:42:35 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -187,14 +187,15 @@ class XmlSiteDirector
 	/**
 	 * Answer an array of the visible site components
 	 * 
+	 * @param string $id
 	 * @return ref array
 	 * @access public
 	 * @since 4/10/06
 	 */
-	function &getVisibleComponents () {
+	function &getVisibleComponents ($id = null) {
 		if (!isset($this->_visibleComponents)) {
 			$visibilityVisitor =& new VisibilitySiteVisitor;
-			$rootSiteComponent =& $this->getRootSiteComponent();
+			$rootSiteComponent =& $this->getRootSiteComponent($id);
 			$visiblityArray =& $rootSiteComponent->acceptVisitor($visibilityVisitor);
 			$this->_visibleComponents =& $visiblityArray['VisibleComponents'];
 			$this->_filledTargetIds =& $visiblityArray['FilledTargetIds'];
@@ -204,14 +205,16 @@ class XmlSiteDirector
 	
 	/**
 	 * Answer an array of the ids of the cells that are filled/used targets.
+	 * the keys of this array are the ids of the menus that use them.
 	 * 
+	 * @param string $id
 	 * @return ref array
 	 * @access public
 	 * @since 4/10/06
 	 */
-	function getFilledTargetIds () {
+	function getFilledTargetIds ($id = null) {
 		if (!isset($this->_filledTargetIds)) {
-			$this->getVisibleComponents();
+			$this->getVisibleComponents($id);
 		}
 		return $this->_filledTargetIds;
 	}
