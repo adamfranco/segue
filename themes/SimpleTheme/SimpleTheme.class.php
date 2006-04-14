@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/DisplaySP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleTheme.class.php,v 1.6 2006/03/07 15:31:54 adamfranco Exp $
+ * @version $Id: SimpleTheme.class.php,v 1.7 2006/04/14 16:41:57 cws-midd Exp $
  */
 class SimpleTheme extends Theme {
 
@@ -244,7 +244,7 @@ class SimpleTheme extends Theme {
 		
 		// =====================================================================
 		// Menu Heading 3 style
-		$menuHeading3 =& new StyleCollection("*.menuHeading3", "menuHeading3", "Menu Heading 3", "A 3st level menu heading.");
+		$menuHeading3 =& new StyleCollection("*.menuHeading3", "menuHeading3", "Menu Heading 3", "A 3rd level menu heading.");
 		$menuHeading3->addSP(new DisplaySP("block"));
 		$menuHeading3->addSP(new BackgroundColorSP("#FD9453"));
 		$menuHeading3->addSP(new PaddingSP("5px"));
