@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.8 2006/04/13 20:25:28 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.9 2006/04/14 21:03:25 adamfranco Exp $
  */ 
 
 /**
@@ -19,12 +19,25 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.8 2006/04/13 20:25:28 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.9 2006/04/14 21:03:25 adamfranco Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
 	// implements NavBlockSiteComponent
 {
+
+	/**
+	 * Populate this object with default values
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/14/06
+	 */
+	function populateWithDefaults () {
+		parent::populateWithDefaults();
+		
+		$this->setOrganizer($this->_director->createSiteComponent("NavOrganizer"));
+	}
 		
 	/**
 	 * Answers the organizer for this object

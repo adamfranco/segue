@@ -150,7 +150,7 @@
                             <contentMarkup><![CDATA[Classes will be indoors unless it is really nice outside. In the event of really amazingly good weather we will meet on the quad.]]></contentMarkup>
                         </Block>
                     </cell>
-                </FlowOrganizer>
+                    </FlowOrganizer>
             </cell>
         </NavOrganizer>
     </SiteNavBlock>

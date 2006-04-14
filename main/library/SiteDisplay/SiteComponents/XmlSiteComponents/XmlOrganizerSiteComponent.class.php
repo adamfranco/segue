@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.12 2006/04/12 21:23:45 cws-midd Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.13 2006/04/14 21:03:25 adamfranco Exp $
  */ 
 
 /**
@@ -18,12 +18,25 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.12 2006/04/12 21:23:45 cws-midd Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.13 2006/04/14 21:03:25 adamfranco Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
 	// implements OrganizersiteComponent
 {
+
+	/**
+	 * Populate this object with default values
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/14/06
+	 */
+	function populateWithDefaults () {
+		$this->updateNumRows(1);
+		$this->updateNumColumns(1);
+		$this->updateDirection('Left-Right/Top-Bottom');
+	}
 	
 	/**
 	 * Answer a displayName for this organizer. (Generally, a type or classification).

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.17 2006/04/13 21:07:36 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.18 2006/04/14 21:03:25 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -20,11 +20,29 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.17 2006/04/13 21:07:36 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.18 2006/04/14 21:03:25 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
 {
+
+	/**
+	 * Constructor
+	 * 
+	 * @return object
+	 * @access public
+	 * @since 4/14/06
+	 */
+	function EditModeSiteVisitor () {
+		$this->ViewModeSiteVisitor();
+		$this->_classNames = array(
+			'Block' => _('Block'),
+			'NavBlock' => _('Link'),
+			'MenuOrganizer' => _('Menu'),
+			'FlowOrganizer' => _('ContentOrganizer'),
+			'FixedOrganizer' => _('Organizer')
+		);
+	}
 
 	/**
 	 * Visit a SiteNavBlock and return the site GUI component that corresponds to
@@ -71,8 +89,13 @@ class EditModeSiteVisitor
 		// Any further empty cells in fixed organizers should get controls to
 		// add to them.
 		foreach (array_keys($this->_emptyCells) as $id) {
-			$this->_emptyCells[$id]->add(new UnstyledBlock(_('Insert new...')), null, '100%', null, TOP);
-			unset($this->_emptyCells[$id]);
+			preg_match("/(.+)_cell:([0-9]+)/", $id, $matches);
+			$organizerId = $matches[1];
+			$cellIndex = $matches[2];
+			
+			$this->_emptyCells[$id]->add(new UnstyledBlock($this->getInsertFormHTML($organizerId, $cellIndex, array('FlowOrganizer', 'MenuOrganizer', 'FixedOrganizer'))), null, '100%', null, TOP);
+			
+			unset($this->_emptyCells[$id], $matches, $organizerId, $cellIndex);
 		}
 		
 		// returning the entire site in GUI component object tree.
@@ -105,7 +128,7 @@ class EditModeSiteVisitor
 		print "\n\t\t\t\tControls:";
 		
 		
-		$controlsHTML = $this->getControlsHTML(_("<em>Block</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
+		$controlsHTML = $this->getControlsHTML("<em>".$this->_classNames['Block']."</em>", ob_get_clean(), '#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 					
 		$styleCollection =& new StyleCollection(
@@ -149,7 +172,7 @@ class EditModeSiteVisitor
 		print "\n\t\t\t\tControls:";
 
 		
-		$controlsHTML = $this->getControlsHTML($block->getDisplayName()._(" <em>Block</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
+		$controlsHTML = $this->getControlsHTML($block->getDisplayName()." <em>".$this->_classNames['Block']."</em>", ob_get_clean(), '#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(
@@ -181,7 +204,7 @@ class EditModeSiteVisitor
 		print "\n\t\t\t\tControls:";
 		
 		
-		$controlsHTML = $this->getControlsHTML($navBlock->getDisplayName()._(" <em>Link</em>"), ob_get_clean(), '#090', '#9F9', '#6C6');
+		$controlsHTML = $this->getControlsHTML($navBlock->getDisplayName()." <em>".$this->_classNames['NavBlock']."</em>", ob_get_clean(), '#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(
@@ -299,11 +322,12 @@ class EditModeSiteVisitor
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
 		}
 		
+		// Appending/drag to end cell
 		if (isset($i))
 			$i++;
 		else
 			$i = 0;
-		$childComponent =& $guiContainer->add(new UnstyledBlock(_('Append new...')), null, '100%', null, TOP);
+		$childComponent =& $guiContainer->add(new UnstyledBlock($this->getAddFormHTML($organizer->getId(), $i, array('Block'))), null, '100%', null, TOP);
 		$this->wrapAsDroppable($childComponent, 
 				$organizer->getId()."_cell:".$i,
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
@@ -362,7 +386,7 @@ class EditModeSiteVisitor
 		}
 		
 		$i++;
-		$childComponent =& $guiContainer->add(new MenuItem(_('Append new...'), 2), null, '100%', null, TOP);
+		$childComponent =& $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), $i, array('NavBlock', 'Block')), 2), null, '100%', null, TOP);
 		$this->wrapAsDroppable($childComponent, 
 				$organizer->getId()."_cell:".$i,
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
@@ -611,6 +635,117 @@ END;
 		
 		print "\n</div>";
 		
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the form for Adding new components
+	 * 
+	 * @param string $organizerId
+	 * @param integer $cellIndex
+	 * @param array $allowed Which components to allow addition of: Block, NavBlock
+	 * @return string The form HTML
+	 * @access public
+	 * @since 4/14/06
+	 */
+	function getAddFormHTML ($organizerId, $cellIndex, $allowed) {
+		ob_start();
+		$harmoni =& Harmoni::instance();
+		print "\n<form action='";
+		print $harmoni->request->quickURL('site', 'addComponent', 
+				array('returnNode' => RequestContext::value('node')));
+		print "' method='post'>";
+		
+		print "\n\t<input type='hidden' name='".RequestContext::name('organizerId')."' value='".$organizerId."'/>";
+		print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
+		
+		print "\n\t<div style='text-decoration: underline; cursor: pointer; white-space: nowrap;'";
+		print "onclick='this.style.display=\"none\"; this.nextSibling.nextSibling.style.display=\"block\";'";
+		print ">";
+		print "\n\t\t"._("Append New...");
+		print "\n\t</div>";
+		print "\n\t<div style='display: none'>";
+		
+		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
+		
+		foreach ($allowed as $class) {
+			print "\n\t\t\t<option value='".$class."'>".$this->_classNames[$class]."</option>";
+		}
+		
+		print "\n\t\t</select>";
+		print "\n\t\t<div style='white-space: nowrap;'>"._("Title: ");
+		print "\n\t\t\t<input name='".RequestContext::name('displayName')."' type='text' size='10'/>";
+		print "\n\t\t</div>";
+		
+		print "\n\t\t<div style='white-space: nowrap; text-align: right;'>";
+		print "\n\t\t\t<input type='button' value='"._('Submit')."'";
+		print " onclick='";
+		print "var hasTitle = false; ";
+		print "var regex = /[^\\s\\n\\t]+/; ";
+		print "for (var i = 0; i < this.form.elements.length; i++) { ";
+		print 		"var elem = this.form.elements[i]; ";
+		print 		"if (elem.name == \"".RequestContext::name('displayName')."\" && elem.value.match(regex)) {";
+		print 			"hasTitle = true;";
+		print 		"}";
+		print "}";
+		print "if (!hasTitle) { ";
+		print 		"alert(\""._("A title is required")."\");";
+		print "} else { ";
+		print 	"this.form.submit();";
+		print "}";
+		print "' />";
+		print "\n\t\t\t<input type='button' ";
+		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.previousSibling.style.display=\"block\";'";
+		print " value='"._("Cancel")."'/>";
+		print "\n\t\t</div>";
+		print "\n\t</div>";
+		print "</form>";
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the form for Adding new components
+	 * 
+	 * @param string $organizerId
+	 * @param integer $cellIndex
+	 * @param array $allowed Which components to allow addition of: MenuOrganizer, FlowOrganizer, FixedOrganizer
+	 * @return string The form HTML
+	 * @access public
+	 * @since 4/14/06
+	 */
+	function getInsertFormHTML ($organizerId, $cellIndex, $allowed) {
+		ob_start();
+		$harmoni =& Harmoni::instance();
+		print "\n<form action='";
+		print $harmoni->request->quickURL('site', 'addComponent', 
+				array('returnNode' => RequestContext::value('node')));
+		print "' method='post'>";
+		
+		print "\n\t<input type='hidden' name='".RequestContext::name('organizerId')."' value='".$organizerId."'/>";
+		print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
+		
+		print "\n\t<div style='text-decoration: underline; cursor: pointer; white-space: nowrap;'";
+		print "onclick='this.style.display=\"none\"; this.nextSibling.nextSibling.style.display=\"block\";'";
+		print ">";
+		print "\n\t\t"._("Insert New...");
+		print "\n\t</div>";
+		print "\n\t<div style='display: none'>";
+		
+		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
+		
+		foreach ($allowed as $class) {
+			print "\n\t\t\t<option value='".$class."'>".$this->_classNames[$class]."</option>";
+		}
+		
+		print "\n\t\t</select>";
+		
+		print "\n\t\t\t<input type='submit' value='"._('Submit')."'/>";
+		print "\n\t\t\t<input type='button' ";
+		print "onclick='this.parentNode.style.display=\"none\"; this.parentNode.previousSibling.previousSibling.style.display=\"block\";'";
+		print " value='"._("Cancel")."'/>";
+		print "\n\t\t</div>";
+		print "\n\t</div>";
+		print "</form>";
 		return ob_get_clean();
 	}
 }

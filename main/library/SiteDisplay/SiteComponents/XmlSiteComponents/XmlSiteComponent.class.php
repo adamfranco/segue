@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.5 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.6 2006/04/14 21:03:25 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.5 2006/04/11 21:06:25 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.6 2006/04/14 21:03:25 adamfranco Exp $
  */
 class XmlSiteComponent 
 	// implements SiteComponent
@@ -38,6 +38,17 @@ class XmlSiteComponent
 	function XmlSiteComponent ( &$director, &$element) {
 		$this->_director =& $director;
 		$this->_element =& $element;
+	}
+	
+	/**
+	 * Populate this object with default values
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/14/06
+	 */
+	function populateWithDefaults () {
+		
 	}
 		
 	/**
@@ -73,9 +84,13 @@ class XmlSiteComponent
 	 * @since 4/10/06
 	 */
 	function &getParentComponent () {
-		return $this->_director->getSiteComponent(
-					$this->_director->_getParentWithId(
-						$this->getElement()));
+		$parentElement =& $this->_director->_getParentWithId($this->getElement());
+		if ($parentElement)
+			return $this->_director->getSiteComponent($parentElement);
+		else {
+			$null = null;
+			return $null;
+		}
 	}
 	
 	/**

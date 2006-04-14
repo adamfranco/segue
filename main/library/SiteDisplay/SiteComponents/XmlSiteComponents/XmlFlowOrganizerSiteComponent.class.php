@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.11 2006/04/13 18:42:35 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.12 2006/04/14 21:03:25 adamfranco Exp $
  */ 
 
 /**
@@ -18,12 +18,26 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.11 2006/04/13 18:42:35 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.12 2006/04/14 21:03:25 adamfranco Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
 	// implements FlowOrganizerSiteComponent
 {
+
+	/**
+	 * Populate this object with default values
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/14/06
+	 */
+	function populateWithDefaults () {
+		parent::populateWithDefaults();
+		$this->updateNumRows(0);
+		$this->updateMaxVisible(0);
+		$this->updateOverflowStyle('Paginate');
+	}
 	
 	/**
 	 * Answer a displayName for this organizer. (Generally, a type or classification).
@@ -154,10 +168,14 @@ class XmlFlowOrganizerSiteComponent
 	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {
-			$oldParent =& $siteComponent->getParentComponent();
-			$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
+			// A cell will have no old parent if it is newly created.
+			if ($oldParent =& $siteComponent->getParentComponent()) {
+				$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
+				$oldParent->detatchSubcomponent($siteComponent);
+			} else {
+				$oldCellId = null;
+			}
 			
-			$oldParent->detatchSubcomponent($siteComponent);
 			$this->addSubcomponent($siteComponent);
 		} else {
 			$oldCellId = $this->getId()."_cell:".$currentIndex;

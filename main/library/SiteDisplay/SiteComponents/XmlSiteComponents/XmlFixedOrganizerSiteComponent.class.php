@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.12 2006/04/13 18:42:35 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.13 2006/04/14 21:03:25 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.12 2006/04/13 18:42:35 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.13 2006/04/14 21:03:25 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -63,6 +63,11 @@ class XmlFixedOrganizerSiteComponent
 				$i++;
 			}
 		}
+		if (!$success && $i < $cellIndex) {
+			
+		
+		}
+		
 		if (!$success)
 			throwError( new Error("Cell $cellIndex Not Found", "SiteComponents"));
 	}
@@ -81,13 +86,17 @@ class XmlFixedOrganizerSiteComponent
 	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {
-			$oldParent =& $siteComponent->getParentComponent();
-			$oldCell = $oldParent->getCellForSubcomponent($siteComponent);
+			// A cell will have no old parent if it is newly created.
+			if ($oldParent =& $siteComponent->getParentComponent()) {
+				$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
+				$oldParent->detatchSubcomponent($siteComponent);
+			} else {
+				$oldCellId = null;
+			}
 			
-			$oldParent->detatchSubcomponent($siteComponent);
 			$this->addSubcomponentToCell($siteComponent, $cellIndex);
 			
-			return $oldParent->getId()."_cell:".$oldCell;
+			return $oldCellId;
 		} else {
 			$this->swapCells($currentIndex, $cellIndex);
 			

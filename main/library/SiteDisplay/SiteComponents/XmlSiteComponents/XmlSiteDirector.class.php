@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.11 2006/04/13 18:42:35 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.12 2006/04/14 21:03:25 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.11 2006/04/13 18:42:35 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.12 2006/04/14 21:03:25 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -229,11 +229,20 @@ class XmlSiteDirector
 	 */
 	function &_getParentWithId ( &$element ) {
 		ArgumentValidator::validate($element, ExtendsValidatorRule::getRule("DOMIT_Element"));
-		ArgumentValidator::validate($element->parentNode, ExtendsValidatorRule::getRule("DOMIT_Element"));
-		if ($element->parentNode->hasAttribute('id'))
-			return $element->parentNode;
-		else
-			return $this->_getParentWithId($element->parentNode);
+		
+		$extendsRule =& ExtendsValidatorRule::getRule("DOMIT_Element");
+		
+		if ($extendsRule->check($element->parentNode)) {
+			if ($element->parentNode->hasAttribute('id'))
+				return $element->parentNode;
+			else
+				return $this->_getParentWithId($element->parentNode);
+		
+		// If this is a newly created node that hasn't been attached yet...
+		} else {
+			$null = null;
+			return $null;
+		}
 	}
 	
 	/**
@@ -250,12 +259,14 @@ class XmlSiteDirector
 		$element =& $this->_document->createElement($componentClass);
 		$idManager =& Services::getService('Id');
 		$newId =& $idManager->createId();
-		$element->setAttribute('Id', $newId->getIdString());
-		$this->_newSiteComponent =& new $class($this, $element);
+		$newId = $newId->getIdString();
+		$element->setAttribute('id', $newId);
+		$this->_createdSiteComponents[$newId] =& new $class($this, $element);
+		$this->_createdSiteComponents[$newId]->populateWithDefaults();
 		
 		// @todo Log SiteComponent creation here
 		
-		return $this->_newSiteComponent;
+		return $this->_createdSiteComponents[$newId];
 	}
 	
 	/**
