@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.3 2006/04/17 20:13:15 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2006/04/17 20:22:03 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.3 2006/04/17 20:13:15 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2006/04/17 20:22:03 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 		
@@ -118,7 +118,7 @@ class ControlsSiteVisitor {
 	 */
 	function printRowsColumns ( &$siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
-		$minCells = $siteComponent->getLastIndexUsed() + 1;
+		$minCells = $siteComponent->getLastIndexFilled() + 1;
 		print "\n\t\t\t\t\t"._('Rows: ');
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'";
 		print " onchange='updateMinCells(this, this.nextSibling.nextSibling.nextSibling.nextSibling, $minCells);'>";

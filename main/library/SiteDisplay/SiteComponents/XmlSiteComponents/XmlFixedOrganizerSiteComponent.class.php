@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.16 2006/04/17 20:13:15 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.17 2006/04/17 20:22:03 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.16 2006/04/17 20:13:15 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.17 2006/04/17 20:22:03 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -173,7 +173,7 @@ class XmlFixedOrganizerSiteComponent
 		}
 		
 		// Remove tags after the max shown if needed.
-		$lastUsed = $this->getLastIndexUsed();
+		$lastUsed = $this->getLastIndexFilled();
 		for ($i = count($this->_element->childNodes) - 1; $i >= $numCells; $i--) {
 			if ($i > $lastUsed)
 				$this->_element->removeChild($this->_element->childNodes[$i]);
@@ -217,8 +217,19 @@ class XmlFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function getLastIndexUsed () {
+	function getLastIndexFilled () {
+		$filledTargetCells = $this->_director->getFilledTargetIds($this->getId());
+		$myFilledTargetCells = array();
+		foreach ($filledTargetCells as $cellId) {
+			if (preg_match('/'.$this->getId().'_cell:([0-9]+)/', $cellId, $matches)) {
+				$myFilledTargetCells[] = intval($matches[1]);
+			}
+		}
+				
 		for ($i = count($this->_element->childNodes) - 1; $i >= 0; $i--) {
+			if (in_array($i, $myFilledTargetCells))
+				return $i;
+				
 			if ($this->_element->childNodes[$i]->firstChild)
 				return $i;
 		}
