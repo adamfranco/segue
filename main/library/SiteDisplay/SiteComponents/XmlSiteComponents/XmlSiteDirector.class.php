@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.12 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.13 2006/04/17 21:16:39 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.12 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.13 2006/04/17 21:16:39 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -81,6 +81,7 @@ class XmlSiteDirector
 	 * @since 4/4/06
 	 */
 	function &traverseUpToRootSiteComponent ( $currentElement ) {
+		ArgumentValidator::validate($currentElement, ExtendsValidatorRule::getRule("DOMIT_Element"));
 		if (!in_array($currentElement->getAttribute('id'), $this->_activeNodes))
 			$this->_activeNodes[] = $currentElement->getAttribute('id');
 		

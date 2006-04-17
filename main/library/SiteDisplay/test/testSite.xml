@@ -134,7 +134,11 @@
                                     </MenuOrganizer>
                                 </cell>
                                 <cell />
-                                <cell />
+                                <cell>
+                                    <FixedOrganizer id="3040" rows="1" cols="1" direction="Left-Right/Top-Bottom">
+                                        <cell />
+                                    </FixedOrganizer>
+                                </cell>
                             </NavOrganizer>
                         </NavBlock>
                     </cell>

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.17 2006/04/17 20:22:03 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.18 2006/04/17 21:16:39 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.17 2006/04/17 20:22:03 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.18 2006/04/17 21:16:39 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -151,7 +151,7 @@ class XmlFixedOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateNumColumns ( $newColumns ) {
-		parent::updateNumRows($newColumns);
+		parent::updateNumColumns($newColumns);
 		
 		$this->normalizeCells();	
 	}
