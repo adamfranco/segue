@@ -134,9 +134,18 @@
                                         </cell>
                                     </FlowOrganizer>
                                 </cell>
-                                <cell />
+                                <cell>
+                                    <FixedOrganizer id="3019" rows="1" cols="1" direction="Left-Right/Top-Bottom" />
+                                </cell>
                             </NavOrganizer>
                         </NavBlock>
+                    </cell>
+                    <cell>
+                        <Block id="3016">
+                            <displayName><![CDATA[Snoopy]]></displayName>
+                            <description><![CDATA[]]></description>
+                            <contentMarkup><![CDATA[]]></contentMarkup>
+                        </Block>
                     </cell>
                 </MenuOrganizer>
             </cell>
@@ -150,7 +159,7 @@
                             <contentMarkup><![CDATA[Classes will be indoors unless it is really nice outside. In the event of really amazingly good weather we will meet on the quad.]]></contentMarkup>
                         </Block>
                     </cell>
-                    </FlowOrganizer>
+                </FlowOrganizer>
             </cell>
         </NavOrganizer>
     </SiteNavBlock>

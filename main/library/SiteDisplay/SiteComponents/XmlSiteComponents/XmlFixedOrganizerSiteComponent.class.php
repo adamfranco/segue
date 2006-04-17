@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.13 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.14 2006/04/17 18:09:38 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.13 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.14 2006/04/17 18:09:38 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -64,8 +64,12 @@ class XmlFixedOrganizerSiteComponent
 			}
 		}
 		if (!$success && $i < $cellIndex) {
-			
 		
+// Add <cell/> tags up to and including ours if needed.			
+// 			while ($i < $cellIndex) {
+// 				$this->_element->document->
+// 				$i++;
+// 			}
 		}
 		
 		if (!$success)
