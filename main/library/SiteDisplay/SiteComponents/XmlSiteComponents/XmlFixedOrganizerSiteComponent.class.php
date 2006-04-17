@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.14 2006/04/17 18:09:38 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.15 2006/04/17 18:26:07 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.14 2006/04/17 18:09:38 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.15 2006/04/17 18:26:07 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -46,6 +46,14 @@ class XmlFixedOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function addSubcomponentToCell ( &$siteComponent, $cellIndex ) {
+		// Add <cell/> tags up to and including ours if needed.	
+		if (count($this->_element->childNodes) <= $cellIndex) {
+			for ($i = count($this->_element->childNodes); $i <= $cellIndex; $i++) {
+				$this->_element->appendChild(
+					$this->_element->ownerDocument->createElement('cell'));
+			}
+		}
+		
 		$child =& $this->_element->firstChild;
 		$i = 0;
 		$success = false;
@@ -62,14 +70,6 @@ class XmlFixedOrganizerSiteComponent
 				$child =& $child->nextSibling;
 				$i++;
 			}
-		}
-		if (!$success && $i < $cellIndex) {
-		
-// Add <cell/> tags up to and including ours if needed.			
-// 			while ($i < $cellIndex) {
-// 				$this->_element->document->
-// 				$i++;
-// 			}
 		}
 		
 		if (!$success)
