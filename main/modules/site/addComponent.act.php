@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.1 2006/04/17 18:10:26 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.2 2006/04/17 21:16:10 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.1 2006/04/17 18:10:26 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.2 2006/04/17 21:16:10 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -38,9 +38,11 @@ class addComponentAction
 		$targetOrgId = RequestContext::value('organizerId');
 		$targetCell = RequestContext::value('cellIndex');
 		
-		$component =& $director->createSiteComponent(RequestContext::value('componentType'));
-			
 		$organizer =& $director->getSiteComponentById($targetOrgId);
+		$director->getRootSiteComponent($targetOrgId);
+		
+		$component =& $director->createSiteComponent(RequestContext::value('componentType'));
+		
 		$oldCellId = $organizer->putSubcomponentInCell($component, $targetCell);
 		
 		if (RequestContext::value('displayName'))
