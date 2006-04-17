@@ -53,7 +53,18 @@
                             <description><![CDATA[Assignments for this course]]></description>
                             <NavOrganizer id="20" rows="1" cols="4" direction="Left-Right/Top-Bottom">
                                 <cell>
-                                    <MenuOrganizer id="21" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" target_id="20_cell:1">
+                                    <FlowOrganizer id="11" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0">
+                                        <cell>
+                                            <Block id="12">
+                                                <displayName><![CDATA[Important Info]]></displayName>
+                                                <description><![CDATA[]]></description>
+                                                <contentMarkup><![CDATA[All assignments are due in class at the beginning of class.]]></contentMarkup>
+                                            </Block>
+                                        </cell>
+                                    </FlowOrganizer>
+                                </cell>
+                                <cell>
+                                    <MenuOrganizer id="21" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" target_id="20_cell:2">
                                         <cell>
                                             <NavBlock id="22">
                                                 <displayName><![CDATA[Week 1]]></displayName>
@@ -123,20 +134,7 @@
                                     </MenuOrganizer>
                                 </cell>
                                 <cell />
-                                <cell>
-                                    <FlowOrganizer id="11" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0">
-                                        <cell>
-                                            <Block id="12">
-                                                <displayName><![CDATA[Important Information]]></displayName>
-                                                <description><![CDATA[]]></description>
-                                                <contentMarkup><![CDATA[All assignments are due in class at the beginning of class.]]></contentMarkup>
-                                            </Block>
-                                        </cell>
-                                    </FlowOrganizer>
-                                </cell>
-                                <cell>
-                                    <FixedOrganizer id="3019" rows="1" cols="1" direction="Left-Right/Top-Bottom" />
-                                </cell>
+                                <cell />
                             </NavOrganizer>
                         </NavBlock>
                     </cell>

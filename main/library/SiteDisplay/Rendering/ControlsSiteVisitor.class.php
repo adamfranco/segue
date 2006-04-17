@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.2 2006/04/17 18:09:37 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.3 2006/04/17 20:13:15 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.2 2006/04/17 18:09:37 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.3 2006/04/17 20:13:15 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 		
@@ -53,6 +53,9 @@ class ControlsSiteVisitor {
 	 * @since 4/17/06
 	 */
 	function &controlsEnd ( &$siteComponent ) {
+		print "\n\t\t\t\t<div style='text-align: right;'>";
+		print "<input type='submit' value='"._("Apply Changes")."'/>";
+		print "</div>";
 		print "\n\t\t\t</form>";
 		
 		$controls = ob_get_clean();
@@ -99,7 +102,9 @@ class ControlsSiteVisitor {
 	function printDisplayName ( &$siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
 		print _('Title: ');
-		print "<input type='text' size='10' value='".$siteComponent->getDisplayName()."'/>";
+		print "<input type='text' size='10' ";
+		print " name='".RequestContext::name('displayName')."'";
+		print " value='".$siteComponent->getDisplayName()."'/>";
 		print "</div>";
 	}
 	
@@ -113,27 +118,58 @@ class ControlsSiteVisitor {
 	 */
 	function printRowsColumns ( &$siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		$minCells = $siteComponent->getLastIndexUsed() + 1;
 		print "\n\t\t\t\t\t"._('Rows: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'>";
-		for ($i = 0; $i <= 10; $i++) {
+		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'";
+		print " onchange='updateMinCells(this, this.nextSibling.nextSibling.nextSibling.nextSibling, $minCells);'>";
+		for ($i = 1; $i <= 10; $i++) {
 			print "\n\t\t\t\t\t\t<option value='".$i."'";
 			print (($i == $siteComponent->getNumRows())?" selected='selected'":"");
+			print (($i * $siteComponent->getNumColumns() < $minCells)?" disabled='disabled'":"");
 			print "/>";
 			print $i;
 			print "</option>";
 		}
 		print "\n\t\t\t\t\t</select>";
 		print "\n\t\t\t\t\t<br/>"._('Columns: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('columns')."'>";
-		for ($i = 0; $i <= 10; $i++) {
+		print "\n\t\t\t\t\t<select name='".RequestContext::name('columns')."'";
+		print " onchange='updateMinCells(this.previousSibling.previousSibling.previousSibling.previousSibling, this, $minCells);'>";
+
+		for ($i = 1; $i <= 10; $i++) {
 			print "\n\t\t\t\t\t\t<option value='".$i."'";
 			print (($i == $siteComponent->getNumColumns())?" selected='selected'":"");
+			print (($i * $siteComponent->getNumRows() < $minCells)?" disabled='disabled'":"");
 			print "/>";
 			print $i;
 			print "</option>";
 		}
 		print "\n\t\t\t\t\t</select>";
 		print "\n\t\t\t\t</div>";
+		print<<<END
+				<script type='text/javascript'>
+				/* <![CDATA[ */
+				
+					function updateMinCells(rowsElement, colsElement, minCells) {						
+						// update the disabled status of row options
+						for (var i = 0; i < rowsElement.childNodes.length; i++) {
+							if (rowsElement.childNodes[i].value * colsElement.value < minCells)
+								rowsElement.childNodes[i].disabled = true;
+							else
+								rowsElement.childNodes[i].disabled = false;
+						}
+						
+						// update the disabled status of column options
+						for (var i = 0; i < colsElement.childNodes.length; i++) {
+							if (colsElement.childNodes[i].value * rowsElement.value < minCells)
+								colsElement.childNodes[i].disabled = true;
+							else
+								colsElement.childNodes[i].disabled = false;
+						}
+					}
+				
+				/* ]]> */
+				</script>
+END;
 	}
 	
 	/**

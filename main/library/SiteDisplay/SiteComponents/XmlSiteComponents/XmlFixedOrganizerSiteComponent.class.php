@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.15 2006/04/17 18:26:07 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.16 2006/04/17 20:13:15 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.15 2006/04/17 18:26:07 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.16 2006/04/17 20:13:15 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -46,13 +46,7 @@ class XmlFixedOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function addSubcomponentToCell ( &$siteComponent, $cellIndex ) {
-		// Add <cell/> tags up to and including ours if needed.	
-		if (count($this->_element->childNodes) <= $cellIndex) {
-			for ($i = count($this->_element->childNodes); $i <= $cellIndex; $i++) {
-				$this->_element->appendChild(
-					$this->_element->ownerDocument->createElement('cell'));
-			}
-		}
+		$this->normalizeCells();
 		
 		$child =& $this->_element->firstChild;
 		$i = 0;
@@ -118,6 +112,8 @@ class XmlFixedOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function swapCells ( $cellOneIndex, $cellTwoIndex ) {
+		$this->normalizeCells();
+		
         // child DOMIT_Elements in an array
         $children =& $this->_element->childNodes;
         // cells
@@ -128,6 +124,60 @@ class XmlFixedOrganizerSiteComponent
         $this->_element->replaceChild($temp, $cell_one);
         $this->_element->replaceChild($cell_one, $cell_two);
         $this->_element->replaceChild($cell_two, $temp);
+	}
+	
+	/**
+	 * Update the number of rows. The contents of this organizer may limit the
+	 * ability to reduce the number of rows.
+	 * 
+	 * @param integer $newRows
+	 * @return void
+	 * @access public
+	 * @since 3/31/06
+	 */
+	function updateNumRows ( $newRows ) {
+		parent::updateNumRows($newRows);
+		
+		$this->normalizeCells();
+	}
+	
+	/**
+	 * Update the number of columns. The contents of this organizer may limit the
+	 * ability to reduce the number of columns.
+	 * 
+	 * @param integer $newColumns
+	 * @return void
+	 * @access public
+	 * @since 3/31/06
+	 */
+	function updateNumColumns ( $newColumns ) {
+		parent::updateNumRows($newColumns);
+		
+		$this->normalizeCells();	
+	}
+	
+	/**
+	 * Populate the <cell/> tags to fit our rows/columns
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/17/06
+	 */
+	function normalizeCells () {
+		$numCells = $this->getNumColumns() * $this->getNumRows();
+		
+		// Add new cells up to our number
+		for ($i = count($this->_element->childNodes); $i <= $numCells; $i++) {
+			$this->_element->appendChild(
+				$this->_element->ownerDocument->createElement('cell'));
+		}
+		
+		// Remove tags after the max shown if needed.
+		$lastUsed = $this->getLastIndexUsed();
+		for ($i = count($this->_element->childNodes) - 1; $i >= $numCells; $i--) {
+			if ($i > $lastUsed)
+				$this->_element->removeChild($this->_element->childNodes[$i]);
+		}
 	}
 	
 	/**
@@ -158,6 +208,21 @@ class XmlFixedOrganizerSiteComponent
 	 */
 	function getNumberOfVisibleCells () {
 		return $this->_getTotalNumberOfCells();
+	}
+	
+	/**
+	 * Answer the last-used index
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 4/17/06
+	 */
+	function getLastIndexUsed () {
+		for ($i = count($this->_element->childNodes) - 1; $i >= 0; $i--) {
+			if ($this->_element->childNodes[$i]->firstChild)
+				return $i;
+		}
+		return false;
 	}
 		
 	/**
