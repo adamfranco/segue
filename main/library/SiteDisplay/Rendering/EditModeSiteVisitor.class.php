@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.18 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.19 2006/04/17 16:14:39 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
+require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
 
 /**
  * The edit-mode site visitor renders the site for editing, displaying controls.
@@ -20,7 +21,7 @@ require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.18 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.19 2006/04/17 16:14:39 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -35,6 +36,7 @@ class EditModeSiteVisitor
 	 */
 	function EditModeSiteVisitor () {
 		$this->ViewModeSiteVisitor();
+		$this->_controlsVisitor =& new ControlsSiteVisitor();
 		$this->_classNames = array(
 			'Block' => _('Block'),
 			'NavBlock' => _('Link'),
@@ -124,11 +126,13 @@ class EditModeSiteVisitor
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		
-		ob_start();
-		print "\n\t\t\t\tControls:";
 		
 		
-		$controlsHTML = $this->getControlsHTML("<em>".$this->_classNames['Block']."</em>", ob_get_clean(), '#090', '#9F9', '#6C6');
+		
+		$controlsHTML = $this->getControlsHTML(
+			"<em>".$this->_classNames['Block']."</em>", 
+			$block->acceptVisitor($this->_controlsVisitor), 
+			'#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 					
 		$styleCollection =& new StyleCollection(
@@ -168,11 +172,10 @@ class EditModeSiteVisitor
 	function &visitBlockInMenu ( &$block ) {
 		$guiContainer =& parent::visitBlockInMenu($block);
 		
-		ob_start();
-		print "\n\t\t\t\tControls:";
-
-		
-		$controlsHTML = $this->getControlsHTML($block->getDisplayName()." <em>".$this->_classNames['Block']."</em>", ob_get_clean(), '#090', '#9F9', '#6C6');
+		$controlsHTML = $this->getControlsHTML(
+			$block->getDisplayName()." <em>".$this->_classNames['Block']."</em>", 
+			$block->acceptVisitor($this->_controlsVisitor), 
+			'#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(
@@ -200,11 +203,10 @@ class EditModeSiteVisitor
 	function &visitNavBlock ( &$navBlock ) {
 		$guiContainer =& parent::visitNavBlock($navBlock);
 		
-		ob_start();
-		print "\n\t\t\t\tControls:";
-		
-		
-		$controlsHTML = $this->getControlsHTML($navBlock->getDisplayName()." <em>".$this->_classNames['NavBlock']."</em>", ob_get_clean(), '#090', '#9F9', '#6C6');
+		$controlsHTML = $this->getControlsHTML(
+			$navBlock->getDisplayName()." <em>".$this->_classNames['NavBlock']."</em>", 
+			$navBlock->acceptVisitor($this->_controlsVisitor), 
+			'#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(
@@ -260,12 +262,11 @@ class EditModeSiteVisitor
 				$organizer->getId()."_cell:".$i,
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
 		}
-		
-		ob_start();
-		print "\n\t\t\t\tControls:";
-		
-		
-		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#F00', '#F99', '#F66');
+
+		$controlsHTML = $this->getControlsHTML(
+			$organizer->getDisplayName(), 
+			$organizer->acceptVisitor($this->_controlsVisitor),
+			'#F00', '#F99', '#F66');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(
@@ -333,11 +334,10 @@ class EditModeSiteVisitor
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
 		
 		
-		ob_start();
-		print "\n\t\t\t\tControls:";
-		
-		
-		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#00F', '#99F', '#66F');
+		$controlsHTML = $this->getControlsHTML(
+			$organizer->getDisplayName(),
+			$organizer->acceptVisitor($this->_controlsVisitor),
+			'#00F', '#99F', '#66F');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 				
 		$styleCollection =& new StyleCollection(
@@ -391,11 +391,10 @@ class EditModeSiteVisitor
 				$organizer->getId()."_cell:".$i,
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
 		
-		ob_start();
-		print "\n\t\t\t\tControls:";
-		
-		
-		$controlsHTML = $this->getControlsHTML($organizer->getDisplayName(), ob_get_clean(), '#00F', '#99F', '#66F');
+		$controlsHTML = $this->getControlsHTML(
+			$organizer->getDisplayName(),
+			$organizer->acceptVisitor($this->_controlsVisitor), 
+			'#00F', '#99F', '#66F');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(
@@ -748,6 +747,7 @@ END;
 		print "</form>";
 		return ob_get_clean();
 	}
+	
 }
 
 ?>
