@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/DisplaySP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleTheme.class.php,v 1.7 2006/04/14 16:41:57 cws-midd Exp $
+ * @version $Id: SimpleTheme.class.php,v 1.8 2006/04/18 20:34:07 adamfranco Exp $
  */
 class SimpleTheme extends Theme {
 
@@ -81,7 +81,7 @@ class SimpleTheme extends Theme {
 		$block2->setBorderUrl("BottomRight", MYPATH."/themes/SimpleTheme/images/corner_BR.gif");
 		
 		
-		$block2->addSP(new BackgroundColorSP("#ccc"));
+		$block2->addSP(new BackgroundColorSP("#ddd"));
 		$block2->addSP(new ColorSP("#000"));
 // 		$block2->addSP(new BorderSP("1px", "solid", "#000"));
 		$block2->addSP(new PaddingSP("10px"));

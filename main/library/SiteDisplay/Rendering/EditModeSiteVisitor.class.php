@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.20 2006/04/18 17:51:47 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.21 2006/04/18 20:34:07 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.20 2006/04/18 17:51:47 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.21 2006/04/18 20:34:07 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -760,7 +760,7 @@ END;
 			if (!$menuTarget)
 				$menuTarget = 'NewCellInNavOrg';
 				
-			print "<br/>".$menuTarget;
+// 			print "<br/>".$menuTarget;
 			print "\n\t\t\t<input type='hidden' name='".RequestContext::name('menuTarget')."' value='".$menuTarget."'/>";
 		}
 		
@@ -808,9 +808,10 @@ END;
 			}
 		}
 		
-		$newTarget = $this->getFirstEmptyCellId($organizer->getParentNavOrganizer(), $organizer->getId());
-		
-		return $newTarget;
+		if ($newTarget)
+			return $newTarget;
+		else
+			return $this->getFirstEmptyCellId($organizer->getParentNavOrganizer(), $organizer->getId());
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.8 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: newView.act.php,v 1.9 2006/04/18 20:34:07 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.8 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: newView.act.php,v 1.9 2006/04/18 20:34:07 adamfranco Exp $
  */
 class newViewAction
 	extends displayAction {
@@ -102,7 +102,7 @@ class newViewAction
 // 		print "<hr/>";
 		
 		if (!$nodeId = RequestContext::value("node"))
-			$nodeId = "5";
+			$nodeId = "1";
 		
 		$rootSiteComponent =& $xmlDirector->getRootSiteComponent($nodeId);
 		

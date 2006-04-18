@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.2 2006/04/17 21:16:10 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.3 2006/04/18 20:34:07 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.2 2006/04/17 21:16:10 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.3 2006/04/18 20:34:07 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -47,6 +47,17 @@ class addComponentAction
 		
 		if (RequestContext::value('displayName'))
 			$component->updateDisplayName(RequestContext::value('displayName'));
+		
+		if (RequestContext::value('componentType') == 'MenuOrganizer') {
+			$menuTarget = RequestContext::value('menuTarget');
+			if ($menuTarget == 'NewCellInNavOrg') {
+				$navOrganizer =& $organizer->getParentNavOrganizer();
+				$navOrganizer->updateNumColumns($navOrganizer->getNumColumns() + 1);
+				$menuTarget = $navOrganizer->getId()."_cell:".($navOrganizer->getLastIndexFilled() + 1);
+			}
+			
+			$component->updateTargetId($menuTarget);
+		}
 	}
 }
 
