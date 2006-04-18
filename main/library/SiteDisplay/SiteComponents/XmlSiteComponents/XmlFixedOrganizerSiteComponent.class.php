@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.18 2006/04/17 21:16:39 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.19 2006/04/18 17:51:48 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.18 2006/04/17 21:16:39 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.19 2006/04/18 17:51:48 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -330,18 +330,6 @@ class XmlFixedOrganizerSiteComponent
 		}
 		
 		return $results;
-	}
-	
-	/**
-	 * Answer the NavOrganizer above this organizer.
-	 * 
-	 * @return object NavOrganizerSiteComponent
-	 * @access public
-	 * @since 4/11/06
-	 */
-	function &getParentNavOrganizer () {
-		$parent =& $this->getParentComponent();
-		return $parent->getParentNavOrganizer();
 	}
 	
 	/**

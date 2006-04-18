@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.19 2006/04/17 16:14:39 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.20 2006/04/18 17:51:47 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.19 2006/04/17 16:14:39 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.20 2006/04/18 17:51:47 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -95,7 +95,7 @@ class EditModeSiteVisitor
 			$organizerId = $matches[1];
 			$cellIndex = $matches[2];
 			
-			$this->_emptyCells[$id]->add(new UnstyledBlock($this->getInsertFormHTML($organizerId, $cellIndex, array('FlowOrganizer', 'MenuOrganizer', 'FixedOrganizer'))), null, '100%', null, TOP);
+			$this->_emptyCells[$id]->add(new UnstyledBlock($this->getInsertFormHTML($siteNavBlock->getDirector(), $organizerId, $cellIndex, array('FlowOrganizer', 'MenuOrganizer', 'FixedOrganizer'))), null, '100%', null, TOP);
 			
 			unset($this->_emptyCells[$id], $matches, $organizerId, $cellIndex);
 		}
@@ -376,16 +376,40 @@ class EditModeSiteVisitor
 		// may be returned in various orders to reflect another underlying fill direction.
 		$orderedIndices = $organizer->getVisibleOrderedIndices();
 		
-		foreach ($orderedIndices as $i) {
-			$child =& $organizer->getSubcomponentForCell($i);
-			$childComponent =& $guiContainer->add($child->acceptVisitor($this, true));
+		if (count ($orderedIndices)) {
+			foreach ($orderedIndices as $i) {
+				$child =& $organizer->getSubcomponentForCell($i);
+				$childComponent =& $guiContainer->add($child->acceptVisitor($this, true));
+				
+				$this->wrapAsDroppable($childComponent, 
+					$organizer->getId()."_cell:".$i,
+					array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
+			}
 			
-			$this->wrapAsDroppable($childComponent, 
-				$organizer->getId()."_cell:".$i,
-				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
+			$i++;
+		} else {
+			// Add a placeholder to our target if we don't have any children
+			$placeholder =& new UnstyledBlock("<div style='height: 50px;'>&nbsp;</div>");
+			
+			$controlsHTML = $this->getControlsHTML(
+				$organizer->getDisplayName()." <em>"._("Target Placeholder")."</em>",
+				'', 
+				'#F00', '#F99', '#F66');
+			$placeholder->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
+			$styleCollection =& new StyleCollection(
+										'.placeholder_red_outline', 
+										'placeholder_red_outline', 
+										'Red Outline', 
+										'A red outline around a menu placeholder');
+			$styleCollection->addSP(new BorderSP('2px', 'solid', '#F00'));
+			$placeholder->addStyle($styleCollection);
+			
+			$this->_missingTargets[$organizer->getTargetId()] =& $placeholder;
+			
+			$i=0;
 		}
 		
-		$i++;
+		
 		$childComponent =& $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), $i, array('NavBlock', 'Block')), 2), null, '100%', null, TOP);
 		$this->wrapAsDroppable($childComponent, 
 				$organizer->getId()."_cell:".$i,
@@ -495,13 +519,13 @@ class EditModeSiteVisitor
 				Draggables.deactivate();
 				
 				if (confirm ('$dropConfirm'))
-				{
+				{					
 					Draggables.drags.each(function(draggable) {draggable.options.revert = false;});
+					
+					droppableElement.style.border ='4px inset #F00';
 					
 					var moveUrl = '".$url."';
 					window.location = moveUrl;
-				} else {
-// 					window.location.reload();
 				}
 			}
 		});
@@ -712,7 +736,7 @@ END;
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function getInsertFormHTML ($organizerId, $cellIndex, $allowed) {
+	function getInsertFormHTML ( &$director, $organizerId, $cellIndex, $allowed) {
 		ob_start();
 		$harmoni =& Harmoni::instance();
 		print "\n<form action='";
@@ -728,7 +752,17 @@ END;
 		print ">";
 		print "\n\t\t"._("Insert New...");
 		print "\n\t</div>";
-		print "\n\t<div style='display: none'>";
+		print "\n\t\t<div style='display: none'>";
+		
+		// Selection of our menu target
+		if (in_array('MenuOrganizer', $allowed)) {
+			$menuTarget = $this->getDefaultMenuTargetId($director, $organizerId, $cellIndex);
+			if (!$menuTarget)
+				$menuTarget = 'NewCellInNavOrg';
+				
+			print "<br/>".$menuTarget;
+			print "\n\t\t\t<input type='hidden' name='".RequestContext::name('menuTarget')."' value='".$menuTarget."'/>";
+		}
 		
 		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
 		
@@ -738,14 +772,79 @@ END;
 		
 		print "\n\t\t</select>";
 		
-		print "\n\t\t\t<input type='submit' value='"._('Submit')."'/>";
-		print "\n\t\t\t<input type='button' ";
-		print "onclick='this.parentNode.style.display=\"none\"; this.parentNode.previousSibling.previousSibling.style.display=\"block\";'";
+		print "\n\t\t\t<div style='text-align: right;'>";
+		print "\n\t\t\t\t<input type='submit' value='"._('Submit')."'/>";
+		print "\n\t\t\t\t<input type='button' ";
+		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.previousSibling.style.display=\"block\";'";
 		print " value='"._("Cancel")."'/>";
+		print "\n\t\t\t</div>";
 		print "\n\t\t</div>";
 		print "\n\t</div>";
 		print "</form>";
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the default menu target or false if one is not available
+	 * 
+	 * @param object SiteDirector $director
+	 * @param string $menuOrganizerId
+	 * @param string $menuCellId
+	 * @return string OR false if not available
+	 * @access public
+	 * @since 4/18/06
+	 */
+	function getDefaultMenuTargetId ( &$director, $menuOrganizerId, $menuCellIndex ) {
+		$organizer =& $director->getSiteComponentById($menuOrganizerId);
+		$newTarget = false;
+		
+		// First, lets target the first empty cell in this organizer 
+		// if one is available
+		$cellIndices = $organizer->getVisibleOrderedIndices();
+		foreach ($cellIndices as $i) {
+			if ($i != $menuCellIndex && is_null($organizer->getSubcomponentForCell($i))) {
+				$newTarget = $organizer->getId()."_cell:".$i;
+				break;
+			}
+		}
+		
+		$newTarget = $this->getFirstEmptyCellId($organizer->getParentNavOrganizer(), $organizer->getId());
+		
+		return $newTarget;
+	}
+	
+	/**
+	 * Recursively find the first empty cell in a fixed organizer other
+	 * than the one to exclude
+	 * 
+	 * @param object $organizer The organizer to search below.
+	 * @param string $orgIdToExclude
+	 * @return string OR false of failure
+	 * @access public
+	 * @since 4/18/06
+	 */
+	function getFirstEmptyCellId ( &$organizer, $orgIdToExclude ) {
+		if ($organizer->getId() != $orgIdToExclude) {
+			$cellIndices = $organizer->getVisibleOrderedIndices();
+			foreach ($cellIndices as $i) {
+				$cellContents =& $organizer->getSubcomponentForCell($i);
+				if (is_null($cellContents)) {
+					return $organizer->getId()."_cell:".$i;
+				}
+			}
+		}
+		
+		// If we didn't find one in this organizer, search its children
+		$childFixedOrganizers =& $organizer->getFixedOrganizers();
+		foreach (array_keys($childFixedOrganizers) as $key) {
+			$result = $this->getFirstEmptyCellId(
+							$childFixedOrganizers[$key], 
+							$orgIdToExclude);
+			if ($result)
+				return $result;
+		}
+		
+		return false;
 	}
 	
 }

@@ -51,20 +51,9 @@
                         <NavBlock id="10">
                             <displayName><![CDATA[Assignments]]></displayName>
                             <description><![CDATA[Assignments for this course]]></description>
-                            <NavOrganizer id="20" rows="1" cols="4" direction="Left-Right/Top-Bottom">
+                            <NavOrganizer id="20" rows="1" cols="3" direction="Left-Right/Top-Bottom">
                                 <cell>
-                                    <FlowOrganizer id="11" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0">
-                                        <cell>
-                                            <Block id="12">
-                                                <displayName><![CDATA[Important Info]]></displayName>
-                                                <description><![CDATA[]]></description>
-                                                <contentMarkup><![CDATA[All assignments are due in class at the beginning of class.]]></contentMarkup>
-                                            </Block>
-                                        </cell>
-                                    </FlowOrganizer>
-                                </cell>
-                                <cell>
-                                    <MenuOrganizer id="21" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" target_id="20_cell:2">
+                                    <MenuOrganizer id="21" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" target_id="20_cell:1">
                                         <cell>
                                             <NavBlock id="22">
                                                 <displayName><![CDATA[Week 1]]></displayName>
@@ -135,9 +124,15 @@
                                 </cell>
                                 <cell />
                                 <cell>
-                                    <FixedOrganizer id="3040" rows="1" cols="1" direction="Left-Right/Top-Bottom">
-                                        <cell />
-                                    </FixedOrganizer>
+                                    <FlowOrganizer id="11" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0">
+                                        <cell>
+                                            <Block id="12">
+                                                <displayName><![CDATA[Important Info]]></displayName>
+                                                <description><![CDATA[]]></description>
+                                                <contentMarkup><![CDATA[All assignments are due in class at the beginning of class.]]></contentMarkup>
+                                            </Block>
+                                        </cell>
+                                    </FlowOrganizer>
                                 </cell>
                             </NavOrganizer>
                         </NavBlock>
@@ -148,6 +143,99 @@
                             <description><![CDATA[]]></description>
                             <contentMarkup><![CDATA[]]></contentMarkup>
                         </Block>
+                    </cell>
+                    <cell>
+                        <NavBlock id="3042">
+                            <displayName><![CDATA[Motorcycles]]></displayName>
+                            <description><![CDATA[]]></description>
+                            <contentMarkup><![CDATA[]]></contentMarkup>
+                            <NavOrganizer id="3043" rows="1" cols="1" direction="Left-Right/Top-Bottom">
+                                <cell>
+                                    <FlowOrganizer id="3049" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate">
+                                        <cell>
+                                            <Block id="3047">
+                                                <displayName><![CDATA[BMW]]></displayName>
+                                                <description><![CDATA[]]></description>
+                                                <contentMarkup><![CDATA[		// Block 1 style
+		$block1 =& new StyleCollection("*.block1", "block1", "Block 1", "The main block where normally all of the page content goes in.");
+// 		$block1->addSP(new BackgroundColorSP("#DDD"));
+// 		$block1->addSP(new PaddingSP("10px"));
+// 		$block1->addSP(new MarginSP("10px"));
+		$this->addStyleForComponentType($block1, BLOCK, 1);
+		
+		// =====================================================================
+		// Block 2 style
+		$block2 =& new CornersStyleCollection("*.block2", "block2", "Block 2", "A 2nd level block. Used for standard content");
+		$block2->setBorderUrl("TopLeft", MYPATH."/themes/SimpleTheme/images/corner_TL.gif");
+		$block2->setBorderUrl("TopRight", MYPATH."/themes/SimpleTheme/images/corner_TR.gif");
+		$block2->setBorderUrl("BottomLeft", MYPATH."/themes/SimpleTheme/images/corner_BL.gif");
+		$block2->setBorderUrl("BottomRight", MYPATH."/themes/SimpleTheme/images/corner_BR.gif");
+		]]></contentMarkup>
+                                            </Block>
+                                        </cell>
+                                        <cell>
+                                            <Block id="3051">
+                                                <displayName><![CDATA[About my motorcycle]]></displayName>
+                                                <description><![CDATA[]]></description>
+                                                <contentMarkup><![CDATA[		// Block 1 style
+		$block1 =& new StyleCollection("*.block1", "block1", "Block 1", "The main block where normally all of the page content goes in.");
+// 		$block1->addSP(new BackgroundColorSP("#DDD"));
+// 		$block1->addSP(new PaddingSP("10px"));
+// 		$block1->addSP(new MarginSP("10px"));
+		$this->addStyleForComponentType($block1, BLOCK, 1);
+		
+		// =====================================================================
+		// Block 2 style
+		$block2 =& new CornersStyleCollection("*.block2", "block2", "Block 2", "A 2nd level block. Used for standard content");
+		$block2->setBorderUrl("TopLeft", MYPATH."/themes/SimpleTheme/images/corner_TL.gif");
+		$block2->setBorderUrl("TopRight", MYPATH."/themes/SimpleTheme/images/corner_TR.gif");
+		$block2->setBorderUrl("BottomLeft", MYPATH."/themes/SimpleTheme/images/corner_BL.gif");
+		$block2->setBorderUrl("BottomRight", MYPATH."/themes/SimpleTheme/images/corner_BR.gif");
+		]]></contentMarkup>
+                                            </Block>
+                                        </cell>
+                                    </FlowOrganizer>
+                                </cell>
+                            </NavOrganizer>
+                        </NavBlock>
+                    </cell>
+                    <cell>
+                        <Block id="3053">
+                            <displayName><![CDATA[stuff]]></displayName>
+                            <description><![CDATA[]]></description>
+                            <contentMarkup><![CDATA[]]></contentMarkup>
+                        </Block>
+                    </cell>
+                    <cell>
+                        <NavBlock id="3054">
+                            <displayName><![CDATA[MenuTest]]></displayName>
+                            <description><![CDATA[]]></description>
+                            <contentMarkup><![CDATA[]]></contentMarkup>
+                            <NavOrganizer id="3055" rows="1" cols="3" direction="Left-Right/Top-Bottom">
+                                <cell>
+                                    <MenuOrganizer id="3059" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate" target_id="3055_cell:1">
+                                        <cell>
+                                            <NavBlock id="3062">
+                                                <displayName><![CDATA[stuff]]></displayName>
+                                                <description><![CDATA[]]></description>
+                                                <contentMarkup><![CDATA[]]></contentMarkup>
+                                                <NavOrganizer id="3063" rows="1" cols="1" direction="Left-Right/Top-Bottom">
+                                                    <cell />
+                                                </NavOrganizer>
+                                            </NavBlock>
+                                        </cell>
+                                        </MenuOrganizer>
+                                </cell>
+                                <cell />
+                                <cell>
+                                    <FixedOrganizer id="3056" rows="1" cols="1" direction="Left-Right/Top-Bottom">
+                                        <cell>
+                                            <FlowOrganizer id="3057" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate" />
+                                        </cell>
+                                    </FixedOrganizer>
+                                </cell>
+                            </NavOrganizer>
+                        </NavBlock>
                     </cell>
                 </MenuOrganizer>
             </cell>

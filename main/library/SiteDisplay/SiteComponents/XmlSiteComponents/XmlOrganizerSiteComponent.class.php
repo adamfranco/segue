@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.13 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.14 2006/04/18 17:51:48 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.13 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.14 2006/04/18 17:51:48 adamfranco Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -175,7 +175,7 @@ class XmlOrganizerSiteComponent
 	 * Answer the subcomponent located in organizer cell $i
 	 * 
 	 * @param integer $i
-	 * @return object SiteComponent
+	 * @return object SiteComponent OR null if not found
 	 * @access public
 	 * @since 4/3/06
 	 */
@@ -282,6 +282,18 @@ class XmlOrganizerSiteComponent
 			}
 		}
 		return $this->_childComponents;
+	}
+	
+	/**
+	 * Answer the NavOrganizer above this organizer.
+	 * 
+	 * @return object NavOrganizerSiteComponent
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function &getParentNavOrganizer () {
+		$parent =& $this->getParentComponent();
+		return $parent->getParentNavOrganizer();
 	}
 	
 /*********************************************************

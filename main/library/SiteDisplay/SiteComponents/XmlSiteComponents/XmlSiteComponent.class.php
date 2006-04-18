@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.6 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.7 2006/04/18 17:51:48 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.6 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.7 2006/04/18 17:51:48 adamfranco Exp $
  */
 class XmlSiteComponent 
 	// implements SiteComponent
@@ -63,6 +63,17 @@ class XmlSiteComponent
 			return $this->_element->getAttribute('id');
 		else
 			throwError( new Error("No id available", "XmlSiteComponents"));
+	}
+	
+	/**
+	 * Answer this component's director
+	 * 
+	 * @return ref object SiteDirector
+	 * @access public
+	 * @since 4/18/06
+	 */
+	function &getDirector () {
+		return $this->_director;
 	}
 	
 	/**
