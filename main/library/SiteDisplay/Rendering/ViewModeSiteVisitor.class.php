@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.9 2006/04/13 17:16:30 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.10 2006/04/18 14:30:59 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -30,7 +30,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.9 2006/04/13 17:16:30 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.10 2006/04/18 14:30:59 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -253,7 +253,7 @@ class ViewModeSiteVisitor {
 		
 		foreach ($orderedIndices as $i) {
 			$child =& $organizer->getSubcomponentForCell($i);
-			$guiContainer->add($child->acceptVisitor($this));
+			$guiContainer->add($child->acceptVisitor($this, true));
 		}
 		
 		return $guiContainer;
