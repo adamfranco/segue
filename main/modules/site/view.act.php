@@ -5,11 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.10 2006/03/16 20:47:56 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.11 2006/05/02 20:24:17 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
-require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
+require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
 require_once(HARMONI."GUIManager/Components/Menu.class.php");
@@ -34,7 +34,7 @@ require_once(MYDIR."/main/modules/window/display.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.10 2006/03/16 20:47:56 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.11 2006/05/02 20:24:17 adamfranco Exp $
  */
 class viewAction 
 	extends displayAction

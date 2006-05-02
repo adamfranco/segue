@@ -5,11 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.9 2006/03/16 20:47:59 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.10 2006/05/02 20:24:17 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
-require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
+require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
 
 /**
  * build the frame of the window
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/BasketManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.9 2006/03/16 20:47:59 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.10 2006/05/02 20:24:17 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.9 2006/03/16 20:47:59 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.10 2006/05/02 20:24:17 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -125,7 +125,8 @@ class displayAction
 		// Right Column
 		$rightColumn =& $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);
 		// Basket
-		$rightColumn->add(BasketManager::getSmallBasketBlock(), "100%", null, LEFT, TOP);
+		$basket =& Basket::instance();
+		$rightColumn->add($basket->getSmallBasketBlock(), "100%", null, LEFT, TOP);
 		if (ereg("^(collection|asset)\.browse$", $harmoni->getCurrentAction()))
 			$rightColumn->add(AssetPrinter::getMultiEditOptionsBlock(), "100%", null, LEFT, TOP);
 		
