@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.15 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.16 2006/05/30 20:18:55 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.15 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.16 2006/05/30 20:18:55 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -572,7 +572,7 @@ class SeguePluginsPlugin {
 		ArgumentValidator::validate($description, StringValidatorRule::getRule());
 		ArgumentValidator::validate($type, ChoiceValidatorRule::getRule('Event_Notice', 'Error'));
 		
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Segue");
 			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",

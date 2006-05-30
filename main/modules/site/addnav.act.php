@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addnav.act.php,v 1.5 2006/03/07 19:27:27 adamfranco Exp $
+ * @version $Id: addnav.act.php,v 1.6 2006/05/30 20:18:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addnav.act.php,v 1.5 2006/03/07 19:27:27 adamfranco Exp $
+ * @version $Id: addnav.act.php,v 1.6 2006/05/30 20:18:55 adamfranco Exp $
  */
 class addnavAction 
 	extends MainWindowAction
@@ -122,7 +122,7 @@ class addnavAction
 			array("node" => RequestContext::value('return_node'))));
 		
 		// Log the success or failure
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Segue");
 			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",

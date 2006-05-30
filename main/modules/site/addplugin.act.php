@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.7 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: addplugin.act.php,v 1.8 2006/05/30 20:18:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.7 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: addplugin.act.php,v 1.8 2006/05/30 20:18:55 adamfranco Exp $
  */
 class addpluginAction 
 	extends MainWindowAction
@@ -77,7 +77,7 @@ class addpluginAction
 		$parentAsset->addAsset($asset->getId());
 		
 		// Log the success or failure
-		if (Services::serviceAvailable("Logging")) {
+		if (Services::serviceRunning("Logging")) {
 			$loggingManager =& Services::getService("Logging");
 			$log =& $loggingManager->getLogForWriting("Segue");
 			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
