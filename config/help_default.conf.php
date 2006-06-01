@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: help_default.conf.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
+ * @version $Id: help_default.conf.php,v 1.3 2006/06/01 14:42:23 adamfranco Exp $
  */
 
-	browse_helpAction::addHelpDirectory(MYDIR."/doc/help");
+	browse_helpAction::addHelpDirectory(MYDIR."/doc/help", MYPATH."/doc/help");
