@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.10 2006/05/30 20:18:55 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.11 2006/06/05 20:25:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/Display/LayoutTemplates/AllRowsLayoutTemplateV
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.10 2006/05/30 20:18:55 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.11 2006/06/05 20:25:49 adamfranco Exp $
  */
 class nav_settingsAction 
 	extends MainWindowAction
@@ -152,7 +152,7 @@ class nav_settingsAction
 			$property->addOption($i, $i);
 		}
 		$property->setValue($numCells);
-		$property->setOnChange("updateLayoutDisplay(this.form);");
+		$property->addOnChange("updateLayoutDisplay(this.form);");
 		
 		
 		$property =& $step->addComponent("arrangement", new WSelectList());
@@ -163,14 +163,14 @@ class nav_settingsAction
 		if (!$siteType->isEqual($asset->getAssetType()))
 			$property->addOption('nested', 'Nested');
 		$property->setValue($arrangement);
-		$property->setOnChange("updateLayoutDisplay(this.form);");
+		$property->addOnChange("updateLayoutDisplay(this.form);");
 		
 		$property =& $step->addComponent("targetoverride", new WSelectList());
 		for ($i = 1; $i <= 4; $i++) {
 			$property->addOption($i, $i);
 		}
 		$property->setValue($targetOverride);
-		$property->setOnChange("updateLayoutDisplay(this.form);");
+		$property->addOnChange("updateLayoutDisplay(this.form);");
 		
 		// create the text
 		ob_start();
