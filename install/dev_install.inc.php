@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.8 2006/03/09 20:22:47 cws-midd Exp $
+ * @version $Id: dev_install.inc.php,v 1.9 2006/06/06 20:04:44 adamfranco Exp $
  */
 
 /*********************************************************
@@ -29,7 +29,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 	$result =& $genericResult->returnAsSelectQueryResult();
 	if ($result->hasNext()) {
 		$_SESSION['table_setup_complete'] = TRUE;
-		RequestContext::locationHeader($_SERVER['PHP_SELF']);
+		RequestContext::locationHeader($_SERVER['REQUEST_URI']);
 		
 		print "<h2>Tables exist in the database. Not creating tables.</h2>";
 		print "<h2>If you have just run the installer, comment out it's line in the config to start using Segue.</h2>";
@@ -305,6 +305,6 @@ if (!isset($_SESSION['table_setup_complete'])) {
 	print "\n<br> ...done";
 	$_SESSION['table_setup_complete'] = TRUE;
 	
-	RequestContext::locationHeader($_SERVER['PHP_SELF']);
+	RequestContext::locationHeader($_SERVER['REQUEST_URI']);
 }
 ?>
