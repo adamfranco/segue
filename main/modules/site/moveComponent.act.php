@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.6 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.7 2006/07/28 19:01:13 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.6 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.7 2006/07/28 19:01:13 adamfranco Exp $
  */
 class moveComponentAction 
 	extends EditModeSiteAction
@@ -41,6 +41,14 @@ class moveComponentAction
 		$targetCell = $matches[2];
 		
 		$component =& $director->getSiteComponentById(RequestContext::value('component'));
+		
+		// If we are moving a navOrganizer, update the target of the menu
+		if (strtolower(get_class($component)) == 'xmlnavorganizersitecomponent') {
+			$menuOrganizer =& $component->getMenuOrganizer();
+			$menuOrganizer->updateTargetId(RequestContext::value('destination'));
+			return;
+		}
+		
 		$newOrganizer =& $director->getSiteComponentById($targetOrgId);
 		$oldCellId = $newOrganizer->putSubcomponentInCell($component, $targetCell);
 		

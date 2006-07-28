@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.9 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.10 2006/07/28 19:01:09 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.9 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.10 2006/07/28 19:01:09 adamfranco Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
@@ -144,6 +144,34 @@ class XmlNavBlockSiteComponent
 		}
 		
 		return $results;
+	}
+	
+	/**
+	 * Answer the NavOrganizer above this nav block.
+	 * 
+	 * @return object NavOrganizerSiteComponent
+	 * @access public
+	 * @since 7/27/06
+	 */
+	function &getParentNavOrganizer () {
+		$parent =& $this->getParentComponent();
+		if ($parent)
+			return $parent->getParentNavOrganizer();
+		else {
+			$null = null;
+			return $null;
+		}
+	}
+	
+	/**
+	 * Answer the menu for this component
+	 * 
+	 * @return object MenuOrganizerSiteComponent
+	 * @access public
+	 * @since 7/28/06
+	 */
+	function &getMenuOrganizer () {
+		return $this->getParentComponent();
 	}
 }
 
