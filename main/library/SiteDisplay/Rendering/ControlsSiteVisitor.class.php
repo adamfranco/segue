@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2006/04/17 20:22:03 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2006/08/18 14:59:22 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2006/04/17 20:22:03 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2006/08/18 14:59:22 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 		
@@ -118,7 +118,7 @@ class ControlsSiteVisitor {
 	 */
 	function printRowsColumns ( &$siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
-		$minCells = $siteComponent->getLastIndexFilled() + 1;
+		$minCells = $siteComponent->getMinNumCells();
 		print "\n\t\t\t\t\t"._('Rows: ');
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'";
 		print " onchange='updateMinCells(this, this.nextSibling.nextSibling.nextSibling.nextSibling, $minCells);'>";
@@ -173,7 +173,43 @@ END;
 	}
 	
 	/**
-	 * Print rows/columns controls
+	 * Print rows/columns controls for a flow organizer
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 4/17/06
+	 */
+	function printFlowRowsColumns ( &$siteComponent ) {
+		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		$numRows = $siteComponent->getNumRows();
+		$numColumns = $siteComponent->getNumColumns();
+		print "\n\t\t\t\t\t"._('Columns: ');
+		print "\n\t\t\t\t\t<select name='".RequestContext::name('columns')."'>";
+
+		for ($i = 1; $i <= 10; $i++) {
+			print "\n\t\t\t\t\t\t<option value='".$i."'";
+			print (($i == $siteComponent->getNumColumns())?" selected='selected'":"");
+			print "/>";
+			print $i;
+			print "</option>";
+		}
+		print "\n\t\t\t\t\t</select>";
+		print "\n\t\t\t\t\t<br/>"._('Rows: ');
+		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'>";
+		for ($i = 0; $i <= 10; $i++) {
+			print "\n\t\t\t\t\t\t<option value='".$i."'";
+			print (($i == $siteComponent->getNumRows())?" selected='selected'":"");
+			print "/>";
+			print (($i == 0)?_("unlimited"):$i);
+			print "</option>";
+		}
+		print "\n\t\t\t\t\t</select>";
+		print "\n\t\t\t\t</div>";
+	}
+	
+	/**
+	 * Print direction controls
 	 * 
 	 * @param SiteComponent $siteComponent
 	 * @return void
@@ -251,7 +287,7 @@ END;
 		$this->controlsStart($siteComponent);
 		
 		$this->printRowsColumns($siteComponent);
-		$this->printDirection($siteComponent);
+// 		$this->printDirection($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
@@ -269,7 +305,7 @@ END;
 		$this->controlsStart($siteComponent);
 		
 		$this->printRowsColumns($siteComponent);
-		$this->printDirection($siteComponent);
+// 		$this->printDirection($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
 	}
@@ -285,6 +321,7 @@ END;
 	function &visitFlowOrganizer ( &$siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
+		$this->printFlowRowsColumns($siteComponent);
 		$this->printDirection($siteComponent);
 		$this->printDelete($siteComponent);
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.1 2006/04/17 20:13:15 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.2 2006/08/18 15:02:24 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.1 2006/04/17 20:13:15 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.2 2006/08/18 15:02:24 adamfranco Exp $
  */
 class ModifySettingsSiteVisitor {
 		
@@ -156,7 +156,7 @@ class ModifySettingsSiteVisitor {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyRowsColumns($siteComponent);
-		$this->applyDirection($siteComponent);
+// 		$this->applyDirection($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -173,7 +173,7 @@ class ModifySettingsSiteVisitor {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyRowsColumns($siteComponent);
-		$this->applyDirection($siteComponent);
+// 		$this->applyDirection($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -189,6 +189,7 @@ class ModifySettingsSiteVisitor {
 	function &visitFlowOrganizer ( &$siteComponent ) {
 		$this->modifyStart($siteComponent);
 		
+		$this->applyRowsColumns($siteComponent);
 		$this->applyDirection($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
