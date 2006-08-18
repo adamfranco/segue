@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.19 2006/04/18 17:51:48 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.20 2006/08/18 15:03:32 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.19 2006/04/18 17:51:48 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.20 2006/08/18 15:03:32 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -234,6 +234,18 @@ class XmlFixedOrganizerSiteComponent
 				return $i;
 		}
 		return false;
+	}
+	
+	/**
+	 * Answer the minimum number of cells that this organizer can have.
+	 *
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 7/28/06
+	 */
+	function getMinNumCells () {
+		return $this->getLastIndexFilled() + 1;
 	}
 		
 	/**
