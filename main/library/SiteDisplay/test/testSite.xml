@@ -6,7 +6,7 @@
         <description><![CDATA[This is an xml test site.]]></description>
         <NavOrganizer id="2" rows="1" cols="2" direction="Left-Right/Top-Bottom">
             <cell>
-                <MenuOrganizer id="3104" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate" target_id="2_cell:1">
+                <MenuOrganizer id="3104" rows="0" cols="1" direction="Top-Bottom/Left-Right" maxVisible="0" overflowStyle="Paginate" target_id="2_cell:1">
                     <cell>
                         <NavBlock id="3105">
                             <displayName><![CDATA[About this course]]></displayName>
@@ -67,14 +67,14 @@
                                                                             <contentMarkup><![CDATA[]]></contentMarkup>
                                                                         </Block>
                                                                     </cell>
-                                                                <cell>
+                                                                    <cell>
                                                                         <Block id="3141">
                                                                             <displayName><![CDATA[7. Tomatoes]]></displayName>
                                                                             <description><![CDATA[]]></description>
                                                                             <contentMarkup><![CDATA[]]></contentMarkup>
                                                                         </Block>
                                                                     </cell>
-                                                                    </FlowOrganizer>
+                                                                </FlowOrganizer>
                                                             </cell>
                                                         </NavOrganizer>
                                                     </NavBlock>
