@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.24 2006/08/18 20:27:52 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2006/08/18 20:43:48 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.24 2006/08/18 20:27:52 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2006/08/18 20:43:48 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -367,10 +367,14 @@ class EditModeSiteVisitor
 	 */
 	function &visitMenuOrganizer ( &$organizer ) {	
 		// Choose layout direction based on number of rows
-		if ($organizer->getDirection() == "Left-Right/Top-Bottom")
+		if ($organizer->getDirection() == "Left-Right/Top-Bottom") {
 			$layout =& new XLayout();
-		else 
+		} else if ($organizer->getDirection() == "Right-Left/Top-Bottom") {
+			$layout =& new XLayout();
+			$layout->setRenderDirection("Right-Left/Top-Bottom");
+		} else {
 			$layout =& new YLayout();
+		}
 		
 		$guiContainer =& new Menu ( $layout, 1);
 		
