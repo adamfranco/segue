@@ -4,7 +4,7 @@
     <SiteNavBlock id="1">
         <displayName><![CDATA[Test Site]]></displayName>
         <description><![CDATA[This is an xml test site.]]></description>
-        <NavOrganizer id="2" rows="2" cols="2" direction="Left-Right/Top-Bottom">
+        <NavOrganizer id="2" rows="1" cols="2" direction="Left-Right/Top-Bottom">
             <cell>
                 <MenuOrganizer id="3104" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate" target_id="2_cell:1">
                     <cell>
@@ -24,29 +24,57 @@
                                                         <contentMarkup><![CDATA[]]></contentMarkup>
                                                         <NavOrganizer id="3109" rows="1" cols="1" direction="Left-Right/Top-Bottom">
                                                             <cell>
-                                                                <FlowOrganizer id="3110" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate">
+                                                                <FlowOrganizer id="3110" rows="0" cols="2" direction="Right-Left/Top-Bottom" maxVisible="0" overflowStyle="Paginate">
                                                                     <cell>
                                                                         <Block id="3112">
-                                                                            <displayName><![CDATA[Office Hours]]></displayName>
+                                                                            <displayName><![CDATA[1. Office Hours]]></displayName>
                                                                             <description><![CDATA[]]></description>
                                                                             <contentMarkup><![CDATA[]]></contentMarkup>
                                                                         </Block>
                                                                     </cell>
                                                                     <cell>
                                                                         <Block id="3113">
-                                                                            <displayName><![CDATA[Office location]]></displayName>
+                                                                            <displayName><![CDATA[2. Office location]]></displayName>
                                                                             <description><![CDATA[]]></description>
                                                                             <contentMarkup><![CDATA[]]></contentMarkup>
                                                                         </Block>
                                                                     </cell>
                                                                     <cell>
                                                                         <Block id="3111">
-                                                                            <displayName><![CDATA[Vita]]></displayName>
+                                                                            <displayName><![CDATA[3. Vita]]></displayName>
                                                                             <description><![CDATA[]]></description>
                                                                             <contentMarkup><![CDATA[]]></contentMarkup>
                                                                         </Block>
                                                                     </cell>
-                                                                </FlowOrganizer>
+                                                                    <cell>
+                                                                        <Block id="3138">
+                                                                            <displayName><![CDATA[4. Favorite Foods]]></displayName>
+                                                                            <description><![CDATA[]]></description>
+                                                                            <contentMarkup><![CDATA[]]></contentMarkup>
+                                                                        </Block>
+                                                                    </cell>
+                                                                    <cell>
+                                                                        <Block id="3139">
+                                                                            <displayName><![CDATA[5. Something else]]></displayName>
+                                                                            <description><![CDATA[]]></description>
+                                                                            <contentMarkup><![CDATA[]]></contentMarkup>
+                                                                        </Block>
+                                                                    </cell>
+                                                                    <cell>
+                                                                        <Block id="3140">
+                                                                            <displayName><![CDATA[6. Another Block]]></displayName>
+                                                                            <description><![CDATA[]]></description>
+                                                                            <contentMarkup><![CDATA[]]></contentMarkup>
+                                                                        </Block>
+                                                                    </cell>
+                                                                <cell>
+                                                                        <Block id="3141">
+                                                                            <displayName><![CDATA[7. Tomatoes]]></displayName>
+                                                                            <description><![CDATA[]]></description>
+                                                                            <contentMarkup><![CDATA[]]></contentMarkup>
+                                                                        </Block>
+                                                                    </cell>
+                                                                    </FlowOrganizer>
                                                             </cell>
                                                         </NavOrganizer>
                                                     </NavBlock>
@@ -66,14 +94,14 @@
                                                                             <contentMarkup><![CDATA[]]></contentMarkup>
                                                                         </Block>
                                                                     </cell>
-                                                                <cell>
+                                                                    <cell>
                                                                         <Block id="3137">
                                                                             <displayName><![CDATA[Lab location]]></displayName>
                                                                             <description><![CDATA[]]></description>
                                                                             <contentMarkup><![CDATA[]]></contentMarkup>
                                                                         </Block>
                                                                     </cell>
-                                                                    </FlowOrganizer>
+                                                                </FlowOrganizer>
                                                             </cell>
                                                         </NavOrganizer>
                                                     </NavBlock>
@@ -158,15 +186,15 @@
                                 <cell>
                                     <FlowOrganizer id="3126" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate">
                                         <cell>
-                                            <Block id="3127">
-                                                <displayName><![CDATA[Due Dates...]]></displayName>
+                                            <Block id="3128">
+                                                <displayName><![CDATA[Formatting of Papers]]></displayName>
                                                 <description><![CDATA[]]></description>
                                                 <contentMarkup><![CDATA[]]></contentMarkup>
                                             </Block>
                                         </cell>
                                         <cell>
-                                            <Block id="3128">
-                                                <displayName><![CDATA[Formatting of Papers]]></displayName>
+                                            <Block id="3127">
+                                                <displayName><![CDATA[Due Dates...]]></displayName>
                                                 <description><![CDATA[]]></description>
                                                 <contentMarkup><![CDATA[]]></contentMarkup>
                                             </Block>
@@ -178,8 +206,6 @@
                     </cell>
                 </MenuOrganizer>
             </cell>
-            <cell />
-            <cell />
             <cell />
         </NavOrganizer>
     </SiteNavBlock>

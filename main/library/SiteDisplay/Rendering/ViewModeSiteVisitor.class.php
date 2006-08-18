@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.10 2006/04/18 14:30:59 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.11 2006/08/18 20:19:08 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -30,7 +30,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.10 2006/04/18 14:30:59 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.11 2006/08/18 20:19:08 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -214,7 +214,9 @@ class ViewModeSiteVisitor {
 	 * @since 4/3/06
 	 */
 	function &visitFlowOrganizer( &$organizer ) {
-		$guiContainer =& new Container (	new TableLayout($organizer->getNumColumns()),
+		$layout =& new TableLayout($organizer->getNumColumns());
+		$layout->setRenderDirection($organizer->getDirection());
+		$guiContainer =& new Container ($layout,
 										BLANK,
 										1);
 		

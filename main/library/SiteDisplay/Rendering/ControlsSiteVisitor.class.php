@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2006/08/18 14:59:22 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2006/08/18 20:19:08 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2006/08/18 14:59:22 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2006/08/18 20:19:08 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 		
@@ -225,10 +225,10 @@ END;
 			"Top-Bottom/Left-Right" => _("Top-Bottom/Left-Right"),
 			"Right-Left/Top-Bottom" => _("Right-Left/Top-Bottom"),
 			"Top-Bottom/Right-Left" => _("Top-Bottom/Right-Left"),
-			"Left-Right/Bottom-Top" => _("Left-Right/Bottom-Top"),
-			"Bottom-Top/Left-Right" => _("Bottom-Top/Left-Right"),
-			"Right-Left/Bottom-Top" => _("Right-Left/Bottom-Top"),
-			"Bottom-Top/Right-Left" => _("Bottom-Top/Right-Left")
+// 			"Left-Right/Bottom-Top" => _("Left-Right/Bottom-Top"),
+// 			"Bottom-Top/Left-Right" => _("Bottom-Top/Left-Right"),
+// 			"Right-Left/Bottom-Top" => _("Right-Left/Bottom-Top"),
+// 			"Bottom-Top/Right-Left" => _("Bottom-Top/Right-Left")
 		);
 		foreach ($directions as $direction => $label) {
 			print "\n\t\t\t\t\t\t<option value='".$direction."'";

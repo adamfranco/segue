@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.22 2006/07/28 19:01:05 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.23 2006/08/18 20:19:08 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.22 2006/07/28 19:01:05 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.23 2006/08/18 20:19:08 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -306,7 +306,9 @@ class EditModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	function &visitFlowOrganizer( &$organizer ) {
-		$guiContainer =& new Container (	new TableLayout($organizer->getNumColumns(), "border: 1px solid #00F; padding: 6px;"),
+		$layout =& new TableLayout($organizer->getNumColumns(), "border: 1px solid #00F; padding: 6px;");
+		$layout->setRenderDirection($organizer->getDirection());
+		$guiContainer =& new Container ($layout,
 										BLANK,
 										1);
 		
