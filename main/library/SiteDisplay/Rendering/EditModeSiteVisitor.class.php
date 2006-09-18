@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2006/08/18 20:43:48 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.26 2006/09/18 16:23:32 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2006/08/18 20:43:48 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.26 2006/09/18 16:23:32 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -240,11 +240,8 @@ class EditModeSiteVisitor
 										1);
 		
 		
-		// Ordered indicies are to be used in a left-right/top-bottom manner, but
-		// may be returned in various orders to reflect another underlying fill direction.
-		$orderedIndices = $organizer->getVisibleOrderedIndices();
-		
-		foreach ($orderedIndices as $i) {
+		$numCells = $organizer->getTotalNumberOfCells();
+		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			if (is_object($child)) {
 				$childComponent =& $guiContainer->add($child->acceptVisitor($this), 
@@ -312,11 +309,8 @@ class EditModeSiteVisitor
 										BLANK,
 										1);
 		
-		// Ordered indicies are to be used in a left-right/top-bottom manner, but
-		// may be returned in various orders to reflect another underlying fill direction.
-		$orderedIndices = $organizer->getVisibleOrderedIndices();
-		
-		foreach ($orderedIndices as $i) {
+		$numCells = $organizer->getTotalNumberOfCells();
+		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			$childComponent =& $guiContainer->add($child->acceptVisitor($this), null, '100%', null, TOP);
 			
@@ -378,12 +372,9 @@ class EditModeSiteVisitor
 		
 		$guiContainer =& new Menu ( $layout, 1);
 		
-		// Ordered indicies are to be used in a left-right/top-bottom manner, but
-		// may be returned in various orders to reflect another underlying fill direction.
-		$orderedIndices = $organizer->getVisibleOrderedIndices();
-		
-		if (count ($orderedIndices)) {
-			foreach ($orderedIndices as $i) {
+		$numCells = $organizer->getTotalNumberOfCells();		
+		if ($numCells) {
+			for ($i = 0; $i < $numCells; $i++) {
 				$child =& $organizer->getSubcomponentForCell($i);
 				$childComponent =& $guiContainer->add($child->acceptVisitor($this, true));
 				

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FixedOrganizerSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: FixedOrganizerSiteComponent.abstract.php,v 1.2 2006/09/18 16:23:32 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FixedOrganizerSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: FixedOrganizerSiteComponent.abstract.php,v 1.2 2006/09/18 16:23:32 adamfranco Exp $
  */
 class FixedOrganizerSiteComponent
 	extends OrganizerSiteComponent
@@ -51,14 +51,13 @@ class FixedOrganizerSiteComponent
 	}
 	
 	/**
-	 * Answer the ordered indices.
+	 * Answer the number of cells. Cells are indexed from zero
 	 * 
-	 * Currently Ignoring Direction and assuming left-right/top-bottom
-	 * @return array
+	 * @return integer
 	 * @access public
-	 * @since 4/3/06
+	 * @since 9/18/06
 	 */
-	function getVisibleOrderedIndices () {
+	function getNumCells () {
 		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
 	}
 	

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.20 2006/08/18 15:03:32 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.21 2006/09/18 16:23:32 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.20 2006/08/18 15:03:32 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.21 2006/09/18 16:23:32 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -181,33 +181,15 @@ class XmlFixedOrganizerSiteComponent
 	}
 	
 	/**
-	 * Answer the ordered indices.
-	 * 
-	 * Currently Ignoring Direction and assuming left-right/top-bottom
-	 * @return array
-	 * @access public
-	 * @since 4/3/06
-	 */
-	function getVisibleOrderedIndices () {
-		$rows = $this->getNumRows();
-		$cols = $this->getNumColumns();
-		$array = array();
-		for ($i = 0; $i < $rows*$cols; $i++) {
-			$array[] = $i;
-		}
-		return $array;
-	}
-
-	/**
-	 * Answer the number of cells in this organizer that are visible (some may
-	 * be empty).
+	 * Answer the total number of cells in this organizer. (Some may be empty) 
+	 * Cells are indexed from zero
 	 * 
 	 * @return integer
 	 * @access public
-	 * @since 3/31/06
+	 * @since 9/18/06
 	 */
-	function getNumberOfVisibleCells () {
-		return $this->_getTotalNumberOfCells();
+	function getTotalNumberOfCells () {
+		 return $this->getNumRows()*$this->getNumColumns();
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.12 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.13 2006/09/18 16:23:32 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.12 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.13 2006/09/18 16:23:32 adamfranco Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -48,64 +48,6 @@ class XmlFlowOrganizerSiteComponent
 	 */
 	function getDisplayName () {
 		return _("<em>Content Organizer</em>");
-	}
-	
-	/**
-	 * Answer the ordered indices.
-	 * 
- 	 * Currently Ignoring Direction and assuming left-right/top-bottom
-	 * @return array
-	 * @access public
-	 * @since 4/3/06
-	 */
-	function getVisibleOrderedIndices () {
-		$array = array();
-		for ($i = 0; $i < $this->getNumberOfVisibleCells(); $i++) {
-			$array[] = $i;
-		}
-		return $array;
-	}
-	
-	/**
-	 * Answer the number of cells in this organizer that are visible (some may
-	 * be empty).
-	 * 
-	 * @return integer
-	 * @access public
-	 * @since 3/31/06
-	 */
-	function getNumberOfVisibleCells () {
-		$max = $this->getMaxVisible();
-		return (!$max || $this->_element->childCount < $max)
-			?$this->_element->childCount:$max;
-	}
-	
-	/**
-	 * Answer the maximum number of cells that can be displayed before overflowing
-	 * (i.e. to pagination, archiving, hiding, etc).
-	 * 
-	 * @return integer
-	 * @access public
-	 * @since 3/31/06
-	 */
-	function getMaxVisible () {
-		if ($this->_element->hasAttribute("maxVisible"))
-			return $this->_element->getAttribute("maxVisible");
-		else
-			return 0;
-	}
-	
-	/**
-	 * Update the maximum number of cells that can be displayed before overflowing
-	 * (i.e. to pagination, archiving, hiding, etc).
-	 * 
-	 * @param integer $newMaxVisible Greater than or equal to 1
-	 * @return void
-	 * @access public
-	 * @since 3/31/06
-	 */
-	function updateMaxVisible ( $newMaxVisible ) {
-		$this->_element->setAttribute('maxVisible', $newMaxVisible);
 	}
 	
 	/**

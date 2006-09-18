@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.15 2006/09/18 14:51:10 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.16 2006/09/18 16:23:32 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.15 2006/09/18 14:51:10 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.16 2006/09/18 16:23:32 adamfranco Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -64,8 +64,8 @@ class XmlOrganizerSiteComponent
 	 * @since 4/3/06
 	 */
 	function getNumRows () {
-		if ($this->_element->hasAttribute('rows'))
-			return $this->_element->getAttribute('rows');
+		if ($this->_element->hasAttribute('rows') && intval($this->_element->getAttribute('rows')) >= 0)
+			return intval($this->_element->getAttribute('rows'));
 		return 0;
 	}
 	
@@ -109,7 +109,8 @@ class XmlOrganizerSiteComponent
 	}
 	
 	/**
-	 * Answer the total number of cells in this organizer. (Some may be empty)
+	 * Answer the total number of cells in this organizer. (Some may be empty) 
+	 * Cells are indexed from zero
 	 * 
 	 * @return integer
 	 * @access public
@@ -117,18 +118,6 @@ class XmlOrganizerSiteComponent
 	 */
 	function getTotalNumberOfCells () {
 		return $this->_element->childCount;
-	}
-	
-	/**
-	 * Answer the number of cells in this organizer that are visible (some may
-	 * be empty).
-	 * 
-	 * @return integer
-	 * @access public
-	 * @since 3/31/06
-	 */
-	function getNumberOfVisibleCells () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
 	}
 	
 	/**

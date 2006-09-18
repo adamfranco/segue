@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.5 2006/04/13 18:42:34 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.6 2006/09/18 16:23:32 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.5 2006/04/13 18:42:34 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.6 2006/09/18 16:23:32 adamfranco Exp $
  */
 class VisibilitySiteVisitor {
 		
@@ -100,11 +100,8 @@ class VisibilitySiteVisitor {
 	 * @since 4/3/06
 	 */
 	function &visitFixedOrganizer ( &$organizer ) {		
-		// Ordered indicies are to be used in a left-right/top-bottom manner, but
-		// may be returned in various orders to reflect another underlying fill direction.
-		$orderedIndices = $organizer->getVisibleOrderedIndices();
-		
-		foreach ($orderedIndices as $i) {
+		$numCells = $organizer->getTotalNumberOfCells();
+		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			if (is_object($child))
 				$child->acceptVisitor($this);

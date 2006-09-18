@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: OrganizerSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: OrganizerSiteComponent.abstract.php,v 1.2 2006/09/18 16:23:32 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: OrganizerSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: OrganizerSiteComponent.abstract.php,v 1.2 2006/09/18 16:23:32 adamfranco Exp $
  */
 class OrganizerSiteComponent
 	extends SiteComponent
@@ -81,18 +81,6 @@ class OrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function getTotalNumberOfCells () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
-	
-	/**
-	 * Answer the number of cells in this organizer that are visible (some may
-	 * be empty).
-	 * 
-	 * @return integer
-	 * @access public
-	 * @since 3/31/06
-	 */
-	function getNumberOfVisibleCells () {
 		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
 	}
 	
