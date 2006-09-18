@@ -24,7 +24,7 @@
                                                         <contentMarkup><![CDATA[]]></contentMarkup>
                                                         <NavOrganizer id="3109" rows="1" cols="1" direction="Left-Right/Top-Bottom">
                                                             <cell>
-                                                                <FlowOrganizer id="3110" rows="0" cols="2" direction="Right-Left/Top-Bottom" maxVisible="0" overflowStyle="Paginate">
+                                                                <FlowOrganizer id="3110" rows="0" cols="2" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate">
                                                                     <cell>
                                                                         <Block id="3112">
                                                                             <displayName><![CDATA[1. Office Hours]]></displayName>
@@ -139,7 +139,7 @@
                             <contentMarkup><![CDATA[]]></contentMarkup>
                             <NavOrganizer id="3119" rows="1" cols="3" direction="Left-Right/Top-Bottom">
                                 <cell>
-                                    <MenuOrganizer id="3121" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate" target_id="3119_cell:1">
+                                    <MenuOrganizer id="3121" rows="0" cols="1" direction="Top-Bottom/Left-Right" maxVisible="0" overflowStyle="Paginate" target_id="3119_cell:1">
                                         <cell>
                                             <NavBlock id="3114">
                                                 <displayName><![CDATA[Syllabus]]></displayName>
