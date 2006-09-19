@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.15 2006/09/19 19:59:58 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.16 2006/09/19 20:26:59 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -30,7 +30,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.15 2006/09/19 19:59:58 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.16 2006/09/19 20:26:59 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -229,6 +229,7 @@ class ViewModeSiteVisitor {
 									$organizer->getNumColumns(), $cellsPerPage);
 		$resultPrinter->setRenderDirection($organizer->getDirection());
 		$resultPrinter->setNamespace('pages_'.$organizer->getId());
+		$resultPrinter->addLinksStyleProperty(new MarginTopSP("10px"));
 		
 		return $resultPrinter->getLayout();
 	}

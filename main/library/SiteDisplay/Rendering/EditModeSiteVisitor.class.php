@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.27 2006/09/19 19:59:58 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2006/09/19 20:26:59 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.27 2006/09/19 19:59:58 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2006/09/19 20:26:59 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -380,6 +380,7 @@ class EditModeSiteVisitor
 									$organizer->getNumColumns(), $cellsPerPage);
 		$resultPrinter->setRenderDirection($organizer->getDirection());
 		$resultPrinter->setTdStyles("border: 1px solid #00F; padding: 6px;");
+		$resultPrinter->addLinksStyleProperty(new BorderSP("1px", "solid", "#00F"));
 		$resultPrinter->setNamespace('pages_'.$organizer->getId());
 		
 		$guiContainer =& $resultPrinter->getLayout();
