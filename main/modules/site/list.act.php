@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.3 2006/02/22 22:06:14 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.4 2006/09/19 20:01:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.3 2006/02/22 22:06:14 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.4 2006/09/19 20:01:56 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -89,7 +89,7 @@ class listAction
 		
 		$harmoni =& Harmoni::instance();
 		$resultPrinter =& new IteratorResultPrinter($assets, 1, 10, "printSiteShort", $harmoni);
-		$resultLayout =& $resultPrinter->getLayout($harmoni, "canView");
+		$resultLayout =& $resultPrinter->getLayout("canView");
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
 	}
 }
