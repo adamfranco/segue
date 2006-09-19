@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.14 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.15 2006/09/19 19:59:58 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -30,7 +30,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.14 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.15 2006/09/19 19:59:58 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -211,19 +211,26 @@ class ViewModeSiteVisitor {
 	 * @since 4/3/06
 	 */
 	function &visitFlowOrganizer( &$organizer ) {
-		$layout =& new TableLayout($organizer->getNumColumns());
-		$layout->setRenderDirection($organizer->getDirection());
-		$guiContainer =& new Container ($layout,
-										BLANK,
-										1);
-		
 		$numCells = $organizer->getTotalNumberOfCells();
+		
+		if ($organizer->getNumRows() == 0)
+			$cellsPerPage = $numCells;
+		// If we are limiting to a number of rows, we are paginating.
+		else
+			$cellsPerPage = $organizer->getNumColumns() * $organizer->getNumRows();
+		
+		$childGuiComponents = array();
 		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
-			$guiContainer->add($child->acceptVisitor($this), null, '100%', null, TOP);
+			$childGuiComponents[] =& $child->acceptVisitor($this);
 		}
 		
-		return $guiContainer;
+		$resultPrinter =& new ArrayResultPrinter($childGuiComponents,
+									$organizer->getNumColumns(), $cellsPerPage);
+		$resultPrinter->setRenderDirection($organizer->getDirection());
+		$resultPrinter->setNamespace('pages_'.$organizer->getId());
+		
+		return $resultPrinter->getLayout();
 	}
 	
 	/**

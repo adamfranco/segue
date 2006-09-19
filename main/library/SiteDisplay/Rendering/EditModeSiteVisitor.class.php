@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.26 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.27 2006/09/19 19:59:58 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.26 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.27 2006/09/19 19:59:58 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -303,33 +303,88 @@ class EditModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	function &visitFlowOrganizer( &$organizer ) {
-		$layout =& new TableLayout($organizer->getNumColumns(), "border: 1px solid #00F; padding: 6px;");
-		$layout->setRenderDirection($organizer->getDirection());
-		$guiContainer =& new Container ($layout,
-										BLANK,
-										1);
+// 		$layout =& new TableLayout($organizer->getNumColumns(), "border: 1px solid #00F; padding: 6px;");
+// 		$layout->setRenderDirection($organizer->getDirection());
+// 		$guiContainer =& new Container ($layout,
+// 										BLANK,
+// 										1);
+// 		
+// 		$numCells = $organizer->getTotalNumberOfCells();
+// 		for ($i = 0; $i < $numCells; $i++) {
+// 			$child =& $organizer->getSubcomponentForCell($i);
+// 			$childComponent =& $guiContainer->add($child->acceptVisitor($this), null, '100%', null, TOP);
+// 			
+// 			$this->wrapAsDroppable($childComponent, 
+// 				$organizer->getId()."_cell:".$i,
+// 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
+// 		}
+// 		
+// 		// Appending/drag to end cell
+// 		if (isset($i))
+// 			$i++;
+// 		else
+// 			$i = 0;
+// 		$childComponent =& $guiContainer->add(new UnstyledBlock($this->getAddFormHTML($organizer->getId(), $i, array('Block'))), null, '100%', null, TOP);
+// 		$this->wrapAsDroppable($childComponent, 
+// 				$organizer->getId()."_cell:".$i,
+// 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
+// 		
+// 		
+// 		$controlsHTML = $this->getControlsHTML(
+// 			$organizer->getDisplayName(),
+// 			$organizer->acceptVisitor($this->_controlsVisitor),
+// 			'#00F', '#99F', '#66F');
+// 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
+// 				
+// 		$styleCollection =& new StyleCollection(
+// 									'.org_blue_outline', 
+// 									'org_blue_outline', 
+// 									'Blue Outline', 
+// 									'A blue outline around organizers');
+// 		$styleCollection->addSP(new BorderSP('1px', 'solid', '#00F'));
+// 		$guiContainer->addStyle($styleCollection);
+// 		
+// 		if (count($organizer->getVisibleDestinationsForPossibleAddition()))
+// 			$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FlowOrganizer');
+// 		
+// 		return $guiContainer;
+		
+		// --------------------------------
 		
 		$numCells = $organizer->getTotalNumberOfCells();
+		
+		if ($organizer->getNumRows() == 0)
+			$cellsPerPage = $numCells;
+		// If we are limiting to a number of rows, we are paginating.
+		else
+			$cellsPerPage = $organizer->getNumColumns() * $organizer->getNumRows();
+		
+		$childGuiComponents = array();
 		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
-			$childComponent =& $guiContainer->add($child->acceptVisitor($this), null, '100%', null, TOP);
-			
-			$this->wrapAsDroppable($childComponent, 
+			$childGuiComponent =& $child->acceptVisitor($this);
+			$this->wrapAsDroppable($childGuiComponent, 
 				$organizer->getId()."_cell:".$i,
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
+			$childGuiComponents[] =& $childGuiComponent;
 		}
 		
-		// Appending/drag to end cell
-		if (isset($i))
-			$i++;
-		else
-			$i = 0;
-		$childComponent =& $guiContainer->add(new UnstyledBlock($this->getAddFormHTML($organizer->getId(), $i, array('Block'))), null, '100%', null, TOP);
-		$this->wrapAsDroppable($childComponent, 
+		$addBlock =& new UnstyledBlock($this->getAddFormHTML($organizer->getId(), $i, array('Block')));
+		$this->wrapAsDroppable($addBlock, 
 				$organizer->getId()."_cell:".$i,
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
+		$childGuiComponents[] =& $addBlock;
 		
 		
+		$resultPrinter =& new ArrayResultPrinter($childGuiComponents,
+									$organizer->getNumColumns(), $cellsPerPage);
+		$resultPrinter->setRenderDirection($organizer->getDirection());
+		$resultPrinter->setTdStyles("border: 1px solid #00F; padding: 6px;");
+		$resultPrinter->setNamespace('pages_'.$organizer->getId());
+		
+		$guiContainer =& $resultPrinter->getLayout();
+		
+		// Controls and organizer dragging.
 		$controlsHTML = $this->getControlsHTML(
 			$organizer->getDisplayName(),
 			$organizer->acceptVisitor($this->_controlsVisitor),
