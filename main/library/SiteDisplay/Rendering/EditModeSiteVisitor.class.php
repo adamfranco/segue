@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2006/09/19 20:26:59 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.29 2006/09/20 14:31:04 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2006/09/19 20:26:59 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.29 2006/09/20 14:31:04 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -303,58 +303,10 @@ class EditModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	function &visitFlowOrganizer( &$organizer ) {
-// 		$layout =& new TableLayout($organizer->getNumColumns(), "border: 1px solid #00F; padding: 6px;");
-// 		$layout->setRenderDirection($organizer->getDirection());
-// 		$guiContainer =& new Container ($layout,
-// 										BLANK,
-// 										1);
-// 		
-// 		$numCells = $organizer->getTotalNumberOfCells();
-// 		for ($i = 0; $i < $numCells; $i++) {
-// 			$child =& $organizer->getSubcomponentForCell($i);
-// 			$childComponent =& $guiContainer->add($child->acceptVisitor($this), null, '100%', null, TOP);
-// 			
-// 			$this->wrapAsDroppable($childComponent, 
-// 				$organizer->getId()."_cell:".$i,
-// 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
-// 		}
-// 		
-// 		// Appending/drag to end cell
-// 		if (isset($i))
-// 			$i++;
-// 		else
-// 			$i = 0;
-// 		$childComponent =& $guiContainer->add(new UnstyledBlock($this->getAddFormHTML($organizer->getId(), $i, array('Block'))), null, '100%', null, TOP);
-// 		$this->wrapAsDroppable($childComponent, 
-// 				$organizer->getId()."_cell:".$i,
-// 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
-// 		
-// 		
-// 		$controlsHTML = $this->getControlsHTML(
-// 			$organizer->getDisplayName(),
-// 			$organizer->acceptVisitor($this->_controlsVisitor),
-// 			'#00F', '#99F', '#66F');
-// 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
-// 				
-// 		$styleCollection =& new StyleCollection(
-// 									'.org_blue_outline', 
-// 									'org_blue_outline', 
-// 									'Blue Outline', 
-// 									'A blue outline around organizers');
-// 		$styleCollection->addSP(new BorderSP('1px', 'solid', '#00F'));
-// 		$guiContainer->addStyle($styleCollection);
-// 		
-// 		if (count($organizer->getVisibleDestinationsForPossibleAddition()))
-// 			$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FlowOrganizer');
-// 		
-// 		return $guiContainer;
-		
-		// --------------------------------
-		
 		$numCells = $organizer->getTotalNumberOfCells();
 		
 		if ($organizer->getNumRows() == 0)
-			$cellsPerPage = $numCells;
+			$cellsPerPage = $numCells + 1;
 		// If we are limiting to a number of rows, we are paginating.
 		else
 			$cellsPerPage = $organizer->getNumColumns() * $organizer->getNumRows();

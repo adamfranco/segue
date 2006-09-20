@@ -24,7 +24,7 @@
                                                         <contentMarkup><![CDATA[]]></contentMarkup>
                                                         <NavOrganizer id="3109" rows="1" cols="1" direction="Left-Right/Top-Bottom">
                                                             <cell>
-                                                                <FlowOrganizer id="3110" rows="3" cols="2" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate">
+                                                                <FlowOrganizer id="3110" rows="2" cols="2" direction="Top-Bottom/Left-Right" maxVisible="0" overflowStyle="Paginate">
                                                                     <cell>
                                                                         <Block id="3112">
                                                                             <displayName><![CDATA[1. Office Hours]]></displayName>
