@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.29 2006/09/20 14:31:04 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.30 2006/09/22 14:41:48 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.29 2006/09/20 14:31:04 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.30 2006/09/22 14:41:48 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -196,12 +196,14 @@ class EditModeSiteVisitor
 	 * Visit a block and return the resulting GUI component.
 	 * 
 	 * @param object NavBlockSiteComponent $navBlock
-	 * @return object Component 
+	 * @return ref array
 	 * @access public
 	 * @since 4/3/06
 	 */
 	function &visitNavBlock ( &$navBlock ) {
-		$guiContainer =& parent::visitNavBlock($navBlock);
+		$guiContainers =& parent::visitNavBlock($navBlock);
+		
+		$guiContainer =& $guiContainers[0];
 		
 		$controlsHTML = $this->getControlsHTML(
 			$navBlock->getDisplayName()." <em>".$this->_classNames['NavBlock']."</em>", 
@@ -220,7 +222,7 @@ class EditModeSiteVisitor
 		if (count($navBlock->getVisibleDestinationsForPossibleAddition()))
 			$this->wrapAsDraggable($guiContainer, $navBlock->getId(), 'NavBlock');
 		
-		return $guiContainer;
+		return $guiContainers;
 	}
 		
 	/**
@@ -378,17 +380,36 @@ class EditModeSiteVisitor
 			$layout =& new YLayout();
 		}
 		
-		$guiContainer =& new Menu ( $layout, 1);
+		if ($this->_menuNestingLevel)
+			$guiContainer =& new SubMenu ( $layout, $this->_menuNestingLevel);
+		else
+			$guiContainer =& new Menu ( $layout, 1);
+		$currentNestingLevel = $this->_menuNestingLevel;
 		
 		$numCells = $organizer->getTotalNumberOfCells();		
 		if ($numCells) {
 			for ($i = 0; $i < $numCells; $i++) {
 				$child =& $organizer->getSubcomponentForCell($i);
-				$childComponent =& $guiContainer->add($child->acceptVisitor($this, true));
+				$childGuiComponents =& $child->acceptVisitor($this, true);
 				
-				$this->wrapAsDroppable($childComponent, 
-					$organizer->getId()."_cell:".$i,
-					array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
+				// If we have multiple Child gui components, then we are dealing
+				// with a menu item followed by a sub menu
+				if (is_array($childGuiComponents)) {
+					// wrap the menu item as droppable
+					$this->wrapAsDroppable($childGuiComponents[0], 
+						$organizer->getId()."_cell:".$i,
+						array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
+					
+					// Add each of the the menuItems/submenus
+					foreach (array_keys($childGuiComponents) as $key) {
+						$guiContainer->add($childGuiComponents[$key]);
+					}
+				} else {
+					$guiContainer->add($childGuiComponents);
+					$this->wrapAsDroppable($childGuiComponents, 
+						$organizer->getId()."_cell:".$i,
+						array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
+				}
 			}
 			
 			$i++;
@@ -423,7 +444,7 @@ class EditModeSiteVisitor
 		$controlsHTML = $this->getControlsHTML(
 			$organizer->getDisplayName(),
 			$organizer->acceptVisitor($this->_controlsVisitor), 
-			'#00F', '#99F', '#66F');
+			'#00F', '#99F', '#66F', $currentNestingLevel);
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 		
 		$styleCollection =& new StyleCollection(
@@ -625,16 +646,18 @@ END;
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor) {
+	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0) {
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		ob_start();
+
 		print "\n<div style='"
 			."color: #000; "
 			."background-color: $backgroundColor; "
 			."border-top: $lineWidth solid $borderColor; "
 			."border-left: $lineWidth solid $borderColor; "
-			."border-right: $lineWidth solid $borderColor;"
+			."border-right: $lineWidth solid $borderColor; "
+			.(($leftIndentLevel)?"margin-left: ".($leftIndentLevel*10)."px; ":"")
 			."'"
 			." onmouseover='showControlsLink(this)'"
 			." onmouseout='hideControlsLink(this)'>";
@@ -805,8 +828,8 @@ END;
 		
 		// First, lets target the first empty cell in this organizer 
 		// if one is available
-		$cellIndices = $organizer->getVisibleOrderedIndices();
-		foreach ($cellIndices as $i) {
+		$numCells = $organizer->getTotalNumberOfCells();
+			for ($i = 0; $i < $numCells; $i++) {
 			if ($i != $menuCellIndex && is_null($organizer->getSubcomponentForCell($i))) {
 				$newTarget = $organizer->getId()."_cell:".$i;
 				break;
@@ -831,8 +854,8 @@ END;
 	 */
 	function getFirstEmptyCellId ( &$organizer, $orgIdToExclude ) {
 		if ($organizer->getId() != $orgIdToExclude) {
-			$cellIndices = $organizer->getVisibleOrderedIndices();
-			foreach ($cellIndices as $i) {
+			$numCells = $organizer->getTotalNumberOfCells();
+			for ($i = 0; $i < $numCells; $i++) {
 				$cellContents =& $organizer->getSubcomponentForCell($i);
 				if (is_null($cellContents)) {
 					return $organizer->getId()."_cell:".$i;

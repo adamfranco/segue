@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.13 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.14 2006/09/22 14:41:49 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.13 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.14 2006/09/22 14:41:49 adamfranco Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -35,7 +35,7 @@ class XmlFlowOrganizerSiteComponent
 	function populateWithDefaults () {
 		parent::populateWithDefaults();
 		$this->updateNumRows(0);
-		$this->updateMaxVisible(0);
+		$this->updateNumColumns(1);
 		$this->updateOverflowStyle('Paginate');
 	}
 	

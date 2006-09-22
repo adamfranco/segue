@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/DisplaySP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleTheme.class.php,v 1.8 2006/04/18 20:34:07 adamfranco Exp $
+ * @version $Id: SimpleTheme.class.php,v 1.9 2006/09/22 14:41:49 adamfranco Exp $
  */
 class SimpleTheme extends Theme {
 
@@ -222,6 +222,12 @@ class SimpleTheme extends Theme {
 		$menu1->addSP(new MarginSP("1px"));
 		$menu1->addSP(new TextAlignSP("left"));
 		$this->addStyleForComponentType($menu1, MENU, 1);
+		
+		// =====================================================================
+		// SubMenu 1 style
+		$styleCollection =& new StyleCollection("*.subMenu1", "subMenu1", "SubMenu 1", "A 1st level sub-menu.");
+		$styleCollection->addSP(new MarginLeftSP("10px"));
+		$this->addStyleForComponentType($styleCollection, SUB_MENU, 1);
 		
 		// =====================================================================
 		// Menu Heading 1 style

@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.16 2006/09/19 20:26:59 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.17 2006/09/22 14:41:49 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
 require_once(HARMONI."GUIManager/Components/Menu.class.php");
+require_once(HARMONI."GUIManager/Components/SubMenu.class.php");
 require_once(HARMONI."GUIManager/Components/MenuItemHeading.class.php");
 require_once(HARMONI."GUIManager/Components/MenuItemLink.class.php");
 require_once(HARMONI."GUIManager/Components/Heading.class.php");
@@ -30,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.16 2006/09/19 20:26:59 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.17 2006/09/22 14:41:49 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -53,6 +54,8 @@ class ViewModeSiteVisitor {
 		 * 		target_id => GUI component to place in target.
 		 *********************************************************/
 		$this->_missingTargets = array();
+		
+		$this->_menuNestingLevel = 0;
 	}
 	
 	/**
@@ -95,11 +98,24 @@ class ViewModeSiteVisitor {
 	 * Visit a block and return the resulting GUI component.
 	 * 
 	 * @param object NavBlockSiteComponent $navBlock
-	 * @return object Component 
+	 * @return ref array
 	 * @access public
 	 * @since 4/3/06
 	 */
 	function &visitNavBlock ( &$navBlock ) {
+		$menuItems = array();
+		
+		// Create the menu item
+		$menuItems[] =& new MenuItemLinkWithAdditionalHtml(
+							$navBlock->getTitleMarkup(),
+							$this->getUrlForComponent($navBlock->getId()),
+							$navBlock->isActive(),
+							1,
+							null,
+							null,
+							$navBlock->getDescription(),
+							'');
+		
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
 		if ($navBlock->isActive()) {
@@ -112,19 +128,18 @@ class ViewModeSiteVisitor {
 			} else {
 				$this->_missingTargets[$navBlock->getTargetId()] =& $childGuiComponent;
 			}
+			
+			$nestedMenuOrganizer =& $navBlock->getNestedMenuOrganizer();
+			if (!is_null($nestedMenuOrganizer)) {
+				$this->_menuNestingLevel++;
+				$menuItems[] =& $nestedMenuOrganizer->acceptVisitor($this);
+			} else {
+				$this->_menuNestingLevel = 0;
+			}
 		}
 		
-		// Create and return the component
-		$menuItem =& new MenuItemLinkWithAdditionalHtml(
-							$navBlock->getTitleMarkup(),
-							$this->getUrlForComponent($navBlock->getId()),
-							$navBlock->isActive(),
-							1,
-							null,
-							null,
-							$navBlock->getDescription(),
-							'');
-		return $menuItem;
+		// return the menu items
+		return $menuItems;
 	}
 	
 	/**
@@ -254,12 +269,21 @@ class ViewModeSiteVisitor {
 			$layout =& new YLayout();
 		}
 		
-		$guiContainer =& new Menu ( $layout, 1);
+		if ($this->_menuNestingLevel)
+			$guiContainer =& new SubMenu ( $layout, $this->_menuNestingLevel);
+		else
+			$guiContainer =& new Menu ( $layout, 1);
 		
 		$numCells = $organizer->getTotalNumberOfCells();
 		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
-			$guiContainer->add($child->acceptVisitor($this, true));
+			$childGuiComponents =& $child->acceptVisitor($this, true);
+			if (is_array($childGuiComponents)) {
+				foreach (array_keys($childGuiComponents) as $key)
+					$guiContainer->add($childGuiComponents[$key]);
+			} else {
+				$guiContainer->add($childGuiComponents);
+			}
 		}
 		
 		return $guiContainer;

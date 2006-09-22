@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.4 2006/04/12 14:31:06 cws-midd Exp $
+ * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.5 2006/09/22 14:41:49 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.4 2006/04/12 14:31:06 cws-midd Exp $
+ * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.5 2006/09/22 14:41:49 adamfranco Exp $
  */
 class XmlMenuOrganizerSiteComponent 
 	extends XmlFlowOrganizerSiteComponent
@@ -46,7 +46,7 @@ class XmlMenuOrganizerSiteComponent
 		if ($this->_element->hasAttribute('target_id'))
 			return $this->_element->getAttribute('target_id');
 
-		throwError( new Error("No target_id available", "XmlSiteComponents"));		
+		throwError( new Error("No target_id available ".$this->_element->toString(true), "XmlSiteComponents"));		
 	}
 
 	/**

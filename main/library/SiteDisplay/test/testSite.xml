@@ -14,7 +14,7 @@
                             <contentMarkup><![CDATA[]]></contentMarkup>
                             <NavOrganizer id="3106" rows="1" cols="2" direction="Left-Right/Top-Bottom">
                                 <cell>
-                                    <FixedOrganizer id="3132" rows="2" cols="1" direction="Left-Right/Top-Bottom">
+                                    <FixedOrganizer id="3132" rows="3" cols="1" direction="Left-Right/Top-Bottom">
                                         <cell>
                                             <MenuOrganizer id="3107" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate" target_id="3132_cell:1">
                                                 <cell>
@@ -109,6 +109,7 @@
                                             </MenuOrganizer>
                                         </cell>
                                         <cell />
+                                        <cell />
                                     </FixedOrganizer>
                                 </cell>
                                 <cell>
@@ -138,50 +139,6 @@
                             <description><![CDATA[]]></description>
                             <contentMarkup><![CDATA[]]></contentMarkup>
                             <NavOrganizer id="3119" rows="1" cols="3" direction="Left-Right/Top-Bottom">
-                                <cell>
-                                    <MenuOrganizer id="3121" rows="0" cols="1" direction="Top-Bottom/Left-Right" maxVisible="0" overflowStyle="Paginate" target_id="3119_cell:1">
-                                        <cell>
-                                            <NavBlock id="3114">
-                                                <displayName><![CDATA[Syllabus]]></displayName>
-                                                <description><![CDATA[]]></description>
-                                                <contentMarkup><![CDATA[]]></contentMarkup>
-                                                <NavOrganizer id="3115" rows="1" cols="1" direction="Left-Right/Top-Bottom">
-                                                    <cell>
-                                                        <FlowOrganizer id="3116" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate">
-                                                            <cell>
-                                                                <Block id="3117">
-                                                                    <displayName><![CDATA[The syllabus]]></displayName>
-                                                                    <description><![CDATA[]]></description>
-                                                                    <contentMarkup><![CDATA[]]></contentMarkup>
-                                                                </Block>
-                                                            </cell>
-                                                        </FlowOrganizer>
-                                                    </cell>
-                                                </NavOrganizer>
-                                            </NavBlock>
-                                        </cell>
-                                        <cell>
-                                            <NavBlock id="3122">
-                                                <displayName><![CDATA[Week 1]]></displayName>
-                                                <description><![CDATA[]]></description>
-                                                <contentMarkup><![CDATA[]]></contentMarkup>
-                                                <NavOrganizer id="3123" rows="1" cols="1" direction="Left-Right/Top-Bottom">
-                                                    <cell />
-                                                </NavOrganizer>
-                                            </NavBlock>
-                                        </cell>
-                                        <cell>
-                                            <NavBlock id="3124">
-                                                <displayName><![CDATA[Week 2]]></displayName>
-                                                <description><![CDATA[]]></description>
-                                                <contentMarkup><![CDATA[]]></contentMarkup>
-                                                <NavOrganizer id="3125" rows="1" cols="1" direction="Left-Right/Top-Bottom">
-                                                    <cell />
-                                                </NavOrganizer>
-                                            </NavBlock>
-                                        </cell>
-                                    </MenuOrganizer>
-                                </cell>
                                 <cell />
                                 <cell>
                                     <FlowOrganizer id="3126" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate">
@@ -201,7 +158,50 @@
                                         </cell>
                                     </FlowOrganizer>
                                 </cell>
+                                <cell />
                             </NavOrganizer>
+                            <MenuOrganizer id="3121" rows="0" cols="1" direction="Top-Bottom/Left-Right" maxVisible="0" overflowStyle="Paginate" target_id="3119_cell:0">
+                                <cell>
+                                    <NavBlock id="3114">
+                                        <displayName><![CDATA[Syllabus]]></displayName>
+                                        <description><![CDATA[]]></description>
+                                        <contentMarkup><![CDATA[]]></contentMarkup>
+                                        <NavOrganizer id="3115" rows="1" cols="1" direction="Left-Right/Top-Bottom">
+                                            <cell>
+                                                <FlowOrganizer id="3116" rows="0" cols="1" direction="Left-Right/Top-Bottom" maxVisible="0" overflowStyle="Paginate">
+                                                    <cell>
+                                                        <Block id="3117">
+                                                            <displayName><![CDATA[The syllabus]]></displayName>
+                                                            <description><![CDATA[]]></description>
+                                                            <contentMarkup><![CDATA[]]></contentMarkup>
+                                                        </Block>
+                                                    </cell>
+                                                </FlowOrganizer>
+                                            </cell>
+                                        </NavOrganizer>
+                                    </NavBlock>
+                                </cell>
+                                <cell>
+                                    <NavBlock id="3122">
+                                        <displayName><![CDATA[Week 1]]></displayName>
+                                        <description><![CDATA[]]></description>
+                                        <contentMarkup><![CDATA[]]></contentMarkup>
+                                        <NavOrganizer id="3123" rows="1" cols="1" direction="Left-Right/Top-Bottom">
+                                            <cell />
+                                        </NavOrganizer>
+                                    </NavBlock>
+                                </cell>
+                                <cell>
+                                    <NavBlock id="3124">
+                                        <displayName><![CDATA[Week 2]]></displayName>
+                                        <description><![CDATA[]]></description>
+                                        <contentMarkup><![CDATA[]]></contentMarkup>
+                                        <NavOrganizer id="3125" rows="1" cols="1" direction="Left-Right/Top-Bottom">
+                                            <cell />
+                                        </NavOrganizer>
+                                    </NavBlock>
+                                </cell>
+                            </MenuOrganizer>
                         </NavBlock>
                     </cell>
                 </MenuOrganizer>

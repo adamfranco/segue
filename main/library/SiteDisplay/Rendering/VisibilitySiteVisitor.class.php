@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.6 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.7 2006/09/22 14:41:49 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.6 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.7 2006/09/22 14:41:49 adamfranco Exp $
  */
 class VisibilitySiteVisitor {
 		
@@ -65,6 +65,10 @@ class VisibilitySiteVisitor {
 		if ($navBlock->isActive()) {
 			$childOrganizer =& $navBlock->getOrganizer();
 			$childOrganizer->acceptVisitor($this);
+			
+			$nestedMenuOrganizer =& $navBlock->getNestedMenuOrganizer();
+			if (!is_null($nestedMenuOrganizer))
+				$nestedMenuOrganizer->acceptVisitor($this);
 		}
 		
 		return $this->visitBlock($navBlock);

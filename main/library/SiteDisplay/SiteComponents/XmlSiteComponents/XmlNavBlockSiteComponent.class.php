@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.10 2006/07/28 19:01:09 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.11 2006/09/22 14:41:49 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.10 2006/07/28 19:01:09 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.11 2006/09/22 14:41:49 adamfranco Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
@@ -61,6 +61,31 @@ class XmlNavBlockSiteComponent
 			$navOrgObj->updateNumColumns('1');
 		}
 		return $navOrgObj;
+		
+		//throwError( new Error("Organizer not found", "XmlSiteComponents"));
+	}
+	
+	/**
+	 * Answers the nested menu for this object
+	 * 
+	 * @return object OrganizerSiteComponent
+	 * @access public
+	 * @since 9/20/06
+	 */
+	function &getNestedMenuOrganizer () {
+		$menuOrgObj = null;
+		$child =& $this->_element->firstChild;
+		while ($child) {
+			if ($child->nodeName == 'MenuOrganizer') {
+				$menuOrg =& $child;
+				$menuOrgObj =& $this->_director->getSiteComponent($menuOrg);
+			}
+			$child =& $child->nextSibling;
+		}
+// 		if (!isset($menuOrgObj)) {
+// 			$menuOrgObj =& $this->_director->createSiteComponent("MenuOrganizer");
+// 		}
+		return $menuOrgObj;
 		
 		//throwError( new Error("Organizer not found", "XmlSiteComponents"));
 	}
