@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.14 2006/09/22 14:41:49 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.15 2006/09/22 19:38:08 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.14 2006/09/22 14:41:49 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.15 2006/09/22 19:38:08 adamfranco Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -215,6 +215,18 @@ class XmlFlowOrganizerSiteComponent
 	 */
 	function &acceptVisitor ( &$visitor ) {
 		return $visitor->visitFlowOrganizer($this);
+	}
+	
+	/**
+	 * Answer true if there is a level of menus below the current one.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 9/22/06
+	 */
+	function subMenuExists () {
+		// Flow organizers can't contain menus.
+		return false;
 	}
 	
 /*********************************************************

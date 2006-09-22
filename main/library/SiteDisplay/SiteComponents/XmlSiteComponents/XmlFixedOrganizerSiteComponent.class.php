@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.22 2006/09/22 15:07:06 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.23 2006/09/22 19:38:08 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.22 2006/09/22 15:07:06 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.23 2006/09/22 19:38:08 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -347,6 +347,24 @@ class XmlFixedOrganizerSiteComponent
 		}
 		
 		return $results;
+	}
+	
+	/**
+	 * Answer true if there is a level of menus below the current one.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 9/22/06
+	 */
+	function subMenuExists () {
+		// Check all children, Menu Organizers will return true.
+		$children =& $this->_getChildComponents();
+		foreach (array_keys($children) as $key) {
+			if (is_object($children[$key]) && $children[$key]->subMenuExists())
+				return TRUE;
+		}
+		
+		return false;
 	}
 }
 

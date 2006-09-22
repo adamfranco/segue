@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.30 2006/09/22 14:41:48 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.31 2006/09/22 19:38:08 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.30 2006/09/22 14:41:48 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.31 2006/09/22 19:38:08 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -95,7 +95,7 @@ class EditModeSiteVisitor
 			$organizerId = $matches[1];
 			$cellIndex = $matches[2];
 			
-			$this->_emptyCells[$id]->add(new UnstyledBlock($this->getInsertFormHTML($siteNavBlock->getDirector(), $organizerId, $cellIndex, array('FlowOrganizer', 'MenuOrganizer', 'FixedOrganizer'))), null, '100%', null, TOP);
+			$this->_emptyCells[$id]->add(new UnstyledBlock($this->getInsertFormHTML($siteNavBlock->getDirector(), $organizerId, $cellIndex, array('FlowOrganizer', 'FixedOrganizer'))), null, '100%', null, TOP);
 			
 			unset($this->_emptyCells[$id], $matches, $organizerId, $cellIndex);
 		}
@@ -657,7 +657,7 @@ END;
 			."border-top: $lineWidth solid $borderColor; "
 			."border-left: $lineWidth solid $borderColor; "
 			."border-right: $lineWidth solid $borderColor; "
-			.(($leftIndentLevel)?"margin-left: ".($leftIndentLevel*10)."px; ":"")
+			.(($leftIndentLevel)?"margin-left: 10px; ":"")
 			."'"
 			." onmouseover='showControlsLink(this)'"
 			." onmouseout='hideControlsLink(this)'>";

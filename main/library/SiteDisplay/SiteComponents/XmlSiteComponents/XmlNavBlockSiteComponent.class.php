@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.13 2006/09/22 15:55:17 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.14 2006/09/22 19:38:08 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.13 2006/09/22 15:55:17 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.14 2006/09/22 19:38:08 adamfranco Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
@@ -236,6 +236,22 @@ class XmlNavBlockSiteComponent
 	 */
 	function &getMenuOrganizer () {
 		return $this->getParentComponent();
+	}
+	
+	/**
+	 * Answer true if there is a level of menus below the current one.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 9/22/06
+	 */
+	function subMenuExists () {
+		if (!is_null($this->getNestedMenuOrganizer()))
+			return TRUE;
+		else {
+			$organizer =& $this->getOrganizer();
+			return $organizer->subMenuExists();
+		}
 	}
 }
 

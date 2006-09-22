@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2006/08/18 20:19:08 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.7 2006/09/22 19:38:08 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2006/08/18 20:19:08 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.7 2006/09/22 19:38:08 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 		
@@ -88,6 +88,42 @@ class ControlsSiteVisitor {
 		print "'>";
 		print _("delete");
 		print "</a>";
+		print "\n\t\t\t\t</div>";
+	}
+	
+	/**
+	 * Print the form to add a submenu
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 9/22/06
+	 */
+	function printAddSubMenu ( &$siteComponent ) {
+		print "\n\t\t\t\t<div>";
+		print _("Sub-Menu: ");
+		
+		if ($siteComponent->subMenuExists()) {
+			print _("created");
+		} else {
+			$parentMenuOrganizer =& $siteComponent->getMenuOrganizer();
+			
+			$harmoni =& Harmoni::instance();
+			$message = _("Are you sure that you wish to create a submenu?");
+			$url = str_replace('&amp;', '&', 
+					$harmoni->request->quickURL('site', 'createSubMenu', array(
+						'parent' => $siteComponent->getId(),
+						'returnNode' => RequestContext::value('node'),
+						'direction' => urlencode($parentMenuOrganizer->getDirection()))));
+			
+			print "\n\t\t\t\t\t<a href='Javascript:";
+			print 	"if (confirm(\"".$message."\")) ";
+			print 		"window.location = \"".$url."\";";
+			print "'>";
+			print _("create");
+			print "</a>";
+		}
+		
 		print "\n\t\t\t\t</div>";
 	}
 	
@@ -269,7 +305,8 @@ END;
 	function &visitNavBlock ( &$siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
-		$this->printDisplayName($siteComponent);
+		$this->printDisplayName($siteComponent);		
+		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
