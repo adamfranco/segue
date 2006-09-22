@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.7 2006/07/28 19:01:13 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.8 2006/09/22 15:55:17 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.7 2006/07/28 19:01:13 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.8 2006/09/22 15:55:17 adamfranco Exp $
  */
 class moveComponentAction 
 	extends EditModeSiteAction
@@ -47,6 +47,17 @@ class moveComponentAction
 			$menuOrganizer =& $component->getMenuOrganizer();
 			$menuOrganizer->updateTargetId(RequestContext::value('destination'));
 			return;
+		} 
+		// If we are moving a menu to a nav block, make the menu nested.
+		else if (strtolower(get_class($component)) == 'xmlmenuorganizersitecomponent') {
+			$newOrganizer =& $director->getSiteComponentById($targetOrgId);
+			$currentComponentInCell =& $newOrganizer->getSubcomponentForCell($targetCell);
+			printpre (strtolower(get_class($currentComponentInCell)));
+			if (strtolower(get_class($currentComponentInCell)) == 'xmlnavblocksitecomponent') {
+				printpre("Moving menu to: ".$currentComponentInCell->getId());
+				$currentComponentInCell->makeNested($component);
+				return;
+			}
 		}
 		
 		$newOrganizer =& $director->getSiteComponentById($targetOrgId);

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.6 2006/09/22 15:07:06 adamfranco Exp $
+ * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.7 2006/09/22 15:55:17 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.6 2006/09/22 15:07:06 adamfranco Exp $
+ * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.7 2006/09/22 15:55:17 adamfranco Exp $
  */
 class XmlMenuOrganizerSiteComponent 
 	extends XmlFlowOrganizerSiteComponent
@@ -100,6 +100,10 @@ class XmlMenuOrganizerSiteComponent
 		// The parent NavOrganizer is a possible destination
 		$parentNav =& $this->getParentNavOrganizer();
 		$results[$parentNav->getId()] =& $parentNav;
+		
+		// Add our parent NavBlock
+		$parentNavBlock =& $parentNav->getParentComponent();
+		$results[$parentNavBlock->getId()] =& $parentNavBlock;
 		
 		// As are FixedOrganizers that are below the parent NavOrganizer, but
 		// not below me.

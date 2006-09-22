@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.16 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.17 2006/09/22 15:55:17 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.16 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: XmlOrganizerSiteComponent.class.php,v 1.17 2006/09/22 15:55:17 adamfranco Exp $
  */
 class XmlOrganizerSiteComponent
 	extends XmlSiteComponent
@@ -301,7 +301,7 @@ class XmlOrganizerSiteComponent
 		// merge our current subcomponents and any other component to be
 		// added. (This is for the Flow/Menu organizers, as well as the
 		// empty case for Fixed organizers.
-		$addableComponents =& $this->getVisibleComponentsForPossibleAddition();
+		$addableComponents =& $this->getVisibleComponentsForPossibleAddition($cellIndex);
 		$movableSubcomponents =& $this->getSubcomponentsNotInCell($cellIndex);
 		$results = array();
 		foreach (array_keys($addableComponents) as $id)
@@ -337,7 +337,7 @@ class XmlOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleComponentsForPossibleAddition () {
+	function &getVisibleComponentsForPossibleAddition ($cellIndex) {
 		$results = array();
 		
 		// If not authorized to add children, return an empty array;
@@ -346,11 +346,22 @@ class XmlOrganizerSiteComponent
 			return $results;
 		}
 		
+		// get the id of the item in this cell so that we can allow dropping
+		// on this item only, rather than any cell in the organizer.
+		// This is used for dropping nested menus.
+		$currentComponentInCell =& $this->getSubcomponentForCell($cellIndex);
+		if ($currentComponentInCell)
+			$currentIdInCell = $currentComponentInCell->getId();
+		else
+			$currentIdInCell = null;
+		
 		$visibleComponents =& $this->_director->getVisibleComponents();
 		foreach (array_keys($visibleComponents) as $id) {
 			$possibleDestinations =& $visibleComponents[$id]->getVisibleDestinationsForPossibleAddition();
 			foreach (array_keys($possibleDestinations) as $destId) {
-				if ($destId == $this->getId()) {
+				
+				// See if this organizer or the current element is listed as a possible destination.
+				if ($destId == $this->getId() || ($currentIdInCell && $destId == $currentIdInCell)) {
 					$results[$id] =& $visibleComponents[$id];
 					break;
 				}
