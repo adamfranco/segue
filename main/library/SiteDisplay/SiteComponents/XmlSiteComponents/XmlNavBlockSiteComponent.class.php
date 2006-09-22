@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.11 2006/09/22 14:41:49 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.12 2006/09/22 15:07:07 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.11 2006/09/22 14:41:49 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.12 2006/09/22 15:07:07 adamfranco Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
@@ -134,6 +134,19 @@ class XmlNavBlockSiteComponent
 	 */
 	function &acceptVisitor ( &$visitor ) {
 		return $visitor->visitNavBlock($this);
+	}
+	
+	/**
+	 * Remove a subcomponent, but don't delete it from the director completely.
+	 * This is used to remove nested menus.
+	 * 
+	 * @param object SiteComponent $subcomponent
+	 * @return void
+	 * @access public
+	 * @since 9/22/06
+	 */
+	function detatchSubcomponent ( &$subcomponent ) {
+		$this->_element->removeChild($subcomponent->getElement());
 	}
 	
 	/**

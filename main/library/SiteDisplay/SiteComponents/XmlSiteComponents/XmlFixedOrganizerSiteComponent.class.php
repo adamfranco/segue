@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.21 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.22 2006/09/22 15:07:06 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.21 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.22 2006/09/22 15:07:06 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -86,7 +86,11 @@ class XmlFixedOrganizerSiteComponent
 		if ($currentIndex === FALSE) {
 			// A cell will have no old parent if it is newly created.
 			if ($oldParent =& $siteComponent->getParentComponent()) {
-				$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
+				if (method_exists($oldParent, 'getCellForSubcomponent'))
+					$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
+				else 
+					$oldCellId = null;
+				
 				$oldParent->detatchSubcomponent($siteComponent);
 			} else {
 				$oldCellId = null;
