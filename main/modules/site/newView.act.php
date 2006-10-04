@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.9 2006/04/18 20:34:07 adamfranco Exp $
+ * @version $Id: newView.act.php,v 1.10 2006/10/04 20:36:19 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.class.php");
 
@@ -23,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: newView.act.php,v 1.9 2006/04/18 20:34:07 adamfranco Exp $
+ * @version $Id: newView.act.php,v 1.10 2006/10/04 20:36:19 adamfranco Exp $
  */
 class newViewAction
 	extends displayAction {
@@ -37,74 +38,42 @@ class newViewAction
 	 * @since 4/3/06
 	 */
 	function &execute ( &$harmoni ) {
-		$testDocument =& new DOMIT_Document();
-		$testDocument->setNamespaceAwareness(true);
-		$success = $testDocument->loadXML(MYDIR."/main/library/SiteDisplay/test/testSite.xml");
+		/*********************************************************
+		 * XML Version
+		 *********************************************************/
+// 		$testDocument =& new DOMIT_Document();
+// 		$testDocument->setNamespaceAwareness(true);
+// 		$success = $testDocument->loadXML(MYDIR."/main/library/SiteDisplay/test/testSite.xml");
+// 
+// 		if ($success !== true) {
+// 			throwError(new Error("DOMIT error: ".$testDocument->getErrorCode().
+// 				"<br/>\t meaning: ".$testDocument->getErrorString()."<br/>", "SiteDisplay"));
+// 		}
+// 
+// 		$director =& new XmlSiteDirector($testDocument);
+// 		
+// 		if (!$nodeId = RequestContext::value("node"))
+// 			$nodeId = "1";
 
-		if ($success !== true) {
-			throwError(new Error("DOMIT error: ".$testDocument->getErrorCode().
-				"<br/>\t meaning: ".$testDocument->getErrorString()."<br/>", "SiteDisplay"));
-		}
-
-		$xmlDirector =& new XmlSiteDirector($testDocument);
+		/*********************************************************
+		 * Asset version
+		 *********************************************************/
+		$repositoryManager =& Services::getService('Repository');
+		$idManager =& Services::getService('Id');
 		
-//		$flow =& $xmlDirector->getSiteComponentById(4);
-//		printpre($flow->_element->toNormalizedString(true));
-//		print "<hr/>";
-
-//		$flow->deleteSubcomponentInCell(2);
-//		printpre($flow->_element->toNormalizedString(true));
-//		print "<hr/>";
-// 		$blockA =& $xmlDirector->createSiteComponent('Block');
-// 		printpre($blockA->_element->toNormalizedString(true));
-//		print "<hr/>";
-//		$blockA->updateDisplayName('New Block');
-// 		printpre($blockA->_element->toNormalizedString(true));
-// 		print "<hr/>";
-// 		$blockA->updateDescription("I'm the new block on the kid.");
-// 		printpre($blockA->_element->toNormalizedString(true));
-// 		print "<hr/>";
-//		$blockA->updateTitleMarkup("Where is this printed?");
-// 		printpre($blockA->_element->toNormalizedString(true));
-// 		print "<hr/>";
-// 		$blockA->updateContentMarkup('Hey... Hey... World... Wake up... WAKE UP!\n ps I have id 7');
-// 		printpre($blockA->_element->toNormalizedString(true));
-// 		print "<hr/>";
-//		$flow->addSubcomponent($blockA);
-//		printpre($flow->_element->toNormalizedString(true));
-//		print "<hr/>";
-		
-		
-//		$blockA =& $xmlDirector->getSiteComponentById(6);
-// 		printpre($blockA->_element->toNormalizedString(true));
-//		$blockA->updateDisplayName('New TextBlock A displayName');
-//		$blockA->updateDescription('My description is the bomb');
-//		$blockA->updateContentMarkup('Hello world. I am a banana. Hear me Roar!');
-// 		print "<hr/>";
-// 		printpre($blockA->_element->toNormalizedString(true));
-// 		print "<hr/>";
-// 		printpre($testDocument->toNormalizedString(true));
-		
-//		$flow->moveBefore('0', '3');
-//		printpre($flow->_element->toNormalizedString(true));
-//		print "<hr/>";
-//		$flow->moveToEnd('1');
-//		printpre($flow->_element->toNormalizedString(true));
-//		print "<hr/>";
-
-// 		$fixed =& $xmlDirector->getSiteComponentById();
-// 		$flow->moveBefore('0', '1');
-// 		print "<hr/>";
-// 		printpre($flow->_element->toNormalizedString(true));
-// 		print "<hr/>";
-// 		$flow->moveToEnd('0');
-// 		printpre($flow->_element->toNormalizedString(true));
-// 		print "<hr/>";
+		$director =& new AssetSiteDirector(
+			$repositoryManager->getRepository(
+				$idManager->getId('edu.middlebury.segue.sites_repository')));
 		
 		if (!$nodeId = RequestContext::value("node"))
-			$nodeId = "1";
+			$nodeId = "67";
+			
 		
-		$rootSiteComponent =& $xmlDirector->getRootSiteComponent($nodeId);
+		
+		/*********************************************************
+		 * Aditional setup
+		 *********************************************************/
+		$rootSiteComponent =& $director->getRootSiteComponent($nodeId);
 		
 		$visitor =& $this->getSiteVisitor();
 		
