@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.17 2006/09/22 14:41:49 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.18 2006/10/04 20:35:00 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.17 2006/09/22 14:41:49 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.18 2006/10/04 20:35:00 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -260,7 +260,9 @@ class ViewModeSiteVisitor {
 	 */
 	function &visitMenuOrganizer ( &$organizer ) {	
 		// Choose layout direction based on number of rows
-		if ($organizer->getDirection() == "Left-Right/Top-Bottom") {
+		if ($this->_menuNestingLevel) {
+			$layout =& new YLayout();
+		} else if ($organizer->getDirection() == "Left-Right/Top-Bottom") {
 			$layout =& new XLayout();
 		} else if ($organizer->getDirection() == "Right-Left/Top-Bottom") {
 			$layout =& new XLayout();
