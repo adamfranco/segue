@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.9 2006/06/06 20:04:44 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.10 2006/10/04 20:33:14 adamfranco Exp $
  */
 
 /*********************************************************
@@ -88,7 +88,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 	 * Script for setting up the RepositoryManager Hierarchy
 	 *********************************************************/	
 			// Create nodes for Qualifiers
-			$collectionsId =& $idManager->getId("edu.middlebury.segue.collections_root");
+			$collectionsId =& $idManager->getId("edu.middlebury.concerto.collections_root");
 			$authorizationHierarchy->createNode($collectionsId, $allOfSegueId, new DefaultQualifierType, "Segue Repositories", "All Repositories in Segue.");
 	
 	/*********************************************************
