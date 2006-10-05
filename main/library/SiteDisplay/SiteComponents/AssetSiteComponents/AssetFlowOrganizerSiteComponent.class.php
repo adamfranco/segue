@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -79,6 +79,7 @@ class AssetFlowOrganizerSiteComponent
 	 */
 	function updateOverflowStyle ( $overflowStyle ) {
 		$this->_element->setAttribute("overflowStyle", $overflowStyle);
+		$this->_saveXml();
 	}
 	
 	/**
@@ -95,6 +96,8 @@ class AssetFlowOrganizerSiteComponent
 		$this->_element->appendChild($cell);
 		// this is only for single page load deletes (testing)
 		$this->_getChildComponents(true);
+		
+		$this->_saveXml();
 	}
 	
 	/**
@@ -119,11 +122,11 @@ class AssetFlowOrganizerSiteComponent
 			}
 			
 			$this->addSubcomponent($siteComponent);
+			$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		} else {
 			$oldCellId = $this->getId()."_cell:".$currentIndex;
 		}
 		
-		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		$this->moveBefore($currentIndex, $cellIndex);
 		
 		return $oldCellId;
@@ -151,6 +154,8 @@ class AssetFlowOrganizerSiteComponent
 			$this->_element->insertBefore($temp, $children[$cellTwoIndex - 1]);
 		else
 			$this->_element->insertBefore($temp, $children[$cellTwoIndex]);
+		
+		$this->_saveXml();
 	}
 	
 	/**
@@ -165,6 +170,8 @@ class AssetFlowOrganizerSiteComponent
 		$temp =& $this->_element->childNodes[$cellIndex];
 		$this->_element->removeChild($temp);
 		$this->_element->appendChild($temp);
+		
+		$this->_saveXml();
 	}
 
 	/**
@@ -184,6 +191,8 @@ class AssetFlowOrganizerSiteComponent
 			$cellIndex--;
 		}
 		$this->_element->removeChild($cell);
+		
+		$this->_saveXml();
 	}
 	
 	/**
@@ -203,6 +212,8 @@ class AssetFlowOrganizerSiteComponent
 		$this->_element->removeChild($cell);
 		$this->_director->deleteSiteComponent($this->getSubcomponentForCell($i));
 		unset($this->_childComponents);
+		
+		$this->_saveXml();
 	}	
 	
 	/**

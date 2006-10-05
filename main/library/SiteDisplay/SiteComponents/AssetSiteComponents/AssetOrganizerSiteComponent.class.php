@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */
 class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -80,6 +80,7 @@ class AssetOrganizerSiteComponent
 	 */
 	function updateNumRows ( $newRows ) {
 		$this->_element->setAttribute('rows', $newRows);
+		$this->_saveXml();
 	}
 
 	/**
@@ -106,6 +107,7 @@ class AssetOrganizerSiteComponent
 	 */
 	function updateNumColumns ( $newColumns ) {
 		$this->_element->setAttribute('cols', $newColumns);
+		$this->_saveXml();
 	}
 	
 	/**
@@ -158,6 +160,7 @@ class AssetOrganizerSiteComponent
 	 */
 	function updateDirection ( $direction ) {
 		$this->_element->setAttribute('direction', $direction);
+		$this->_saveXml();
 	}
 	
 	/**
@@ -231,6 +234,8 @@ class AssetOrganizerSiteComponent
 			$cellIndex--;
 		}
 		$cell->removeChild($subcomponent->getElement());
+		
+		$this->_saveXml();
 	}
 	
 	/**

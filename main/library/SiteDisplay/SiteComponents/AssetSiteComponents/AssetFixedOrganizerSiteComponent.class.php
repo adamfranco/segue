@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */
 class AssetFixedOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -68,6 +68,8 @@ class AssetFixedOrganizerSiteComponent
 		
 		if (!$success)
 			throwError( new Error("Cell $cellIndex Not Found", "SiteComponents"));
+		
+		$this->_saveXml();
 	}
 	
 	/**
@@ -128,6 +130,8 @@ class AssetFixedOrganizerSiteComponent
         $this->_element->replaceChild($temp, $cell_one);
         $this->_element->replaceChild($cell_one, $cell_two);
         $this->_element->replaceChild($cell_two, $temp);
+       
+       	$this->_saveXml();
 	}
 	
 	/**
@@ -182,6 +186,8 @@ class AssetFixedOrganizerSiteComponent
 			if ($i > $lastUsed)
 				$this->_element->removeChild($this->_element->childNodes[$i]);
 		}
+		
+		$this->_saveXml();
 	}
 	
 	/**
@@ -251,6 +257,8 @@ class AssetFixedOrganizerSiteComponent
 		$cell->removeChild($cell->firstChild);
 		$this->_director->deleteSiteComponent($this->getSubcomponentForCell($i));
 		unset($this->_childComponents);
+		
+		$this->_saveXml();
 	}	
 
 	/**

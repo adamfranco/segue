@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -111,6 +111,7 @@ class AssetNavBlockSiteComponent
 		}
 		// organizer not found... create it
 		$this->_element->appendChild($orgElement);
+		$this->_saveXml();
 	}
 	
 	/**
@@ -160,6 +161,8 @@ class AssetNavBlockSiteComponent
 		
 		$this->_element->appendChild($menuOrganizer->getElement());
 		
+		$this->_saveXml();
+		
 		return $oldCellId;
 	}
 	
@@ -174,6 +177,7 @@ class AssetNavBlockSiteComponent
 	 */
 	function detatchSubcomponent ( &$subcomponent ) {
 		$this->_element->removeChild($subcomponent->getElement());
+		$this->_saveXml();
 	}
 	
 	/**

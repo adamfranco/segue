@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */
 class AssetSiteComponent 
 	// implements SiteComponent
@@ -150,6 +150,27 @@ class AssetSiteComponent
 	 */
 	function &getVisibleDestinationsForPossibleAddition () {
 		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay"));
+	}
+	
+/*********************************************************
+ * Private methods
+ *********************************************************/
+	
+	/**
+	 * Store changes to our asset's XML document
+	 * 
+	 * @return void
+	 * @access private
+	 * @since 10/5/06
+	 */
+	function _saveXml () {
+		printpre("<h2>AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
+		printpre($this->_element->ownerDocument->toNormalizedString(true));
+// 		exit;
+		
+		$this->_asset->updateContent(
+			Blob::fromString(
+				$this->_element->ownerDocument->toNormalizedString()));
 	}
 }
 

@@ -5,11 +5,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.1 2006/04/14 21:03:24 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 
 
 /**
@@ -20,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/X
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.1 2006/04/14 21:03:24 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */
 class EditModeSiteAction 
 	extends MainWindowAction
@@ -110,18 +111,34 @@ class EditModeSiteAction
 	 * @since 4/14/06
 	 */
 	function &getSiteDirector () {
-		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
+		/*********************************************************
+		 * XML Version
+		 *********************************************************/
+// 		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
+// 		
+// 		$this->document =& new DOMIT_Document();
+// 		$this->document->setNamespaceAwareness(true);
+// 		$success = $this->document->loadXML($this->filename);
+// 
+// 		if ($success !== true) {
+// 			throwError(new Error("DOMIT error: ".$this->document->getErrorCode().
+// 				"<br/>\t meaning: ".$this->document->getErrorString()."<br/>", "SiteDisplay"));
+// 		}
+// 
+// 		$director =& new XmlSiteDirector($this->document);
 		
-		$this->document =& new DOMIT_Document();
-		$this->document->setNamespaceAwareness(true);
-		$success = $this->document->loadXML($this->filename);
-
-		if ($success !== true) {
-			throwError(new Error("DOMIT error: ".$this->document->getErrorCode().
-				"<br/>\t meaning: ".$this->document->getErrorString()."<br/>", "SiteDisplay"));
-		}
-
-		$director =& new XmlSiteDirector($this->document);
+		
+		/*********************************************************
+		 * Asset version
+		 *********************************************************/
+		$repositoryManager =& Services::getService('Repository');
+		$idManager =& Services::getService('Id');
+		
+		$director =& new AssetSiteDirector(
+			$repositoryManager->getRepository(
+				$idManager->getId('edu.middlebury.segue.sites_repository')));
+		
+		
 		return $director;
 	}
 	
@@ -134,36 +151,36 @@ class EditModeSiteAction
 	 */
 	function writeDataAndReturn () {
 		// 		printpre($this->document->toNormalizedString(true));
-		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
-		
-		// Let's make sure the file exists and is writable first.
-		if (is_writable($this->filename)) {
-		
-			// In our example we're opening $filename in append mode.
-			// The file pointer is at the bottom of the file hence
-			// that's where $somecontent will go when we fwrite() it.
-			if (!$handle = fopen($this->filename, 'w')) {
-				echo "Cannot open file (".$this->filename.")";
-				exit;
-			}
-			
-			// Write $somecontent to our opened file.
-			if (fwrite($handle, $this->document->toNormalizedString()) === FALSE) {
-				echo "Cannot write to file (".$this->filename.")";
-				exit;
-			}
-			
-			fclose($handle);
+// 		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
+// 		
+// 		// Let's make sure the file exists and is writable first.
+// 		if (is_writable($this->filename)) {
+// 		
+// 			// In our example we're opening $filename in append mode.
+// 			// The file pointer is at the bottom of the file hence
+// 			// that's where $somecontent will go when we fwrite() it.
+// 			if (!$handle = fopen($this->filename, 'w')) {
+// 				echo "Cannot open file (".$this->filename.")";
+// 				exit;
+// 			}
+// 			
+// 			// Write $somecontent to our opened file.
+// 			if (fwrite($handle, $this->document->toNormalizedString()) === FALSE) {
+// 				echo "Cannot write to file (".$this->filename.")";
+// 				exit;
+// 			}
+// 			
+// 			fclose($handle);
 			
 			$harmoni =& Harmoni::instance();
 			RequestContext::locationHeader($harmoni->request->quickURL(
 				"site", "newEdit",
 				array("node" => RequestContext::value('returnNode'))));	
-			
-		} else {
-			echo "The file ".$this->filename." is not writable.<hr/>";
-			printpre($this->document->toNormalizedString(true));
-		}
+// 			
+// 		} else {
+// 			echo "The file ".$this->filename." is not writable.<hr/>";
+// 			printpre($this->document->toNormalizedString(true));
+// 		}
 
 	}
 }

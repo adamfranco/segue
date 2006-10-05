@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -75,7 +75,12 @@ class AssetSiteDirector
 			ArgumentValidator::validate($id, StringValidatorRule::getRule());
 			
 			$idManager =& Services::getService("Id");
-			$currentAsset =& $this->_repository->getAsset($idManager->getId($id));
+			
+			if (preg_match('/^(\w+)----(\w+)$/', $id, $matches))
+				$currentAsset =& $this->_repository->getAsset(
+						$idManager->getId($matches[1]));
+			else
+				$currentAsset =& $this->_repository->getAsset($idManager->getId($id));
 			
 			$this->activateDefaultsDownAsset($currentAsset);
 			$this->_rootSiteComponent =& $this->traverseUpToRootSiteComponent($currentAsset);
@@ -259,7 +264,7 @@ class AssetSiteDirector
 						$idManager->getId($matches[1]));
 			$xmlDoc =& $this->getXmlDocumentFromAsset($asset);
 			$element =& $xmlDoc->getElementByID($matches[2], false);
-			return $this->getSiteComponentFromXml($element);
+			return $this->getSiteComponentFromXml($asset, $element);
 		} else {
 			return $this->getSiteComponentFromAsset(
 						$this->_repository->getAsset(

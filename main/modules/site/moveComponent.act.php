@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.8 2006/09/22 15:55:17 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.9 2006/10/05 18:09:49 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.8 2006/09/22 15:55:17 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.9 2006/10/05 18:09:49 adamfranco Exp $
  */
 class moveComponentAction 
 	extends EditModeSiteAction
@@ -43,25 +43,31 @@ class moveComponentAction
 		$component =& $director->getSiteComponentById(RequestContext::value('component'));
 		
 		// If we are moving a navOrganizer, update the target of the menu
-		if (strtolower(get_class($component)) == 'xmlnavorganizersitecomponent') {
+		if (preg_match('/^.*NavOrganizerSiteComponent$/i', get_class($component))) {
 			$menuOrganizer =& $component->getMenuOrganizer();
 			$menuOrganizer->updateTargetId(RequestContext::value('destination'));
 			return;
 		} 
 		// If we are moving a menu to a nav block, make the menu nested.
-		else if (strtolower(get_class($component)) == 'xmlmenuorganizersitecomponent') {
+		else if (preg_match('/^.*MenuOrganizerSiteComponent$/i', get_class($component))) {
 			$newOrganizer =& $director->getSiteComponentById($targetOrgId);
 			$currentComponentInCell =& $newOrganizer->getSubcomponentForCell($targetCell);
 			printpre (strtolower(get_class($currentComponentInCell)));
-			if (strtolower(get_class($currentComponentInCell)) == 'xmlnavblocksitecomponent') {
+			if (preg_match('/^.*NavBlockSiteComponent$/i', get_class($component))) {
 				printpre("Moving menu to: ".$currentComponentInCell->getId());
 				$currentComponentInCell->makeNested($component);
 				return;
 			}
 		}
 		
+		printpre("targetOrgId: ".$targetOrgId);
+		printpre("targetCell: ".$targetCell);
+		printpre("componentId: ".RequestContext::value('component'));
+		
 		$newOrganizer =& $director->getSiteComponentById($targetOrgId);
 		$oldCellId = $newOrganizer->putSubcomponentInCell($component, $targetCell);
+		
+		printpre("oldCellId: ".$oldCellId);
 		
 		// If the targetCell was a target for any menus, change their targets
 		// to the cell just vacated by the component we swapped with
@@ -74,6 +80,8 @@ class moveComponentAction
 				$menuOrganizer->updateTargetId($oldCellId);
 			}
 		}
+		
+// 		exit;
 	}
 }
 
