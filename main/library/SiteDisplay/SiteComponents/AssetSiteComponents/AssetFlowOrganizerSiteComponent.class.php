@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.3 2006/10/06 15:43:09 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.3 2006/10/06 15:43:09 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -98,6 +98,12 @@ class AssetFlowOrganizerSiteComponent
 		$this->_getChildComponents(true);
 		
 		$this->_saveXml();
+		
+		if ($this->_director->NavBlockType->isEqual($siteComponent->_asset->getAssetType())
+			|| $this->_director->BlockType->isEqual($siteComponent->_asset->getAssetType()))
+		{
+			$this->_asset->addAsset($siteComponent->_asset->getId());
+		}
 	}
 	
 	/**
@@ -112,7 +118,7 @@ class AssetFlowOrganizerSiteComponent
 	 */
 	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
-		if ($currentIndex === FALSE) {
+		if ($currentIndex === FALSE) {			
 			// A cell will have no old parent if it is newly created.
 			if ($oldParent =& $siteComponent->getParentComponent()) {
 				$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
@@ -193,6 +199,12 @@ class AssetFlowOrganizerSiteComponent
 		$this->_element->removeChild($cell);
 		
 		$this->_saveXml();
+		
+		if ($this->_director->NavBlockType->isEqual($subcomponent->_asset->getAssetType())
+			|| $this->_director->BlockType->isEqual($subcomponent->_asset->getAssetType()))
+		{
+			$this->_asset->removeAsset($subcomponent->_asset->getId(), true);
+		}
 	}
 	
 	/**

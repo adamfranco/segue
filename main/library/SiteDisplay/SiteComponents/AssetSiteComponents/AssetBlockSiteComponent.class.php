@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.2 2006/10/06 15:43:08 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.2 2006/10/06 15:43:08 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -37,6 +37,31 @@ class AssetBlockSiteComponent
 		$this->updateDisplayName('');
 		$this->updateDescription('');
 		$this->updateContentMarkup('');
+	}
+	
+	/**
+	 * Answer the DOMIT_Element associated with this SiteComponent
+	 * 
+	 * @return object DOMIT_Element
+	 * @access public
+	 * @since 4/5/06
+	 */
+	function &getElement () {
+		$tmpDocument =& new DOMIT_Document();
+		$element =& $tmpDocument->createElement($this->getComponentClass());
+		$element->setAttribute('id', $this->getId());
+		return $element;
+	}
+	
+	/**
+	 * Answer the component class
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 10/6/06
+	 */
+	function getComponentClass () {
+		return 'Block';
 	}
 	
 	/**

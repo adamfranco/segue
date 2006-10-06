@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.3 2006/10/06 15:43:09 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.3 2006/10/06 15:43:09 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -37,6 +37,17 @@ class AssetNavBlockSiteComponent
 		parent::populateWithDefaults();
 		
 		$this->setOrganizer($this->_director->createSiteComponent("NavOrganizer"));
+	}
+	
+	/**
+	 * Answer the component class
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 10/6/06
+	 */
+	function getComponentClass () {
+		return 'NavBlock';
 	}
 		
 	/**
