@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -175,6 +175,9 @@ class AssetSiteDirector
 		if ($currentElement->nodeType == 1 
 			&& preg_match('/^.*Block$/i', $currentElement->nodeName))
 		{
+			if (!$currentElement->getAttribute('id'))
+				throwError(new Error("No id attribute in: ".$currentElement->toNormalizedString(true)."\nWithin document: ".$currentElement->ownerDocument->toNormalizedString(true)));
+			
 			$idManager =& Services::getService('Id');
 			$asset =& $this->_repository->getAsset($idManager->getId(
 							$currentElement->getAttribute('id')));

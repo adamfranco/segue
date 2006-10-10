@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
  */
 class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -228,6 +228,9 @@ class AssetOrganizerSiteComponent
 	function detatchSubcomponent ( &$subcomponent ) {
 		$cellIndex = $this->getCellForSubcomponent($subcomponent);
 		
+		$childAssetIdsBelowSubcomponent = $this->_getAssetIdsBelowElement(
+			$subcomponent->getElement());
+		
 		$cell =& $this->_element->firstChild;
 		while ($cellIndex) {
 			$cell =& $cell->nextSibling;
@@ -236,6 +239,43 @@ class AssetOrganizerSiteComponent
 		$cell->removeChild($subcomponent->getElement());
 		
 		$this->_saveXml();
+		
+		// Ensure that any assets referenced in the XML are removed from our asset.
+		$childAssetIdsBelowSubcomponent = $this->_getAssetIdsBelowElement(
+			$subcomponent->getElement());
+		$idManager =& Services::getService('Id');
+		foreach ($childAssetIdsBelowSubcomponent as $idString) {
+			$this->_asset->removeAsset($idManager->getId($idString), TRUE);
+		}
+	}
+	
+	/**
+	 * Answer the Ids of Assets that represent nodes below our node in the XML 
+	 * hierarchy. If the Organizer XML is moved to another level of the hierarchy, 
+	 * those child Assets will need to come along
+	 * 
+	 * @param object DOMIT_element $element
+	 * @return array An array of string Ids
+	 * @access public
+	 * @since 10/6/06
+	 */
+	function _getAssetIdsBelowElement ( &$element ) {
+		$assetIds = array();
+		
+		// If this element is a Block or NavBlock it is represented by an asset
+		if ($element->nodeType == 1 
+			&& preg_match('/^.*Block$/i', $element->nodeName))
+		{
+			$assetIds[] = $element->getAttribute('id');
+		} else {		
+			$child =& $element->firstChild;
+			while ($child) {
+				$assetIds = array_merge($assetIds, $this->_getAssetIdsBelowElement($child));
+				$child =& $child->nextSibling;
+			}
+		}
+				
+		return $assetIds;
 	}
 	
 	/**

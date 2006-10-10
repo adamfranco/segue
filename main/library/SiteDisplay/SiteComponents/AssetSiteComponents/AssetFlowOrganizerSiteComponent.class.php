@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.3 2006/10/06 15:43:09 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.4 2006/10/10 19:38:30 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.3 2006/10/06 15:43:09 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.4 2006/10/10 19:38:30 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -279,8 +279,8 @@ class AssetFlowOrganizerSiteComponent
 		
 		$visibleComponents =& $this->_director->getVisibleComponents();
 		foreach (array_keys($visibleComponents) as $id) {
-			if (strtolower("XmlFixedOrganizerSiteComponent") == strtolower(get_class($visibleComponents[$id]))
-				|| strtolower("XmlNavOrganizerSiteComponent") == strtolower(get_class($visibleComponents[$id])))
+			if (preg_match('/^.*FixedOrganizerSiteComponent$/i', get_class($visibleComponents[$id]))
+				|| preg_match('/^.*NavOrganizerSiteComponent$/i', get_class($visibleComponents[$id])))
 			{
 					$results[$id] =& $visibleComponents[$id];
 			}

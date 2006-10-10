@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
  */
 class AssetFixedOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -70,6 +70,14 @@ class AssetFixedOrganizerSiteComponent
 			throwError( new Error("Cell $cellIndex Not Found", "SiteComponents"));
 		
 		$this->_saveXml();
+		
+		// Ensure that any assets referenced in the XML are added to our asset.
+		$childAssetIdsBelowSubcomponent = $this->_getAssetIdsBelowElement(
+			$siteComponent->getElement());
+		$idManager =& Services::getService('Id');
+		foreach ($childAssetIdsBelowSubcomponent as $idString) {
+			$this->_asset->addAsset($idManager->getId($idString));
+		}
 	}
 	
 	/**
@@ -84,6 +92,7 @@ class AssetFixedOrganizerSiteComponent
 	 * @since 4/12/06
 	 */
 	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
+		$this->normalizeCells();
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {
 			// A cell will have no old parent if it is newly created.
@@ -350,8 +359,16 @@ class AssetFixedOrganizerSiteComponent
 		
 		$children =& $this->_getChildComponents();
 		foreach (array_keys($children) as $key) {
-			if (strtolower("XmlFixedOrganizerSiteComponent") == strtolower(get_class($children[$key])))
+// 			if ($children[$key]) {
+// 				print "<hr/>";
+// 				printpre($children[$key]->getId());
+// 				printpre(get_class($children[$key]));
+// 			}
+			if (preg_match('/^.*FixedOrganizerSiteComponent$/i', get_class($children[$key]))) 
+			{
 				$results[$children[$key]->getId()] =& $children[$key];
+				
+			}
 		}
 		
 		return $results;

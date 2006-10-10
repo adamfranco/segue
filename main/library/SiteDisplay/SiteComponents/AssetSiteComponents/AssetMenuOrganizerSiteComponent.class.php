@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
  */
 class AssetMenuOrganizerSiteComponent 
 	extends AssetFlowOrganizerSiteComponent
@@ -60,7 +60,8 @@ class AssetMenuOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateTargetId ($id) {
-		$this->_element->setAttribute('target_id', $id);
+		preg_match('/^(.+----)?(.+_cell:[0-9]+)$/i', $id, $matches);
+		$this->_element->setAttribute('target_id', $matches[2]);
 		$this->_saveXml();
 	}
 	
@@ -142,7 +143,7 @@ class AssetMenuOrganizerSiteComponent
 		$parent =& $this->getParentComponent();
 		
 		// if this menu is nested, return the parent's nav organizer
-		if (strtolower(get_class($parent)) == "xmlnavblocksitecomponent")
+		if (preg_match('/^.*NavBlockSiteComponent$/i', get_class($parent)))
 			return $parent->getOrganizer();
 		
 		// otherwise traverse up

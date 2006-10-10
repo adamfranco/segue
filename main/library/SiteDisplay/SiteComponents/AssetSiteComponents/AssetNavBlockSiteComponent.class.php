@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.3 2006/10/06 15:43:09 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.4 2006/10/10 19:38:30 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.3 2006/10/06 15:43:09 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.4 2006/10/10 19:38:30 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -173,6 +173,16 @@ class AssetNavBlockSiteComponent
 		$this->_element->appendChild($menuOrganizer->getElement());
 		
 		$this->_saveXml();
+		
+		
+		// Ensure that any assets referenced in the XML are added to our asset.
+		$childAssetIdsBelowSubcomponent = $menuOrganizer->_getAssetIdsBelowElement(
+			$menuOrganizer->getElement());
+		$idManager =& Services::getService('Id');
+		foreach ($childAssetIdsBelowSubcomponent as $idString) {
+			$this->_asset->addAsset($idManager->getId($idString));
+		}
+		
 		
 		return $oldCellId;
 	}

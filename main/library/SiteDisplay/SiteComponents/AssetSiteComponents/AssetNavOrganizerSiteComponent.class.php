@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.2 2006/10/10 19:38:30 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.1 2006/10/04 20:36:19 adamfranco Exp $
+ * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.2 2006/10/10 19:38:30 adamfranco Exp $
  */
 class AssetNavOrganizerSiteComponent
 	extends AssetFixedOrganizerSiteComponent 
@@ -75,6 +75,7 @@ class AssetNavOrganizerSiteComponent
 		// The parent NavOrganizer is a possible destination
 		$parent =& $this->getParentComponent();
 		$parentNav =& $parent->getParentNavOrganizer();
+		
 		if ($parentNav)
 			$results[$parentNav->getId()] =& $parentNav;
 		else

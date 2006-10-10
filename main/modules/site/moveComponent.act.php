@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.9 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.10 2006/10/10 19:38:31 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.9 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.10 2006/10/10 19:38:31 adamfranco Exp $
  */
 class moveComponentAction 
 	extends EditModeSiteAction
@@ -53,21 +53,22 @@ class moveComponentAction
 			$newOrganizer =& $director->getSiteComponentById($targetOrgId);
 			$currentComponentInCell =& $newOrganizer->getSubcomponentForCell($targetCell);
 			printpre (strtolower(get_class($currentComponentInCell)));
-			if (preg_match('/^.*NavBlockSiteComponent$/i', get_class($component))) {
+			if (preg_match('/^.*NavBlockSiteComponent$/i', get_class($currentComponentInCell))) {
 				printpre("Moving menu to: ".$currentComponentInCell->getId());
 				$currentComponentInCell->makeNested($component);
 				return;
 			}
+			
 		}
 		
-		printpre("targetOrgId: ".$targetOrgId);
-		printpre("targetCell: ".$targetCell);
-		printpre("componentId: ".RequestContext::value('component'));
+// 		printpre("targetOrgId: ".$targetOrgId);
+// 		printpre("targetCell: ".$targetCell);
+// 		printpre("componentId: ".RequestContext::value('component'));
 		
 		$newOrganizer =& $director->getSiteComponentById($targetOrgId);
 		$oldCellId = $newOrganizer->putSubcomponentInCell($component, $targetCell);
 		
-		printpre("oldCellId: ".$oldCellId);
+// 		printpre("oldCellId: ".$oldCellId);
 		
 		// If the targetCell was a target for any menus, change their targets
 		// to the cell just vacated by the component we swapped with
