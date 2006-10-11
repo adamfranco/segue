@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.10 2006/10/10 19:38:31 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.11 2006/10/11 19:37:51 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.10 2006/10/10 19:38:31 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.11 2006/10/11 19:37:51 adamfranco Exp $
  */
 class moveComponentAction 
 	extends EditModeSiteAction
@@ -52,9 +52,7 @@ class moveComponentAction
 		else if (preg_match('/^.*MenuOrganizerSiteComponent$/i', get_class($component))) {
 			$newOrganizer =& $director->getSiteComponentById($targetOrgId);
 			$currentComponentInCell =& $newOrganizer->getSubcomponentForCell($targetCell);
-			printpre (strtolower(get_class($currentComponentInCell)));
 			if (preg_match('/^.*NavBlockSiteComponent$/i', get_class($currentComponentInCell))) {
-				printpre("Moving menu to: ".$currentComponentInCell->getId());
 				$currentComponentInCell->makeNested($component);
 				return;
 			}

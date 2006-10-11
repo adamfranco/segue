@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.2 2006/10/06 15:43:08 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.3 2006/10/11 19:37:51 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.2 2006/10/06 15:43:08 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.3 2006/10/11 19:37:51 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -235,16 +235,10 @@ class AssetBlockSiteComponent
 			if ($id == $parent->getId())
 				continue;
 			
-			switch (strtolower(get_class($possibleDestinations[$id]))) {
-				case 'xmlblocksitecomponent':
-					break;
-				case 'xmlfixedorganizersitecomponent':
-					break;
-				case 'xmlnavorganizersitecomponent':
-					break;
-				default:
-					$results[$id] =& $possibleDestinations[$id];
-					break;
+			if (preg_match('/^.*(Menu|Flow)OrganizerSiteComponent$/i', 
+				get_class($possibleDestinations[$id]))) 
+			{
+				$results[$id] =& $possibleDestinations[$id];
 			}
 		}
 		
