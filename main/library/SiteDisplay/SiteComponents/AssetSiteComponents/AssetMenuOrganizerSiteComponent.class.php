@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.4 2006/10/11 19:00:09 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.4 2006/10/11 19:00:09 adamfranco Exp $
  */
 class AssetMenuOrganizerSiteComponent 
 	extends AssetFlowOrganizerSiteComponent
@@ -119,7 +119,8 @@ class AssetMenuOrganizerSiteComponent
 		
 		// Add our parent NavBlock
 		$parentNavBlock =& $parentNav->getParentComponent();
-		$results[$parentNavBlock->getId()] =& $parentNavBlock;
+		if (!$parentNavBlock->getNestedMenuOrganizer())
+			$results[$parentNavBlock->getId()] =& $parentNavBlock;
 		
 		// As are FixedOrganizers that are below the parent NavOrganizer, but
 		// not below me.
