@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.32 2006/10/04 20:35:00 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.33 2006/10/12 19:09:50 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.32 2006/10/04 20:35:00 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.33 2006/10/12 19:09:50 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -341,7 +341,9 @@ class EditModeSiteVisitor
 		
 		// Controls and organizer dragging.
 		$controlsHTML = $this->getControlsHTML(
-			$organizer->getDisplayName(),
+			$organizer->getDisplayName()
+			." ".$organizer->getId()
+			.'',
 			$organizer->acceptVisitor($this->_controlsVisitor),
 			'#00F', '#99F', '#66F');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));

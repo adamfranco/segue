@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.3 2006/10/12 19:09:51 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.3 2006/10/12 19:09:51 adamfranco Exp $
  */
 class AssetSiteComponent 
 	// implements SiteComponent
@@ -164,7 +164,11 @@ class AssetSiteComponent
 	 * @since 10/5/06
 	 */
 	function _saveXml () {
-		printpre("<h2>AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
+		printpre("<hr/><h2>Saving AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
+		print("<h3>Previous XML</h3>");
+		$oldContent =& $this->_asset->getContent();
+		printpre(htmlentities($oldContent->asString()));
+		print("<h3>New XML</h3>");
 		printpre($this->_element->ownerDocument->toNormalizedString(true));
 // 		exit;
 		
