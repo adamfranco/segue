@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.4 2006/10/16 16:39:28 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.5 2006/10/16 18:24:30 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.4 2006/10/16 16:39:28 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.5 2006/10/16 18:24:30 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -229,7 +229,13 @@ class AssetSiteDirector
 			$this->_xmlDocuments[$assetIdString] =& new DOMIT_Document();
 			$this->_xmlDocuments[$assetIdString]->setNamespaceAwareness(true);
 			$assetContent = $asset->getContent();
-			$success = $this->_xmlDocuments[$assetIdString]->parseXML($assetContent->asString());
+			
+			// if we have asset content, parse it
+			if (strlen($assetContent->asString()))
+				$success = $this->_xmlDocuments[$assetIdString]->parseXML($assetContent->asString());
+			// otherwise, just use the empty document.
+			else
+				$success = true;
 	
 			if ($success !== true) {
 				throwError(new Error("DOMIT error: ".$this->_xmlDocuments[$assetIdString]->getErrorCode().
