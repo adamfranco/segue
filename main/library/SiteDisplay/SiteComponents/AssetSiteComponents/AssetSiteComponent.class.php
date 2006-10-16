@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.3 2006/10/12 19:09:51 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.4 2006/10/16 19:37:55 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.3 2006/10/12 19:09:51 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.4 2006/10/16 19:37:55 adamfranco Exp $
  */
 class AssetSiteComponent 
 	// implements SiteComponent
@@ -54,6 +54,17 @@ class AssetSiteComponent
 	 * @since 4/14/06
 	 */
 	function populateWithDefaults () {
+		
+	}
+	
+	/**
+	 * Delete any stored data needed as part of the delete process
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 10/16/06
+	 */
+	function deleteAndCleanUpData () {
 		
 	}
 		

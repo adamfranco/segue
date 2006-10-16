@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.4 2006/10/16 16:39:28 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.5 2006/10/16 19:37:55 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.4 2006/10/16 16:39:28 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.5 2006/10/16 19:37:55 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -37,6 +37,18 @@ class AssetBlockSiteComponent
 		$this->updateDisplayName('');
 		$this->updateDescription('');
 		$this->updateContentMarkup('');
+	}
+	
+	/**
+	 * Delete any stored data needed as part of the delete process
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 10/16/06
+	 */
+	function deleteAndCleanUpData () {
+		$repository =& $this->_asset->getRepository();
+		$repository->deleteAsset($this->_asset->getId());
 	}
 	
 	/**

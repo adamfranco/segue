@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.5 2006/10/16 18:24:30 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.6 2006/10/16 19:37:55 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.5 2006/10/16 18:24:30 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.6 2006/10/16 19:37:55 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -445,8 +445,10 @@ class AssetSiteDirector
 	function deleteSiteComponent ( &$siteComponent ) {
 		// @todo log SiteComponent deletion here
 		
-		unset($this->_createdSiteComponents[$siteComponent->getId()],
-			$siteComponent);
+		$id = $siteComponent->getId();
+		$siteComponent->deleteAndCleanUpData();
+		
+		unset($this->_createdSiteComponents[$id], $siteComponent);
 	}
 }
 
