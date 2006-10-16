@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.3 2006/10/16 20:17:23 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.2 2006/10/05 18:09:49 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.3 2006/10/16 20:17:23 adamfranco Exp $
  */
 class EditModeSiteAction 
 	extends MainWindowAction
@@ -172,16 +172,27 @@ class EditModeSiteAction
 // 			
 // 			fclose($handle);
 			
-			$harmoni =& Harmoni::instance();
-			RequestContext::locationHeader($harmoni->request->quickURL(
-				"site", "newEdit",
-				array("node" => RequestContext::value('returnNode'))));	
+			$this->returnToCallerPage();
 // 			
 // 		} else {
 // 			echo "The file ".$this->filename." is not writable.<hr/>";
 // 			printpre($this->document->toNormalizedString(true));
 // 		}
 
+	}
+	
+	/**
+	 * Return the browser to the page from whence they came
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 10/16/06
+	 */
+	function returnToCallerPage () {
+		$harmoni =& Harmoni::instance();
+		RequestContext::locationHeader($harmoni->request->quickURL(
+			"site", "newEdit",
+			array("node" => RequestContext::value('returnNode'))));	
 	}
 }
 
