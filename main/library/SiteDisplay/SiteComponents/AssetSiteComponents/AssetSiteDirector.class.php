@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.4 2006/10/16 16:39:28 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.4 2006/10/16 16:39:28 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -389,17 +389,39 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function &createSiteComponent ( $componentClass ) {
-		throwError(new Error("Should we be getting here?"));
+	function &createSiteComponent ( $componentClass, &$parentComponent ) {
+// 		throwError(new Error("Should we be getting here?"));
 		
 		$class = 'Asset'.$componentClass.'SiteComponent';
-		$element =& $this->_document->createElement($componentClass);
-		$idManager =& Services::getService('Id');
-		$newId =& $idManager->createId();
-		$newId = $newId->getIdString();
-		$element->setAttribute('id', $newId);
-		$this->_createdSiteComponents[$newId] =& new $class($this, $element);
-		$this->_createdSiteComponents[$newId]->populateWithDefaults();
+		
+		// For blocks, create an asset for them
+		if (preg_match('/^.*Block$/', $componentClass)) {
+			$typeName = $componentClass."Type";
+			$asset =& $this->_repository->createAsset("Untitled", "",
+						$this->$typeName);
+			$assetId =& $asset->getId();
+			$element = null;
+			$newId = $assetId->getIdString();
+			
+			$this->_createdSiteComponents[$newId] =& new $class($this, $asset, $element);
+			$this->_createdSiteComponents[$newId]->populateWithDefaults();
+			
+			$parentComponent->addSubcomponent($this->_createdSiteComponents[$newId]);
+		} 
+		// For Organizers, use the parent's asset.
+		else {
+			$asset =& $parentComponent->_asset;
+			
+			$parentElement =& $parentComponent->getElement();
+			$element =& $parentElement->ownerDocument->createElement($componentClass);
+			$idManager =& Services::getService('Id');
+			$newIdObj =& $idManager->createId();
+			$newId = $newIdObj->getIdString();
+			$element->setAttribute('id', $newId);
+			
+			$this->_createdSiteComponents[$newId] =& new $class($this, $asset, $element);
+			$this->_createdSiteComponents[$newId]->populateWithDefaults();
+		}
 		
 		// @todo Log SiteComponent creation here
 		

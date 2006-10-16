@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.5 2006/10/11 19:37:51 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.6 2006/10/16 16:39:28 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.5 2006/10/11 19:37:51 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.6 2006/10/16 16:39:28 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -36,7 +36,7 @@ class AssetNavBlockSiteComponent
 	function populateWithDefaults () {
 		parent::populateWithDefaults();
 		
-		$this->setOrganizer($this->_director->createSiteComponent("NavOrganizer"));
+		$this->setOrganizer($this->_director->createSiteComponent("NavOrganizer", $this));
 	}
 	
 	/**
@@ -67,7 +67,7 @@ class AssetNavBlockSiteComponent
 			$child =& $child->nextSibling;
 		}
 		if (!isset($navOrgObj)) {
-			$navOrgObj =& $this->_director->createSiteComponent("NavOrganizer");
+			$navOrgObj =& $this->_director->createSiteComponent("NavOrganizer", $this);
 			$navOrgObj->updateNumRows('1');
 			$navOrgObj->updateNumColumns('1');
 		}

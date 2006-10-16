@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.1 2006/09/22 19:38:09 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.2 2006/10/16 16:39:28 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.1 2006/09/22 19:38:09 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.2 2006/10/16 16:39:28 adamfranco Exp $
  */
 class createSubMenuAction
 	extends EditModeSiteAction
@@ -60,7 +60,7 @@ class createSubMenuAction
 		}
 		
 		// Crete the submenu
-		$subMenu =& $director->createSiteComponent("MenuOrganizer");
+		$subMenu =& $director->createSiteComponent("MenuOrganizer", $parentNavBlock);
 		$parentNavBlock->makeNested($subMenu);
 		
 		// Set its target.

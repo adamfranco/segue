@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.3 2006/10/11 19:37:51 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.4 2006/10/16 16:39:28 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.3 2006/10/11 19:37:51 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.4 2006/10/16 16:39:28 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -169,7 +169,7 @@ class AssetBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateContentMarkup ( $contentMarkup ) {
-		$content =& String::fromString($contentMarkup);
+		$content =& Blob::fromString($contentMarkup);
 		$this->_asset->updateContent($content);
 	}
 	

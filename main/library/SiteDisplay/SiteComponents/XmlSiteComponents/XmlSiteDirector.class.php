@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.13 2006/04/17 21:16:39 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.14 2006/10/16 16:39:28 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.13 2006/04/17 21:16:39 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.14 2006/10/16 16:39:28 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -251,11 +251,15 @@ class XmlSiteDirector
 	 *
 	 * Note: parameter should have capital first letters of words
 	 * @param string $componentClass just the unique 'FlowOrganizer' etc.
+	 * @param object $parentComponent The component under which this component will be created.
 	 * @return object SiteComponent
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function &createSiteComponent ( $componentClass ) {
+	function &createSiteComponent ( $componentClass, &$parentComponent ) {
+		// $parentComponent is unused in this implementation, but is used
+		// by other storage implementations.
+		
 		$class = 'Xml'.$componentClass.'SiteComponent';
 		$element =& $this->_document->createElement($componentClass);
 		$idManager =& Services::getService('Id');
