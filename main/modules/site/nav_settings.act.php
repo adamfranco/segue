@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.11 2006/06/05 20:25:49 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.12 2006/11/27 14:37:28 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/Display/LayoutTemplates/AllRowsLayoutTemplateV
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: nav_settings.act.php,v 1.11 2006/06/05 20:25:49 adamfranco Exp $
+ * @version $Id: nav_settings.act.php,v 1.12 2006/11/27 14:37:28 adamfranco Exp $
  */
 class nav_settingsAction 
 	extends MainWindowAction
@@ -263,7 +263,7 @@ class nav_settingsAction
 	 * @since 2/16/06
 	 */
 	function renderLayoutDisplay (numCells, arrangement, targetOverride) {
-		var destination = getElementFromDocument('layout_display');
+		var destination = document.get_element_by_id('layout_display');
 		
 		destination.innerHTML = '';
 		var table = document.createElement('table');
@@ -603,25 +603,6 @@ class nav_settingsAction
 		col.style.border = '1px dotted';
 		col.style.margin = '3px';
 		col.style.backgroundColor = '#f99';
-	}
-	
-	/**
-	 * Answer the element of the document by id.
-	 * 
-	 * @param string id
-	 * @return object The html element
-	 * @access public
-	 * @since 8/25/05
-	 */
-	function getElementFromDocument(id) {
-		// Gecko, KHTML, Opera, IE6+
-		if (document.getElementById) {
-			return document.getElementById(id);
-		}
-		// IE 4-5
-		if (document.all) {
-			return document.all[id];
-		}			
 	}
 
 /* ]]> */

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.5 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.6 2006/11/27 14:37:28 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.5 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.6 2006/11/27 14:37:28 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -174,7 +174,7 @@ class SeguePluginsAjaxPlugin
 				
 				if (req) {
 					req.onreadystatechange = function () {
-						var pluginElement = getElementFromDocument('plugin:' + pluginId);
+						var pluginElement = document.get_element_by_id('plugin:' + pluginId);
 						
 						if (req.readyState > 0 && req.readyState < 4) {
 							pluginElement.innerHTML = '<div>Loading...</div>';
@@ -223,7 +223,7 @@ class SeguePluginsAjaxPlugin
 									}
 									
 									// Place the new values in the page
-									var pluginTitleElement = getElementFromDocument('plugin-title:' + pluginId);
+									var pluginTitleElement = document.get_element_by_id('plugin-title:' + pluginId);
 									pluginTitleElement.innerHTML = title;
 									pluginElement.innerHTML = markup.replace(/}}>/g, ']'+']'+'>');
 								} else {
@@ -243,25 +243,6 @@ class SeguePluginsAjaxPlugin
 						req.send(null);
 					}
 				}
-			}
-			
-			/**
-			 * Answer the element of the document by id.
-			 * 
-			 * @param string id
-			 * @return object The html element
-			 * @access public
-			 * @since 8/25/05
-			 */
-			function getElementFromDocument(id) {
-				// Gecko, KHTML, Opera, IE6+
-				if (document.getElementById) {
-					return document.getElementById(id);
-				}
-				// IE 4-5
-				if (document.all) {
-					return document.all[id];
-				}			
 			}
 			
 			/* ]]> */

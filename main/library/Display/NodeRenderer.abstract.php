@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.33 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.34 2006/11/27 14:37:28 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.33 2006/02/22 20:29:56 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.34 2006/11/27 14:37:28 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -501,8 +501,8 @@ class NodeRenderer {
 			/* <![CDATA[ */
 			
 				function showOptions (id) {
-					var optionsForm = getElementFromDocument('options_form:' + id);
-					var optionsButton = getElementFromDocument('options_button:' + id);
+					var optionsForm = document.get_element_by_id('options_form:' + id);
+					var optionsButton = document.get_element_by_id('options_button:' + id);
 // 					alert('optionsForm.style.display = ' + optionsForm.style.display);
 // 					alert('optionsForm.innerHTML = ' + optionsForm.innerHTML);
 					optionsForm.style.display = 'block';
@@ -511,8 +511,8 @@ class NodeRenderer {
 				}
 				
 				function hideOptions (id) {
-					var optionsForm = getElementFromDocument('options_form:' + id);
-					var optionsButton = getElementFromDocument('options_button:' + id);
+					var optionsForm = document.get_element_by_id('options_form:' + id);
+					var optionsButton = document.get_element_by_id('options_button:' + id);
 					optionsForm.style.display = 'none';
 					optionsButton.style.display = 'block';
 				}
@@ -525,7 +525,7 @@ class NodeRenderer {
 				
 				function changeCell(url, selectElement, currentCell, parentId) {
 					var destinationId = 'node:' + parentId + '-cell-' + selectElement.value;
-					var destinationElement = getElementFromDocument(destinationId);
+					var destinationElement = document.get_element_by_id(destinationId);
 					var flash = new BorderFlash(destinationElement);
 					flash.start();
 					
@@ -555,7 +555,7 @@ class NodeRenderer {
 					}
 					
 					BorderFlash.doFlash = function (elementId) {
-						var element = getElementFromDocument(elementId);
+						var element = document.get_element_by_id(elementId);
 						switch (element.flashStep) {
 							case 1:
 								element.style.border = '2px dotted red';
@@ -592,7 +592,7 @@ class NodeRenderer {
 				 * @access public
 				 * @since 8/25/05
 				 */
-				function getElementFromDocument(id) {
+				function document.get_element_by_id(id) {
 					// Gecko, KHTML, Opera, IE6+
 					if (document.getElementById) {
 						return document.getElementById(id);
@@ -647,7 +647,7 @@ END;
 					var flashes = new Array();
 					var j = 0;
 					for (var i = 0; i < elementsToFlash.length; i++) {
-						var destinationElement = getElementFromDocument(elementsToFlash[i]);
+						var destinationElement = document.get_element_by_id(elementsToFlash[i]);
 						if (destinationElement) {
 							flashes[j] = new BorderFlash(destinationElement);
 							flashes[j].start();
