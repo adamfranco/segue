@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.2 2006/03/10 20:53:49 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.3 2006/12/12 17:19:02 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.2 2006/03/10 20:53:49 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.3 2006/12/12 17:19:02 adamfranco Exp $
  */
 class mainAction 
 	extends MainWindowAction
@@ -70,8 +70,8 @@ class mainAction
 		print _("Current Authentications: ");
 		print "</center>\n\t</th></tr>";
 		
-		while($authTypes->hasNextType()) {
-			$authType =& $authTypes->nextType();
+		while($authTypes->hasNext()) {
+			$authType =& $authTypes->next();
 			$typeString = HarmoniType::typeToString($authType);
 			print "\n\t<tr>";
 			print "\n\t\t<td><small>";
