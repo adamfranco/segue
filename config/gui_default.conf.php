@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: gui_default.conf.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
+ * @version $Id: gui_default.conf.php,v 1.3 2007/01/08 21:02:32 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../themes/SimpleTheme/SimpleTheme.class.php");
@@ -26,5 +26,14 @@ require_once(dirname(__FILE__)."/../themes/SimpleTheme/SimpleTheme.class.php");
 	$configuration->addProperty('character_set', $arg0 = 'utf-8');
 	$configuration->addProperty('document_type', $arg1 = 'text/html');
 	$configuration->addProperty('document_type_definition', $arg2 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">');
+	
+	$arrayOfThemes[] = array("Generic Theme","GenericTheme");
+	$arrayOfThemes[] = array("Simple Theme","SimpleTheme");
+	$arrayOfThemes[] = array("Simple Lines Theme","SimpleLinesTheme");
+	$arrayOfThemes[] = array("Simple Black Theme","SimpleThemeBlack");
+
+
+	$configuration->addProperty('array_of_default_themes', $arrayOfThemes);
+	
 	unset($arg0, $arg1, $arg2);
 	Services::startManagerAsService("GUIManager", $context, $configuration);

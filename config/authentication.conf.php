@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: authentication.conf.php,v 1.4 2006/02/28 19:01:08 adamfranco Exp $
+ * @version $Id: authentication.conf.php,v 1.5 2007/01/08 21:02:32 adamfranco Exp $
  */
  
 // :: Start the AuthenticationManager OSID Impl.
@@ -60,6 +60,7 @@
 		$ldapConfiguration->addProperty('tokens_class', $arg0 = 'LDAPAuthNTokens');
 		$ldapConfiguration->addProperty("LDAPHost", $arg1 = "ad.middlebury.edu");
 		$ldapConfiguration->addProperty("UserBaseDN", $arg2 = "cn=users,dc=middlebury,dc=edu");
+		$ldapConfiguration->addProperty("ClassesBaseDN", $arg2a = "ou=classes,ou=groups,dc=middlebury,dc=edu");
 		$ldapConfiguration->addProperty("GroupBaseDN", $arg3 = "ou=groups,dc=middlebury,dc=edu");
 		$ldapConfiguration->addProperty("bindDN", $arg4 = "juser");
 		$ldapConfiguration->addProperty("bindDNPassword", $arg5 = "poi987");
