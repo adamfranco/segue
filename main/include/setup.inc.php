@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: setup.inc.php,v 1.4 2006/03/03 17:20:21 adamfranco Exp $
+ * @version $Id: setup.inc.php,v 1.5 2007/01/08 21:26:29 adamfranco Exp $
  */
 
 /*********************************************************
@@ -18,6 +18,11 @@ debug::level(-100);
 /******************************************************************************
  * Start the session so that we can use the session for storage.
  ******************************************************************************/
+if (file_exists(MYDIR.'/config/harmoni.conf.php'))
+	require_once (MYDIR.'/config/harmoni.conf.php');
+else
+	require_once (MYDIR.'/config/harmoni_default.conf.php');
+ 
 $harmoni->startSession();
 
 

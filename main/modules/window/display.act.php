@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.10 2006/05/02 20:24:17 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.11 2007/01/08 21:26:29 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.10 2006/05/02 20:24:17 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.11 2007/01/08 21:26:29 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.10 2006/05/02 20:24:17 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.11 2007/01/08 21:26:29 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -120,7 +120,10 @@ class displayAction
 		}
 		
 		// use the result from previous actions
-		$contentDestination->add($harmoni->result, null, null, CENTER, TOP); 
+		if (is_object($harmoni->result))
+			$contentDestination->add($harmoni->result, null, null, CENTER, TOP);
+		else if (is_string($harmoni->result))
+			$contentDestination->add(new Block($harmoni->result, STANDARD_BLOCK), null, null, CENTER, TOP);
 		
 		// Right Column
 		$rightColumn =& $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);

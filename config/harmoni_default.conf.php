@@ -10,15 +10,19 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: harmoni_default.conf.php,v 1.7 2006/04/07 14:07:06 adamfranco Exp $
+ * @version $Id: harmoni_default.conf.php,v 1.8 2007/01/08 21:26:28 adamfranco Exp $
  */
 
 // :: set up the $harmoni object :: 
 	$harmoni->config->set("defaultModule","home");
 	$harmoni->config->set("defaultAction","welcome");
 	$harmoni->config->set("programTitle","Segue");
-	$harmoni->config->set("sessionName","PHPSESSID");
+	$harmoni->config->set("sessionName","SEGUE_SESSID");
 	$harmoni->config->set("sessionUseCookies",true);
+	// In order to prevent User's from including their SESSION IDs in urls that they
+	// copy/paste for others, we will force the usage of cookies. This will prevent
+	// inadvertant session fixation problems.
+	$harmoni->config->set("sessionUseOnlyCookies",true);
 	$harmoni->config->set("sessionCookiePath","/");
 	$harmoni->config->set("sessionCookieDomain","middlebury.edu");
 	
