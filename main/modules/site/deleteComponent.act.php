@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.2 2006/10/16 20:17:24 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.3 2007/01/10 20:44:33 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.2 2006/10/16 20:17:24 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.3 2007/01/10 20:44:33 adamfranco Exp $
  */
 class deleteComponentAction 
 	extends EditModeSiteAction
@@ -53,7 +53,7 @@ class deleteComponentAction
 	function returnToCallerPage () {
 		$harmoni =& Harmoni::instance();
 		RequestContext::locationHeader($harmoni->request->quickURL(
-			"site", "newEdit",
+			"site", "editview",
 			array("node" => $this->_returnNode)));	
 	}
 	

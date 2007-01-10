@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.33 2006/10/12 19:09:50 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.34 2007/01/10 20:44:33 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.33 2006/10/12 19:09:50 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.34 2007/01/10 20:44:33 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -478,7 +478,7 @@ class EditModeSiteVisitor
 	 */
 	function getUrlForComponent ( $id ) {
 		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL("site", "newEdit", array("node" => $id));
+		return $harmoni->request->quickURL("site", "editview", array("node" => $id));
 	}
 	
 	/**

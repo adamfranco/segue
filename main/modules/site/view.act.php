@@ -1,51 +1,33 @@
 <?php
 /**
+ * @since 4/3/06
  * @package segue.modules.site
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11 2006/05/02 20:24:17 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.12 2007/01/10 20:44:33 adamfranco Exp $
  */ 
-
-require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
-require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
-
-require_once(HARMONI."GUIManager/Components/Header.class.php");
-require_once(HARMONI."GUIManager/Components/Menu.class.php");
-require_once(HARMONI."GUIManager/Components/MenuItemHeading.class.php");
-require_once(HARMONI."GUIManager/Components/MenuItemLink.class.php");
-require_once(HARMONI."GUIManager/Components/Heading.class.php");
-require_once(HARMONI."GUIManager/Components/Footer.class.php");
-require_once(HARMONI."GUIManager/Container.class.php");
-
-require_once(HARMONI."GUIManager/Layouts/XLayout.class.php");
-require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
-
-require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
-
+ 
 require_once(MYDIR."/main/modules/window/display.act.php");
+require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.class.php");
 
 /**
- * display the site.
+ * Test view using new components
  * 
+ * @since 4/3/06
  * @package segue.modules.site
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11 2006/05/02 20:24:17 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.12 2007/01/10 20:44:33 adamfranco Exp $
  */
-class viewAction 
-	extends displayAction
-{
-	/**
-	 * If true, editing controls will be displayed
-	 * @var boolean $_showControls;  
-	 * @access private
-	 * @since 2/22/06
-	 */
-	var $_showControls = false;
+class viewAction
+	extends displayAction {
 		
 	/**
 	 * Execute the Action
@@ -53,29 +35,64 @@ class viewAction
 	 * @param object Harmoni $harmoni
 	 * @return mixed
 	 * @access public
-	 * @since 4/25/05
+	 * @since 4/3/06
 	 */
 	function &execute ( &$harmoni ) {
+		/*********************************************************
+		 * XML Version
+		 *********************************************************/
+// 		$testDocument =& new DOMIT_Document();
+// 		$testDocument->setNamespaceAwareness(true);
+// 		$success = $testDocument->loadXML(MYDIR."/main/library/SiteDisplay/test/testSite.xml");
+// 
+// 		if ($success !== true) {
+// 			throwError(new Error("DOMIT error: ".$testDocument->getErrorCode().
+// 				"<br/>\t meaning: ".$testDocument->getErrorString()."<br/>", "SiteDisplay"));
+// 		}
+// 
+// 		$director =& new XmlSiteDirector($testDocument);
+// 		
+// 		if (!$nodeId = RequestContext::value("node"))
+// 			$nodeId = "1";
+
+		/*********************************************************
+		 * Asset version
+		 *********************************************************/
+		$repositoryManager =& Services::getService('Repository');
+		$idManager =& Services::getService('Id');
 		
-		$idManager =& Services::getService("Id");
-		$repositoryManager =& Services::getService("Repository");
-		$repository =& $repositoryManager->getRepository(
-			$idManager->getId("edu.middlebury.segue.sites_repository"));
+		$director =& new AssetSiteDirector(
+			$repositoryManager->getRepository(
+				$idManager->getId('edu.middlebury.segue.sites_repository')));
+		
+		if (!$nodeId = RequestContext::value("node"))
+			$nodeId = "67";
 			
-		$assetIdString = RequestContext::value('node');
-		$assetId =& $idManager->getId($assetIdString);
-		$asset =& $repository->getAsset($assetId);
-		$nodeRenderer =& NodeRenderer::forAsset($asset, $null = null);
 		
 		
-		$harmoni =& Harmoni::instance();
+		/*********************************************************
+		 * Aditional setup
+		 *********************************************************/
+		$rootSiteComponent =& $director->getRootSiteComponent($nodeId);
+		
+		$visitor =& $this->getSiteVisitor();
+		
+		$siteGuiComponent =& $rootSiteComponent->acceptVisitor($visitor);
+		
+		
+
+		
+		
+		/*********************************************************
+		 * Other headers and footers
+		 *********************************************************/
 		$outputHandler =& $harmoni->getOutputHandler();
 		$head = $outputHandler->getHead();
 		if (preg_match('/<title>.*<\/title>/', $head))
 			$head = preg_replace('/<title>.*<\/title>/', 
-				'<title>'.$nodeRenderer->getSiteTitle().'</title>', $head);
+				'<title>'.$rootSiteComponent->getDisplayName().'</title>', $head);
 		else
-			$head .= "<title>".$asset->getDisplayName()."</title>";
+			$head .= "<title>".$rootSiteComponent->getDisplayName()."</title>";
 		$outputHandler->setHead($head);
 		
 				
@@ -85,12 +102,12 @@ class viewAction
 		
 		$mainScreen =& new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
 		
-	// :: Top Row ::
+		// :: Top Row ::
 		$headRow =& $mainScreen->add(
 			new Container($xLayout, HEADER, 1), 
 			"100%", null, CENTER, TOP);
 		
-		$headRow->add(new UnstyledBlock("<h1>".$nodeRenderer->getSiteTitle()."</h1>"), 
+		$headRow->add(new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"), 
 			null, null, LEFT, TOP);
 		
 		$rightHeadColumn =& $headRow->add(
@@ -100,47 +117,12 @@ class viewAction
 		$rightHeadColumn->add($this->getLoginComponent(), 
 				null, null, RIGHT, TOP);
 		
-		ob_start();
-		print "\n<div style='font-size: small; vertical-align: top; text-align: right; height:30px;'>";
-		print "\n\t<a href='".$harmoni->request->quickURL("home", "welcome")."'>";
-		print _("home");
-		print "</a>\n</div>";
-		$rightHeadColumn->add(new UnstyledBlock(ob_get_clean()), 
-				null, null, RIGHT, TOP);
 		
-		if ($this->_showControls) {
-			$siteRenderer =& $nodeRenderer->getSiteRenderer();
-			$siteRenderer->setShowControls($this->_showControls);
-			
-			ob_start();
-			print "\n\t<a href='";
-			print $harmoni->request->quickURL("site", "view", array('node' => RequestContext::value('node')));
-			print "' style='border: 1px solid; padding: 2px; text-align: center; text-decoration: none; margin: 2px;'>";
-			print _("Hide Controls");
-			print "</a>";
-			$rightHeadColumn->add(new UnstyledBlock(ob_get_clean().$siteRenderer->getSettingsForm()), 
-				null, null, RIGHT, BOTTOM);
-		} else {
-			ob_start();
-			print "\n\t<a href='";
-			print $harmoni->request->quickURL("site", "editview", array('node' => RequestContext::value('node')));
-			print "' style='border: 1px solid; padding: 2px; text-align: center; text-decoration: none; margin: 2px;'>";
-			print _("Show Controls");
-			print "</a>";
-			$rightHeadColumn->add(new UnstyledBlock(ob_get_clean()), 
-				null, null, RIGHT, BOTTOM);
-		}
-			
+		// :: Site ::
+		$mainScreen->add($siteGuiComponent);
 		
 		
-		// Add the rendered site.
-		$mainScreen->add(
-			$nodeRenderer->renderSite($this->_showControls),
-			"100%", null, CENTER, TOP);
-		
-		
-				
-	// :: Footer ::
+		// :: Footer ::
 		$footer =& $mainScreen->add(
 			new Container (new XLayout, FOOTER, 1),
 			"100%", null, RIGHT, BOTTOM);
@@ -155,10 +137,20 @@ class viewAction
 		$footerText .= "</a>";
 		$footer->add(new UnstyledBlock($footerText), "50%", null, RIGHT, BOTTOM);
 		
-
-
-
+		
 		return $mainScreen;
+	}
+
+	/**
+	 * Answer the appropriate site visitor for this action
+	 * 
+	 * @return object SiteVisitor
+	 * @access public
+	 * @since 4/6/06
+	 */
+	function &getSiteVisitor () {
+		$visitor =& new ViewModeSiteVisitor();
+		return $visitor;
 	}	
 }
 

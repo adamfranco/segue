@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.4 2006/09/19 20:01:56 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.5 2007/01/10 20:44:33 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.4 2006/09/19 20:01:56 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.5 2007/01/10 20:44:33 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -80,9 +80,9 @@ class listAction
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
 		
 		
-		$siteType = new HarmoniType('site_components', 
-							'edu.middlebury.segue', 
-							'site', 
+		$siteType = new HarmoniType('segue', 
+							'edu.middlebury', 
+							'SiteNavBlock', 
 							'An Asset of this type is the root node of a Segue site.');
 		$assets =& $repository->getAssetsByType($siteType);
 		
@@ -140,6 +140,7 @@ function printSiteShort(& $asset, &$harmoni, $num) {
 	print "\n\t<strong>".htmlspecialchars($asset->getDisplayName())."</strong>";
 	print "\n\t</a>";
 	print "\n\t<br/>"._("ID#").": ".$assetId->getIdString();
+	print "\n\t<a href='".$harmoni->request->quickURL('site', 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
 	$description =& HtmlString::withValue($asset->getDescription());
 	$description->trim(25);
 	print  "\n\t<div style='font-size: smaller;'>".$description->asString()."</div>";	
