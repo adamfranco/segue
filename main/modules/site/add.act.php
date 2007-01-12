@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.9 2007/01/12 16:55:07 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.10 2007/01/12 17:30:04 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -18,7 +18,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.9 2007/01/12 16:55:07 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.10 2007/01/12 17:30:04 adamfranco Exp $
  */
 class addAction 
 	extends EditModeSiteAction
@@ -192,13 +192,17 @@ class addAction
 		$page2->updateDisplayName(_('My Second Page'));
 		$page2->updateDescription(_('This is the second page in the site, added by default.'));
 		
-		$page1Content =& $director->createSiteComponent('Block', $page1ContentOrg);
-		$page1Content->updateDisplayName(_('My Third Content'));
-		$page1Content->updateDescription(_('This is the first content in this page, added by default.'));
+		$page2Org =& $page2->getOrganizer();
+		$page2ContentOrg =& $director->createSiteComponent('FlowOrganizer', $page2Org);
+		$page2Org->putSubcomponentInCell($page2ContentOrg, 0);
 		
-		$page1Content =& $director->createSiteComponent('Block', $page1ContentOrg);
-		$page1Content->updateDisplayName(_('My Fourth Content'));
-		$page1Content->updateDescription(_('This is the second content in this page, added by default.'));
+		$page2Content =& $director->createSiteComponent('Block', $page2ContentOrg);
+		$page2Content->updateDisplayName(_('My Third Content'));
+		$page2Content->updateDescription(_('This is the first content in this page, added by default.'));
+		
+		$page2Content =& $director->createSiteComponent('Block', $page2ContentOrg);
+		$page2Content->updateDisplayName(_('My Fourth Content'));
+		$page2Content->updateDescription(_('This is the second content in this page, added by default.'));
 		
 		
 		/*********************************************************
