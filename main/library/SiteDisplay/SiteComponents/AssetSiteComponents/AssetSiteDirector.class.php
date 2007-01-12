@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.9 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.10 2007/01/12 22:41:20 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.9 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.10 2007/01/12 22:41:20 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -451,7 +451,7 @@ class AssetSiteDirector
 			$this->_createdSiteComponents[$newId] =& new $class($this, $asset, $element);
 			$this->_createdSiteComponents[$newId]->populateWithDefaults();
 			
-			if ($componentType->isEqual($this->SiteNavBlockType)) {
+			if (!$componentType->isEqual($this->SiteNavBlockType)) {
 				$parentComponent->addSubcomponent($this->_createdSiteComponents[$newId]);
 			}
 		} 

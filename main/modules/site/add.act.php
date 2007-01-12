@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.11 2007/01/12 21:59:18 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.12 2007/01/12 22:41:20 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -18,7 +18,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.11 2007/01/12 21:59:18 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.12 2007/01/12 22:41:20 adamfranco Exp $
  */
 class addAction 
 	extends EditModeSiteAction
@@ -178,11 +178,11 @@ class addAction
 		$page1ContentOrg =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $page1Org);
 		$page1Org->putSubcomponentInCell($page1ContentOrg, 0);
 		
-		$page1Content =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'Block'), $page1ContentOrg);
+		$page1Content =& $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page1ContentOrg);
 		$page1Content->updateDisplayName(_('My First Content'));
 		$page1Content->updateDescription(_('This is the first content in this page, added by default.'));
 		
-		$page1Content =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'Block'), $page1ContentOrg);
+		$page1Content =& $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page1ContentOrg);
 		$page1Content->updateDisplayName(_('My Second Content'));
 		$page1Content->updateDescription(_('This is the second content in this page, added by default.'));
 		
@@ -196,11 +196,11 @@ class addAction
 		$page2ContentOrg =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $page2Org);
 		$page2Org->putSubcomponentInCell($page2ContentOrg, 0);
 		
-		$page2Content =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'Block'), $page2ContentOrg);
+		$page2Content =& $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page2ContentOrg);
 		$page2Content->updateDisplayName(_('My Third Content'));
 		$page2Content->updateDescription(_('This is the first content in this page, added by default.'));
 		
-		$page2Content =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'Block'), $page2ContentOrg);
+		$page2Content =& $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page2ContentOrg);
 		$page2Content->updateDisplayName(_('My Fourth Content'));
 		$page2Content->updateDescription(_('This is the second content in this page, added by default.'));
 		
