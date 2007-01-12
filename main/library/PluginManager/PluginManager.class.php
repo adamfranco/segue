@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.10 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.11 2007/01/12 19:40:22 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.10 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: PluginManager.class.php,v 1.11 2007/01/12 19:40:22 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -47,8 +47,11 @@ class PluginManager {
 	 */
 	function PluginManager () {
 		$this->_arrays = array('enabled', 'disabled');
+		
+		$this->_pluginClasses = array();
+		$this->_pluginDirs = array();
 
-		if (!isset($_SESSION['post_config_setup_complete']))
+		if (!isset($_SESSION['registered_plugins']))
 	 		$this->_registerPlugins(); // not installed, just in filesystem
 
 		if (!isset($_SESSION['enabled_plugins']))
@@ -176,13 +179,13 @@ class PluginManager {
 	 * @since 2/23/06
 	 */
 	function _registerPlugins () {
-		$this->_registeredPlugins = array();
+		$_SESSION['registeredPlugins'] = array();
 		// open the plugin directory
 		$plugPath = MYDIR."/plugins/";
 		$pDirHandle = openDir($plugPath);
 		// directories that should be there and are not plugins
 		$ignore = array(".", "..", "CVS");
-		
+				
 		// first grab a domain folder and then look inside it
 		while ($domainDir = readdir($pDirHandle)) {
 			$domainPath = $plugPath."/".$domainDir;
@@ -197,7 +200,7 @@ class PluginManager {
 					$authPath = $domainPath."/".$authDir;
 					
 					if (is_dir($authPath) && !in_array($authDir, $ignore)
-							&& ereg("^[a-zA-Z0-9_]+$", $authDir)) {
+							&& ereg("^[a-zA-Z0-9\._]+$", $authDir)) {
 						$authority = $authDir;
 						
 						$aDirHandle = openDir($authPath);
@@ -212,8 +215,8 @@ class PluginManager {
 								$indexString = $type->printableString();
 								// unique types are placed in the array
 								if (!isset(
-									$this->_registeredPlugins[$indexString]))
-									$this->_registeredPlugins[$indexString] = 
+									$_SESSION['registeredPlugins'][$indexString]))
+									$_SESSION['registeredPlugins'][$indexString] = 
 										$type;
 							}
 						}
@@ -231,7 +234,9 @@ class PluginManager {
 	 * @since 3/9/06
 	 */
 	function getRegisteredPlugins () {
-		return $this->_registeredPlugins;
+		if (!isset($_SESSION['registeredPlugins']))
+			$this->_registerPlugins();
+		return $_SESSION['registeredPlugins'];
 	}
 
 	/**
@@ -281,29 +286,88 @@ class PluginManager {
 		$idstring = $id->getIdString();
 		if (!isset($this->_plugins[$idstring])) {
 			$type =& $asset->getAssetType();
-			$domain = $type->getDomain();
-			$authority = $type->getAuthority();
-			$keyword = $type->getKeyword();
+			// Clean type components to safe strings.
+			$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
+			$authority = preg_replace('/[^a-z_\-\.]/i', '', $type->getAuthority());
+			$keyword = preg_replace('/[^a-z_\-]/i', '', $type->getKeyword());
+			
+
 			
 			if ($this->isPluginDomain($domain)) {
 				require_once(MYDIR."/main/library/PluginManager/"
 					.$domain."/".$domain."Plugin.abstract.php");
 				require_once(MYDIR."/main/library/PluginManager/"
 					.$domain."/".$domain."AjaxPlugin.abstract.php");
-				require_once(MYDIR."/plugins/".$domain."/"
-					.$authority."/".$keyword."/"
-					.$authority.$keyword."Plugin.class.php");
-					
-				eval('$plugin =& '.$authority.$keyword.
-					'Plugin::newInstance($asset, $this->_configuration);');
+				require_once($this->getPluginDir($type)
+					.$this->getPluginClass($type).".class.php");
+				
+				eval('$plugin =& '.$this->getPluginClass($type).
+					'::newInstance($asset, $this->_configuration);');
 	
 				$this->_plugins[$idstring] = $plugin;
 			} else {
-				throwError(new Error("Plugin Manager", "This asset does not contain a 
-					plugin"));
+				$plugins = $this->getRegisteredPlugins();
+				// Check to see if this plugin even exists
+				foreach ($plugins as $plugType) {
+					if ($type->getDomain() == $plugType->getDomain())
+						throwError(new Error("This asset does not contain a plugin. Domain, '".$domain."' exists, but is not installed.", "Plugin Manager"));
+				}
+				// Otherwise give a generic error.
+				throwError(new Error("This asset does not contain a 
+					plugin. Type, '".Type::typeToString($type)."' does not match any plugins in the registered plugins: ".printpre($this->getRegisteredPlugins(), true), "Plugin Manager"));
 			}
 		}
 		return $this->_plugins[$idstring];
+	}
+	
+	/**
+	 * Answer the Plugin class for a given type
+	 * 
+	 * @param object Type $type
+	 * @return string
+	 * @access public
+	 * @since 1/12/07
+	 */
+	function getPluginClass ( &$type ) {
+		if (!isset($this->_pluginClasses[$type->asString()])) {
+			// Clean type components to safe strings.
+			$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
+			$authority = preg_replace('/[^a-z_\-\.]/i', '', $type->getAuthority());
+			$keyword = preg_replace('/[^a-z_\-]/i', '', $type->getKeyword());
+			
+			// Convert an authority like 'edu.middlebury' to 'EduMiddlebury'
+			// for use in classnames.
+			$authorityParts = explode('.', $authority);
+			$authorityClassPart = '';
+			foreach ($authorityParts as $part)
+				$authorityClassPart .= ucFirst($part);
+			
+			$this->_pluginClasses[$type->asString()] = $authorityClassPart.$keyword."Plugin";
+		}
+		
+		return $this->_pluginClasses[$type->asString()];
+	}
+	
+	/**
+	 * Answer the Plugin class for a given type
+	 * 
+	 * @param object Type $type
+	 * @return string
+	 * @access public
+	 * @since 1/12/07
+	 */
+	function getPluginDir ( &$type ) {
+		if (!isset($this->_pluginDirs[$type->asString()])) {
+			// Clean type components to safe strings.
+			$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
+			$authority = preg_replace('/[^a-z_\-\.]/i', '', $type->getAuthority());
+			$keyword = preg_replace('/[^a-z_\-]/i', '', $type->getKeyword());
+			
+			$this->_pluginDirs[$type->asString()] = MYDIR."/plugins/".$domain."/"
+						.$authority."/".$keyword."/";
+		}
+		
+		return $this->_pluginDirs[$type->asString()];
 	}
 
 	/**

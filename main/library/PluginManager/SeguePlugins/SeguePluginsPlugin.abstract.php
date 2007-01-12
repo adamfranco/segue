@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.16 2006/05/30 20:18:55 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.17 2007/01/12 19:40:22 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -20,7 +20,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.16 2006/05/30 20:18:55 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.17 2007/01/12 19:40:22 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -622,10 +622,9 @@ class SeguePluginsPlugin {
 
 
 		$type =& $asset->getAssetType();
-		$pluginDir = $configuration->getProperty("plugin_dir")."/".
-			$type->getDomain()."/".$type->getAuthority().
-			"/".$type->getKeyword()."/";
-		$pluginClass = $type->getAuthority().$type->getKeyword()."Plugin";
+		$pluginManager =& Services::getService("PluginManager");
+		$pluginDir = $pluginManager->getPluginDir($type);
+		$pluginClass = $pluginManager->getPluginClass($type);
 		$pluginFile = $pluginDir.$pluginClass.".class.php";
 		
 		
