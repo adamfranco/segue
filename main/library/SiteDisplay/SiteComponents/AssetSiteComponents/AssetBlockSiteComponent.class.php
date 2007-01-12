@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.5 2006/10/16 19:37:55 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.6 2007/01/12 19:42:26 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.5 2006/10/16 19:37:55 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.6 2007/01/12 19:42:26 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -63,6 +63,17 @@ class AssetBlockSiteComponent
 		$element =& $tmpDocument->createElement($this->getComponentClass());
 		$element->setAttribute('id', $this->getId());
 		return $element;
+	}
+	
+	/**
+	 * Answer the asset that corresponds to this block
+	 * 
+	 * @return object Asset
+	 * @access public
+	 * @since 1/12/07
+	 */
+	function &getAsset () {
+		return $this->_asset;
 	}
 	
 	/**
