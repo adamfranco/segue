@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.4 2007/01/12 16:57:13 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.4 2007/01/12 16:57:13 adamfranco Exp $
  */
 class AssetFixedOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -148,14 +148,16 @@ class AssetFixedOrganizerSiteComponent
 	 * ability to reduce the number of rows.
 	 * 
 	 * @param integer $newRows
+	 * @param boolean $initialCreation To prevent loops, set to true when first
+	 *									creating this component.
 	 * @return void
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function updateNumRows ( $newRows ) {
+	function updateNumRows ( $newRows, $initialCreation = FALSE ) {
 		parent::updateNumRows($newRows);
 		
-		$this->normalizeCells();
+		$this->normalizeCells($initialCreation);
 	}
 	
 	/**
@@ -163,24 +165,28 @@ class AssetFixedOrganizerSiteComponent
 	 * ability to reduce the number of columns.
 	 * 
 	 * @param integer $newColumns
+	 * @param boolean $initialCreation To prevent loops, set to true when first
+	 *									creating this component.
 	 * @return void
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function updateNumColumns ( $newColumns ) {
+	function updateNumColumns ( $newColumns, $initialCreation = FALSE ) {
 		parent::updateNumColumns($newColumns);
 		
-		$this->normalizeCells();	
+		$this->normalizeCells($initialCreation);	
 	}
 	
 	/**
 	 * Populate the <cell/> tags to fit our rows/columns
 	 * 
+	 * @param boolean $initialCreation To prevent loops, set to true when first
+	 *									creating this component.
 	 * @return void
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function normalizeCells () {
+	function normalizeCells ($initialCreation = FALSE) {
 		$numCells = $this->getNumColumns() * $this->getNumRows();
 		
 		// Add new cells up to our number
@@ -189,11 +195,13 @@ class AssetFixedOrganizerSiteComponent
 				$this->_element->ownerDocument->createElement('cell'));
 		}
 		
-		// Remove tags after the max shown if needed.
-		$lastUsed = $this->getLastIndexFilled();
-		for ($i = count($this->_element->childNodes) - 1; $i >= $numCells; $i--) {
-			if ($i > $lastUsed)
-				$this->_element->removeChild($this->_element->childNodes[$i]);
+		if (!$initialCreation) {
+			// Remove tags after the max shown if needed.
+			$lastUsed = $this->getLastIndexFilled();
+			for ($i = count($this->_element->childNodes) - 1; $i >= $numCells; $i--) {
+				if ($i > $lastUsed)
+					$this->_element->removeChild($this->_element->childNodes[$i]);
+			}
 		}
 		
 		$this->_saveXml();

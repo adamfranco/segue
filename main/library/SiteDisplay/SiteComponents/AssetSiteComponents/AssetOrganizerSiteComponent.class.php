@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.4 2007/01/12 16:57:13 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.3 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.4 2007/01/12 16:57:13 adamfranco Exp $
  */
 class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -33,8 +33,8 @@ class AssetOrganizerSiteComponent
 	 * @since 4/14/06
 	 */
 	function populateWithDefaults () {
-		$this->updateNumRows(1);
-		$this->updateNumColumns(1);
+		$this->updateNumRows(1, TRUE);
+		$this->updateNumColumns(1, TRUE);
 		$this->updateDirection('Left-Right/Top-Bottom');
 	}
 	
