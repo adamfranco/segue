@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.10 2007/01/12 17:30:04 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.11 2007/01/12 21:59:18 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -18,7 +18,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.10 2007/01/12 17:30:04 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.11 2007/01/12 21:59:18 adamfranco Exp $
  */
 class addAction 
 	extends EditModeSiteAction
@@ -148,7 +148,7 @@ class addAction
 		 * Create the site Asset
 		 *********************************************************/			
 		$director =& $this->getSiteDirector();
-		$site =& $director->createSiteComponent('SiteNavBlock', $null = null);
+		$site =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'SiteNavBlock'), $null = null);
 		
 		$site->updateDisplayName($properties['namedescstep']['display_name']);
 		$site->updateDescription($properties['namedescstep']['description']);
@@ -163,44 +163,44 @@ class addAction
 		$siteOrganizer =& $site->getOrganizer();
 		$siteOrganizer->updateNumColumns('2');
 		
-		$mainMenu =& $director->createSiteComponent('MenuOrganizer', $siteOrganizer);
+		$mainMenu =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'MenuOrganizer'), $siteOrganizer);
 		$siteOrganizer->putSubcomponentInCell($mainMenu, 0);
 		$menuTarget = $siteOrganizer->getId()."_cell:1";
 		$mainMenu->updateTargetId($menuTarget);
 		$mainMenu->updateDirection('Top-Bottom/Left-Right');
 		
 		
-		$page1 =& $director->createSiteComponent('NavBlock', $mainMenu);
+		$page1 =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'NavBlock'), $mainMenu);
 		$page1->updateDisplayName(_('My First Page'));
 		$page1->updateDescription(_('This is the first page in the site, added by default.'));
 		
 		$page1Org =& $page1->getOrganizer();
-		$page1ContentOrg =& $director->createSiteComponent('FlowOrganizer', $page1Org);
+		$page1ContentOrg =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $page1Org);
 		$page1Org->putSubcomponentInCell($page1ContentOrg, 0);
 		
-		$page1Content =& $director->createSiteComponent('Block', $page1ContentOrg);
+		$page1Content =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'Block'), $page1ContentOrg);
 		$page1Content->updateDisplayName(_('My First Content'));
 		$page1Content->updateDescription(_('This is the first content in this page, added by default.'));
 		
-		$page1Content =& $director->createSiteComponent('Block', $page1ContentOrg);
+		$page1Content =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'Block'), $page1ContentOrg);
 		$page1Content->updateDisplayName(_('My Second Content'));
 		$page1Content->updateDescription(_('This is the second content in this page, added by default.'));
 		
 		
 		
-		$page2 =& $director->createSiteComponent('NavBlock', $mainMenu);
+		$page2 =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'NavBlock'), $mainMenu);
 		$page2->updateDisplayName(_('My Second Page'));
 		$page2->updateDescription(_('This is the second page in the site, added by default.'));
 		
 		$page2Org =& $page2->getOrganizer();
-		$page2ContentOrg =& $director->createSiteComponent('FlowOrganizer', $page2Org);
+		$page2ContentOrg =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $page2Org);
 		$page2Org->putSubcomponentInCell($page2ContentOrg, 0);
 		
-		$page2Content =& $director->createSiteComponent('Block', $page2ContentOrg);
+		$page2Content =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'Block'), $page2ContentOrg);
 		$page2Content->updateDisplayName(_('My Third Content'));
 		$page2Content->updateDescription(_('This is the first content in this page, added by default.'));
 		
-		$page2Content =& $director->createSiteComponent('Block', $page2ContentOrg);
+		$page2Content =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'Block'), $page2ContentOrg);
 		$page2Content->updateDisplayName(_('My Fourth Content'));
 		$page2Content->updateDescription(_('This is the second content in this page, added by default.'));
 		

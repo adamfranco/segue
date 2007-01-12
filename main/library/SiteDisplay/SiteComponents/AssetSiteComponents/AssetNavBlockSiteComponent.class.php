@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.7 2006/10/16 18:24:30 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.8 2007/01/12 21:59:17 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.7 2006/10/16 18:24:30 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.8 2007/01/12 21:59:17 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -40,7 +40,7 @@ class AssetNavBlockSiteComponent
 		$this->_element =& $xmlDocument->createElement($this->getComponentClass());
 		$xmlDocument->appendChild($this->_element);
 				
-		$this->setOrganizer($this->_director->createSiteComponent("NavOrganizer", $this));
+		$this->setOrganizer($this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "NavOrganizer"), $this));
 	}
 	
 	/**
@@ -71,7 +71,7 @@ class AssetNavBlockSiteComponent
 			$child =& $child->nextSibling;
 		}
 		if (!isset($navOrgObj)) {
-			$navOrgObj =& $this->_director->createSiteComponent("NavOrganizer", $this);
+			$navOrgObj =& $this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "NavOrganizer"), $this);
 			$navOrgObj->updateNumRows('1');
 			$navOrgObj->updateNumColumns('1');
 		}
@@ -99,7 +99,7 @@ class AssetNavBlockSiteComponent
 			$child =& $child->nextSibling;
 		}
 // 		if (!isset($menuOrgObj)) {
-// 			$menuOrgObj =& $this->_director->createSiteComponent("MenuOrganizer");
+// 			$menuOrgObj =& $this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "MenuOrganizer"));
 // 		}
 		return $menuOrgObj;
 		

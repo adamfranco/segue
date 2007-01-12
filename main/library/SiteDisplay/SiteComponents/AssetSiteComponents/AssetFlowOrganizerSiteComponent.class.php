@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.5 2007/01/12 18:07:18 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.6 2007/01/12 21:59:17 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.5 2007/01/12 18:07:18 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.6 2007/01/12 21:59:17 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -197,7 +197,7 @@ class AssetFlowOrganizerSiteComponent
 		
 		$this->_saveXml();
 		
-		if (!$this->isOrganizer($siteComponent->_asset->getAssetType()))
+		if (isset($siteComponent->_asset) && !$this->isOrganizer($siteComponent->_asset->getAssetType()))
 			$this->_asset->removeAsset($subcomponent->_asset->getId(), true);
 	}
 	

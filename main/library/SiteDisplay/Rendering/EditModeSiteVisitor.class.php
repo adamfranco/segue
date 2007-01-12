@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.34 2007/01/10 20:44:33 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.35 2007/01/12 21:59:17 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.34 2007/01/10 20:44:33 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.35 2007/01/12 21:59:17 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -90,12 +90,15 @@ class EditModeSiteVisitor
 		
 		// Any further empty cells in fixed organizers should get controls to
 		// add to them.
+		$allowed = array();
+		$allowed[] = new Type('segue', 'edu.middlebury', 'FlowOrganizer');
+		$allowed[] = new Type('segue', 'edu.middlebury', 'FixedOrganizer');
 		foreach (array_keys($this->_emptyCells) as $id) {
 			preg_match("/(.+)_cell:([0-9]+)/", $id, $matches);
 			$organizerId = $matches[1];
 			$cellIndex = $matches[2];
 			
-			$this->_emptyCells[$id]->add(new UnstyledBlock($this->getInsertFormHTML($siteNavBlock->getDirector(), $organizerId, $cellIndex, array('FlowOrganizer', 'FixedOrganizer'))), null, '100%', null, TOP);
+			$this->_emptyCells[$id]->add(new UnstyledBlock($this->getInsertFormHTML($siteNavBlock->getDirector(), $organizerId, $cellIndex, $allowed)), null, '100%', null, TOP);
 			
 			unset($this->_emptyCells[$id], $matches, $organizerId, $cellIndex);
 		}
@@ -117,9 +120,19 @@ class EditModeSiteVisitor
 	 */
 	function &visitBlock ( &$block ) {
 		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
+				
+		$pluginManager =& Services::getService('PluginManager');
 		
-		$heading =& $guiContainer->add(new Heading($block->getTitleMarkup(), 2), null, null, null, TOP);
-		$content =& $guiContainer->add(new Block($block->getContentMarkup(), STANDARD_BLOCK), null, null, null, TOP);
+		$heading =& $guiContainer->add(
+			new Heading(
+				$pluginManager->getPluginTitleMarkup($block->getAsset(), true), 
+				2),
+			null, null, null, TOP);
+		$content =& $guiContainer->add(
+			new Block(
+				$pluginManager->getPluginText($block->getAsset(), true),
+				STANDARD_BLOCK), 
+			null, null, null, TOP);
 		
 		$primaryColor = '#090';
 		$secondaryColor = '#9F9';
@@ -323,7 +336,8 @@ class EditModeSiteVisitor
 			$childGuiComponents[] =& $childGuiComponent;
 		}
 		
-		$addBlock =& new UnstyledBlock($this->getAddFormHTML($organizer->getId(), $i, array('Block')));
+		$pluginManager =& Services::getService("PluginManager");
+		$addBlock =& new UnstyledBlock($this->getAddFormHTML($organizer->getId(), $i, $pluginManager->getEnabledPlugins()));
 		$this->wrapAsDroppable($addBlock, 
 				$organizer->getId()."_cell:".$i,
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
@@ -439,8 +453,12 @@ class EditModeSiteVisitor
 			$i=0;
 		}
 		
+		$allowed = array();
+		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
+		$pluginManager =& Services::getService("PluginManager");
+		$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 		
-		$childComponent =& $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), $i, array('NavBlock', 'Block')), 2), null, '100%', null, TOP);
+		$childComponent =& $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), $i, $allowed), 2), null, '100%', null, TOP);
 		$this->wrapAsDroppable($childComponent, 
 				$organizer->getId()."_cell:".$i,
 				array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
@@ -698,7 +716,7 @@ END;
 	 * 
 	 * @param string $organizerId
 	 * @param integer $cellIndex
-	 * @param array $allowed Which components to allow addition of: Block, NavBlock
+	 * @param array $allowed Which component Types to allow addition of: segue::edu.middlebury::Block, segue::edu.middlebury::NavBlock
 	 * @return string The form HTML
 	 * @access public
 	 * @since 4/14/06
@@ -723,8 +741,13 @@ END;
 		
 		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
 		
-		foreach ($allowed as $class) {
-			print "\n\t\t\t<option value='".$class."'>".$this->_classNames[$class]."</option>";
+		foreach ($allowed as $type) {
+			print "\n\t\t\t<option value='".$type->asString()."'>";
+			if (isset($this->_classNames[$type->getKeyword()]))
+				print $this->_classNames[$type->getKeyword()];
+			else
+				print $type->getKeyword();
+			print "</option>";
 		}
 		
 		print "\n\t\t</select>";
@@ -798,8 +821,13 @@ END;
 		
 		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
 		
-		foreach ($allowed as $class) {
-			print "\n\t\t\t<option value='".$class."'>".$this->_classNames[$class]."</option>";
+		foreach ($allowed as $type) {
+			print "\n\t\t\t<option value='".$type->asString()."'>";
+			if (isset($this->_classNames[$type->getKeyword()]))
+				print $this->_classNames[$type->getKeyword()];
+			else
+				print $type->getKeyword();
+			print "</option>";
 		}
 		
 		print "\n\t\t</select>";

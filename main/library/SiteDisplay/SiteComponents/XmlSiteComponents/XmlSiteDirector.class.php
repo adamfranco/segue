@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.14 2006/10/16 16:39:28 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.15 2007/01/12 21:59:18 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.14 2006/10/16 16:39:28 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.15 2007/01/12 21:59:18 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -250,17 +250,17 @@ class XmlSiteDirector
 	 * Answer a new Instance of the passed SiteComponent
 	 *
 	 * Note: parameter should have capital first letters of words
-	 * @param string $componentClass just the unique 'FlowOrganizer' etc.
+	 * @param object Type $componentType E.g. new Type('segue', 'edu.middlebury', 'FlowOrganizer') etc.
 	 * @param object $parentComponent The component under which this component will be created.
 	 * @return object SiteComponent
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function &createSiteComponent ( $componentClass, &$parentComponent ) {
+	function &createSiteComponent ( $componentType, &$parentComponent ) {
 		// $parentComponent is unused in this implementation, but is used
 		// by other storage implementations.
 		
-		$class = 'Xml'.$componentClass.'SiteComponent';
+		$class = 'Xml'.$componentType->getKeyword.'SiteComponent';
 		$element =& $this->_document->createElement($componentClass);
 		$idManager =& Services::getService('Id');
 		$newId =& $idManager->createId();

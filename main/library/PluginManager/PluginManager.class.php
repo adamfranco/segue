@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.12 2007/01/12 20:28:00 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.13 2007/01/12 21:59:17 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.12 2007/01/12 20:28:00 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.13 2007/01/12 21:59:17 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -596,12 +596,12 @@ class PluginManager {
 		$en = array();
 		while ($results->hasNext()) {
 			$result = $results->next();
-			if ($result['type_enabled'] == 0)
-				$dis[] = $result['type_domain']."::".
+			if ($result['type_enabled'] == 1)
+				$en[] = $result['type_domain']."::".
 						 $result['type_authority']."::".
 						 $result['type_keyword'];
 			else
-				$en[] =$result['type_domain']."::".
+				$dis[] =$result['type_domain']."::".
 						 $result['type_authority']."::".
 						 $result['type_keyword'];
 		}
@@ -609,6 +609,17 @@ class PluginManager {
 		$this->_enabledPlugins = $en;
 		$this->_objectifyArrays();
 		$this->_cachePluginArrays();
+	}
+	
+	/**
+	 * Returns the array containing all the enabled plugins
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 1/11/07
+	 */
+	function getEnabledPlugins () {
+		return $this->_enabledPlugins;
 	}
 	
 	/**

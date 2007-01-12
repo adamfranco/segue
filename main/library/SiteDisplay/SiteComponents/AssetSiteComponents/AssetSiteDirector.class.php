@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.8 2007/01/12 18:07:18 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.9 2007/01/12 21:59:17 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.8 2007/01/12 18:07:18 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.9 2007/01/12 21:59:17 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -70,6 +70,10 @@ class AssetSiteDirector
 		$this->FixedOrganizerType =& new Type('segue', 'edu.middlebury', 'FixedOrganizer');
 		$this->siteDisplayTypes[] =& $this->FixedOrganizerType;
 		$this->organizerTypes[] =& $this->FixedOrganizerType;
+		
+		$this->NavOrganizerType =& new Type('segue', 'edu.middlebury', 'NavOrganizer');
+		$this->siteDisplayTypes[] =& $this->NavOrganizerType;
+		$this->organizerTypes[] =& $this->NavOrganizerType;
 		
 		$this->FlowOrganizerType =& new Type('segue', 'edu.middlebury', 'FlowOrganizer');
 		$this->siteDisplayTypes[] =& $this->FlowOrganizerType;
@@ -326,6 +330,7 @@ class AssetSiteDirector
 			
 			$xmlDocument =& $this->getXmlDocumentFromAsset($asset);
 			
+			
 			$this->_createdSiteComponents[$idString] =& new $class($this, $asset, $xmlDocument->documentElement);
 		}
 		return $this->_createdSiteComponents[$idString];
@@ -416,21 +421,29 @@ class AssetSiteDirector
 	 * Answer a new Instance of the passed SiteComponent
 	 *
 	 * Note: parameter should have capital first letters of words
-	 * @param string $componentClass just the unique 'FlowOrganizer' etc.
+	 * @param object Type $componentType E.g. new Type('segue', 'edu.middlebury', 'FlowOrganizer') etc.
 	 * @return object SiteComponent
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function &createSiteComponent ( $componentClass, &$parentComponent ) {
+	function &createSiteComponent ( $componentType, &$parentComponent ) {
 // 		throwError(new Error("Should we be getting here?"));
+
+		foreach ($this->siteDisplayTypes as $siteDisplayType) {
+			if ($componentType->isEqual($siteDisplayType)) {
+				$typeKey = ucfirst($componentType->getKeyword());
+				break;
+			}
+		}
+		if (!isset($typeKey))
+			$typeKey = 'Block';
+		$class = "Asset".$typeKey."SiteComponent";
 		
-		$class = 'Asset'.$componentClass.'SiteComponent';
 		
 		// For blocks, create an asset for them
-		if (preg_match('/^.*Block$/', $componentClass)) {
-			$typeName = $componentClass."Type";
+		if (preg_match('/^.*BlockSiteComponent$/', $class)) {
 			$asset =& $this->_repository->createAsset("Untitled", "",
-						$this->$typeName);
+						$componentType);
 			$assetId =& $asset->getId();
 			$element = null;
 			$newId = $assetId->getIdString();
@@ -438,8 +451,7 @@ class AssetSiteDirector
 			$this->_createdSiteComponents[$newId] =& new $class($this, $asset, $element);
 			$this->_createdSiteComponents[$newId]->populateWithDefaults();
 			
-			if ($componentClass != 'SiteNavBlock') {
-				printpre(get_class($parentComponent));
+			if ($componentType->isEqual($this->SiteNavBlockType)) {
 				$parentComponent->addSubcomponent($this->_createdSiteComponents[$newId]);
 			}
 		} 
@@ -448,7 +460,7 @@ class AssetSiteDirector
 			$asset =& $parentComponent->_asset;
 			
 			$parentElement =& $parentComponent->getElement();
-			$element =& $parentElement->ownerDocument->createElement($componentClass);
+			$element =& $parentElement->ownerDocument->createElement($typeKey);
 			$idManager =& Services::getService('Id');
 			$newIdObj =& $idManager->createId();
 			$newId = $newIdObj->getIdString();
