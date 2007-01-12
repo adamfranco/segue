@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pluginData domain='SeguePlugins' authority='Segue' keyword='Assignment'>
+<pluginData domain='SeguePlugins' authority='edu.middlebury' keyword='Assignment'>
 	<record name='Assignment'>
 		<datum name='Reading' type='string'></datum>
 		<datum name='Question' type='string'></datum>

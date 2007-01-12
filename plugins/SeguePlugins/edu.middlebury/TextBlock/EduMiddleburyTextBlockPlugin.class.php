@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.9 2006/03/07 19:27:27 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.1 2007/01/12 19:39:13 adamfranco Exp $
  */
 
 /**
@@ -18,9 +18,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTextBlockPlugin.class.php,v 1.9 2006/03/07 19:27:27 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.1 2007/01/12 19:39:13 adamfranco Exp $
  */
-class SegueTextBlockPlugin
+class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
 // 	extends SeguePluginsPlugin
 {

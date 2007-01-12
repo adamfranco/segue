@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueDownloadPlugin.class.php,v 1.4 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.1 2007/01/12 19:39:13 adamfranco Exp $
  */
 
 /**
@@ -18,9 +18,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueDownloadPlugin.class.php,v 1.4 2006/04/12 21:19:56 cws-midd Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.1 2007/01/12 19:39:13 adamfranco Exp $
  */
-class SegueDownloadPlugin
+class EduMiddleburyDownloadPlugin
 	extends SeguePluginsAjaxPlugin
 // 	extends SeguePluginsPlugin
 {
