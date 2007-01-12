@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.34 2006/11/27 14:37:28 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.35 2007/01/12 20:28:00 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/NavigationNodeRenderer.class.php");
@@ -26,7 +26,7 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
  * @copyright Copyright &copy; 2006, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NodeRenderer.abstract.php,v 1.34 2006/11/27 14:37:28 adamfranco Exp $
+ * @version $Id: NodeRenderer.abstract.php,v 1.35 2007/01/12 20:28:00 adamfranco Exp $
  */
 class NodeRenderer {
 
@@ -45,6 +45,7 @@ class NodeRenderer {
 	 * @since 1/19/06
 	 */
 	function &forAsset ( &$asset, &$parent ) {
+		throwError(new Error("This class is depricated.", __CLASS__));
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
 		ArgumentValidator::validate($parent, OptionalRule::getRule(
 			ExtendsValidatorRule::getRule("NavigationNodeRenderer")));
@@ -227,6 +228,7 @@ class NodeRenderer {
 	 * @since 2/20/06
 	 */
 	function acceptVisitor ( &$nodeVisitor ) {
+		throwError(new Error("This class is depricated.", __CLASS__));
 		// The implementation should be something like:
 		$nodeVisitor->visitGenericNode($this);
 		// where "Generic" in the above line is replaced with an appropriate,
@@ -277,6 +279,7 @@ class NodeRenderer {
 	 * @since 1/19/06
 	 */
 	function getTitle () {
+		throwError(new Error("This class is depricated.", __CLASS__));
 		return $this->_asset->getDisplayName();
 	}
 	
@@ -288,6 +291,7 @@ class NodeRenderer {
 	 * @since 1/23/06
 	 */
 	function &getId () {
+		throwError(new Error("This class is depricated.", __CLASS__));
 		$id =& $this->_asset->getId();
 		return $id;
 	}
@@ -320,6 +324,7 @@ class NodeRenderer {
 	 * @since 1/26/06
 	 */
 	function &renderSite ($showControls = false) {
+		throwError(new Error("This class is depricated.", __CLASS__));
 		return $this->_parent->renderSite($showControls);
 	}
 	
@@ -342,6 +347,7 @@ class NodeRenderer {
 	 * @since 1/26/06
 	 */
 	function getSiteTitle () {
+		throwError(new Error("This class is depricated.", __CLASS__));
 		return $this->_parent->getSiteTitle();
 	}
 	
@@ -353,6 +359,7 @@ class NodeRenderer {
 	 * @since 1/26/06
 	 */
 	function &getSiteRenderer () {
+		throwError(new Error("This class is depricated.", __CLASS__));
 		$siteRenderer =& $this->_parent->getSiteRenderer();
 		return $siteRenderer;
 	}

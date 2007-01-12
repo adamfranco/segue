@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.11 2007/01/12 19:40:22 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.12 2007/01/12 20:28:00 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.11 2007/01/12 19:40:22 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.12 2007/01/12 20:28:00 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -425,7 +425,7 @@ class PluginManager {
 				$harmoni->request->endNamespace();
 			}
 		} else {
-			print "The requested plugin is not enabled, please contact your administrator for more information";
+			print "The requested plugin, '".$type->asString()."' is not enabled, please contact your administrator for more information";
 		}
 		return ob_get_clean();
 	}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.13 2007/01/12 16:54:26 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.14 2007/01/12 20:28:00 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.13 2007/01/12 16:54:26 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.14 2007/01/12 20:28:00 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -83,13 +83,19 @@ class viewAction
 		 * Other headers and footers
 		 *********************************************************/
 		$outputHandler =& $harmoni->getOutputHandler();
-		$head = $outputHandler->getHead();
-		if (preg_match('/<title>.*<\/title>/', $head))
-			$head = preg_replace('/<title>.*<\/title>/', 
-				'<title>'.$rootSiteComponent->getDisplayName().'</title>', $head);
-		else
-			$head .= "<title>".$rootSiteComponent->getDisplayName()."</title>";
-		$outputHandler->setHead($head);
+		
+		// Remove any existing title tags from the head text
+		print preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead());
+		
+		//Add our new title
+		print "\n\t\t<title>";
+		print strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $rootSiteComponent->getDisplayName()));
+		print "</title>";
+		
+		// Add our common Harmoni javascript libraries
+		require(POLYPHONY_DIR."/main/library/Harmoni.js.inc.php");
+		
+		$outputHandler->setHead(ob_get_clean());
 		
 				
 		$xLayout =& new XLayout();

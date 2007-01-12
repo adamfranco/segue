@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.19 2007/01/10 20:44:33 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.20 2007/01/12 20:28:00 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.19 2007/01/10 20:44:33 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.20 2007/01/12 20:28:00 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -69,8 +69,23 @@ class ViewModeSiteVisitor {
 	function &visitBlock ( &$block ) {
 		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
 		
-		$guiContainer->add(new Heading($block->getTitleMarkup(), 2), null, null, null, TOP);
-		$guiContainer->add(new Block($block->getContentMarkup(), STANDARD_BLOCK), null, null, null, TOP);
+		$pluginManager =& Services::getService('PluginManager');
+		
+		if (true) {
+			$guiContainer->add(
+				new Heading(
+					$pluginManager->getPluginTitleMarkup($block->getAsset(), true), 
+					2),
+				null, null, null, TOP);
+			$guiContainer->add(
+				new Block(
+					$pluginManager->getPluginText($block->getAsset(), true),
+					STANDARD_BLOCK), 
+				null, null, null, TOP);
+		} else {
+// 			$guiContainer->add(new Heading($block->getTitleMarkup(), 2), null, null, null, TOP);
+// 			$guiContainer->add(new Block($block->getContentMarkup(), STANDARD_BLOCK), null, null, null, TOP);
+		}
 		
 		return $guiContainer;
 	}

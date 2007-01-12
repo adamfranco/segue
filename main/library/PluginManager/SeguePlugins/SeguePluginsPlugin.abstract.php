@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.17 2007/01/12 19:40:22 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.18 2007/01/12 20:28:00 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 
 /**
  * Abstract class that all Plugins must extend
@@ -20,7 +21,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.17 2007/01/12 19:40:22 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.18 2007/01/12 20:28:00 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -582,9 +583,15 @@ class SeguePluginsPlugin {
 			
 			$item =& new AgentNodeEntryItem($category, $description);
 			$item->addNodeId($this->_asset->getId());
-			$renderer =& NodeRenderer::forAsset($this->_asset);
-			$siteRenderer =& $renderer->getSiteRenderer();
-			$item->addNodeId($siteRenderer->getId());
+			
+			// Get the site Id (Note: this creates a circular dependancy between
+			// the plugins package and the SiteDisplay Package.
+			$idManager =& Services::getService("Id");
+			$nodeId =& $this->_asset->getId();
+			$director =& new AssetSiteDirector($this->_asset->getRepository());	
+			$rootSiteComponent =& $director->getRootSiteComponent($nodeId->getIdString());
+			
+			$item->addNodeId($idManager->getId($rootSiteComponent->getId()));
 			
 			$log->appendLogWithTypes($item,	$formatType, $priorityType);
 		}
