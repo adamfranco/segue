@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.5 2007/01/10 20:44:33 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.6 2007/01/12 16:53:08 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.5 2007/01/10 20:44:33 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.6 2007/01/12 16:53:08 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -141,6 +141,8 @@ function printSiteShort(& $asset, &$harmoni, $num) {
 	print "\n\t</a>";
 	print "\n\t<br/>"._("ID#").": ".$assetId->getIdString();
 	print "\n\t<a href='".$harmoni->request->quickURL('site', 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
+	print "\n\t | <a href='".$harmoni->request->quickURL('site', 'deleteComponent', array('node' => $assetId->getIdString()))."'>"._("delete")."</a>";
+	
 	$description =& HtmlString::withValue($asset->getDescription());
 	$description->trim(25);
 	print  "\n\t<div style='font-size: smaller;'>".$description->asString()."</div>";	
