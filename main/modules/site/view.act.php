@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.12 2007/01/10 20:44:33 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.13 2007/01/12 16:54:26 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.12 2007/01/10 20:44:33 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.13 2007/01/12 16:54:26 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -63,24 +63,20 @@ class viewAction
 		
 		$director =& new AssetSiteDirector(
 			$repositoryManager->getRepository(
-				$idManager->getId('edu.middlebury.segue.sites_repository')));
+				$idManager->getId('edu.middlebury.segue.sites_repository')));			
 		
 		if (!$nodeId = RequestContext::value("node"))
-			$nodeId = "67";
-			
-		
+			throwError(new Error('No site node specified.', 'SiteDisplay'));
 		
 		/*********************************************************
 		 * Aditional setup
 		 *********************************************************/
 		$rootSiteComponent =& $director->getRootSiteComponent($nodeId);
+		$this->rootSiteComponent =& $rootSiteComponent;
 		
 		$visitor =& $this->getSiteVisitor();
 		
 		$siteGuiComponent =& $rootSiteComponent->acceptVisitor($visitor);
-		
-		
-
 		
 		
 		/*********************************************************
@@ -117,6 +113,12 @@ class viewAction
 		$rightHeadColumn->add($this->getLoginComponent(), 
 				null, null, RIGHT, TOP);
 		
+		$rightHeadColumn->add($this->getSegueLinksComponent(), 
+				null, null, RIGHT, TOP);
+				
+		$rightHeadColumn->add($this->getCommandsComponent(), 
+				null, null, RIGHT, TOP);
+		
 		
 		// :: Site ::
 		$mainScreen->add($siteGuiComponent);
@@ -151,7 +153,57 @@ class viewAction
 	function &getSiteVisitor () {
 		$visitor =& new ViewModeSiteVisitor();
 		return $visitor;
-	}	
+	}
+	
+	/**
+	 * Answer a links back to the main Segue pages
+	 * 
+	 * @return object GUIComponent
+	 * @access public
+	 * @since 1/12/07
+	 */
+	function &getSegueLinksComponent () {
+		$harmoni =& Harmoni::instance();
+		ob_start();
+		
+		print "<a href='".$harmoni->request->quickURL('home', 'welcome')."' alt='"._("The Segue homepage")."'>";
+		print _("home")."</a> | ";
+		
+		print "<a href='".$harmoni->request->quickURL('site', 'list')."' alt='"._("List of Segue sites")."'>";
+		print _("site list")."</a>";
+		
+		$ret =& new Component(ob_get_clean(), BLANK, 2);
+		return $ret;
+	}
+	
+	/**
+	 * Answer a links back to the main Segue pages
+	 * 
+	 * @return object GUIComponent
+	 * @access public
+	 * @since 1/12/07
+	 */
+	function &getCommandsComponent () {
+		$harmoni =& Harmoni::instance();
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		
+		ob_start();
+		if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.modify"),
+				$idManager->getId($this->rootSiteComponent->getId())))
+		{
+			print "<a href='";
+			print $harmoni->request->quickURL('site', 'editview', array(
+					'node' => RequestContext::value("node")));
+			print "' alt='"._("Go to Edit-Mode")."'>";
+			print _("edit")."</a>";
+		}
+	
+		
+		$ret =& new Component(ob_get_clean(), BLANK, 2);
+		return $ret;
+	}
 }
 
 ?>
