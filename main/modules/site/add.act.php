@@ -5,10 +5,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.8 2006/05/30 20:18:55 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.9 2007/01/12 16:55:07 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
 
 /**
  * 
@@ -18,10 +18,10 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.8 2006/05/30 20:18:55 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.9 2007/01/12 16:55:07 adamfranco Exp $
  */
 class addAction 
-	extends MainWindowAction
+	extends EditModeSiteAction
 {
 	/**
 	 * Check Authorizations
@@ -113,95 +113,14 @@ class addAction
 		// Create the step text
 		ob_start();
 		print "\n<h2>"._("Name")."</h2>";
-		print "\n"._("The Name for this <em>Asset</em>: ");
+		print "\n"._("The Name for this <em>Site</em>: ");
 		print "\n<br />[[display_name]]";
 		print "\n<h2>"._("Description")."</h2>";
-		print "\n"._("The Description for this <em>Asset</em>: ");
+		print "\n"._("The Description for this <em>Site</em>: ");
 		print "\n<br />[[description]]";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
-		
-// 		
-// 		// :: Content ::
-// 		$step =& $wizard->addStep("contentstep", new WizardStep());
-// 		$step->setDisplayName(_("Content")." ("._("optional").")");
-// 		
-// 		$property =& $step->addComponent("content", WTextArea::withRowsAndColumns(20,50));
-// 		
-// 		// Create the step text
-// 		ob_start();
-// 		print "\n<h2>"._("Content")."</h2>";
-// 		print "\n"._("This is an optional place to put content for this <em>Asset</em>. <br />If you would like more structure, you can create new schemas to hold the <em>Asset's</em> data.");
-// 		print "\n<br />[[content]]";
-// 		print "\n<div style='width: 400px'> &nbsp; </div>";
-// 		$step->setContent(ob_get_contents());
-// 		ob_end_clean();
-		
-		// :: Effective/Expiration Dates ::
-		$step =& $wizard->addStep("datestep", new WizardStep());
-		$step->setDisplayName(_("Effective Dates")." ("._("optional").")");
-		
-		// Create the properties.
-		$property =& $step->addComponent("effective_date", new WTextField());
-	//	$property->setDefaultValue();
-//		$property->setErrorString(" <span style='color: #f00'>* "._("The date must be of the form YYYYMMDD, YYYYMM, or YYYY.")."</span>");
-	
-		$property =& $step->addComponent("expiration_date", new WTextField());
-	//	$property->setDefaultValue();
-//		$property->setErrorString(" <span style='color: #f00'>* "._("The date must be of the form YYYYMMDD, YYYYMM, or YYYY.")."</span>");
-		
-		// Create the step text
-		ob_start();
-		print "\n<h2>"._("Effective Date")."</h2>";
-		print "\n"._("The date that this <em>Asset</em> becomes effective: ");
-		print "\n<br />[[effective_date]]";
-		
-		print "\n<h2>"._("Expiration Date")."</h2>";
-		print "\n"._("The date that this <em>Asset</em> expires: ");
-		print "\n<br />[[expiration_date]]";
-		$step->setContent(ob_get_contents());
-		ob_end_clean();
-		
-		
-// 		
-// 		// :: Parent ::
-// 		$step =& $wizard->addStep("parentstep", new WizardStep());
-// 		$step->setDisplayName(_("Parent")." ("._("optional").")");
-// 		
-// 		// Create the properties.
-// 		$property =& $step->addComponent("parent", new WSelectList());
-// 		$harmoni =& Harmoni::instance();
-// 		
-// 		$property->addOption("NONE", _("None"));
-// 		
-// 		$assets =& $repository->getAssets();
-// 		$authZManager =& Services::getService("AuthZ");
-// 		$idManager =& Services::getService("Id");
-// 		while ($assets->hasNext()) {
-// 			$asset =& $assets->next();
-// 			$assetId =& $asset->getId();
-// 			if ($authZManager->isUserAuthorized(
-// 				$idManager->getId("edu.middlebury.authorization.add_children"),
-// 				$assetId))
-// 			{
-// 				$property->addOption($assetId->getIdString(), $assetId->getIdString()." - ".$asset->getDisplayName());
-// 			}
-// 		}
-// 		
-// 		if (RequestContext::value('parent'))
-// 			$property->setValue(RequestContext::value('parent'));
-// 		else
-// 			$property->setValue("NONE");
-// 				
-// 		// Create the step text
-// 		ob_start();
-// 		print "\n<h2>"._("Parent <em>Asset</em>")."</h2>";
-// 		print "\n"._("Select one of the <em>Assets</em> below if you wish to make this new asset a child of another asset: ");
-// 		print "\n<br />[[parent]]";
-// 		
-// 		$step->setContent(ob_get_contents());
-// 		ob_end_clean();
 		
 		return $wizard;
 	}
@@ -221,107 +140,86 @@ class addAction
 		
 		if (!$wizard->validate()) return false;
 		
-		// Make sure we have a valid Repository
 		$idManager =& Services::getService("Id");
-		$authZ =& Services::getService("AuthZ");
-		$repositoryManager =& Services::getService("Repository");
-		$repository =& $repositoryManager->getRepository(
-			$idManager->getId("edu.middlebury.segue.sites_repository"));
-		
 		$properties = $wizard->getAllValues();
 		
-		// First, verify that we chose a parent that we can add children to.
-		if (!isset($properties['parentstep']['parent'])
-			|| !$properties['parentstep']['parent'] 
-			|| $properties['parentstep']['parent'] == 'NONE'
-			|| ($parentId =& $idManager->getId($properties['parentstep']['parent'])
-				&& $authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.add_children"), $parentId)))
-		{
 		
-			$assetType = new HarmoniType('site_components', 
-										'edu.middlebury.segue', 
-										'site', 
-										'An Asset of this type is the root node of a Segue site.');
+		/*********************************************************
+		 * Create the site Asset
+		 *********************************************************/			
+		$director =& $this->getSiteDirector();
+		$site =& $director->createSiteComponent('SiteNavBlock', $null = null);
+		
+		$site->updateDisplayName($properties['namedescstep']['display_name']);
+		$site->updateDescription($properties['namedescstep']['description']);
+		
+		$this->_siteId = $site->getId();
+		$siteId =& $idManager->getId($site->getId());
+		
+		
+		/*********************************************************
+		 * Create our default child assets
+		 *********************************************************/
+		$siteOrganizer =& $site->getOrganizer();
+		$siteOrganizer->updateNumColumns('2');
+		
+		$mainMenu =& $director->createSiteComponent('MenuOrganizer', $siteOrganizer);
+		$siteOrganizer->putSubcomponentInCell($mainMenu, 0);
+		$menuTarget = $siteOrganizer->getId()."_cell:1";
+		$mainMenu->updateTargetId($menuTarget);
+		$mainMenu->updateDirection('Top-Bottom/Left-Right');
+		
+		
+		$page1 =& $director->createSiteComponent('NavBlock', $mainMenu);
+		$page1->updateDisplayName(_('My First Page'));
+		$page1->updateDescription(_('This is the first page in the site, added by default.'));
+		
+		$page1Org =& $page1->getOrganizer();
+		$page1ContentOrg =& $director->createSiteComponent('FlowOrganizer', $page1Org);
+		$page1Org->putSubcomponentInCell($page1ContentOrg, 0);
+		
+		$page1Content =& $director->createSiteComponent('Block', $page1ContentOrg);
+		$page1Content->updateDisplayName(_('My First Content'));
+		$page1Content->updateDescription(_('This is the first content in this page, added by default.'));
+		
+		$page1Content =& $director->createSiteComponent('Block', $page1ContentOrg);
+		$page1Content->updateDisplayName(_('My Second Content'));
+		$page1Content->updateDescription(_('This is the second content in this page, added by default.'));
+		
+		
+		
+		$page2 =& $director->createSiteComponent('NavBlock', $mainMenu);
+		$page2->updateDisplayName(_('My Second Page'));
+		$page2->updateDescription(_('This is the second page in the site, added by default.'));
+		
+		$page1Content =& $director->createSiteComponent('Block', $page1ContentOrg);
+		$page1Content->updateDisplayName(_('My Third Content'));
+		$page1Content->updateDescription(_('This is the first content in this page, added by default.'));
+		
+		$page1Content =& $director->createSiteComponent('Block', $page1ContentOrg);
+		$page1Content->updateDisplayName(_('My Fourth Content'));
+		$page1Content->updateDescription(_('This is the second content in this page, added by default.'));
+		
+		
+		/*********************************************************
+		 * Log the success or failure
+		 *********************************************************/
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager =& Services::getService("Logging");
+			$log =& $loggingManager->getLogForWriting("Segue");
+			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
 			
-			$asset =& $repository->createAsset($properties['namedescstep']['display_name'], 
-										$properties['namedescstep']['description'], 
-										$assetType);
-										
-			$assetId =& $asset->getId();
-			$this->_assetId =& $assetId;
+			$item =& new AgentNodeEntryItem("Create Site", "Site added");
+			$item->addNodeId($siteId);
 			
-			// Defaults for navigational layouts
-			$arrangement ='columns';
-			$numCells = 2;
-			$targetOverride = 2;	
-			
-			// Add a default navigation record structure
-			$navStructId =& $idManager->getId('Repository::edu.middlebury.segue.sites_repository'
-					.'::edu.middlebury.segue.nav_nod_rs');
-			$record =& $asset->createRecord($navStructId);
-			
-			// layout_arrangement
-			$partStructId =& $idManager->getId(
-					'Repository::edu.middlebury.segue.sites_repository'
-					.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.layout_arrangement');
-			$value =& String::withValue($arrangement);
-			$record->createPart($partStructId, $value);
-			
-			// num_cells
-			$partStructId =& $idManager->getId(
-					'Repository::edu.middlebury.segue.sites_repository'
-					.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.num_cells');
-			$value =& Integer::withValue($numCells);
-			$record->createPart($partStructId, $value);
-			
-			// target_override
-			$partStructId =& $idManager->getId(
-					'Repository::edu.middlebury.segue.sites_repository'
-					.'::edu.middlebury.segue.nav_nod_rs.edu.middlebury.segue.nav_nod_rs.target_override');
-			$value =& Integer::withValue($targetOverride);
-			$record->createPart($partStructId, $value);
-			
-			// Update the effective/expiration dates
-			if ($properties['datestep']['effective_date'])
-				$asset->updateEffectiveDate(
-					DateAndTime::fromString($properties['datestep']['effective_date']));
-			if ($properties['datestep']['expiration_date'])
-				$asset->updateExpirationDate(
-					DateAndTime::fromString($properties['datestep']['expiration_date']));
-			
-			// Add our parent if we have specified one.
-			if (isset($properties['parentstep']['parent'])
-				&& $properties['parentstep']['parent'] 
-				&& $properties['parentstep']['parent'] != 'NONE') 
-			{
-				$parentId =& $idManager->getId($properties['parentstep']['parent']);
-				$parentAsset =& $repository->getAsset($parentId);
-				$parentAsset->addAsset($assetId);
-			}
-			
-			// Log the success or failure
-			if (Services::serviceRunning("Logging")) {
-				$loggingManager =& Services::getService("Logging");
-				$log =& $loggingManager->getLogForWriting("Segue");
-				$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
-								"A format in which the acting Agent[s] and the target nodes affected are specified.");
-				$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
-								"Normal events.");
-				
-				$item =& new AgentNodeEntryItem("Create Site", "Site added");
-				$item->addNodeId($asset->getId());
-				
-				$log->appendLogWithTypes($item,	$formatType, $priorityType);
-			}
-			
-			return TRUE;
-		} 
-		// If we don't have authorization to add to the picked parent, send us back to
-		// that step.
-		else {
-			$wizard->setStep("parentstep");
-			return FALSE;
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
 		}
+		
+		return TRUE;
+	
 	}
 	
 	/**
@@ -333,9 +231,9 @@ class addAction
 	 */
 	function getReturnUrl () {
 		$harmoni =& Harmoni::instance();
-		if ($this->_assetId) 
+		if ($this->_siteId) 
 			return $harmoni->request->quickURL("site", "editview", array(
-				"node" => $this->_assetId->getIdString()));
+				"node" => $this->_siteId));
 		else
 			return $harmoni->request->quickURL("site", "list");
 	}
