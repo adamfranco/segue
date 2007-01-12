@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.6 2006/10/16 19:37:55 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.7 2007/01/12 16:56:22 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.6 2006/10/16 19:37:55 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.7 2007/01/12 16:56:22 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -412,7 +412,10 @@ class AssetSiteDirector
 			$this->_createdSiteComponents[$newId] =& new $class($this, $asset, $element);
 			$this->_createdSiteComponents[$newId]->populateWithDefaults();
 			
-			$parentComponent->addSubcomponent($this->_createdSiteComponents[$newId]);
+			if ($componentClass != 'SiteNavBlock') {
+				printpre(get_class($parentComponent));
+				$parentComponent->addSubcomponent($this->_createdSiteComponents[$newId]);
+			}
 		} 
 		// For Organizers, use the parent's asset.
 		else {
