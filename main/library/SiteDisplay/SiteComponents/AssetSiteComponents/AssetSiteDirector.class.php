@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.7 2007/01/12 16:56:22 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.8 2007/01/12 18:07:18 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.7 2007/01/12 16:56:22 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.8 2007/01/12 18:07:18 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -54,12 +54,30 @@ class AssetSiteDirector
 		$this->_xmlDocuments = array();
 		
 		// Asset Types
+		$this->siteDisplayTypes = array();
+		
 		$this->SiteNavBlockType =& new Type('segue', 'edu.middlebury', 'SiteNavBlock');
+		$this->siteDisplayTypes[] =& $this->SiteNavBlockType;
+		
 		$this->NavBlockType =& new Type('segue', 'edu.middlebury', 'NavBlock');
+		$this->siteDisplayTypes[] =& $this->NavBlockType;
+		
 		$this->BlockType =& new Type('segue', 'edu.middlebury', 'Block');
+		$this->siteDisplayTypes[] =& $this->BlockType;
+		
+		$this->organizerTypes = array();
+		
 		$this->FixedOrganizerType =& new Type('segue', 'edu.middlebury', 'FixedOrganizer');
+		$this->siteDisplayTypes[] =& $this->FixedOrganizerType;
+		$this->organizerTypes[] =& $this->FixedOrganizerType;
+		
 		$this->FlowOrganizerType =& new Type('segue', 'edu.middlebury', 'FlowOrganizer');
+		$this->siteDisplayTypes[] =& $this->FlowOrganizerType;
+		$this->organizerTypes[] =& $this->FlowOrganizerType;
+		
 		$this->MenuOrganizerType =& new Type('segue', 'edu.middlebury', 'MenuOrganizer');
+		$this->siteDisplayTypes[] =& $this->MenuOrganizerType;
+		$this->organizerTypes[] =& $this->MenuOrganizerType;
 	}
 	
 	/**
@@ -296,7 +314,15 @@ class AssetSiteDirector
 		$idString = $id->getIdString();
 		if (!isset($this->_createdSiteComponents[$idString])) {
 			$type =& $asset->getAssetType();
-			$class = "Asset".ucfirst($type->getKeyword())."SiteComponent";
+			foreach ($this->siteDisplayTypes as $siteDisplayType) {
+				if ($type->isEqual($siteDisplayType)) {
+					$typeKey = ucfirst($type->getKeyword());
+					break;
+				}
+			}
+			if (!isset($typeKey))
+				$typeKey = 'Block';
+			$class = "Asset".$typeKey."SiteComponent";
 			
 			$xmlDocument =& $this->getXmlDocumentFromAsset($asset);
 			

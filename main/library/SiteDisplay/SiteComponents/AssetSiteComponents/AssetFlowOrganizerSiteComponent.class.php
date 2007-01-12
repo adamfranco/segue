@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.4 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.5 2007/01/12 18:07:18 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.4 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.5 2007/01/12 18:07:18 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -99,11 +99,8 @@ class AssetFlowOrganizerSiteComponent
 		
 		$this->_saveXml();
 		
-		if ($this->_director->NavBlockType->isEqual($siteComponent->_asset->getAssetType())
-			|| $this->_director->BlockType->isEqual($siteComponent->_asset->getAssetType()))
-		{
+		if (!$this->isOrganizer($siteComponent->_asset->getAssetType()))
 			$this->_asset->addAsset($siteComponent->_asset->getId());
-		}
 	}
 	
 	/**
@@ -200,11 +197,8 @@ class AssetFlowOrganizerSiteComponent
 		
 		$this->_saveXml();
 		
-		if ($this->_director->NavBlockType->isEqual($subcomponent->_asset->getAssetType())
-			|| $this->_director->BlockType->isEqual($subcomponent->_asset->getAssetType()))
-		{
+		if (!$this->isOrganizer($siteComponent->_asset->getAssetType()))
 			$this->_asset->removeAsset($subcomponent->_asset->getId(), true);
-		}
 	}
 	
 	/**
@@ -249,6 +243,23 @@ class AssetFlowOrganizerSiteComponent
 	 */
 	function subMenuExists () {
 		// Flow organizers can't contain menus.
+		return false;
+	}
+	
+	/**
+	 * Answer true if the type passed corresponds to an organizer
+	 * 
+	 * @param object Type $type
+	 * @return boolean
+	 * @access public
+	 * @since 1/12/07
+	 */
+	function isOrganizer ( &$type ) {
+		foreach ($this->_director->organizerTypes as $orgType) {
+			if ($type->isEqual($orgType))
+				return true;	
+		}
+		
 		return false;
 	}
 	
