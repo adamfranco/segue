@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.1 2007/01/15 17:57:15 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.2 2007/01/15 18:44:47 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
 require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
+require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
 
 /**
  * The edit-mode site visitor renders the site for editing, displaying controls.
@@ -21,10 +22,10 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.1 2007/01/15 17:57:15 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.2 2007/01/15 18:44:47 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
-	extends ViewModeSiteVisitor
+	extends EditModeSiteVisitor
 {
 
 	/**
@@ -35,15 +36,9 @@ class ArrangeModeSiteVisitor
 	 * @since 4/14/06
 	 */
 	function ArrangeModeSiteVisitor () {
-		$this->ViewModeSiteVisitor();
+		$this->EditModeSiteVisitor();
 		$this->_controlsVisitor =& new ControlsSiteVisitor();
-		$this->_classNames = array(
-			'Block' => _('Block'),
-			'NavBlock' => _('Link'),
-			'MenuOrganizer' => _('Menu'),
-			'FlowOrganizer' => _('ContentOrganizer'),
-			'FixedOrganizer' => _('Organizer')
-		);
+		$this->_action = 'arrangeview';
 	}
 
 	/**
@@ -496,7 +491,7 @@ class ArrangeModeSiteVisitor
 	 */
 	function getUrlForComponent ( $id ) {
 		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL("site", "editview", array("node" => $id));
+		return $harmoni->request->quickURL("site", "arrangeview", array("node" => $id));
 	}
 	
 	/**
@@ -711,75 +706,7 @@ END;
 		return ob_get_clean();
 	}
 	
-	/**
-	 * Answer the form for Adding new components
-	 * 
-	 * @param string $organizerId
-	 * @param integer $cellIndex
-	 * @param array $allowed Which component Types to allow addition of: segue::edu.middlebury::Block, segue::edu.middlebury::NavBlock
-	 * @return string The form HTML
-	 * @access public
-	 * @since 4/14/06
-	 */
-	function getAddFormHTML ($organizerId, $cellIndex, $allowed) {
-		ob_start();
-		$harmoni =& Harmoni::instance();
-		print "\n<form action='";
-		print $harmoni->request->quickURL('site', 'addComponent', 
-				array('returnNode' => RequestContext::value('node')));
-		print "' method='post'>";
-		
-		print "\n\t<input type='hidden' name='".RequestContext::name('organizerId')."' value='".$organizerId."'/>";
-		print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
-		
-		print "\n\t<div style='text-decoration: underline; cursor: pointer; white-space: nowrap;'";
-		print "onclick='this.style.display=\"none\"; this.nextSibling.nextSibling.style.display=\"block\";'";
-		print ">";
-		print "\n\t\t"._("Append New...");
-		print "\n\t</div>";
-		print "\n\t<div style='display: none'>";
-		
-		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
-		
-		foreach ($allowed as $type) {
-			print "\n\t\t\t<option value='".$type->asString()."'>";
-			if (isset($this->_classNames[$type->getKeyword()]))
-				print $this->_classNames[$type->getKeyword()];
-			else
-				print $type->getKeyword();
-			print "</option>";
-		}
-		
-		print "\n\t\t</select>";
-		print "\n\t\t<div style='white-space: nowrap;'>"._("Title: ");
-		print "\n\t\t\t<input name='".RequestContext::name('displayName')."' type='text' size='10'/>";
-		print "\n\t\t</div>";
-		
-		print "\n\t\t<div style='white-space: nowrap; text-align: right;'>";
-		print "\n\t\t\t<input type='button' value='"._('Submit')."'";
-		print " onclick='";
-		print "var hasTitle = false; ";
-		print "var regex = /[^\\s\\n\\t]+/; ";
-		print "for (var i = 0; i < this.form.elements.length; i++) { ";
-		print 		"var elem = this.form.elements[i]; ";
-		print 		"if (elem.name == \"".RequestContext::name('displayName')."\" && elem.value.match(regex)) {";
-		print 			"hasTitle = true;";
-		print 		"}";
-		print "}";
-		print "if (!hasTitle) { ";
-		print 		"alert(\""._("A title is required")."\");";
-		print "} else { ";
-		print 	"this.form.submit();";
-		print "}";
-		print "' />";
-		print "\n\t\t\t<input type='button' ";
-		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.previousSibling.style.display=\"block\";'";
-		print " value='"._("Cancel")."'/>";
-		print "\n\t\t</div>";
-		print "\n\t</div>";
-		print "</form>";
-		return ob_get_clean();
-	}
+	
 	
 	/**
 	 * Answer the form for Adding new components
