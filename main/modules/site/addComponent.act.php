@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.5 2007/01/12 21:59:18 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.6 2007/01/15 21:49:35 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.5 2007/01/12 21:59:18 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.6 2007/01/15 21:49:35 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -42,7 +42,10 @@ class addComponentAction
 		$director->getRootSiteComponent($targetOrgId);
 		
 		$componentType =& Type::fromString(RequestContext::value('componentType'));
-		$component =& $director->createSiteComponent($componentType, $organizer);
+		if ($componentType->getDomain() == 'segue-multipart')
+			$component =& $this->createMultipartComponent($director, $componentType, $organizer);
+		else
+			$component =& $director->createSiteComponent($componentType, $organizer);
 		
 		$oldCellId = $organizer->putSubcomponentInCell($component, $targetCell);
 		
@@ -59,6 +62,47 @@ class addComponentAction
 			
 			$component->updateTargetId($menuTarget);
 		}
+	}
+	
+	/**
+	 * Assemble a multipart component
+	 * 
+	 * @param object SiteDirector $director
+	 * @param object Type $componentType
+	 * @param object OrganizerSiteComponent $organizer
+	 * @return SiteComponent
+	 * @access public
+	 * @since 1/15/07
+	 */
+	function &createMultipartComponent ( &$director, &$componentType, &$organizer ) {
+		
+		switch ($componentType->getKeyword()) {
+			case 'SubMenu_multipart':
+				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
+				$subMenu =& $director->createSiteComponent($director->MenuOrganizerType, $component);
+				$component->makeNested($subMenu);
+				$navOrganizer =& $component->getOrganizer();
+				$subMenu->updateTargetId($navOrganizer->getId()."_cell:0");
+				break;
+			case 'ContentPage_multipart':
+				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
+				$navOrganizer =& $component->getOrganizer();
+				$contentOrganizer =& $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
+				$navOrganizer->putSubcomponentInCell($contentOrganizer, 0);
+				break;
+			case 'SidebarContentPage_multipart':
+				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
+				$navOrganizer =& $component->getOrganizer();
+				$contentOrganizer =& $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
+				$navOrganizer->putSubcomponentInCell($contentOrganizer, 0);
+				
+				$navOrganizer->updateNumColumns(2);
+				$contentOrganizer =& $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
+				$navOrganizer->putSubcomponentInCell($contentOrganizer, 1);
+				break;
+		}
+		
+		return $component;
 	}
 }
 

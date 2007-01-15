@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.22 2007/01/15 17:57:15 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.23 2007/01/15 21:49:35 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.22 2007/01/15 17:57:15 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.23 2007/01/15 21:49:35 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -169,6 +169,8 @@ class ViewModeSiteVisitor {
 		
 		// Check completeness and render any nodes still waiting for targets
 		foreach (array_keys($this->_missingTargets) as $targetId) {
+			if (!is_object($this->_emptyCells[$targetId]))
+				throwError(new Error("Expecting object, found ".$this->_emptyCells[$targetId].".", __CLASS__));
 			$this->_emptyCells[$targetId]->add($this->_missingTargets[$targetId], null, '100%', null, TOP);
 			unset($this->_emptyCells[$targetId]);
 			unset($this->_missingTargets[$targetId]);

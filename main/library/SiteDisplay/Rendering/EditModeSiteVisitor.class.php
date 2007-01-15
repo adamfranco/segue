@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.37 2007/01/15 18:44:48 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.38 2007/01/15 21:49:35 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.37 2007/01/15 18:44:48 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.38 2007/01/15 21:49:35 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -40,11 +40,16 @@ class EditModeSiteVisitor
 		$this->ViewModeSiteVisitor();
 		$this->_classNames = array(
 			'Block' => _('Block'),
-			'NavBlock' => _('Navigation Level'),
+			'NavBlock' => _('Navigation Item'),
 			'MenuOrganizer' => _('Menu'),
 			'FlowOrganizer' => _('ContentOrganizer'),
-			'FixedOrganizer' => _('Organizer')
+			'FixedOrganizer' => _('Organizer'),
+			'SubMenu_multipart' => _('Sub-Menu'),
+			'ContentPage_multipart' => _('Content Page'),
+			'SidebarContentPage_multipart' => _('Content Page with Sidebar')
 		);
+		
+		
 	}
 	
 	/**
@@ -125,7 +130,10 @@ class EditModeSiteVisitor
 		
 		// Add the "Append" form to the organizer
 		$allowed = array();
-		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
+		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart');
+		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
+		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
+// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
 		$pluginManager =& Services::getService("PluginManager");
 		$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 		
