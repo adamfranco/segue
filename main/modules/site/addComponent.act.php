@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.6 2007/01/15 21:49:35 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.7 2007/01/15 22:05:41 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.6 2007/01/15 21:49:35 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.7 2007/01/15 22:05:41 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -84,6 +84,17 @@ class addComponentAction
 				$navOrganizer =& $component->getOrganizer();
 				$subMenu->updateTargetId($navOrganizer->getId()."_cell:0");
 				break;
+			case 'SidebarSubMenu_multipart':
+				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
+				$subMenu =& $director->createSiteComponent($director->MenuOrganizerType, $component);
+				$component->makeNested($subMenu);
+				$navOrganizer =& $component->getOrganizer();
+				$subMenu->updateTargetId($navOrganizer->getId()."_cell:0");
+				
+				$navOrganizer->updateNumColumns(2);
+				$contentOrganizer =& $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
+				$navOrganizer->putSubcomponentInCell($contentOrganizer, 1);
+				break;		
 			case 'ContentPage_multipart':
 				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
 				$navOrganizer =& $component->getOrganizer();
@@ -100,6 +111,8 @@ class addComponentAction
 				$contentOrganizer =& $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
 				$navOrganizer->putSubcomponentInCell($contentOrganizer, 1);
 				break;
+			default:
+				throwError(new Error("Unknown multipart component: '".$componentType->asString()."'", __CLASS__));
 		}
 		
 		return $component;

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.2 2007/01/15 18:44:47 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.3 2007/01/15 22:05:40 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.2 2007/01/15 18:44:47 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.3 2007/01/15 22:05:40 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -449,6 +449,10 @@ class ArrangeModeSiteVisitor
 		}
 		
 		$allowed = array();
+		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart');
+		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
+		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
+		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
 		$pluginManager =& Services::getService("PluginManager");
 		$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
