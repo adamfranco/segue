@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.14 2007/01/12 20:28:00 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.15 2007/01/15 17:57:15 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.14 2007/01/12 20:28:00 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.15 2007/01/15 17:57:15 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -199,11 +199,19 @@ class viewAction
 				$idManager->getId("edu.middlebury.authorization.modify"),
 				$idManager->getId($this->rootSiteComponent->getId())))
 		{
-			print "<a href='";
+			print _("view");
+			
+			print " | <a href='";
 			print $harmoni->request->quickURL('site', 'editview', array(
 					'node' => RequestContext::value("node")));
 			print "' alt='"._("Go to Edit-Mode")."'>";
 			print _("edit")."</a>";
+			
+			print " | <a href='";
+			print $harmoni->request->quickURL('site', 'arrangeview', array(
+					'node' => RequestContext::value("node")));
+			print "' alt='"._("Go to Arrange-Mode")."'>";
+			print _("arrange")."</a>";
 		}
 	
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.21 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.22 2007/01/15 17:57:15 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.21 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.22 2007/01/15 17:57:15 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -73,12 +73,12 @@ class ViewModeSiteVisitor {
 		
 		$guiContainer->add(
 			new Heading(
-				$pluginManager->getPluginTitleMarkup($block->getAsset(), true), 
+				$pluginManager->getPluginTitleMarkup($block->getAsset(), false), 
 				2),
 		null, null, null, TOP);
 		$guiContainer->add(
 			new Block(
-				$pluginManager->getPluginText($block->getAsset(), true),
+				$pluginManager->getPluginText($block->getAsset(), false),
 				STANDARD_BLOCK), 
 			null, null, null, TOP);
 		

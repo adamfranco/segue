@@ -6,13 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.4 2007/01/15 17:57:15 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.1 2007/01/15 17:57:15 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/ArrangeModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/view.act.php");
 
 /**
@@ -24,9 +24,9 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.4 2007/01/15 17:57:15 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.1 2007/01/15 17:57:15 adamfranco Exp $
  */
-class editviewAction
+class arrangeviewAction
 	extends viewAction {
 	
 	/**
@@ -37,7 +37,7 @@ class editviewAction
 	 * @since 4/6/06
 	 */
 	function &getSiteVisitor () {
-		$visitor =& new EditModeSiteVisitor();
+		$visitor =& new ArrangeModeSiteVisitor();
 		return $visitor;
 	}
 	
@@ -58,13 +58,13 @@ class editviewAction
 		print "' alt='"._("Go to View-Mode")."'>";
 		print _("view")."</a>";
 		
-		print " | "._("edit");
-		
-		print " | <a href='";
-		print $harmoni->request->quickURL('site', 'arrangeview', array(
+		print "| <a href='";
+		print $harmoni->request->quickURL('site', 'editview', array(
 				'node' => RequestContext::value("node")));
-		print "' alt='"._("Go to Arrange-Mode")."'>";
-		print _("arrange")."</a>";
+		print "' alt='"._("Go to Edit-Mode")."'>";
+		print _("edit")."</a>";
+		
+		print " | "._("arrange");
 				
 		$ret =& new Component(ob_get_clean(), BLANK, 2);
 		return $ret;
