@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.3 2007/01/15 22:05:40 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.4 2007/01/16 21:54:07 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.3 2007/01/15 22:05:40 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.4 2007/01/16 21:54:07 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -37,8 +37,8 @@ class ArrangeModeSiteVisitor
 	 */
 	function ArrangeModeSiteVisitor () {
 		$this->EditModeSiteVisitor();
-		$this->_controlsVisitor =& new ControlsSiteVisitor();
 		$this->_action = 'arrangeview';
+		$this->_controlsVisitor->setReturnAction($this->_action);
 	}
 
 	/**
@@ -583,83 +583,6 @@ class ArrangeModeSiteVisitor
 	}
 	
 	/**
-	 * Print javascript requirered by other methods.
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 4/7/06
-	 */
-	function printJavascript () {
-		$showControls = _("Show Controls");
-		$hideControls = _("Hide Controls");
-		print <<<END
-
-<script type='text/javascript'>
-/* <![CDATA[ */
-		
-	function showControlsLink(mainElement) {
-		var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
-		controlsLink.style.visibility = 'visible';
-	}
-	
-	function hideControlsLink(mainElement) {
-		var controls = getDescendentByClassName(mainElement, 'controls');
-		if (controls.style.display != 'block') {
-			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
-			controlsLink.style.visibility = 'hidden';
-		}		
-	}
-	
-	function toggleControls(mainElement) {
-		var controls = getDescendentByClassName(mainElement, 'controls');
-		
-		// if controls aren't show, show them
-		if (controls.style.display != 'block') {
-			controls.style.display = 'block';
-			
-			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
-			controlsLink.style.visibility = 'visible';
-			controlsLink.innerHTML = '$hideControls';
-		}
-		// if they are shown, hide them.
-		else {
-			var controls = getDescendentByClassName(mainElement, 'controls');
-			controls.style.display = 'none';
-			
-			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
-			controlsLink.innerHTML = '$showControls';
-		}
-	}
-	
-	function getDescendentByClassName(element, className) {
-		// base case, we found the element
-		if (element.className == className)
-			return element;
-		
-		// Check our children
-		var child = element.firstChild;
-		while (child) {
-			var foundInChild = getDescendentByClassName(child, className);
-			if (foundInChild)
-				return foundInChild;
-			child = child.nextSibling;
-		}
-		
-		// if not found, return
-		return false;
-	}
-	
-	function doDrop(draggableElement, droppableElement) {
-		alert ("Element, " + draggableElement.id + " was dropped on " + droppableElement.id);
-	}
-	
-/* ]]> */
-</script>
-
-END;
-	}
-	
-	/**
 	 * Answer the HTML for the controls top-bar
 	 * 
 	 * @param <##>
@@ -727,7 +650,8 @@ END;
 		$harmoni =& Harmoni::instance();
 		print "\n<form action='";
 		print $harmoni->request->quickURL('site', 'addComponent', 
-				array('returnNode' => RequestContext::value('node')));
+				array('returnNode' => RequestContext::value('node'),
+					'returnAction' => $this->_action));
 		print "' method='post'>";
 		
 		print "\n\t<input type='hidden' name='".RequestContext::name('organizerId')."' value='".$organizerId."'/>";

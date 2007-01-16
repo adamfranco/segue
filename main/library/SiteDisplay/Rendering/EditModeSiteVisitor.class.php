@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.39 2007/01/15 22:05:41 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.40 2007/01/16 21:54:07 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.39 2007/01/15 22:05:41 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.40 2007/01/16 21:54:07 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -35,7 +35,10 @@ class EditModeSiteVisitor
 	 * @since 4/14/06
 	 */
 	function EditModeSiteVisitor () {
+		$this->_controlsVisitor =& new ControlsSiteVisitor();
+		
 		$this->_action = 'editview';
+		$this->_controlsVisitor->setReturnAction($this->_action);
 		
 		$this->ViewModeSiteVisitor();
 		$this->_classNames = array(
@@ -51,7 +54,31 @@ class EditModeSiteVisitor
 			
 		);
 		
+		ob_start();
+		// Print out Javascript functions needed by our methods
+		$this->printJavascript();
 		
+		print<<<END
+			
+			<style type='text/css'>
+				.controls_form {
+					text-align: left;
+					color: #000;
+				}
+				
+				.controls_form a {
+					text-align: left;
+					color: #000;
+				}
+			</style>
+
+END;
+		
+		
+		
+		$harmoni =& Harmoni::instance();
+		$outputHandler =& $harmoni->getOutputHandler();
+		$outputHandler->setHead($outputHandler->getHead().ob_get_clean());
 	}
 	
 	/**
@@ -67,16 +94,28 @@ class EditModeSiteVisitor
 		
 		$pluginManager =& Services::getService('PluginManager');
 		
-		$guiContainer->add(
+		$heading =& $guiContainer->add(
 			new Heading(
 				$pluginManager->getPluginTitleMarkup($block->getAsset(), true), 
 				2),
 		null, null, null, TOP);
-		$guiContainer->add(
+		$content =& $guiContainer->add(
 			new Block(
 				$pluginManager->getPluginText($block->getAsset(), true),
 				STANDARD_BLOCK), 
 			null, null, null, TOP);
+			
+		
+		// Add controls bar and border
+		$controlsHTML = $this->getBarPreHTML('#090')
+			.$this->getControlsHTML(
+				"<em>".$this->_classNames['Block']."</em>", 
+				$block->acceptVisitor($this->_controlsVisitor), 
+				'#090', '#9F9', '#6C6', 0, true);
+		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
+		
+		$guiContainer->setPostHTML($this->getBarPostHTML());
+		
 		
 		return $guiContainer;
 	}
@@ -115,7 +154,19 @@ class EditModeSiteVisitor
 		$resultPrinter->setNamespace('pages_'.$organizer->getId());
 		$resultPrinter->addLinksStyleProperty(new MarginTopSP("10px"));
 		
-		return $resultPrinter->getLayout();
+		$guiContainer =& $resultPrinter->getLayout();
+		
+		// Add controls bar and border
+		$controlsHTML = $this->getBarPreHTML('#00F')
+			.$this->getControlsHTML(
+				"<em>".$this->_classNames['FlowOrganizer']."</em>", 
+				$organizer->acceptVisitor($this->_controlsVisitor), 
+				'#00F', '#99F', '#66F');
+		$guiContainer->setPreHTML($controlsHTML."\n<div style='z-index: 0;'>".$guiContainer->getPreHTML($null = null));
+		
+		$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>".$this->getBarPostHTML());
+		
+		return $guiContainer;
 	}
 	
 	/**
@@ -231,6 +282,259 @@ class EditModeSiteVisitor
 		print "\n\t</div>";
 		print "</form>";
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the HTML for the controls top-bar
+	 * 
+	 * @param <##>
+	 * @return <##>
+	 * @access public
+	 * @since 4/7/06
+	 */
+	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0) {
+		$halfLineWidth = 1;
+		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
+		
+		$opacityStyles =	"filter:alpha(opacity=70); "
+							."-moz-opacity: .70; "
+							."opacity: .70; ";
+		ob_start();
+		print "\n<div class='controls_bar' style='"
+			."color: #000; "
+			."min-width: 200px; "
+// 			."border-top: $lineWidth solid $borderColor; "
+// 			."border-left: $lineWidth solid $borderColor; "
+// 			."border-right: $lineWidth solid $borderColor; "
+			.(($leftIndentLevel)?"margin-left: 10px; ":"")
+			."display: none; ";
+		print "position: absolute; ";
+		print "z-index: 9999; ";
+		
+		
+		print "'";
+		print " onmouseover='showControlsLink(this)'"
+			." onmouseout='hideControlsLink(this)'>";
+		print "\n<table border='0' cellpadding='0' cellspacing='0'"
+			." style='width: 100%; padding: 0px; margin: 0px; cursor: move;"
+			."background-color: $backgroundColor; "
+			.$opacityStyles
+			."'"
+// 			." onmousemove='if(which == 1) { alert(\"dragging\"); drag(this.parentNode, this, screenX, screenY); }'"
+// 			." onmouseup='endDrag(this.parentNode)'"
+			.">";
+		print "\n\t<tr>";
+		print "\n\t\t<td>";
+		print "\n\t\t".$title;
+		print "\n\t\t</td>";
+		print "\n\t\t<td style='text-align: right;'>";
+		print "\n\t\t\t\t<span class='controls_link'"
+			."style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
+			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'>";
+		print "\n\t\t\t"._("Show Controls");
+		print "\n\t\t\t</span>";
+		print "\n\t\t</td>";
+		print "\n\t</tr>";
+		print "\n</table>";
+		
+		$opacityStyles =	"filter:alpha(opacity=95); "
+							."-moz-opacity: .95; "
+							."opacity: .95; ";
+		
+		print "\n\t\t\t<div class='controls' style='display: none; border-top: 1px solid $dividerColor; background-color: $backgroundColor; ".$opacityStyles."'>";
+		print $controlsHTML;
+		print "\n\t\t\t\t</div>";
+		
+		print "\n</div>";
+		if (!$float) {
+			print "\n<div style='display: none;' class='controls_spacer'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>";
+		}
+		
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer a wrapping div that triggers showing and hiding the border and 
+	 * controls-bar for the item
+	 * 
+	 * @param string $borderColor
+	 * @return string
+	 * @access public
+	 * @since 1/16/07
+	 */
+	function getBarPreHTML ($borderColor) {
+		ob_start();
+		print "\n<div class='site_component_wrapper'";
+		print " onmouseover='this.borderColor = \"$borderColor\"; showControls(this)'";
+		print " onmouseout='if (event.target.nodeName != \"SELECT\" && event.target.nodeName != \"OPTION\") {hideControls(this);} '";
+		print " style='position: relative;'";
+		print ">";
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer a wrapping div that triggers showing and hiding the border and 
+	 * controls-bar for the item
+	 * 
+	 * @param string $borderColor
+	 * @return string
+	 * @access public
+	 * @since 1/16/07
+	 */
+	function getBarPostHTML () {
+		return "\n</div>";
+	}
+	
+	/**
+	 * Print javascript requirered by other methods.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/7/06
+	 */
+	function printJavascript () {
+		$showControls = _("Show Controls");
+		$hideControls = _("Hide Controls");
+		print <<<END
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+
+	function showControls(mainElement) {
+		mainElement.style.border='2px solid ' + mainElement.borderColor;
+		var controls = getDescendentByClassName(mainElement, 'controls_bar');
+		controls.style.display = 'block';
+		
+		var spacer = getDescendentByClassName(mainElement, 'controls_spacer');
+		if (spacer)
+			spacer.style.display = 'block';
+		
+		var rightEdge = document.getOffsetLeft(controls) + controls.offsetWidth;
+		var windowSize = getWindowDimensions();
+		var windowScroll = getScrollXY();
+		var windowRight = windowSize[0] + windowScroll[0];
+		// Scroll over to the show the full bar
+		if (windowRight < rightEdge) {
+			window.scrollBy(rightEdge - windowRight, 0);
+		}
+		
+		
+	}
+	
+	function hideControls(mainElement) {
+		mainElement.style.border='0px';
+		var controls = getDescendentByClassName(mainElement, 'controls_bar');
+		controls.style.display = 'none';
+		var spacer = getDescendentByClassName(mainElement, 'controls_spacer');
+		if (spacer)
+			spacer.style.display = 'none';
+	}
+		
+	function showControlsLink(mainElement) {
+		var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
+		controlsLink.style.visibility = 'visible';
+	}
+	
+	function hideControlsLink(mainElement) {
+		var controls = getDescendentByClassName(mainElement, 'controls');
+		if (controls.style.display != 'block') {
+			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
+			controlsLink.style.visibility = 'hidden';
+		}		
+	}
+	
+	function toggleControls(mainElement) {
+		var controls = getDescendentByClassName(mainElement, 'controls');
+		
+		// if controls aren't show, show them
+		if (controls.style.display != 'block') {
+			controls.style.display = 'block';
+			
+			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
+			controlsLink.style.visibility = 'visible';
+			controlsLink.innerHTML = '$hideControls';
+		}
+		// if they are shown, hide them.
+		else {
+			var controls = getDescendentByClassName(mainElement, 'controls');
+			controls.style.display = 'none';
+			
+			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
+			controlsLink.innerHTML = '$showControls';
+		}
+	}
+	
+	function getDescendentByClassName(element, className) {
+		// base case, we found the element
+		if (element.className == className)
+			return element;
+		
+		// Check our children
+		var child = element.firstChild;
+		while (child) {
+			var foundInChild = getDescendentByClassName(child, className);
+			if (foundInChild)
+				return foundInChild;
+			child = child.nextSibling;
+		}
+		
+		// if not found, return
+		return false;
+	}
+	
+	function doDrop(draggableElement, droppableElement) {
+		alert ("Element, " + draggableElement.id + " was dropped on " + droppableElement.id);
+	}
+	
+	//--------------------------
+	// By Mark "Tarquin" wilton-Jones
+	// From: http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
+	//--------------------------
+	function getWindowDimensions() {
+		var myWidth = 0, myHeight = 0;
+		if( typeof( window.innerWidth ) == 'number' ) {
+			//Non-IE
+			myWidth = window.innerWidth;
+			myHeight = window.innerHeight;
+		} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+			//IE 6+ in 'standards compliant mode'
+			myWidth = document.documentElement.clientWidth;
+			myHeight = document.documentElement.clientHeight;
+		} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+			//IE 4 compatible
+			myWidth = document.body.clientWidth;
+			myHeight = document.body.clientHeight;
+		}
+		
+		return [ myWidth, myHeight ];
+	}
+	
+	//--------------------------
+	// By Mark "Tarquin" wilton-Jones
+	// From: http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
+	//--------------------------
+	function getScrollXY() {
+		var scrOfX = 0, scrOfY = 0;
+		if( typeof( window.pageYOffset ) == 'number' ) {
+			//Netscape compliant
+			scrOfY = window.pageYOffset;
+			scrOfX = window.pageXOffset;
+		} else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) {
+			//DOM compliant
+			scrOfY = document.body.scrollTop;
+			scrOfX = document.body.scrollLeft;
+		} else if( document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) {
+			//IE6 standards compliant mode
+			scrOfY = document.documentElement.scrollTop;
+			scrOfX = document.documentElement.scrollLeft;
+		}
+		return [ scrOfX, scrOfY ];
+	}
+	
+/* ]]> */
+</script>
+
+END;
 	}
 }
 

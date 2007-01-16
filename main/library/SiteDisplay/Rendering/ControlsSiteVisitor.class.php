@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.7 2006/09/22 19:38:08 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.8 2007/01/16 21:54:07 adamfranco Exp $
  */ 
 
 /**
@@ -18,10 +18,25 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.7 2006/09/22 19:38:08 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.8 2007/01/16 21:54:07 adamfranco Exp $
  */
 class ControlsSiteVisitor {
+	
+	var $_action = 'editview';
 		
+	/**
+	 * Set the action to return to
+	 * 
+	 * @param string $returnAction
+	 * @return void
+	 * @access public
+	 * @since 1/16/07
+	 */
+	function setReturnAction ($returnAction) {
+		$this->_action = $returnAction;
+	}
+	
+	
 	/**
 	 * print common controls
 	 * 
@@ -38,8 +53,11 @@ class ControlsSiteVisitor {
 		print " action='";
 		print $harmoni->request->quickURL('site', 'modifyComponent',
 				array('node' => $siteComponent->getId(),
-					"returnNode" => RequestContext::value('node')));
-		print "'>";
+					"returnNode" => RequestContext::value('node'),
+					'returnAction' => $this->_action));
+		print "'";
+		print " class='controls_form'";
+		print ">";
 		
 // 		$harmoni->request->startNamespace('controls_form_'.$siteComponent->getId());
 	}
@@ -78,7 +96,8 @@ class ControlsSiteVisitor {
 		$url = str_replace('&amp;', '&', 
 				$harmoni->request->quickURL('site', 'deleteComponent', array(
 					'node' => $siteComponent->getId(),
-					'returnNode' => RequestContext::value('node')
+					'returnNode' => RequestContext::value('node'),
+					'returnAction' => $this->_action
 					)));
 		
 		print "\n\t\t\t\t<div>";
@@ -114,6 +133,7 @@ class ControlsSiteVisitor {
 					$harmoni->request->quickURL('site', 'createSubMenu', array(
 						'parent' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
+						'returnAction' => $this->_action,
 						'direction' => urlencode($parentMenuOrganizer->getDirection()))));
 			
 			print "\n\t\t\t\t\t<a href='Javascript:";
