@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.40 2007/01/16 21:54:07 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.41 2007/01/17 15:45:30 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.40 2007/01/16 21:54:07 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.41 2007/01/17 15:45:30 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -64,6 +64,7 @@ class EditModeSiteVisitor
 				.controls_form {
 					text-align: left;
 					color: #000;
+					padding: 3px;
 				}
 				
 				.controls_form a {
@@ -193,6 +194,16 @@ END;
 		
 		$childComponent =& $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed), 2), null, '100%', null, TOP);
 		
+		// Add controls bar and border
+		$controlsHTML = $this->getBarPreHTML('#00F')
+			.$this->getControlsHTML(
+				"<em>".$this->_classNames['MenuOrganizer']."</em>", 
+				$organizer->acceptVisitor($this->_controlsVisitor), 
+				'#00F', '#99F', '#66F');
+		$guiContainer->setPreHTML($controlsHTML."\n<div style='z-index: 0;'>".$guiContainer->getPreHTML($null = null));
+		
+		$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>".$this->getBarPostHTML());
+		
 		return $guiContainer;
 	}
 	
@@ -316,12 +327,11 @@ END;
 		print " onmouseover='showControlsLink(this)'"
 			." onmouseout='hideControlsLink(this)'>";
 		print "\n<table border='0' cellpadding='0' cellspacing='0'"
-			." style='width: 100%; padding: 0px; margin: 0px; cursor: move;"
+			." style='width: 100%; padding: 0px; margin: 0px; cursor: pointer;"
 			."background-color: $backgroundColor; "
 			.$opacityStyles
 			."'"
-// 			." onmousemove='if(which == 1) { alert(\"dragging\"); drag(this.parentNode, this, screenX, screenY); }'"
-// 			." onmouseup='endDrag(this.parentNode)'"
+			." onclick='toggleControls(this.parentNode.parentNode);'"
 			.">";
 		print "\n\t<tr>";
 		print "\n\t\t<td>";
@@ -330,7 +340,7 @@ END;
 		print "\n\t\t<td style='text-align: right;'>";
 		print "\n\t\t\t\t<span class='controls_link'"
 			."style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
-			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'>";
+			.">";
 		print "\n\t\t\t"._("Show Controls");
 		print "\n\t\t\t</span>";
 		print "\n\t\t</td>";
