@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.1 2007/01/12 19:39:13 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.2 2007/01/17 22:42:05 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.1 2007/01/12 19:39:13 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.2 2007/01/17 22:42:05 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -50,7 +50,6 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) { 			
- 			$this->setTitle($this->cleanHTML($this->getFieldValue('title')));
  			$this->setContent($this->cleanHTML($this->getFieldValue('content')));
  			$this->logEvent('Modify Content', 'TextBlock content updated');
  		}
@@ -72,10 +71,7 @@ class EduMiddleburyTextBlockPlugin
  		if ($this->getFieldValue('edit') && $this->canModify()) {
 			print "\n".$this->formStartTagWithAction();
  			
- 			print "\n\t<input type='text' name='".$this->getFieldName('title')."' value='".$this->getTitle()."' size='50'/>";
- 			
- 			print "\n\t<br/>";
- 			print "\n\t<textarea name='".$this->getFieldName('content')."' rows='10' cols='50'>".$this->getContent()."</textarea>";
+ 			print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
  			
  			print "\n\t<br/>";
  			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
@@ -84,12 +80,18 @@ class EduMiddleburyTextBlockPlugin
  			
 			print "\n</form>";
  		} else if ($this->canView()) {
+ 			if ($this->shouldShowControls()) {
+				print "\n<div onclick=".$this->url(array('edit' => 'true')).">";
+ 			}
 	 		print "\n".$this->getContent();
+	 		
 	 		if ($this->shouldShowControls()) {
-				print "\n<div style='text-align: right'>";
-				print "\n\t<a href=".$this->url(array('edit' => 'true')).">"._("edit")."</a>";
+				print "\n</div>";
+				print "\n<div style='text-align: right; white-space: nowrap;'>";
+				print "\n\t<a href=".$this->url(array('edit' => 'true')).">"._("click to edit")."</a>";
 				print "\n</div>";
 			}
+				
  		}
  		
  		return ob_get_clean();

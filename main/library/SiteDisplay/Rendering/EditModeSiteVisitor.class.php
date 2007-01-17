@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.44 2007/01/17 21:44:40 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.45 2007/01/17 22:42:04 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.44 2007/01/17 21:44:40 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.45 2007/01/17 22:42:04 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -486,6 +486,17 @@ END;
 		if (spacer)
 			spacer.style.display = 'block';
 		
+		// First extend the main element
+		var rightEdge = document.getOffsetLeft(controls) + controls.offsetWidth;
+		var windowSize = getWindowDimensions();
+		var windowScroll = getScrollXY();
+		var windowRight = windowSize[0] + windowScroll[0];
+		// Scroll over to the show the full bar
+		if (windowRight < rightEdge) {
+			mainElement.style.width = controls.offsetWidth + 'px';
+		}
+		
+		// Scroll over if necessary
 		var rightEdge = document.getOffsetLeft(controls) + controls.offsetWidth;
 		var windowSize = getWindowDimensions();
 		var windowScroll = getScrollXY();
@@ -494,8 +505,6 @@ END;
 		if (windowRight < rightEdge) {
 			window.scrollBy(rightEdge - windowRight, 0);
 		}
-		
-		
 	}
 	
 	function hideControls(mainElement) {
@@ -506,6 +515,8 @@ END;
 		var spacer = getDescendentByClassName(mainElement, 'controls_spacer');
 // 		if (spacer)
 // 			spacer.style.display = 'none';
+		
+		mainElement.style.width = '';
 	}
 		
 	function showControlsLink(mainElement) {
