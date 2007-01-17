@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: libraries.inc.php,v 1.6 2006/01/24 20:11:06 cws-midd Exp $
+ * @version $Id: libraries.inc.php,v 1.7 2007/01/17 17:15:32 adamfranco Exp $
  */
 
 /******************************************************************************
@@ -40,8 +40,8 @@ require_once (POLYPHONY_DIR."/polyphony.inc.php");
  * Include our libraries
  ******************************************************************************/
 require_once(MYDIR."/main/library/SegueMenuGenerator.class.php");
-require_once(MYDIR."/main/library/Display/NodeRenderer.abstract.php");
-
+require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
+require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
 
 /******************************************************************************
  * Include any theme classes we want to use. They need to be included prior

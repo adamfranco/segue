@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.4 2007/01/16 21:54:07 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.5 2007/01/17 17:15:34 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.4 2007/01/16 21:54:07 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.5 2007/01/17 17:15:34 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -181,10 +181,10 @@ class ArrangeModeSiteVisitor
 		$guiContainer =& parent::visitBlockInMenu($block);
 		
 		$controlsHTML = $this->getControlsHTML(
-			$block->getDisplayName()." <em>".$this->_classNames['Block']."</em>", 
+			"<em>".$this->_classNames['Block']."</em>", 
 			$block->acceptVisitor($this->_controlsVisitor), 
 			'#090', '#9F9', '#6C6');
-		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
+		$guiContainer->setPreHTML($controlsHTML);
 		
 		$styleCollection =& new StyleCollection(
 									'.nav_outline', 
@@ -214,10 +214,10 @@ class ArrangeModeSiteVisitor
 		$guiContainer =& $guiContainers[0];
 		
 		$controlsHTML = $this->getControlsHTML(
-			$navBlock->getDisplayName()." <em>".$this->_classNames['NavBlock']."</em>", 
+			"<em>".$this->_classNames['NavBlock']."</em>", 
 			$navBlock->acceptVisitor($this->_controlsVisitor), 
 			'#090', '#9F9', '#6C6');
-		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
+		$guiContainer->setPreHTML($controlsHTML);
 		
 		$styleCollection =& new StyleCollection(
 									'.nav_outline', 
@@ -271,7 +271,7 @@ class ArrangeModeSiteVisitor
 		}
 
 		$controlsHTML = $this->getControlsHTML(
-			$organizer->getDisplayName()." ".$organizer->getId(), 
+			$organizer->getDisplayName(), 
 			$organizer->acceptVisitor($this->_controlsVisitor),
 			'#F00', '#F99', '#F66');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
@@ -351,7 +351,6 @@ class ArrangeModeSiteVisitor
 		// Controls and organizer dragging.
 		$controlsHTML = $this->getControlsHTML(
 			$organizer->getDisplayName()
-			." ".$organizer->getId()
 			.'',
 			$organizer->acceptVisitor($this->_controlsVisitor),
 			'#00F', '#99F', '#66F');
@@ -611,12 +610,12 @@ class ArrangeModeSiteVisitor
 // 			." onmouseup='endDrag(this.parentNode)'"
 			.">";
 		print "\n\t<tr>";
-		print "\n\t\t<td>";
+		print "\n\t\t<td style='white-space: nowrap;'>";
 		print "\n\t\t".$title;
 		print "\n\t\t</td>";
 		print "\n\t\t<td style='text-align: right;'>";
 		print "\n\t\t\t\t<span class='controls_link'"
-			."style='visibility: hidden; cursor: pointer;'"
+			."style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
 			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'>";
 		print "\n\t\t\t"._("Show Controls");
 		print "\n\t\t\t</span>";
