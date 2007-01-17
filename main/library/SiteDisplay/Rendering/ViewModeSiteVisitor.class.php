@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.23 2007/01/15 21:49:35 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.24 2007/01/17 16:12:30 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.23 2007/01/15 21:49:35 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.24 2007/01/17 16:12:30 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -94,12 +94,13 @@ class ViewModeSiteVisitor {
 	 * @since 4/3/06
 	 */
 	function &visitBlockInMenu ( &$block ) {
+		$pluginManager =& Services::getService('PluginManager');
 		// Create and return the component
 		$menuItem =& new MenuItem(
 							"<span style='font-weight: bold; font-size: large;'>"
-							.$block->getTitleMarkup()
+							.$pluginManager->getPluginTitleMarkup($block->getAsset(), false)
 							."</span><br/>"
-							.$block->getContentMarkup(),
+							.$pluginManager->getPluginText($block->getAsset(), false),
 							1);
 		return $menuItem;
 	}

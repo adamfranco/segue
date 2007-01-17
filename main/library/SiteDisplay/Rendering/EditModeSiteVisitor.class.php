@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.41 2007/01/17 15:45:30 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.42 2007/01/17 16:12:29 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.41 2007/01/17 15:45:30 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.42 2007/01/17 16:12:29 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -43,7 +43,7 @@ class EditModeSiteVisitor
 		$this->ViewModeSiteVisitor();
 		$this->_classNames = array(
 			'Block' => _('Block'),
-			'NavBlock' => _('Navigation Item'),
+			'NavBlock' => _('Nav. Item'),
 			'MenuOrganizer' => _('Menu'),
 			'FlowOrganizer' => _('ContentOrganizer'),
 			'FixedOrganizer' => _('Organizer'),
@@ -119,6 +119,61 @@ END;
 		
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Visit a block and return the resulting GUI component. (A menu item)
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return object MenuItem 
+	 * @access public
+	 * @since 4/3/06
+	 */
+	function &visitBlockInMenu ( &$block ) {
+		$pluginManager =& Services::getService('PluginManager');
+		// Create and return the component
+		$menuItem =& new MenuItem(
+							"<div style='font-weight: bold; font-size: large;'>"
+							.$pluginManager->getPluginTitleMarkup($block->getAsset(), true)
+							."</div>"
+							.$pluginManager->getPluginText($block->getAsset(), true),
+							1);
+							
+		// Add controls bar and border
+		$controlsHTML = $this->getBarPreHTML('#090')
+			.$this->getControlsHTML(
+				"<em>".$this->_classNames['Block']."</em>", 
+				$block->acceptVisitor($this->_controlsVisitor), 
+				'#090', '#9F9', '#6C6', 0, true);
+		$menuItem->setPreHTML($controlsHTML.$menuItem->getPreHTML($null = null));
+		
+		$menuItem->setPostHTML($this->getBarPostHTML());
+		
+		return $menuItem;
+	}
+	
+	/**
+	 * Visit a block and return the resulting GUI component.
+	 * 
+	 * @param object NavBlockSiteComponent $navBlock
+	 * @return ref array
+	 * @access public
+	 * @since 4/3/06
+	 */
+	function &visitNavBlock ( &$navBlock ) {
+		$menuItems =& parent::visitNavBlock($navBlock);
+		
+		// Add controls bar and border
+		$controlsHTML = $this->getBarPreHTML('#090')
+			.$this->getControlsHTML(
+				"<em>".$this->_classNames['NavBlock']."</em>", 
+				$navBlock->acceptVisitor($this->_controlsVisitor), 
+				'#090', '#9F9', '#6C6', 0, true);
+		$menuItems[0]->setPreHTML($controlsHTML.$menuItems[0]->getPreHTML($null = null));
+		
+		$menuItems[0]->setPostHTML($this->getBarPostHTML());
+		
+		return $menuItems;
 	}
 	
 	/**
@@ -357,7 +412,7 @@ END;
 		
 		print "\n</div>";
 		if (!$float) {
-			print "\n<div style='display: none;' class='controls_spacer'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>";
+			print "\n<div style='display: block;' class='controls_spacer'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>";
 		}
 		
 		return ob_get_clean();
@@ -377,7 +432,7 @@ END;
 		print "\n<div class='site_component_wrapper'";
 		print " onmouseover='this.borderColor = \"$borderColor\"; showControls(this)'";
 		print " onmouseout='if (event.target.nodeName != \"SELECT\" && event.target.nodeName != \"OPTION\") {hideControls(this);} '";
-		print " style='position: relative;'";
+		print " style='position: relative; margin: 2px;'";
 		print ">";
 		return ob_get_clean();
 	}
@@ -411,6 +466,7 @@ END;
 /* <![CDATA[ */
 
 	function showControls(mainElement) {
+		mainElement.style.margin='0px';
 		mainElement.style.border='2px solid ' + mainElement.borderColor;
 		var controls = getDescendentByClassName(mainElement, 'controls_bar');
 		controls.style.display = 'block';
@@ -432,12 +488,13 @@ END;
 	}
 	
 	function hideControls(mainElement) {
+		mainElement.style.margin='2px';
 		mainElement.style.border='0px';
 		var controls = getDescendentByClassName(mainElement, 'controls_bar');
 		controls.style.display = 'none';
 		var spacer = getDescendentByClassName(mainElement, 'controls_spacer');
-		if (spacer)
-			spacer.style.display = 'none';
+// 		if (spacer)
+// 			spacer.style.display = 'none';
 	}
 		
 	function showControlsLink(mainElement) {
