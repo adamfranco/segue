@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.7 2006/04/18 17:51:48 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.8 2007/01/17 21:21:59 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.7 2006/04/18 17:51:48 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.8 2007/01/17 21:21:59 adamfranco Exp $
  */
 class XmlSiteComponent 
 	// implements SiteComponent
@@ -113,6 +113,66 @@ class XmlSiteComponent
 	 */
 	function isActive () {
 		return $this->_director->isActive($this->getId());
+	}
+	
+	/**
+	 * Answer the setting of 'showDisplayNames' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @return mixed true, false, or 'default'
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function showDisplayNames () {
+		if (!$this->_element->hasAttribute('showDisplayNames'))
+			return 'default';
+		
+		if ($this->_element->getAttribute('showDisplayNames') == 'true')
+			return true;
+		else if ($this->_element->getAttribute('showDisplayNames') == 'false')
+			return false;
+		else
+			return 'default';
+	}
+	
+	/**
+	 * change the setting of 'showDisplayNames' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @param mixed  $showDisplayNames true, false, or 'default'
+	 * @return void
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function updateShowDisplayNames ( $showDisplayNames ) {
+		if ($showDisplayNames === true || $showDisplayNames === 'true')
+			$this->_element->setAttribute('showDisplayNames', 'true');
+		else if ($showDisplayNames === false || $showDisplayNames === 'false')
+			$this->_element->setAttribute('showDisplayNames', 'false');
+		else
+			$this->_element->setAttribute('showDisplayNames', 'default');
+	}
+	
+	/**
+	 * Answer true if the display name should be shown for this component,
+	 * taking into account its setting and those in the hierarchy above it.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function showDisplayName () {
+		if ($this->showDisplayNames() === 'default') {
+			$parent =& $this->getParentComponent();
+			
+			if ($parent)
+				return $parent->showDisplayName();
+			// Base case if none is specified anywhere in the hierarchy
+			else
+				return true;
+		} else {
+			return $this->showDisplayNames();
+		}
 	}
 	
 	/**

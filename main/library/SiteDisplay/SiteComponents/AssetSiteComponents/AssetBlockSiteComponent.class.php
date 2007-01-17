@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.6 2007/01/12 19:42:26 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.7 2007/01/17 21:21:57 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.6 2007/01/12 19:42:26 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.7 2007/01/17 21:21:57 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -59,21 +59,17 @@ class AssetBlockSiteComponent
 	 * @since 4/5/06
 	 */
 	function &getElement () {
-		$tmpDocument =& new DOMIT_Document();
-		$element =& $tmpDocument->createElement($this->getComponentClass());
-		$element->setAttribute('id', $this->getId());
-		return $element;
-	}
-	
-	/**
-	 * Answer the asset that corresponds to this block
-	 * 
-	 * @return object Asset
-	 * @access public
-	 * @since 1/12/07
-	 */
-	function &getAsset () {
-		return $this->_asset;
+		if (!isset($this->_element)) {
+			$parentComponent =& $this->getParentComponent();
+			$parentElement =& $parentComponent->getElement();
+			$this->_element =& $parentElement->ownerDocument->getElementByID($this->getId(), false);
+// 			} else {		
+// 				$tmpDocument =& new DOMIT_Document();
+// 				$this->_element =& $tmpDocument->createElement($this->getComponentClass());
+// 				$this->_element->setAttribute('id', $this->getId());
+// 			}
+		}
+		return $this->_element;
 	}
 	
 	/**
@@ -266,6 +262,35 @@ class AssetBlockSiteComponent
 		}
 		
 		return $results;
+	}
+	
+/*********************************************************
+ * Private methods
+ *********************************************************/
+	
+	/**
+	 * Store changes to our asset's XML document. This asset's 'element'
+	 * is actually in its parent component, so store the parent asset's xml.
+	 * 
+	 * @return void
+	 * @access private
+	 * @since 10/5/06
+	 */
+	function _saveXml () {
+		printpre("<hr/><h2>Saving Parent AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
+		print("<h3>Previous XML</h3>");
+		$parentComponent =& $this->getParentComponent();
+		$parentAsset =& $parentComponent->getAsset();
+		$oldContent =& $parentAsset->getContent();
+		printpre(htmlentities($oldContent->asString()));
+		print("<h3>New XML</h3>");
+		$element =& $this->getElement();
+		printpre($element->ownerDocument->toNormalizedString(true));
+// 		exit;
+		
+		$parentAsset->updateContent(
+			Blob::fromString(
+				$element->ownerDocument->toNormalizedString()));
 	}
 
 }

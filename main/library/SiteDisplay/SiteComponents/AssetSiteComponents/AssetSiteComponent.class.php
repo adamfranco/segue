@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.4 2006/10/16 19:37:55 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.5 2007/01/17 21:21:59 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.4 2006/10/16 19:37:55 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.5 2007/01/17 21:21:59 adamfranco Exp $
  */
 class AssetSiteComponent 
 	// implements SiteComponent
@@ -66,6 +66,17 @@ class AssetSiteComponent
 	 */
 	function deleteAndCleanUpData () {
 		
+	}
+	
+	/**
+	 * Answer the asset that corresponds to this block
+	 * 
+	 * @return object Asset
+	 * @access public
+	 * @since 1/12/07
+	 */
+	function &getAsset () {
+		return $this->_asset;
 	}
 		
 	/**
@@ -136,6 +147,72 @@ class AssetSiteComponent
 	}
 	
 	/**
+	 * Answer the setting of 'showDisplayNames' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @return mixed true, false, or 'default'
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function showDisplayNames () {
+		$element =& $this->getElement();
+		
+		if (!$element->hasAttribute('showDisplayNames'))
+			return 'default';
+		
+		if ($element->getAttribute('showDisplayNames') == 'true')
+			return true;
+		else if ($element->getAttribute('showDisplayNames') == 'false')
+			return false;
+		else
+			return 'default';
+	}
+	
+	/**
+	 * change the setting of 'showDisplayNames' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @param mixed  $showDisplayNames true, false, or 'default'
+	 * @return void
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function updateShowDisplayNames ( $showDisplayNames ) {
+		$element =& $this->getElement();
+		
+		if ($showDisplayNames === true || $showDisplayNames === 'true')
+			$element->setAttribute('showDisplayNames', 'true');
+		else if ($showDisplayNames === false || $showDisplayNames === 'false')
+			$element->setAttribute('showDisplayNames', 'false');
+		else
+			$element->setAttribute('showDisplayNames', 'default');
+		
+		$this->_saveXml();
+	}
+	
+	/**
+	 * Answer true if the display name should be shown for this component,
+	 * taking into account its setting and those in the hierarchy above it.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function showDisplayName () {
+		if ($this->showDisplayNames() === 'default') {
+			$parent =& $this->getParentComponent();
+			
+			if ($parent)
+				return $parent->showDisplayName();
+			// Base case if none is specified anywhere in the hierarchy
+			else
+				return true;
+		} else {
+			return $this->showDisplayNames();
+		}
+	}
+	
+	/**
 	 * Accepts a visitor.
 	 * 
 	 * @param object Visitor
@@ -180,12 +257,13 @@ class AssetSiteComponent
 		$oldContent =& $this->_asset->getContent();
 		printpre(htmlentities($oldContent->asString()));
 		print("<h3>New XML</h3>");
-		printpre($this->_element->ownerDocument->toNormalizedString(true));
+		$element =& $this->getElement();
+		printpre($element->ownerDocument->toNormalizedString(true));
 // 		exit;
 		
 		$this->_asset->updateContent(
 			Blob::fromString(
-				$this->_element->ownerDocument->toNormalizedString()));
+				$element->ownerDocument->toNormalizedString()));
 	}
 }
 

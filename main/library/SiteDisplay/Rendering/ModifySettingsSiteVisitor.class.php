@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.2 2006/08/18 15:02:24 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.3 2007/01/17 21:21:57 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.2 2006/08/18 15:02:24 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.3 2007/01/17 21:21:57 adamfranco Exp $
  */
 class ModifySettingsSiteVisitor {
 		
@@ -63,6 +63,38 @@ class ModifySettingsSiteVisitor {
 			&& RequestContext::value('displayName') != $siteComponent->getDisplayName())
 		{
 			$siteComponent->updateDisplayName(RequestContext::value('displayName'));
+		}
+	}
+	
+	/**
+	 * Apply the description changes
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 1/16/07
+	 */
+	function applyDescription ( &$siteComponent ) {
+		if(RequestContext::value('description') 
+			&& RequestContext::value('description') != $siteComponent->getDescription())
+		{
+			$siteComponent->updateDescription(RequestContext::value('description'));
+		}
+	}
+	
+	/**
+	 * Apply the description changes
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 1/16/07
+	 */
+	function applyShowDisplayNames ( &$siteComponent ) {
+		if(RequestContext::value('showDisplayNames') 
+			&& RequestContext::value('showDisplayNames') !== $siteComponent->showDisplayNames())
+		{
+			$siteComponent->updateShowDisplayNames(RequestContext::value('showDisplayNames'));
 		}
 	}
 	
@@ -124,6 +156,8 @@ class ModifySettingsSiteVisitor {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyDisplayName($siteComponent);
+		$this->applyDescription($siteComponent);
+		$this->applyShowDisplayNames($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -140,6 +174,8 @@ class ModifySettingsSiteVisitor {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyDisplayName($siteComponent);
+		$this->applyDescription($siteComponent);
+		$this->applyShowDisplayNames($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -157,6 +193,7 @@ class ModifySettingsSiteVisitor {
 		
 		$this->applyRowsColumns($siteComponent);
 // 		$this->applyDirection($siteComponent);
+		$this->applyShowDisplayNames($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -174,6 +211,7 @@ class ModifySettingsSiteVisitor {
 		
 		$this->applyRowsColumns($siteComponent);
 // 		$this->applyDirection($siteComponent);
+		$this->applyShowDisplayNames($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -191,6 +229,7 @@ class ModifySettingsSiteVisitor {
 		
 		$this->applyRowsColumns($siteComponent);
 		$this->applyDirection($siteComponent);
+		$this->applyShowDisplayNames($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -207,6 +246,7 @@ class ModifySettingsSiteVisitor {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyDirection($siteComponent);
+		$this->applyShowDisplayNames($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}

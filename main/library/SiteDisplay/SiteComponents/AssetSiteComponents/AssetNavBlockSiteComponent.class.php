@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.8 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.9 2007/01/17 21:21:57 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.8 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.9 2007/01/17 21:21:57 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -52,6 +52,17 @@ class AssetNavBlockSiteComponent
 	 */
 	function getComponentClass () {
 		return 'NavBlock';
+	}
+	
+	/**
+	 * Answer the DOMIT_Element associated with this SiteComponent
+	 * 
+	 * @return object DOMIT_Element
+	 * @access public
+	 * @since 4/5/06
+	 */
+	function &getElement () {
+		return $this->_element;
 	}
 		
 	/**
@@ -280,6 +291,34 @@ class AssetNavBlockSiteComponent
 			$organizer =& $this->getOrganizer();
 			return $organizer->subMenuExists();
 		}
+	}
+	
+/*********************************************************
+ * Private methods
+ *********************************************************/
+	
+	/**
+	 * Store changes to our asset's XML document
+	 * We need to redefine this as the basic implementation was
+	 * overridden by AssetBlockSiteComponent
+	 * 
+	 * @return void
+	 * @access private
+	 * @since 10/5/06
+	 */
+	function _saveXml () {
+		printpre("<hr/><h2>Saving AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
+		print("<h3>Previous XML</h3>");
+		$oldContent =& $this->_asset->getContent();
+		printpre(htmlentities($oldContent->asString()));
+		print("<h3>New XML</h3>");
+		$element =& $this->getElement();
+		printpre($element->ownerDocument->toNormalizedString(true));
+// 		exit;
+		
+		$this->_asset->updateContent(
+			Blob::fromString(
+				$element->ownerDocument->toNormalizedString()));
 	}
 }
 

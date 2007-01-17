@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.24 2007/01/17 16:12:30 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.25 2007/01/17 21:21:57 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.24 2007/01/17 16:12:30 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.25 2007/01/17 21:21:57 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -71,11 +71,14 @@ class ViewModeSiteVisitor {
 		
 		$pluginManager =& Services::getService('PluginManager');
 		
-		$guiContainer->add(
-			new Heading(
-				$pluginManager->getPluginTitleMarkup($block->getAsset(), false), 
-				2),
-		null, null, null, TOP);
+		if ($block->showDisplayName()) {
+			$guiContainer->add(
+				new Heading(
+					$pluginManager->getPluginTitleMarkup($block->getAsset(), false), 
+					2),
+			null, null, null, TOP);
+		}
+		
 		$guiContainer->add(
 			new Block(
 				$pluginManager->getPluginText($block->getAsset(), false),
@@ -96,12 +99,17 @@ class ViewModeSiteVisitor {
 	function &visitBlockInMenu ( &$block ) {
 		$pluginManager =& Services::getService('PluginManager');
 		// Create and return the component
-		$menuItem =& new MenuItem(
-							"<span style='font-weight: bold; font-size: large;'>"
-							.$pluginManager->getPluginTitleMarkup($block->getAsset(), false)
-							."</span><br/>"
-							.$pluginManager->getPluginText($block->getAsset(), false),
-							1);
+		ob_start();
+		
+		if ($block->showDisplayName()) {
+			print "<div style='font-weight: bold; font-size: large;'>"
+					.$pluginManager->getPluginTitleMarkup($block->getAsset(), false)
+					."</div>";
+		}
+		
+		print "<div>".$pluginManager->getPluginText($block->getAsset(), false)."</div>";
+		
+		$menuItem =& new MenuItem(ob_get_clean(), 1);
 		return $menuItem;
 	}
 	

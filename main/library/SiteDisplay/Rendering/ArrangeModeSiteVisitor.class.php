@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.5 2007/01/17 17:15:34 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.6 2007/01/17 21:21:56 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.5 2007/01/17 17:15:34 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.6 2007/01/17 21:21:56 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -118,11 +118,13 @@ class ArrangeModeSiteVisitor
 				
 		$pluginManager =& Services::getService('PluginManager');
 		
-		$heading =& $guiContainer->add(
-			new Heading(
-				$pluginManager->getPluginTitleMarkup($block->getAsset(), true), 
-				2),
-			null, null, null, TOP);
+		if ($block->showDisplayName()) {
+			$heading =& $guiContainer->add(
+				new Heading(
+					$pluginManager->getPluginTitleMarkup($block->getAsset(), true), 
+					2),
+				null, null, null, TOP);
+		}
 		$content =& $guiContainer->add(
 			new Block(
 				$pluginManager->getPluginText($block->getAsset(), true),
@@ -142,16 +144,19 @@ class ArrangeModeSiteVisitor
 			$block->acceptVisitor($this->_controlsVisitor), 
 			'#090', '#9F9', '#6C6');
 		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
-					
-		$styleCollection =& new StyleCollection(
-									'.block_side_outline', 
-									'block_side_outline', 
-									'Side Outline', 
-									'A side outline around block titles');
-		$styleCollection->addSP(new BorderTopSP($lineWidth, 'solid', $primaryColor));
-		$styleCollection->addSP(new BorderLeftSP($lineWidth, 'solid', $primaryColor));
-		$styleCollection->addSP(new BorderRightSP($lineWidth, 'solid', $primaryColor));
-		$heading->addStyle($styleCollection);
+		
+		if ($block->showDisplayName()) {
+			$styleCollection =& new StyleCollection(
+										'.block_side_outline', 
+										'block_side_outline', 
+										'Side Outline', 
+										'A side outline around block titles');
+			$styleCollection->addSP(new BorderTopSP($lineWidth, 'solid', $primaryColor));
+			$styleCollection->addSP(new BorderLeftSP($lineWidth, 'solid', $primaryColor));
+			$styleCollection->addSP(new BorderRightSP($lineWidth, 'solid', $primaryColor));
+			
+			$heading->addStyle($styleCollection);
+		}
 		
 		$styleCollection =& new StyleCollection(
 									'.block_bottom_outline', 

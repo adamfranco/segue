@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.42 2007/01/17 16:12:29 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.43 2007/01/17 21:21:57 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.42 2007/01/17 16:12:29 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.43 2007/01/17 21:21:57 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -95,11 +95,15 @@ END;
 		
 		$pluginManager =& Services::getService('PluginManager');
 		
-		$heading =& $guiContainer->add(
-			new Heading(
-				$pluginManager->getPluginTitleMarkup($block->getAsset(), true), 
-				2),
-		null, null, null, TOP);
+		
+		if ($block->showDisplayName()) {
+			$heading =& $guiContainer->add(
+				new Heading(
+					$pluginManager->getPluginTitleMarkup($block->getAsset(), true), 
+					2),
+			null, null, null, TOP);
+		}
+		
 		$content =& $guiContainer->add(
 			new Block(
 				$pluginManager->getPluginText($block->getAsset(), true),
@@ -132,12 +136,18 @@ END;
 	function &visitBlockInMenu ( &$block ) {
 		$pluginManager =& Services::getService('PluginManager');
 		// Create and return the component
-		$menuItem =& new MenuItem(
-							"<div style='font-weight: bold; font-size: large;'>"
-							.$pluginManager->getPluginTitleMarkup($block->getAsset(), true)
-							."</div>"
-							.$pluginManager->getPluginText($block->getAsset(), true),
-							1);
+		ob_start();
+		
+		if ($block->showDisplayName()) {
+			print "<div style='font-weight: bold; font-size: large;'>"
+					.$pluginManager->getPluginTitleMarkup($block->getAsset(), true)
+					."</div>";
+		}
+		
+		print "<div>".$pluginManager->getPluginText($block->getAsset(), true)."</div>";
+		
+		$menuItem =& new MenuItem(ob_get_clean(), 1);
+		
 							
 		// Add controls bar and border
 		$controlsHTML = $this->getBarPreHTML('#090')

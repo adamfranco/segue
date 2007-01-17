@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.8 2007/01/16 21:54:07 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/01/17 21:21:57 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.8 2007/01/16 21:54:07 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/01/17 21:21:57 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -100,13 +100,13 @@ class ControlsSiteVisitor {
 					'returnAction' => $this->_action
 					)));
 		
-		print "\n\t\t\t\t<div>";
-		print "\n\t\t\t\t\t<a href='Javascript:";
+		print "\n\t\t\t\t<div style='margin-top: 5px; margin-bottom: 5px;'>";
+		print "\n\t\t\t\t\t<button onclick='";
 		print 	"if (confirm(\"".$message."\")) ";
 		print 		"window.location = \"".$url."\";";
 		print "'>";
 		print _("delete");
-		print "</a>";
+		print "</button>";
 		print "\n\t\t\t\t</div>";
 	}
 	
@@ -119,7 +119,7 @@ class ControlsSiteVisitor {
 	 * @since 9/22/06
 	 */
 	function printAddSubMenu ( &$siteComponent ) {
-		print "\n\t\t\t\t<div>";
+		print "\n\t\t\t\t<div style='font-weight: bold;'>";
 		print _("Sub-Menu: ");
 		
 		if ($siteComponent->subMenuExists()) {
@@ -156,12 +156,69 @@ class ControlsSiteVisitor {
 	 * @since 4/17/06
 	 */
 	function printDisplayName ( &$siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
 		print _('Title: ');
-		print "<input type='text' size='10' ";
+		print "<input type='text' size='25' ";
 		print " name='".RequestContext::name('displayName')."'";
 		print " value='".$siteComponent->getDisplayName()."'/>";
 		print "</div>";
+	}
+	
+	/**
+	 * Print the display title controls
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 1/16/07
+	 */
+	function printShowDisplayNames ( &$siteComponent ) {
+		print "\n\t\t\t\t<table cellspacing='0' cellpadding='0'>\n\t\t\t\t\t<tr><td style='white-space: nowrap;' valign='top' rowspan='3'>";
+		print "<strong>"._('Display Block Titles: ')."</strong>";
+		
+		print "</td>\n\t\t\t\t\t<td>";
+		print " <input type='radio' ";
+		print " name='".RequestContext::name('showDisplayNames')."'";
+		print " value='default'";
+		print (($siteComponent->showDisplayNames() == 'default')?" checked='checked'":"");
+		print "'/>"._(" use default");
+		
+		print "</td></tr>\n\t\t\t\t\t<tr><td>";
+		print " <input type='radio' ";
+		print " name='".RequestContext::name('showDisplayNames')."'";
+		print " value='true'";
+		print (($siteComponent->showDisplayNames() === true)?" checked='checked'":"");
+		print "'/>"._("override-yes");
+		
+		print "</td></tr>\n\t\t\t\t\t<tr><td>";
+		print " <input type='radio' ";
+		print " name='".RequestContext::name('showDisplayNames')."'";
+		print " value='false'";
+		print (($siteComponent->showDisplayNames() === false)?" checked='checked'":"");
+		print "'/>"._("override-no");
+		
+		print "</td></tr>";
+		print "\n\t\t\t\t</table>";
+	}
+	
+	/**
+	 * Print description controls
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 1/16/07
+	 */
+	function printDescription ( &$siteComponent ) {
+		print "\n\t\t\t\t<table cellpadding='0' cellspacing='0'><tr><td valign='top'>";
+		print "<div style='font-weight: bold;'>"._('Description: ')."</div>";
+		print "<div style='font-size: smaller; width: 125px;'>"
+			._("The description will be included in RSS feeds, title attributes, and other external references to this item.")."</div>";
+		print "\n\t\t\t\t\t</td><td valign='top'><textarea rows='5' cols='25'";
+		print " name='".RequestContext::name('description')."'";
+		print " value='".$siteComponent->getDescription()."'/>";
+		print "</textarea>";
+		print "\n\t\t\t\t</td></tr></table>";
 	}
 	
 	/**
@@ -173,7 +230,7 @@ class ControlsSiteVisitor {
 	 * @since 4/17/06
 	 */
 	function printRowsColumns ( &$siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
 		$minCells = $siteComponent->getMinNumCells();
 		print "\n\t\t\t\t\t"._('Rows: ');
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'";
@@ -237,7 +294,7 @@ END;
 	 * @since 4/17/06
 	 */
 	function printFlowRowsColumns ( &$siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
 		$numRows = $siteComponent->getNumRows();
 		$numColumns = $siteComponent->getNumColumns();
 		print "\n\t\t\t\t\t"._('Columns: ');
@@ -273,7 +330,7 @@ END;
 	 * @since 4/17/06
 	 */
 	function printDirection ( &$siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
 		print "\n\t\t\t\t\t"._('Index Direction: ');
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('direction')."'>";
 		$directions = array(
@@ -308,7 +365,9 @@ END;
 	function &visitBlock ( &$siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
+		$this->printShowDisplayNames($siteComponent);
 		$this->printDisplayName($siteComponent);
+		$this->printDescription($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
@@ -325,7 +384,9 @@ END;
 	function &visitNavBlock ( &$siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
+		$this->printShowDisplayNames($siteComponent);
 		$this->printDisplayName($siteComponent);		
+		$this->printDescription($siteComponent);
 		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
 		
@@ -378,6 +439,7 @@ END;
 	function &visitFlowOrganizer ( &$siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
+		$this->printShowDisplayNames($siteComponent);
 		$this->printFlowRowsColumns($siteComponent);
 		$this->printDirection($siteComponent);
 		$this->printDelete($siteComponent);
@@ -396,6 +458,7 @@ END;
 	function &visitMenuOrganizer ( &$siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
+		$this->printShowDisplayNames($siteComponent);
 		$this->printDirection($siteComponent);
 		$this->printDelete($siteComponent);
 		
