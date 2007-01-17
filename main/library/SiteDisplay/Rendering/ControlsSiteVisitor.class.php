@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/01/17 21:21:57 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/01/17 21:44:40 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/01/17 21:21:57 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/01/17 21:44:40 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -136,12 +136,12 @@ class ControlsSiteVisitor {
 						'returnAction' => $this->_action,
 						'direction' => urlencode($parentMenuOrganizer->getDirection()))));
 			
-			print "\n\t\t\t\t\t<a href='Javascript:";
+			print "\n\t\t\t\t\t<button onclick='";
 			print 	"if (confirm(\"".$message."\")) ";
 			print 		"window.location = \"".$url."\";";
 			print "'>";
 			print _("create");
-			print "</a>";
+			print "</button>";
 		}
 		
 		print "\n\t\t\t\t</div>";

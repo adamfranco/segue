@@ -6,11 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.43 2007/01/17 21:21:57 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.44 2007/01/17 21:44:40 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
-require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
+require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
 
 /**
  * The edit-mode site visitor renders the site for editing, displaying controls.
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.43 2007/01/17 21:21:57 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.44 2007/01/17 21:44:40 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -35,10 +35,11 @@ class EditModeSiteVisitor
 	 * @since 4/14/06
 	 */
 	function EditModeSiteVisitor () {
-		$this->_controlsVisitor =& new ControlsSiteVisitor();
-		
 		$this->_action = 'editview';
+		
+		$this->_controlsVisitor =& new EditModeControlsSiteVisitor();
 		$this->_controlsVisitor->setReturnAction($this->_action);
+		
 		
 		$this->ViewModeSiteVisitor();
 		$this->_classNames = array(
