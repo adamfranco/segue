@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.45 2007/01/17 22:42:04 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.46 2007/01/18 22:02:36 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.45 2007/01/17 22:42:04 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.46 2007/01/18 22:02:36 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -45,6 +45,7 @@ class EditModeSiteVisitor
 		$this->_classNames = array(
 			'Block' => _('Block'),
 			'NavBlock' => _('Nav. Item'),
+			'SiteNavBlock' => _('Site'),
 			'MenuOrganizer' => _('Menu'),
 			'FlowOrganizer' => _('ContentOrganizer'),
 			'FixedOrganizer' => _('Organizer'),
@@ -186,6 +187,7 @@ END;
 		
 		return $menuItems;
 	}
+	
 	
 	/**
 	 * Visit a menu organizer and return the menu GUI component that corresponds

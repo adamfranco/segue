@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.3 2007/01/17 21:21:57 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.4 2007/01/18 22:02:36 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.3 2007/01/17 21:21:57 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.4 2007/01/18 22:02:36 adamfranco Exp $
  */
 class ModifySettingsSiteVisitor {
 		
@@ -171,6 +171,24 @@ class ModifySettingsSiteVisitor {
 	 * @since 4/17/06
 	 */
 	function &visitNavBlock ( &$siteComponent ) {
+		$this->modifyStart($siteComponent);
+		
+		$this->applyDisplayName($siteComponent);
+		$this->applyDescription($siteComponent);
+		$this->applyShowDisplayNames($siteComponent);
+		
+		return $this->modifyEnd($siteComponent);
+	}
+	
+	/**
+	 * Answer controls for NavBlock SiteComponents
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return string
+	 * @access public
+	 * @since 4/17/06
+	 */
+	function &visitSiteNavBlock ( &$siteComponent ) {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyDisplayName($siteComponent);

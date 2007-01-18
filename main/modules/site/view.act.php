@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.15 2007/01/15 17:57:15 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.16 2007/01/18 22:02:39 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.15 2007/01/15 17:57:15 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.16 2007/01/18 22:02:39 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -37,7 +37,8 @@ class viewAction
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &execute ( &$harmoni ) {
+	function &execute () {
+		$harmoni =& Harmoni::instance();
 		/*********************************************************
 		 * XML Version
 		 *********************************************************/
@@ -76,7 +77,7 @@ class viewAction
 		
 		$visitor =& $this->getSiteVisitor();
 		
-		$siteGuiComponent =& $rootSiteComponent->acceptVisitor($visitor);
+		$this->siteGuiComponent =& $rootSiteComponent->acceptVisitor($visitor);
 		
 		
 		/*********************************************************
@@ -105,14 +106,15 @@ class viewAction
 		$mainScreen =& new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		// :: Top Row ::
-		$headRow =& $mainScreen->add(
+		$this->headRow =& $mainScreen->add(
 			new Container($xLayout, HEADER, 1), 
 			"100%", null, CENTER, TOP);
 		
-		$headRow->add(new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"), 
+		$this->leftHeadColumn =& $this->headRow->add(
+			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"), 
 			null, null, LEFT, TOP);
 		
-		$rightHeadColumn =& $headRow->add(
+		$rightHeadColumn =& $this->headRow->add(
 			new Container($yLayout, BLANK, 1), 
 			null, null, CENTER, TOP);
 		
@@ -127,7 +129,7 @@ class viewAction
 		
 		
 		// :: Site ::
-		$mainScreen->add($siteGuiComponent);
+		$mainScreen->add($this->siteGuiComponent);
 		
 		
 		// :: Footer ::
@@ -157,8 +159,9 @@ class viewAction
 	 * @since 4/6/06
 	 */
 	function &getSiteVisitor () {
-		$visitor =& new ViewModeSiteVisitor();
-		return $visitor;
+		if (!isset($this->visitor)) 
+			$this->visitor =& new EditModeSiteVisitor();
+		return $this->visitor;
 	}
 	
 	/**

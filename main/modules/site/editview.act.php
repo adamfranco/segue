@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.4 2007/01/15 17:57:15 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.5 2007/01/18 22:02:39 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.4 2007/01/15 17:57:15 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.5 2007/01/18 22:02:39 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -37,8 +37,34 @@ class editviewAction
 	 * @since 4/6/06
 	 */
 	function &getSiteVisitor () {
-		$visitor =& new EditModeSiteVisitor();
-		return $visitor;
+		if (!isset($this->visitor)) 
+			$this->visitor =& new EditModeSiteVisitor();
+		return $this->visitor;
+	}
+	
+	/**
+	 * Execute the action
+	 * 
+	 * @return object
+	 * @access public
+	 * @since 1/18/07
+	 */
+	function &execute () {
+		$mainScreen =& parent::execute();
+		
+		// Add controls bar and border
+		$visitor =& $this->getSiteVisitor();
+		$controlsHTML = $visitor->getBarPreHTML('#090')
+			.$visitor->getControlsHTML(
+				"<em>"._("Site")."</em>", 
+				$this->rootSiteComponent->acceptVisitor($visitor->_controlsVisitor), 
+				'#090', '#9F9', '#6C6', 0, true);
+		$mainScreen->setPreHTML($controlsHTML.$mainScreen->getPreHTML($null = null));
+		
+		$mainScreen->setPostHTML($visitor->getBarPostHTML());
+		
+		
+		return $mainScreen;
 	}
 	
 	/**

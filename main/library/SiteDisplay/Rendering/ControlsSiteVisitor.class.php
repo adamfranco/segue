@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/01/17 21:44:40 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.11 2007/01/18 22:02:34 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/01/17 21:44:40 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.11 2007/01/18 22:02:34 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -389,6 +389,16 @@ END;
 		$this->printDescription($siteComponent);
 		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
+		
+		return $this->controlsEnd($siteComponent);
+	}
+	
+	function &visitSiteNavBlock ( &$siteComponent ) {
+		$this->controlsStart($siteComponent);
+		
+		$this->printShowDisplayNames($siteComponent);
+		$this->printDisplayName($siteComponent);		
+		$this->printDescription($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
 	}
