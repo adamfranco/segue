@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.13 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.14 2007/01/18 20:45:54 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.13 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.14 2007/01/18 20:45:54 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -412,7 +412,14 @@ class PluginManager {
 			
 			$assetId =& $asset->getId();
 			
-			print SeguePluginsAjaxPlugin::getPluginSystemJavascript();
+			if (!isset($this->_ajaxLibWritten) || !$this->_ajaxLibWritten) {
+				$harmoni =& Harmoni::instance();
+				$outputHandler =& $harmoni->getOutputHandler();
+				$outputHandler->setHead(
+					$outputHandler->getHead()
+					.SeguePluginsAjaxPlugin::getPluginSystemJavascript());
+				$this->_ajaxLibWritten = true;	
+			}
 			
 			if (!is_object($plugin)) {
 				print $plugin;
