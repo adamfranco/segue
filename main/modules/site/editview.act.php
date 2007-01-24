@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.5 2007/01/18 22:02:39 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.6 2007/01/24 19:19:24 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.5 2007/01/18 22:02:39 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.6 2007/01/24 19:19:24 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -58,7 +58,7 @@ class editviewAction
 			.$visitor->getControlsHTML(
 				"<em>"._("Site")."</em>", 
 				$this->rootSiteComponent->acceptVisitor($visitor->_controlsVisitor), 
-				'#090', '#9F9', '#6C6', 0, true);
+				'#090', '#9F9', '#6C6', 0, false);
 		$mainScreen->setPreHTML($controlsHTML.$mainScreen->getPreHTML($null = null));
 		
 		$mainScreen->setPostHTML($visitor->getBarPostHTML());

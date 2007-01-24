@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.16 2007/01/18 22:02:39 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.17 2007/01/24 19:19:24 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.16 2007/01/18 22:02:39 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.17 2007/01/24 19:19:24 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -160,7 +160,7 @@ class viewAction
 	 */
 	function &getSiteVisitor () {
 		if (!isset($this->visitor)) 
-			$this->visitor =& new EditModeSiteVisitor();
+			$this->visitor =& new ViewModeSiteVisitor();
 		return $this->visitor;
 	}
 	
