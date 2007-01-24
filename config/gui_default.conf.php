@@ -10,19 +10,19 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: gui_default.conf.php,v 1.3 2007/01/08 21:02:32 adamfranco Exp $
+ * @version $Id: gui_default.conf.php,v 1.4 2007/01/24 19:05:42 adamfranco Exp $
  */
 
-require_once(dirname(__FILE__)."/../themes/SimpleTheme/SimpleTheme.class.php");
+require_once(dirname(__FILE__)."/../themes/SimpleThemeBlack/SimpleThemeBlack.class.php");
 
 
 // :: GUIManager setup ::
-	define("LOGO_URL", MYPATH."/themes/SimpleTheme/images/logo.gif");
+	define("LOGO_URL", MYPATH."/themes/SimpleThemeBlack/images/logo.gif");
 	
 	$configuration =& new ConfigurationProperties;
 	$configuration->addProperty('database_index', $dbID);
 	$configuration->addProperty('database_name', $dbName);
-	$configuration->addProperty('default_theme', new SimpleTheme);
+	$configuration->addProperty('default_theme', new SimpleThemeBlack);
 	$configuration->addProperty('character_set', $arg0 = 'utf-8');
 	$configuration->addProperty('document_type', $arg1 = 'text/html');
 	$configuration->addProperty('document_type_definition', $arg2 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">');
