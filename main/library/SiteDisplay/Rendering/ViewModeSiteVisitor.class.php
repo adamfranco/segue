@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.25 2007/01/17 21:21:57 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.26 2007/01/24 19:19:43 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.25 2007/01/17 21:21:57 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.26 2007/01/24 19:19:43 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -76,14 +76,14 @@ class ViewModeSiteVisitor {
 				new Heading(
 					$pluginManager->getPluginTitleMarkup($block->getAsset(), false), 
 					2),
-			null, null, null, TOP);
+			$block->getWidth(), null, null, TOP);
 		}
 		
 		$guiContainer->add(
 			new Block(
 				$pluginManager->getPluginText($block->getAsset(), false),
 				STANDARD_BLOCK), 
-			null, null, null, TOP);
+			$block->getWidth(), null, null, TOP);
 		
 		return $guiContainer;
 	}
@@ -102,7 +102,7 @@ class ViewModeSiteVisitor {
 		ob_start();
 		
 		if ($block->showDisplayName()) {
-			print "<div style='font-weight: bold; font-size: large;'>"
+			print "<div style='font-weight: bold; font-size: large;' title=\"".$block->getDescription()."\">"
 					.$pluginManager->getPluginTitleMarkup($block->getAsset(), false)
 					."</div>";
 		}
@@ -142,7 +142,7 @@ class ViewModeSiteVisitor {
 			$childGuiComponent =& $childOrganizer->acceptVisitor($this);
 			
 			if (isset($this->_emptyCells[$navBlock->getTargetId()])) {
-				$this->_emptyCells[$navBlock->getTargetId()]->add($childGuiComponent, null, '100%', null, TOP);
+				$this->_emptyCells[$navBlock->getTargetId()]->add($childGuiComponent, $childOrganizer->getWidth(), '100%', null, TOP);
 				unset($this->_emptyCells[$navBlock->getTargetId()]);
 			} else {
 				$this->_missingTargets[$navBlock->getTargetId()] =& $childGuiComponent;
@@ -210,7 +210,7 @@ class ViewModeSiteVisitor {
 		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			if (is_object($child)) {
-				$guiContainer->add($child->acceptVisitor($this), null, null, null, TOP );
+				$guiContainer->add($child->acceptVisitor($this), $child->getWidth(), null, null, TOP );
 			} else {
 				// This should be changed to a new container type which
 				// only has one cell and does not add any HTML when rendered.

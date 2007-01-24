@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.11 2007/01/18 22:02:34 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.12 2007/01/24 19:19:43 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.11 2007/01/18 22:02:34 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.12 2007/01/24 19:19:43 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -216,9 +216,27 @@ class ControlsSiteVisitor {
 			._("The description will be included in RSS feeds, title attributes, and other external references to this item.")."</div>";
 		print "\n\t\t\t\t\t</td><td valign='top'><textarea rows='5' cols='25'";
 		print " name='".RequestContext::name('description')."'";
-		print " value='".$siteComponent->getDescription()."'/>";
+		print ">".$siteComponent->getDescription();
 		print "</textarea>";
 		print "\n\t\t\t\t</td></tr></table>";
+	}
+	
+	/**
+	 * Print width controls
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 4/17/06
+	 */
+	function printWidth ( &$siteComponent ) {
+		print "<div style='font-weight: bold;'>"._('Width: ');
+		print "<input type='text' size='6' ";
+		print " name='".RequestContext::name('width')."'";
+		print " value='".$siteComponent->getWidth()."'/>";
+		print "</div>";
+		print "<div style='font-size: smaller;'>"
+			._("If desired, enter a width in either pixel or percent form; e.g. '150px', 200px', '100%', '50%', etc.")."</div>";		
 	}
 	
 	/**
@@ -368,6 +386,7 @@ END;
 		$this->printShowDisplayNames($siteComponent);
 		$this->printDisplayName($siteComponent);
 		$this->printDescription($siteComponent);
+		$this->printWidth($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
@@ -452,6 +471,7 @@ END;
 		$this->printShowDisplayNames($siteComponent);
 		$this->printFlowRowsColumns($siteComponent);
 		$this->printDirection($siteComponent);
+		$this->printWidth($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
@@ -470,6 +490,7 @@ END;
 		
 		$this->printShowDisplayNames($siteComponent);
 		$this->printDirection($siteComponent);
+		$this->printWidth($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);

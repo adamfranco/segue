@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.4 2007/01/18 22:02:36 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.5 2007/01/24 19:19:43 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.4 2007/01/18 22:02:36 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.5 2007/01/24 19:19:43 adamfranco Exp $
  */
 class ModifySettingsSiteVisitor {
 		
@@ -99,6 +99,22 @@ class ModifySettingsSiteVisitor {
 	}
 	
 	/**
+	 * Apply the description changes
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 1/16/07
+	 */
+	function applyWidth ( &$siteComponent ) {
+		if(RequestContext::value('width') 
+			&& RequestContext::value('width') !== $siteComponent->getWidth())
+		{
+			$siteComponent->updateWidth(RequestContext::value('width'));
+		}
+	}
+	
+	/**
 	 * Print rows/columns controls
 	 * 
 	 * @param SiteComponent $siteComponent
@@ -158,6 +174,7 @@ class ModifySettingsSiteVisitor {
 		$this->applyDisplayName($siteComponent);
 		$this->applyDescription($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
+		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -212,6 +229,7 @@ class ModifySettingsSiteVisitor {
 		$this->applyRowsColumns($siteComponent);
 // 		$this->applyDirection($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
+		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -230,6 +248,7 @@ class ModifySettingsSiteVisitor {
 		$this->applyRowsColumns($siteComponent);
 // 		$this->applyDirection($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
+		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -248,6 +267,7 @@ class ModifySettingsSiteVisitor {
 		$this->applyRowsColumns($siteComponent);
 		$this->applyDirection($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
+		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -265,6 +285,7 @@ class ModifySettingsSiteVisitor {
 		
 		$this->applyDirection($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
+		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}

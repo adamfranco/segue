@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.5 2007/01/17 21:21:59 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.6 2007/01/24 19:19:43 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.5 2007/01/17 21:21:59 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.6 2007/01/24 19:19:43 adamfranco Exp $
  */
 class AssetSiteComponent 
 	// implements SiteComponent
@@ -210,6 +210,39 @@ class AssetSiteComponent
 		} else {
 			return $this->showDisplayNames();
 		}
+	}
+	
+	/**
+	 * Answer the width of the component. The default is an empty string.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/19/07
+	 */
+	function getWidth () {
+		$element =& $this->getElement();
+		if ($element->hasAttribute('width'))
+			return $element->getAttribute('width');
+		else
+			return '';
+	}
+	
+	/**
+	 * Set the width of the component. If an invalid value
+	 * 
+	 * @param string $width '100px', '50px', '100%', etc, OR and empty string
+	 * @return void
+	 * @access public
+	 * @since 1/19/07
+	 */
+	function updateWidth ($width) {
+		$element =& $this->getElement();
+		if (preg_match('/^[0-9]+(px|%)$/i', $width))
+			$element->setAttribute('width', $width);
+		else
+			$element->removeAttribute('width');
+		
+		$this->_saveXml();
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.7 2007/01/17 21:44:40 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.8 2007/01/24 19:19:43 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.7 2007/01/17 21:44:40 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.8 2007/01/24 19:19:43 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -125,13 +125,13 @@ class ArrangeModeSiteVisitor
 				new Heading(
 					$pluginManager->getPluginTitleMarkup($block->getAsset(), true), 
 					2),
-				null, null, null, TOP);
+				$block->getWidth(), null, null, TOP);
 		}
 		$content =& $guiContainer->add(
 			new Block(
 				$pluginManager->getPluginText($block->getAsset(), true),
 				STANDARD_BLOCK), 
-			null, null, null, TOP);
+			$block->getWidth(), null, null, TOP);
 		
 		$primaryColor = '#090';
 		$secondaryColor = '#9F9';
@@ -262,7 +262,7 @@ class ArrangeModeSiteVisitor
 			$child =& $organizer->getSubcomponentForCell($i);
 			if (is_object($child)) {
 				$childComponent =& $guiContainer->add($child->acceptVisitor($this), 
-														null, null, null, TOP);
+														$child->getWidth(), null, null, TOP);
 			} else {
 				// This should be changed to a new container type which
 				// only has one cell and does not add any HTML when rendered.
