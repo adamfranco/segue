@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.8 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.9 2007/01/26 14:30:49 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.8 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.9 2007/01/26 14:30:49 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -79,25 +79,43 @@ class ArrangeModeSiteVisitor
 		$childGuiComponent =& $childOrganizer->acceptVisitor($this);
 		
 		// Check completeness and render any nodes still waiting for targets
-		foreach (array_keys($this->_missingTargets) as $targetId) {
-			$this->_emptyCells[$targetId]->add($this->_missingTargets[$targetId], null, '100%', null, TOP);
-			unset($this->_emptyCells[$targetId]);
+		foreach (array_keys($this->_missingTargets) as $targetId) {			
+			if ($this->_missingTargetWidths[$targetId])
+				$width = $this->_missingTargetWidths[$targetId];
+			else
+				$width = null;
+			
+			$this->_emptyCellContainers[$targetId]->insertAtPlaceholder(
+				$this->_emptyCellPlaceholders[$targetId],
+				$this->_missingTargets[$targetId], 
+				$width, '100%', null, TOP);
+				
+			unset($this->_emptyCellContainers[$targetId]);
+			unset($this->_emptyCellPlaceholders[$targetId]);
 			unset($this->_missingTargets[$targetId]);
+			unset($this->_missingTargetWidths[$targetId]);
 		}
+		
+		
 		
 		// Any further empty cells in fixed organizers should get controls to
 		// add to them.
 		$allowed = array();
 		$allowed[] = new Type('segue', 'edu.middlebury', 'FlowOrganizer');
 		$allowed[] = new Type('segue', 'edu.middlebury', 'FixedOrganizer');
-		foreach (array_keys($this->_emptyCells) as $id) {
+		foreach (array_keys($this->_emptyCellContainers) as $id) {
 			preg_match("/(.+)_cell:([0-9]+)/", $id, $matches);
 			$organizerId = $matches[1];
 			$cellIndex = $matches[2];
 			
-			$this->_emptyCells[$id]->add(new UnstyledBlock($this->getInsertFormHTML($siteNavBlock->getDirector(), $organizerId, $cellIndex, $allowed)), null, '100%', null, TOP);
+			$this->_emptyCellContainers[$id]->insertAtPlaceholder(
+				$this->_emptyCellPlaceholders[$id],
+				new UnstyledBlock($this->getInsertFormHTML(
+					$siteNavBlock->getDirector(), 
+					$organizerId, $cellIndex, $allowed)),
+				null, '100%', null, TOP);
 			
-			unset($this->_emptyCells[$id], $matches, $organizerId, $cellIndex);
+			unset($this->_emptyCellContainers[$id], $this->_emptyCellPlaceholders[$id], $matches, $organizerId, $cellIndex);
 		}
 		
 		// returning the entire site in GUI component object tree.
@@ -263,13 +281,11 @@ class ArrangeModeSiteVisitor
 			if (is_object($child)) {
 				$childComponent =& $guiContainer->add($child->acceptVisitor($this), 
 														$child->getWidth(), null, null, TOP);
-			} else {
-				// This should be changed to a new container type which
-				// only has one cell and does not add any HTML when rendered.
-				$childComponent =& new Container(new XLayout, BLANK, 1);
-				
-				$this->_emptyCells[$organizer->getId().'_cell:'.$i] =& $childComponent;
-				$guiContainer->add($childComponent, null, '100%', null, TOP);
+			} else {				
+				$this->_emptyCellContainers[$organizer->getId().'_cell:'.$i] =& $guiContainer;
+				$this->_emptyCellPlaceholders[$organizer->getId().'_cell:'.$i] = $guiContainer->addPlaceholder();
+				$childComponent =& $guiContainer->getComponent(
+					$this->_emptyCellPlaceholders[$organizer->getId().'_cell:'.$i]);
 			}
 			
 			$this->wrapAsDroppable($childComponent, 
@@ -540,6 +556,8 @@ class ArrangeModeSiteVisitor
 	 * @since 4/7/06
 	 */
 	function wrapAsDroppable (&$component, $id, $allowedDraggables) {
+		ArgumentValidator::validate($component, ExtendsValidatorRule::getRule("Component"));
+		
 		if (!count($allowedDraggables))
 			return;
 		

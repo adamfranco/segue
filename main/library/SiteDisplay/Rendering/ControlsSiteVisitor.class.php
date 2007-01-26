@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.12 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.13 2007/01/26 14:30:49 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.12 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.13 2007/01/26 14:30:49 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -230,13 +230,13 @@ class ControlsSiteVisitor {
 	 * @since 4/17/06
 	 */
 	function printWidth ( &$siteComponent ) {
-		print "<div style='font-weight: bold;'>"._('Width: ');
+		print "<div style='font-weight: bold;'>"._('Maximum Width Guideline: ');
 		print "<input type='text' size='6' ";
 		print " name='".RequestContext::name('width')."'";
 		print " value='".$siteComponent->getWidth()."'/>";
 		print "</div>";
 		print "<div style='font-size: smaller;'>"
-			._("If desired, enter a width in either pixel or percent form; e.g. '150px', 200px', '100%', '50%', etc.")."</div>";		
+			._("If desired, enter a width in either pixel or percent form; e.g. '150px', 200px', '100%', '50%', etc.<br/><strong>Note:</strong> This width is a guideline and is not guarenteed to be enforced. Content will fill the page, using this guideline where possible. Content inside of this container may stretch it beyond the specified width.")."</div>";		
 	}
 	
 	/**
@@ -386,7 +386,7 @@ END;
 		$this->printShowDisplayNames($siteComponent);
 		$this->printDisplayName($siteComponent);
 		$this->printDescription($siteComponent);
-		$this->printWidth($siteComponent);
+// 		$this->printWidth($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);

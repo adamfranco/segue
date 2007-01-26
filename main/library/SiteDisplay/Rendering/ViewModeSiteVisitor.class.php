@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.26 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.27 2007/01/26 14:30:49 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.26 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.27 2007/01/26 14:30:49 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -47,13 +47,15 @@ class ViewModeSiteVisitor {
 		 * cell placeholders: 
 		 *		target_id => [empty] GUI container object.
 		 *********************************************************/
-		$this->_emptyCells = array();
+		$this->_emptyCellContainers = array();
+		$this->_emptyCellPlaceholders = array();
 		
 		/*********************************************************
 		 * Contents of targets which have not yet been traversed-to
 		 * 		target_id => GUI component to place in target.
 		 *********************************************************/
 		$this->_missingTargets = array();
+		$this->_missingTargetWidths = array();
 		
 		$this->_menuNestingLevel = 0;
 	}
@@ -141,11 +143,16 @@ class ViewModeSiteVisitor {
 			$childOrganizer =& $navBlock->getOrganizer();
 			$childGuiComponent =& $childOrganizer->acceptVisitor($this);
 			
-			if (isset($this->_emptyCells[$navBlock->getTargetId()])) {
-				$this->_emptyCells[$navBlock->getTargetId()]->add($childGuiComponent, $childOrganizer->getWidth(), '100%', null, TOP);
-				unset($this->_emptyCells[$navBlock->getTargetId()]);
+			if (isset($this->_emptyCellContainers[$navBlock->getTargetId()])) {
+				$this->_emptyCellContainers[$navBlock->getTargetId()]->insertAtPlaceholder(
+					$this->_emptyCellPlaceholders[$navBlock->getTargetId()],
+					$childGuiComponent, $childOrganizer->getWidth(), '100%', null, TOP);
+					
+				unset($this->_emptyCellContainers[$navBlock->getTargetId()],
+					$this->_emptyCellPlaceholders[$navBlock->getTargetId()]);
 			} else {
 				$this->_missingTargets[$navBlock->getTargetId()] =& $childGuiComponent;
+				$this->_missingTargetWidths[$navBlock->getTargetId()] = $childOrganizer->getWidth();
 			}
 			
 			$nestedMenuOrganizer =& $navBlock->getNestedMenuOrganizer();
@@ -178,11 +185,23 @@ class ViewModeSiteVisitor {
 		
 		// Check completeness and render any nodes still waiting for targets
 		foreach (array_keys($this->_missingTargets) as $targetId) {
-			if (!is_object($this->_emptyCells[$targetId]))
-				throwError(new Error("Expecting object, found ".$this->_emptyCells[$targetId].".", __CLASS__));
-			$this->_emptyCells[$targetId]->add($this->_missingTargets[$targetId], null, '100%', null, TOP);
-			unset($this->_emptyCells[$targetId]);
+			if (!is_object($this->_emptyCellContainers[$targetId]))
+				throwError(new Error("Expecting object, found '".$this->_emptyCellContainers[$targetId]."'.", __CLASS__));
+			
+			if ($this->_missingTargetWidths[$targetId])
+				$width = $this->_missingTargetWidths[$targetId];
+			else
+				$width = null;
+			
+			$this->_emptyCellContainers[$targetId]->insertAtPlaceholder(
+				$this->_emptyCellPlaceholders[$targetId],
+				$this->_missingTargets[$targetId], 
+				$width, '100%', null, TOP);
+				
+			unset($this->_emptyCellContainers[$targetId]);
+			unset($this->_emptyCellPlaceholders[$targetId]);
 			unset($this->_missingTargets[$targetId]);
+			unset($this->_missingTargetWidths[$targetId]);
 		}
 		
 		// returning the entire site in GUI component object tree.
@@ -212,12 +231,8 @@ class ViewModeSiteVisitor {
 			if (is_object($child)) {
 				$guiContainer->add($child->acceptVisitor($this), $child->getWidth(), null, null, TOP );
 			} else {
-				// This should be changed to a new container type which
-				// only has one cell and does not add any HTML when rendered.
-				$placeholder =& new Container(new XLayout, BLANK, 1);
-				
-				$this->_emptyCells[$organizer->getId().'_cell:'.$i] =& $placeholder;
-				$guiContainer->add($placeholder, null, '100%', null, TOP);
+				$this->_emptyCellContainers[$organizer->getId().'_cell:'.$i] =& $guiContainer;
+				$this->_emptyCellPlaceholders[$organizer->getId().'_cell:'.$i] = $guiContainer->addPlaceholder();
 			}
 		}
 		
