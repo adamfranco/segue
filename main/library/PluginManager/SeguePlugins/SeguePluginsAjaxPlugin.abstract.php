@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.7 2007/01/17 21:52:32 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.8 2007/01/29 21:25:24 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.7 2007/01/17 21:52:32 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.8 2007/01/29 21:25:24 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -158,6 +158,13 @@ class SeguePluginsAjaxPlugin
 			}
 			
 			function updateAjaxPlugin( pluginId, destination, method, data ) {
+				// Keep the width the same to prevent too much re-flowing of the
+				// page
+				var pluginElement = document.get_element_by_id('plugin:' + pluginId);
+				pluginElement.style.width = pluginElement.offsetWidth + 'px';
+				pluginElement.style.height = pluginElement.offsetHeight + 'px';
+				
+				
 				if (method == null) {
 					method = 'GET';
 					data = null;
@@ -170,7 +177,6 @@ class SeguePluginsAjaxPlugin
 				// branch for IE/Windows ActiveX version
 				else if (window.ActiveXObject)
 					var req = new ActiveXObject("Microsoft.XMLHTTP");
-				
 				
 				if (req) {
 					req.onreadystatechange = function () {
@@ -228,6 +234,10 @@ class SeguePluginsAjaxPlugin
 										pluginTitleElement.innerHTML = title;
 										
 									pluginElement.innerHTML = markup.replace(/}}>/g, ']'+']'+'>');
+									
+									// unset our temporary width
+									pluginElement.style.width = '';
+									pluginElement.style.height = '';
 								} else {
 									alert("There was a problem retrieving the XML data:\\n" +
 										req.statusText);
