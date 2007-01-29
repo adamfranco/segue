@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.2 2007/01/17 22:42:05 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.3 2007/01/29 21:26:09 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.2 2007/01/17 22:42:05 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.3 2007/01/29 21:26:09 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -77,6 +77,8 @@ class EduMiddleburyTextBlockPlugin
  			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
  			
  			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSend()."/>";
+ 			
+ 			print "\n\t<input type='button' value='"._('Media')."' onclick=\"MediaLibrary.run('".$this->getId()."', this);\"/>";
  			
 			print "\n</form>";
  		} else if ($this->canView()) {

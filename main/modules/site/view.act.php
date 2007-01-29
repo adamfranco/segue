@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.17 2007/01/24 19:19:24 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.18 2007/01/29 21:26:09 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.17 2007/01/24 19:19:24 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.18 2007/01/29 21:26:09 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -95,6 +95,9 @@ class viewAction
 		
 		// Add our common Harmoni javascript libraries
 		require(POLYPHONY_DIR."/main/library/Harmoni.js.inc.php");
+		
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/CenteredPanel.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/MediaLibrary.js'></script>";
 		
 		$outputHandler->setHead(ob_get_clean());
 		
