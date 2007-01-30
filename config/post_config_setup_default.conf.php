@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.7 2006/03/14 22:13:55 cws-midd Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.8 2007/01/30 20:46:08 adamfranco Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
@@ -117,6 +117,33 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	}
 	
 	$results->free();
+	
+	
+	// Check for the dublin core record structure
+	$dcId =& $idManager->getId('dc');
+	$dcExists = FALSE;
+	$recStructs =& $repository->getRecordStructures();
+	while ($recStructs->hasNext()) {
+		$recStruct =& $recStructs->next();
+		if ($dcId->isEqual($recStruct->getId())) {
+			$dcExists = true;
+			break;
+		}
+	}
+	
+	if (!$dcExists) {
+		$array = array();
+		$importer =& XMLRepositoryImporter::withObject(
+			$array,
+			$repository,
+			MYDIR."/sampledata/SchemaInstallCollection.xml", 
+			"insert");
+		$importer->parseAndImportBelow("recordstructure");
+		if ($importer->hasErrors()) {
+			$importer->printErrorMessages();
+			exit;
+		}
+	}
 
 	$_SESSION['post_config_setup_complete'] = TRUE;
 }
