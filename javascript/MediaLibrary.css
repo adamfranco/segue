@@ -1,0 +1,43 @@
+.medialibrary .thumbnail {
+	max-height: 50px;
+	max-width: 50px;
+}
+
+.medialibrary .link {
+	cursor: pointer;
+}
+
+.medialibrary th {
+	text-align: left;
+}
+
+.medialibrary .medialist th {
+	padding-left: 5px;
+	padding-right: 5px;
+	
+	background-color: #AAA;
+	filter: alpha(opacity=50);
+	-moz-opacity: .50;
+	opacity: .50;
+}
+
+.medialibrary .medialist .displayName {
+
+}
+
+.medialibrary .medialist .description {
+	font-size: small;
+}
+
+.medialibrary .medialist .citation {
+	font-size: small;
+	font-family: serif;
+}
+
+.medialibrary .medialist .modification_date {
+	white-space: nowrap;
+}
+
+.medialibrary a img {
+	border: 0px;
+}
