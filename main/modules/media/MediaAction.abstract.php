@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.1 2007/01/29 21:26:09 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.1 2007/01/29 21:26:09 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -118,6 +118,7 @@ class MediaAction
 	 * @since 1/26/07
 	 */
 	function getAssetXml (&$asset) {
+		$idManager =& Services::getService("Id");
 		ob_start();
 		
 		$assetId =& $asset->getId();
@@ -131,9 +132,102 @@ class MediaAction
 		print $asset->getDescription();
 		print "]]></description>";
 		
-// 		$fileRecords =&
-// 		print "\n\t\t<fileRecord id=\"".$asset->getIdString()."\">";
+		print "\n\t\t<modificationDate><![CDATA[";
+		$date =& $asset->getModificationDate();
+		$time =& $date->asTime();
+		print $date->ymdString()." ".$time->string12(false);
+		print "]]></modificationDate>";
 		
+		/*********************************************************
+		 * Files
+		 *********************************************************/
+ 		$fileRecords =& $asset->getRecordsByRecordStructure(
+ 			$idManager->getId('FILE'));
+ 		while ($fileRecords->hasNext()) {
+ 			$fileRecord =& $fileRecords->next();
+ 			$fileRecordId =& $fileRecord->getId();
+			print "\n\t\t<file id=\"".$fileRecordId->getIdString()."\">";
+			
+			$parts =& $fileRecord->getPartsByPartStructure($idManager->getId("FILE_NAME"));
+			$part =& $parts->next();
+			print "\n\t\t\t<name><![CDATA[".$part->getValue()."]]></name>";
+			
+			$parts =& $fileRecord->getPartsByPartStructure($idManager->getId("FILE_SIZE"));
+			$part =& $parts->next();
+			print "\n\t\t\t<size>".$part->getValue()."</size>";
+			
+			print "\n\t\t\t<url><![CDATA[";
+			print RepositoryInputOutputModuleManager::getFileUrlForRecord(
+					$asset, $fileRecord);
+			print "]]></url>";
+			
+			print "\n\t\t\t<thumbnailUrl><![CDATA[";
+			print RepositoryInputOutputModuleManager::getThumbnailUrlForRecord(
+					$asset, $fileRecord);
+			print "]]></thumbnailUrl>";
+			
+			print "\n\t\t</file>";
+		}
+		
+		/*********************************************************
+		 * Dublin Core
+		 *********************************************************/
+		$records =& $asset->getRecordsByRecordStructure(
+ 			$idManager->getId('dc'));
+ 		if ($records->hasNext()) {
+	 		$record =& $records->next();
+	 		$recordId =& $record->getId();
+			print "\n\t\t<dublinCore id=\"".$recordId->getIdString()."\">";
+			
+			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.title"));
+			if ($parts->hasNext()) {
+				$part =& $parts->next();
+				$valueObj =& $part->getValue();
+				print "\n\t\t\t<title><![CDATA[".$valueObj->asString()."]]></title>";
+			}
+			
+			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.description"));
+			if ($parts->hasNext()) {
+				$part =& $parts->next();
+				$valueObj =& $part->getValue();
+				print "\n\t\t\t<description><![CDATA[".$valueObj->asString()."]]></description>";
+			}
+			
+			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.creator"));
+			if ($parts->hasNext()) {
+				$part =& $parts->next();
+				$valueObj =& $part->getValue();
+				print "\n\t\t\t<creator><![CDATA[".$valueObj->asString()."]]></creator>";
+			}
+			
+			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.source"));
+			if ($parts->hasNext()) {
+				$part =& $parts->next();
+				$valueObj =& $part->getValue();
+				print "\n\t\t\t<source><![CDATA[".$valueObj->asString()."]]></source>";
+			}
+			
+			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.publisher"));
+			if ($parts->hasNext()) {
+				$part =& $parts->next();
+				$valueObj =& $part->getValue();
+				print "\n\t\t\t<publisher><![CDATA[".$valueObj->asString()."]]></publisher>";
+			}
+			
+			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.date"));
+			if ($parts->hasNext()) {
+				$part =& $parts->next();
+				$valueObj =& $part->getValue();
+				$date =& $valueObj->asDate();
+				print "\n\t\t\t<date><![CDATA[";
+				print $date->asString();
+				print "]]></date>";
+			}
+			
+			print "\n\t\t</dublinCore>";
+	 	}
+ 		
+ 		
 		print "\n\t</asset>";
 		
 		return ob_get_clean();

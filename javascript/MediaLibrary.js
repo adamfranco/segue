@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.1 2007/01/29 21:26:04 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.1 2007/01/29 21:26:04 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -46,7 +46,8 @@ function MediaLibrary ( assetId, callingElement ) {
 								"Media Library",
 								15,
 								600,
-								callingElement);
+								callingElement,
+								'medialibrary');
 		
 		this.assetId = assetId;
 		
@@ -153,7 +154,21 @@ function MediaLibrary ( assetId, callingElement ) {
 	 * @since 1/26/07
 	 */
 	MediaLibrary.prototype.createMediaList = function () {
-		this.mediaList = document.createElement('ul');		
+		this.mediaList = document.createElement('table');	
+		this.mediaList.className = 'medialist';
+		this.mediaListHead = this.mediaList.appendChild(document.createElement('thead'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('thumb'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('info'));
+		
+// 		var element = this.mediaListHead.appendChild(document.createElement('th'));
+// 		element.appendChild(document.createTextNode('size'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('date'));
 		
 		this.contentElement.appendChild(this.mediaList);
 	}
@@ -199,6 +214,9 @@ function MediaLibrary ( assetId, callingElement ) {
 			
 			return false;
 		}
+		
+		var xmlSerializer = new XMLSerializer();
+		alert(xmlSerializer.serializeToString(responseElement));
 			
 		var fileAssets = responseElement.getElementsByTagName('asset');
 		if (fileAssets.length) {
@@ -241,6 +259,7 @@ function MediaLibrary ( assetId, callingElement ) {
 				if (req.readyState == 4) {
 					// only if we get a good load should we continue.
 					if (req.status == 200) {
+// 						alert(req.responseText);
 						mediaLibrary.loadMedia(req.responseXML);
 					} else {
 						throw new Error("There was a problem retrieving the XML data: " +
@@ -320,7 +339,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.1 2007/01/29 21:26:04 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
  */
 function MediaAsset ( xmlElement ) {
 	if ( arguments.length > 0 ) {
@@ -339,6 +358,23 @@ function MediaAsset ( xmlElement ) {
 	MediaAsset.prototype.init = function ( xmlElement ) {
 		this.displayName = xmlElement.getElementsByTagName('displayName')[0].firstChild.data;
 		this.description = xmlElement.getElementsByTagName('description')[0].firstChild.data;
+		this.modificationDate = xmlElement.getElementsByTagName('modificationDate')[0].firstChild.data;
+		if (xmlElement.getElementsByTagName('title').length)
+			this.title = xmlElement.getElementsByTagName('title')[0].firstChild.data;
+		if (xmlElement.getElementsByTagName('source').length)
+			this.source = xmlElement.getElementsByTagName('source')[0].firstChild.data;
+		if (xmlElement.getElementsByTagName('creator').length)
+			this.creator = xmlElement.getElementsByTagName('creator')[0].firstChild.data;
+		if (xmlElement.getElementsByTagName('publisher').length)
+			this.publisher = xmlElement.getElementsByTagName('publisher')[0].firstChild.data;
+		if (xmlElement.getElementsByTagName('date').length)
+			this.date = xmlElement.getElementsByTagName('date')[0].firstChild.data;
+		
+		this.files = new Array();
+		var mediaElements = xmlElement.getElementsByTagName('file');
+		for (var i = 0; i < mediaElements.length; i++) {
+			this.files.push(new MediaFile(mediaElements[i]));
+		}
 	}
 	
 	/**
@@ -350,18 +386,162 @@ function MediaAsset ( xmlElement ) {
 	 */
 	MediaAsset.prototype.getEntryElement = function () {
 		if (!this.entryElement) {
-			this.entryElement = document.createElement('li');
+			this.entryElement = document.createElement('tbody');
 			
-			this.displayNameElement = this.entryElement.appendChild(document.createElement('div'));
+			var rows = new Array();
+			rows.push(this.entryElement.appendChild(document.createElement('tr')));
+			
+			this.filesElement = rows[rows.length - 1].appendChild(document.createElement('td'));
+			if (this.files.length) {
+				for (var i = 0; i < this.files.length; i++) {
+					this.files[i].render(this.filesElement);
+				}
+			}
+			
+			this.displayNameElement = rows[rows.length - 1].appendChild(document.createElement('td'));
 			this.displayNameElement.innerHTML = this.displayName;
+			this.displayNameElement.className = 'displayName';
 			
-			this.descriptionElement = this.entryElement.appendChild(document.createElement('div'));
-			this.descriptionElement.innerHTML = this.description;
+			if (this.description) {
+				rows.push(this.entryElement.appendChild(document.createElement('tr')));
+				this.descriptionElement = rows[rows.length - 1].appendChild(document.createElement('td'));
+				this.descriptionElement.innerHTML = this.description;
+				this.descriptionElement.className = 'description';
+			}
+			
+			rows.push(this.entryElement.appendChild(document.createElement('tr')));
+			this.citationElement = rows[rows.length - 1].appendChild(document.createElement('td'));
+			this.citationElement.className = 'citation';
+			this.writeCitation();
+			
+			this.dateElement = rows[0].appendChild(document.createElement('td'));
+			this.dateElement.className = 'modification_date';
+			if (this.modificationDate)
+				this.dateElement.innerHTML = this.modificationDate;
+			
+			this.filesElement.rowSpan = rows.length;
+			this.dateElement.rowSpan = rows.length;
 		}
 		
 		return this.entryElement;
 	}
+	
+	/**
+	 * Write a citation into the citation element
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/31/07
+	 */
+	MediaAsset.prototype.writeCitation = function () {		
+		if (this.author) {
+			var element = this.citationElement.appendChild(document.createElement('span'));
+			element.innerHTML = this.author;
+			
+			this.citationElement.appendChild(document.createTextNode('. '));
+		}
+		
+		if (this.title) {
+			this.citationElement.appendChild(document.createTextNode('"'));
+			
+			var element = this.citationElement.appendChild(document.createElement('span'));
+			element.innerHTML = this.title;
+			
+			this.citationElement.appendChild(document.createTextNode('" '));
+		}
+		
+		if (this.source) {
+			var element = this.citationElement.appendChild(document.createElement('span'));
+			element.innerHTML = this.source;
+			element.style.fontStyle = 'italic';
+			
+			this.citationElement.appendChild(document.createTextNode('. '));
+		}
+		
+		if (this.publisher) {
+			var element = this.citationElement.appendChild(document.createElement('span'));
+			element.innerHTML = this.publisher;
+			
+			this.citationElement.appendChild(document.createTextNode(', '));
+		}
+		
+		if (this.date) {
+			var element = this.citationElement.appendChild(document.createElement('span'));
+			element.innerHTML = this.date;
+			
+			this.citationElement.appendChild(document.createTextNode(' '));
+		}
+		
+		if (this.pages) {
+			this.citationElement.appendChild(document.createTextNode('('));
+			
+			var element = this.citationElement.appendChild(document.createElement('span'));
+			element.innerHTML = this.pages;
+			
+			this.citationElement.appendChild(document.createTextNode(') '));
+		}
+	}
 
+/**
+ * This class represents a file record attached to an asset
+ * 
+ * @since 1/31/07
+ * @package segue.media
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: MediaLibrary.js,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
+ */
+function MediaFile ( xmlElement ) {
+	if ( arguments.length > 0 ) {
+		this.init( xmlElement );
+	}
+}
+
+	/**
+	 * Initialize this object
+	 * 
+	 * @param <##>
+	 * @return void
+	 * @access public
+	 * @since 1/31/07
+	 */
+	MediaFile.prototype.init = function ( xmlElement ) {
+		this.id = xmlElement.getAttribute('id');
+		this.name = xmlElement.getElementsByTagName('name')[0].firstChild.data;
+		this.size = xmlElement.getElementsByTagName('size')[0].firstChild.data;
+		this.url = xmlElement.getElementsByTagName('url')[0].firstChild.data;
+		this.url = decodeURI(this.url);
+		this.url = this.url.urlDecodeAmpersands();
+		this.thumbnailUrl = xmlElement.getElementsByTagName('thumbnailUrl')[0].firstChild.data;
+		this.thumbnailUrl = decodeURI(this.thumbnailUrl);
+		this.thumbnailUrl = this.thumbnailUrl.urlDecodeAmpersands();
+	}
+	
+	/**
+	 * Render the object into a container
+	 * 
+	 * @param object DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 1/31/07
+	 */
+	MediaFile.prototype.render = function ( container ) {
+		this.imageLink = container.appendChild(document.createElement('a'));
+		this.imageLink.href = this.url;
+		
+		this.img = this.imageLink.appendChild(document.createElement('img'));
+		this.img.src = this.thumbnailUrl;
+		
+// 		var url = this.url;
+// 		this.img.onclick = function () {
+// 			window.open (url, this.id, "height=400,width=600,resizable=yes,scrollbars=yes");
+// 		}
+		this.img.className = 'thumbnail link';
+		
+// 		container.appendChild(this.img);
+	}
 
 
 /**
