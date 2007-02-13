@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.3 2007/02/13 22:12:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.3 2007/02/13 22:12:59 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -134,8 +134,7 @@ class MediaAction
 		
 		print "\n\t\t<modificationDate><![CDATA[";
 		$date =& $asset->getModificationDate();
-		$time =& $date->asTime();
-		print $date->ymdString()." ".$time->string12(false);
+		print $date->asString();
 		print "]]></modificationDate>";
 		
 		/*********************************************************

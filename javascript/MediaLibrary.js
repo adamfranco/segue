@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.3 2007/02/13 22:12:58 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.3 2007/02/13 22:12:58 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -50,6 +50,9 @@ function MediaLibrary ( assetId, callingElement ) {
 								'medialibrary');
 		
 		this.assetId = assetId;
+		
+		this.tabIndex = 1;
+		this.uploadFormDefaults = new Array();
 		
 		this.createForm();
 		this.createMediaList();
@@ -92,8 +95,6 @@ function MediaLibrary ( assetId, callingElement ) {
 				'onComplete' : function(xmlDoc) {mediaLibrary.completeUploadCallback(xmlDoc)}});
 		}
 		
-		this.uploadFormDefaults = new Array();		
-		
 		var table = this.uploadForm.appendChild(document.createElement('table'));
 		var row1 = table.appendChild(document.createElement('tr'));
 		var row2 = table.appendChild(document.createElement('tr'));
@@ -116,13 +117,20 @@ function MediaLibrary ( assetId, callingElement ) {
 // 		submit.type = 'submit';
 		
 		this.contentElement.appendChild(this.uploadForm);
+		this.uploadForm.elements[0].focus();
 	}
 	
 	/**
 	 * Add an input field to the given table row
 	 * 
-	 * @param <##>
-	 * @return <##>
+	 * @param object DOM_Element row
+	 * @param string labelText
+	 * @param string type <input type='xxxx'/> I.E. File, text, submit
+	 * @param string name
+	 * @param string defaultValue
+	 * @param object properties An associative list of other properties to give to
+	 *							the input
+	 * @return DOM_Element the input element
 	 * @access public
 	 * @since 1/29/07
 	 */
@@ -144,6 +152,11 @@ function MediaLibrary ( assetId, callingElement ) {
 				input[key] = properties[key];
 			}
 		}
+		
+		input.tabIndex = this.tabIndex;
+		this.tabIndex++;
+		
+		return input;
 	}
 	
 	/**
@@ -221,7 +234,7 @@ function MediaLibrary ( assetId, callingElement ) {
 		var fileAssets = responseElement.getElementsByTagName('asset');
 		if (fileAssets.length) {
 			for (var i = 0; i < fileAssets.length; i++) {
-				this.addMediaAsset(new MediaAsset(fileAssets[i]));
+				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i]));
 			}
 		}
 		
@@ -308,7 +321,7 @@ function MediaLibrary ( assetId, callingElement ) {
 		var fileAssets = responseElement.getElementsByTagName('asset');
 		if (fileAssets.length) {
 			for (var i = 0; i < fileAssets.length; i++) {
-				this.addMediaAsset(new MediaAsset(fileAssets[i]));
+				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i]));
 			}
 		}
 		
@@ -339,26 +352,30 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.3 2007/02/13 22:12:58 adamfranco Exp $
  */
-function MediaAsset ( xmlElement ) {
+function MediaAsset ( assetId, xmlElement ) {
 	if ( arguments.length > 0 ) {
-		this.init( xmlElement );
+		this.init( assetId, xmlElement );
 	}
 }
 
 	/**
 	 * Initilize this object
 	 * 
+	 * @param string assetId The id of the asset this media is attached to.
 	 * @param object DOM_Element xmlElement
 	 * @return void
 	 * @access public
 	 * @since 1/26/07
 	 */
-	MediaAsset.prototype.init = function ( xmlElement ) {
+	MediaAsset.prototype.init = function ( assetId, xmlElement ) {
+		this.assetId = assetId;
+		this.id = xmlElement.getAttribute('id');
 		this.displayName = xmlElement.getElementsByTagName('displayName')[0].firstChild.data;
 		this.description = xmlElement.getElementsByTagName('description')[0].firstChild.data;
-		this.modificationDate = xmlElement.getElementsByTagName('modificationDate')[0].firstChild.data;
+		this.modificationDate = Date.fromISO8601(
+			xmlElement.getElementsByTagName('modificationDate')[0].firstChild.data);
 		if (xmlElement.getElementsByTagName('title').length)
 			this.title = xmlElement.getElementsByTagName('title')[0].firstChild.data;
 		if (xmlElement.getElementsByTagName('source').length)
@@ -367,14 +384,17 @@ function MediaAsset ( xmlElement ) {
 			this.creator = xmlElement.getElementsByTagName('creator')[0].firstChild.data;
 		if (xmlElement.getElementsByTagName('publisher').length)
 			this.publisher = xmlElement.getElementsByTagName('publisher')[0].firstChild.data;
-		if (xmlElement.getElementsByTagName('date').length)
-			this.date = xmlElement.getElementsByTagName('date')[0].firstChild.data;
+		if (xmlElement.getElementsByTagName('date').length) {
+			this.date = new Date( xmlElement.getElementsByTagName('date')[0].firstChild.data);
+		}
 		
 		this.files = new Array();
 		var mediaElements = xmlElement.getElementsByTagName('file');
 		for (var i = 0; i < mediaElements.length; i++) {
 			this.files.push(new MediaFile(mediaElements[i]));
 		}
+		
+		this.uploadFormDefaults = new Array();
 	}
 	
 	/**
@@ -385,102 +405,252 @@ function MediaAsset ( xmlElement ) {
 	 * @since 1/26/07
 	 */
 	MediaAsset.prototype.getEntryElement = function () {
+		// if our entry element doesn't exist, create it
 		if (!this.entryElement) {
 			this.entryElement = document.createElement('tbody');
-			
-			var rows = new Array();
-			rows.push(this.entryElement.appendChild(document.createElement('tr')));
-			
-			this.filesElement = rows[rows.length - 1].appendChild(document.createElement('td'));
-			if (this.files.length) {
-				for (var i = 0; i < this.files.length; i++) {
-					this.files[i].render(this.filesElement);
-				}
-			}
-			
-			this.displayNameElement = rows[rows.length - 1].appendChild(document.createElement('td'));
-			this.displayNameElement.innerHTML = this.displayName;
-			this.displayNameElement.className = 'displayName';
-			
-			if (this.description) {
-				rows.push(this.entryElement.appendChild(document.createElement('tr')));
-				this.descriptionElement = rows[rows.length - 1].appendChild(document.createElement('td'));
-				this.descriptionElement.innerHTML = this.description;
-				this.descriptionElement.className = 'description';
-			}
-			
-			rows.push(this.entryElement.appendChild(document.createElement('tr')));
-			this.citationElement = rows[rows.length - 1].appendChild(document.createElement('td'));
-			this.citationElement.className = 'citation';
-			this.writeCitation();
-			
-			this.dateElement = rows[0].appendChild(document.createElement('td'));
-			this.dateElement.className = 'modification_date';
-			if (this.modificationDate)
-				this.dateElement.innerHTML = this.modificationDate;
-			
-			this.filesElement.rowSpan = rows.length;
-			this.dateElement.rowSpan = rows.length;
 		}
+		// if it exists, clear out its contents
+		else {
+			this.entryElement.innerHTML = '';
+		}
+		
+		var row = this.entryElement.appendChild(document.createElement('tr'));
+		
+		var filesElement = row.appendChild(document.createElement('td'));
+		if (this.files.length) {
+			for (var i = 0; i < this.files.length; i++) {
+				this.files[i].render(filesElement);
+			}
+		}
+		
+		this.infoElement = row.appendChild(document.createElement('td'));
+		this.writeInfo(this.infoElement);
+		
+		var dateElement = row.appendChild(document.createElement('td'));
+		dateElement.className = 'modification_date';
+		if (this.modificationDate)
+			dateElement.innerHTML = this.modificationDate.toFormatedString('E NNN dd, yyyy h:mm a');
+		
+		var editDiv = dateElement.appendChild(document.createElement('div'));
+		var editButton = editDiv.appendChild(document.createElement('a'));
+		editButton.innerHTML = 'edit';
+		editButton.mediaAsset = this;
+		editButton.onclick = function () {
+			this.mediaAsset.toggleForm(this);
+		}	
 		
 		return this.entryElement;
 	}
 	
 	/**
-	 * Write a citation into the citation element
+	 * Toggle display of info and form
 	 * 
+	 * @param object DOM_Element editLink
+	 * @return void
+	 * @access public
+	 * @since 2/13/07
+	 */
+	MediaAsset.prototype.toggleForm = function (editLink) {
+		// If we are showing the form, delete it and replace it with the info
+		if (this.uploadForm) {
+			delete this.uploadForm;
+			this.infoElement.innerHTML = '';
+			this.writeInfo(this.infoElement);
+			editLink.innerHTML = 'edit';
+		} 
+		// If we aren't showing the form, show the form
+		else {
+			this.createForm();
+			editLink.innerHTML = 'cancel';
+		}
+	}
+	
+	/**
+	 * Write the info to the infoElement
+	 * 
+	 * @param DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 2/13/07
+	 */
+	MediaAsset.prototype.writeInfo = function ( container ) {
+		displayNameElement = container.appendChild(document.createElement('div'))
+		displayNameElement.innerHTML = this.displayName;
+		displayNameElement.className = 'displayName';
+		
+		if (this.description) {
+			var descriptionElement = container.appendChild(document.createElement('div'));
+			descriptionElement.innerHTML = this.description;
+			descriptionElement.className = 'description';
+		}
+		
+		var citationElement = container.appendChild(document.createElement('div'));
+		citationElement.className = 'citation';
+		this.writeCitation(citationElement);
+	}
+	
+	/**
+	 * Answer a citation 
+	 * 
+	 * @param DOM_Element container
 	 * @return void
 	 * @access public
 	 * @since 1/31/07
 	 */
-	MediaAsset.prototype.writeCitation = function () {		
-		if (this.author) {
-			var element = this.citationElement.appendChild(document.createElement('span'));
+	MediaAsset.prototype.writeCitation = function ( container ) {
+		
+		if (this.author) {			
+			var element = container.appendChild(document.createElement('span'));
 			element.innerHTML = this.author;
 			
-			this.citationElement.appendChild(document.createTextNode('. '));
+			container.appendChild(document.createTextNode('. '));
 		}
 		
 		if (this.title) {
-			this.citationElement.appendChild(document.createTextNode('"'));
+			container.appendChild(document.createTextNode('"'));
 			
-			var element = this.citationElement.appendChild(document.createElement('span'));
+			var element = container.appendChild(document.createElement('span'));
 			element.innerHTML = this.title;
 			
-			this.citationElement.appendChild(document.createTextNode('" '));
+			container.appendChild(document.createTextNode('" '));
 		}
 		
 		if (this.source) {
-			var element = this.citationElement.appendChild(document.createElement('span'));
+			var element = container.appendChild(document.createElement('span'));
 			element.innerHTML = this.source;
 			element.style.fontStyle = 'italic';
 			
-			this.citationElement.appendChild(document.createTextNode('. '));
+			container.appendChild(document.createTextNode('. '));
 		}
 		
 		if (this.publisher) {
-			var element = this.citationElement.appendChild(document.createElement('span'));
+			var element = container.appendChild(document.createElement('span'));
 			element.innerHTML = this.publisher;
 			
-			this.citationElement.appendChild(document.createTextNode(', '));
+			container.appendChild(document.createTextNode(', '));
 		}
 		
 		if (this.date) {
-			var element = this.citationElement.appendChild(document.createElement('span'));
-			element.innerHTML = this.date;
+			var element = container.appendChild(document.createElement('span'));
+			element.innerHTML = this.date.toFormatedString('yyyy');;
 			
-			this.citationElement.appendChild(document.createTextNode(' '));
+			container.appendChild(document.createTextNode(' '));
 		}
 		
 		if (this.pages) {
-			this.citationElement.appendChild(document.createTextNode('('));
+			container.appendChild(document.createTextNode('('));
 			
-			var element = this.citationElement.appendChild(document.createElement('span'));
+			var element = container.appendChild(document.createElement('span'));
 			element.innerHTML = this.pages;
 			
-			this.citationElement.appendChild(document.createTextNode(') '));
-		}
+			container.appendChild(document.createTextNode(') '));
+		}		
 	}
+	
+	/**
+	 * Create an edit form for this media asset
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/13/07
+	 */
+	MediaAsset.prototype.createForm = function () {
+		this.uploadForm = document.createElement('form');
+		this.uploadForm.action = Harmoni.quickUrl('media', 'update', {'assetId': this.assetId, 'mediaAssetId': this.id});
+		this.uploadForm.method = 'post';
+		this.uploadForm.enctype = 'multipart/form-data';
+		mediaAsset = this;
+		this.uploadForm.onsubmit = function () {
+			return AIM.submit(this, 
+				{'onStart' : function() {mediaAsset.startUploadCallback()}, 
+				'onComplete' : function(xmlDoc) {mediaAsset.completeUploadCallback(xmlDoc)}});
+		}		
+		
+		var table = this.uploadForm.appendChild(document.createElement('table'));
+		
+		if (this.files.length) {
+			for (var i = 0; i < this.files.length; i++) {
+				var row = table.appendChild(document.createElement('tr'));
+				var heading = row.appendChild(document.createElement('th'));
+				heading.innerHTML = 'File: ';
+				
+				var datum = row.appendChild(document.createElement('td'));
+				var dummyField = datum.appendChild(document.createElement('input'));
+				dummyField.type = 'text';
+				dummyField.name = 'dummy';
+				dummyField.value = this.files[i].name;
+				dummyField.readonly = 'readonly';
+				dummyField.title = 'Click to Replace';
+				dummyField.style.cursor = 'pointer';
+				dummyField.mediaAsset = this;
+				dummyField.fileId = this.files[i].id;
+				dummyField.onclick = function () {
+					var uploadField = document.createElement('input');
+					uploadField.dummyField = this;
+					uploadField.type = 'file';
+					uploadField.size = '10';
+					uploadField.name = 'file___' + this.fileId;
+					this.parentNode.insertBefore(uploadField, this);
+					
+					var uploadCancel = document.createElement('input');
+					uploadCancel.type = 'button';
+					uploadCancel.value = 'cancel file replace';
+					uploadCancel.dummyField = this;
+					uploadCancel.uploadField = uploadField;
+					uploadCancel.onclick = function () {
+						this.parentNode.removeChild(this.uploadField);
+						this.dummyField.style.display = 'inline';
+						this.parentNode.removeChild(this);
+						delete this.uploadField;
+						delete this;
+					}
+					this.parentNode.insertBefore(uploadCancel, this);
+					
+					this.style.display = 'none';
+				}
+			}
+		}
+		// Allow the user to add a file
+		else {
+			this.addFieldToRow(table.appendChild(document.createElement('tr')),
+				'File', 'file', 'media_file', '', {'size': '10'});
+		}
+			
+		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+			'Name/Title', 'text', 'displayName', this.displayName);
+		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+			'Description', 'text', 'description', this.description);
+		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+			'Author/Creator', 'text', 'creator', this.creator || '');
+		
+		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+			'Source', 'text', 'source', this.source || '');
+		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+			'Publisher', 'text', 'publisher', this.publisher || '');
+		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+			'[Pub.] Date', 'text', 'date', this.date || '');
+		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+			'', 'submit', 'submit', 'Submit');
+		
+		
+// 		var subDiv = this.uploadForm.appendChild(document.createElement('div'));
+// 		var submit = subDiv.appendChild(document.createElement('input'));
+// 		submit.type = 'submit';
+		
+		this.infoElement.innerHTML = '';
+		this.infoElement.appendChild(this.uploadForm);
+		this.uploadForm.elements[1].focus();
+	}
+	
+	/**
+	 * Add an input field to the given table row
+	 * 
+	 * @param <##>
+	 * @return <##>
+	 * @access public
+	 * @since 2/13/07
+	 */
+	MediaAsset.prototype.addFieldToRow = MediaLibrary.prototype.addFieldToRow;
 
 /**
  * This class represents a file record attached to an asset
@@ -491,7 +661,7 @@ function MediaAsset ( xmlElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.2 2007/02/09 21:35:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.3 2007/02/13 22:12:58 adamfranco Exp $
  */
 function MediaFile ( xmlElement ) {
 	if ( arguments.length > 0 ) {
