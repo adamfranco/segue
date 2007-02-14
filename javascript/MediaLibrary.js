@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.3 2007/02/13 22:12:58 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.4 2007/02/14 17:41:13 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.3 2007/02/13 22:12:58 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.4 2007/02/14 17:41:13 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -352,7 +352,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.3 2007/02/13 22:12:58 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.4 2007/02/14 17:41:13 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement ) {
 	if ( arguments.length > 0 ) {
@@ -432,11 +432,11 @@ function MediaAsset ( assetId, xmlElement ) {
 			dateElement.innerHTML = this.modificationDate.toFormatedString('E NNN dd, yyyy h:mm a');
 		
 		var editDiv = dateElement.appendChild(document.createElement('div'));
-		var editButton = editDiv.appendChild(document.createElement('a'));
-		editButton.innerHTML = 'edit';
-		editButton.mediaAsset = this;
-		editButton.onclick = function () {
-			this.mediaAsset.toggleForm(this);
+		this.editLink = editDiv.appendChild(document.createElement('a'));
+		this.editLink.innerHTML = 'edit';
+		this.editLink.mediaAsset = this;
+		this.editLink.onclick = function () {
+			this.mediaAsset.toggleForm();
 		}	
 		
 		return this.entryElement;
@@ -445,24 +445,46 @@ function MediaAsset ( assetId, xmlElement ) {
 	/**
 	 * Toggle display of info and form
 	 * 
-	 * @param object DOM_Element editLink
 	 * @return void
 	 * @access public
 	 * @since 2/13/07
 	 */
-	MediaAsset.prototype.toggleForm = function (editLink) {
+	MediaAsset.prototype.toggleForm = function () {
 		// If we are showing the form, delete it and replace it with the info
 		if (this.uploadForm) {
-			delete this.uploadForm;
-			this.infoElement.innerHTML = '';
-			this.writeInfo(this.infoElement);
-			editLink.innerHTML = 'edit';
+			this.closeForm();
 		} 
 		// If we aren't showing the form, show the form
 		else {
-			this.createForm();
-			editLink.innerHTML = 'cancel';
+			this.openForm();
 		}
+	}
+	
+	/**
+	 * Close the form
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/14/07
+	 */
+	MediaAsset.prototype.closeForm = function () {
+		if (this.uploadForm)
+			delete this.uploadForm;
+		this.infoElement.innerHTML = '';
+		this.writeInfo(this.infoElement);
+		this.editLink.innerHTML = 'edit';
+	}
+	
+	/**
+	 * Open the form
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/14/07
+	 */
+	MediaAsset.prototype.openForm = function () {
+		this.createForm();
+		this.editLink.innerHTML = 'cancel';
 	}
 	
 	/**
@@ -499,9 +521,9 @@ function MediaAsset ( assetId, xmlElement ) {
 	 */
 	MediaAsset.prototype.writeCitation = function ( container ) {
 		
-		if (this.author) {			
+		if (this.creator) {			
 			var element = container.appendChild(document.createElement('span'));
-			element.innerHTML = this.author;
+			element.innerHTML = this.creator;
 			
 			container.appendChild(document.createTextNode('. '));
 		}
@@ -651,6 +673,57 @@ function MediaAsset ( assetId, xmlElement ) {
 	 * @since 2/13/07
 	 */
 	MediaAsset.prototype.addFieldToRow = MediaLibrary.prototype.addFieldToRow;
+	
+	/**
+	 * Start the upload callback process.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/26/07
+	 */
+	MediaAsset.prototype.startUploadCallback = function () {
+		return true;
+	}
+	
+	/**
+	 * Finish the upload callback process.
+	 * 
+	 * @param DOM_Document xmldoc
+	 * @return boolean
+	 * @access public
+	 * @since 1/26/07
+	 */
+	MediaAsset.prototype.completeUploadCallback = function (xmldoc) {
+		try {
+			var responseElement = xmldoc.firstChild;
+			
+			var errors = responseElement.getElementsByTagName('error');
+			if (errors.length) {
+				for (var i = 0; i < errors.length; i++) {
+					throw new Error( errors[i].firstChild.data );
+				}
+			}
+		} catch (error) {
+			alert (error);
+			
+			if (responseElement.xml)
+				alert(responseElement.xml);
+			else {
+				var xmlSerializer = new XMLSerializer();
+				alert(xmlSerializer.serializeToString(responseElement));
+			}
+			
+			return false;
+		}
+		
+		var xmlSerializer = new XMLSerializer();
+		alert(xmlSerializer.serializeToString(responseElement));
+		
+		this.init(this.assetId, responseElement);
+		this.closeForm();
+		
+		return true;
+	}
 
 /**
  * This class represents a file record attached to an asset
@@ -661,7 +734,7 @@ function MediaAsset ( assetId, xmlElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.3 2007/02/13 22:12:58 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.4 2007/02/14 17:41:13 adamfranco Exp $
  */
 function MediaFile ( xmlElement ) {
 	if ( arguments.length > 0 ) {

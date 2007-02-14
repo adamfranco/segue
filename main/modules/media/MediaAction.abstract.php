@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.3 2007/02/13 22:12:59 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.4 2007/02/14 17:41:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.3 2007/02/13 22:12:59 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.4 2007/02/14 17:41:15 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -230,6 +230,180 @@ class MediaAction
 		print "\n\t</asset>";
 		
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Add a file record to an asset
+	 * 
+	 * @param object Asset $asset
+	 * @return void
+	 * @access public
+	 * @since 1/30/07
+	 */
+	function addFileRecord ( &$asset ) {
+		$idManager =& Services::getService("Id");
+		
+		$record =& $asset->createRecord($idManager->getId("FILE"));
+		$this->updateFileRecord($asset, $record);
+	}
+	
+	/**
+	 * Add a Dublin Core Record to an asset
+	 * 
+	 * @param object Asset $asset
+	 * @return void
+	 * @access public
+	 * @since 1/30/07
+	 */
+	function addDublinCoreRecord ( &$asset ) {
+		$idManager =& Services::getService("Id");
+		
+		$record =& $asset->createRecord($idManager->getId("dc"));
+		
+		$this->updateDublinCoreRecord($asset, $record);
+	}
+	
+	/**
+	 * Update a file record from the file in the $_FILES array;
+	 * 
+	 * @param object Record $record
+	 * @return void
+	 * @access public
+	 * @since 1/30/07
+	 */
+	function updateFileRecord ( &$asset, &$record, $fieldName = 'media_file') {
+		$idManager =& Services::getService("Id");
+		
+		$name = $_FILES[$fieldName]['name'];
+		$tmpName = $_FILES[$fieldName]['tmp_name'];			
+		$mimeType = $_FILES[$fieldName]['type'];
+		// If we weren't passed a mime type or were passed the generic
+		// application/octet-stream type, see if we can figure out the
+		// type.
+		if (!$mimeType || $mimeType == 'application/octet-stream') {
+			$mime =& Services::getService("MIME");
+			$mimeType = $mime->getMimeTypeForFileName($name);
+		}
+		
+		$parts =& $record->getPartsByPartStructure($idManager->getId("FILE_DATA"));
+		$part =& $parts->next();
+		$part->updateValue(file_get_contents($tmpName));
+		
+		$parts =& $record->getPartsByPartStructure($idManager->getId("FILE_NAME"));
+		$part =& $parts->next();
+		$part->updateValue($name);
+		
+		$parts =& $record->getPartsByPartStructure($idManager->getId("MIME_TYPE"));
+		$part =& $parts->next();
+		$part->updateValue($mimeType);
+		
+		
+		/*********************************************************
+		 * Thumbnail Generation
+		 *********************************************************/
+		$imageProcessor =& Services::getService("ImageProcessor");
+					
+		// If our image format is supported by the image processor,
+		// generate a thumbnail.
+		if ($imageProcessor->isFormatSupported($mimeType)) {
+			if ($tmpName) {
+				$sourceData = file_get_contents($tmpName);
+			} else {
+				// Download the file data and temporarily store it in the results
+				if (!isset($results['file_url']))
+					$sourceData = file_get_contents($results['file_url']);
+				
+				$parts =& $record->getPartsByPartStructure($idManager->getId("FILE_SIZE"));
+				$part =& $parts->next();
+				$part->updateValue(strval(strlen($sourceData)));
+			}
+		
+			$thumbnailData = $imageProcessor->generateThumbnailData($mimeType, $sourceData);
+		}
+		
+		$parts =& $record->getPartsByPartStructure($idManager->getId("THUMBNAIL_DATA"));
+		$thumbDataPart =& $parts->next();
+		$parts =& $record->getPartsByPartStructure($idManager->getId("THUMBNAIL_MIME_TYPE"));
+		$thumbMimeTypePart =& $parts->next();
+		
+		if ($thumbnailData) {
+			$thumbDataPart->updateValue($thumbnailData);
+			$thumbMimeTypePart->updateValue($imageProcessor->getThumbnailFormat());
+		}
+		// just make our thumbnail results empty. Default icons will display
+		// instead.
+		else {
+			$thumbDataPart->updateValue("");
+			$thumbMimeTypePart->updateValue("NULL");
+		}
+	}
+	
+	/**
+	 * Update the dublin core record with info from the form.
+	 * 
+	 * @param object Asset $asset
+	 * @param object Record $record
+	 * @return void
+	 * @access public
+	 * @since 1/30/07
+	 */
+	function updateDublinCoreRecord ( &$asset, &$record ) {
+		$idManager =& Services::getService("Id");
+		
+		$value = String::fromString($asset->getDisplayName());
+		$id = $idManager->getId("dc.title");
+		$this->updateSingleValuedPart($record, $id, $value);
+		
+		$value = String::fromString($asset->getDescription());
+		$id = $idManager->getId("dc.description");
+		$this->updateSingleValuedPart($record, $id, $value);
+		
+		$value = String::fromString(RequestContext::value('creator'));
+		$id = $idManager->getId("dc.creator");
+		$this->updateSingleValuedPart($record, $id, $value);
+		
+		$value = String::fromString(RequestContext::value('source'));
+		$id = $idManager->getId("dc.source");
+		$this->updateSingleValuedPart($record, $id, $value);
+		
+		$value = String::fromString(RequestContext::value('publisher'));
+		$id = $idManager->getId("dc.publisher");
+		$this->updateSingleValuedPart($record, $id, $value);
+		
+		$value = DateAndTime::fromString(RequestContext::value('date'));
+		$id = $idManager->getId("dc.date");
+		$this->updateSingleValuedPart($record, $id, $value);
+	}
+	
+	/**
+	 * Update a single-valued part
+	 * 
+	 * @param object Record $record
+	 * @param object Id $partStructureId
+	 * @param object $value
+	 * @return void
+	 * @access public
+	 * @since 1/30/07
+	 */
+	function updateSingleValuedPart ( &$record, &$partStructureId, &$value ) {
+		if (is_object($value) && $value->asString()) {
+			$parts =& $record->getPartsByPartStructure($partStructureId);
+			if ($parts->hasNext()) {
+				$part =& $parts->next();
+				$part->updateValue($value);
+			} else {
+				$record->createPart($partStructureId, $value);
+			}
+		}
+		
+		// Remove existing parts
+		else {
+			$parts =& $record->getPartsByPartStructure($partStructureId);
+			while ($parts->hasNext()) {
+				$part =& $parts->next();
+				$record->deletePart($part->getId());
+			}
+		}
 	}
 }
 
