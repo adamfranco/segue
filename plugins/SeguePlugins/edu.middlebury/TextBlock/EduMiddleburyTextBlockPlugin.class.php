@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.3 2007/01/29 21:26:09 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.4 2007/02/21 22:08:52 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.3 2007/01/29 21:26:09 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.4 2007/02/21 22:08:52 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -78,7 +78,39 @@ class EduMiddleburyTextBlockPlugin
  			
  			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSend()."/>";
  			
- 			print "\n\t<input type='button' value='"._('Media')."' onclick=\"MediaLibrary.run('".$this->getId()."', this);\"/>";
+ 			// Image button
+ 			print "\n\t<input type='button' value='"._('Add Image')."' onclick=\"";
+ 			print "this.onUse = function (mediaFile) { ";
+ 			print 		"var newString = '\\n<img src=\'' + mediaFile.url.escapeHTML() + '\' title=\'' + mediaFile.asset.displayName.escapeHTML() + '\'/>' ; ";
+ 			print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
+ 			print "}; "; 
+ 			print "MediaLibrary.run('".$this->getId()."', this); ";
+ 			print "\"/>";
+ 			
+ 			// File button
+ 			print "\n\t<input type='button' value='"._('Add File')."' onclick=\"";
+ 			print "this.onUse = function (mediaFile) { ";
+ 			print		"var downloadBar = document.createElement('div'); ";
+ 			print 		"var link = downloadBar.appendChild(document.createElement('a')); ";
+ 			print 		"link.href = mediaFile.url.escapeHTML(); ";
+ 			print		"link.title = mediaFile.name.escapeHTML(); ";
+ 			
+ 			print		"var img = link.appendChild(document.createElement('img')); ";
+ 			print		"img.src = mediaFile.thumbnailUrl; ";
+ 			print		"img.align = 'left'; ";
+ 			
+ 			print		"var title = downloadBar.appendChild(document.createElement('div')); ";
+ 			print 		"title.innerHTML = mediaFile.asset.displayName; ";
+ 			print		"title.fontWeight = 'bold'; ";
+ 			
+ 			print		"var citation = downloadBar.appendChild(document.createElement('div')); ";
+ 			print 		"mediaFile.asset.writeCitation(citation); ";
+ 			
+ 			print 		"var newString = '<div>' + downloadBar.innerHTML + '<div style=\'clear: both;\'></div></div>'; ";
+ 			print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
+ 			print "}; "; 
+ 			print "MediaLibrary.run('".$this->getId()."', this); ";
+ 			print "\"/>";
  			
 			print "\n</form>";
  		} else if ($this->canView()) {

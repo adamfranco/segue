@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.4 2007/02/14 17:41:13 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.5 2007/02/21 22:08:52 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.4 2007/02/14 17:41:13 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.5 2007/02/21 22:08:52 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -49,6 +49,7 @@ function MediaLibrary ( assetId, callingElement ) {
 								callingElement,
 								'medialibrary');
 		
+		this.caller = callingElement;
 		this.assetId = assetId;
 		
 		this.tabIndex = 1;
@@ -74,6 +75,19 @@ function MediaLibrary ( assetId, callingElement ) {
 		} else {
 			var tmp = new MediaLibrary(assetId, callingElement );
 		}
+	}
+	
+	/**
+	 * Choose a media file and close
+	 * 
+	 * @param object MediaFile mediaFile
+	 * @return void
+	 * @access public
+	 * @since 2/21/07
+	 */
+	MediaLibrary.prototype.onUse = function (mediaFile) {
+		this.close();
+		this.caller.onUse(mediaFile);
 	}
 	
 	/**
@@ -234,7 +248,7 @@ function MediaLibrary ( assetId, callingElement ) {
 		var fileAssets = responseElement.getElementsByTagName('asset');
 		if (fileAssets.length) {
 			for (var i = 0; i < fileAssets.length; i++) {
-				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i]));
+				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i], this));
 			}
 		}
 		
@@ -321,7 +335,7 @@ function MediaLibrary ( assetId, callingElement ) {
 		var fileAssets = responseElement.getElementsByTagName('asset');
 		if (fileAssets.length) {
 			for (var i = 0; i < fileAssets.length; i++) {
-				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i]));
+				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i], this));
 			}
 		}
 		
@@ -352,11 +366,11 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.4 2007/02/14 17:41:13 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.5 2007/02/21 22:08:52 adamfranco Exp $
  */
-function MediaAsset ( assetId, xmlElement ) {
+function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
-		this.init( assetId, xmlElement );
+		this.init( assetId, xmlElement, library );
 	}
 }
 
@@ -369,7 +383,8 @@ function MediaAsset ( assetId, xmlElement ) {
 	 * @access public
 	 * @since 1/26/07
 	 */
-	MediaAsset.prototype.init = function ( assetId, xmlElement ) {
+	MediaAsset.prototype.init = function ( assetId, xmlElement, library ) {
+		this.library = library;
 		this.assetId = assetId;
 		this.id = xmlElement.getAttribute('id');
 		this.displayName = xmlElement.getElementsByTagName('displayName')[0].firstChild.data;
@@ -391,7 +406,7 @@ function MediaAsset ( assetId, xmlElement ) {
 		this.files = new Array();
 		var mediaElements = xmlElement.getElementsByTagName('file');
 		for (var i = 0; i < mediaElements.length; i++) {
-			this.files.push(new MediaFile(mediaElements[i]));
+			this.files.push(new MediaFile(mediaElements[i], this, this.library));
 		}
 		
 		this.uploadFormDefaults = new Array();
@@ -719,7 +734,12 @@ function MediaAsset ( assetId, xmlElement ) {
 		var xmlSerializer = new XMLSerializer();
 		alert(xmlSerializer.serializeToString(responseElement));
 		
-		this.init(this.assetId, responseElement);
+		for (var i = 0; i < responseElement.childNodes.length; i++) {
+			if (responseElement.childNodes[i].nodeName == 'asset') {
+				this.init(this.assetId, responseElement.childNodes[i]);
+				break;
+			}
+		}
 		this.closeForm();
 		
 		return true;
@@ -734,11 +754,11 @@ function MediaAsset ( assetId, xmlElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.4 2007/02/14 17:41:13 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.5 2007/02/21 22:08:52 adamfranco Exp $
  */
-function MediaFile ( xmlElement ) {
+function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
-		this.init( xmlElement );
+		this.init( xmlElement, asset, library );
 	}
 }
 
@@ -750,7 +770,9 @@ function MediaFile ( xmlElement ) {
 	 * @access public
 	 * @since 1/31/07
 	 */
-	MediaFile.prototype.init = function ( xmlElement ) {
+	MediaFile.prototype.init = function ( xmlElement, asset, library ) {
+		this.asset = asset;
+		this.library = library;
 		this.id = xmlElement.getAttribute('id');
 		this.name = xmlElement.getElementsByTagName('name')[0].firstChild.data;
 		this.size = xmlElement.getElementsByTagName('size')[0].firstChild.data;
@@ -771,17 +793,27 @@ function MediaFile ( xmlElement ) {
 	 * @since 1/31/07
 	 */
 	MediaFile.prototype.render = function ( container ) {
-		this.imageLink = container.appendChild(document.createElement('a'));
-		this.imageLink.href = this.url;
+		var fileDiv = container.appendChild(document.createElement('div'));
+		fileDiv.style.whiteSpace = 'nowrap';
 		
-		this.img = this.imageLink.appendChild(document.createElement('img'));
-		this.img.src = this.thumbnailUrl;
+		var useButton = fileDiv.appendChild(document.createElement('button'));
+		useButton.innerHTML = 'use';
+		useButton.onclick = this.library.onUse.bind(this.library, this);
+		
+		fileDiv.appendChild(document.createTextNode(' '));
+		
+		var imageLink = fileDiv.appendChild(document.createElement('a'));
+		imageLink.href = this.url;
+		
+		var img = imageLink.appendChild(document.createElement('img'));
+		img.src = this.thumbnailUrl;
+		img.align = 'center';
 		
 // 		var url = this.url;
 // 		this.img.onclick = function () {
 // 			window.open (url, this.id, "height=400,width=600,resizable=yes,scrollbars=yes");
 // 		}
-		this.img.className = 'thumbnail link';
+		img.className = 'thumbnail link';
 		
 // 		container.appendChild(this.img);
 	}
