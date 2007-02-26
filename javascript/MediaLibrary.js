@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.5 2007/02/21 22:08:52 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.5 2007/02/21 22:08:52 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -52,12 +52,25 @@ function MediaLibrary ( assetId, callingElement ) {
 		this.caller = callingElement;
 		this.assetId = assetId;
 		
-		this.tabIndex = 1;
-		this.uploadFormDefaults = new Array();
+		this.tabs = new TabbedContent();
+		this.tabs.appendToContainer(this.contentElement);
 		
-		this.createForm();
-		this.createMediaList();
-		this.fetchMedia();
+	// Files attached to this asset
+		var tab = this.tabs.addTab('asset_media', "Files Here");
+		this.assetLibrary = new AssetLibrary(this, this.assetId, this.caller, tab.wrapperElement);
+		
+		tab.library = this.assetLibrary;
+		tab.onOpen = function () { this.library.onOpen() };
+		
+		this.tabs.selectTab('asset_media');
+		
+	// All Files in Site
+		var tab = this.tabs.addTab('site_media', "Other Files In Site");
+		this.siteLibrary = new SiteLibrary(this, this.assetId, this.caller, tab.wrapperElement);
+		
+		tab.library = this.siteLibrary;
+		tab.onOpen = function () { this.library.onOpen() };
+		
 	}
 	
 	/**
@@ -78,6 +91,55 @@ function MediaLibrary ( assetId, callingElement ) {
 	}
 	
 	/**
+	 * Update the panel when the content changes
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/26/07
+	 */
+	MediaLibrary.prototype.onContentChange = function () {
+		this.center();
+	}
+
+/**
+ * <##>
+ * 
+ * @since 2/26/07
+ * @package segue.media
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
+ */
+function FileLibrary ( owner, assetId, caller, container ) {
+	if ( arguments.length > 0 ) {
+		this.init( owner, assetId, caller, container );
+	}
+}
+
+	/**
+	 * Initialize this object
+	 * 
+	 * @param string assetId
+	 * @param object DOM_Element	callingElement 
+	 *		A unique element that this panel is associated with. An element can 
+	 *		only have one panel associated with it, which will be cached with 
+	 *		this element.
+	 * @param object DOM_Element	container the container to render our content in.
+	 * @return void
+	 * @access public
+	 * @since 2/26/07
+	 */
+	FileLibrary.prototype.init = function ( owner, assetId, caller, container ) {
+		this.owner = owner;
+		this.assetId = assetId;
+		this.caller = caller;
+		this.container = container;
+	}
+
+	
+	/**
 	 * Choose a media file and close
 	 * 
 	 * @param object MediaFile mediaFile
@@ -85,19 +147,203 @@ function MediaLibrary ( assetId, callingElement ) {
 	 * @access public
 	 * @since 2/21/07
 	 */
-	MediaLibrary.prototype.onUse = function (mediaFile) {
-		this.close();
+	FileLibrary.prototype.onUse = function (mediaFile) {
+		this.owner.close();
 		this.caller.onUse(mediaFile);
 	}
 	
 	/**
-	 * Create the forms for media uploading
+	 * Recenter the panel
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/26/07
+	 */
+	FileLibrary.prototype.onContentChange = function () {
+		this.owner.onContentChange();
+	}
+	
+	/**
+	 * Create the media list container
+	 * 
+	 * @param object DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	FileLibrary.prototype.createMediaList = function (container) {
+		this.mediaList = document.createElement('table');	
+		this.mediaList.className = 'medialist';
+		this.mediaListHead = this.mediaList.appendChild(document.createElement('thead'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('thumb'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('info'));
+		
+// 		var element = this.mediaListHead.appendChild(document.createElement('th'));
+// 		element.appendChild(document.createTextNode('size'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('modification date'));
+		
+		container.appendChild(this.mediaList);
+	}
+	
+	/**
+	 * Fetch the list of existing media
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/29/07
+	 */
+	FileLibrary.prototype.fetchMedia = function () {
+		var req = Harmoni.createRequest();
+		var url = this.getMediaListUrl()
+		if (req) {
+			// Define a variable to point at this MediaLibrary that will be in the
+			// scope of the request-processing function, since 'this' will (at that
+			// point) be that function.
+			var mediaLibrary = this;
+
+			req.onreadystatechange = function () {
+				// only if req shows "loaded"
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200) {
+// 						alert(req.responseText);
+						mediaLibrary.loadMedia(req.responseXML);
+					} else {
+						throw new Error("There was a problem retrieving the XML data: " +
+							req.statusText);
+					}
+				}
+			} 
+			
+			req.open("GET", url, true);
+			req.send(null);
+		} else {
+			throw new Error("Error: Unable to execute AJAX request. Please upgrade your browser.");
+		}
+	}
+	
+	/**
+	 * Load the existing media for this asset
 	 * 
 	 * @return void
 	 * @access public
 	 * @since 1/26/07
 	 */
-	MediaLibrary.prototype.createForm = function () {
+	FileLibrary.prototype.loadMedia = function (xmldoc) {
+// 		try {
+			var responseElement = xmldoc.firstChild;
+			
+			var errors = responseElement.getElementsByTagName('error');
+			if (errors.length) {
+				for (var i = 0; i < errors.length; i++) {
+					throw new Error( errors[i].firstChild.data );
+				}
+			}
+// 		} catch (error) {
+// 			alert (error);
+			
+// 			if (responseElement.xml)
+// 				alert(responseElement.xml);
+// 			else {
+// 				var xmlSerializer = new XMLSerializer();
+// 				alert(xmlSerializer.serializeToString(responseElement));
+// 			}
+			
+// 			return false;
+// 		}
+		
+		var fileAssets = responseElement.getElementsByTagName('asset');
+		if (fileAssets.length) {
+			for (var i = 0; i < fileAssets.length; i++) {
+				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i], this, this.canEdit));
+			}
+		}
+		
+		// Re-center the panel
+		this.onContentChange();
+	}
+	
+	/**
+	 * Add a media Asset to our list
+	 * 
+	 * @param object MediaAsset mediaAsset
+	 * @return object MediaAsset
+	 * @access public
+	 * @since 1/26/07
+	 */
+	FileLibrary.prototype.addMediaAsset = function (mediaAsset) {
+		this.mediaList.appendChild(mediaAsset.getEntryElement());
+	}
+
+
+
+AssetLibrary.prototype = new FileLibrary();
+AssetLibrary.prototype.constructor = AssetLibrary;
+AssetLibrary.superclass = FileLibrary.prototype;
+
+/**
+ * <##>
+ * 
+ * @since 2/26/07
+ * @package <##>
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
+ */
+function AssetLibrary ( owner, assetId, caller, container ) {
+	if ( arguments.length > 0 ) {
+		this.init( owner, assetId, caller, container );
+		
+		this.canEdit = true;
+	}
+}
+	
+	/**
+	 * Open this library
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/26/07
+	 */
+	AssetLibrary.prototype.onOpen = function () {
+		if (!this.mediaList) {
+			this.tabIndex = 1;
+			this.uploadFormDefaults = new Array();
+			
+			this.createForm(this.container);
+			this.createMediaList(this.container);
+			this.fetchMedia();
+		}
+	}
+	
+	/**
+	 * Answer the url of the media list
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/26/07
+	 */
+	AssetLibrary.prototype.getMediaListUrl = function () {
+		return Harmoni.quickUrl('media', 'list', {'assetId': this.assetId});
+	}
+	
+	/**
+	 * Create the forms for media uploading
+	 * 
+	 * @param object DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	AssetLibrary.prototype.createForm = function (container) {
 		this.uploadForm = document.createElement('form');
 		this.uploadForm.action = Harmoni.quickUrl('media', 'upload', {'assetId': this.assetId});
 		this.uploadForm.method = 'post';
@@ -130,7 +376,7 @@ function MediaLibrary ( assetId, callingElement ) {
 // 		var submit = subDiv.appendChild(document.createElement('input'));
 // 		submit.type = 'submit';
 		
-		this.contentElement.appendChild(this.uploadForm);
+		container.appendChild(this.uploadForm);
 		this.uploadForm.elements[0].focus();
 	}
 	
@@ -148,7 +394,7 @@ function MediaLibrary ( assetId, callingElement ) {
 	 * @access public
 	 * @since 1/29/07
 	 */
-	MediaLibrary.prototype.addFieldToRow = function ( row, labelText, type, name, defaultValue, properties ) {
+	AssetLibrary.prototype.addFieldToRow = function ( row, labelText, type, name, defaultValue, properties ) {
 		var heading = row.appendChild(document.createElement('th'));
 		if (labelText) {
 			var label = heading.appendChild(document.createElement('label'));
@@ -174,40 +420,13 @@ function MediaLibrary ( assetId, callingElement ) {
 	}
 	
 	/**
-	 * Create the media list container
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 1/26/07
-	 */
-	MediaLibrary.prototype.createMediaList = function () {
-		this.mediaList = document.createElement('table');	
-		this.mediaList.className = 'medialist';
-		this.mediaListHead = this.mediaList.appendChild(document.createElement('thead'));
-		
-		var element = this.mediaListHead.appendChild(document.createElement('th'));
-		element.appendChild(document.createTextNode('thumb'));
-		
-		var element = this.mediaListHead.appendChild(document.createElement('th'));
-		element.appendChild(document.createTextNode('info'));
-		
-// 		var element = this.mediaListHead.appendChild(document.createElement('th'));
-// 		element.appendChild(document.createTextNode('size'));
-		
-		var element = this.mediaListHead.appendChild(document.createElement('th'));
-		element.appendChild(document.createTextNode('date'));
-		
-		this.contentElement.appendChild(this.mediaList);
-	}
-	
-	/**
 	 * Start the upload callback process.
 	 * 
 	 * @return boolean
 	 * @access public
 	 * @since 1/26/07
 	 */
-	MediaLibrary.prototype.startUploadCallback = function () {
+	AssetLibrary.prototype.startUploadCallback = function () {
 		return true;
 	}
 	
@@ -219,7 +438,7 @@ function MediaLibrary ( assetId, callingElement ) {
 	 * @access public
 	 * @since 1/26/07
 	 */
-	MediaLibrary.prototype.completeUploadCallback = function (xmldoc) {
+	AssetLibrary.prototype.completeUploadCallback = function (xmldoc) {
 		try {
 			var responseElement = xmldoc.firstChild;
 			
@@ -264,96 +483,56 @@ function MediaLibrary ( assetId, callingElement ) {
 		
 		return true;
 	}
-	
-	/**
-	 * Fetch the list of existing media
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 1/29/07
-	 */
-	MediaLibrary.prototype.fetchMedia = function () {
-		var req = Harmoni.createRequest();
-		var url = Harmoni.quickUrl('media', 'list', {'assetId': this.assetId});
-		if (req) {
-			// Define a variable to point at this MediaLibrary that will be in the
-			// scope of the request-processing function, since 'this' will (at that
-			// point) be that function.
-			var mediaLibrary = this;
 
-			req.onreadystatechange = function () {
-				// only if req shows "loaded"
-				if (req.readyState == 4) {
-					// only if we get a good load should we continue.
-					if (req.status == 200) {
-// 						alert(req.responseText);
-						mediaLibrary.loadMedia(req.responseXML);
-					} else {
-						throw new Error("There was a problem retrieving the XML data: " +
-							req.statusText);
-					}
-				}
-			} 
-			
-			req.open("GET", url, true);
-			req.send(null);
-		} else {
-			throw new Error("Error: Unable to execute AJAX request. Please upgrade your browser.");
-		}
+
+SiteLibrary.prototype = new FileLibrary();
+SiteLibrary.prototype.constructor = SiteLibrary;
+SiteLibrary.superclass = FileLibrary.prototype;
+
+/**
+ * <##>
+ * 
+ * @since 2/26/07
+ * @package segue.media
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
+ */
+function SiteLibrary ( owner, assetId, caller, container ) {
+	if ( arguments.length > 0 ) {
+		this.init( owner, assetId, caller, container );
+		
+		this.canEdit = false;
 	}
-	
+}
+
 	/**
-	 * Load the existing media for this asset
+	 * Open this library
 	 * 
 	 * @return void
 	 * @access public
-	 * @since 1/26/07
+	 * @since 2/26/07
 	 */
-	MediaLibrary.prototype.loadMedia = function (xmldoc) {
-// 		try {
-			var responseElement = xmldoc.firstChild;
-			
-			var errors = responseElement.getElementsByTagName('error');
-			if (errors.length) {
-				for (var i = 0; i < errors.length; i++) {
-					throw new Error( errors[i].firstChild.data );
-				}
-			}
-// 		} catch (error) {
-// 			alert (error);
-			
-// 			if (responseElement.xml)
-// 				alert(responseElement.xml);
-// 			else {
-// 				var xmlSerializer = new XMLSerializer();
-// 				alert(xmlSerializer.serializeToString(responseElement));
-// 			}
-			
-// 			return false;
-// 		}
-		
-		var fileAssets = responseElement.getElementsByTagName('asset');
-		if (fileAssets.length) {
-			for (var i = 0; i < fileAssets.length; i++) {
-				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i], this));
-			}
+	SiteLibrary.prototype.onOpen = function () {
+		if (!this.mediaList) {			
+			this.createMediaList(this.container);
+			this.fetchMedia();
 		}
-		
-		// Re-center the panel
-		this.center();
 	}
 	
 	/**
-	 * Add a media Asset to our list
+	 * Answer the url of the media list
 	 * 
-	 * @param object MediaAsset mediaAsset
-	 * @return object MediaAsset
+	 * @return string
 	 * @access public
-	 * @since 1/26/07
+	 * @since 2/26/07
 	 */
-	MediaLibrary.prototype.addMediaAsset = function (mediaAsset) {
-		this.mediaList.appendChild(mediaAsset.getEntryElement());
+	SiteLibrary.prototype.getMediaListUrl = function () {
+		return Harmoni.quickUrl('media', 'site_list', {'assetId': this.assetId});
 	}
+
 	
 
 /**
@@ -366,11 +545,11 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.5 2007/02/21 22:08:52 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
  */
-function MediaAsset ( assetId, xmlElement, library ) {
+function MediaAsset ( assetId, xmlElement, library, isEditable ) {
 	if ( arguments.length > 0 ) {
-		this.init( assetId, xmlElement, library );
+		this.init( assetId, xmlElement, library, isEditable );
 	}
 }
 
@@ -383,9 +562,16 @@ function MediaAsset ( assetId, xmlElement, library ) {
 	 * @access public
 	 * @since 1/26/07
 	 */
-	MediaAsset.prototype.init = function ( assetId, xmlElement, library ) {
+	MediaAsset.prototype.init = function ( assetId, xmlElement, library, isEditable ) {
 		this.library = library;
 		this.assetId = assetId;
+		
+		if (isEditable) {
+			this.isEditable = true;
+		} else {
+			this.isEditable = false;
+		}
+		
 		this.id = xmlElement.getAttribute('id');
 		this.displayName = xmlElement.getElementsByTagName('displayName')[0].firstChild.data;
 		this.description = xmlElement.getElementsByTagName('description')[0].firstChild.data;
@@ -446,13 +632,15 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		if (this.modificationDate)
 			dateElement.innerHTML = this.modificationDate.toFormatedString('E NNN dd, yyyy h:mm a');
 		
-		var editDiv = dateElement.appendChild(document.createElement('div'));
-		this.editLink = editDiv.appendChild(document.createElement('a'));
-		this.editLink.innerHTML = 'edit';
-		this.editLink.mediaAsset = this;
-		this.editLink.onclick = function () {
-			this.mediaAsset.toggleForm();
-		}	
+		if (this.isEditable) {
+			var editDiv = dateElement.appendChild(document.createElement('div'));
+			this.editLink = editDiv.appendChild(document.createElement('a'));
+			this.editLink.innerHTML = 'edit file';
+			this.editLink.mediaAsset = this;
+			this.editLink.onclick = function () {
+				this.mediaAsset.toggleForm();
+			}	
+		}
 		
 		return this.entryElement;
 	}
@@ -487,7 +675,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
 			delete this.uploadForm;
 		this.infoElement.innerHTML = '';
 		this.writeInfo(this.infoElement);
-		this.editLink.innerHTML = 'edit';
+		this.editLink.innerHTML = 'edit file';
 	}
 	
 	/**
@@ -754,7 +942,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.5 2007/02/21 22:08:52 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {

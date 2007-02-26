@@ -21,6 +21,10 @@
 	opacity: .50;
 }
 
+.medialibrary .medialist {
+	width: 100%;
+}
+
 .medialibrary .medialist .displayName {
 
 }

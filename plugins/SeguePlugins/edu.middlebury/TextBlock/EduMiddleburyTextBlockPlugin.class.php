@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.4 2007/02/21 22:08:52 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.5 2007/02/26 20:14:30 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.4 2007/02/21 22:08:52 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.5 2007/02/26 20:14:30 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -98,6 +98,7 @@ class EduMiddleburyTextBlockPlugin
  			print		"var img = link.appendChild(document.createElement('img')); ";
  			print		"img.src = mediaFile.thumbnailUrl; ";
  			print		"img.align = 'left'; ";
+ 			print		"img.border = '0'; ";
  			
  			print		"var title = downloadBar.appendChild(document.createElement('div')); ";
  			print 		"title.innerHTML = mediaFile.asset.displayName; ";
