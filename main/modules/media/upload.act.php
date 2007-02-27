@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.3 2007/02/14 17:41:15 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.4 2007/02/27 20:04:44 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,12 +20,34 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.3 2007/02/14 17:41:15 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.4 2007/02/27 20:04:44 adamfranco Exp $
  */
 class uploadAction
 	extends MediaAction
 {
+	
+	/**
+	 * Check authorization
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 2/27/07
+	 */
+	function isAuthorizedToExecute () {
+		// Check that the user can access the media library
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
 		
+		$contentAsset =& $this->getContentAsset();
+		
+		return ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"),
+			$contentAsset->getId()) || 
+			$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.add_children"),
+			$contentAsset->getId()));
+	}
+	
 	/**
 	 * Process the changes and build the output
 	 * 

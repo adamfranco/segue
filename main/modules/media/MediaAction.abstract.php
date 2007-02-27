@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.4 2007/02/14 17:41:15 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.5 2007/02/27 20:04:44 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.4 2007/02/14 17:41:15 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.5 2007/02/27 20:04:44 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -119,6 +119,15 @@ class MediaAction
 	 */
 	function getAssetXml (&$asset) {
 		$idManager =& Services::getService("Id");
+		$authZ =& Services::getService("AuthZ");
+		
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.view"),
+			$asset->getId()))
+		{
+			return '';
+		}
+		
 		ob_start();
 		
 		$assetId =& $asset->getId();
@@ -136,6 +145,21 @@ class MediaAction
 		$date =& $asset->getModificationDate();
 		print $date->asString();
 		print "]]></modificationDate>";
+		
+		print "\n\t\t<authorization function='edu.middlebury.authorization.view' />";
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"),
+			$asset->getId()))
+		{
+			print "\n\t\t<authorization function='edu.middlebury.authorization.modify' />";
+		}
+		
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.delete"),
+			$asset->getId()))
+		{
+			print "\n\t\t<authorization function='edu.middlebury.authorization.delete' />";
+		}
 		
 		/*********************************************************
 		 * Files

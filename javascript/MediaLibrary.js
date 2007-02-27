@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.7 2007/02/27 20:04:44 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.7 2007/02/27 20:04:44 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -110,7 +110,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.7 2007/02/27 20:04:44 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -280,6 +280,110 @@ function FileLibrary ( owner, assetId, caller, container ) {
 	FileLibrary.prototype.addMediaAsset = function (mediaAsset) {
 		this.mediaList.appendChild(mediaAsset.getEntryElement());
 	}
+	
+	/**
+	 * Add an input field to the given table row
+	 * 
+	 * @param object DOM_Element row
+	 * @param string labelText
+	 * @param string type <input type='xxxx'/> I.E. File, text, submit
+	 * @param string name
+	 * @param string defaultValue
+	 * @param object properties An associative list of other properties to give to
+	 *							the input
+	 * @return DOM_Element the input element
+	 * @access public
+	 * @since 1/29/07
+	 */
+	FileLibrary.prototype.addFieldToRow = function ( row, labelText, type, name, defaultValue, properties ) {
+		var heading = row.appendChild(document.createElement('th'));
+		if (labelText) {
+			var label = heading.appendChild(document.createElement('label'));
+			label.appendChild(document.createTextNode(labelText));
+			heading.appendChild(document.createTextNode(': '));
+		}
+		var datum = row.appendChild(document.createElement('td'));
+		var input = datum.appendChild(document.createElement('input'));
+		input.type = type;
+		input.name = name;
+		input.value = defaultValue;
+		this.uploadFormDefaults[name] = defaultValue;
+		if (properties) {
+			for (var key in properties) {
+				input[key] = properties[key];
+			}
+		}
+		
+		input.tabIndex = this.tabIndex;
+		this.tabIndex++;
+		
+		return input;
+	}
+	
+	/**
+	 * Start the upload callback process.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/26/07
+	 */
+	FileLibrary.prototype.startUploadCallback = function () {
+		return true;
+	}
+	
+	/**
+	 * Finish the upload callback process.
+	 * 
+	 * @param 
+	 * @return boolean
+	 * @access public
+	 * @since 1/26/07
+	 */
+	FileLibrary.prototype.completeUploadCallback = function (xmldoc) {
+		try {
+			var responseElement = xmldoc.firstChild;
+			
+			var errors = responseElement.getElementsByTagName('error');
+			if (errors.length) {
+				for (var i = 0; i < errors.length; i++) {
+					throw new Error( errors[i].firstChild.data );
+				}
+			}
+		} catch (error) {
+			alert (error);
+			
+// 			if (responseElement.xml)
+// 				alert(responseElement.xml);
+// 			else {
+// 				var xmlSerializer = new XMLSerializer();
+// 				alert(xmlSerializer.serializeToString(responseElement));
+// 			}
+			
+			return false;
+		}
+		
+// 		var xmlSerializer = new XMLSerializer();
+// 		alert(xmlSerializer.serializeToString(responseElement));
+			
+		var fileAssets = responseElement.getElementsByTagName('asset');
+		if (fileAssets.length) {
+			for (var i = 0; i < fileAssets.length; i++) {
+				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i], this));
+			}
+		}
+		
+		for (var i = 0; i < this.uploadForm.elements.length; i++) {
+			if (this.uploadForm.elements[i].type != 'submit') {
+				if (this.uploadFormDefaults[this.uploadForm.elements[i].name])
+					this.uploadForm.elements[i].value = 
+						this.uploadFormDefaults[this.uploadForm.elements[i].name];
+				else
+					this.uploadForm.elements[i].value = '';
+			}
+		}
+		
+		return true;
+	}
 
 
 
@@ -296,7 +400,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.7 2007/02/27 20:04:44 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -379,110 +483,6 @@ function AssetLibrary ( owner, assetId, caller, container ) {
 		container.appendChild(this.uploadForm);
 		this.uploadForm.elements[0].focus();
 	}
-	
-	/**
-	 * Add an input field to the given table row
-	 * 
-	 * @param object DOM_Element row
-	 * @param string labelText
-	 * @param string type <input type='xxxx'/> I.E. File, text, submit
-	 * @param string name
-	 * @param string defaultValue
-	 * @param object properties An associative list of other properties to give to
-	 *							the input
-	 * @return DOM_Element the input element
-	 * @access public
-	 * @since 1/29/07
-	 */
-	AssetLibrary.prototype.addFieldToRow = function ( row, labelText, type, name, defaultValue, properties ) {
-		var heading = row.appendChild(document.createElement('th'));
-		if (labelText) {
-			var label = heading.appendChild(document.createElement('label'));
-			label.appendChild(document.createTextNode(labelText));
-			heading.appendChild(document.createTextNode(': '));
-		}
-		var datum = row.appendChild(document.createElement('td'));
-		var input = datum.appendChild(document.createElement('input'));
-		input.type = type;
-		input.name = name;
-		input.value = defaultValue;
-		this.uploadFormDefaults[name] = defaultValue;
-		if (properties) {
-			for (var key in properties) {
-				input[key] = properties[key];
-			}
-		}
-		
-		input.tabIndex = this.tabIndex;
-		this.tabIndex++;
-		
-		return input;
-	}
-	
-	/**
-	 * Start the upload callback process.
-	 * 
-	 * @return boolean
-	 * @access public
-	 * @since 1/26/07
-	 */
-	AssetLibrary.prototype.startUploadCallback = function () {
-		return true;
-	}
-	
-	/**
-	 * Finish the upload callback process.
-	 * 
-	 * @param 
-	 * @return boolean
-	 * @access public
-	 * @since 1/26/07
-	 */
-	AssetLibrary.prototype.completeUploadCallback = function (xmldoc) {
-		try {
-			var responseElement = xmldoc.firstChild;
-			
-			var errors = responseElement.getElementsByTagName('error');
-			if (errors.length) {
-				for (var i = 0; i < errors.length; i++) {
-					throw new Error( errors[i].firstChild.data );
-				}
-			}
-		} catch (error) {
-			alert (error);
-			
-// 			if (responseElement.xml)
-// 				alert(responseElement.xml);
-// 			else {
-// 				var xmlSerializer = new XMLSerializer();
-// 				alert(xmlSerializer.serializeToString(responseElement));
-// 			}
-			
-			return false;
-		}
-		
-		var xmlSerializer = new XMLSerializer();
-		alert(xmlSerializer.serializeToString(responseElement));
-			
-		var fileAssets = responseElement.getElementsByTagName('asset');
-		if (fileAssets.length) {
-			for (var i = 0; i < fileAssets.length; i++) {
-				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i], this));
-			}
-		}
-		
-		for (var i = 0; i < this.uploadForm.elements.length; i++) {
-			if (this.uploadForm.elements[i].type != 'submit') {
-				if (this.uploadFormDefaults[this.uploadForm.elements[i].name])
-					this.uploadForm.elements[i].value = 
-						this.uploadFormDefaults[this.uploadForm.elements[i].name];
-				else
-					this.uploadForm.elements[i].value = '';
-			}
-		}
-		
-		return true;
-	}
 
 
 SiteLibrary.prototype = new FileLibrary();
@@ -498,7 +498,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.7 2007/02/27 20:04:44 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -545,11 +545,11 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.7 2007/02/27 20:04:44 adamfranco Exp $
  */
-function MediaAsset ( assetId, xmlElement, library, isEditable ) {
+function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
-		this.init( assetId, xmlElement, library, isEditable );
+		this.init( assetId, xmlElement, library );
 	}
 }
 
@@ -562,15 +562,9 @@ function MediaAsset ( assetId, xmlElement, library, isEditable ) {
 	 * @access public
 	 * @since 1/26/07
 	 */
-	MediaAsset.prototype.init = function ( assetId, xmlElement, library, isEditable ) {
+	MediaAsset.prototype.init = function ( assetId, xmlElement, library ) {
 		this.library = library;
 		this.assetId = assetId;
-		
-		if (isEditable) {
-			this.isEditable = true;
-		} else {
-			this.isEditable = false;
-		}
 		
 		this.id = xmlElement.getAttribute('id');
 		this.displayName = xmlElement.getElementsByTagName('displayName')[0].firstChild.data;
@@ -587,6 +581,21 @@ function MediaAsset ( assetId, xmlElement, library, isEditable ) {
 			this.publisher = xmlElement.getElementsByTagName('publisher')[0].firstChild.data;
 		if (xmlElement.getElementsByTagName('date').length) {
 			this.date = new Date( xmlElement.getElementsByTagName('date')[0].firstChild.data);
+		}
+		
+		// Authorizations
+		this.canEdit = false;
+		this.canDelete = false;
+		var azs = xmlElement.getElementsByTagName('authorization');
+		for (var i = 0; i < azs.length; i++) {
+			switch (azs[i].getAttribute('function')) {
+			case 'edu.middlebury.authorization.modify':
+				this.canEdit = true;
+				break;
+			case 'edu.middlebury.authorization.delete':
+				this.canDelete = true;
+				break;
+			}
 		}
 		
 		this.files = new Array();
@@ -632,14 +641,31 @@ function MediaAsset ( assetId, xmlElement, library, isEditable ) {
 		if (this.modificationDate)
 			dateElement.innerHTML = this.modificationDate.toFormatedString('E NNN dd, yyyy h:mm a');
 		
-		if (this.isEditable) {
+		if (this.canEdit || this.canDelete) {
 			var editDiv = dateElement.appendChild(document.createElement('div'));
-			this.editLink = editDiv.appendChild(document.createElement('a'));
-			this.editLink.innerHTML = 'edit file';
-			this.editLink.mediaAsset = this;
-			this.editLink.onclick = function () {
-				this.mediaAsset.toggleForm();
-			}	
+			
+			if (this.canEdit) {
+				this.editLink = editDiv.appendChild(document.createElement('a'));
+				this.editLink.innerHTML = 'edit file';
+				this.editLink.mediaAsset = this;
+				this.editLink.onclick = function () {
+					this.mediaAsset.toggleForm();
+				}
+				
+				editDiv.appendChild(document.createTextNode(' '));
+			}
+			
+			if (this.canDelete) {
+				this.deleteLink = editDiv.appendChild(document.createElement('a'));
+				this.deleteLink.innerHTML = 'delete file';
+				this.deleteLink.mediaAsset = this;
+				this.deleteLink.onclick = function () {
+					if (confirm('Are you sure that you want to delete this file? If it is used in the site, links to it will be broken.'))
+					{
+						this.mediaAsset.delete();
+					}
+				}
+			}
 		}
 		
 		return this.entryElement;
@@ -875,7 +901,7 @@ function MediaAsset ( assetId, xmlElement, library, isEditable ) {
 	 * @access public
 	 * @since 2/13/07
 	 */
-	MediaAsset.prototype.addFieldToRow = MediaLibrary.prototype.addFieldToRow;
+	MediaAsset.prototype.addFieldToRow = FileLibrary.prototype.addFieldToRow;
 	
 	/**
 	 * Start the upload callback process.
@@ -942,7 +968,7 @@ function MediaAsset ( assetId, xmlElement, library, isEditable ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.6 2007/02/26 20:14:29 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.7 2007/02/27 20:04:44 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
