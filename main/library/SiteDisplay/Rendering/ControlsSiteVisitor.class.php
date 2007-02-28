@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.13 2007/01/26 14:30:49 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2007/02/28 19:37:24 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.13 2007/01/26 14:30:49 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2007/02/28 19:37:24 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -91,6 +91,8 @@ class ControlsSiteVisitor {
 	 * @since 4/17/06
 	 */
 	function printDelete ( &$siteComponent ) {
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
 		$harmoni =& Harmoni::instance();
 		$message = _("Are you sure that you wish to delete this component and all of its children?");
 		$url = str_replace('&amp;', '&', 
@@ -102,8 +104,15 @@ class ControlsSiteVisitor {
 		
 		print "\n\t\t\t\t<div style='margin-top: 5px; margin-bottom: 5px;'>";
 		print "\n\t\t\t\t\t<button onclick='";
-		print 	"if (confirm(\"".$message."\")) ";
-		print 		"window.location = \"".$url."\";";
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.delete"), 
+			$siteComponent->getQualifierId()))
+		{
+			print 	"if (confirm(\"".$message."\")) ";
+			print 		"window.location = \"".$url."\";";
+		} else {
+			print "alert(\""._('You are not authorized to delete this item.')."\"); return false;";
+		}
 		print "'>";
 		print _("delete");
 		print "</button>";
@@ -119,6 +128,9 @@ class ControlsSiteVisitor {
 	 * @since 9/22/06
 	 */
 	function printAddSubMenu ( &$siteComponent ) {
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		
 		print "\n\t\t\t\t<div style='font-weight: bold;'>";
 		print _("Sub-Menu: ");
 		
@@ -137,8 +149,15 @@ class ControlsSiteVisitor {
 						'direction' => urlencode($parentMenuOrganizer->getDirection()))));
 			
 			print "\n\t\t\t\t\t<button onclick='";
-			print 	"if (confirm(\"".$message."\")) ";
-			print 		"window.location = \"".$url."\";";
+			if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.add_children"), 
+				$siteComponent->getQualifierId()))
+			{
+				print 	"if (confirm(\"".$message."\")) ";
+				print 		"window.location = \"".$url."\";";
+			} else {
+				print "alert(\""._('You are not authorized to create a submenu.')."\"); return false;";
+			}
 			print "'>";
 			print _("create");
 			print "</button>";
@@ -160,6 +179,16 @@ class ControlsSiteVisitor {
 		print _('Title: ');
 		print "<input type='text' size='25' ";
 		print " name='".RequestContext::name('displayName')."'";
+		
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			print " readonly='readonly'";
+		}
+		
 		print " value='".$siteComponent->getDisplayName()."'/>";
 		print "</div>";
 	}
@@ -176,11 +205,23 @@ class ControlsSiteVisitor {
 		print "\n\t\t\t\t<table cellspacing='0' cellpadding='0'>\n\t\t\t\t\t<tr><td style='white-space: nowrap;' valign='top' rowspan='3'>";
 		print "<strong>"._('Display Block Titles: ')."</strong>";
 		
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$canEdit = true;
+		} else {
+			$canEdit = false;
+		}
+		
 		print "</td>\n\t\t\t\t\t<td>";
 		print " <input type='radio' ";
 		print " name='".RequestContext::name('showDisplayNames')."'";
 		print " value='default'";
 		print (($siteComponent->showDisplayNames() == 'default')?" checked='checked'":"");
+		print (($canEdit)?"":" disabled='disabled'");
 		print "'/>"._(" use default");
 		
 		print "</td></tr>\n\t\t\t\t\t<tr><td>";
@@ -188,6 +229,7 @@ class ControlsSiteVisitor {
 		print " name='".RequestContext::name('showDisplayNames')."'";
 		print " value='true'";
 		print (($siteComponent->showDisplayNames() === true)?" checked='checked'":"");
+		print (($canEdit)?"":" disabled='disabled'");
 		print "'/>"._("override-yes");
 		
 		print "</td></tr>\n\t\t\t\t\t<tr><td>";
@@ -195,6 +237,7 @@ class ControlsSiteVisitor {
 		print " name='".RequestContext::name('showDisplayNames')."'";
 		print " value='false'";
 		print (($siteComponent->showDisplayNames() === false)?" checked='checked'":"");
+		print (($canEdit)?"":" disabled='disabled'");
 		print "'/>"._("override-no");
 		
 		print "</td></tr>";
@@ -216,6 +259,16 @@ class ControlsSiteVisitor {
 			._("The description will be included in RSS feeds, title attributes, and other external references to this item.")."</div>";
 		print "\n\t\t\t\t\t</td><td valign='top'><textarea rows='5' cols='25'";
 		print " name='".RequestContext::name('description')."'";
+		
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			print " readonly='readonly'";
+		}
+		
 		print ">".$siteComponent->getDescription();
 		print "</textarea>";
 		print "\n\t\t\t\t</td></tr></table>";
@@ -233,6 +286,14 @@ class ControlsSiteVisitor {
 		print "<div style='font-weight: bold;'>"._('Maximum Width Guideline: ');
 		print "<input type='text' size='6' ";
 		print " name='".RequestContext::name('width')."'";
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			print " readonly='readonly'";
+		}
 		print " value='".$siteComponent->getWidth()."'/>";
 		print "</div>";
 		print "<div style='font-size: smaller;'>"
@@ -252,6 +313,16 @@ class ControlsSiteVisitor {
 		$minCells = $siteComponent->getMinNumCells();
 		print "\n\t\t\t\t\t"._('Rows: ');
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'";
+		
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			print " readonly='readonly'";
+		}
+		
 		print " onchange='updateMinCells(this, this.nextSibling.nextSibling.nextSibling.nextSibling, $minCells);'>";
 		for ($i = 1; $i <= 10; $i++) {
 			print "\n\t\t\t\t\t\t<option value='".$i."'";
@@ -316,8 +387,19 @@ END;
 		$numRows = $siteComponent->getNumRows();
 		$numColumns = $siteComponent->getNumColumns();
 		print "\n\t\t\t\t\t"._('Columns: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('columns')."'>";
-
+		print "\n\t\t\t\t\t<select name='".RequestContext::name('columns')."'";
+		
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			print " readonly='readonly'";
+		}
+		
+		print ">";
+		
 		for ($i = 1; $i <= 10; $i++) {
 			print "\n\t\t\t\t\t\t<option value='".$i."'";
 			print (($i == $siteComponent->getNumColumns())?" selected='selected'":"");
@@ -350,7 +432,19 @@ END;
 	function printDirection ( &$siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
 		print "\n\t\t\t\t\t"._('Index Direction: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('direction')."'>";
+		print "\n\t\t\t\t\t<select name='".RequestContext::name('direction')."'";
+		
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			print " readonly='readonly'";
+		}
+		
+		print ">";
+		
 		$directions = array(
 			"Left-Right/Top-Bottom" => _("Left-Right/Top-Bottom"),
 			"Top-Bottom/Left-Right" => _("Top-Bottom/Left-Right"),
