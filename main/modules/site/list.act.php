@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.6 2007/01/12 16:53:08 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.7 2007/02/28 16:35:39 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.6 2007/01/12 16:53:08 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.7 2007/02/28 16:35:39 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -106,8 +106,7 @@ function canView( & $asset ) {
 	$authZ =& Services::getService("AuthZ");
 	$idManager =& Services::getService("Id");
 	
-	if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.access"), $asset->getId())
-		|| $authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $asset->getId()))
+	if ($authZ->isUserAuthorizedBelow($idManager->getId("edu.middlebury.authorization.view"), $asset->getId()))
 	{
 		return TRUE;
 	} else {

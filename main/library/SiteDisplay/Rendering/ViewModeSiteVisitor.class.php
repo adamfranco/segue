@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.27 2007/01/26 14:30:49 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.28 2007/02/28 16:35:37 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.27 2007/01/26 14:30:49 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.28 2007/02/28 16:35:37 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -69,6 +69,16 @@ class ViewModeSiteVisitor {
 	 * @since 4/3/06
 	 */
 	function &visitBlock ( &$block ) {
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");	
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.view"), 
+			$idManager->getId($block->getId())))
+		{
+			$false = false;
+			return $false;
+		}
+		
 		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
 		
 		$pluginManager =& Services::getService('PluginManager');
@@ -99,6 +109,16 @@ class ViewModeSiteVisitor {
 	 * @since 4/3/06
 	 */
 	function &visitBlockInMenu ( &$block ) {
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");	
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.view"), 
+			$idManager->getId($block->getId())))
+		{
+			$false = false;
+			return $false;
+		}
+		
 		$pluginManager =& Services::getService('PluginManager');
 		// Create and return the component
 		ob_start();
@@ -124,6 +144,16 @@ class ViewModeSiteVisitor {
 	 * @since 4/3/06
 	 */
 	function &visitNavBlock ( &$navBlock ) {
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");	
+		if (!$authZ->isUserAuthorizedBelow(
+			$idManager->getId("edu.middlebury.authorization.view"), 
+			$idManager->getId($navBlock->getId())))
+		{
+			$false = false;
+			return $false;
+		}
+		
 		$menuItems = array();
 		
 		// Create the menu item
@@ -273,7 +303,10 @@ class ViewModeSiteVisitor {
 		$childGuiComponents = array();
 		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
-			$childGuiComponents[] =& $child->acceptVisitor($this);
+			$childGuiComponent =& $child->acceptVisitor($this);
+			// Filter out false entries returned due to lack of authorization
+			if ($childGuiComponent)
+				$childGuiComponents[] =& $childGuiComponent;
 		}
 		
 		$resultPrinter =& new ArrayResultPrinter($childGuiComponents,
@@ -312,19 +345,27 @@ class ViewModeSiteVisitor {
 		else
 			$guiContainer =& new Menu ( $layout, 1);
 		
+		$hasChildComponents = false;
 		$numCells = $organizer->getTotalNumberOfCells();
 		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			$childGuiComponents =& $child->acceptVisitor($this, true);
-			if (is_array($childGuiComponents)) {
+			if ($childGuiComponents === false || (is_array($childGuiComponents) && !count($childGuiComponents))) {
+				// do nothing
+			} else if (is_array($childGuiComponents)) {
+				$hasChildComponents = true;
 				foreach (array_keys($childGuiComponents) as $key)
 					$guiContainer->add($childGuiComponents[$key]);
 			} else {
+				$hasChildComponents = true;
 				$guiContainer->add($childGuiComponents);
 			}
 		}
+		if ($hasChildComponents)
+			return $guiContainer;
 		
-		return $guiContainer;
+		$false = false;
+		return $false;
 	}
 	
 	/**

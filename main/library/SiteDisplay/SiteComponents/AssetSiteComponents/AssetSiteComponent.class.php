@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.6 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.7 2007/02/28 16:35:38 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.6 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.7 2007/02/28 16:35:38 adamfranco Exp $
  */
 class AssetSiteComponent 
 	// implements SiteComponent
@@ -77,6 +77,18 @@ class AssetSiteComponent
 	 */
 	function &getAsset () {
 		return $this->_asset;
+	}
+	
+	/**
+	 * Answer the id of authorization qualifier that corresponds to this component.
+	 * 
+	 * @return object Id
+	 * @access public
+	 * @since 2/28/07
+	 */
+	function &getQualifierId () {
+		$asset =& $this->getAsset();
+		return $asset->getId();
 	}
 		
 	/**

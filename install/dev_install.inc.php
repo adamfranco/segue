@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.11 2007/01/08 21:02:32 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.12 2007/02/28 16:35:30 adamfranco Exp $
  */
 
 /*********************************************************
@@ -227,10 +227,6 @@ if (!isset($_SESSION['table_setup_complete'])) {
 				
 			// View/Use Functions
 				$type =& new Type ("Authorization", "edu.middlebury.harmoni", "View/Use", "Functions for viewing and using.");
-			
-				$id =& $idManager->getId("edu.middlebury.authorization.access");
-				$function =& $authZManager->createFunction($id, "Access", "Access a qualifier.", $type, $qualifierHierarchyId);
-				$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 				
 				$id =& $idManager->getId("edu.middlebury.authorization.view");
 				$function =& $authZManager->createFunction($id, "View", "View a qualifier.", $type, $qualifierHierarchyId);

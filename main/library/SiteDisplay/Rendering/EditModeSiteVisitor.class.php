@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.47 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.48 2007/02/28 16:35:36 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.47 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.48 2007/02/28 16:35:36 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -93,6 +93,16 @@ END;
 	 * @since 1/15/07
 	 */
 	function &visitBlock ( &$block ) {
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");	
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.view"), 
+			$idManager->getId($block->getId())))
+		{
+			$false = false;
+			return $false;
+		}
+		
 		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
 		
 		$pluginManager =& Services::getService('PluginManager');
@@ -114,15 +124,21 @@ END;
 			
 		
 		// Add controls bar and border
-		$controlsHTML = $this->getBarPreHTML('#090')
-			.$this->getControlsHTML(
-				"<em>".$this->_classNames['Block']."</em>", 
-				$block->acceptVisitor($this->_controlsVisitor), 
-				'#090', '#9F9', '#6C6', 0, true);
-		$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
-		
-		$guiContainer->setPostHTML($this->getBarPostHTML());
-		
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$block->getQualifierId()))
+		{
+			$controlsHTML = $this->getBarPreHTML('#090')
+				.$this->getControlsHTML(
+					"<em>".$this->_classNames['Block']."</em>", 
+					$block->acceptVisitor($this->_controlsVisitor), 
+					'#090', '#9F9', '#6C6', 0, true);
+			$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
+			
+			$guiContainer->setPostHTML($this->getBarPostHTML());
+		}		
 		
 		return $guiContainer;
 	}
@@ -136,6 +152,16 @@ END;
 	 * @since 4/3/06
 	 */
 	function &visitBlockInMenu ( &$block ) {
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");	
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.view"), 
+			$idManager->getId($block->getId())))
+		{
+			$false = false;
+			return $false;
+		}
+		
 		$pluginManager =& Services::getService('PluginManager');
 		// Create and return the component
 		ob_start();
@@ -150,16 +176,23 @@ END;
 		
 		$menuItem =& new MenuItem(ob_get_clean(), 1);
 		
-							
-		// Add controls bar and border
-		$controlsHTML = $this->getBarPreHTML('#090')
-			.$this->getControlsHTML(
-				"<em>".$this->_classNames['Block']."</em>", 
-				$block->acceptVisitor($this->_controlsVisitor), 
-				'#090', '#9F9', '#6C6', 0, true);
-		$menuItem->setPreHTML($controlsHTML.$menuItem->getPreHTML($null = null));
 		
-		$menuItem->setPostHTML($this->getBarPostHTML());
+		// Add controls bar and border
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$block->getQualifierId()))
+		{
+			$controlsHTML = $this->getBarPreHTML('#090')
+				.$this->getControlsHTML(
+					"<em>".$this->_classNames['Block']."</em>", 
+					$block->acceptVisitor($this->_controlsVisitor), 
+					'#090', '#9F9', '#6C6', 0, true);
+			$menuItem->setPreHTML($controlsHTML.$menuItem->getPreHTML($null = null));
+			
+			$menuItem->setPostHTML($this->getBarPostHTML());
+		}
 		
 		return $menuItem;
 	}
@@ -175,15 +208,25 @@ END;
 	function &visitNavBlock ( &$navBlock ) {
 		$menuItems =& parent::visitNavBlock($navBlock);
 		
-		// Add controls bar and border
-		$controlsHTML = $this->getBarPreHTML('#090')
-			.$this->getControlsHTML(
-				"<em>".$this->_classNames['NavBlock']."</em>", 
-				$navBlock->acceptVisitor($this->_controlsVisitor), 
-				'#090', '#9F9', '#6C6', 0, true);
-		$menuItems[0]->setPreHTML($controlsHTML.$menuItems[0]->getPreHTML($null = null));
+		if (!$menuItems)
+			return $menuItems;
 		
-		$menuItems[0]->setPostHTML($this->getBarPostHTML());
+		// Add controls bar and border
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$navBlock->getQualifierId()))
+		{
+			$controlsHTML = $this->getBarPreHTML('#090')
+				.$this->getControlsHTML(
+					"<em>".$this->_classNames['NavBlock']."</em>", 
+					$navBlock->acceptVisitor($this->_controlsVisitor), 
+					'#090', '#9F9', '#6C6', 0, true);
+			$menuItems[0]->setPreHTML($controlsHTML.$menuItems[0]->getPreHTML($null = null));
+			
+			$menuItems[0]->setPostHTML($this->getBarPostHTML());
+		}
 		
 		return $menuItems;
 	}
@@ -210,12 +253,22 @@ END;
 		$childGuiComponents = array();
 		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
-			$childGuiComponents[] =& $child->acceptVisitor($this);
+			$childGuiComponent =& $child->acceptVisitor($this);
+			// Filter out false entries returned due to lack of authorization
+			if ($childGuiComponent)
+				$childGuiComponents[] =& $childGuiComponent;
 		}
 		
 		// Add the "Append" form to the organizer
-		$pluginManager =& Services::getService("PluginManager");
-		$childGuiComponents[] =& new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins()));
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.add_children"), 
+			$organizer->getQualifierId()))
+		{
+			$pluginManager =& Services::getService("PluginManager");
+			$childGuiComponents[] =& new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins()));
+		}
 		
 		$resultPrinter =& new ArrayResultPrinter($childGuiComponents,
 									$organizer->getNumColumns(), $cellsPerPage);
@@ -226,14 +279,21 @@ END;
 		$guiContainer =& $resultPrinter->getLayout();
 		
 		// Add controls bar and border
-		$controlsHTML = $this->getBarPreHTML('#00F')
-			.$this->getControlsHTML(
-				"<em>".$this->_classNames['FlowOrganizer']."</em>", 
-				$organizer->acceptVisitor($this->_controlsVisitor), 
-				'#00F', '#99F', '#66F');
-		$guiContainer->setPreHTML($controlsHTML."\n<div style='z-index: 0;'>".$guiContainer->getPreHTML($null = null));
-		
-		$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>".$this->getBarPostHTML());
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$organizer->getQualifierId()))
+		{
+			$controlsHTML = $this->getBarPreHTML('#00F')
+				.$this->getControlsHTML(
+					"<em>".$this->_classNames['FlowOrganizer']."</em>", 
+					$organizer->acceptVisitor($this->_controlsVisitor), 
+					'#00F', '#99F', '#66F');
+			$guiContainer->setPreHTML($controlsHTML."\n<div style='z-index: 0;'>".$guiContainer->getPreHTML($null = null));
+			
+			$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>".$this->getBarPostHTML());
+		}
 		
 		return $guiContainer;
 	}
@@ -251,26 +311,40 @@ END;
 		$guiContainer =& parent::visitMenuOrganizer($organizer);
 		
 		// Add the "Append" form to the organizer
-		$allowed = array();
-		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart');
-		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
-		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
-		$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
-// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
-		$pluginManager =& Services::getService("PluginManager");
-		$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
-		
-		$childComponent =& $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed), 2), null, '100%', null, TOP);
-		
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.add_children"), 
+			$organizer->getQualifierId()))
+		{
+			$allowed = array();
+			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart');
+			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
+			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
+			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
+	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
+			$pluginManager =& Services::getService("PluginManager");
+			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
+			
+			$childComponent =& $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed), 2), null, '100%', null, TOP);
+		}
+				
 		// Add controls bar and border
-		$controlsHTML = $this->getBarPreHTML('#00F')
-			.$this->getControlsHTML(
-				"<em>".$this->_classNames['MenuOrganizer']."</em>", 
-				$organizer->acceptVisitor($this->_controlsVisitor), 
-				'#00F', '#99F', '#66F');
-		$guiContainer->setPreHTML($controlsHTML."\n<div style='z-index: 0;'>".$guiContainer->getPreHTML($null = null));
-		
-		$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>".$this->getBarPostHTML());
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$organizer->getQualifierId()))
+		{
+			$controlsHTML = $this->getBarPreHTML('#00F')
+				.$this->getControlsHTML(
+					"<em>".$this->_classNames['MenuOrganizer']."</em>", 
+					$organizer->acceptVisitor($this->_controlsVisitor), 
+					'#00F', '#99F', '#66F');
+			$guiContainer->setPreHTML($controlsHTML."\n<div style='z-index: 0;'>".$guiContainer->getPreHTML($null = null));
+			
+			$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>".$this->getBarPostHTML());
+		}
 		
 		return $guiContainer;
 	}
