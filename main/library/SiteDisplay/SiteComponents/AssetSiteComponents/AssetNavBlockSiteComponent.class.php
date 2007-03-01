@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.9 2007/01/17 21:21:57 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.10 2007/03/01 18:43:16 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.9 2007/01/17 21:21:57 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.10 2007/03/01 18:43:16 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -236,8 +236,8 @@ class AssetNavBlockSiteComponent
 		$possibleDestinations =& $this->_director->getVisibleComponents();
 		$parent =& $this->getParentComponent();
 		foreach (array_keys($possibleDestinations) as $id) {
-			if ($id == $parent->getId())
-				continue;
+// 			if ($id == $parent->getId())
+// 				continue;
 			
 			if (preg_match('/^.*MenuOrganizerSiteComponent$/i', 
 				get_class($possibleDestinations[$id]))) 
