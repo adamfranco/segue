@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.12 2007/01/12 22:41:20 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -18,7 +18,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.12 2007/01/12 22:41:20 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
  */
 class addAction 
 	extends EditModeSiteAction
@@ -236,10 +236,10 @@ class addAction
 	function getReturnUrl () {
 		$harmoni =& Harmoni::instance();
 		if ($this->_siteId) 
-			return $harmoni->request->quickURL("site", "editview", array(
+			return $harmoni->request->quickURL('ui2', "editview", array(
 				"node" => $this->_siteId));
 		else
-			return $harmoni->request->quickURL("site", "list");
+			return $harmoni->request->quickURL('ui2', "list");
 	}
 }
 

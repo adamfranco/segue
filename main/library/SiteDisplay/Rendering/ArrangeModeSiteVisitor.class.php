@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.10 2007/03/01 18:43:13 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.11 2007/03/01 20:12:55 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.10 2007/03/01 18:43:13 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.11 2007/03/01 20:12:55 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -633,7 +633,7 @@ class ArrangeModeSiteVisitor
 	 */
 	function getUrlForComponent ( $id ) {
 		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL("site", "arrangeview", array("node" => $id));
+		return $harmoni->request->quickURL('ui2', "arrangeview", array("node" => $id));
 	}
 	
 	/**
@@ -686,7 +686,7 @@ class ArrangeModeSiteVisitor
 		$url = str_replace("XXXdraggableXXX", "' + draggableElement.id + '",
 					str_replace("XXXdroppableXXX", "' + droppableElement.id + '",
 						str_replace('&amp;', '&', 
-							$harmoni->request->quickUrl('site', 'moveComponent', 
+							$harmoni->request->quickURL('ui2', 'moveComponent', 
 								array('component' => "XXXdraggableXXX", 
 									'destination' => "XXXdroppableXXX",
 									'returnNode' => RequestContext::value('node'))))));
@@ -789,7 +789,7 @@ class ArrangeModeSiteVisitor
 		ob_start();
 		$harmoni =& Harmoni::instance();
 		print "\n<form action='";
-		print $harmoni->request->quickURL('site', 'addComponent', 
+		print $harmoni->request->quickURL('ui2', 'addComponent', 
 				array('returnNode' => RequestContext::value('node'),
 					'returnAction' => $this->_action));
 		print "' method='post'>";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.21 2007/02/26 20:14:30 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.1 2007/03/01 20:12:59 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.21 2007/02/26 20:14:30 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.1 2007/03/01 20:12:59 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -185,7 +185,7 @@ class viewAction
 		print "<a href='".$harmoni->request->quickURL('home', 'welcome')."' alt='"._("The Segue homepage")."'>";
 		print _("home")."</a> | ";
 		
-		print "<a href='".$harmoni->request->quickURL('site', 'list')."' alt='"._("List of Segue sites")."'>";
+		print "<a href='".$harmoni->request->quickURL('ui2', 'list')."' alt='"._("List of Segue sites")."'>";
 		print _("site list")."</a>";
 		
 		$ret =& new Component(ob_get_clean(), BLANK, 2);
@@ -212,13 +212,13 @@ class viewAction
 			print _("view");
 			
 			print " | <a href='";
-			print $harmoni->request->quickURL('site', 'editview', array(
+			print $harmoni->request->quickURL('ui2', 'editview', array(
 					'node' => RequestContext::value("node")));
 			print "' alt='"._("Go to Edit-Mode")."'>";
 			print _("edit")."</a>";
 			
 			print " | <a href='";
-			print $harmoni->request->quickURL('site', 'arrangeview', array(
+			print $harmoni->request->quickURL('ui2', 'arrangeview', array(
 					'node' => RequestContext::value("node")));
 			print "' alt='"._("Go to Arrange-Mode")."'>";
 			print _("arrange")."</a>";

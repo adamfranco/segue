@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.7 2007/02/28 16:35:39 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.1 2007/03/01 20:12:59 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.7 2007/02/28 16:35:39 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.1 2007/03/01 20:12:59 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -85,7 +85,7 @@ class editviewAction
 		
 		ob_start();
 		print "<a href='";
-		print $harmoni->request->quickURL('site', 'view', array(
+		print $harmoni->request->quickURL('ui2', 'view', array(
 				'node' => RequestContext::value("node")));
 		print "' alt='"._("Go to View-Mode")."'>";
 		print _("view")."</a>";
@@ -93,7 +93,7 @@ class editviewAction
 		print " | "._("edit");
 		
 		print " | <a href='";
-		print $harmoni->request->quickURL('site', 'arrangeview', array(
+		print $harmoni->request->quickURL('ui2', 'arrangeview', array(
 				'node' => RequestContext::value("node")));
 		print "' alt='"._("Go to Arrange-Mode")."'>";
 		print _("arrange")."</a>";

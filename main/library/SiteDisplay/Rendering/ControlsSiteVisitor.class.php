@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2007/02/28 19:37:24 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2007/03/01 20:12:55 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2007/02/28 19:37:24 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2007/03/01 20:12:55 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -51,7 +51,7 @@ class ControlsSiteVisitor {
 		
 		print "\n\t\t\t<form method='post'";
 		print " action='";
-		print $harmoni->request->quickURL('site', 'modifyComponent',
+		print $harmoni->request->quickURL('ui2', 'modifyComponent',
 				array('node' => $siteComponent->getId(),
 					"returnNode" => RequestContext::value('node'),
 					'returnAction' => $this->_action));
@@ -96,7 +96,7 @@ class ControlsSiteVisitor {
 		$harmoni =& Harmoni::instance();
 		$message = _("Are you sure that you wish to delete this component and all of its children?");
 		$url = str_replace('&amp;', '&', 
-				$harmoni->request->quickURL('site', 'deleteComponent', array(
+				$harmoni->request->quickURL('ui2', 'deleteComponent', array(
 					'node' => $siteComponent->getId(),
 					'returnNode' => RequestContext::value('node'),
 					'returnAction' => $this->_action
@@ -142,7 +142,7 @@ class ControlsSiteVisitor {
 			$harmoni =& Harmoni::instance();
 			$message = _("Are you sure that you wish to create a submenu?");
 			$url = str_replace('&amp;', '&', 
-					$harmoni->request->quickURL('site', 'createSubMenu', array(
+					$harmoni->request->quickURL('ui2', 'createSubMenu', array(
 						'parent' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->_action,

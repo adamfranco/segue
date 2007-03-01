@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.3 2007/01/12 21:59:18 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.3 2007/01/12 21:59:18 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
  */
 class createSubMenuAction
 	extends EditModeSiteAction

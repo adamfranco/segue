@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.7 2007/02/28 16:35:39 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.1 2007/03/01 20:12:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.7 2007/02/28 16:35:39 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.1 2007/03/01 20:12:59 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -67,7 +67,7 @@ class listAction
 		{
 			ob_start();
 			print "\n\t<a href='";
-			print $harmoni->request->quickURL("site", "add");
+			print $harmoni->request->quickURL('ui2', "add");
 			print "' style='border: 1px solid; padding: 2px; text-align: center; text-decoration: none; margin: 2px;'>";
 			print _("Create New Site");
 			print "</a>";
@@ -135,12 +135,12 @@ function printSiteShort(& $asset, &$harmoni, $num) {
 	
 	ob_start();
 	$assetId =& $asset->getId();
-	print "\n\t<a href='".$harmoni->request->quickURL('site', 'view', array('node' => $assetId->getIdString()))."'>";
+	print "\n\t<a href='".$harmoni->request->quickURL('ui2', 'view', array('node' => $assetId->getIdString()))."'>";
 	print "\n\t<strong>".htmlspecialchars($asset->getDisplayName())."</strong>";
 	print "\n\t</a>";
 	print "\n\t<br/>"._("ID#").": ".$assetId->getIdString();
-	print "\n\t<a href='".$harmoni->request->quickURL('site', 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
-	print "\n\t | <a href='".$harmoni->request->quickURL('site', 'deleteComponent', array('node' => $assetId->getIdString()))."'>"._("delete")."</a>";
+	print "\n\t<a href='".$harmoni->request->quickURL('ui2', 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
+	print "\n\t | <a href='".$harmoni->request->quickURL('ui2', 'deleteComponent', array('node' => $assetId->getIdString()))."'>"._("delete")."</a>";
 	
 	$description =& HtmlString::withValue($asset->getDescription());
 	$description->trim(25);

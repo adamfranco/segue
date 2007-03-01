@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.48 2007/02/28 16:35:36 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.49 2007/03/01 20:12:55 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.48 2007/02/28 16:35:36 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.49 2007/03/01 20:12:55 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -362,7 +362,7 @@ END;
 	 */
 	function getUrlForComponent ( $id ) {
 		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL("site", "editview", array("node" => $id));
+		return $harmoni->request->quickURL('ui2', "editview", array("node" => $id));
 	}
 	
 	/**
@@ -379,7 +379,7 @@ END;
 		ob_start();
 		$harmoni =& Harmoni::instance();
 		print "\n<form action='";
-		print $harmoni->request->quickURL('site', 'addComponent', 
+		print $harmoni->request->quickURL('ui2', 'addComponent', 
 				array('returnNode' => RequestContext::value('node'),
 					'returnAction' => $this->_action));
 		print "' method='post'>";

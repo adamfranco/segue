@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.7 2007/01/15 22:05:41 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.7 2007/01/15 22:05:41 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
