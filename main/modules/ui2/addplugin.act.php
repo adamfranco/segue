@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.2 2007/03/01 20:22:20 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.2 2007/03/01 20:22:20 adamfranco Exp $
  */
 class addpluginAction 
 	extends MainWindowAction
@@ -96,7 +96,7 @@ class addpluginAction
 		}
 		
 		RequestContext::locationHeader($harmoni->request->quickURL(
-			"site", "editview",
+			"ui2", "editview",
 			array("node" => RequestContext::value('return_node'))));
 	}
 }

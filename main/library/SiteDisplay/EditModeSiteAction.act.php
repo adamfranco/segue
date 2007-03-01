@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.5 2007/01/15 18:44:47 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.6 2007/03/01 20:22:20 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.5 2007/01/15 18:44:47 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.6 2007/03/01 20:22:20 adamfranco Exp $
  */
 class EditModeSiteAction 
 	extends MainWindowAction
@@ -194,7 +194,7 @@ class EditModeSiteAction
 			$returnAction = 'editview';
 			
 		RequestContext::locationHeader($harmoni->request->quickURL(
-			"site", $returnAction,
+			"ui2", $returnAction,
 			array("node" => RequestContext::value('returnNode'))));	
 	}
 }
