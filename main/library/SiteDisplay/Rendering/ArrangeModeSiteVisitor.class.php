@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.11 2007/03/01 20:12:55 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.12 2007/04/13 19:59:16 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.11 2007/03/01 20:12:55 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.12 2007/04/13 19:59:16 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -689,7 +689,8 @@ class ArrangeModeSiteVisitor
 							$harmoni->request->quickURL('ui2', 'moveComponent', 
 								array('component' => "XXXdraggableXXX", 
 									'destination' => "XXXdroppableXXX",
-									'returnNode' => RequestContext::value('node'))))));
+									'returnNode' => RequestContext::value('node'),
+									'returnAction' => $this->_action)))));
 		
 		$component->setPostHTML(
 			$component->getPostHTML($null = null)

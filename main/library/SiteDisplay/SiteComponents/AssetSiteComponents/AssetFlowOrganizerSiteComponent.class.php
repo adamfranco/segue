@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.6 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.7 2007/04/13 19:59:16 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.6 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.7 2007/04/13 19:59:16 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -92,7 +92,9 @@ class AssetFlowOrganizerSiteComponent
 	 */
 	function addSubcomponent ( &$siteComponent ) {
 		$cell =& $this->_element->ownerDocument->createElement('cell');
-		$cell->appendChild($siteComponent->getElement());
+		$snippet =& $this->_element->ownerDocument->createElement($siteComponent->getComponentClass());
+		$snippet->setAttribute('id', $siteComponent->getId());
+		$cell->appendChild($snippet);
 		$this->_element->appendChild($cell);
 		// this is only for single page load deletes (testing)
 		$this->_getChildComponents(true);

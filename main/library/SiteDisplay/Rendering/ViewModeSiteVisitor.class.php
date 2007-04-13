@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.29 2007/03/01 20:12:56 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.30 2007/04/13 19:59:16 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.29 2007/03/01 20:12:56 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.30 2007/04/13 19:59:16 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -259,7 +259,9 @@ class ViewModeSiteVisitor {
 		for ($i = 0; $i < $numCells; $i++) {
 			$child =& $organizer->getSubcomponentForCell($i);
 			if (is_object($child)) {
-				$guiContainer->add($child->acceptVisitor($this), $child->getWidth(), null, null, TOP );
+				$childComponent =& $child->acceptVisitor($this);
+				if ($childComponent)
+					$guiContainer->add($childComponent, $child->getWidth(), null, null, TOP );
 			} else {
 				$this->_emptyCellContainers[$organizer->getId().'_cell:'.$i] =& $guiContainer;
 				$this->_emptyCellPlaceholders[$organizer->getId().'_cell:'.$i] = $guiContainer->addPlaceholder();
@@ -361,7 +363,7 @@ class ViewModeSiteVisitor {
 				$guiContainer->add($childGuiComponents);
 			}
 		}
-		if ($hasChildComponents)
+// 		if ($hasChildComponents)
 			return $guiContainer;
 		
 		$false = false;
