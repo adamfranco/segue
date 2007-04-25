@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.49 2007/03/01 20:12:55 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.50 2007/04/25 18:42:07 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.49 2007/03/01 20:12:55 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.50 2007/04/25 18:42:07 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -222,7 +222,8 @@ END;
 				.$this->getControlsHTML(
 					"<em>".$this->_classNames['NavBlock']."</em>", 
 					$navBlock->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true);
+					'#090', '#9F9', '#6C6', 0, true)
+				."<br/>";
 			$menuItems[0]->setPreHTML($controlsHTML.$menuItems[0]->getPreHTML($null = null));
 			
 			$menuItems[0]->setPostHTML($this->getBarPostHTML());
