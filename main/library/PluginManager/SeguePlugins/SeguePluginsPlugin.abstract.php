@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.19 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.20 2007/04/27 20:20:19 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
+require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
 
 /**
  * Abstract class that all Plugins must extend
@@ -21,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.19 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.20 2007/04/27 20:20:19 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	

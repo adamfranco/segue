@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.2 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.3 2007/04/27 20:20:19 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.2 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.3 2007/04/27 20:20:19 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SeguePluginsAjaxPlugin
@@ -170,29 +170,14 @@ class EduMiddleburyDownloadPlugin
 		ob_start();
 // 		printpre($this->getContent());
 		
-		$asset =& $this->getMediaAsset();
-		if ($asset) {
-			$harmoni =& Harmoni::instance();
-			$harmoni->request->StartNamespace('polyphony-repository');
-			$thumbnailUrl =  $harmoni->request->quickURL("repository", "viewthumbnail", 
-				array(
-				"repository_id" => $this->getMediaRepositoryId(),
-				"asset_id" => $this->getMediaAssetId(),
-				"record_id" => $this->getMediaRecordId()));
-			$fileUrl = $harmoni->request->quickURL("repository", "viewfile", 
-				array(
-				"repository_id" => $this->getMediaRepositoryId(),
-				"asset_id" => $this->getMediaAssetId(),
-				"record_id" => $this->getMediaRecordId()));
-			$harmoni->request->endNamespace();
-				
-			print "\n";			
-			
+		$file =& $this->getMediaFile();
+		if ($file) {
+			print "\n";				
 			print "\n<div>";
 			
-			print "\n\t<a href='".$fileUrl."'>";
+			print "\n\t<a href='".$file->getUrl()."'>";
 			print "\n\t\t<img src='";
-			print $thumbnailUrl;
+			print $file->getThumbnailUrl();
 			print "' align='left' border='0'/>";
 			print "\n\t</a>";
 			
@@ -202,30 +187,26 @@ class EduMiddleburyDownloadPlugin
 			
 			print "\n\t\t<p style='text-align: center;'>";
 			print "\n\t\t\t<a href='";
-			print $fileUrl;
+			print $file->getUrl();
 			print "'>";
 			print "<strong>"._("Download this file")."</strong>";
 			print "</a>";
 // 			print "\n\t\t</p>";
 			
-			$idManager =& Services::getService("Id");
-			$record =& $asset->getRecord($idManager->getId($this->getMediaRecordId()));
-			$parts =& $record->getPartsByPartStructure(
-				$idManager->getId('FILE_SIZE'));		
-			if ($parts->hasNext()) {
-				$part =& $parts->next();
-				$size = ByteSize::withValue($part->getValue());
-				$size = $size->asString();
+			$size =& $file->getSize();
+			
+			if ($size->value()) {
+				$sizeString = $size->asString();
 			} else {
-				$size = _("unknown size");
+				$sizeString = _("unknown size");
 			}
-			print "\n\t\t<br/>".$size."</p>";
+			print "\n\t\t<br/>".$sizeString."</p>";
 			
 // 			print "\n\t</div>";
 			
 			print "\n</div>";
 			print "\n<div style='clear: both;'>";
-			print $this->getCitation($asset);
+			print $this->getCitation($file->getAsset());
 			print "</div>";
 		}
 		
@@ -240,40 +221,36 @@ class EduMiddleburyDownloadPlugin
 	 * @access public
 	 * @since 4/25/07
 	 */
-	function getCitation (&$asset) {
+	function getCitation (&$mediaAsset) {
 		ob_start();
-		
-		$val = $this->getDcValue($asset, "dc.creator");
-		if ($val) {			
-			print $val->asString();
+
+		if ($mediaAsset->getCreator()) {			
+			print $mediaAsset->getCreator();
 			print '. ';
 		}
 		
-		$val = $this->getDcValue($asset, "dc.title");
-		if ($val) {
+		if ($mediaAsset->getTitle()) {			
 			print '"';
-			print $val->asString();
+			print $mediaAsset->getTitle();
 			print '" ';
 		}
 		
-		$val = $this->getDcValue($asset, "dc.source");
-		if ($val) {
+		if ($mediaAsset->getSource()) {			
 			print '<em>';
-			print $val->asString();
+			print $mediaAsset->getSource();
 			print '</em>. ';
 		}
 		
-		$val = $this->getDcValue($asset, "dc.publisher");
-		if ($val) {
+		if ($mediaAsset->getPublisher()) {
 			print '';
-			print $val->asString();
+			print $mediaAsset->getPublisher();
 			print ', ';
 		}
 		
-		$val = $this->getDcValue($asset, "dc.date");
-		if ($val) {
+		if ($mediaAsset->getDate()) {
+			$date = $mediaAsset->getDate();
 			print '';
-			print $val->year();
+			print $date->year();
 			print ' ';
 		}
 		
@@ -281,51 +258,28 @@ class EduMiddleburyDownloadPlugin
 	}
 	
 	/**
-	 * Answer the first value from a Dublin Core record for an asset
+	 * Answer the media file
 	 * 
-	 * @param object Record $dcRecord
-	 * @param string $partId
-	 * @return object SObject The primitive object for the value
+	 * @return object MediaFile
 	 * @access public
 	 * @since 4/25/07
 	 */
-	function getDcValue (&$asset, $partIdString) {
-		$idManager =& Services::getService("Id");
-		
-		$values =& $asset->getPartValuesByPartStructure(
-			$idManager->getId($partIdString));
-		
-		if ($values->hasNext()) {
-			return $values->next();
+	function &getMediaFile () {
+		if (!isset($this->_mediaFile)) {
+			if ($this->getContent()) {
+				$this->_mediaFile =& MediaFile::withIdStrings(
+					$this->getMediaRepositoryId(),
+					$this->getMediaAssetId(),
+					$this->getMediaRecordId());
+				
+				
+			} else {
+				$null = null;
+				return $null;
+			}
 		}
 		
-		return null;
-	}
-	
-	/**
-	 * Answer the media Asset
-	 * 
-	 * @return object Asset
-	 * @access public
-	 * @since 4/25/07
-	 */
-	function &getMediaAsset () {
-		if ($this->getContent()) {
-			$idManager =& Services::getService("Id");
-			$repositoryManager =& Services::getService("Repository");
-						
-			$repository =& $repositoryManager->getRepository(
-				$idManager->getId($this->getMediaRepositoryId()));
-			$assetId =& $idManager->getId($this->getMediaAssetId());
-			
-			if ($repository->assetExists($assetId)) {
-				$asset =& $repository->getAsset($assetId);
-				return $asset;
-			}	
-		}
-		
-		$null = null;
-		return $null;
+		return $this->_mediaFile;
 	}
 	
 /*********************************************************
