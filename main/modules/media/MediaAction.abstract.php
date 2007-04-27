@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.5 2007/02/27 20:04:44 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.6 2007/04/27 15:13:31 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.5 2007/02/27 20:04:44 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.6 2007/04/27 15:13:31 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -131,7 +131,9 @@ class MediaAction
 		ob_start();
 		
 		$assetId =& $asset->getId();
-		print "\n\t<asset id=\"".$assetId->getIdString()."\">";
+		$repository =& $asset->getRepository();
+		$repositoryId =& $repository->getId();
+		print "\n\t<asset id=\"".$assetId->getIdString()."\" repositoryId=\"".$repositoryId->getIdString()."\">";
 		
 		print "\n\t\t<displayName><![CDATA[";
 		print $asset->getDisplayName();		

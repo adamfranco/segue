@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: plugins_default.conf.php,v 1.3 2007/01/12 20:27:59 adamfranco Exp $
+ * @version $Id: plugins_default.conf.php,v 1.4 2007/04/27 15:13:31 adamfranco Exp $
  */
  
 	require_once(MYDIR."/main/library/PluginManager/PluginManager.class.php");
@@ -26,5 +26,7 @@
 	
 	
 	$pluginManager =& Services::getService("PluginManager");
-// 	$pluginManager->_installPlugin(new Type ('SeguePlugins', 'edu.middlebury', 'TextBlock'));
+// 	$pluginManager->installPlugin(new Type ('SeguePlugins', 'edu.middlebury', 'TextBlock'));
+// 	$pluginManager->installPlugin(new Type ('SeguePlugins', 'edu.middlebury', 'Download'));
+// 	$pluginManager->installPlugin(new Type ('SeguePlugins', 'edu.middlebury', 'Assignment'));
 	

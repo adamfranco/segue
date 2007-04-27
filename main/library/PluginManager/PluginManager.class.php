@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.14 2007/01/18 20:45:54 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.15 2007/04/27 15:13:31 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.14 2007/01/18 20:45:54 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.15 2007/04/27 15:13:31 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -461,10 +461,10 @@ class PluginManager {
 	 * 
 	 * @param object HarmoniType $type gives us the location of plugin to be 
 	 * installed
-	 * @access private
+	 * @access public
 	 * @since 3/6/06
 	 */
-	function _installPlugin ($type) {
+	function installPlugin ($type) {
 	// @todo deal with new plugin readiness structure, and database tables
 		$authZ =& Services::getService("AuthZ");
 //		if ($authZ->isUserAuthorized("edu.middlebury.authorization.add_children", ??))	{

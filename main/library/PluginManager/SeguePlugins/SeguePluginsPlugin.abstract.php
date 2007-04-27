@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.18 2007/01/12 20:28:00 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.19 2007/04/27 15:13:31 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.18 2007/01/12 20:28:00 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.19 2007/04/27 15:13:31 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -227,6 +227,29 @@ class SeguePluginsPlugin {
 	 */
 	function setTitle ( $title ) {
 		$this->_asset->updateDisplayName($title);
+	}
+	
+	/**
+	 * Answer the persisted 'description' value of this plugin.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function getDescription () {
+		return $this->_asset->getDescription();
+	}
+	
+	/**
+	 * Set the persisted 'description' value of this plugin.
+	 * 
+	 * @param string $title
+	 * @return void
+	 * @access public
+	 * @since 1/13/06
+	 */
+	function setDescription ( $description ) {
+		$this->_asset->updateDescription($description);
 	}
 	
 	/**
@@ -441,6 +464,18 @@ class SeguePluginsPlugin {
 		return $path;
 	}
 
+/*********************************************************
+ * Files
+ *
+ * There are two ways that files can be stored and accessed
+ * by plugins. 
+ * 		1. 	Reference files from the media library
+ *		2. 	Store and access file records in the plugin's 
+ *			data array.
+ *
+ * 
+ *********************************************************/
+ 
 	/**
 	 * Answer the URL for the file 
 	 * 
@@ -556,6 +591,10 @@ class SeguePluginsPlugin {
 			
 		return $datum;
 	}
+	
+/*********************************************************
+ * Logging
+ *********************************************************/
 	
 	/**
 	 * Log an event. Plugins should log events that involve data modification

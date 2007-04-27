@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: repository_default.conf.php,v 1.4 2007/04/13 19:58:22 adamfranco Exp $
+ * @version $Id: repository_default.conf.php,v 1.5 2007/04/27 15:13:31 adamfranco Exp $
  */
  
 // :: Set up the RepositoryManager ::
@@ -21,7 +21,7 @@
 	$configuration->addProperty('hierarchy_id', $repositoryHierarchyId);
 	$configuration->addProperty('default_parent_id', $defaultParentId);
 	$configuration->addProperty('version_control_all', $arg2 = TRUE);
-	$configuration->addProperty('use_filesystem_for_files', $arg3 = TRUE);
+	$configuration->addProperty('use_filesystem_for_files', $arg3 = FALSE);
 // 	$configuration->addProperty('file_data_path', $arg4 = MYPATH."/../segue_data");
 	Services::startManagerAsService("RepositoryManager", $context, $configuration);
 	unset($arg0, $arg1, $arg2, $arg3, $arg4);

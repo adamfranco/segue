@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.8 2007/01/30 20:46:08 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.9 2007/04/27 15:13:31 adamfranco Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
@@ -110,7 +110,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 		$plugins = $pm->getRegisteredPlugins();
 		// iterate through registered plugins and install them
 		foreach ($plugins as $type) {
-			$pm->_installPlugin($type);
+			$pm->installPlugin($type);
 		}
 	} else {
 		$pm->_loadPlugins();
