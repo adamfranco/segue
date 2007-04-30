@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.8 2007/01/29 21:25:24 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.9 2007/04/30 20:22:06 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.8 2007/01/29 21:25:24 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.9 2007/04/30 20:22:06 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -52,11 +52,8 @@ class SeguePluginsAjaxPlugin
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function url ( $parameters = array() ) {		
-		ArgumentValidator::validate($parameters, 
-			OptionalRule::getRule(ArrayValidatorRule::getRule()));
-		
-		return "'Javascript:updateAjaxPlugin(\"".$this->getId()."\", \"".$this->_ajaxUrl($parameters)."\")'";
+	function href ( $parameters = array() ) {		
+		return "href='Javascript:".$this->locationSend($parameters)."'";
 	}
 	
 	/**
@@ -64,7 +61,7 @@ class SeguePluginsAjaxPlugin
 	 * passed.
 	 *
 	 * Use this method, e.g.:
-	 *		"onclick=".$this->locationSend(array('item' => 123))
+	 *		"onclick=".$this->sendToJS(array('item' => 123))
 	 * instead of the following:
 	 * 		"onclick='window.location=\"".$this->url(array('item' => 123))."\"'"
 	 * 
@@ -73,8 +70,11 @@ class SeguePluginsAjaxPlugin
 	 * @access public
 	 * @since 1/16/06
 	 */
-	function locationSend ( $parameters = array() ) {		
-		return $this->url($parameters);
+	function locationSend ( $parameters = array() ) {
+		ArgumentValidator::validate($parameters, 
+			OptionalRule::getRule(ArrayValidatorRule::getRule()));
+			
+		return "updateAjaxPlugin(\"".$this->getId()."\", \"".$this->_ajaxUrl($parameters)."\");";
 	}
 	
 	/**

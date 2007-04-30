@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.50 2007/04/25 18:42:07 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.51 2007/04/30 20:22:06 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.50 2007/04/25 18:42:07 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.51 2007/04/30 20:22:06 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -519,7 +519,7 @@ END;
 		ob_start();
 		print "\n<div class='site_component_wrapper'";
 		print " onmouseover='this.borderColor = \"$borderColor\"; showControls(this)'";
-		print " onmouseout='if (event.target.nodeName != \"SELECT\" && event.target.nodeName != \"OPTION\") {hideControls(this);} '";
+		print " onmouseout='if (isValidMouseOut(this, event)) {hideControls(this);} '";
 		print " style='position: relative; margin: 2px;'";
 		print ">";
 		return ob_get_clean();

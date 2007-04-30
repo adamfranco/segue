@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.6 2007/04/30 16:41:07 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.7 2007/04/30 20:22:06 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.6 2007/04/30 16:41:07 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.7 2007/04/30 20:22:06 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -76,7 +76,7 @@ class EduMiddleburyTextBlockPlugin
  			print "\n\t<br/>";
  			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
  			
- 			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSend()."/>";
+ 			print "\n\t<input type='button' value='"._('Cancel')."' onclick='".$this->locationSend()."'/>";
  			
  			// Image button
  			print "\n\t<input type='button' value='"._('Add Image')."' onclick=\"";
@@ -116,14 +116,14 @@ class EduMiddleburyTextBlockPlugin
 			print "\n</form>";
  		} else if ($this->canView()) {
  			if ($this->shouldShowControls()) {
-				print "\n<div onclick=".$this->url(array('edit' => 'true')).">";
+				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
  			}
 	 		print "\n".$this->getContent();
 	 		
 	 		if ($this->shouldShowControls()) {
 				print "\n</div>";
 				print "\n<div style='text-align: right; white-space: nowrap;'>";
-				print "\n\t<a href=".$this->url(array('edit' => 'true')).">"._("click to edit")."</a>";
+				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._("edit")."</a>";
 				print "\n</div>";
 			}
 				

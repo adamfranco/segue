@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.23 2007/04/30 16:41:05 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.24 2007/04/30 20:22:06 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.23 2007/04/30 16:41:05 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.24 2007/04/30 20:22:06 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -105,6 +105,17 @@ class SeguePluginsPlugin {
  *********************************************************/
 	
 	/**
+	 * Answer an href tag string with the array values added as parameters.
+	 * 
+	 * @param array $parameters Associative array ('name' => 'value')
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	function href ( $parameters = array() ) {
+		return "href='".$this->url($parameters)."'";
+	}
+	/**
 	 * Answer a Url string with the array values added as parameters.
 	 * 
 	 * @param array $parameters Associative array ('name' => 'value')
@@ -119,7 +130,7 @@ class SeguePluginsPlugin {
 		$url =& $this->_baseUrl->deepCopy();
 		if (is_array($parameters) && count($parameters))
 			$url->setValues($parameters);
-		return "'".$url->write()."'";
+		return $url->write();
 	}
 	
 	/**

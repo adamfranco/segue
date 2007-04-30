@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.5 2007/04/30 16:29:27 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.6 2007/04/30 20:22:06 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.5 2007/04/30 16:29:27 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.6 2007/04/30 20:22:06 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SeguePluginsAjaxPlugin
@@ -120,7 +120,7 @@ class EduMiddleburyDownloadPlugin
  			print "\n\t<br/>";
  			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
  			
- 			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSend()."/>";
+ 			print "\n\t<input type='button' value='"._('Cancel')."' onclick='".$this->locationSend()."'/>";
 
  			
 			print "\n</form>";
@@ -142,7 +142,7 @@ class EduMiddleburyDownloadPlugin
 	 		if ($this->shouldShowControls()) {
 // 				print "\n</div>";
 				print "\n<div style='text-align: right; white-space: nowrap;'>";
-				print "\n\t<a href=".$this->url(array('edit' => 'true')).">"._("edit")."</a>";
+				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._("edit")."</a>";
 				print "\n</div>";
 			}
 				
