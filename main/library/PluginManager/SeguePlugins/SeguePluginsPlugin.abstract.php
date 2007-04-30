@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.21 2007/04/30 14:07:15 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.22 2007/04/30 16:29:27 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.21 2007/04/30 14:07:15 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.22 2007/04/30 16:29:27 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -485,15 +485,12 @@ class SeguePluginsPlugin {
   * to upload and manage files across their site and from
   * remote sources.
   *
-  * MediaFiles are identified by three ids: a repository id,
-  * an asset id, and a file-record id. To access a MediaFile
-  * object use the MediaFile::withIds() or MediaFile::withIdStringss()
-  * static accessor methods:
-  *		$mediaFile =& MediaFile::withIdStrings('123', '456', '789');
+  * MediaFiles are identified by a string id. To access a MediaFile
+  * object use the MediaFile::withIdString() static accessor method:
+  *		$mediaFile =& MediaFile::withIdString('repositoryId=123&assetId=456&recordId=789');
   *
-  * MediaFiles can return a reference to their MediaAsset object
-  * which in turn provides access to Dublin Core metadata
-  * as well as any other MediaFiles attached to that MediaAsset.
+  * MediaFiles provide access to Dublin Core metadata as as urls and file 
+  * properties.
   *
   * To load the media library create a button or link that
   * calls the media library's static initializer method, run(),
@@ -506,13 +503,10 @@ class SeguePluginsPlugin {
   *		<input type="button" 
   *			onclick="this.onUse = function (mediaFile) {
   *
-  *						alert(mediaFile.asset.displayName
-  *							+ '\n' + mediaFile.url
-  *							+ '\n' + mediaFile.thumbnailUrl);
+  *						alert(mediaFile.getTitles()[0]
+  *							+ '\n' + mediaFile.getUrl()
+  *							+ '\n' + mediaFile.getThumbnailUrl());
   *
-  *						alert(mediaFile.asset.repositoryId
-  *							+ '\n' + mediaFile.asset.id
-  *							+ '\n' + mediaFile.id);
   *					 }
   *
   *					 MediaLibrary.run('12345', this);"

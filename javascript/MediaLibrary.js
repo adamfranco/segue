@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.8 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.8 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -110,7 +110,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.8 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -400,7 +400,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.8 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -498,7 +498,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.8 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -545,7 +545,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.8 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -835,7 +835,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
 				dummyField.title = 'Click to Replace';
 				dummyField.style.cursor = 'pointer';
 				dummyField.mediaAsset = this;
-				dummyField.fileId = this.files[i].id;
+				dummyField.fileId = this.files[i].recordId;
 				dummyField.onclick = function () {
 					var uploadField = document.createElement('input');
 					uploadField.dummyField = this;
@@ -969,7 +969,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.8 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
@@ -982,13 +982,13 @@ function MediaFile ( xmlElement, asset, library) {
 	 * 
 	 * @param <##>
 	 * @return void
-	 * @access public
+	 * @access protected
 	 * @since 1/31/07
 	 */
 	MediaFile.prototype.init = function ( xmlElement, asset, library ) {
 		this.asset = asset;
 		this.library = library;
-		this.id = xmlElement.getAttribute('id');
+		this.recordId = xmlElement.getAttribute('id');
 		this.name = xmlElement.getElementsByTagName('name')[0].firstChild.data;
 		this.size = xmlElement.getElementsByTagName('size')[0].firstChild.data;
 		this.url = xmlElement.getElementsByTagName('url')[0].firstChild.data;
@@ -1004,7 +1004,7 @@ function MediaFile ( xmlElement, asset, library) {
 	 * 
 	 * @param object DOM_Element container
 	 * @return void
-	 * @access public
+	 * @access protected
 	 * @since 1/31/07
 	 */
 	MediaFile.prototype.render = function ( container ) {
@@ -1026,12 +1026,259 @@ function MediaFile ( xmlElement, asset, library) {
 		
 // 		var url = this.url;
 // 		this.img.onclick = function () {
-// 			window.open (url, this.id, "height=400,width=600,resizable=yes,scrollbars=yes");
+// 			window.open (url, this.recordId, "height=400,width=600,resizable=yes,scrollbars=yes");
 // 		}
 		img.className = 'thumbnail link';
 		
 // 		container.appendChild(this.img);
 	}
+	
+	
+	
+/*********************************************************
+ * Begin - MediaFile public API
+ *
+ * The methods below comprise the public API for working
+ * with MediaFiles in Segue. These methods work hand-in-hand
+ * with the equivalent MediaFile PHP class.
+ *********************************************************/
+	/**
+	 * Answer a string identifier for this file
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getId = function () {
+		return "repositoryId=" + this.asset.repositoryId 
+			+ "&assetId=" + this.asset.id
+			+ "&recordId=" + this.recordId;
+	}
+	
+	/**
+	 * Answer the URL to the file
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getUrl = function () {
+		return this.url;
+	}
+	
+	/**
+	 * Answer the thumbnail URL
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getThumbnailUrl = function () {
+		return this.thumbnailUrl;
+	}
+	
+	/**
+	 * Answer the filename
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getFilename = function () {
+		return this.name;
+	}
+	
+	/**
+	 * Answer the size of the file in bytes
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getSize = function () {
+		return this.size;
+	}
+	
+	/**
+	 * Answer the MIME type of the file
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getMimeType = function () {
+		return this.mimeType;
+	}
+	
+	/**
+	 * Answer the modification date
+	 * 
+	 * @return object Date
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getModificationDate = function () {
+		return this.asset.modificationDate;
+	}
+	
+	/**
+	 * Answer an array of all titles
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getTitles = function () {
+		return [this.asset.title];
+	}
+	
+	/**
+	 * Answer an array of all descriptions
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getDescriptions = function () {
+		return [this.asset.description];
+	}
+	
+	/**
+	 * Answer an array of all creators
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getCreators = function () {
+		return [this.asset.creator];
+	}
+	
+	/**
+	 * Answer an array of all subjects
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getSubjects = function () {
+		return [this.asset.subject];
+	}
+	
+	/**
+	 * Answer an array of all contributors
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getContributors = function () {
+		return [this.asset.contributor];
+	}
+	
+	/**
+	 * Answer an array of all Dates
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getDates = function () {
+		return [this.asset.date];
+	}
+	
+	/**
+	 * Answer an array of all Formats
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getFormats = function () {
+		return [this.asset.format];
+	}
+	
+	/**
+	 * Answer an array of all Publishers
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getPublishers = function () {
+		return [this.asset.publisher];
+	}
+	
+	/**
+	 * Answer an array of all languages
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getLanguages = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all types
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getTypes = function () {
+		return [this.mimeType];
+	}
+	
+	/**
+	 * Answer an array of all rights strings
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getRights = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all sources
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getSources = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all relations
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getRelations = function () {
+		return [];
+	}
+	
+	/**
+	 * Write a citation into the DOM element passed
+	 * 
+	 * @param object DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.writeCitation = function (container) {
+		this.asset.writeCitation( container );
+	}
+
+/*********************************************************
+ * End - MediaFile public API
+ *********************************************************/
 
 
 /**
