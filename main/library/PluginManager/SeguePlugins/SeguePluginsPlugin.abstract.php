@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.20 2007/04/27 20:20:19 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.21 2007/04/30 14:07:15 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.20 2007/04/27 20:20:19 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.21 2007/04/30 14:07:15 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -476,6 +476,61 @@ class SeguePluginsPlugin {
  *
  * 
  *********************************************************/
+ 
+ /*********************************************************
+  * Files referenced from the media library.
+  * -----------------------------------------
+  *
+  * Segue has a built-in "media library" that allows users
+  * to upload and manage files across their site and from
+  * remote sources.
+  *
+  * MediaFiles are identified by three ids: a repository id,
+  * an asset id, and a file-record id. To access a MediaFile
+  * object use the MediaFile::withIds() or MediaFile::withIdStringss()
+  * static accessor methods:
+  *		$mediaFile =& MediaFile::withIdStrings('123', '456', '789');
+  *
+  * MediaFiles can return a reference to their MediaAsset object
+  * which in turn provides access to Dublin Core metadata
+  * as well as any other MediaFiles attached to that MediaAsset.
+  *
+  * To load the media library create a button or link that
+  * calls the media library's static initializer method, run(),
+  * and pass it the plugin's id and a DOM Element for reference.
+  * To the referenced DOM element you must attach an "onUse" method
+  * which will be given a MediaFile javascript object when the
+  * user chooses a file in the media library.
+  *
+  * Example (Note that the line-returns in the Javascript must be removed for actual usage):
+  *		<input type="button" 
+  *			onclick="this.onUse = function (mediaFile) {
+  *
+  *						alert(mediaFile.asset.displayName
+  *							+ '\n' + mediaFile.url
+  *							+ '\n' + mediaFile.thumbnailUrl);
+  *
+  *						alert(mediaFile.asset.repositoryId
+  *							+ '\n' + mediaFile.asset.id
+  *							+ '\n' + mediaFile.id);
+  *					 }
+  *
+  *					 MediaLibrary.run('12345', this);"
+  *			value="Select File"/>
+  *
+  * 
+  * This is the preferred method for handling files.
+  *********************************************************/
+ 
+ 
+ /*********************************************************
+  * Files in the Plugin's data array.
+  * -----------------------------------------
+  *
+  * Your plugin can store files in its data array if needed.
+  * This may be useful if the plugin needs to handle file
+  * uploads that should not be directly accessible.
+  *********************************************************/
  
 	/**
 	 * Answer the URL for the file 

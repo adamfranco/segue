@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.3 2007/04/27 20:20:19 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.4 2007/04/30 14:07:15 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.3 2007/04/27 20:20:19 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.4 2007/04/30 14:07:15 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SeguePluginsAjaxPlugin
@@ -74,16 +74,10 @@ class EduMiddleburyDownloadPlugin
  		
  		if ($this->getFieldValue('edit') && $this->canModify()) {
 			print "\n".$this->formStartTagWithAction();
-			
-			if ($this->getContent()) {
-				$info = explode("\n",$this->getContent());
-			} else {
-				$info = array("", "", "");
-			}
  			
- 			print "\n\t<input name='".$this->getFieldName('repository_id')."' type='hidden' value=\"".$info[0]."\"/>";
- 			print "\n\t<input name='".$this->getFieldName('asset_id')."' type='hidden' value=\"".$info[1]."\"/>";
- 			print "\n\t<input name='".$this->getFieldName('record_id')."' type='hidden' value=\"".$info[2]."\"/>";
+ 			print "\n\t<input name='".$this->getFieldName('repository_id')."' type='hidden' value=\"".$this->getMediaRepositoryId()."\"/>";
+ 			print "\n\t<input name='".$this->getFieldName('asset_id')."' type='hidden' value=\"".$this->getMediaAssetId()."\"/>";
+ 			print "\n\t<input name='".$this->getFieldName('record_id')."' type='hidden' value=\"".$this->getMediaFileId()."\"/>";
  			
  			// Description
  			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->getDescription()."</textarea>";
@@ -106,11 +100,17 @@ class EduMiddleburyDownloadPlugin
  			print		"img.align = 'left'; ";
  			print		"img.border = '0'; ";
  			
- 			print		"var title = downloadBar.appendChild(document.createElement('div')); ";
- 			print 		"title.innerHTML = mediaFile.asset.displayName; ";
- 			print		"title.fontWeight = 'bold'; ";
+ 			print		"var downloadDiv = downloadBar.appendChild(document.createElement('div')); ";
+ 			print		"download.style.textAlign = 'center'; ";
+ 			print		"var download = downloadDiv.appendChild(document.createElement('a')); ";
+ 			print 		"download.innerHTML = '"._("Download this file")."'; ";
+ 			print		"download.style.fontWeight = 'bold'; ";
+ 			print		"download.href = mediafile.url; ";
+ 			print		"downloadDiv.appendChild(document.createElement('br')); ";
+ 			print		"downloadDiv.appendChild(document.createTextNode(mediaFile.size)); ";
  			
  			print		"var citation = downloadBar.appendChild(document.createElement('div')); ";
+ 			print		"citation.style.clear = 'both'; ";
  			print 		"mediaFile.asset.writeCitation(citation); ";
  			
  			print 		"this.nextSibling.innerHTML = '<div>' + downloadBar.innerHTML + '<div style=\\'clear: both;\\'></div></div>'; ";
@@ -270,7 +270,7 @@ class EduMiddleburyDownloadPlugin
 				$this->_mediaFile =& MediaFile::withIdStrings(
 					$this->getMediaRepositoryId(),
 					$this->getMediaAssetId(),
-					$this->getMediaRecordId());
+					$this->getMediaFileId());
 				
 				
 			} else {
@@ -339,7 +339,7 @@ class EduMiddleburyDownloadPlugin
  	 * @access public
  	 * @since 4/25/07
  	 */
- 	function getMediaRecordId () {
+ 	function getMediaFileId () {
  		if ($this->getContent()) {
  			$info = explode("\n", $this->getContent());
  			return $info[2];
