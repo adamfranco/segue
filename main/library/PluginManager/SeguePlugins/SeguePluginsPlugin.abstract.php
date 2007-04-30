@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.22 2007/04/30 16:29:27 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.23 2007/04/30 16:41:05 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.22 2007/04/30 16:29:27 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.23 2007/04/30 16:41:05 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -514,6 +514,44 @@ class SeguePluginsPlugin {
   *
   * 
   * This is the preferred method for handling files.
+  *
+  * The methods availible in the MediaFile class are as follows:
+  *
+  * 	Instance Creation (static):
+  *			withIdString($idString)
+  *
+  *		Access:
+  *			getIdString()
+  *			getSize()
+  *			getFilename()
+  *			getMimeType()
+  *			getFileContents()
+  *			getUrl()
+  *			getThumbnailUrl()
+  *			getModificationDate()
+  *			
+  *		Access - Dublin Core:
+  *			getTitle()
+  *			getTitles()
+  *			getCreator()
+  *			getCreators()
+  *			getDescription()
+  *			getDescriptions()
+  *			getSource()
+  *			getSources()
+  *			getPublisher()
+  *			getPublishers()
+  *			getDate()
+  *			getDates()
+  *			getContributor()
+  *			getContributors()
+  *			getRight()
+  *			getRights()
+  *			getRelation()
+  *			getRelations()
+  *			getLanguage()
+  *			getLanguages()
+  *			
   *********************************************************/
  
  
