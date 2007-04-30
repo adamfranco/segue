@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.1 2007/03/01 20:12:59 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.2 2007/04/30 16:21:15 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.clas
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.1 2007/03/01 20:12:59 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.2 2007/04/30 16:21:15 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -182,10 +182,10 @@ class viewAction
 		$harmoni =& Harmoni::instance();
 		ob_start();
 		
-		print "<a href='".$harmoni->request->quickURL('home', 'welcome')."' alt='"._("The Segue homepage")."'>";
+		print "<a href='".$harmoni->request->quickURL('home', 'welcome')."' title='"._("The Segue homepage")."'>";
 		print _("home")."</a> | ";
 		
-		print "<a href='".$harmoni->request->quickURL('ui2', 'list')."' alt='"._("List of Segue sites")."'>";
+		print "<a href='".$harmoni->request->quickURL('ui2', 'list')."' title='"._("List of Segue sites")."'>";
 		print _("site list")."</a>";
 		
 		$ret =& new Component(ob_get_clean(), BLANK, 2);

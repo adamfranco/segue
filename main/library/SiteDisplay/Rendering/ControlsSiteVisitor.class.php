@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2007/03/01 20:12:55 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.16 2007/04/30 16:21:14 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2007/03/01 20:12:55 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.16 2007/04/30 16:21:14 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -95,12 +95,11 @@ class ControlsSiteVisitor {
 		$idManager =& Services::getService("Id");
 		$harmoni =& Harmoni::instance();
 		$message = _("Are you sure that you wish to delete this component and all of its children?");
-		$url = str_replace('&amp;', '&', 
-				$harmoni->request->quickURL('ui2', 'deleteComponent', array(
+		$url = 	$harmoni->request->quickURL('ui2', 'deleteComponent', array(
 					'node' => $siteComponent->getId(),
 					'returnNode' => RequestContext::value('node'),
 					'returnAction' => $this->_action
-					)));
+					));
 		
 		print "\n\t\t\t\t<div style='margin-top: 5px; margin-bottom: 5px;'>";
 		print "\n\t\t\t\t\t<button onclick='";
@@ -108,8 +107,10 @@ class ControlsSiteVisitor {
 			$idManager->getId("edu.middlebury.authorization.delete"), 
 			$siteComponent->getQualifierId()))
 		{
-			print 	"if (confirm(\"".$message."\")) ";
-			print 		"window.location = \"".$url."\";";
+			print 	"if (confirm(\"".$message."\")) {";
+			print 		" var url = \"".$url."\"; ";
+			print 		"window.location = url.urlDecodeAmpersands(); ";
+			print 	"} ";
 		} else {
 			print "alert(\""._('You are not authorized to delete this item.')."\"); return false;";
 		}
@@ -222,7 +223,7 @@ class ControlsSiteVisitor {
 		print " value='default'";
 		print (($siteComponent->showDisplayNames() == 'default')?" checked='checked'":"");
 		print (($canEdit)?"":" disabled='disabled'");
-		print "'/>"._(" use default");
+		print "/>"._(" use default");
 		
 		print "</td></tr>\n\t\t\t\t\t<tr><td>";
 		print " <input type='radio' ";
@@ -230,7 +231,7 @@ class ControlsSiteVisitor {
 		print " value='true'";
 		print (($siteComponent->showDisplayNames() === true)?" checked='checked'":"");
 		print (($canEdit)?"":" disabled='disabled'");
-		print "'/>"._("override-yes");
+		print "/>"._("override-yes");
 		
 		print "</td></tr>\n\t\t\t\t\t<tr><td>";
 		print " <input type='radio' ";
@@ -238,7 +239,7 @@ class ControlsSiteVisitor {
 		print " value='false'";
 		print (($siteComponent->showDisplayNames() === false)?" checked='checked'":"");
 		print (($canEdit)?"":" disabled='disabled'");
-		print "'/>"._("override-no");
+		print "/>"._("override-no");
 		
 		print "</td></tr>";
 		print "\n\t\t\t\t</table>";
@@ -328,7 +329,7 @@ class ControlsSiteVisitor {
 			print "\n\t\t\t\t\t\t<option value='".$i."'";
 			print (($i == $siteComponent->getNumRows())?" selected='selected'":"");
 			print (($i * $siteComponent->getNumColumns() < $minCells)?" disabled='disabled'":"");
-			print "/>";
+			print ">";
 			print $i;
 			print "</option>";
 		}
@@ -341,7 +342,7 @@ class ControlsSiteVisitor {
 			print "\n\t\t\t\t\t\t<option value='".$i."'";
 			print (($i == $siteComponent->getNumColumns())?" selected='selected'":"");
 			print (($i * $siteComponent->getNumRows() < $minCells)?" disabled='disabled'":"");
-			print "/>";
+			print ">";
 			print $i;
 			print "</option>";
 		}
@@ -403,7 +404,7 @@ END;
 		for ($i = 1; $i <= 10; $i++) {
 			print "\n\t\t\t\t\t\t<option value='".$i."'";
 			print (($i == $siteComponent->getNumColumns())?" selected='selected'":"");
-			print "/>";
+			print ">";
 			print $i;
 			print "</option>";
 		}
@@ -413,7 +414,7 @@ END;
 		for ($i = 0; $i <= 10; $i++) {
 			print "\n\t\t\t\t\t\t<option value='".$i."'";
 			print (($i == $siteComponent->getNumRows())?" selected='selected'":"");
-			print "/>";
+			print ">";
 			print (($i == 0)?_("unlimited"):$i);
 			print "</option>";
 		}
@@ -458,7 +459,7 @@ END;
 		foreach ($directions as $direction => $label) {
 			print "\n\t\t\t\t\t\t<option value='".$direction."'";
 			print (($direction == $siteComponent->getDirection())?" selected='selected'":"");
-			print "/>";
+			print ">";
 			print $label;
 			print "</option>";
 		}
