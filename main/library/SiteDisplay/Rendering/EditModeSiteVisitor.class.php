@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.52 2007/05/03 18:22:00 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.53 2007/05/03 18:34:26 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.52 2007/05/03 18:22:00 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.53 2007/05/03 18:34:26 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -460,8 +460,9 @@ END;
 // 			."border-top: $lineWidth solid $borderColor; "
 // 			."border-left: $lineWidth solid $borderColor; "
 // 			."border-right: $lineWidth solid $borderColor; "
-			.(($leftIndentLevel)?"margin-left: 10px; ":"")
-			."visibility: hidden; ";
+			.(($leftIndentLevel)?"margin-left: 10px; ":"");
+		
+		print "visibility: hidden; ";
 		print "position: absolute; ";
 		print "z-index: 9999; ";
 		print "left: 0px; ";
@@ -469,7 +470,8 @@ END;
 		
 		print "'";
 		print " onmouseover='showControlsLink(this)'"
-			." onmouseout='hideControlsLink(this)'>";
+			." onmouseout='hideControlsLink(this)'";
+		print ">";
 		print "\n<table border='0' cellpadding='0' cellspacing='0'"
 			." style='width: 100%; padding: 0px; margin: 0px; cursor: pointer;"
 			."background-color: $backgroundColor; "
