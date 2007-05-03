@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.10 2007/05/03 20:56:29 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.10 2007/05/03 20:56:29 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -67,10 +67,9 @@ function MediaLibrary ( assetId, callingElement ) {
 	// All Files in Site
 		var tab = this.tabs.addTab('site_media', "Other Files In Site");
 		this.siteLibrary = new SiteLibrary(this, this.assetId, this.caller, tab.wrapperElement);
-		
+
 		tab.library = this.siteLibrary;
 		tab.onOpen = function () { this.library.onOpen() };
-		
 	}
 	
 	/**
@@ -110,7 +109,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.10 2007/05/03 20:56:29 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -238,8 +237,7 @@ function FileLibrary ( owner, assetId, caller, container ) {
 	FileLibrary.prototype.loadMedia = function (xmldoc) {
 // 		try {
 			var responseElement = xmldoc.firstChild;
-			
-			var errors = responseElement.getElementsByTagName('error');
+			var errors = xmldoc.getElementsByTagName('error');
 			if (errors.length) {
 				for (var i = 0; i < errors.length; i++) {
 					throw new Error( errors[i].firstChild.data );
@@ -258,7 +256,7 @@ function FileLibrary ( owner, assetId, caller, container ) {
 // 			return false;
 // 		}
 		
-		var fileAssets = responseElement.getElementsByTagName('asset');
+		var fileAssets = xmldoc.getElementsByTagName('asset');
 		if (fileAssets.length) {
 			for (var i = 0; i < fileAssets.length; i++) {
 				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i], this, this.canEdit));
@@ -303,10 +301,11 @@ function FileLibrary ( owner, assetId, caller, container ) {
 			heading.appendChild(document.createTextNode(': '));
 		}
 		var datum = row.appendChild(document.createElement('td'));
-		var input = datum.appendChild(document.createElement('input'));
+		var input = document.createElement('input');
 		input.type = type;
 		input.name = name;
 		input.value = defaultValue;
+		
 		this.uploadFormDefaults[name] = defaultValue;
 		if (properties) {
 			for (var key in properties) {
@@ -316,6 +315,8 @@ function FileLibrary ( owner, assetId, caller, container ) {
 		
 		input.tabIndex = this.tabIndex;
 		this.tabIndex++;
+		
+		datum.appendChild(input);
 		
 		return input;
 	}
@@ -400,7 +401,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.10 2007/05/03 20:56:29 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -498,7 +499,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.10 2007/05/03 20:56:29 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -545,7 +546,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.10 2007/05/03 20:56:29 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -663,7 +664,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
 				this.deleteLink.onclick = function () {
 					if (confirm('Are you sure that you want to delete this file? If it is used in the site, links to it will be broken.'))
 					{
-						this.mediaAsset.delete();
+						this.mediaAsset.deleteAsset();
 					}
 				}
 			}
@@ -939,15 +940,15 @@ function MediaAsset ( assetId, xmlElement, library ) {
 			if (responseElement.xml)
 				alert(responseElement.xml);
 			else {
-				var xmlSerializer = new XMLSerializer();
-				alert(xmlSerializer.serializeToString(responseElement));
+// 				var xmlSerializer = new XMLSerializer();
+// 				alert(xmlSerializer.serializeToString(responseElement));
 			}
 			
 			return false;
 		}
 		
-		var xmlSerializer = new XMLSerializer();
-		alert(xmlSerializer.serializeToString(responseElement));
+// 		var xmlSerializer = new XMLSerializer();
+// 		alert(xmlSerializer.serializeToString(responseElement));
 		
 		for (var i = 0; i < responseElement.childNodes.length; i++) {
 			if (responseElement.childNodes[i].nodeName == 'asset') {
@@ -969,7 +970,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.9 2007/04/30 16:29:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.10 2007/05/03 20:56:29 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
