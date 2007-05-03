@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.51 2007/04/30 20:22:06 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.52 2007/05/03 18:22:00 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.51 2007/04/30 20:22:06 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.52 2007/05/03 18:22:00 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -461,9 +461,10 @@ END;
 // 			."border-left: $lineWidth solid $borderColor; "
 // 			."border-right: $lineWidth solid $borderColor; "
 			.(($leftIndentLevel)?"margin-left: 10px; ":"")
-			."display: none; ";
+			."visibility: hidden; ";
 		print "position: absolute; ";
 		print "z-index: 9999; ";
+		print "left: 0px; ";
 		
 		
 		print "'";
@@ -520,7 +521,7 @@ END;
 		print "\n<div class='site_component_wrapper'";
 		print " onmouseover='this.borderColor = \"$borderColor\"; showControls(this)'";
 		print " onmouseout='if (isValidMouseOut(this, event)) {hideControls(this);} '";
-		print " style='position: relative; margin: 2px;'";
+		print " style='position: relative; border: 2px solid transparent;'";
 		print ">";
 		return ob_get_clean();
 	}
@@ -554,14 +555,13 @@ END;
 /* <![CDATA[ */
 
 	function showControls(mainElement) {
-		mainElement.style.margin='0px';
-		mainElement.style.border='2px solid ' + mainElement.borderColor;
+ 		mainElement.style.borderColor = mainElement.borderColor;
 		var controls = getDescendentByClassName(mainElement, 'controls_bar');
-		controls.style.display = 'block';
+		controls.style.visibility = 'visible';
 		
 		var spacer = getDescendentByClassName(mainElement, 'controls_spacer');
 		if (spacer)
-			spacer.style.display = 'block';
+			spacer.style.visibility = 'visible';
 		
 		// First extend the main element
 		var rightEdge = document.getOffsetLeft(controls) + controls.offsetWidth;
@@ -585,13 +585,16 @@ END;
 	}
 	
 	function hideControls(mainElement) {
-		mainElement.style.margin='2px';
-		mainElement.style.border='0px';
+		var controls = getDescendentByClassName(mainElement, 'controls');
+		if (controls.style.display != 'none') {
+			return;
+		}
+		mainElement.style.borderColor = 'transparent';
 		var controls = getDescendentByClassName(mainElement, 'controls_bar');
-		controls.style.display = 'none';
+		controls.style.visibility = 'hidden';
 		var spacer = getDescendentByClassName(mainElement, 'controls_spacer');
 // 		if (spacer)
-// 			spacer.style.display = 'none';
+// 			spacer.style.visibility = 'hidden';
 		
 		mainElement.style.width = '';
 	}
