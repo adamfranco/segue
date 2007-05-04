@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.1 2007/01/17 21:44:40 adamfranco Exp $
+ * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.1 2007/05/04 18:06:10 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.1 2007/01/17 21:44:40 adamfranco Exp $
+ * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.1 2007/05/04 18:06:10 adamfranco Exp $
  */
 class EditModeControlsSiteVisitor
 	extends ControlsSiteVisitor

@@ -6,13 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.2 2007/04/30 16:21:15 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.3 2007/05/04 18:06:10 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/EditModeSiteVisitor.class.php");
+require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/view.act.php");
 
 /**
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.2 2007/04/30 16:21:15 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.3 2007/05/04 18:06:10 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
