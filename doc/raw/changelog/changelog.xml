@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+ @package concerto.docs
+ 
+ @copyright Copyright &copy; 2005, Middlebury College
+ @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ 
+ @version $Id: changelog.xml,v 1.1 2007/05/04 20:47:23 adamfranco Exp $
+ -->
+<!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
+
+<changelog name="Segue ChangeLog">
+	<version number="2.0.0-alpha" date="The Future">
+		<new author='adam,chris'>
+			Plug-in system added.
+		</new>
+		<new author='adam'>
+			Site rendering system added.
+		</new>
+		<new author='adam'>
+			Everything is new.
+		</new>
+	</version>
+	
+	<authors>
+		<name short="adam">Adam Franco</name>
+		<name short="alex">Alex Chapin</name>
+		<name short="chris">Christopher Shubert</name>
+	</authors>
+	<groupid>82171</groupid>
+	<reftypes>
+		<reftype name="bug">565234</reftype>
+		<reftype name="fr">565237</reftype>
+		<reftype name="task"></reftype>
+	</reftypes>
+</changelog>

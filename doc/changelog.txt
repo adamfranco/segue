@@ -1,0 +1,20 @@
+
+
+Name: Segue ChangeLog
+
+
+v. 2.0.0-alpha (The Future)
+----------------------------------------------------
+		
+	* New feature: 
+		Plug-in system added.
+		(Adam Franco, Christopher Shubert)
+		
+	* New feature: 
+		Site rendering system added.
+		(Adam Franco)
+		
+	* New feature: 
+		Everything is new.
+		(Adam Franco)
+	
