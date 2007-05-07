@@ -127,7 +127,7 @@
 					</xsl:when>
 					<!-- Otherwise add ours to the already completed ones -->
 					<xsl:otherwise>
-						<xsl:value-of select="concat($completedLines, '&#x0A;&#x09;&#x09;', $currentLine, $remainingString)"/>
+						<xsl:value-of select="concat($completedLines, '&#x0A;&#x09;&#x09;', $currentLine, '&#x20;', $remainingString)"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
@@ -163,7 +163,7 @@
 									</xsl:when>
 									<!-- Otherwise add ours to the already completed ones -->
 									<xsl:otherwise>
-										<xsl:value-of select="concat($completedLines, '&#x0A;', $currentLine)"/>
+										<xsl:value-of select="concat($completedLines, '&#x0A;&#x09;&#x09;', $currentLine)"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:with-param>

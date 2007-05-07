@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog-plaintext.xsl,v 1.1 2007/05/04 20:47:24 adamfranco Exp $
+ @version $Id: changelog-plaintext.xsl,v 1.2 2007/05/07 15:22:27 adamfranco Exp $
  -->
  
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -79,10 +79,10 @@ v. <xsl:value-of select="@number" /><xsl:if test="@date!=''"> (<xsl:value-of sel
 	<xsl:call-template name="addNewlines">
 		<xsl:with-param name="maxCharacters" select="76"/>
 		<xsl:with-param name="remainingString">
-			<xsl:value-of select="normalize-space(translate(.,'&#10;',''))" />
-	
+			<xsl:value-of select="normalize-space(translate(translate(.,'&#10;',''), '&#x0A;', ' '))" />
 		</xsl:with-param>
 	</xsl:call-template>
+	
 	<xsl:if test="@author">
 		<xsl:text>&#x0A;&#x09;&#x09;</xsl:text>
 		<xsl:text>(</xsl:text>
