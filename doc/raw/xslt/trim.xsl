@@ -123,7 +123,7 @@
 				<xsl:choose>
 					<!-- If we don't have any completed lines just add ours -->
 					<xsl:when test="not(string-length($completedLines))">
-						<xsl:value-of select="concat($currentLine, $remainingString)"/>
+						<xsl:value-of select="concat('&#x0A;&#x09;&#x09;', $currentLine, $remainingString)"/>
 					</xsl:when>
 					<!-- Otherwise add ours to the already completed ones -->
 					<xsl:otherwise>
@@ -134,7 +134,18 @@
 			
 			<!-- Otherwise, add the next word and continue -->
 			<xsl:otherwise>
-				<xsl:variable name="nextWord" select="substring-before($remainingString, '&#x20;')"/>
+				<xsl:variable name="nextWord">
+					<xsl:choose>
+						<!-- Normal Case -->
+						<xsl:when test="contains($remainingString, '&#x20;')">
+							<xsl:value-of name="nextWord" select="substring-before($remainingString, '&#x20;')"/>
+						</xsl:when>
+						<!-- If we only have one word remaining, it is our next word -->
+						<xsl:otherwise>
+							<xsl:value-of name="nextWord" select="$remainingString"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:variable name="nextWordLength" select="1 + string-length($nextWord)"/>
 				<xsl:variable name="newRemainingString" select="substring-after($remainingString, '&#x20;')"/>
 				
