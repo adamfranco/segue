@@ -5,12 +5,18 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.1 2007/05/04 20:47:23 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.2 2007/05/08 14:03:17 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-alpha" date="The Future">
+		<new author='adam'>
+			Classic-mode site-building user interface added.
+		</new>
+		<new author='adam'>
+			Site-building user interface added.
+		</new>
 		<new author='adam,chris'>
 			Plug-in system added.
 		</new>
