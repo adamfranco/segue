@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 4/17/06
- * @package segue.library.site_display
+ * @package segue.modules.classic_ui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.1 2007/05/08 14:03:20 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
  */ 
 
 /**
  * Returns the controls strings for each component type
  * 
  * @since 4/17/06
- * @package segue.library.site_display
+ * @package segue.modules.classic_ui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.1 2007/05/08 14:03:20 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -141,7 +141,7 @@ class ControlsSiteVisitor {
 			$siteComponent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', 'editContentWizard', array(
+			$url = 	$harmoni->request->quickURL('ui1', 'editContent', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->_action
@@ -172,7 +172,7 @@ class ControlsSiteVisitor {
 			$parent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', 'editContentWizard', array(
+			$url = 	$harmoni->request->quickURL('ui1', 'editContent', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->_action
@@ -282,305 +282,7 @@ class ControlsSiteVisitor {
 		print "\n\t\t\t\t</div>";
 	}
 	
-	/**
-	 * Print displayName controls
-	 * 
-	 * @param SiteComponent $siteComponent
-	 * @return void
-	 * @access public
-	 * @since 4/17/06
-	 */
-	function printDisplayName ( &$siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
-		print _('Title: ');
-		print "<input type='text' size='25' ";
-		print " name='".RequestContext::name('displayName')."'";
-		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		if (!$authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$siteComponent->getQualifierId()))
-		{
-			print " readonly='readonly'";
-		}
-		
-		print " value='".$siteComponent->getDisplayName()."'/>";
-		print "</div>";
-	}
-	
-	/**
-	 * Print the display title controls
-	 * 
-	 * @param SiteComponent $siteComponent
-	 * @return void
-	 * @access public
-	 * @since 1/16/07
-	 */
-	function printShowDisplayNames ( &$siteComponent ) {
-		print "\n\t\t\t\t<table cellspacing='0' cellpadding='0'>\n\t\t\t\t\t<tr><td style='white-space: nowrap;' valign='top' rowspan='3'>";
-		print "<strong>"._('Display Block Titles: ')."</strong>";
-		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		if ($authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$siteComponent->getQualifierId()))
-		{
-			$canEdit = true;
-		} else {
-			$canEdit = false;
-		}
-		
-		print "</td>\n\t\t\t\t\t<td>";
-		print " <input type='radio' ";
-		print " name='".RequestContext::name('showDisplayNames')."'";
-		print " value='default'";
-		print (($siteComponent->showDisplayNames() == 'default')?" checked='checked'":"");
-		print (($canEdit)?"":" disabled='disabled'");
-		print "/>"._(" use default");
-		
-		print "</td></tr>\n\t\t\t\t\t<tr><td>";
-		print " <input type='radio' ";
-		print " name='".RequestContext::name('showDisplayNames')."'";
-		print " value='true'";
-		print (($siteComponent->showDisplayNames() === true)?" checked='checked'":"");
-		print (($canEdit)?"":" disabled='disabled'");
-		print "/>"._("override-yes");
-		
-		print "</td></tr>\n\t\t\t\t\t<tr><td>";
-		print " <input type='radio' ";
-		print " name='".RequestContext::name('showDisplayNames')."'";
-		print " value='false'";
-		print (($siteComponent->showDisplayNames() === false)?" checked='checked'":"");
-		print (($canEdit)?"":" disabled='disabled'");
-		print "/>"._("override-no");
-		
-		print "</td></tr>";
-		print "\n\t\t\t\t</table>";
-	}
-	
-	/**
-	 * Print description controls
-	 * 
-	 * @param SiteComponent $siteComponent
-	 * @return void
-	 * @access public
-	 * @since 1/16/07
-	 */
-	function printDescription ( &$siteComponent ) {
-		print "\n\t\t\t\t<table cellpadding='0' cellspacing='0'><tr><td valign='top'>";
-		print "<div style='font-weight: bold;'>"._('Description: ')."</div>";
-		print "<div style='font-size: smaller; width: 125px;'>"
-			._("The description will be included in RSS feeds, title attributes, and other external references to this item.")."</div>";
-		print "\n\t\t\t\t\t</td><td valign='top'><textarea rows='5' cols='25'";
-		print " name='".RequestContext::name('description')."'";
-		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		if (!$authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$siteComponent->getQualifierId()))
-		{
-			print " readonly='readonly'";
-		}
-		
-		print ">".$siteComponent->getDescription();
-		print "</textarea>";
-		print "\n\t\t\t\t</td></tr></table>";
-	}
-	
-	/**
-	 * Print width controls
-	 * 
-	 * @param SiteComponent $siteComponent
-	 * @return void
-	 * @access public
-	 * @since 4/17/06
-	 */
-	function printWidth ( &$siteComponent ) {
-		print "<div style='font-weight: bold;'>"._('Maximum Width Guideline: ');
-		print "<input type='text' size='6' ";
-		print " name='".RequestContext::name('width')."'";
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		if (!$authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$siteComponent->getQualifierId()))
-		{
-			print " readonly='readonly'";
-		}
-		print " value='".$siteComponent->getWidth()."'/>";
-		print "</div>";
-		print "<div style='font-size: smaller;'>"
-			._("If desired, enter a width in either pixel or percent form; e.g. '150px', 200px', '100%', '50%', etc.<br/><strong>Note:</strong> This width is a guideline and is not guarenteed to be enforced. Content will fill the page, using this guideline where possible. Content inside of this container may stretch it beyond the specified width.")."</div>";		
-	}
-	
-	/**
-	 * Print rows/columns controls
-	 * 
-	 * @param SiteComponent $siteComponent
-	 * @return void
-	 * @access public
-	 * @since 4/17/06
-	 */
-	function printRowsColumns ( &$siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
-		$minCells = $siteComponent->getMinNumCells();
-		print "\n\t\t\t\t\t"._('Rows: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'";
-		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		if (!$authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$siteComponent->getQualifierId()))
-		{
-			print " readonly='readonly'";
-		}
-		
-		print " onchange='updateMinCells(this, this.nextSibling.nextSibling.nextSibling.nextSibling, $minCells);'>";
-		for ($i = 1; $i <= 10; $i++) {
-			print "\n\t\t\t\t\t\t<option value='".$i."'";
-			print (($i == $siteComponent->getNumRows())?" selected='selected'":"");
-			print (($i * $siteComponent->getNumColumns() < $minCells)?" disabled='disabled'":"");
-			print ">";
-			print $i;
-			print "</option>";
-		}
-		print "\n\t\t\t\t\t</select>";
-		print "\n\t\t\t\t\t<br/>"._('Columns: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('columns')."'";
-		print " onchange='updateMinCells(this.previousSibling.previousSibling.previousSibling.previousSibling, this, $minCells);'>";
 
-		for ($i = 1; $i <= 10; $i++) {
-			print "\n\t\t\t\t\t\t<option value='".$i."'";
-			print (($i == $siteComponent->getNumColumns())?" selected='selected'":"");
-			print (($i * $siteComponent->getNumRows() < $minCells)?" disabled='disabled'":"");
-			print ">";
-			print $i;
-			print "</option>";
-		}
-		print "\n\t\t\t\t\t</select>";
-		print "\n\t\t\t\t</div>";
-		print<<<END
-				<script type='text/javascript'>
-				/* <![CDATA[ */
-				
-					function updateMinCells(rowsElement, colsElement, minCells) {						
-						// update the disabled status of row options
-						for (var i = 0; i < rowsElement.childNodes.length; i++) {
-							if (rowsElement.childNodes[i].value * colsElement.value < minCells)
-								rowsElement.childNodes[i].disabled = true;
-							else
-								rowsElement.childNodes[i].disabled = false;
-						}
-						
-						// update the disabled status of column options
-						for (var i = 0; i < colsElement.childNodes.length; i++) {
-							if (colsElement.childNodes[i].value * rowsElement.value < minCells)
-								colsElement.childNodes[i].disabled = true;
-							else
-								colsElement.childNodes[i].disabled = false;
-						}
-					}
-				
-				/* ]]> */
-				</script>
-END;
-	}
-	
-	/**
-	 * Print rows/columns controls for a flow organizer
-	 * 
-	 * @param SiteComponent $siteComponent
-	 * @return void
-	 * @access public
-	 * @since 4/17/06
-	 */
-	function printFlowRowsColumns ( &$siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
-		$numRows = $siteComponent->getNumRows();
-		$numColumns = $siteComponent->getNumColumns();
-		print "\n\t\t\t\t\t"._('Columns: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('columns')."'";
-		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		if (!$authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$siteComponent->getQualifierId()))
-		{
-			print " readonly='readonly'";
-		}
-		
-		print ">";
-		
-		for ($i = 1; $i <= 10; $i++) {
-			print "\n\t\t\t\t\t\t<option value='".$i."'";
-			print (($i == $siteComponent->getNumColumns())?" selected='selected'":"");
-			print ">";
-			print $i;
-			print "</option>";
-		}
-		print "\n\t\t\t\t\t</select>";
-		print "\n\t\t\t\t\t<br/>"._('Rows: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'>";
-		for ($i = 0; $i <= 10; $i++) {
-			print "\n\t\t\t\t\t\t<option value='".$i."'";
-			print (($i == $siteComponent->getNumRows())?" selected='selected'":"");
-			print ">";
-			print (($i == 0)?_("unlimited"):$i);
-			print "</option>";
-		}
-		print "\n\t\t\t\t\t</select>";
-		print "\n\t\t\t\t</div>";
-	}
-	
-	/**
-	 * Print direction controls
-	 * 
-	 * @param SiteComponent $siteComponent
-	 * @return void
-	 * @access public
-	 * @since 4/17/06
-	 */
-	function printDirection ( &$siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
-		print "\n\t\t\t\t\t"._('Index Direction: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('direction')."'";
-		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		if (!$authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$siteComponent->getQualifierId()))
-		{
-			print " readonly='readonly'";
-		}
-		
-		print ">";
-		
-		$directions = array(
-			"Left-Right/Top-Bottom" => _("Left-Right/Top-Bottom"),
-			"Top-Bottom/Left-Right" => _("Top-Bottom/Left-Right"),
-			"Right-Left/Top-Bottom" => _("Right-Left/Top-Bottom"),
-			"Top-Bottom/Right-Left" => _("Top-Bottom/Right-Left"),
-// 			"Left-Right/Bottom-Top" => _("Left-Right/Bottom-Top"),
-// 			"Bottom-Top/Left-Right" => _("Bottom-Top/Left-Right"),
-// 			"Right-Left/Bottom-Top" => _("Right-Left/Bottom-Top"),
-// 			"Bottom-Top/Right-Left" => _("Bottom-Top/Right-Left")
-		);
-		foreach ($directions as $direction => $label) {
-			print "\n\t\t\t\t\t\t<option value='".$direction."'";
-			print (($direction == $siteComponent->getDirection())?" selected='selected'":"");
-			print ">";
-			print $label;
-			print "</option>";
-		}
-		print "\n\t\t\t\t\t</select>";
-		print "\n\t\t\t\t</div>";
-	}
 	
 	/**
 	 * Answer controls for Block SiteComponents

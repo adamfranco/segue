@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.15 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.16 2007/05/09 15:28:12 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.15 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.16 2007/05/09 15:28:12 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -438,7 +438,7 @@ class PluginManager {
 	}
 	
 	/**
-	 * Answer the title Markup for this plugin
+	 * Answer the description Markup for this plugin
 	 * 
 	 * @param object Asset $asset
 	 * @param optional boolean $showControls
@@ -446,12 +446,13 @@ class PluginManager {
 	 * @access public
 	 * @since 2/22/06
 	 */
-	function getPluginTitleMarkup ( &$asset, $showControls = false ) {
+	function getPluginDescriptionMarkup ( &$asset, $showControls = false ) {
 		$plugin =& $this->getPlugin($asset);
 		$plugin->setShowControls($showControls);
 		
-		if ($plugin->getPluginTitleMarkup())
-			return $plugin->getPluginTitleMarkup();
+		if ($plugin->getDescriptionMarkup())
+			// @todo add HTML cleaning.
+			return $plugin->getDescriptionMarkup();
 		else
 			return "";
 	}

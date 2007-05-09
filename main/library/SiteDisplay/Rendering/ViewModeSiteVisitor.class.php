@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.30 2007/04/13 19:59:16 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.31 2007/05/09 15:28:13 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.30 2007/04/13 19:59:16 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.31 2007/05/09 15:28:13 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -86,7 +86,7 @@ class ViewModeSiteVisitor {
 		if ($block->showDisplayName()) {
 			$guiContainer->add(
 				new Heading(
-					$pluginManager->getPluginTitleMarkup($block->getAsset(), false), 
+					$block->getDisplayName(),
 					2),
 			$block->getWidth(), null, null, TOP);
 		}
@@ -125,7 +125,7 @@ class ViewModeSiteVisitor {
 		
 		if ($block->showDisplayName()) {
 			print "<div style='font-weight: bold; font-size: large;' title=\"".$block->getDescription()."\">"
-					.$pluginManager->getPluginTitleMarkup($block->getAsset(), false)
+					.$block->getDisplayName()
 					."</div>";
 		}
 		

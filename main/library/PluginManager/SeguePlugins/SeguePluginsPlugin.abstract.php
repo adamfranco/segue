@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.24 2007/04/30 20:22:06 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.25 2007/05/09 15:28:13 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.24 2007/04/30 20:22:06 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.25 2007/05/09 15:28:13 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -88,13 +88,70 @@ class SeguePluginsPlugin {
  	 * Plugin writers should override this method with their own functionality
  	 * as needed.
  	 * 
- 	 * @param array $request
- 	 * @return void
+ 	 * @return string
  	 * @access public
  	 * @since 1/12/06
  	 */
  	function getMarkup () {
  		return "<p>Override this method to display your pluggin.</p>";
+ 	}
+ 	
+ 	/**
+	 * Answer the markup for the plugin description. Override this method to
+	 * add proccessing of description text before display. This description
+	 * may return plain text or XHTML text.
+	 * 
+	 * This method MAY
+	 * be used in your plugin implementation and WILL BE used to display a
+	 * description of the plugin instance in external contexts (such as a 
+	 * site-map).
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/20/06
+	 */
+	function getDescriptionMarkup () {
+		return $this->getDescription();
+	}
+ 	
+ 	/*********************************************************
+ 	 * The following three methods allow plugins to work within
+ 	 * the "Segue Classic" user interface.
+ 	 *********************************************************/
+ 	/**
+ 	 * Return the a {@link WizardComponent} to allow editing of your
+ 	 * plugin in the Wizard.
+ 	 * 
+ 	 * @return object WizardComponent
+ 	 * @access public
+ 	 * @since 5/8/07
+ 	 */
+ 	function &getWizardComponent () {
+ 		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
+ 	}
+ 	
+ 	/**
+ 	 * Return the a string of markup that corresponds to your wizard component.
+ 	 * Needed to allow editing of your plugin in the Segue Classic Mode Wizard.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 5/8/07
+ 	 */
+ 	function getWizardText () {
+ 		return "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
+ 	}
+ 	
+ 	/**
+ 	 * Update the component from an array of values
+ 	 * 
+ 	 * @param array $values
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 5/8/07
+ 	 */
+ 	function updateFromWizard ( $values ) {
+ 		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
  	}
  	
 /*********************************************************
@@ -227,18 +284,6 @@ class SeguePluginsPlugin {
 	 */
 	function getTitle () {
 		return $this->_asset->getDisplayName();
-	}
-	
-	/**
-	 * Set the persisted 'title' value of this plugin.
-	 * 
-	 * @param string $title
-	 * @return void
-	 * @access public
-	 * @since 1/13/06
-	 */
-	function setTitle ( $title ) {
-		$this->_asset->updateDisplayName($title);
 	}
 	
 	/**
@@ -951,17 +996,6 @@ class SeguePluginsPlugin {
 	 */
 	function getPluginMarkup () {
 		return $this->getMarkup();
-	}
-	
-	/**
-	 * Answer the markup for the pluginTitle
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 1/20/06
-	 */
-	function getPluginTitleMarkup () {
-		return $this->getTitle();
 	}
 	
 	/**

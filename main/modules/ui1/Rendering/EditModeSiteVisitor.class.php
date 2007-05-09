@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 4/6/06
- * @package segue.libraries.site_display
+ * @package segue.modules.classic_ui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.1 2007/05/08 14:03:20 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -16,12 +16,12 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * The edit-mode site visitor renders the site for editing, displaying controls.
  * 
  * @since 4/6/06
- * @package segue.libraries.site_display
+ * @package segue.modules.classic_ui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.1 2007/05/08 14:03:20 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -111,7 +111,7 @@ END;
 		if ($block->showDisplayName()) {
 			$heading =& $guiContainer->add(
 				new Heading(
-					$pluginManager->getPluginTitleMarkup($block->getAsset(), false), 
+					$block->getDisplayName()
 					2),
 			$block->getWidth(), null, null, TOP);
 		}
@@ -151,7 +151,7 @@ END;
 		
 		if ($block->showDisplayName()) {
 			print "<div style='font-weight: bold; font-size: large;'>"
-					.$pluginManager->getPluginTitleMarkup($block->getAsset(), false)
+					.$block->getDisplayName()
 					."</div>";
 		}
 		

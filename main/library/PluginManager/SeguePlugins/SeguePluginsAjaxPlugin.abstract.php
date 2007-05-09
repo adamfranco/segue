@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.9 2007/04/30 20:22:06 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.10 2007/05/09 15:28:13 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.9 2007/04/30 20:22:06 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.10 2007/05/09 15:28:13 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -194,23 +194,6 @@ class SeguePluginsAjaxPlugin
 									//get the plugin element
 									var pluginResponseElement = req.responseXML.firstChild;
 									
-									// Title
-									var elements = pluginResponseElement.getElementsByTagName("title");
-									var title = '';
-									if (elements.length > 0 && elements[0]) {
-										if (elements[0].textContent)
-											title = elements[0].textContent;
-										else if (true) {
-											for (var i = 0; i < elements[0].childNodes.length; i++) {
-												if (elements[0].childNodes[i].nodeType == 4) {
-													title = elements[0].childNodes[i].data;
-												}
-											}
-										}
-									} else {
-										alert("Error: No valid <title> was found in\\n\\n" + req.responseText);	
-									}
-									
 									// Markup
 									var elements = pluginResponseElement.getElementsByTagName("markup");
 									var markup = '';
@@ -228,11 +211,7 @@ class SeguePluginsAjaxPlugin
 										alert("Error: No valid <markup> was found in\\n\\n" + req.responseText);	
 									}
 									
-									// Place the new values in the page
-									var pluginTitleElement = document.get_element_by_id('plugin-title:' + pluginId);
-									if (pluginTitleElement)
-										pluginTitleElement.innerHTML = title;
-										
+									// Place the new values in the page										
 									pluginElement.innerHTML = markup.replace(/}}>/g, ']'+']'+'>');
 									
 									// unset our temporary width
@@ -283,20 +262,6 @@ END;
 		return $markup;
 	}
  	
- 	/**
-	 * Answer the markup for the pluginTitle
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 1/20/06
-	 */
-	function getPluginTitleMarkup () {
-		$markup = "\n<div id='plugin-title:".$this->getId()."'>";
-		$markup .= $this->getTitle();
-		$markup .= "</div>"; 
-		return $markup;
-	}
-	
 	/**
 	 * Answer a Url string with the array values added as parameters.
 	 * 

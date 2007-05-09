@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 4/3/06
- * @package segue.modules.site
+ * @package segue.modules.classic_ui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.1 2007/05/08 14:03:18 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -19,12 +19,12 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * Test view using new components
  * 
  * @since 4/3/06
- * @package segue.modules.site
+ * @package segue.modules.classic_ui
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.1 2007/05/08 14:03:18 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -216,12 +216,6 @@ class viewAction
 					'node' => RequestContext::value("node")));
 			print "' alt='"._("Go to Edit-Mode")."'>";
 			print _("edit")."</a>";
-			
-			print " | <a href='";
-			print $harmoni->request->quickURL('ui1', 'arrangeview', array(
-					'node' => RequestContext::value("node")));
-			print "' alt='"._("Go to Arrange-Mode")."'>";
-			print _("arrange")."</a>";
 		}
 	
 		
