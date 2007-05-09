@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2007/05/09 20:04:32 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2007/05/09 20:04:32 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -111,7 +111,7 @@ END;
 		if ($block->showDisplayName()) {
 			$heading =& $guiContainer->add(
 				new Heading(
-					$block->getDisplayName()
+					$block->getDisplayName(),
 					2),
 			$block->getWidth(), null, null, TOP);
 		}

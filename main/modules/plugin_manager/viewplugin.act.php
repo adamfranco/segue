@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.9 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: viewplugin.act.php,v 1.1 2007/05/09 20:04:32 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -18,9 +18,9 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.9 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: viewplugin.act.php,v 1.1 2007/05/09 20:04:32 adamfranco Exp $
  */
-class update_ajaxAction 
+class viewpluginAction 
 	extends Action
 {
 	/**
@@ -41,8 +41,28 @@ class update_ajaxAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function execute () {
+	function &execute () {
+		ob_start();
 		$harmoni =& Harmoni::instance();
+		
+		/*********************************************************
+		 * Other headers and footers
+		 *********************************************************/
+		$outputHandler =& $harmoni->getOutputHandler();
+		
+		
+		// Add our common Harmoni javascript libraries
+		require(POLYPHONY_DIR."/main/library/Harmoni.js.inc.php");
+		
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/CenteredPanel.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/TabbedContent.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/prototype.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/js_quicktags.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/MediaLibrary.js'></script>";
+		print "\n\t\t<link rel='stylesheet' type='text/css' href='".MYPATH."/javascript/MediaLibrary.css'/>";
+		
+		$outputHandler->setHead(ob_get_clean());
+		
 		
 		// Get the plugin asset id
 		$harmoni->request->startNamespace('plugin_manager');
@@ -61,24 +81,16 @@ class update_ajaxAction
 		$plugin =& $pluginManager->getPlugin($asset);
 
 		
-		header("Content-type: text/xml");
-		print "<plugin>\n";
 		if (!is_object($plugin)) {
-			print "\t<markup>\n\t\t<![CDATA[";
 			print $plugin;
-			print "]]>\n\t</markup>\n";
 		} else {
-			$markup = $plugin->executeAndGetMarkup(TRUE);
-			print "\t<markup>\n\t\t<![CDATA[";
-			// CDATA sections cannot contain ']]>' and therefor cannot be nested
-			// get around this by replacing the ']]>' tags in the markup.
-			print preg_replace('/\]\]>/', '}}>', $markup);
-			print "]]>\n\t</markup>\n";
-			
+			print $plugin->executeAndGetMarkup(TRUE);			
 		}
-		print "</plugin>";
 		
-		exit();
+// 		exit();
+
+		$block =& new UnstyledBlock(ob_get_clean());
+		return $block;
 	}
 }
 

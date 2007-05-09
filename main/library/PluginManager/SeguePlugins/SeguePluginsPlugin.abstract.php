@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.25 2007/05/09 15:28:13 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.26 2007/05/09 20:04:32 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.25 2007/05/09 15:28:13 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.26 2007/05/09 20:04:32 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -117,7 +117,23 @@ class SeguePluginsPlugin {
  	/*********************************************************
  	 * The following three methods allow plugins to work within
  	 * the "Segue Classic" user interface.
+ 	 *
+ 	 * If plugins do not support the wizard directly, then their
+ 	 * markup with 'show controls' enabled will be put directly 
+ 	 * in the wizard.
  	 *********************************************************/
+ 	/**
+ 	 * Answer true if this plugin natively supports editing via wizard components.
+ 	 * Override to return true if you implement the getWizardComponent(), 
+ 	 * getWizardText(), and updateFromWizard() methods.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access public
+ 	 * @since 5/9/07
+ 	 */
+ 	function supportsWizard () {
+ 		return false;
+ 	}
  	/**
  	 * Return the a {@link WizardComponent} to allow editing of your
  	 * plugin in the Wizard.
@@ -968,21 +984,26 @@ class SeguePluginsPlugin {
 	/**
 	 * Execute the plugin and return its markup.
 	 * 
-	 * @param object URLWriter $baseUrl
+	 * @param optional boolean $showControls
 	 * @return string
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function executeAndGetMarkup ($baseUrl) {
-		ArgumentValidator::validate($baseUrl, ExtendsValidatorRule::getRule('URLWriter'));
+	function executeAndGetMarkup ( $showControls = false ) {
+		$this->setShowControls($showControls);
 		
-		$this->_baseUrl =& $baseUrl;
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->startNamespace(
+			get_class($this).':'.$this->getId());
+		$this->_baseUrl =& $harmoni->request->mkURL();
 		
 		$this->update($this->_getRequestData());
 		
 		$markup = $this->getPluginMarkup();
 		
 		$this->_storeData();
+		
+		$harmoni->request->endNamespace();
 		
 		return $markup;
 	}

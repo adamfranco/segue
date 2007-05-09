@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.10 2007/05/09 15:28:13 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.11 2007/05/09 20:04:32 adamfranco Exp $
  */ 
+
+require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
 
 /**
  * Abstract class that all AjaxPlugins must extend
@@ -18,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.10 2007/05/09 15:28:13 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.11 2007/05/09 20:04:32 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -194,6 +196,7 @@ class SeguePluginsAjaxPlugin
 									//get the plugin element
 									var pluginResponseElement = req.responseXML.firstChild;
 									
+									
 									// Markup
 									var elements = pluginResponseElement.getElementsByTagName("markup");
 									var markup = '';
@@ -256,8 +259,10 @@ END;
 	 * @since 1/20/06
 	 */
 	function getPluginMarkup () {
+		$this->writeAjaxLib();
+			
 		$markup = "\n<div id='plugin:".$this->getId()."'>\n";
-		$markup .= $this->getMarkup();
+		$markup .= parent::getPluginMarkup();
 		$markup .= "\n</div>"; 
 		return $markup;
 	}
@@ -300,6 +305,25 @@ END;
 			$url->setValues($parameters);
 		
 		return $url->write();
+	}
+	
+	/**
+	 * Write the AJAX library to the document's head
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 5/9/07
+	 * @static
+	 */
+	function writeAjaxLib () {
+		if (!isset($GLOBALS['ajaxLibWritten']) || !$GLOBALS['ajaxLibWritten']) {
+			$harmoni =& Harmoni::instance();
+			$outputHandler =& $harmoni->getOutputHandler();
+			$outputHandler->setHead(
+				$outputHandler->getHead()
+				.SeguePluginsAjaxPlugin::getPluginSystemJavascript());
+			$GLOBALS['ajaxLibWritten'] = true;	
+		}
 	}
 }
 

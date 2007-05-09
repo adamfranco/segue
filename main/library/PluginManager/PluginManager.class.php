@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.16 2007/05/09 15:28:12 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.17 2007/05/09 20:04:31 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.16 2007/05/09 15:28:12 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.17 2007/05/09 20:04:31 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -408,28 +408,13 @@ class PluginManager {
 				array_keys(/*$this->_enabledPlugins*/$this->getInstalledPlugins()))) {
 			
 			$plugin =& $this->getPlugin($asset);
-			$plugin->setShowControls($showControls);
 			
 			$assetId =& $asset->getId();
-			
-			if (!isset($this->_ajaxLibWritten) || !$this->_ajaxLibWritten) {
-				$harmoni =& Harmoni::instance();
-				$outputHandler =& $harmoni->getOutputHandler();
-				$outputHandler->setHead(
-					$outputHandler->getHead()
-					.SeguePluginsAjaxPlugin::getPluginSystemJavascript());
-				$this->_ajaxLibWritten = true;	
-			}
 			
 			if (!is_object($plugin)) {
 				print $plugin;
 			} else {
-				$harmoni =& Harmoni::instance();
-				$harmoni->request->startNamespace(
-					get_class($plugin).':'.$assetId->getIdString());
-				$baseUrl =& $harmoni->request->mkURL();
-				print $plugin->executeAndGetMarkup($baseUrl);
-				$harmoni->request->endNamespace();
+				print $plugin->executeAndGetMarkup($showControls);
 			}
 		} else {
 			print "The requested plugin, '".$type->asString()."' is not enabled, please contact your administrator for more information";
@@ -441,12 +426,11 @@ class PluginManager {
 	 * Answer the description Markup for this plugin
 	 * 
 	 * @param object Asset $asset
-	 * @param optional boolean $showControls
 	 * @return string
 	 * @access public
 	 * @since 2/22/06
 	 */
-	function getPluginDescriptionMarkup ( &$asset, $showControls = false ) {
+	function getPluginDescriptionMarkup ( &$asset ) {
 		$plugin =& $this->getPlugin($asset);
 		$plugin->setShowControls($showControls);
 		

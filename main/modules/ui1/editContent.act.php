@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editContent.act.php,v 1.1 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: editContent.act.php,v 1.2 2007/05/09 20:04:32 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
+require_once(MYDIR."/main/library/PluginManager/SeguePlugins/SeguePluginsAjaxPlugin.abstract.php");
 
 /**
  * This action provides a wizard for editing 
@@ -20,7 +21,7 @@ require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editContent.act.php,v 1.1 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: editContent.act.php,v 1.2 2007/05/09 20:04:32 adamfranco Exp $
  */
 class editContentAction
 	extends SegueClassicWizard
@@ -47,6 +48,18 @@ class editContentAction
 	 */
 	function &getSiteComponent () {
 		return $this->getSiteComponentForId($this->getQualifierId());
+	}
+	
+	/**
+	 * Build the content for this action
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 5/8/07
+	 */
+	function buildContent () {
+		SeguePluginsAjaxPlugin::writeAjaxLib();
+		parent::buildContent();
 	}
 	
 	/**
@@ -99,13 +112,21 @@ class editContentAction
 		print "\n<br />[[display_name]]</p>";
 		
 		
-		$property =& $step->addComponent("content", $plugin->getWizardComponent());
-
-		print "\n<p><strong>"._("Content:")."</strong>";
-		print $plugin->getWizardText();
-		$step->setContent(ob_get_contents());
-		ob_end_clean();
+		print "\n<p>\n\t<strong>"._("Content:")."</strong></p>\n\t";
+		if ($plugin->supportsWizard()) {
+			$property =& $step->addComponent("content", $plugin->getWizardComponent());
+			
+			print $plugin->getWizardText();
+		} else {
+			$harmoni =& Harmoni::instance();
+			$harmoni->request->startNamespace("plugin_manager");
+			$url = $harmoni->request->quickURL("plugin_manager", "viewplugin",
+				array("plugin_id" => $plugin->getId()));
+			$harmoni->request->endNamespace();
+			print "\n<iframe src='".$url."' height='600px' width='800px'/>";
+		}
 		
+		$step->setContent(ob_get_clean());
 		return $step;
 	}
 	
