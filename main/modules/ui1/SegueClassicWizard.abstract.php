@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.1 2007/05/09 15:28:13 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.2 2007/05/11 18:36:23 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.1 2007/05/09 15:28:13 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.2 2007/05/11 18:36:23 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -112,6 +112,56 @@ class SegueClassicWizard
 	}
 	
 	/**
+	 * Create a new Wizard for this action. Caching of this Wizard is handled by
+	 * {@link getWizard()} and does not need to be implemented here.
+	 * 
+	 * @return object Wizard
+	 * @access public
+	 * @since 5/8/07
+	 */
+	function &createWizard () {
+		// Instantiate the wizard, then add our steps.
+		$wizard =& SimpleStepWizard::withDefaultLayout();
+		
+		$wizard->addStep("namedesc", $this->getTitleStep());
+		$wizard->addStep("display", $this->getDisplayOptionsStep());
+		$wizard->addStep("status", $this->getStatusStep());
+		
+		return $wizard;
+	}
+	
+	/**
+	 * Save our results. Tearing down and unsetting the Wizard is handled by
+	 * in {@link runWizard()} and does not need to be implemented here.
+	 * 
+	 * @param string $cacheName
+	 * @return boolean TRUE if save was successful and tear-down/cleanup of the
+	 *		Wizard should ensue.
+	 * @access public
+	 * @since 5/9/07
+	 */
+	function saveWizard ( $cacheName ) {
+		$wizard =& $this->getWizard($cacheName);
+		
+		// If all properties validate then go through the steps nessisary to
+		// save the data.
+		if ($wizard->validate()) {
+			$properties = $wizard->getAllValues();
+			
+			if (!$this->saveTitleStep($properties['namedesc']))
+				return FALSE;
+			if (!$this->saveDisplayOptionsStep($properties['display']))
+				return FALSE;
+			if (!$this->saveStatusStep($properties['status']))
+				return FALSE;
+			
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+	
+	/**
 	 * Answer the url to return to
 	 * 
 	 * @return string
@@ -173,15 +223,14 @@ class SegueClassicWizard
 	/**
 	 * Create the step for adding the title and description
 	 * 
-	 * @param object Wizard $wizard
 	 * @return object WizardStep
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &addNameAndDescriptionStep ( &$wizard ) {
+	function &getTitleStep () {
 		$component =& $this->getSiteComponent();
 		
-		$step =& $wizard->addStep("namedesc", new WizardStep());
+		$step =& new WizardStep();
 		$step->setDisplayName(_("Title &amp; Description"));
 		
 		// Create the step text
@@ -213,17 +262,38 @@ class SegueClassicWizard
 	}
 	
 	/**
+	 * save the name and description step
+	 * 
+	 * @param array $values
+	 * @return boolean
+	 * @access public
+	 * @since 5/9/07
+	 */
+	function saveTitleStep ($values) {
+		$component =& $this->getSiteComponent();
+		
+		$value = trim($values['display_name']);
+		if (!$value)
+			return false;
+		$component->updateDisplayName($value);
+		
+		$value = trim($values['description']);
+		$component->updateDescription($value);
+		
+		return true;
+	}
+	
+	/**
 	 * Create the step for adding the display options.
 	 * 
-	 * @param object Wizard $wizard
 	 * @return object WizardStep
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &addDisplayOptionsStep ( &$wizard ) {
+	function &getDisplayOptionsStep () {
 		$component =& $this->getSiteComponent();
 		
-		$step =& $wizard->addStep("display_options", new WizardStep());
+		$step =& new WizardStep();
 		$step->setDisplayName(_("Display Options"));
 		
 		// Create the step text
@@ -264,17 +334,30 @@ class SegueClassicWizard
 	}
 	
 	/**
+	 * save the display options step
+	 * 
+	 * @param array $values
+	 * @return boolean
+	 * @access public
+	 * @since 5/9/07
+	 */
+	function saveDisplayOptionsStep ($values) {
+		$component =& $this->getSiteComponent();
+		$component->updateShowDisplayNames($values['show_titles']);
+		return true;
+	}
+	
+	/**
 	 * Create the step for status options.
 	 * 
-	 * @param object Wizard $wizard
 	 * @return object WizardStep
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &addStatusStep ( &$wizard ) {
+	function &getStatusStep () {
 		$component =& $this->getSiteComponent();
 		
-		$step =& $wizard->addStep("status", new WizardStep());
+		$step =& new WizardStep();
 		$step->setDisplayName(_("Status"));
 		
 		// Create the step text
@@ -311,6 +394,18 @@ class SegueClassicWizard
 		ob_end_clean();
 		
 		return $step;
+	}
+	
+	/**
+	 * save the status step
+	 * 
+	 * @param array $values
+	 * @return boolean
+	 * @access public
+	 * @since 5/9/07
+	 */
+	function saveStatusStep ($values) {
+		return true;
 	}
 }
 

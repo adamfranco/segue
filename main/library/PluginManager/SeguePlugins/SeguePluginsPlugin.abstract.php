@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.26 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.27 2007/05/11 18:36:23 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.26 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.27 2007/05/11 18:36:23 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -125,7 +125,7 @@ class SeguePluginsPlugin {
  	/**
  	 * Answer true if this plugin natively supports editing via wizard components.
  	 * Override to return true if you implement the getWizardComponent(), 
- 	 * getWizardText(), and updateFromWizard() methods.
+ 	 * and updateFromWizard() methods.
  	 * 
  	 * @return boolean
  	 * @access public
@@ -144,18 +144,6 @@ class SeguePluginsPlugin {
  	 */
  	function &getWizardComponent () {
  		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
- 	}
- 	
- 	/**
- 	 * Return the a string of markup that corresponds to your wizard component.
- 	 * Needed to allow editing of your plugin in the Segue Classic Mode Wizard.
- 	 * 
- 	 * @return string
- 	 * @access public
- 	 * @since 5/8/07
- 	 */
- 	function getWizardText () {
- 		return "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
  	}
  	
  	/**

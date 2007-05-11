@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.3 2007/05/11 18:36:23 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.3 2007/05/11 18:36:23 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -38,6 +38,7 @@ class viewAction
 	 * @since 4/3/06
 	 */
 	function &execute () {
+		ob_start();
 		$harmoni =& Harmoni::instance();
 		/*********************************************************
 		 * XML Version

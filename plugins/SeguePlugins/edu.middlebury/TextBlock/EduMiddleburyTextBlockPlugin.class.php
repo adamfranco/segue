@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.7 2007/04/30 20:22:06 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.8 2007/05/11 18:36:23 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.7 2007/04/30 20:22:06 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.8 2007/05/11 18:36:23 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -131,7 +131,95 @@ class EduMiddleburyTextBlockPlugin
  		
  		return ob_get_clean();
  	}
-	
+ 	
+ 	/*********************************************************
+ 	 * The following three methods allow plugins to work within
+ 	 * the "Segue Classic" user interface.
+ 	 *
+ 	 * If plugins do not support the wizard directly, then their
+ 	 * markup with 'show controls' enabled will be put directly 
+ 	 * in the wizard.
+ 	 *********************************************************/
+ 	/**
+ 	 * Answer true if this plugin natively supports editing via wizard components.
+ 	 * Override to return true if you implement the getWizardComponent(), 
+ 	 * and updateFromWizard() methods.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access public
+ 	 * @since 5/9/07
+ 	 */
+ 	function supportsWizard () {
+ 		return true;
+ 	}
+ 	/**
+ 	 * Return the a {@link WizardComponent} to allow editing of your
+ 	 * plugin in the Wizard.
+ 	 * 
+ 	 * @return object WizardComponent
+ 	 * @access public
+ 	 * @since 5/8/07
+ 	 */
+ 	function &getWizardComponent () {
+ 		$wrapper =& new WComponentCollection;
+ 		ob_start();
+ 		
+ 		$content =& $wrapper->addComponent('content', WTextArea::withRowsAndColumns(20, 80));
+ 		$content->setValue($this->getContent());
+ 		
+ 		print "[[content]]";
+ 		
+ 		// Image button
+ 		print "<br/>";
+		print "\n\t<input type='button' value='"._('Add Image')."' onclick=\"";
+		print "this.onUse = function (mediaFile) { ";
+		print 		"var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + mediaFile.getTitles()[0].escapeHTML() + '\'/>' ; ";
+		print 		"edInsertContent(this.form.elements['[[fieldname:content]]'], newString); ";
+		print "}; "; 
+		print "MediaLibrary.run('".$this->getId()."', this); ";
+		print "\"/>";
+		
+		// File button
+		print "\n\t<input type='button' value='"._('Add File')."' onclick=\"";
+		print "this.onUse = function (mediaFile) { ";
+		print		"var downloadBar = document.createElement('div'); ";
+		print 		"var link = downloadBar.appendChild(document.createElement('a')); ";
+		print 		"link.href = mediaFile.getUrl().escapeHTML(); ";
+		print		"link.title = mediaFile.getTitles()[0].escapeHTML(); ";
+		
+		print		"var img = link.appendChild(document.createElement('img')); ";
+		print		"img.src = mediaFile.getThumbnailUrl(); ";
+		print		"img.align = 'left'; ";
+		print		"img.border = '0'; ";
+		
+		print		"var title = downloadBar.appendChild(document.createElement('div')); ";
+		print 		"title.innerHTML = mediaFile.getTitles()[0]; ";
+		print		"title.fontWeight = 'bold'; ";
+		
+		print		"var citation = downloadBar.appendChild(document.createElement('div')); ";
+		print 		"mediaFile.writeCitation(citation); ";
+		
+		print 		"var newString = '<div>' + downloadBar.innerHTML + '<div style=\'clear: both;\'></div></div>'; ";
+		print 		"edInsertContent(this.form.elements['[[fieldname:content]]'], newString); ";
+		print "}; "; 
+		print "MediaLibrary.run('".$this->getId()."', this); ";
+		print "\"/>";
+ 		
+ 		$wrapper->setContent(ob_get_clean());
+ 		return $wrapper;
+ 	}
+ 	
+ 	/**
+ 	 * Update the component from an array of values
+ 	 * 
+ 	 * @param mixed string or array $values
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 5/8/07
+ 	 */
+ 	function updateFromWizard ( $values ) {
+ 		$this->setContent($values['content']);
+ 	}
 }
 
 ?>
