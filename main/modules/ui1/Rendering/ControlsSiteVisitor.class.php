@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.3 2007/05/15 16:48:24 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.3 2007/05/15 16:48:24 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -131,7 +131,7 @@ class ControlsSiteVisitor {
 	 * @access public
 	 * @since 5/7/07
 	 */
-	function printEdit ( &$siteComponent ) {
+	function printEdit ( &$siteComponent, $action ) {
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");
 		$harmoni =& Harmoni::instance();
@@ -141,7 +141,7 @@ class ControlsSiteVisitor {
 			$siteComponent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', 'editContent', array(
+			$url = 	$harmoni->request->quickURL('ui1', $action, array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->_action
@@ -297,7 +297,7 @@ class ControlsSiteVisitor {
 		
 		$this->printReorder($siteComponent);
 		$this->printMove($siteComponent);
-		$this->printEdit($siteComponent);
+		$this->printEdit($siteComponent, 'editContent');
 		$this->printDelete($siteComponent);
 		$this->printVersions($siteComponent);
 		
@@ -317,7 +317,7 @@ class ControlsSiteVisitor {
 		
 		$this->printReorder($siteComponent);
 		$this->printMove($siteComponent);
-		$this->printEdit($siteComponent);
+		$this->printEdit($siteComponent, 'editNav');
 		$this->printDelete($siteComponent);
 // 		$this->printVersions($siteComponent);
 // 		$this->printAddSubMenu($siteComponent);
@@ -388,7 +388,7 @@ class ControlsSiteVisitor {
 			$siteComponent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', 'editMenuWizard', array(
+			$url = 	$harmoni->request->quickURL('ui1', 'editFlowOrg', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->_action
@@ -431,7 +431,7 @@ class ControlsSiteVisitor {
 			$siteComponent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', 'editMenuWizard', array(
+			$url = 	$harmoni->request->quickURL('ui1', 'editMenu', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->_action

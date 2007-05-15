@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.2 2007/05/11 18:36:23 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.3 2007/05/15 16:48:24 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.2 2007/05/11 18:36:23 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.3 2007/05/15 16:48:24 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -63,8 +63,8 @@ class SegueClassicWizard
 	 * @since 5/8/07
 	 */
 	function &getQualifierId () {
-		$idManager =& Services::getService("Id");
-		return $idManager->getId(RequestContext::value("node"));
+		$component =& $this->getSiteComponent();
+		return $component->getQualifierId();
 	}
 	
 	/**
@@ -76,7 +76,9 @@ class SegueClassicWizard
 	 * @since 5/8/07
 	 */
 	function &getSiteComponent () {
-		throwError(new Error(__CLASS__."::".__FUNCTION__."() must be overridded in child classes."));
+		$idManager =& Services::getService("Id");
+		return $this->getSiteComponentForId(
+			$idManager->getId(RequestContext::value("node")));
 	}
 	
 	/**
@@ -327,8 +329,7 @@ class SegueClassicWizard
 // 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		
 		
-		$step->setContent(ob_get_contents());
-		ob_end_clean();
+		$step->setContent(ob_get_clean());
 		
 		return $step;
 	}

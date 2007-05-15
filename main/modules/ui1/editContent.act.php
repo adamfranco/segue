@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editContent.act.php,v 1.3 2007/05/11 18:36:23 adamfranco Exp $
+ * @version $Id: editContent.act.php,v 1.4 2007/05/15 16:48:24 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/PluginManager/SeguePlugins/SeguePluginsAjaxPlu
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editContent.act.php,v 1.3 2007/05/11 18:36:23 adamfranco Exp $
+ * @version $Id: editContent.act.php,v 1.4 2007/05/15 16:48:24 adamfranco Exp $
  */
 class editContentAction
 	extends SegueClassicWizard
@@ -36,18 +36,6 @@ class editContentAction
 	 */
 	function getHeadingText () {
 		return _("Edit Content");
-	}
-	
-	/**
-	 * Answer the site component that we are editing. If this is a creation wizard
-	 * then null will be returned.
-	 * 
-	 * @return mixed object SiteComponent or null
-	 * @access public
-	 * @since 5/8/07
-	 */
-	function &getSiteComponent () {
-		return $this->getSiteComponentForId($this->getQualifierId());
 	}
 	
 	/**
