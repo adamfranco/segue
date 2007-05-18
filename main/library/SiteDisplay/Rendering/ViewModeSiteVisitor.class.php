@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.31 2007/05/09 15:28:13 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.32 2007/05/18 20:00:58 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.31 2007/05/09 15:28:13 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.32 2007/05/18 20:00:58 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -78,7 +78,7 @@ class ViewModeSiteVisitor {
 			$false = false;
 			return $false;
 		}
-		
+				
 		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
 		
 		$pluginManager =& Services::getService('PluginManager');
@@ -86,7 +86,7 @@ class ViewModeSiteVisitor {
 		if ($block->showDisplayName()) {
 			$guiContainer->add(
 				new Heading(
-					$block->getDisplayName(),
+					$this->getBlockTitle($block),
 					2),
 			$block->getWidth(), null, null, TOP);
 		}
@@ -98,6 +98,31 @@ class ViewModeSiteVisitor {
 			$block->getWidth(), null, null, TOP);
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Answer the title of a block
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return string
+	 * @access public
+	 * @since 5/18/07
+	 */
+	function getBlockTitle ( &$block ) {
+		return "<a href='".$this->getDetailUrl($block->getId())."'>".$block->getDisplayName()."</a>";
+	}
+	
+	/**
+	 * Answer the detail url of a block
+	 * 
+	 * @param string $id
+	 * @return string
+	 * @access public
+	 * @since 5/18/07
+	 */
+	function getDetailUrl ($id) {
+		$harmoni =& Harmoni::instance();
+		return $harmoni->request->quickURL('ui2', "detail", array("node" => $id));
 	}
 	
 	/**
