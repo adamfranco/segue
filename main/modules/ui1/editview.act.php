@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.1 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.2 2007/05/21 20:09:00 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.1 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.2 2007/05/21 20:09:00 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -55,20 +55,21 @@ class editviewAction
 		// Add controls bar and border
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");
+		$siteId =& $this->rootSiteComponent->getQualifierId();
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$this->rootSiteComponent->getQualifierId()))
+			$siteId))
 		{
-// 			$visitor =& $this->getSiteVisitor();
-// 			$controlsHTML = $visitor->getBarPreHTML('#090')
-// 				.$visitor->getControlsHTML(
-// 					"<em>"._("Site")."</em>", 
-// 					$this->rootSiteComponent->acceptVisitor($visitor->_controlsVisitor), 
-// 					'#090', '#9F9', '#6C6', 0, false);
-// 			$mainScreen->setPreHTML($controlsHTML.$mainScreen->getPreHTML($null = null));
+			ob_start();
+			$harmoni =& Harmoni::instance();
 			
-// 			$mainScreen->setPostHTML($visitor->getBarPostHTML());
-		}		
+			print "\n<a href='".$harmoni->request->quickURL("ui1", "editSite", 
+				array("node" => $siteId->getIdString()))."'>";
+			print "\n\t<input type='button' value='"._("Edit Site Settings")."'/>";
+			print "\n</a>";
+			
+			$mainScreen->add(new UnstyledBlock(ob_get_clean()), null, null, RIGHT, BOTTOM);
+		}
 		
 		return $mainScreen;
 	}
