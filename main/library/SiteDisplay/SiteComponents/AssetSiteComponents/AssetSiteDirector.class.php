@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.10 2007/01/12 22:41:20 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.11 2007/05/22 17:05:27 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.10 2007/01/12 22:41:20 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.11 2007/05/22 17:05:27 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -82,6 +82,20 @@ class AssetSiteDirector
 		$this->MenuOrganizerType =& new Type('segue', 'edu.middlebury', 'MenuOrganizer');
 		$this->siteDisplayTypes[] =& $this->MenuOrganizerType;
 		$this->organizerTypes[] =& $this->MenuOrganizerType;
+	}
+	
+	/**
+	 * Clear the DOM cache. This needs to be done when moving around components and then
+	 * making subsequent calls to director methods that re-fetch the dom cache
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 5/22/07
+	 */
+	function clearDomCache () {
+		$this->_activeNodes = array();
+		$this->_visibleComponents = array();
+		$this->_filledTargetIds = array();
 	}
 	
 	/**

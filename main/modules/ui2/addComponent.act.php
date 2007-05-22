@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.2 2007/05/22 17:05:28 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.2 2007/05/22 17:05:28 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -80,20 +80,47 @@ class addComponentAction
 			case 'SubMenu_multipart':
 				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
 				$subMenu =& $director->createSiteComponent($director->MenuOrganizerType, $component);
-				$component->makeNested($subMenu);
 				$navOrganizer =& $component->getOrganizer();
-				$subMenu->updateTargetId($navOrganizer->getId()."_cell:0");
+				
+				// If the parent menu is vertical, nest the sub-menu by default.
+				if (preg_match('/^(Top-Bottom|Bottom-Top)\//i', $organizer->getDirection())) {
+					$component->makeNested($subMenu);
+					$targetIndex = 0;
+				}
+				// If the parent is horizontal, put the sub-menu in the first cell
+				// of the parent's nav-organizer
+				else {
+					$navOrganizer->addSubcomponentToCell($subMenu, 0);
+					$navOrganizer->updateNumColumns(2);
+					$targetIndex = 1;
+				}
+				
+				$subMenu->updateTargetId($navOrganizer->getId()."_cell:".$targetIndex);
+				$subMenu->updateDirection('Top-Bottom/Left-Right');
 				break;
 			case 'SidebarSubMenu_multipart':
 				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
 				$subMenu =& $director->createSiteComponent($director->MenuOrganizerType, $component);
-				$component->makeNested($subMenu);
 				$navOrganizer =& $component->getOrganizer();
-				$subMenu->updateTargetId($navOrganizer->getId()."_cell:0");
 				
-				$navOrganizer->updateNumColumns(2);
+				// If the parent menu is vertical, nest the sub-menu by default.
+				if (preg_match('/^(Top-Bottom|Bottom-Top)\//i', $organizer->getDirection())) {
+					$component->makeNested($subMenu);
+					$navOrganizer->updateNumColumns(2);
+					$targetIndex = 0;
+				}
+				// If the parent is horizontal, put the sub-menu in the first cell
+				// of the parent's nav-organizer
+				else {
+					$navOrganizer->addSubcomponentToCell($subMenu, 0);
+					$navOrganizer->updateNumColumns(3);
+					$targetIndex = 1;
+				}
+				
+				$subMenu->updateTargetId($navOrganizer->getId()."_cell:".$targetIndex);
 				$contentOrganizer =& $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
-				$navOrganizer->putSubcomponentInCell($contentOrganizer, 1);
+				$navOrganizer->putSubcomponentInCell($contentOrganizer, $targetIndex + 1);
+				$subMenu->updateDirection('Top-Bottom/Left-Right');
 				break;		
 			case 'ContentPage_multipart':
 				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);

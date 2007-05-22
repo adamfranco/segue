@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.1 2007/05/04 18:06:10 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.2 2007/05/22 17:05:28 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.1 2007/05/04 18:06:10 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.2 2007/05/22 17:05:28 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -155,7 +155,7 @@ class ControlsSiteVisitor {
 				$siteComponent->getQualifierId()))
 			{
 				print 	"if (confirm(\"".$message."\")) ";
-				print 		"window.location = \"".$url."\";";
+				print 		"window.location = \"".$url."\"; return false;";
 			} else {
 				print "alert(\""._('You are not authorized to create a submenu.')."\"); return false;";
 			}

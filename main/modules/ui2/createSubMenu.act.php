@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.2 2007/05/22 17:05:28 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.2 2007/05/22 17:05:28 adamfranco Exp $
  */
 class createSubMenuAction
 	extends EditModeSiteAction
@@ -38,10 +38,38 @@ class createSubMenuAction
 	function processChanges ( &$director ) {
 		// Get the target organizer's Id & Cell
 		$parentNavBlockId = RequestContext::value('parent');
-		
 		$parentNavBlock =& $director->getSiteComponentById($parentNavBlockId);
 		$director->getRootSiteComponent($parentNavBlockId);		
 		$navOrganizer =& $parentNavBlock->getOrganizer();
+		
+		// Crete the submenu
+		$subMenu =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', "MenuOrganizer"), $parentNavBlock);
+		
+		// If the parent menu is vertical, nest the sub-menu by default.
+		$parentMenu =& $parentNavBlock->getParentComponent();
+		
+		if (preg_match('/^(Top-Bottom|Bottom-Top)\//i', $parentMenu->getDirection())) {
+			$parentNavBlock->makeNested($subMenu);
+		}
+		// If the parent is horizontal, put the sub-menu in the first cell
+		// of the parent's nav-organizer
+		else {
+			$numCells = $navOrganizer->getTotalNumberOfCells();
+			for ($i = 0; $i < $numCells; $i++) {
+				if (!$navOrganizer->getSubComponentForCell($i)) {
+					$firstEmpty = $i;
+					break;
+				}
+			}
+			if (!isset($firstEmpty)) {
+				$navOrganizer->updateNumColumns($navOrganizer->getNumColumns() + 1);
+				$firstEmpty = $navOrganizer->getLastIndexFilled() + 1;
+			}
+			$navOrganizer->putSubcomponentInCell($subMenu, $firstEmpty);
+			for ($i = $firstEmpty; $i > 0; $i--) {
+				$navOrganizer->swapCells($i, $i - 1);
+			}
+		}
 		
 		// See if there is an empty cell to use for the target.
 		$numCells = $navOrganizer->getTotalNumberOfCells();
@@ -51,17 +79,14 @@ class createSubMenuAction
 				break;
 			}
 		}
-		
-		// If not, expand the navOrganizer to make room for the new menu target.
+		// If not, expand the navOrganizer to make room for the new menu target in the second cell.
 		if (!isset($subMenuTarget)) {
 			$navOrganizer->updateNumColumns($navOrganizer->getNumColumns() + 1);
-			$subMenuTarget = $navOrganizer->getId()."_cell:"
-									.($navOrganizer->getLastIndexFilled() + 1);
+			for ($i = ($navOrganizer->getTotalNumberOfCells() - 1); $i > 1; $i--) {
+				$navOrganizer->swapCells($i, $i - 1);
+			}
+			$subMenuTarget = $navOrganizer->getId()."_cell:1";
 		}
-		
-		// Crete the submenu
-		$subMenu =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', "MenuOrganizer"), $parentNavBlock);
-		$parentNavBlock->makeNested($subMenu);
 		
 		// Set its target.
 		$subMenu->updateTargetId($subMenuTarget);
@@ -69,6 +94,7 @@ class createSubMenuAction
 		// set the direction
 		if (RequestContext::value('direction'))
 			$subMenu->updateDirection(urldecode(RequestContext::value('direction')));
+		
 	}
 	
 }

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.4 2007/01/12 16:57:13 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.5 2007/05/22 17:05:27 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.4 2007/01/12 16:57:13 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.5 2007/05/22 17:05:27 adamfranco Exp $
  */
 class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -300,7 +300,7 @@ class AssetOrganizerSiteComponent
 	 */
 	function &_getChildComponents ($force = false) {
 		// load the data array
-		if ($force || !is_array($this->_childComponents)) {
+		if ($force || !isset($this->_childComponents) || !is_array($this->_childComponents)) {
 			$this->_childComponents = array();
 			
 			$child =& $this->_element->firstChild;

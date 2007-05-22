@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.7 2007/02/28 16:35:38 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.8 2007/05/22 17:05:27 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.7 2007/02/28 16:35:38 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.8 2007/05/22 17:05:27 adamfranco Exp $
  */
 class AssetSiteComponent 
 	// implements SiteComponent
@@ -44,6 +44,21 @@ class AssetSiteComponent
 		$this->_director =& $director;
 		$this->_asset =& $asset;
 		$this->_element =& $element;
+	}
+	
+	/**
+	 * Clear the DOM cache. This needs to be done when moving around components and then
+	 * making subsequent calls to director methods that re-fetch the dom cache
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 5/22/07
+	 */
+	function clearDomCache () {
+		if (isset($this->_childComponents))
+			unset($this->_childComponents);
+		
+		$this->_director->clearDomCache();
 	}
 	
 	/**
@@ -309,6 +324,8 @@ class AssetSiteComponent
 		$this->_asset->updateContent(
 			Blob::fromString(
 				$element->ownerDocument->toNormalizedString()));
+		
+		$this->clearDomCache();
 	}
 }
 
