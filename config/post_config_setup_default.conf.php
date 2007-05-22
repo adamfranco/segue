@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.9 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.10 2007/05/22 19:13:26 adamfranco Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
@@ -39,61 +39,40 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 								  "This is a Repository that holds all of the Sites in Segue.",
 								  $siteRepositoryType,
 								  $siteRepositoryId);
+	}
 
-
-		$navNodeSchemaId =& $idManager->getId("edu.middlebury.segue.nav_nod_rs");
-		
-		$navNodeSchema =& $repository->createRecordStructure(
-							"Navigational-Node RecordStructure", 
-							"This is the RecordStruction used for navigational-nodes.", 
+	$schemas =& $repository->getRecordStructures();
+	$pluginSchemaExists = false;
+	$pluginSchemaId = $idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs");
+	
+	while ($schemas->hasNext()) {
+		$schema =& $schemas->next();
+		if ($pluginSchemaId->isEqual($schema->getId())) {
+			$pluginSchemaExists = TRUE;
+		}
+	}
+	
+	/*********************************************************
+	 * SeguePlugin Schema
+	 *********************************************************/	
+	if (!$pluginSchemaExists) {
+			
+		$schema =& $repository->createRecordStructure(
+							"Segue Plugin RecordStructure", 
+							"This is the RecordStruction used for common Segue Plugin data.", 
 							"text/plain", 
 							"", 
-							$navNodeSchemaId);
+							$pluginSchemaId,
+							true);
 							
-		$navNodeSchema->createPartStructure(
-							"num_cells", 
-							"The number of cells that this node's children will be arranged in.", 
-							new HarmoniType("Repository", "edu.middlebury.harmoni", "integer"), 
-							false, 
-							false, 
-							false,
-							$idManager->getId("edu.middlebury.segue.nav_nod_rs.num_cells"));
-							
-		$navNodeSchema->createPartStructure(
-							"layout_arrangement", 
-							"The arrangement of the layout of this navigational-node: rows, columns, nested", 
+		$schema->createPartStructure(
+							"raw_description", 
+							"A raw description field. Data stored here is used interally to to plugin.", 
 							new HarmoniType("Repository", "edu.middlebury.harmoni", "string"), 
 							false, 
 							false, 
 							false,
-							$idManager->getId("edu.middlebury.segue.nav_nod_rs.layout_arrangement"));
-							
-		$navNodeSchema->createPartStructure(
-							"target_override", 
-							"The cell-number to use to use for the target for this node and descendent nodes: 1 to 'num_cells'.", 
-							new HarmoniType("Repository", "edu.middlebury.harmoni", "integer"), 
-							false, 
-							false, 
-							false,
-							$idManager->getId("edu.middlebury.segue.nav_nod_rs.target_override"));
-							
-		$navNodeSchema->createPartStructure(
-							"child_order", 
-							"The order of the children of this node", 
-							new HarmoniType("Repository", "edu.middlebury.harmoni", "string"), 
-							false, 
-							false, 
-							false,
-							$idManager->getId("edu.middlebury.segue.nav_nod_rs.child_order"));
-
-		$navNodeSchema->createPartStructure(
-							"child_cells", 
-							"The destination cells of the children of this node", 
-							new HarmoniType("Repository", "edu.middlebury.harmoni", "string"), 
-							false, 
-							false, 
-							false,
-							$idManager->getId("edu.middlebury.segue.nav_nod_rs.child_cells"));
+							$idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs.raw_description"));
 	}
 	
 	// check if Install default plugins

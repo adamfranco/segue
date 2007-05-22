@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.27 2007/05/11 18:36:23 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.28 2007/05/22 19:13:26 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.27 2007/05/11 18:36:23 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.28 2007/05/22 19:13:26 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -97,22 +97,18 @@ class SeguePluginsPlugin {
  	}
  	
  	/**
-	 * Answer the markup for the plugin description. Override this method to
-	 * add proccessing of description text before display. This description
-	 * may return plain text or XHTML text.
-	 * 
-	 * This method MAY
-	 * be used in your plugin implementation and WILL BE used to display a
-	 * description of the plugin instance in external contexts (such as a 
-	 * site-map).
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 1/20/06
-	 */
-	function getDescriptionMarkup () {
-		return $this->getDescription();
-	}
+ 	 * Generate a plain-text or HTML description string for the plugin instance.
+ 	 * This may simply be a stored 'raw description' string, it could be generated
+ 	 * from other content in the plugin instance, or some combination there-of.
+ 	 * Override this method in your plugin as needed.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 5/22/07
+ 	 */
+ 	function generateDescription () {
+ 		return $this->getRawDescription();
+ 	}
  	
  	/*********************************************************
  	 * The following three methods allow plugins to work within
@@ -291,26 +287,78 @@ class SeguePluginsPlugin {
 	}
 	
 	/**
-	 * Answer the persisted 'description' value of this plugin.
+	 * Answer the persisted raw description value of this plugin. 
+	 * It is up to the plugin writer what data to store in the raw description 
+	 * field. The 'raw description' will only be used internally in this plugin.
+	 * External access to the plugin's description will all go through 
+	 * the getDescription() method, which may include additional operations.
 	 * 
 	 * @return string
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getDescription () {
-		return $this->_asset->getDescription();
+	function getRawDescription () {
+		$idManager =& Services::getService("Id");
+		$parts =& $this->_asset->getPartsByPartStructure(
+			$idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs.raw_description"));
+		
+		if ($parts->hasNext()) {
+			$part =& $parts->next();
+			$value =& $part->getValue();
+			return $value->asString();
+		} else {
+			return "";
+		}
 	}
 	
 	/**
-	 * Set the persisted 'description' value of this plugin.
+	 * Set the persisted 'raw description' value of this plugin.
+	 * It is up to the plugin writer what data to store in the raw description 
+	 * field. The 'raw description' will only be used internally in this plugin.
+	 * External access to the plugin's description will all go through 
+	 * the getDescription() method, which may include additional operations.
 	 * 
-	 * @param string $title
+	 * @param string $description
 	 * @return void
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function setDescription ( $description ) {
-		$this->_asset->updateDescription($description);
+	function setRawDescription ( $description ) {
+		$idManager =& Services::getService("Id");
+		$parts =& $this->_asset->getPartsByPartStructure(
+			$idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs.raw_description"));
+		if ($parts->hasNext()) {
+			$part =& $parts->next();
+			$part->updateValue(String::fromString($description));
+		} else {
+			$records =& $this->_asset->getRecordsByRecordStructure(
+				$idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs"));
+			if ($records->hasNext()) {
+				$record =& $records->next();
+			} else {
+				$record =& $this->_asset->createRecord($idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs"));
+			}
+			
+			$part =& $record->createPart($idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs.raw_description"), String::fromString($description));
+		}
+		
+		$this->_asset->updateDescription($this->generateDescription());
+	}
+	
+	/**
+	 * Answer the description markup for the plugin instance. This description
+	 * will have been generated via the plugin's generateDescription() method.
+	 * 
+	 * This method MAY be overridden in your plugin implementation and 
+	 * WILL BE used to display a description of the plugin instance in external 
+	 * contexts (such as a site-map).
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/20/06
+	 */
+	function getDescription () {
+		return $this->_asset->getDescription();
 	}
 	
 	/**
@@ -1332,7 +1380,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * Answer true if our data has been modified
 	 * 
 	 * @return boolean
-	 * @access public
+	 * @access private
 	 * @since 1/13/06
 	 */
 	function _fileDataChanged () {
@@ -1398,7 +1446,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * 
 	 * @param string $dname RecordStructure display name
 	 * @param integer $instance index in $this->data for record
-	 * @access public
+	 * @access private
 	 * @since 3/1/06
 	 */
 	function _createInstance ($dname, $instance) {

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.6 2007/04/30 20:22:06 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.7 2007/05/22 19:13:26 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.6 2007/04/30 20:22:06 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.7 2007/05/22 19:13:26 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SeguePluginsAjaxPlugin
@@ -51,7 +51,7 @@ class EduMiddleburyDownloadPlugin
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) { 			
  			$this->setContent($this->getFieldValue('file_id'));
- 			$this->setDescription($this->getFieldValue('description'));
+ 			$this->setRawDescription($this->getFieldValue('description'));
  			$this->logEvent('Modify Content', 'File for download updated');
  		}
  	}
@@ -75,7 +75,7 @@ class EduMiddleburyDownloadPlugin
  			print "\n\t<input name='".$this->getFieldName('file_id')."' type='hidden' value=\"".$this->getContent()."\"/>";
  			 			
  			// Description
- 			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->getDescription()."</textarea>";
+ 			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->getRawDescription()."</textarea>";
  			
  			// Select File button
  			print "\n\t<br/><br/><input type='button' value='"._('Select File')."' onclick=\"";
