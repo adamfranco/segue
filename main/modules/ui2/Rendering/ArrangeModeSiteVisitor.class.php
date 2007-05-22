@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.3 2007/05/22 17:13:44 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.3 2007/05/22 17:13:44 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -80,7 +80,7 @@ class ArrangeModeSiteVisitor
 		
 		// Check completeness and render any nodes still waiting for targets
 		foreach (array_keys($this->_missingTargets) as $targetId) {			
-			if ($this->_missingTargetWidths[$targetId])
+			if (isset($this->_missingTargetWidths[$targetId]) && $this->_missingTargetWidths[$targetId])
 				$width = $this->_missingTargetWidths[$targetId];
 			else
 				$width = null;
