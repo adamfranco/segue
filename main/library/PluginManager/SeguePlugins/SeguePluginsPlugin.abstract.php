@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.28 2007/05/22 19:13:26 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.29 2007/05/22 20:18:00 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.28 2007/05/22 19:13:26 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.29 2007/05/22 20:18:00 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -300,7 +300,7 @@ class SeguePluginsPlugin {
 	function getRawDescription () {
 		$idManager =& Services::getService("Id");
 		$parts =& $this->_asset->getPartsByPartStructure(
-			$idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs.raw_description"));
+			$idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"));
 		
 		if ($parts->hasNext()) {
 			$part =& $parts->next();
@@ -326,20 +326,20 @@ class SeguePluginsPlugin {
 	function setRawDescription ( $description ) {
 		$idManager =& Services::getService("Id");
 		$parts =& $this->_asset->getPartsByPartStructure(
-			$idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs.raw_description"));
+			$idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"));
 		if ($parts->hasNext()) {
 			$part =& $parts->next();
 			$part->updateValue(String::fromString($description));
 		} else {
 			$records =& $this->_asset->getRecordsByRecordStructure(
-				$idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs"));
+				$idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs"));
 			if ($records->hasNext()) {
 				$record =& $records->next();
 			} else {
-				$record =& $this->_asset->createRecord($idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs"));
+				$record =& $this->_asset->createRecord($idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs"));
 			}
 			
-			$part =& $record->createPart($idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs.raw_description"), String::fromString($description));
+			$part =& $record->createPart($idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"), String::fromString($description));
 		}
 		
 		$this->_asset->updateDescription($this->generateDescription());

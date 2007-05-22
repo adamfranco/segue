@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.10 2007/05/22 19:13:26 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.11 2007/05/22 20:17:59 adamfranco Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
@@ -43,7 +43,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 
 	$schemas =& $repository->getRecordStructures();
 	$pluginSchemaExists = false;
-	$pluginSchemaId = $idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs");
+	$pluginSchemaId = $idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs");
 	
 	while ($schemas->hasNext()) {
 		$schema =& $schemas->next();
@@ -72,7 +72,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 							false, 
 							false, 
 							false,
-							$idManager->getId("Repository::edu.middlebury.segue::edu.middlebury.segue.segue_plungin_rs.raw_description"));
+							$idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"));
 	}
 	
 	// check if Install default plugins
