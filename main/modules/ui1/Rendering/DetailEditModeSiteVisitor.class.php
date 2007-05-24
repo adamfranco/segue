@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.1 2007/05/24 19:32:01 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.2 2007/05/24 20:04:04 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.1 2007/05/24 19:32:01 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.2 2007/05/24 20:04:04 adamfranco Exp $
  */
 class DetailEditModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -130,6 +130,22 @@ class DetailEditModeSiteVisitor
 			return $this->visitTargetBlock();
 		} else {
 			return parent::visitFlowOrganizer($organizer);
+		}
+	}
+	
+	/**
+	 * Visit a flow organizer and return the resultant GUI component [a container].
+	 * 
+	 * @param object FlowOrganizerSiteComponent
+	 * @return object Component
+	 * @access public
+	 * @since 5/18/07
+	 */
+	function &visitMenuOrganizer( &$organizer ) {
+		if ($organizer->getId() == $this->_flowOrgId) {
+			return $this->visitTargetBlock();
+		} else {
+			return parent::visitMenuOrganizer($organizer);
 		}
 	}
 }
