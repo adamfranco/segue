@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.5 2007/05/24 18:46:26 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.6 2007/05/24 19:32:01 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.5 2007/05/24 18:46:26 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.6 2007/05/24 19:32:01 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -85,45 +85,27 @@ END;
 	}
 	
 	/**
-	 * Visit a block and return the resulting GUI component.
+	 * Answer the plugin content for a block
 	 * 
 	 * @param object BlockSiteComponent $block
-	 * @return object Component 
+	 * @return string
 	 * @access public
-	 * @since 1/15/07
+	 * @since 5/23/07
 	 */
-	function &visitBlock ( &$block ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");	
-		if (!$authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.view"), 
-			$idManager->getId($block->getId())))
-		{
-			$false = false;
-			return $false;
-		}
-		
-		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
-		
-		$pluginManager =& Services::getService('PluginManager');
-		
-		
-		if ($block->showDisplayName()) {
-			$heading =& $guiContainer->add(
-				new Heading(
-					$block->getDisplayName(),
-					2),
-			$block->getWidth(), null, null, TOP);
-		}
-		
-		$content =& $guiContainer->add(
-			new Block(
-				$pluginManager->getPluginMarkup($block->getAsset(), false)
-					.$block->acceptVisitor($this->_controlsVisitor),
-				STANDARD_BLOCK), 
-			$block->getWidth(), null, null, TOP);
-		
-		return $guiContainer;
+	function getPluginContent ( &$block ) {
+		return parent::getPluginContent($block)
+				.$block->acceptVisitor($this->_controlsVisitor);
+	}
+	
+	/**
+	 * Answer true if plugin controls should be shown.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 5/24/07
+	 */
+	function showPluginControls () {
+		return false;
 	}
 	
 	/**
