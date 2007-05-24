@@ -6,13 +6,15 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.3 2007/05/11 18:36:23 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.4 2007/05/24 18:46:26 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/DetailViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php");
 require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
 
 /**
@@ -24,7 +26,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.3 2007/05/11 18:36:23 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.4 2007/05/24 18:46:26 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -63,7 +65,7 @@ class viewAction
 		$repositoryManager =& Services::getService('Repository');
 		$idManager =& Services::getService('Id');
 		
-		$director =& new AssetSiteDirector(
+		$this->_director =& new AssetSiteDirector(
 			$repositoryManager->getRepository(
 				$idManager->getId('edu.middlebury.segue.sites_repository')));			
 		
@@ -73,7 +75,7 @@ class viewAction
 		/*********************************************************
 		 * Aditional setup
 		 *********************************************************/
-		$rootSiteComponent =& $director->getRootSiteComponent($nodeId);
+		$rootSiteComponent =& $this->_director->getRootSiteComponent($nodeId);
 		$this->rootSiteComponent =& $rootSiteComponent;
 		
 		$visitor =& $this->getSiteVisitor();
@@ -167,8 +169,16 @@ class viewAction
 	 * @since 4/6/06
 	 */
 	function &getSiteVisitor () {
-		if (!isset($this->visitor)) 
-			$this->visitor =& new ViewModeSiteVisitor();
+		if (!isset($this->visitor)) {
+			
+			$requestedNode =& $this->_director->getSiteComponentById(
+				RequestContext::value("node"));
+			
+			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
+				$this->visitor =& new DetailViewModeSiteVisitor($requestedNode);
+			else
+				$this->visitor =& new ViewModeSiteVisitor();
+		}
 		return $this->visitor;
 	}
 	

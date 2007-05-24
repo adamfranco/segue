@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.5 2007/05/24 18:13:21 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.6 2007/05/24 18:46:26 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.5 2007/05/24 18:13:21 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.6 2007/05/24 18:46:26 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -140,8 +140,15 @@ class ArrangeModeSiteVisitor
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		
-		$heading =& $guiContainer->getComponent(1);
+		// Get our content and heading objects from the parent visitor
 		$content =& $guiContainer->getComponent(2);
+		if ($content)
+			$heading =& $guiContainer->getComponent(1);
+		else {
+			$heading = null;
+			$content =& $guiContainer->getComponent(1);
+		}
+		
 		
 		// Add controls bar and border
 		$authZ =& Services::getService("AuthZ");
@@ -609,22 +616,6 @@ class ArrangeModeSiteVisitor
 		}
 		
 		return $guiContainer;
-	}
-	
-	/**
-	 * Answer the Url for this component id.
-	 *
-	 * Note: this is clunky that this object has to know about harmoni and 
-	 * what action to target. Maybe rewrite...
-	 * 
-	 * @param string $id
-	 * @return string
-	 * @access public
-	 * @since 4/4/06
-	 */
-	function getUrlForComponent ( $id ) {
-		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL('ui2', "arrangeview", array("node" => $id));
 	}
 	
 	/**

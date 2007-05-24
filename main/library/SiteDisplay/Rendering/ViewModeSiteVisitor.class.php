@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.34 2007/05/24 18:35:27 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.35 2007/05/24 18:46:25 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.34 2007/05/24 18:35:27 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.35 2007/05/24 18:46:25 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -459,7 +459,10 @@ class ViewModeSiteVisitor {
 	 */
 	function getUrlForComponent ( $id ) {
 		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL('ui2', "view", array("node" => $id));
+		return $harmoni->request->quickURL(
+			$harmoni->request->getRequestedModule(), 
+			$harmoni->request->getRequestedAction(),
+			array("node" => $id));
 	}
 }
 

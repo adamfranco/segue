@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2007/05/24 17:48:27 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.4 2007/05/24 18:46:26 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2007/05/24 17:48:27 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.4 2007/05/24 18:46:26 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -344,22 +344,6 @@ END;
 		}
 		
 		return $guiContainer;
-	}
-	
-	/**
-	 * Answer the Url for this component id.
-	 *
-	 * Note: this is clunky that this object has to know about harmoni and 
-	 * what action to target. Maybe rewrite...
-	 * 
-	 * @param string $id
-	 * @return string
-	 * @access public
-	 * @since 4/4/06
-	 */
-	function getUrlForComponent ( $id ) {
-		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL('ui2', "editview", array("node" => $id));
 	}
 	
 	/**
