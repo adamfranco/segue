@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.12 2007/05/24 17:47:30 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.13 2007/05/24 18:13:21 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.12 2007/05/24 17:47:30 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.13 2007/05/24 18:13:21 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -254,12 +254,14 @@ END;
 	/**
 	 * Answer the markup for this plugin
 	 * 
+	 * @param optional boolean $showControls
+	 * @param optional boolean $extended	If true, return the extended version. Default: false.
 	 * @return string
 	 * @access public
 	 * @since 1/20/06
 	 */
-	function executeAndGetMarkup ( $showControls = false ) {
-		$markup = parent::executeAndGetMarkup($showControls);
+	function executeAndGetMarkup ( $showControls = false, $extended = false ) {
+		$markup = parent::executeAndGetMarkup($showControls, $extended);
 		
 		$this->writeAjaxLib();
 		

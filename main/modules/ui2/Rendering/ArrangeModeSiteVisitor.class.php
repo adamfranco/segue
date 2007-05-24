@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.4 2007/05/24 17:48:27 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.5 2007/05/24 18:13:21 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.4 2007/05/24 17:48:27 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.5 2007/05/24 18:13:21 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -184,6 +184,22 @@ class ArrangeModeSiteVisitor
 		}
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Answer the detail url of a block
+	 * 
+	 * @param string $id
+	 * @return string
+	 * @access public
+	 * @since 5/18/07
+	 */
+	function getDetailUrl ($id) {
+		$harmoni =& Harmoni::instance();
+		return $harmoni->request->quickURL(
+				$harmoni->request->getRequestedModule(),
+				'editview',
+				array("node" => $id));
 	}
 	
 	/**
