@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.33 2007/05/24 17:48:27 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.34 2007/05/24 18:35:27 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.33 2007/05/24 17:48:27 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.34 2007/05/24 18:35:27 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -81,7 +81,7 @@ class ViewModeSiteVisitor {
 				
 		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
 		
-		if ($block->showDisplayName()) {
+		if ($this->showBlockTitle($block)) {
 			$guiContainer->add(
 				new Heading(
 					$this->getBlockTitle($block),
@@ -97,6 +97,18 @@ class ViewModeSiteVisitor {
 			$block->getWidth(), null, null, TOP);
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Answer true if the block title should be shown.
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return boolean
+	 * @access public
+	 * @since 5/24/07
+	 */
+	function showBlockTitle ( &$block ) {
+		return $block->showDisplayName();
 	}
 	
 	/**

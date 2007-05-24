@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.3 2007/05/24 18:13:21 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.4 2007/05/24 18:35:27 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.3 2007/05/24 18:13:21 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.4 2007/05/24 18:35:27 adamfranco Exp $
  */
 class DetailViewModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -84,7 +84,7 @@ class DetailViewModeSiteVisitor
 		$pluginManager =& Services::getService('PluginManager');
 		$plugin =& $pluginManager->getPlugin($block->getAsset());
 		
-		print $plugin->exectueAndGetExtendedMarkup(false);
+		print $plugin->executeAndGetExtendedMarkup(false);
 		
 		return ob_get_clean();
 	}
@@ -102,6 +102,18 @@ class DetailViewModeSiteVisitor
 			return $block->getDisplayName()." &raquo; "._("Detail");
 		else
 			return parent::getBlockTitle($block);
+	}
+	
+	/**
+	 * Answer true if the block title should be shown.
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return boolean
+	 * @access public
+	 * @since 5/24/07
+	 */
+	function showBlockTitle ( &$block ) {
+		return true;
 	}
 	
 	/**
