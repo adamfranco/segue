@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.4 2007/05/24 18:46:26 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.5 2007/05/24 19:55:46 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.4 2007/05/24 18:46:26 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.5 2007/05/24 19:55:46 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -148,30 +148,7 @@ END;
 	 * @since 4/3/06
 	 */
 	function &visitBlockInMenu ( &$block ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");	
-		if (!$authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.view"), 
-			$idManager->getId($block->getId())))
-		{
-			$false = false;
-			return $false;
-		}
-		
-		$pluginManager =& Services::getService('PluginManager');
-		// Create and return the component
-		ob_start();
-		
-		if ($block->showDisplayName()) {
-			print "<div style='font-weight: bold; font-size: large;'>"
-					.$block->getDisplayName()
-					."</div>";
-		}
-		
-		print "<div>".$pluginManager->getPluginMarkup($block->getAsset(), true)."</div>";
-		
-		$menuItem =& new MenuItem(ob_get_clean(), 1);
-		
+		$menuItem =& parent::visitBlockInMenu($block);
 		
 		// Add controls bar and border
 		$authZ =& Services::getService("AuthZ");

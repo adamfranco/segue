@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.35 2007/05/24 18:46:25 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.36 2007/05/24 19:55:46 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.35 2007/05/24 18:46:25 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.36 2007/05/24 19:55:46 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -199,13 +199,13 @@ class ViewModeSiteVisitor {
 		// Create and return the component
 		ob_start();
 		
-		if ($block->showDisplayName()) {
+		if ($this->showBlockTitle($block)) {
 			print "<div style='font-weight: bold; font-size: large;' title=\"".$block->getDescription()."\">"
-					.$block->getDisplayName()
+					.$this->getBlockTitle($block)
 					."</div>";
 		}
 		
-		print "<div>".$pluginManager->getPluginMarkup($block->getAsset(), false)."</div>";
+		print "<div>".$this->getPluginContent($block)."</div>";
 		
 		$menuItem =& new MenuItem(ob_get_clean(), 1);
 		return $menuItem;
