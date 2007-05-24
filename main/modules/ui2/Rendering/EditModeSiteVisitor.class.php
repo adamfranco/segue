@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2007/05/24 17:48:27 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.2 2007/05/09 15:28:15 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2007/05/24 17:48:27 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -93,36 +93,21 @@ END;
 	 * @since 1/15/07
 	 */
 	function &visitBlock ( &$block ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");	
-		if (!$authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.view"), 
-			$idManager->getId($block->getId())))
-		{
-			$false = false;
-			return $false;
-		}
+		$guiContainer =& $this->addBlockControls($block, parent::visitBlock($block));			
 		
-		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
-		
-		$pluginManager =& Services::getService('PluginManager');
-		
-		
-		if ($block->showDisplayName()) {
-			$heading =& $guiContainer->add(
-				new Heading(
-					$block->getDisplayName(),
-					2),
-			$block->getWidth(), null, null, TOP);
-		}
-		
-		$content =& $guiContainer->add(
-			new Block(
-				$pluginManager->getPluginText($block->getAsset(), true),
-				STANDARD_BLOCK), 
-			$block->getWidth(), null, null, TOP);
-			
-		
+		return $guiContainer;
+	}
+	
+	/**
+	 * Add controls to the block
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @param object Container $guiContainer
+	 * @return object Container The guiContainer
+	 * @access public
+	 * @since 5/24/07
+	 */
+	function &addBlockControls (&$block, &$guiContainer) {
 		// Add controls bar and border
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");
@@ -138,9 +123,20 @@ END;
 			$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 			
 			$guiContainer->setPostHTML($this->getBarPostHTML());
-		}		
+		}
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Answer true if plugin controls should be shown.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 5/24/07
+	 */
+	function showPluginControls () {
+		return true;
 	}
 	
 	/**
@@ -172,7 +168,7 @@ END;
 					."</div>";
 		}
 		
-		print "<div>".$pluginManager->getPluginText($block->getAsset(), true)."</div>";
+		print "<div>".$pluginManager->getPluginMarkup($block->getAsset(), true)."</div>";
 		
 		$menuItem =& new MenuItem(ob_get_clean(), 1);
 		

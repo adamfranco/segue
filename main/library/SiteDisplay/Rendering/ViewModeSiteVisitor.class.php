@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.32 2007/05/18 20:00:58 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.33 2007/05/24 17:48:27 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.32 2007/05/18 20:00:58 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.33 2007/05/24 17:48:27 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -81,8 +81,6 @@ class ViewModeSiteVisitor {
 				
 		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
 		
-		$pluginManager =& Services::getService('PluginManager');
-		
 		if ($block->showDisplayName()) {
 			$guiContainer->add(
 				new Heading(
@@ -91,13 +89,51 @@ class ViewModeSiteVisitor {
 			$block->getWidth(), null, null, TOP);
 		}
 		
+		// Plugin content		
 		$guiContainer->add(
 			new Block(
-				$pluginManager->getPluginText($block->getAsset(), false),
+				$this->getPluginContent($block),
 				STANDARD_BLOCK), 
 			$block->getWidth(), null, null, TOP);
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Answer the plugin content for a block
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return string
+	 * @access public
+	 * @since 5/23/07
+	 */
+	function getPluginContent ( &$block ) {
+		ob_start();
+		$harmoni =& Harmoni::instance();
+		$pluginManager =& Services::getService('PluginManager');
+		$plugin =& $pluginManager->getPlugin($block->getAsset());
+		
+		print $plugin->executeAndGetMarkup($this->showPluginControls());
+		
+		if ($plugin->hasExtendedMarkup()) {	
+			print "\n<div style='text-align: right;'>";
+			print "\n\t<a href='".$this->getDetailUrl($block->getId())."'>";
+			print $plugin->getExtendedLinkLabel();
+			print "</a>";
+			print "\n</div>";
+		}
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer true if plugin controls should be shown.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 5/24/07
+	 */
+	function showPluginControls () {
+		return false;
 	}
 	
 	/**
@@ -122,7 +158,10 @@ class ViewModeSiteVisitor {
 	 */
 	function getDetailUrl ($id) {
 		$harmoni =& Harmoni::instance();
-		return $harmoni->request->quickURL('ui2', "detail", array("node" => $id));
+		return $harmoni->request->quickURL(
+				$harmoni->request->getRequestedModule(),
+				$harmoni->request->getRequestedAction(),
+				array("node" => $id));
 	}
 	
 	/**
@@ -154,7 +193,7 @@ class ViewModeSiteVisitor {
 					."</div>";
 		}
 		
-		print "<div>".$pluginManager->getPluginText($block->getAsset(), false)."</div>";
+		print "<div>".$pluginManager->getPluginMarkup($block->getAsset(), false)."</div>";
 		
 		$menuItem =& new MenuItem(ob_get_clean(), 1);
 		return $menuItem;

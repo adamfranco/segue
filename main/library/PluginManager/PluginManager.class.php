@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.17 2007/05/09 20:04:31 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.18 2007/05/24 17:47:29 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.17 2007/05/09 20:04:31 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.18 2007/05/24 17:47:29 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -397,24 +397,23 @@ class PluginManager {
 	 * 
 	 * @param object Asset $asset
 	 * @param optional boolean $showControls
+	 * @param optional boolean $extended
 	 * @return string
 	 * @access public
 	 * @since 1/20/06
 	 */
-	function getPluginText ( &$asset, $showControls = false ) {
+	function getPluginMarkup ( &$asset, $showControls = false, $extended = false ) {
 		ob_start();
 		$type =& $asset->getAssetType();
 		if (in_array($type->printableString(), 
 				array_keys(/*$this->_enabledPlugins*/$this->getInstalledPlugins()))) {
 			
 			$plugin =& $this->getPlugin($asset);
-			
-			$assetId =& $asset->getId();
-			
+						
 			if (!is_object($plugin)) {
 				print $plugin;
 			} else {
-				print $plugin->executeAndGetMarkup($showControls);
+				print $plugin->executeAndGetMarkup($showControls, $extended);
 			}
 		} else {
 			print "The requested plugin, '".$type->asString()."' is not enabled, please contact your administrator for more information";
@@ -423,20 +422,31 @@ class PluginManager {
 	}
 	
 	/**
-	 * Answer the description Markup for this plugin
+	 * Answer the extended version of the XHTML text of the plugin
+	 * 
+	 * @param object Asset $asset
+	 * @param optional boolean $showControls
+	 * @return string
+	 * @access public
+	 * @since 1/20/06
+	 */
+	function getExtendedPluginMarkup ( &$asset, $showControls = false) {
+		return $this->getPluginMarkup($asset, $showControls, true);
+	}
+	
+	/**
+	 * Answer the description plain or HTML text for this plugin
 	 * 
 	 * @param object Asset $asset
 	 * @return string
 	 * @access public
 	 * @since 2/22/06
 	 */
-	function getPluginDescriptionMarkup ( &$asset ) {
+	function getPluginDescription ( &$asset ) {
 		$plugin =& $this->getPlugin($asset);
-		$plugin->setShowControls($showControls);
 		
-		if ($plugin->getDescriptionMarkup())
-			// @todo add HTML cleaning.
-			return $plugin->getDescriptionMarkup();
+		if ($plugin->getDescription())
+			return $plugin->getDescription();
 		else
 			return "";
 	}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.1 2007/05/18 20:00:58 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.2 2007/05/24 17:48:27 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.1 2007/05/18 20:00:58 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.2 2007/05/24 17:48:27 adamfranco Exp $
  */
 class DetailViewModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -68,6 +68,25 @@ class DetailViewModeSiteVisitor
 		}
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Answer the plugin content for a block
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return string
+	 * @access public
+	 * @since 5/23/07
+	 */
+	function getPluginContent ( &$block ) {
+		ob_start();
+		$harmoni =& Harmoni::instance();
+		$pluginManager =& Services::getService('PluginManager');
+		$plugin =& $pluginManager->getPlugin($block->getAsset());
+		
+		print $plugin->getExtendedMarkup(false);
+		
+		return ob_get_clean();
 	}
 	
 	/**

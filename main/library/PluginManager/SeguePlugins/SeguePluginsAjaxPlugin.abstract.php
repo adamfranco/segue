@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.11 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.12 2007/05/24 17:47:30 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.11 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.12 2007/05/24 17:47:30 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -258,13 +258,16 @@ END;
 	 * @access public
 	 * @since 1/20/06
 	 */
-	function getPluginMarkup () {
+	function executeAndGetMarkup ( $showControls = false ) {
+		$markup = parent::executeAndGetMarkup($showControls);
+		
 		$this->writeAjaxLib();
-			
-		$markup = "\n<div id='plugin:".$this->getId()."'>\n";
-		$markup .= parent::getPluginMarkup();
-		$markup .= "\n</div>"; 
-		return $markup;
+		
+		ob_start();
+		print "\n<div id='plugin:".$this->getId()."'>\n";
+		print $markup;
+		print "\n</div>"; 
+		return ob_get_clean();
 	}
  	
 	/**

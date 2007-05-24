@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.29 2007/05/22 20:18:00 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.30 2007/05/24 17:47:30 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.29 2007/05/22 20:18:00 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.30 2007/05/24 17:47:30 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -97,6 +97,34 @@ class SeguePluginsPlugin {
  	}
  	
  	/**
+ 	 * Return the markup that represents the plugin in and expanded form.
+ 	 * This method will be called when looking at a "detail view" of the plugin
+ 	 * where the representation of the plugin will be the focus of the page
+ 	 * rather than just one of many elements.
+ 	 * Override this method in your plugin as needed.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 5/23/07
+ 	 */
+ 	function getExtendedMarkup () {
+ 		return $this->getMarkup();
+ 	}
+ 	
+ 	/**
+ 	 * Answer the label to use when linking to the plugin's extented markup.
+ 	 * For a text-based plugin this may be the default, 'read more >>', for
+ 	 * an image plugin it might be something like "Large View", etc.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 5/23/07
+ 	 */
+ 	function getExtendedLinkLabel () {
+ 		return _("read more &raquo;");
+ 	}
+ 	
+ 	/**
  	 * Generate a plain-text or HTML description string for the plugin instance.
  	 * This may simply be a stored 'raw description' string, it could be generated
  	 * from other content in the plugin instance, or some combination there-of.
@@ -162,7 +190,8 @@ class SeguePluginsPlugin {
  *********************************************************/
 	
 	/**
-	 * Answer an href tag string with the array values added as parameters.
+	 * Answer an href tag string with the array values added as parameters to 
+	 * an internal url.
 	 * 
 	 * @param array $parameters Associative array ('name' => 'value')
 	 * @return string
@@ -173,7 +202,7 @@ class SeguePluginsPlugin {
 		return "href='".$this->url($parameters)."'";
 	}
 	/**
-	 * Answer a Url string with the array values added as parameters.
+	 * Answer an internal Url string with the array values added as parameters.
 	 * 
 	 * @param array $parameters Associative array ('name' => 'value')
 	 * @return string
@@ -191,8 +220,8 @@ class SeguePluginsPlugin {
 	}
 	
 	/**
-	 * Answer a Javascript command to send the window to a url with the parameters
-	 * passed.
+	 * Answer a Javascript command to send the window to an internal url with the 
+	 * parameters passed.
 	 *
 	 * Use this method, e.g.:
 	 *		"onclick=".$this->locationSend(array('item' => 123))
@@ -341,8 +370,6 @@ class SeguePluginsPlugin {
 			
 			$part =& $record->createPart($idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"), String::fromString($description));
 		}
-		
-		$this->_asset->updateDescription($this->generateDescription());
 	}
 	
 	/**
@@ -1021,11 +1048,12 @@ class SeguePluginsPlugin {
 	 * Execute the plugin and return its markup.
 	 * 
 	 * @param optional boolean $showControls
+	 * @param optional boolean $extended	If true, return the extended version. Default: false.
 	 * @return string
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function executeAndGetMarkup ( $showControls = false ) {
+	function executeAndGetMarkup ( $showControls = false, $extended = false ) {
 		$this->setShowControls($showControls);
 		
 		$harmoni =& Harmoni::instance();
@@ -1035,9 +1063,21 @@ class SeguePluginsPlugin {
 		
 		$this->update($this->_getRequestData());
 		
-		$markup = $this->getPluginMarkup();
+		if ($extended)
+			$markup = $this->getExtendedMarkup();
+		else
+			$markup = $this->getMarkup();
+		
+		// update the description if needed
+		$this->setShowControls(false);
+		$desc = $this->generateDescription();
+		$this->setShowControls($showControls);
+		if ($desc != $this->_asset->getDescription()) {
+			$this->_asset->updateDescription($desc);
+		}
 		
 		$this->_storeData();
+		
 		
 		$harmoni->request->endNamespace();
 		
@@ -1045,14 +1085,37 @@ class SeguePluginsPlugin {
 	}
 	
 	/**
-	 * Answer the markup for this plugin
+	 * Execute the plugin and return its markup.
 	 * 
+	 * @param optional boolean $showControls
+	 * @param optional boolean $extended
 	 * @return string
 	 * @access public
-	 * @since 1/20/06
+	 * @since 5/23/07
 	 */
-	function getPluginMarkup () {
-		return $this->getMarkup();
+	function executeAndGetExtendedMarkup ( $showControls = false) {
+		return $this->executeAndGetMarkup($showControls, true);
+	}
+	
+	/**
+	 * Answer true if this plugin instance has extended content that should
+	 * be linked to.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 5/23/07
+	 */
+	function hasExtendedMarkup () {
+		$showControls = $this->_showControls;
+		$this->_showControls = false;
+		
+		if ($this->getMarkup() == $this->getExtendedMarkup())
+			$hasExtended = false;
+		else
+			$hasExtended = true;
+		
+		$this->_showControls = $showControls;
+		return $hasExtended;
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.3 2007/05/22 17:13:44 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.4 2007/05/24 17:48:27 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.3 2007/05/22 17:13:44 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.4 2007/05/24 17:48:27 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -126,47 +126,22 @@ class ArrangeModeSiteVisitor
 	}
 	
 	/**
-	 * Visit a block and return the resulting GUI component.
+	 * Add controls to the block
 	 * 
 	 * @param object BlockSiteComponent $block
-	 * @return object Component 
+	 * @param object Container $guiContainer
+	 * @return object Container The guiContainer
 	 * @access public
-	 * @since 4/3/06
+	 * @since 5/24/07
 	 */
-	function &visitBlock ( &$block ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");	
-		if (!$authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.view"), 
-			$idManager->getId($block->getId())))
-		{
-			$false = false;
-			return $false;
-		}
-		
-		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
-				
-		$pluginManager =& Services::getService('PluginManager');
-		
-		if ($block->showDisplayName()) {
-			$heading =& $guiContainer->add(
-				new Heading(
-					$block->getDisplayName(), 
-					2),
-				$block->getWidth(), null, null, TOP);
-		}
-		$content =& $guiContainer->add(
-			new Block(
-				$pluginManager->getPluginText($block->getAsset(), true),
-				STANDARD_BLOCK), 
-			$block->getWidth(), null, null, TOP);
-		
+	function &addBlockControls (&$block, &$guiContainer) {
 		$primaryColor = '#090';
 		$secondaryColor = '#9F9';
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		
-		
+		$heading =& $guiContainer->getComponent(1);
+		$content =& $guiContainer->getComponent(2);
 		
 		// Add controls bar and border
 		$authZ =& Services::getService("AuthZ");

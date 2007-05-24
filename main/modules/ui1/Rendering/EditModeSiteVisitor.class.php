@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.4 2007/05/24 17:48:27 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.3 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.4 2007/05/24 17:48:27 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -118,7 +118,7 @@ END;
 		
 		$content =& $guiContainer->add(
 			new Block(
-				$pluginManager->getPluginText($block->getAsset(), false)
+				$pluginManager->getPluginMarkup($block->getAsset(), false)
 					.$block->acceptVisitor($this->_controlsVisitor),
 				STANDARD_BLOCK), 
 			$block->getWidth(), null, null, TOP);
@@ -156,7 +156,7 @@ END;
 		}
 		
 		print "<div>";
-		print $pluginManager->getPluginText($block->getAsset(), false);
+		print $pluginManager->getPluginMarkup($block->getAsset(), false);
 		print $block->acceptVisitor($this->_controlsVisitor);
 		print "</div>";
 		
