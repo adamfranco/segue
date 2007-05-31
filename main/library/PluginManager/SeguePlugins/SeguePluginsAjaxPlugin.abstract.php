@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.13 2007/05/24 18:13:21 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.14 2007/05/31 17:39:23 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.13 2007/05/24 18:13:21 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.14 2007/05/31 17:39:23 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -261,6 +261,8 @@ END;
 	 * @since 1/20/06
 	 */
 	function executeAndGetMarkup ( $showControls = false, $extended = false ) {
+		$this->_isExtended = $extended;
+		
 		$markup = parent::executeAndGetMarkup($showControls, $extended);
 		
 		$this->writeAjaxLib();
@@ -303,7 +305,12 @@ END;
 		$url =& $harmoni->request->mkURL('plugin_manager', 'update_ajax');
 	
 		$harmoni->request->startNamespace('plugin_manager');
+		
 		$url->setValue('plugin_id', $this->getId());
+		
+		if ($this->_isExtended)
+			$url->setValue('extended', 'true');
+			
 		$harmoni->request->endNamespace();
 		
 		if (is_array($parameters) && count($parameters))

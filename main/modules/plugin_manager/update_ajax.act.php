@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.9 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.10 2007/05/31 17:39:23 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.9 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.10 2007/05/31 17:39:23 adamfranco Exp $
  */
 class update_ajaxAction 
 	extends Action
@@ -47,6 +47,10 @@ class update_ajaxAction
 		// Get the plugin asset id
 		$harmoni->request->startNamespace('plugin_manager');
 		$id = RequestContext::value('plugin_id');
+		if (RequestContext::value('extended') == 'true')
+			$showExtended = true;
+		else
+			$showExtended = false;
 		$harmoni->request->endNamespace();
 			
 		// Get the plugin asset object
@@ -68,7 +72,11 @@ class update_ajaxAction
 			print $plugin;
 			print "]]>\n\t</markup>\n";
 		} else {
-			$markup = $plugin->executeAndGetMarkup(TRUE);
+			if ($showExtended)
+				$markup = $plugin->executeAndGetExtendedMarkup(TRUE);
+			else
+				$markup = $plugin->executeAndGetMarkup(TRUE);
+				
 			print "\t<markup>\n\t\t<![CDATA[";
 			// CDATA sections cannot contain ']]>' and therefor cannot be nested
 			// get around this by replacing the ']]>' tags in the markup.

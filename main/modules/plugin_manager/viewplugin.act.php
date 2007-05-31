@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewplugin.act.php,v 1.1 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: viewplugin.act.php,v 1.2 2007/05/31 17:39:23 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewplugin.act.php,v 1.1 2007/05/09 20:04:32 adamfranco Exp $
+ * @version $Id: viewplugin.act.php,v 1.2 2007/05/31 17:39:23 adamfranco Exp $
  */
 class viewpluginAction 
 	extends Action
@@ -67,6 +67,10 @@ class viewpluginAction
 		// Get the plugin asset id
 		$harmoni->request->startNamespace('plugin_manager');
 		$id = RequestContext::value('plugin_id');
+		if (RequestContext::value('extended') == 'true')
+			$showExtended = true;
+		else
+			$showExtended = false;
 		$harmoni->request->endNamespace();
 			
 		// Get the plugin asset object
@@ -84,7 +88,10 @@ class viewpluginAction
 		if (!is_object($plugin)) {
 			print $plugin;
 		} else {
-			print $plugin->executeAndGetMarkup(TRUE);			
+			if ($showExtended)
+				print $plugin->executeAndGetExtendedMarkup(TRUE);
+			else
+				print $plugin->executeAndGetMarkup(TRUE);
 		}
 		
 // 		exit();

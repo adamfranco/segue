@@ -5,12 +5,15 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.5 2007/05/24 18:35:27 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.6 2007/05/31 17:39:19 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-alpha" date="The Future">
+		<new author='adam'>
+			Ajax updates now respect normal/extended state.
+		</new>
 		<change author='adam'>
 			Detail mode now forces plugin titles to be shown.
 		</change>
