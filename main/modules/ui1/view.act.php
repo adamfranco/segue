@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.4 2007/05/24 18:46:26 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.5 2007/05/31 19:49:20 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -15,6 +15,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/DetailViewModeSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class.php");
 require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
 
 /**
@@ -26,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.4 2007/05/24 18:46:26 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.5 2007/05/31 19:49:20 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -121,7 +122,8 @@ class viewAction
 			"100%", null, CENTER, TOP);
 		
 		$this->leftHeadColumn =& $this->headRow->add(
-			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"), 
+			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"
+				."<div class='breadcrumbs'>".$this->getBreadCrumbs()."</div>"), 
 			null, null, LEFT, TOP);
 		
 		$rightHeadColumn =& $this->headRow->add(
@@ -180,6 +182,20 @@ class viewAction
 				$this->visitor =& new ViewModeSiteVisitor();
 		}
 		return $this->visitor;
+	}
+	
+	/**
+	 * Answer the bread crumbs for the current node
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/31/07
+	 */
+	function getBreadCrumbs () {
+		$node =& $this->_director->getSiteComponentById(
+				RequestContext::value("node"));
+		
+		return $node->acceptVisitor(new BreadCrumbsVisitor);
 	}
 	
 	/**
