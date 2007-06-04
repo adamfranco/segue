@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.7 2007/05/24 19:55:46 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.8 2007/06/04 16:31:57 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.7 2007/05/24 19:55:46 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.8 2007/06/04 16:31:57 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -257,62 +257,22 @@ END;
 	function getAddFormHTML ($organizerId, $cellIndex, $allowed) {
 		ob_start();
 		$harmoni =& Harmoni::instance();
-		print "\n<form action='";
-		print $harmoni->request->quickURL('ui1', 'addComponent', 
-				array('returnNode' => RequestContext::value('node'),
-					'returnAction' => $this->_action));
-		print "' method='post'>";
-		
-		print "\n\t<input type='hidden' name='".RequestContext::name('organizerId')."' value='".$organizerId."'/>";
+
+		$params = array(
+					'node' => RequestContext::value('node'),
+					'returnNode' => RequestContext::value('node'),
+					'returnAction' => $this->_action,
+					'organizerId' => $organizerId);
 		if (!is_null($cellIndex))
-			print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
+			$params['cellIndex'] = $cellIndex;
 		
-		print "\n\t<div style='text-decoration: underline; cursor: pointer; white-space: nowrap;'";
-		print "onclick='this.style.display=\"none\"; this.nextSibling.nextSibling.style.display=\"block\";'";
-		print ">";
-		print "\n\t\t"._("Append New...");
+		print "\n\t<div style='white-space: nowrap;'>";
+		print "\n\t\t<a href='";
+		print $harmoni->request->quickURL('ui1', 'addContent', $params);
+		print "'>";
+		print "\n\t\t\t"._("Append New...");
+		print "\n\t\t</a>";
 		print "\n\t</div>";
-		print "\n\t<div style='display: none'>";
-		
-		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
-		
-		foreach ($allowed as $type) {
-			print "\n\t\t\t<option value='".$type->asString()."'>";
-			if (isset($this->_classNames[$type->getKeyword()]))
-				print $this->_classNames[$type->getKeyword()];
-			else
-				print $type->getKeyword();
-			print "</option>";
-		}
-		
-		print "\n\t\t</select>";
-		print "\n\t\t<div style='white-space: nowrap;'>"._("Title: ");
-		print "\n\t\t\t<input name='".RequestContext::name('displayName')."' type='text' size='10'/>";
-		print "\n\t\t</div>";
-		
-		print "\n\t\t<div style='white-space: nowrap; text-align: right;'>";
-		print "\n\t\t\t<input type='button' value='"._('Submit')."'";
-		print " onclick='";
-		print "var hasTitle = false; ";
-		print "var regex = /[^\\s\\n\\t]+/; ";
-		print "for (var i = 0; i < this.form.elements.length; i++) { ";
-		print 		"var elem = this.form.elements[i]; ";
-		print 		"if (elem.name == \"".RequestContext::name('displayName')."\" && elem.value.match(regex)) {";
-		print 			"hasTitle = true;";
-		print 		"}";
-		print "}";
-		print "if (!hasTitle) { ";
-		print 		"alert(\""._("A title is required")."\");";
-		print "} else { ";
-		print 	"this.form.submit();";
-		print "}";
-		print "' />";
-		print "\n\t\t\t<input type='button' ";
-		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.previousSibling.style.display=\"block\";'";
-		print " value='"._("Cancel")."'/>";
-		print "\n\t\t</div>";
-		print "\n\t</div>";
-		print "</form>";
 		return ob_get_clean();
 	}
 	
