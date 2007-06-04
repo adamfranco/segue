@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.30 2007/05/24 17:47:30 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.31 2007/06/04 16:30:59 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.30 2007/05/24 17:47:30 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.31 2007/06/04 16:30:59 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -54,6 +54,19 @@ class SeguePluginsPlugin {
  * Override these methods to implement the functionality of
  * a plugin.
  *********************************************************/
+ 	
+ 	/**
+ 	 * Answer a description of the the plugin (not the instance) to provide to 
+ 	 * users when choosing between what plugin to create.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 6/1/07
+ 	 * @static
+ 	 */
+ 	function getPluginDescription () {
+ 		return _("Override this method in your plugin.");
+ 	}
  	
  	/**
  	 * Initialize this Plugin. 
@@ -93,7 +106,7 @@ class SeguePluginsPlugin {
  	 * @since 1/12/06
  	 */
  	function getMarkup () {
- 		return "<p>Override this method to display your pluggin.</p>";
+ 		return _("<p>Override this method to display your pluggin.</p>");
  	}
  	
  	/**

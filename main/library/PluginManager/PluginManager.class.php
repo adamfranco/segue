@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.18 2007/05/24 17:47:29 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.19 2007/06/04 16:30:59 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.18 2007/05/24 17:47:29 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.19 2007/06/04 16:30:59 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -117,8 +117,37 @@ class PluginManager {
 		foreach ($this->_arrays as $arrayName) {
 			eval('$array = $this->_'.$arrayName.'Plugins;');
 			foreach ($array as $key => $keystring) {
-				$array[$keystring] =& HarmoniType::fromString($keystring);
+				if ($keystring) {
+					$array[$keystring] =& HarmoniType::fromString($keystring);					
+				}
 				unset($array[$key]);
+			}
+			eval('$this->_'.$arrayName.'Plugins = $array;');
+		}
+		
+		$this->_addTypeDescriptions();
+	}
+	
+	/**
+	 * Add descriptions to the type array
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 6/1/07
+	 */
+	function _addTypeDescriptions () {
+		foreach ($this->_arrays as $arrayName) {
+			eval('$array = $this->_'.$arrayName.'Plugins;');
+			foreach ($array as $key => $type) {				
+				$this->_loadPluginFiles($type);
+				$class = $this->getPluginClass($type);
+				
+				eval('$description = '.$class.'::getPluginDescription();');
+				$array[$key] =& new Type(
+					$type->getDomain(),
+					$type->getAuthority(),
+					$type->getKeyword(),
+					$description);
 			}
 			eval('$this->_'.$arrayName.'Plugins = $array;');
 		}
@@ -138,6 +167,43 @@ class PluginManager {
 			foreach (array_keys($array) as $keystring)
 				$cache_array[] = $keystring;
 			eval('$_SESSION["'.$arrayName.'_plugins"] = $cache_array;');
+		}
+	}
+	
+	/**
+	 * Include the class files for a plugin
+	 * 
+	 * @param object Type $type
+	 * @return void
+	 * @access public
+	 * @since 6/1/07
+	 */
+	function _loadPluginFiles (&$type) {
+		// Clean type components to safe strings.
+		$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
+		$authority = preg_replace('/[^a-z_\-\.]/i', '', $type->getAuthority());
+		$keyword = preg_replace('/[^a-z_\-]/i', '', $type->getKeyword());
+		
+		
+		if ($this->isPluginDomain($domain)) {
+			require_once(MYDIR."/main/library/PluginManager/"
+				.$domain."/".$domain."Plugin.abstract.php");
+			require_once(MYDIR."/main/library/PluginManager/"
+				.$domain."/".$domain."AjaxPlugin.abstract.php");
+			require_once($this->getPluginDir($type)
+				.$this->getPluginClass($type).".class.php");
+			
+
+		} else {
+			$plugins = $this->getRegisteredPlugins();
+			// Check to see if this plugin even exists
+			foreach ($plugins as $plugType) {
+				if ($type->getDomain() == $plugType->getDomain())
+					throwError(new Error("This asset does not contain a plugin. Domain, '".$domain."' exists, but is not installed.", "Plugin Manager"));
+			}
+			// Otherwise give a generic error.
+			throwError(new Error("This asset does not contain a 
+				plugin. Type, '".Type::typeToString($type)."' does not match any plugins in the registered plugins: ".printpre($this->getRegisteredPlugins(), true), "Plugin Manager"));
 		}
 	}
 
@@ -286,37 +352,14 @@ class PluginManager {
 		$idstring = $id->getIdString();
 		if (!isset($this->_plugins[$idstring])) {
 			$type =& $asset->getAssetType();
-			// Clean type components to safe strings.
-			$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
-			$authority = preg_replace('/[^a-z_\-\.]/i', '', $type->getAuthority());
-			$keyword = preg_replace('/[^a-z_\-]/i', '', $type->getKeyword());
-			
-
-			
-			if ($this->isPluginDomain($domain)) {
-				require_once(MYDIR."/main/library/PluginManager/"
-					.$domain."/".$domain."Plugin.abstract.php");
-				require_once(MYDIR."/main/library/PluginManager/"
-					.$domain."/".$domain."AjaxPlugin.abstract.php");
-				require_once($this->getPluginDir($type)
-					.$this->getPluginClass($type).".class.php");
+			$this->_loadPluginFiles($type);
 				
-				eval('$plugin =& '.$this->getPluginClass($type).
-					'::newInstance($asset, $this->_configuration);');
-	
-				$this->_plugins[$idstring] = $plugin;
-			} else {
-				$plugins = $this->getRegisteredPlugins();
-				// Check to see if this plugin even exists
-				foreach ($plugins as $plugType) {
-					if ($type->getDomain() == $plugType->getDomain())
-						throwError(new Error("This asset does not contain a plugin. Domain, '".$domain."' exists, but is not installed.", "Plugin Manager"));
-				}
-				// Otherwise give a generic error.
-				throwError(new Error("This asset does not contain a 
-					plugin. Type, '".Type::typeToString($type)."' does not match any plugins in the registered plugins: ".printpre($this->getRegisteredPlugins(), true), "Plugin Manager"));
-			}
+			eval('$this->_plugins[$idstring] =& '.$this->getPluginClass($type).
+				'::newInstance($asset, $this->_configuration);');
 		}
+		if (!isset($this->_plugins[$idstring]) || !$this->_plugins[$idstring])
+			throwError(new Error("Plugin (id = '$idstring', type = '".$type->asString()."') retrieval failed.", "Segue.Plugins"));
+		
 		return $this->_plugins[$idstring];
 	}
 	
