@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.9 2007/05/24 17:47:30 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.10 2007/06/04 19:45:29 adamfranco Exp $
  */
 
 /**
@@ -18,12 +18,24 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.9 2007/05/24 17:47:30 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.10 2007/06/04 19:45:29 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
 // 	extends SeguePluginsPlugin
 {
+	/**
+ 	 * Answer a description of the the plugin (not the instance) to provide to 
+ 	 * users when choosing between what plugin to create.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 6/1/07
+ 	 * @static
+ 	 */
+ 	function getPluginDescription () {
+ 		return _("The Text Block is a unit of HTML-formatted text that may contain inline images, links, and formatting.");
+ 	}
 		
 	/**
  	 * Initialize this Plugin. 
