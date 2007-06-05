@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.8 2007/06/04 16:31:57 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.9 2007/06/05 20:36:55 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.8 2007/06/04 16:31:57 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.9 2007/06/05 20:36:55 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -190,8 +190,7 @@ END;
 			$idManager->getId("edu.middlebury.authorization.add_children"), 
 			$organizer->getQualifierId()))
 		{
-			$pluginManager =& Services::getService("PluginManager");
-			$childGuiComponents[] =& new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins()));
+			$childGuiComponents[] =& new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null));
 		}
 		
 		$resultPrinter =& new ArrayResultPrinter($childGuiComponents,
@@ -233,10 +232,8 @@ END;
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
 	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
-			$pluginManager =& Services::getService("PluginManager");
-			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
-			$childComponent =& $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed), 2), null, '100%', null, TOP);
+			$childComponent =& $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), null, 'addMenuContent'), 2), null, '100%', null, TOP);
 		}
 				
 		$guiContainer->setPreHTML($organizer->acceptVisitor($this->_controlsVisitor));
@@ -249,12 +246,12 @@ END;
 	 * 
 	 * @param string $organizerId
 	 * @param integer $cellIndex
-	 * @param array $allowed Which component Types to allow addition of: segue::edu.middlebury::Block, segue::edu.middlebury::NavBlock
+	 * @param string $action The action to use for adding the new content
 	 * @return string The form HTML
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function getAddFormHTML ($organizerId, $cellIndex, $allowed) {
+	function getAddFormHTML ($organizerId, $cellIndex, $action = 'addContent') {
 		ob_start();
 		$harmoni =& Harmoni::instance();
 
@@ -268,7 +265,7 @@ END;
 		
 		print "\n\t<div style='white-space: nowrap;'>";
 		print "\n\t\t<a href='";
-		print $harmoni->request->quickURL('ui1', 'addContent', $params);
+		print $harmoni->request->quickURL('ui1', $action, $params);
 		print "'>";
 		print "\n\t\t\t"._("Append New...");
 		print "\n\t\t</a>";

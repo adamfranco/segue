@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.2 2007/06/05 15:24:19 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.3 2007/06/05 20:36:55 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/SingleStepWizard.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.2 2007/06/05 15:24:19 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.3 2007/06/05 20:36:55 adamfranco Exp $
  */
 class addContentAction
 	extends SegueClassicWizard
@@ -53,7 +53,7 @@ class addContentAction
 		$saveButton =& $wizard->getSaveButton();
 		$saveButton->setLabel(_("Create >>"));
 		
-		$wizard->addStep("type", $this->getTypeStep());
+		$wizard->addStep("content", $this->getContentStep());
 		
 		return $wizard;
 	}
@@ -76,7 +76,7 @@ class addContentAction
 		if ($wizard->validate()) {
 			$properties = $wizard->getAllValues();
 			
-			if (!$this->saveTypeStep($properties['type']))
+			if (!$this->saveContentStep($properties['content']))
 				return FALSE;
 			
 			return TRUE;
@@ -92,16 +92,16 @@ class addContentAction
 	 * @access public
 	 * @since 6/1/07
 	 */
-	function &getTypeStep () {
+	function &getContentStep () {
 		$pluginManager =& Services::getService('PluginManager');
 		
 		$step =& new WizardStep();
-		$step->setDisplayName(_("Content Type"));
+		$step->setDisplayName(_("Create New Content"));
 		
 		$property =& $step->addComponent("organizerId", new WHiddenField());
 		$property->setValue(RequestContext::value('organizerId'));
 		
-		$property =& $step->addComponent("content_type", new WRadioList());
+		$property =& $step->addComponent("type", new WRadioList());
 		
 		$plugins = $pluginManager->getEnabledPlugins();
 		
@@ -130,7 +130,7 @@ class addContentAction
 				
 		print "\n<div><strong>"._("Select a Content Type:")."</strong>";
 // 		print "\n"._("The title of content: ");
-		print "\n<br /><br />[[content_type]]</div>[[organizerId]]";
+		print "\n<br /><br />[[type]]</div>[[organizerId]]";
 		
 		$step->setContent(ob_get_clean());
 		return $step;
@@ -144,10 +144,10 @@ class addContentAction
 	 * @access public
 	 * @since 6/4/07
 	 */
-	function saveTypeStep ($values) {
+	function saveContentStep ($values) {
 		$director =& $this->getSiteDirector();
 		$organizer =& $this->getSiteComponentForIdString($values['organizerId']);
-		$componentType =& Type::fromString($values['content_type']);
+		$componentType =& Type::fromString($values['type']);
 		
 		$component =& $director->createSiteComponent($componentType, $organizer);
 		
