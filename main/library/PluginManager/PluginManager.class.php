@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.19 2007/06/04 16:30:59 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.20 2007/06/05 15:23:41 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.19 2007/06/04 16:30:59 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.20 2007/06/05 15:23:41 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -411,6 +411,25 @@ class PluginManager {
 		}
 		
 		return $this->_pluginDirs[$type->asString()];
+	}
+	
+	/**
+	 * Answer the url of an icon image for a given plugin type
+	 * 
+	 * @param object Type $type
+	 * @return string
+	 * @access public
+	 * @since 6/4/07
+	 */
+	function getPluginIconUrl ( &$type ) {
+		$icon = $this->getPluginDir($type)."/icon.png";
+		if (file_exists($icon)) {
+			$harmoni =& Harmoni::instance();
+			return $harmoni->request->quickURL('plugin_manager', 'icon',
+					array('type' => $type->asString()));
+		} else {
+			return null;
+		}
 	}
 
 	/**
