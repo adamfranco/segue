@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.3 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.4 2007/06/05 15:24:19 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.3 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.4 2007/06/05 15:24:19 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -92,6 +92,19 @@ class SegueClassicWizard
 	function &getSiteComponentForId ( &$id ) {
 		$director =& $this->getSiteDirector();
 		return $director->getSiteComponentById($id->getIdString());
+	}
+	
+	/**
+	 * Answer the site component for a given Id string
+	 * 
+	 * @param string $id
+	 * @return object SiteComponent
+	 * @access public
+	 * @since 6/4/07
+	 */
+	function &getSiteComponentForIdString ( $id ) {
+		$director =& $this->getSiteDirector();
+		return $director->getSiteComponentById($id);
 	}
 	
 	/**
@@ -172,6 +185,8 @@ class SegueClassicWizard
 	 */
 	function getReturnUrl () {
 		$harmoni =& Harmoni::instance();
+		$harmoni->request->forget("returnNode");
+		$harmoni->request->forget("returnAction");
 		return $harmoni->request->quickURL(
 			'ui1', $harmoni->request->get("returnAction"),
 			array('node' => $harmoni->request->get("returnNode")));

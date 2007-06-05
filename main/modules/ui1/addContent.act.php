@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.1 2007/06/04 16:31:57 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.2 2007/06/05 15:24:19 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
+require_once(POLYPHONY."/main/library/Wizard/SingleStepWizard.class.php");
 
 /**
  * A 1-step wizard to choose what kind of content to create
@@ -20,7 +21,7 @@ require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.1 2007/06/04 16:31:57 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.2 2007/06/05 15:24:19 adamfranco Exp $
  */
 class addContentAction
 	extends SegueClassicWizard
@@ -48,7 +49,9 @@ class addContentAction
 	 */
 	function &createWizard () {
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
+		$wizard =& SingleStepWizard::withDefaultLayout();
+		$saveButton =& $wizard->getSaveButton();
+		$saveButton->setLabel(_("Create >>"));
 		
 		$wizard->addStep("type", $this->getTypeStep());
 		
@@ -95,34 +98,82 @@ class addContentAction
 		$step =& new WizardStep();
 		$step->setDisplayName(_("Content Type"));
 		
+		$property =& $step->addComponent("organizerId", new WHiddenField());
+		$property->setValue(RequestContext::value('organizerId'));
+		
 		$property =& $step->addComponent("content_type", new WRadioList());
 		
 		$plugins = $pluginManager->getEnabledPlugins();
 		
+		$set = false;
 		foreach ($plugins as $key => $pType) {
 			ob_start();
-			print "\n<div'>";
-			$iconFile = $pluginManager->getPluginDir($pType)."/icon.png";
-			if (file_exists($iconFile)) {
-				print "\n\t<img src='".$iconFile."' width='50px' style='float: left;'/>";
+			print "\n<div>";
+			$icon = $pluginManager->getPluginIconUrl($pType);
+			if ($icon) {
+				print "\n\t<img src='".$icon."' width='200px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
 			}
-			print "\n\t<div><strong>".$pType->getKeyword()."</strong></div>";
 			print "\n\t<div>".$pType->getDescription()."</div>";
 			print "\n</div>";
-			$property->addOption($key, ob_get_clean());
+			print "\n<div style='clear: both;'></div>";
+			$property->addOption($key, 
+				"<strong>".$pType->getKeyword()."</strong>", 
+				ob_get_clean());
+			if (!$set) {
+				$property->setValue($key);
+				$set = true;
+			}
 		}
 		
 		// Create the step text
 		ob_start();
 				
-		print "\n<p><strong>"._("Select a Content Type:")."</strong>";
+		print "\n<div><strong>"._("Select a Content Type:")."</strong>";
 // 		print "\n"._("The title of content: ");
-		print "\n<br />[[content_type]]</p>";
+		print "\n<br /><br />[[content_type]]</div>[[organizerId]]";
 		
 		$step->setContent(ob_get_clean());
 		return $step;
 	}
 	
+	/**
+	 * Save the type step
+	 * 
+	 * @param array $values1
+	 * @return boolean
+	 * @access public
+	 * @since 6/4/07
+	 */
+	function saveTypeStep ($values) {
+		$director =& $this->getSiteDirector();
+		$organizer =& $this->getSiteComponentForIdString($values['organizerId']);
+		$componentType =& Type::fromString($values['content_type']);
+		
+		$component =& $director->createSiteComponent($componentType, $organizer);
+		
+		$this->_newId = $component->getId();
+		return true;
+	}
+	
+	/**
+	 * Answer the url to return to
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/4/07
+	 */
+	function getReturnUrl () {
+		if (isset($this->_newId)) {
+			$harmoni =& Harmoni::instance();
+			return $harmoni->request->quickURL(
+				'ui1', 'editContent',
+				array('node' => $this->_newId,
+					'returnAction' => $harmoni->request->get("returnAction"),
+					'returnNode' => $harmoni->request->get("returnNode")));
+		} else {
+			return parent::getReturnUrl();
+		}
+	}
 }
 
 ?>
