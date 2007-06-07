@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.3 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2007/06/07 14:22:51 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.3 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2007/06/07 14:22:51 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -103,7 +103,7 @@ class ControlsSiteVisitor {
 		{
 		
 			$message = _("Are you sure that you wish to delete this component and all of its children?");
-			$url = 	$harmoni->request->quickURL('ui1', 'deleteComponent', array(
+			$url = 	$harmoni->request->quickURL('ui1', 'deleteComponent1', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->_action
@@ -137,7 +137,7 @@ class ControlsSiteVisitor {
 		$harmoni =& Harmoni::instance();
 		
 		if ($authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.delete"), 
+			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteComponent->getQualifierId()))
 		{
 		
