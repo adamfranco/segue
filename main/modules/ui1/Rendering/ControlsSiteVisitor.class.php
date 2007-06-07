@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2007/06/07 14:22:51 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2007/06/07 14:28:17 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2007/06/07 14:22:51 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2007/06/07 14:28:17 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -103,7 +103,7 @@ class ControlsSiteVisitor {
 		{
 		
 			$message = _("Are you sure that you wish to delete this component and all of its children?");
-			$url = 	$harmoni->request->quickURL('ui1', 'deleteComponent1', array(
+			$url = 	$harmoni->request->quickURL('ui1', 'deleteComponent', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->_action
