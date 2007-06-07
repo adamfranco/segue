@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.1 2007/06/05 20:36:55 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.2 2007/06/07 18:04:18 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.1 2007/06/05 20:36:55 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.2 2007/06/07 18:04:18 adamfranco Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -103,10 +103,8 @@ class addMenuContentAction
 		foreach ($navTypes as $i => $navArray) {
 			ob_start();
 			print "\n<div>";
-// 			$icon = $pluginManager->getPluginIconUrl($pType);
-// 			if ($icon) {
-// 				print "\n\t<img src='".$icon."' width='200px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
-// 			}
+			$icon = MYPATH."/icons/".$navArray['icon'];
+			print "\n\t<img src='".$icon."' width='200px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
 			print "\n\t<div>".$navArray['description']."</div>";
 			print "\n</div>";
 			print "\n<div style='clear: both;'></div>";
@@ -167,22 +165,26 @@ class addMenuContentAction
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart'),
 				"name" => _("Content Page"),
-				"description" => _("A single page of content.")
+				"description" => _("A single page of content."),
+				"icon" => "Page.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart'),
 				"name" => _("Content Page with Sidebar"),
-				"description" => _("A single page of content with a sidebar that will be present when the page is viewed.")
+				"description" => _("A single page of content with a sidebar that will be present when the page is viewed."),
+				"icon" => "PageWithSideBar.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart'),
 				"name" => _("Sub-Menu"),
-				"description" => _("This option adds a new level of navigation under which Content Pages or other Sub-Menus can be added.")
+				"description" => _("This option adds a new level of navigation under which Content Pages or other Sub-Menus can be added."),
+				"icon" => "SubMenu.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart'),
 				"name" => _("Sub-Menu with Sidebar"),
-				"description" => _("This option adds a new level of navigation under which Content Pages or other Sub-Menus can be added. A sidebar will also be present whenever any of the pages in this Sub-Menu are viewed.")
+				"description" => _("This option adds a new level of navigation under which Content Pages or other Sub-Menus can be added. A sidebar will also be present whenever any of the pages in this Sub-Menu are viewed."),
+				"icon" => "SubMenuWithSideBar.png"
 			);
 		return $types;
 	}
