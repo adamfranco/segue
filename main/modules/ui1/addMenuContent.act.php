@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.2 2007/06/07 18:04:18 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.3 2007/06/07 19:39:53 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.2 2007/06/07 18:04:18 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.3 2007/06/07 19:39:53 adamfranco Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -37,13 +37,33 @@ class addMenuContentAction
 	 */
 	function &createWizard () {
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
+		$wizard =& SimpleStepWizard::withText(
+				"<div>\n" .
+				"[[_stepsBar]]" .
+				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
+				"<tr>\n" .
+				"<td align='left' width='50%'>\n" .
+				"[[_cancel]]<br/>\n" .
+				"[[_prev]]" .
+				"</td>\n" .
+				"<td align='right' width='50%'>\n" .
+				"<br/>\n" .
+				"[[_next]]" .
+				"</td></tr></table>" .
+				"</div>\n" .
+				"<hr/>\n" .
+				"<div>\n" .
+				"[[_steps]]" .
+				"</div>\n"
+			);
 		$saveButton =& $wizard->getSaveButton();
 		$saveButton->setLabel(_("Create >>"));
 		
 		$wizard->addStep("nav", $this->getNavStep());
 		
-		$wizard->addStep("content", $this->getContentStep());
+		$step =& $this->getContentStep();
+		$step->setDisplayName(_("Create New Menu Content"));
+		$wizard->addStep("content", $step);
 		
 		return $wizard;
 	}
@@ -96,12 +116,13 @@ class addMenuContentAction
 		$property =& $step->addComponent("organizerId", new WHiddenField());
 		$property->setValue(RequestContext::value('organizerId'));
 		
-		$property =& $step->addComponent("type", new WRadioList());
+		$property =& $step->addComponent("type", new WSaveWithChoiceButtonList());
 		
 		$navTypes = $this->getNavTypes();
 		
 		foreach ($navTypes as $i => $navArray) {
 			ob_start();
+			print " <strong>".$navArray['name']."</strong>";
 			print "\n<div>";
 			$icon = MYPATH."/icons/".$navArray['icon'];
 			print "\n\t<img src='".$icon."' width='200px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
@@ -109,7 +130,7 @@ class addMenuContentAction
 			print "\n</div>";
 			print "\n<div style='clear: both;'></div>";
 			$property->addOption($navArray['type']->asString(), 
-				"<strong>".$navArray['name']."</strong>", 
+				_("Create >>"), 
 				ob_get_clean());
 				
 			if (!$i) {
@@ -121,7 +142,7 @@ class addMenuContentAction
 		// Create the step text
 		ob_start();
 				
-		print "\n<div><strong>"._("Select a Navigation type and click 'Create >>' or click 'Next' to choose a Content item to add to the menu:")."</strong>";
+		print "\n<div>"._("Select a Navigation type and click 'Create >>' or click 'Next' to choose a Content item to add to the menu:")."<hr/>";
 // 		print "\n"._("The title of content: ");
 		print "\n<br /><br />[[type]]</div>[[organizerId]]";
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.3 2007/06/05 20:36:55 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.4 2007/06/07 19:39:53 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/SingleStepWizard.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.3 2007/06/05 20:36:55 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.4 2007/06/07 19:39:53 adamfranco Exp $
  */
 class addContentAction
 	extends SegueClassicWizard
@@ -49,7 +49,21 @@ class addContentAction
 	 */
 	function &createWizard () {
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SingleStepWizard::withDefaultLayout();
+		$wizard =& SingleStepWizard::withText(
+				"<div>\n" .
+				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
+				"<tr>\n" .
+				"<td align='left' width='50%'>\n" .
+				"[[_cancel]]\n" .
+				"</td>\n" .
+				"<td align='right' width='50%'>\n" .
+				"</td></tr></table>" .
+				"</div>\n" .
+				"<hr/>\n" .
+				"<div>\n" .
+				"[[_steps]]" .
+				"</div>\n"
+		);
 		$saveButton =& $wizard->getSaveButton();
 		$saveButton->setLabel(_("Create >>"));
 		
@@ -101,13 +115,14 @@ class addContentAction
 		$property =& $step->addComponent("organizerId", new WHiddenField());
 		$property->setValue(RequestContext::value('organizerId'));
 		
-		$property =& $step->addComponent("type", new WRadioList());
+		$property =& $step->addComponent("type", new WSaveWithChoiceButtonList());
 		
 		$plugins = $pluginManager->getEnabledPlugins();
 		
 		$set = false;
 		foreach ($plugins as $key => $pType) {
 			ob_start();
+			print " <strong>".$pType->getKeyword()."</strong>";
 			print "\n<div>";
 			$icon = $pluginManager->getPluginIconUrl($pType);
 			if ($icon) {
@@ -117,7 +132,7 @@ class addContentAction
 			print "\n</div>";
 			print "\n<div style='clear: both;'></div>";
 			$property->addOption($key, 
-				"<strong>".$pType->getKeyword()."</strong>", 
+				_('Create >> '), 
 				ob_get_clean());
 			if (!$set) {
 				$property->setValue($key);
