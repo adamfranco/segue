@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.5 2007/05/24 20:04:04 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.6 2007/07/06 18:28:21 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
 
 /**
  * Render the 'detail' view of a node and its discusions.
@@ -20,7 +21,7 @@ require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.5 2007/05/24 20:04:04 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.6 2007/07/06 18:28:21 adamfranco Exp $
  */
 class DetailViewModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -62,9 +63,13 @@ class DetailViewModeSiteVisitor
 						3),
 				$block->getWidth(), null, null, TOP);
 			
-// 			$guiContainer->add(
-// 				$this->getDiscussions($block),
-// 				$block->getWidth(), null, null, TOP);
+			ob_start();
+			$commentManager =& CommentManager::instance();
+			print $commentManager->getMarkup($block->getAsset());
+			
+			$guiContainer->add(
+				new Block(ob_get_clean(), STANDARD_BLOCK),
+				$block->getWidth(), null, null, TOP);
 		}
 		
 		return $guiContainer;
