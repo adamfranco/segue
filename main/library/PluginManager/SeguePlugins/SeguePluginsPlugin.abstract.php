@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.31 2007/06/04 16:30:59 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.32 2007/07/06 18:27:36 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.31 2007/06/04 16:30:59 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.32 2007/07/06 18:27:36 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -526,11 +526,16 @@ class SeguePluginsPlugin {
 	 * @since 1/16/06
 	 */
 	function canModify () {
-		$azManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		return $azManager->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.modify"),
-				$this->_asset->getId());
+		if (isset($this->_canModifyFunction)) {
+			$function = $this->_canModifyFunction;
+			return $function($this);
+		} else {
+			$azManager =& Services::getService("AuthZ");
+			$idManager =& Services::getService("Id");
+			return $azManager->isUserAuthorized(
+					$idManager->getId("edu.middlebury.authorization.modify"),
+					$this->_asset->getId());
+		}
 	}
 	
 	/**
@@ -541,11 +546,16 @@ class SeguePluginsPlugin {
 	 * @since 1/16/06
 	 */
 	function canView () {
-		$azManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		return $azManager->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.view"),
-				$this->_asset->getId());
+		if (isset($this->_canViewFunction)) {
+			$function = $this->_canViewFunction;
+			return $function($this);
+		} else {
+			$azManager =& Services::getService("AuthZ");
+			$idManager =& Services::getService("Id");
+			return $azManager->isUserAuthorized(
+					$idManager->getId("edu.middlebury.authorization.view"),
+					$this->_asset->getId());
+		}
 	}
 	
 	/**
@@ -1566,6 +1576,40 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Set a custom function for checking if the user can modify the plugin.
+	 * This function must accept the plugin as its only argument and return
+	 * a boolean. Use the create_function() method to create an anonymous function.
+	 *
+	 * This may be used to allow the plugin to make use of alternate authorization
+	 * systems or settings.
+	 * 
+	 * @param string $function
+	 * @return void
+	 * @access public
+	 * @since 7/5/07
+	 */
+	function setCanModifyFunction ($function) {
+		$this->_canModifyFunction = $function;
+	}
+	
+	/**
+	 * Set a custom function for checking if the user can modify the plugin.
+	 * This function must accept the plugin as its only argument and return
+	 * a boolean. Use the create_function() method to create an anonymous function.
+	 *
+	 * This may be used to allow the plugin to make use of alternate authorization
+	 * systems or settings.
+	 * 
+	 * @param string $function
+	 * @return void
+	 * @access public
+	 * @since 7/5/07
+	 */
+	function setCanViewFunction ($function) {
+		$this->_canViewFunction = $function;
 	}
 }
 ?>
