@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.1 2007/07/06 17:51:39 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.2 2007/07/09 20:06:44 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.1 2007/07/06 17:51:39 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.2 2007/07/09 20:06:44 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -112,7 +112,7 @@ class CommentNode {
 			$plugin =& $pluginManager->getPlugin($this->_asset);
 			
 			// We've just checked our view permission, so use true
-			$plugin->setCanViewFunction('$plugin', 'return true;');
+			$plugin->setCanViewFunction(create_function('$plugin', 'return true;'));
 			
 			// If we are authorized to comment, are the comment author, and there are
 			// no replies yet, allow us to edit the comment
@@ -122,7 +122,7 @@ class CommentNode {
 				&& $this->isAuthor()
 				&& $this->numReplies() === 0)
 			{
-				$plugin->setCanModifyFunction('$plugin', 'return true;');
+				$plugin->setCanModifyFunction(create_function('$plugin', 'return true;'));
 				return $plugin->executeAndGetMarkup(true);
 			} else {
 				$plugin->setCanModifyFunction('$plugin', 'return false;');
@@ -209,7 +209,14 @@ class CommentNode {
 	 * @since 7/5/07
 	 */
 	function &getAuthor () {
+		$agentManager =& Services::getService('Agent');
 		
+		if ($this->_asset->getCreator()) {
+			return $agentManager->getAgent($this->_asset->getCreator());
+		} else {
+			$idManager =& Services::getService('Id');
+			return $agentManager->getAgent($idManager->getId('edu.middlebury.agents.anonymous'));
+		}
 	}
 	
 	/**
@@ -222,6 +229,12 @@ class CommentNode {
 	function isAuthor () {
 		$author =& $this->getAuthor();
 		$authorId =& $author->getId();
+		
+		$idManager =& Services::getService('Id');
+		$anonId =& $idManager->getId('edu.middlebury.agents.anonymous');
+		if ($anonId->isEqual($authorId))
+			return false;
+		
 		$authN =& Services::getService("AuthN");
 		$agentM =& Services::getService("Agent");
 		$authTypes =& $authN->getAuthenticationTypes();
@@ -250,6 +263,17 @@ class CommentNode {
 		print "\n\t\t<div class='comment_display'>";
 		print "\n\t\t\t<div class='comment_title'>";
 		print $this->getSubject();
+		print "\n\t\t\t</div>";
+		
+		print "\n\t\t\t<div class='comment_byline'>";
+		$author =& $this->getAuthor();
+		$date =& $this->getCreationDate();
+		$dateString = $date->dayOfWeekName()." ".$date->monthName()." ".$date->dayOfMonth().", ".$date->year();
+		$time =& $date->asTime();
+		print str_replace('%1', $author->getDisplayName(),
+				str_replace('%2', $dateString,
+					str_replace('%3', $time->string12(),
+						_("by %1 on %2 at %3"))));
 		print "\n\t\t\t</div>";
 		
 		print "\n\t\t\t<div class='comment_body'>";

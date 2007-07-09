@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.1 2007/07/06 17:51:39 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.2 2007/07/09 20:06:44 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.1 2007/07/06 17:51:39 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.2 2007/07/09 20:06:44 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -438,6 +438,10 @@ class CommentManager {
 			
 			.comment_reply {
 			 	margin-left: 15px;
+			}
+			
+			.comment_byline {
+				font-size: smaller;
 			}
 		</style>
 		

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.13 2007/04/13 19:58:22 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.14 2007/07/09 20:06:44 adamfranco Exp $
  */
 
 /*********************************************************
@@ -234,6 +234,10 @@ if (!isset($_SESSION['table_setup_complete'])) {
 				
 				$id =& $idManager->getId("edu.middlebury.authorization.comment");
 				$function =& $authZManager->createFunction($id, "Comment", "Comment on a qualifier.", $type, $qualifierHierarchyId);
+				$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
+				
+				$id =& $idManager->getId("edu.middlebury.authorization.view_comments");
+				$function =& $authZManager->createFunction($id, "View Comments", "View comments made on a qualifier.", $type, $qualifierHierarchyId);
 				$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
 				
 				
