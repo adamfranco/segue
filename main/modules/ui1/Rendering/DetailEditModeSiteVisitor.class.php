@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.3 2007/07/09 20:55:29 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.4 2007/07/10 15:36:07 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.3 2007/07/09 20:55:29 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.4 2007/07/10 15:36:07 adamfranco Exp $
  */
 class DetailEditModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -56,18 +56,16 @@ class DetailEditModeSiteVisitor
 		$guiContainer =& parent::visitBlock($block);
 		
 		if ($guiContainer) {
+			$commentManager =& CommentManager::instance();
+			
 			$guiContainer->add(
 					new Heading(
-						_("Discussions:"),
+						$commentManager->getHeadingMarkup($block->getAsset()),
 						3),
 				$block->getWidth(), null, null, TOP);
 			
-			ob_start();
-			$commentManager =& CommentManager::instance();
-			print $commentManager->getMarkup($block->getAsset());
-			
 			$guiContainer->add(
-				new Block(ob_get_clean(), STANDARD_BLOCK),
+				new Block($commentManager->getMarkup($block->getAsset()), STANDARD_BLOCK),
 				$block->getWidth(), null, null, TOP);
 		}
 		

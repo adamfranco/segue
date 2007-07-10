@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.4 2007/07/10 14:36:47 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.5 2007/07/10 15:36:06 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.4 2007/07/10 14:36:47 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.5 2007/07/10 15:36:06 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -301,6 +301,27 @@ class CommentManager {
 	}
 	
 	/**
+	 * Answer the Heading for discussions
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 7/10/07
+	 */
+	function getHeadingMarkup ( &$asset ) {
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->passthrough('node');
+		$harmoni->request->startNamespace('comments');
+		ob_start();
+		
+		print _("Comments:");
+		print "<a name='".RequestContext::name('top')."'></a>";
+		
+		$harmoni->request->forget('node');
+		$harmoni->request->endNamespace();
+		return ob_get_clean();
+	}
+	
+	/**
 	 * Answer the interface markup needed to display the comments attached to the
 	 * given asset.
 	 * 
@@ -310,6 +331,10 @@ class CommentManager {
 	 * @since 7/3/07
 	 */
 	function getMarkup ( &$asset ) {
+		$harmoni =& Harmoni::instance();
+		$harmoni->request->passthrough('node');
+		$harmoni->request->startNamespace('comments');
+		
 		if (RequestContext::value('order'))
 			$this->setDisplayOrder(RequestContext::value('order'));
 		
@@ -319,15 +344,17 @@ class CommentManager {
 		if (RequestContext::value('create_new_comment')) {
 			$comment =& $this->createRootComment(Type::fromString(RequestContext::value('new_comment_type')));
 			$comment->enableEditForm();
+			printpre("HERE");
 		}
 		$this->addHead();
 		
 		ob_start();
 		
 		// print the ordering form
-		print "\n\n<form action='#' method='post'>";
+		print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('top')."' method='post'>";
 		
 		print "\n\t<div style='float: left;'>";
+		
 		print "\n\t<input type='button' name='".RequestContext::name('create_new_comment')."' value='"._('Create New')."'";
 		print " onclick='this.form.action = this.form.action.replace(/#.*/, \"#current_comment\"); this.form.submit();'";
 		print "/>";
@@ -381,6 +408,8 @@ class CommentManager {
 		
 		print "\n</div>";
 		
+		$harmoni->request->forget('node');
+		$harmoni->request->endNamespace();
 		return ob_get_clean();
 	}
 	
