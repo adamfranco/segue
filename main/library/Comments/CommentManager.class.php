@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.5 2007/07/10 15:36:06 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.6 2007/07/10 20:56:48 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.5 2007/07/10 15:36:06 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.6 2007/07/10 20:56:48 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -62,6 +62,9 @@ class CommentManager {
 	function CommentManager () {
 		$this->mediaFileType =& new Type ('segue', 'edu.middlebury', 'media_file',
 				'A file that is uploaded to Segue.');
+		$this->_comments = array();
+		$this->_allComments = array();
+		$this->_rootComments = array();
 	}
 	
 	/**
@@ -89,13 +92,13 @@ class CommentManager {
 		$commentContainer =& $this->_getCommentContainer($asset);
 		
 		$repository =& $asset->getRepository();
-		$commentAsset =& $repository->createAsset("", "", $type);
+		$commentAsset =& $repository->createAsset(_("(untitled)"), "", $type);
 		$commentContainer->addAsset($commentAsset->getId());
 		$comment =& $this->getComment($commentAsset);
 		
 		// Clear our order caches
-		$this->_rootComments[$id->getIdString()];
-		$this->_allComments[$id->getIdString()];
+		unset($this->_rootComments[$id->getIdString()]);
+		unset($this->_allComments[$id->getIdString()]);
 		
 		return $comment;
 	}
@@ -342,9 +345,8 @@ class CommentManager {
 			$this->setDisplayMode(RequestContext::value('displayMode'));
 		
 		if (RequestContext::value('create_new_comment')) {
-			$comment =& $this->createRootComment(Type::fromString(RequestContext::value('new_comment_type')));
+			$comment =& $this->createRootComment($asset, Type::fromString(RequestContext::value('new_comment_type')));
 			$comment->enableEditForm();
-			printpre("HERE");
 		}
 		$this->addHead();
 		
@@ -355,8 +357,8 @@ class CommentManager {
 		
 		print "\n\t<div style='float: left;'>";
 		
-		print "\n\t<input type='button' name='".RequestContext::name('create_new_comment')."' value='"._('Create New')."'";
-		print " onclick='this.form.action = this.form.action.replace(/#.*/, \"#current_comment\"); this.form.submit();'";
+		print "\n\t<input type='submit' name='".RequestContext::name('create_new_comment')."' value='"._('Create New')."'";
+// 		print " onclick='this.form.action = this.form.action.replace(/#.*/, \"#current_comment\"); alert(this.form.action); this.form.submit();'";
 		print "/>";
 		
 		print "\n\t\t<select name='".RequestContext::name('new_comment_type')."'/>";
@@ -492,10 +494,18 @@ class CommentManager {
 				clear: left;
 			}
 			
-			.comment_title {
-				font-weight: bold;
+			.comment {
 				border-top: 1px solid;
 				margin-top: 5px;
+			}
+			
+			.comment_controls {
+				float: right;
+				text-align: right;
+			}
+			
+			.comment_title {
+				font-weight: bold;
 			}
 			
 			.comment_replies {

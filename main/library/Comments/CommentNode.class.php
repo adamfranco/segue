@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.2 2007/07/09 20:06:44 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.3 2007/07/10 20:56:48 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.2 2007/07/09 20:06:44 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.3 2007/07/10 20:56:48 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -102,25 +102,14 @@ class CommentNode {
 	 */
 	function getBody () {
 		// Only return a body if we are authorized to view the comment
-		$azManager =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		if ($azManager->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.view_comments"),
-			$this->getId()))
-		{
+		if ($this->canView()) {
 			$pluginManager =& Services::getService('PluginManager');
 			$plugin =& $pluginManager->getPlugin($this->_asset);
 			
 			// We've just checked our view permission, so use true
 			$plugin->setCanViewFunction(create_function('$plugin', 'return true;'));
 			
-			// If we are authorized to comment, are the comment author, and there are
-			// no replies yet, allow us to edit the comment
-			if ($azManager->isUserAuthorized(
-					$idManager->getId("edu.middlebury.authorization.comment"),
-					$this->getId())
-				&& $this->isAuthor()
-				&& $this->numReplies() === 0)
+			if ($this->canModify())
 			{
 				$plugin->setCanModifyFunction(create_function('$plugin', 'return true;'));
 				return $plugin->executeAndGetMarkup(true);
@@ -131,6 +120,50 @@ class CommentNode {
 		} else {
 			return _("You are not authorized to view this comment.");
 		}
+	}
+	
+	/**
+	 * Answer true if the current user can view the comment
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 7/10/07
+	 */
+	function canView () {
+		if (!isset($this->_canView)) {
+			$azManager =& Services::getService("AuthZ");
+			$idManager =& Services::getService("Id");
+			$this->_canView = $azManager->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.view_comments"),
+				$this->getId());
+		}
+		return $this->_canView;
+	}
+	
+	/**
+	 * Answer true if the current user can modify the comment.
+	 * If we are authorized to comment, are the comment author, and there are
+	 * no replies yet, allow us to edit the comment.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 7/10/07
+	 */
+	function canModify () {
+		if (!isset($this->_canModify)) {
+			$azManager =& Services::getService("AuthZ");
+			$idManager =& Services::getService("Id");
+			$this->_canModify = $azManager->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.comment"),
+				$this->getId());
+				
+			if (!$this->isAuthor())
+				$this->_canModify = FALSE;
+				
+			if ($this->numReplies() > 0)
+				$this->_canModify = FALSE;
+		}
+		return $this->_canModify;
 	}
 	
 	/**
@@ -257,13 +290,34 @@ class CommentNode {
 	 * @since 7/5/07
 	 */
 	function getMarkup ($showThreadedReplies) {
+		$harmoni =& Harmoni::instance();
 		ob_start();
 		print "\n\t<div class='comment' id='".$this->getIdString()."'>";
 		
 		print "\n\t\t<div class='comment_display'>";
-		print "\n\t\t\t<div class='comment_title'>";
+		
+		print "\n\t\t\t<div class='comment_controls'>";
+		if ($this->canModify()) {
+			print "\n\t\t\t\t<a href='#' onclick=\"this.parentNode.nextSibling.style.display='none'; this.parentNode.nextSibling.nextSibling.style.display='block'; return false;\">"._("edit subject")."</a> | ";
+			print "\n\t\t\t\t<a href='#' onclick=\"\">"._("delete")."</a> | ";
+		}
+		print "\n\t\t\t\t<a href='#' onclick=\"\">"._("reply")."</a>";
+		print "\n\t\t\t</div>";
+		
+		print "<div class='comment_title'>";
 		print $this->getSubject();
 		print "\n\t\t\t</div>";
+		if ($this->canModify()) {
+			print "<form action='"
+				.$harmoni->request->quickURL()."#".RequestContext::name('top')."'"
+				." method='post' style='display: none;'";
+			print " onclick=\"this.previousSibling\"";
+			print ">";
+			print "\n\t\t\t\t<input type='text' name='".RequestContext::name('subject')."' value=\"".$this->getSubject()."\"/>";
+			print "\n\t\t\t\t<input type='submit' name='".RequestContext::name('submit')."' value=\""._("Update Subject")."\"/>";
+			print "\n\t\t\t\t<input type='button' name='".RequestContext::name('cancel')."' value=\""._("Cancel")."\" onclick=\"this.parentNode.style.display='none'; this.parentNode.previousSibling.style.display='block'; return false;\"/>";
+			print "\n\t\t\t</form>";
+		}
 		
 		print "\n\t\t\t<div class='comment_byline'>";
 		$author =& $this->getAuthor();
