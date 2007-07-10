@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.3 2007/07/09 20:55:29 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.4 2007/07/10 14:36:47 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.3 2007/07/09 20:55:29 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.4 2007/07/10 14:36:47 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -205,8 +205,9 @@ class CommentManager {
 		}
 		
 		// Sort the comment Ids based on time.
-		array_multisort($this->_rootComments[$assetIdString]['ids'], $this->_rootComments[$assetIdString]['times'], 
-			(($order == ASC)?SORT_ASC:SORT_DESC));
+		array_multisort($this->_rootComments[$assetIdString]['times'], 
+			(($order == ASC)?SORT_ASC:SORT_DESC),
+			$this->_rootComments[$assetIdString]['ids']);
 		
 		$null = null;
 		$comments = new HarmoniIterator($null);
@@ -258,13 +259,13 @@ class CommentManager {
 				$comment =& $allComments->next();
 				$dateTime =& $comment->getCreationDate();
 				$this->_allComments[$assetIdString]['ids'][] =& $comment->getId();
-				$this->_allComments[$assetIdString]['times'][] = $dateTime->asString();
+				$this->_allComments[$assetIdString]['times'][] = $dateTime->asSeconds();
 			}
 		}
 		
 		// Sort the comment Ids based on time.
-		array_multisort($this->_allComments[$assetIdString]['ids'], $this->_allComments[$assetIdString]['times'], 
-			(($order == ASC)?SORT_ASC:SORT_DESC));
+		array_multisort($this->_allComments[$assetIdString]['times'], 
+			SORT_NUMERIC, (($order == ASC)?SORT_ASC:SORT_DESC), $this->_allComments[$assetIdString]['ids']);
 		
 		$null = null;
 		$comments = new HarmoniIterator($null);
