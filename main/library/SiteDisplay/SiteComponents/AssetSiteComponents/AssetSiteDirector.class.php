@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.11 2007/05/22 17:05:27 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.12 2007/07/11 14:28:22 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.11 2007/05/22 17:05:27 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.12 2007/07/11 14:28:22 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -151,7 +151,7 @@ class AssetSiteDirector
 			while ($parentAssets->hasNext()) {
 				$parent =& $parentAssets->next();
 				$parentType =& $parent->getAssetType();
-				if ($parentType->getDomain() == 'segue')
+				if (preg_match('/segue/i', $parentType->getDomain()))
 					return $this->traverseUpToRootSiteComponent($parent);
 			}
 			
