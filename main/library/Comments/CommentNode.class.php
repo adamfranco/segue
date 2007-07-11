@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.3 2007/07/10 20:56:48 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.4 2007/07/11 20:15:21 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.3 2007/07/10 20:56:48 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.4 2007/07/11 20:15:21 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -91,6 +91,21 @@ class CommentNode {
 	 */
 	function getSubject () {
 		return $this->_asset->getDisplayName();
+	}
+	
+	/**
+	 * Update the subject
+	 * 
+	 * @param string $subject
+	 * @return void
+	 * @access public
+	 * @since 7/11/07
+	 */
+	function updateSubject ( $subject ) {
+		if ($subject)
+			$this->_asset->updateDisplayName($subject);
+		else
+			$this->_asset->updateDisplayName(_("(untitled)"));
 	}
 	
 	/**
@@ -304,16 +319,26 @@ class CommentNode {
 		print "\n\t\t\t\t<a href='#' onclick=\"\">"._("reply")."</a>";
 		print "\n\t\t\t</div>";
 		
-		print "<div class='comment_title'>";
+		print "<div class='comment_title'";
+		if ($this->canModify()) {
+			print " onclick=\"this.style.display='none'; this.nextSibling.style.display='block'; this.nextSibling.".RequestContext::name('subject').".focus();\"";
+		}
+		print ">";
 		print $this->getSubject();
 		print "\n\t\t\t</div>";
 		if ($this->canModify()) {
+			$id =& $this->getId();
 			print "<form action='"
 				.$harmoni->request->quickURL()."#".RequestContext::name('top')."'"
 				." method='post' style='display: none;'";
-			print " onclick=\"this.previousSibling\"";
+			print " onsubmit=\"";
+			print "updateCommentSubject (this, this.previousSibling); ";
+			print "this.style.display='none'; ";
+			print "this.previousSibling.style.display='block'; ";
+			print "return false; \"";
 			print ">";
 			print "\n\t\t\t\t<input type='text' name='".RequestContext::name('subject')."' value=\"".$this->getSubject()."\"/>";
+			print "\n\t\t\t\t<input type='hidden' name='".RequestContext::name('comment_id')."' value=\"".$id->getIdString()."\"/>";
 			print "\n\t\t\t\t<input type='submit' name='".RequestContext::name('submit')."' value=\""._("Update Subject")."\"/>";
 			print "\n\t\t\t\t<input type='button' name='".RequestContext::name('cancel')."' value=\""._("Cancel")."\" onclick=\"this.parentNode.style.display='none'; this.parentNode.previousSibling.style.display='block'; return false;\"/>";
 			print "\n\t\t\t</form>";

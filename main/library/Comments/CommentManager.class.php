@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.6 2007/07/10 20:56:48 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.7 2007/07/11 20:15:21 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.6 2007/07/10 20:56:48 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.7 2007/07/11 20:15:21 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -486,6 +486,8 @@ class CommentManager {
 		ob_start();
 		print $outputHandler->getHead();
 		
+		$subjectField = RequestContext::name('subject');
+		$commentIdField = RequestContext::name('comment_id');
 		print <<< END
 		
 		<style type='text/css'>
@@ -520,6 +522,38 @@ class CommentManager {
 				font-size: smaller;
 			}
 		</style>
+		
+		<script type='text/javascript'>
+		// <![CDATA[
+			
+			function updateCommentSubject ( form, dest ) {
+				dest.innerHTML = form.$subjectField.value;
+				var params = {
+					'subject': form.$subjectField.value, 
+					'comment_id': form.$commentIdField.value
+					};
+					
+				var url = Harmoni.quickUrl('comments', 'update_ajax', params, 'comments');
+				var req = Harmoni.createRequest();
+				req.onreadystatechange = function () {
+					// only if req shows "loaded"
+					if (req.readyState == 4) {
+						// only if we get a good load should we continue.
+						if (req.status == 200) {
+// 							alert(req.responseText);
+						} else {
+							throw new Error("There was a problem retrieving the XML data: " +
+								req.statusText);
+						}
+					}
+				} 
+				
+				req.open("GET", url, true);
+				req.send(null);
+			}
+			
+		// ]]>
+		</script>
 		
 END;
 		$outputHandler->setHead(ob_get_clean());
