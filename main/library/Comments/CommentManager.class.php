@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.7 2007/07/11 20:15:21 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.8 2007/07/12 14:46:45 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.7 2007/07/11 20:15:21 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.8 2007/07/12 14:46:45 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -527,10 +527,13 @@ class CommentManager {
 		// <![CDATA[
 			
 			function updateCommentSubject ( form, dest ) {
-				dest.innerHTML = form.$subjectField.value;
+				var subject = form.$subjectField.value;
+				var comment_id = form.$commentIdField.value;
+				
+				dest.innerHTML = subject;
 				var params = {
-					'subject': form.$subjectField.value, 
-					'comment_id': form.$commentIdField.value
+					'subject': escape(subject), 
+					'comment_id': escape(comment_id)
 					};
 					
 				var url = Harmoni.quickUrl('comments', 'update_ajax', params, 'comments');
