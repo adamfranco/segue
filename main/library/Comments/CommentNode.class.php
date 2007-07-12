@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.4 2007/07/11 20:15:21 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.5 2007/07/12 16:19:45 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.4 2007/07/11 20:15:21 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.5 2007/07/12 16:19:45 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -314,7 +314,14 @@ class CommentNode {
 		print "\n\t\t\t<div class='comment_controls'>";
 		if ($this->canModify()) {
 			print "\n\t\t\t\t<a href='#' onclick=\"this.parentNode.nextSibling.style.display='none'; this.parentNode.nextSibling.nextSibling.style.display='block'; return false;\">"._("edit subject")."</a> | ";
-			print "\n\t\t\t\t<a href='#' onclick=\"\">"._("delete")."</a> | ";
+			$deleteUrl = $harmoni->request->mkURL();
+			$deleteUrl->setValue('delete_comment', $this->getIdString());
+			print "\n\t\t\t\t<a href='".$deleteUrl->write()."' onclick=\"";
+			print "if (!confirm('"._("Are you sure that you want to delete this comment?")."')) { ";
+			
+			print "return false; ";
+			print "}";
+			print "\">"._("delete")."</a> | ";
 		}
 		print "\n\t\t\t\t<a href='#' onclick=\"\">"._("reply")."</a>";
 		print "\n\t\t\t</div>";
@@ -327,7 +334,6 @@ class CommentNode {
 		print $this->getSubject();
 		print "\n\t\t\t</div>";
 		if ($this->canModify()) {
-			$id =& $this->getId();
 			print "<form action='"
 				.$harmoni->request->quickURL()."#".RequestContext::name('top')."'"
 				." method='post' style='display: none;'";
@@ -338,7 +344,7 @@ class CommentNode {
 			print "return false; \"";
 			print ">";
 			print "\n\t\t\t\t<input type='text' name='".RequestContext::name('subject')."' value=\"".$this->getSubject()."\"/>";
-			print "\n\t\t\t\t<input type='hidden' name='".RequestContext::name('comment_id')."' value=\"".$id->getIdString()."\"/>";
+			print "\n\t\t\t\t<input type='hidden' name='".RequestContext::name('comment_id')."' value=\"".$this->getIdString()."\"/>";
 			print "\n\t\t\t\t<input type='submit' name='".RequestContext::name('submit')."' value=\""._("Update Subject")."\"/>";
 			print "\n\t\t\t\t<input type='button' name='".RequestContext::name('cancel')."' value=\""._("Cancel")."\" onclick=\"this.parentNode.style.display='none'; this.parentNode.previousSibling.style.display='block'; return false;\"/>";
 			print "\n\t\t\t</form>";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.8 2007/07/12 14:46:45 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.9 2007/07/12 16:19:45 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.8 2007/07/12 14:46:45 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.9 2007/07/12 16:19:45 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -163,6 +163,25 @@ class CommentManager {
 			$this->_comments[$id->getIdString()] =& new CommentNode($asset);
 		}
 		return $this->_comments[$id->getIdString()];
+	}
+	
+	/**
+	 * Delete a comment
+	 * 
+	 * @param object Id $id
+	 * @return void
+	 * @access public
+	 * @since 7/12/07
+	 */
+	function deleteComment ( &$id ) {
+		$comment =& $this->getComment($id);
+		$asset =& $comment->_asset;
+		$repository =& $asset->getRepository();
+		$repository->deleteAsset($id);
+		
+		unset($this->_comments[$id->getIdString()]);
+		unset($this->_rootComments);
+		unset($this->_allComments);
 	}
 	
 	/**
@@ -348,6 +367,12 @@ class CommentManager {
 			$comment =& $this->createRootComment($asset, Type::fromString(RequestContext::value('new_comment_type')));
 			$comment->enableEditForm();
 		}
+		
+		if (RequestContext::value('delete_comment')) {
+			$idManager =& Services::getService('Id');
+			$this->deleteComment($idManager->getId(RequestContext::value('delete_comment')));
+		}
+		
 		$this->addHead();
 		
 		ob_start();
