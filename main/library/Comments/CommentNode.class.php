@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.5 2007/07/12 16:19:45 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.6 2007/07/13 15:31:25 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.5 2007/07/12 16:19:45 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.6 2007/07/13 15:31:25 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -309,26 +309,37 @@ class CommentNode {
 		ob_start();
 		print "\n\t<div class='comment' id='".$this->getIdString()."'>";
 		
+		if ($this->_enableEditForm) {
+			print "<a name='".RequestContext::name('current')."'></a>";
+		}
+		
 		print "\n\t\t<div class='comment_display'>";
 		
-		print "\n\t\t\t<div class='comment_controls'>";
+		print "\n\t\t\t<form class='comment_controls'>";
 		if ($this->canModify()) {
 			print "\n\t\t\t\t<a href='#' onclick=\"this.parentNode.nextSibling.style.display='none'; this.parentNode.nextSibling.nextSibling.style.display='block'; return false;\">"._("edit subject")."</a> | ";
 			$deleteUrl = $harmoni->request->mkURL();
 			$deleteUrl->setValue('delete_comment', $this->getIdString());
-			print "\n\t\t\t\t<a href='".$deleteUrl->write()."' onclick=\"";
+			print "\n\t\t\t\t<a ";
+			print "href='".$deleteUrl->write()."#".RequestContext::name('top')."'";
+			print " onclick=\"";
 			print "if (!confirm('"._("Are you sure that you want to delete this comment?")."')) { ";
 			
 			print "return false; ";
 			print "}";
 			print "\">"._("delete")."</a> | ";
 		}
-		print "\n\t\t\t\t<a href='#' onclick=\"\">"._("reply")."</a>";
-		print "\n\t\t\t</div>";
+		$replyUrl = $harmoni->request->mkURL();
+		$replyUrl->setValue('reply_parent', $this->getIdString());
+		print "\n\t\t\t\t<a href='#' onclick=\"CommentPluginChooser.run(this, '".$replyUrl->write()."#".RequestContext::name('current')."'); return false;\">"._("reply")."</a>";
+		print "\n\t\t\t</form>";
 		
 		print "<div class='comment_title'";
 		if ($this->canModify()) {
 			print " onclick=\"this.style.display='none'; this.nextSibling.style.display='block'; this.nextSibling.".RequestContext::name('subject').".focus();\"";
+		}
+		if ($this->_enableEditForm) {
+			print " style='display: none;'";
 		}
 		print ">";
 		print $this->getSubject();
@@ -336,7 +347,9 @@ class CommentNode {
 		if ($this->canModify()) {
 			print "<form action='"
 				.$harmoni->request->quickURL()."#".RequestContext::name('top')."'"
-				." method='post' style='display: none;'";
+				." method='post'";
+			if (!$this->_enableEditForm)
+				print " style='display: none;'";
 			print " onsubmit=\"";
 			print "updateCommentSubject (this, this.previousSibling); ";
 			print "this.style.display='none'; ";

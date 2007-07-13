@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.9 2007/07/12 16:19:45 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.10 2007/07/13 15:31:25 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.9 2007/07/12 16:19:45 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.10 2007/07/13 15:31:25 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -101,6 +101,28 @@ class CommentManager {
 		unset($this->_allComments[$id->getIdString()]);
 		
 		return $comment;
+	}
+	
+	/**
+	 * Create a reply to a comment
+	 * 
+	 * @param object Type $type
+	 * @return object CommentNode
+	 * @access public
+	 * @since 7/12/07
+	 */
+	function &createReply ( &$parentId, &$type) {
+		$parent =& $this->getComment($parentId);
+		
+		$repository =& $parent->_asset->getRepository();
+		$replyAsset =& $repository->createAsset(_("(untitled)"), "", $type);
+		$parent->_asset->addAsset($replyAsset->getId());
+		$reply =& $this->getComment($replyAsset);
+		
+		// Clear our order caches
+		unset($this->_allComments);
+		
+		return $reply;
 	}
 	
 	/**
@@ -368,6 +390,15 @@ class CommentManager {
 			$comment->enableEditForm();
 		}
 		
+		if (RequestContext::value('reply_parent') && RequestContext::value('plugin_type')) {
+			$idManager =& Services::getService('Id');
+			$comment =& $this->createReply(
+				$idManager->getId(RequestContext::value('reply_parent')),
+				Type::fromString(RequestContext::value('plugin_type')));
+			$comment->updateSubject(RequestContext::value('title'));
+			$comment->enableEditForm();
+		}
+		
 		if (RequestContext::value('delete_comment')) {
 			$idManager =& Services::getService('Id');
 			$this->deleteComment($idManager->getId(RequestContext::value('delete_comment')));
@@ -378,9 +409,7 @@ class CommentManager {
 		ob_start();
 		
 		// print the ordering form
-		print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('top')."' method='post'>";
-		
-		print "\n\t<div style='float: left;'>";
+		print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('current')."' method='post' style='float: left;'>";
 		
 		print "\n\t<input type='submit' name='".RequestContext::name('create_new_comment')."' value='"._('Create New')."'";
 // 		print " onclick='this.form.action = this.form.action.replace(/#.*/, \"#current_comment\"); alert(this.form.action); this.form.submit();'";
@@ -394,9 +423,11 @@ class CommentManager {
 		}
 		print "\n\t\t</select> ";
 		print _('Comment');
-		print "\n\t</div>";
 		
-		print "\n\t<div style='float: right; text-align: right;'>";
+		print "\n</form>";
+
+		print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('top')."' method='post'  style='float: right; text-align: right;'>";
+
 		
 		print "\n\t\t<select name='".RequestContext::name('displayMode')."'/>";
 		print "\n\t\t\t<option value='threaded'".(($this->getDisplayMode() == 'threaded')?" selected='selected'":"").">";
@@ -414,11 +445,11 @@ class CommentManager {
 		
 		print "\n\t<input type='submit' value='"._("Change")."'/>";
 		
-		print "\n\t</div>";
-		
-		print "\n\t<div style='clear: both;'> &nbsp; </div>";
-		
 		print "\n</form>";
+		
+		print "\n<div style='clear: both;'> &nbsp; </div>";
+		
+		
 		
 		// Print out the Comments
 		print "\n<div id='".RequestContext::name('comments')."'>";
@@ -584,6 +615,18 @@ class CommentManager {
 		</script>
 		
 END;
+		// Add our common Harmoni javascript libraries
+		require(POLYPHONY_DIR."/main/library/Harmoni.js.inc.php");
+		
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/CenteredPanel.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/TabbedContent.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/prototype.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/js_quicktags.js'></script>";
+		
+		print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/PluginChooser.js'></script>";
+		print "\n\t\t<link rel='stylesheet' type='text/css' href='".MYPATH."/javascript/PluginChooser.css'/>";
+		print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/CommentPluginChooser.js'></script>";
+		
 		$outputHandler->setHead(ob_get_clean());
 	}
 }

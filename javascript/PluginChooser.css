@@ -1,0 +1,20 @@
+.pluginchooser img.icon {
+	float: left;
+	width: 200px;
+}
+
+.pluginchooser dt {
+	clear: both;
+	font-weight: bold;
+}
+
+.pluginchooser .title_form {
+	font-weight: bold;
+	margin-top: 10px;
+}
+
+.pluginchooser .submit_buttons {
+	clear: both;
+	padding-top: 10px;
+	text-align: right;
+}
