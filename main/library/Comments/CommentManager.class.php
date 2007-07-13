@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.10 2007/07/13 15:31:25 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.11 2007/07/13 19:59:03 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.10 2007/07/13 15:31:25 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.11 2007/07/13 19:59:03 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -386,7 +386,8 @@ class CommentManager {
 			$this->setDisplayMode(RequestContext::value('displayMode'));
 		
 		if (RequestContext::value('create_new_comment')) {
-			$comment =& $this->createRootComment($asset, Type::fromString(RequestContext::value('new_comment_type')));
+			$comment =& $this->createRootComment($asset, Type::fromString(RequestContext::value('plugin_type')));
+			$comment->updateSubject(RequestContext::value('title'));
 			$comment->enableEditForm();
 		}
 		
@@ -408,24 +409,16 @@ class CommentManager {
 		
 		ob_start();
 		
+		// New comment
+		print "\n<div style='float: left;'>";
+		$url =& $harmoni->request->mkURL();
+		$url->setValue('create_new_comment', 'true');
+		print "\n\t<button ";
+		print "onclick=\"CommentPluginChooser.run(this, '".$url->write()."#".RequestContext::name('current')."', ''); return false;\">";
+		print _("New Comment")."</button>";
+		print "\n</div>";
+		
 		// print the ordering form
-		print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('current')."' method='post' style='float: left;'>";
-		
-		print "\n\t<input type='submit' name='".RequestContext::name('create_new_comment')."' value='"._('Create New')."'";
-// 		print " onclick='this.form.action = this.form.action.replace(/#.*/, \"#current_comment\"); alert(this.form.action); this.form.submit();'";
-		print "/>";
-		
-		print "\n\t\t<select name='".RequestContext::name('new_comment_type')."'/>";
-		$pluginManager =& Services::getService('PluginManager');
-		$plugins = $pluginManager->getEnabledPlugins();
-		foreach ($plugins as $key => $pType) {
-			print "\n\t\t\t<option value='".$key."'>".$pType->getKeyword()."</option>";
-		}
-		print "\n\t\t</select> ";
-		print _('Comment');
-		
-		print "\n</form>";
-
 		print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('top')."' method='post'  style='float: right; text-align: right;'>";
 
 		
@@ -461,7 +454,11 @@ class CommentManager {
 		
 		while ($comments->hasNext()) {
 			$comment =& $comments->next();
-			print $comment->getMarkup(($this->getDisplayMode() == 'threaded')?true:false);
+			// If this is a work in progress that has not had content added yet, 
+			// do not display it.
+			if ($comment->hasContent() || $comment->isAuthor()) {
+				print $comment->getMarkup(($this->getDisplayMode() == 'threaded')?true:false);
+			}
 		}
 		
 		print "\n</div>";

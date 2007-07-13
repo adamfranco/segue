@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.32 2007/07/06 18:27:36 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.33 2007/07/13 19:59:03 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.32 2007/07/06 18:27:36 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.33 2007/07/13 19:59:03 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -149,6 +149,23 @@ class SeguePluginsPlugin {
  	 */
  	function generateDescription () {
  		return $this->getRawDescription();
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if this instance of a plugin 'has content'. This method is called
+ 	 * to determine if the plugin instance is ready to be 'published' or is a newly-created
+ 	 * placeholder awaiting content addition. If the plugin has no appreciable 
+ 	 * difference between have content or not, this method should return true. For
+ 	 * example: an interactive calendar plugin should probably be 'published' 
+ 	 * whether or not events have been added to it.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access public
+ 	 * @since 7/13/07
+ 	 */
+ 	function hasContent () {
+ 		// Override as needed
+ 		return true;
  	}
  	
  	/*********************************************************

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginChooser.js,v 1.2 2007/07/13 18:17:30 adamfranco Exp $
+ * @version $Id: PluginChooser.js,v 1.3 2007/07/13 19:59:02 adamfranco Exp $
  */
 
 PluginChooser.prototype = new CenteredPanel();
@@ -22,7 +22,7 @@ PluginChooser.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginChooser.js,v 1.2 2007/07/13 18:17:30 adamfranco Exp $
+ * @version $Id: PluginChooser.js,v 1.3 2007/07/13 19:59:02 adamfranco Exp $
  */
 function PluginChooser (callingElement, destUrl ) {
 	if ( arguments.length > 0 ) {
@@ -58,9 +58,11 @@ function PluginChooser (callingElement, destUrl ) {
 		this.form.chooser = this;
 		this.form.onsubmit = function () {
 			var titleFieldName = Harmoni.fieldName('title', this.chooser.namespace);
-			if (this[titleFieldName].value == '')
+			var titleField = this[titleFieldName];
+			if (titleField.value == '')
 			{
 				alert (this.chooser.titleError);
+				titleField.focus();
 				return false;
 			}
 		}

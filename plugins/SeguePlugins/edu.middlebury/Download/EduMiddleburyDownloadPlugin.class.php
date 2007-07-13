@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.8 2007/06/04 19:45:29 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.9 2007/07/13 19:59:03 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.8 2007/06/04 19:45:29 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.9 2007/07/13 19:59:03 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SeguePluginsAjaxPlugin
@@ -206,6 +206,13 @@ class EduMiddleburyDownloadPlugin
 			print "\n</div>";
 			print "\n<div style='clear: both;'>";
 			print $this->getCitation($file);
+			print "</div>";
+		} else {
+			print "\n<div class='plugin_empty'>";
+			print _("No file has been selected yet. ");
+			if ($this->shouldShowControls()) {
+				print "<br/>"._("Click the 'edit' link to choose a file. ");
+			}
 			print "</div>";
 		}
 		

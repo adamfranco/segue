@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.7 2007/07/13 18:17:31 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.8 2007/07/13 19:59:03 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.7 2007/07/13 18:17:31 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.8 2007/07/13 19:59:03 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -297,6 +297,19 @@ class CommentNode {
 	}
 	
 	/**
+	 * Answer true if the comment has content and can therefor be show and replied-to.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 7/13/07
+	 */
+	function hasContent () {
+		$pluginManager =& Services::getService('PluginManager');
+		$plugin =& $pluginManager->getPlugin($this->_asset);
+		return $plugin->hasContent();
+	}
+	
+	/**
 	 * Answer the markup for this comment.
 	 * 
 	 * @param boolean $showThreadedReplies
@@ -306,6 +319,7 @@ class CommentNode {
 	 */
 	function getMarkup ($showThreadedReplies) {
 		$harmoni =& Harmoni::instance();
+		
 		ob_start();
 		print "\n\t<div class='comment' id='".$this->getIdString()."'>";
 		
@@ -316,8 +330,13 @@ class CommentNode {
 		print "\n\t\t<div class='comment_display'>";
 		
 		print "\n\t\t\t<form class='comment_controls'>";
+		$controls = array();
 		if ($this->canModify()) {
-			print "\n\t\t\t\t<a href='#' onclick=\"this.parentNode.nextSibling.style.display='none'; this.parentNode.nextSibling.nextSibling.style.display='block'; return false;\">"._("edit subject")."</a> | ";
+			ob_start();
+			print "\n\t\t\t\t<a href='#' onclick=\"this.parentNode.nextSibling.style.display='none'; this.parentNode.nextSibling.nextSibling.style.display='block'; return false;\">"._("edit subject")."</a>";
+			$controls[] = ob_get_clean();
+			
+			ob_start();
 			$deleteUrl = $harmoni->request->mkURL();
 			$deleteUrl->setValue('delete_comment', $this->getIdString());
 			print "\n\t\t\t\t<a ";
@@ -327,11 +346,18 @@ class CommentNode {
 			
 			print "return false; ";
 			print "}";
-			print "\">"._("delete")."</a> | ";
+			print "\">"._("delete")."</a>";
+			$controls[] = ob_get_clean();
 		}
-		$replyUrl = $harmoni->request->mkURL();
-		$replyUrl->setValue('reply_parent', $this->getIdString());
-		print "\n\t\t\t\t<a href='#' onclick=\"CommentPluginChooser.run(this, '".$replyUrl->write()."#".RequestContext::name('current')."', '".rawurlencode(_('Re: ').$this->getSubject())."'); return false;\">"._("reply")."</a>";
+		if ($this->hasContent()) {
+			ob_start();
+			$replyUrl = $harmoni->request->mkURL();
+			$replyUrl->setValue('reply_parent', $this->getIdString());
+			print "\n\t\t\t\t<a href='#' onclick=\"CommentPluginChooser.run(this, '".$replyUrl->write()."#".RequestContext::name('current')."', '".rawurlencode(_('Re: ').$this->getSubject())."'); return false;\">"._("reply")."</a>";
+			$controls[] = ob_get_clean();
+		}
+		
+		print implode(" | ", $controls);
 		print "\n\t\t\t</form>";
 		
 		print "<div class='comment_title'";
@@ -382,11 +408,15 @@ class CommentNode {
 			$replies =& $this->getReplies(ASC);
 			while ($replies->hasNext()) {
 				$reply =& $replies->next();
-				print "\n\t\t\t\t<img src='".MYPATH."/icons/reply_indent.png' class='reply_icon'/>";
-				print "\n\t\t\t<div class='comment_reply'>";
-				print $reply->getMarkup(true);
-				
-				print "\n\t\t\t</div>";
+				// If this is a work in progress that has not had content added yet, 
+				// do not display it.
+				if ($reply->hasContent() || $reply->isAuthor()) {
+					print "\n\t\t\t\t<img src='".MYPATH."/icons/reply_indent.png' class='reply_icon'/>";
+					print "\n\t\t\t<div class='comment_reply'>";
+					print $reply->getMarkup(true);
+					
+					print "\n\t\t\t</div>";
+				}
 			}
 			
 			print "\n\t\t</div>";

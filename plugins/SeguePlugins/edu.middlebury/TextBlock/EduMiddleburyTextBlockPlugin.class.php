@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.10 2007/06/04 19:45:29 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.11 2007/07/13 19:59:03 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.10 2007/06/04 19:45:29 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.11 2007/07/13 19:59:03 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -146,12 +146,22 @@ class EduMiddleburyTextBlockPlugin
 				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
  			}
  			
- 			$abstractLength = intval($this->getRawDescription());
- 			if ($abstractLength) {
-		 		print "\n".$this->trimHTML($this->getContent(), $abstractLength);
-		 	} else {
-		 		print "\n".$this->getContent();
-		 	}
+ 			if ($this->hasContent()) {
+				$abstractLength = intval($this->getRawDescription());
+				if ($abstractLength) {
+					print "\n".$this->trimHTML($this->getContent(), $abstractLength);
+				} else {
+					print "\n".$this->getContent();
+				}
+			} else {
+				print "\n<div class='plugin_empty'>";
+				print _("No text has been added yet. ");
+				if ($this->shouldShowControls()) {
+					print "<br/>"._("Click the 'edit' link to choose a file. ");
+				}
+				print "</div>";
+			}
+		 	
 	 		
 	 		if ($this->shouldShowControls()) {
 				print "\n</div>";
@@ -300,6 +310,25 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function updateFromWizard ( $values ) {
  		$this->setContent($values['content']);
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if this instance of a plugin 'has content'. This method is called
+ 	 * to determine if the plugin instance is ready to be 'published' or is a newly-created
+ 	 * placeholder awaiting content addition. If the plugin has no appreciable 
+ 	 * difference between have content or not, this method should return true. For
+ 	 * example: an interactive calendar plugin should probably be 'published' 
+ 	 * whether or not events have been added to it.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access public
+ 	 * @since 7/13/07
+ 	 */
+ 	function hasContent () {
+ 		if (strlen($this->getContent()) > 0)
+	 		return true;
+	 	else
+	 		return false;
  	}
 }
 
