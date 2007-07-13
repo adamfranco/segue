@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.6 2007/07/13 15:31:25 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.7 2007/07/13 18:17:31 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.6 2007/07/13 15:31:25 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.7 2007/07/13 18:17:31 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -331,15 +331,12 @@ class CommentNode {
 		}
 		$replyUrl = $harmoni->request->mkURL();
 		$replyUrl->setValue('reply_parent', $this->getIdString());
-		print "\n\t\t\t\t<a href='#' onclick=\"CommentPluginChooser.run(this, '".$replyUrl->write()."#".RequestContext::name('current')."'); return false;\">"._("reply")."</a>";
+		print "\n\t\t\t\t<a href='#' onclick=\"CommentPluginChooser.run(this, '".$replyUrl->write()."#".RequestContext::name('current')."', '".rawurlencode(_('Re: ').$this->getSubject())."'); return false;\">"._("reply")."</a>";
 		print "\n\t\t\t</form>";
 		
 		print "<div class='comment_title'";
 		if ($this->canModify()) {
 			print " onclick=\"this.style.display='none'; this.nextSibling.style.display='block'; this.nextSibling.".RequestContext::name('subject').".focus();\"";
-		}
-		if ($this->_enableEditForm) {
-			print " style='display: none;'";
 		}
 		print ">";
 		print $this->getSubject();
@@ -348,8 +345,7 @@ class CommentNode {
 			print "<form action='"
 				.$harmoni->request->quickURL()."#".RequestContext::name('top')."'"
 				." method='post'";
-			if (!$this->_enableEditForm)
-				print " style='display: none;'";
+			print " style='display: none;'";
 			print " onsubmit=\"";
 			print "updateCommentSubject (this, this.previousSibling); ";
 			print "this.style.display='none'; ";

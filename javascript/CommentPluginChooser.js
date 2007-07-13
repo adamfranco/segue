@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentPluginChooser.js,v 1.1 2007/07/13 15:31:25 adamfranco Exp $
+ * @version $Id: CommentPluginChooser.js,v 1.2 2007/07/13 18:17:30 adamfranco Exp $
  */
 
 CommentPluginChooser.prototype = new PluginChooser();
@@ -22,13 +22,32 @@ CommentPluginChooser.superclass = PluginChooser.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentPluginChooser.js,v 1.1 2007/07/13 15:31:25 adamfranco Exp $
+ * @version $Id: CommentPluginChooser.js,v 1.2 2007/07/13 18:17:30 adamfranco Exp $
  */
-function CommentPluginChooser ( callingElement, destUrl ) {
+function CommentPluginChooser ( callingElement, destUrl, defaultTitle ) {
 	if ( arguments.length > 0 ) {
-		this.init( callingElement, destUrl );
+		this.init( callingElement, destUrl, defaultTitle );
 	}
 }
+
+	/**
+	 * Initialise the object
+	 * 
+	 * @param string organizerId
+	 * @param object DOM_Element	callingElement 
+	 *		A unique element that this panel is associated with. An element can 
+	 *		only have one panel associated with it, which will be cached with 
+	 *		this element.
+	 * @return void
+	 * @access public
+	 * @since 7/12/07
+	 */
+	CommentPluginChooser.prototype.init = function ( callingElement, destUrl, defaultTitle ) {		
+		this.defaultTitle = unescape(defaultTitle);
+		CommentPluginChooser.superclass.init.call(this, 
+								callingElement,
+								destUrl);
+	}
 
 	/**
 	 * Set some default values
@@ -40,7 +59,7 @@ function CommentPluginChooser ( callingElement, destUrl ) {
 	CommentPluginChooser.prototype.setDefaults = function () {
 		this.preTitleText = 'Add a subject and choose a type of content to add.';
 		this.titleLabel = 'Subject: ';
-		this.defaultTitle = '';
+// 		this.defaultTitle = '';
 		this.titleError = 'Please enter a subject.';
 		this.namespace = 'comments';
 	}
@@ -54,10 +73,10 @@ function CommentPluginChooser ( callingElement, destUrl ) {
 	 * @access public
 	 * @since  7/12/07
 	 */
-	CommentPluginChooser.run = function ( callingElement, destUrl ) {
+	CommentPluginChooser.run = function ( callingElement, destUrl, defaultTitle ) {
 		if (callingElement.panel) {
 			callingElement.panel.open();
 		} else {
-			var tmp = new CommentPluginChooser( callingElement, destUrl );
+			var tmp = new CommentPluginChooser( callingElement, destUrl, defaultTitle );
 		}
 	}
