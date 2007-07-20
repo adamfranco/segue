@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2007/07/20 19:16:53 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2007/07/20 20:21:24 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2007/07/20 19:16:53 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2007/07/20 20:21:24 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -222,17 +222,17 @@ class ControlsSiteVisitor {
 		print " name='".RequestContext::name('showDisplayNames')."'>";
 		
 		print "\n\t\t\t\t\t\t<option value='default'";
-		print (($siteComponent->showDisplayNames() == 'default')?" checked='checked'":"");
+		print (($siteComponent->showDisplayNames() === 'default')?" selected='selected'":"");
 		print ">"._(" use default");
 		print "</option>";
 		
 		print "\n\t\t\t\t\t\t<option value='true'";
-		print (($siteComponent->showDisplayNames() === true)?" checked='checked'":"");
+		print (($siteComponent->showDisplayNames() === true)?" selected='selected'":"");
 		print ">"._("override-yes");
 		print "</option>";
 		
 		print "\n\t\t\t\t\t\t<option value='false'";
-		print (($siteComponent->showDisplayNames() === false)?" checked='checked'":"");
+		print (($siteComponent->showDisplayNames() === false)?" selected='selected'":"");
 		print ">"._("override-no");
 		print "</option>";
 		
@@ -263,23 +263,23 @@ class ControlsSiteVisitor {
 		} else {
 			$canEdit = false;
 		}
-		
+				
 		print "\n\t\t\t\t\t<select ";
 		print (($canEdit)?"":" disabled='disabled'");
-		print " name='".RequestContext::name('enableComments')."'>";
+		print " name='".RequestContext::name('commentsEnabled')."'>";
 		
 		print "\n\t\t\t\t\t\t<option value='default'";
-// 		print (($siteComponent->enableComments() == 'default')?" checked='checked'":"");
+		print (($siteComponent->commentsEnabled() === 'default')?" selected='selected'":"");
 		print ">"._(" use default");
 		print "</option>";
 		
 		print "\n\t\t\t\t\t\t<option value='true'";
-// 		print (($siteComponent->enableComments() === true)?" checked='checked'":"");
+		print (($siteComponent->commentsEnabled() === true)?" selected='selected'":"");
 		print ">"._("override-yes");
 		print "</option>";
 		
 		print "\n\t\t\t\t\t\t<option value='false'";
-// 		print (($siteComponent->enableComments() === false)?" checked='checked'":"");
+		print (($siteComponent->commentsEnabled() === false)?" selected='selected'":"");
 		print ">"._("override-no");
 		print "</option>";
 		

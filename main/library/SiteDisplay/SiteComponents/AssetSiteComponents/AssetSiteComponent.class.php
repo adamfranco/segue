@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.8 2007/05/22 17:05:27 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.9 2007/07/20 20:21:24 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.8 2007/05/22 17:05:27 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.9 2007/07/20 20:21:24 adamfranco Exp $
  */
 class AssetSiteComponent 
 	// implements SiteComponent
@@ -236,6 +236,72 @@ class AssetSiteComponent
 				return true;
 		} else {
 			return $this->showDisplayNames();
+		}
+	}	
+	
+	/**
+	 * change the setting of 'commentsEnabled' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @param mixed  $commentsEnabled true, false, or 'default'
+	 * @return void
+	 * @access public
+	 * @since 7/20/07
+	 */
+	function updateCommentsEnabled ( $commentsEnabled ) {
+		$element =& $this->getElement();
+		
+		if ($commentsEnabled === true || $commentsEnabled === 'true')
+			$element->setAttribute('commentsEnabled', 'true');
+		else if ($commentsEnabled === false || $commentsEnabled === 'false')
+			$element->setAttribute('commentsEnabled', 'false');
+		else
+			$element->setAttribute('commentsEnabled', 'default');
+		
+		$this->_saveXml();
+	}
+
+	/**
+	 * Answer the setting of 'commentsEnabled' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @return mixed true, false, or 'default'
+	 * @access public
+	 * @since 7/20/07
+	 */
+	function commentsEnabled () {
+		$element =& $this->getElement();
+		
+		if (!$element->hasAttribute('commentsEnabled'))
+			return 'default';
+		
+		if ($element->getAttribute('commentsEnabled') == 'true')
+			return true;
+		else if ($element->getAttribute('commentsEnabled') == 'false')
+			return false;
+		else
+			return 'default';
+	}
+	
+	/**
+	 * Answer true if the comments should be shown for this component,
+	 * taking into account its setting and those in the hierarchy above it.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function showComments () {
+		if ($this->commentsEnabled() === 'default') {
+			$parent =& $this->getParentComponent();
+			
+			if ($parent)
+				return $parent->showComments();
+			// Base case if none is specified anywhere in the hierarchy
+			else
+				return false;
+		} else {
+			return $this->commentsEnabled();
 		}
 	}
 	

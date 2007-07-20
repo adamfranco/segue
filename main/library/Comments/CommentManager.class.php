@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.11 2007/07/13 19:59:03 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.12 2007/07/20 20:21:23 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.11 2007/07/13 19:59:03 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.12 2007/07/20 20:21:23 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -317,6 +317,19 @@ class CommentManager {
 			$comments->add($this->getComment($id));
 		
 		return $comments;
+	}
+	
+	/**
+	 * Answer the number of comments on an asset
+	 * 
+	 * @param mixed $assetOrId
+	 * @return int
+	 * @access public
+	 * @since 7/20/07
+	 */
+	function getNumComments ( &$assetOrId ) {
+		$comments =& $this->getAllComments($assetOrId);
+		return $comments->count();
 	}
 	
 	/**

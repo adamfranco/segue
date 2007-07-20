@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.36 2007/05/24 19:55:46 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.37 2007/07/20 20:21:23 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.36 2007/05/24 19:55:46 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.37 2007/07/20 20:21:23 adamfranco Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -127,6 +127,18 @@ class ViewModeSiteVisitor {
 		
 		print $plugin->executeAndGetMarkup($this->showPluginControls());
 		
+		if ($block->showComments()) {
+			$cm =& CommentManager::instance();
+			print "\n<div style='float: right; margin-left: 10px;'>";
+			print "\n\t<a href='".$this->getDetailUrl($block->getId())."#";
+			$harmoni->request->startNamespace("comments");
+			print RequestContext::name('top')."'>";
+			$harmoni->request->endNamespace();
+			print str_replace("%1", $cm->getNumComments($block->getAsset()), _("Comments (%1) &raquo;"));
+			print "</a>";
+			print "\n</div>";
+		}
+		
 		if ($plugin->hasExtendedMarkup()) {	
 			print "\n<div style='text-align: right;'>";
 			print "\n\t<a href='".$this->getDetailUrl($block->getId())."'>";
@@ -134,6 +146,8 @@ class ViewModeSiteVisitor {
 			print "</a>";
 			print "\n</div>";
 		}
+		
+		print "\n<div style='clear: both'></div>";
 		return ob_get_clean();
 	}
 	

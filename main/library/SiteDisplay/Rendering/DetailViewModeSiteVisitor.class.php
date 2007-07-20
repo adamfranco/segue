@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.7 2007/07/10 15:36:07 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.8 2007/07/20 20:21:23 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.7 2007/07/10 15:36:07 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.8 2007/07/20 20:21:23 adamfranco Exp $
  */
 class DetailViewModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -56,7 +56,7 @@ class DetailViewModeSiteVisitor
 		
 		$guiContainer =& parent::visitBlock($block);
 		
-		if ($guiContainer) {
+		if ($guiContainer && $block->showComments()) {
 			$commentManager =& CommentManager::instance();
 			
 			$guiContainer->add(
