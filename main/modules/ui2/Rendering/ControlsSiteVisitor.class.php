@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.3 2007/05/22 19:13:26 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2007/07/20 19:16:53 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.3 2007/05/22 19:13:26 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.4 2007/07/20 19:16:53 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -203,7 +203,7 @@ class ControlsSiteVisitor {
 	 * @since 1/16/07
 	 */
 	function printShowDisplayNames ( &$siteComponent ) {
-		print "\n\t\t\t\t<table cellspacing='0' cellpadding='0'>\n\t\t\t\t\t<tr><td style='white-space: nowrap;' valign='top' rowspan='3'>";
+		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
 		print "<strong>"._('Display Block Titles: ')."</strong>";
 		
 		$authZ =& Services::getService("AuthZ");
@@ -217,32 +217,75 @@ class ControlsSiteVisitor {
 			$canEdit = false;
 		}
 		
-		print "</td>\n\t\t\t\t\t<td>";
-		print " <input type='radio' ";
-		print " name='".RequestContext::name('showDisplayNames')."'";
-		print " value='default'";
+		print "\n\t\t\t\t\t<select ";
+		print (($canEdit)?"":" disabled='disabled'");
+		print " name='".RequestContext::name('showDisplayNames')."'>";
+		
+		print "\n\t\t\t\t\t\t<option value='default'";
 		print (($siteComponent->showDisplayNames() == 'default')?" checked='checked'":"");
-		print (($canEdit)?"":" disabled='disabled'");
-		print "/>"._(" use default");
+		print ">"._(" use default");
+		print "</option>";
 		
-		print "</td></tr>\n\t\t\t\t\t<tr><td>";
-		print " <input type='radio' ";
-		print " name='".RequestContext::name('showDisplayNames')."'";
-		print " value='true'";
+		print "\n\t\t\t\t\t\t<option value='true'";
 		print (($siteComponent->showDisplayNames() === true)?" checked='checked'":"");
-		print (($canEdit)?"":" disabled='disabled'");
-		print "/>"._("override-yes");
+		print ">"._("override-yes");
+		print "</option>";
 		
-		print "</td></tr>\n\t\t\t\t\t<tr><td>";
-		print " <input type='radio' ";
-		print " name='".RequestContext::name('showDisplayNames')."'";
-		print " value='false'";
+		print "\n\t\t\t\t\t\t<option value='false'";
 		print (($siteComponent->showDisplayNames() === false)?" checked='checked'":"");
-		print (($canEdit)?"":" disabled='disabled'");
-		print "/>"._("override-no");
+		print ">"._("override-no");
+		print "</option>";
 		
-		print "</td></tr>";
-		print "\n\t\t\t\t</table>";
+		print "\n\t\t\t\t\t</select> ";
+		
+		print "\n\t\t\t\t</div>";
+	}
+	
+	/**
+	 * Print the discussion controls
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 7/16/07
+	 */
+	function printCommentSettings ( &$siteComponent ) {
+		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		print "<strong>"._('Enable Comments: ')."</strong>";
+		
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$canEdit = true;
+		} else {
+			$canEdit = false;
+		}
+		
+		print "\n\t\t\t\t\t<select ";
+		print (($canEdit)?"":" disabled='disabled'");
+		print " name='".RequestContext::name('enableComments')."'>";
+		
+		print "\n\t\t\t\t\t\t<option value='default'";
+// 		print (($siteComponent->enableComments() == 'default')?" checked='checked'":"");
+		print ">"._(" use default");
+		print "</option>";
+		
+		print "\n\t\t\t\t\t\t<option value='true'";
+// 		print (($siteComponent->enableComments() === true)?" checked='checked'":"");
+		print ">"._("override-yes");
+		print "</option>";
+		
+		print "\n\t\t\t\t\t\t<option value='false'";
+// 		print (($siteComponent->enableComments() === false)?" checked='checked'":"");
+		print ">"._("override-no");
+		print "</option>";
+		
+		print "\n\t\t\t\t\t</select> ";
+		
+		print "\n\t\t\t\t</div>";
 	}
 	
 	/**
@@ -482,6 +525,7 @@ END;
 		$this->printDisplayName($siteComponent);
 // 		$this->printDescription($siteComponent);
 // 		$this->printWidth($siteComponent);
+		$this->printCommentSettings($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
@@ -501,6 +545,7 @@ END;
 		$this->printShowDisplayNames($siteComponent);
 		$this->printDisplayName($siteComponent);		
 		$this->printDescription($siteComponent);
+		$this->printCommentSettings($siteComponent);
 		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
 		
@@ -513,6 +558,7 @@ END;
 		$this->printShowDisplayNames($siteComponent);
 		$this->printDisplayName($siteComponent);		
 		$this->printDescription($siteComponent);
+		$this->printCommentSettings($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
 	}
@@ -564,6 +610,7 @@ END;
 		$this->controlsStart($siteComponent);
 		
 		$this->printShowDisplayNames($siteComponent);
+		$this->printCommentSettings($siteComponent);
 		$this->printFlowRowsColumns($siteComponent);
 		$this->printDirection($siteComponent);
 		$this->printWidth($siteComponent);
@@ -584,6 +631,7 @@ END;
 		$this->controlsStart($siteComponent);
 		
 		$this->printShowDisplayNames($siteComponent);
+		$this->printCommentSettings($siteComponent);
 		$this->printDirection($siteComponent);
 		$this->printWidth($siteComponent);
 		$this->printDelete($siteComponent);
