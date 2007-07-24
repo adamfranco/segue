@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.11 2007/07/13 19:59:03 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.12 2007/07/24 20:31:34 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.11 2007/07/13 19:59:03 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.12 2007/07/24 20:31:34 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -121,7 +121,9 @@ class EduMiddleburyTextBlockPlugin
 		print "\"/>";
 		
 		print "\n\t<br/>";
-		print "\n\t<input name='".$this->getFieldName('abstractLength')."' type='text' value='".intval($this->getRawDescription())."' onchange='return false;'/>";
+		print str_replace('%1',
+			"<input name='".$this->getFieldName('abstractLength')."' type='text' value='".intval($this->getRawDescription())."' onchange='return false;' size='3'/>",
+			_("Abstract to %1 words. (Enter '0' for no abstract)"));
 		
 		print "\n</form>";
  	}
@@ -255,8 +257,12 @@ class EduMiddleburyTextBlockPlugin
  		$wrapper =& new WComponentCollection;
  		ob_start();
  		
- 		$content =& $wrapper->addComponent('content', WTextArea::withRowsAndColumns(20, 80));
- 		$content->setValue($this->getContent());
+ 		$property =& $wrapper->addComponent('content', WTextArea::withRowsAndColumns(20, 80));
+ 		$property->setValue($this->getContent());
+ 		
+ 		$property =& $wrapper->addComponent('abstractLength', new WTextField);
+ 		$property->setSize(3);
+ 		$property->setValue($this->getRawDescription());
  		
  		print "[[content]]";
  		
@@ -295,6 +301,9 @@ class EduMiddleburyTextBlockPlugin
 		print "}; "; 
 		print "MediaLibrary.run('".$this->getId()."', this); ";
 		print "\"/>";
+		
+		print "\n\t<br/>";
+		print _("Abstract to [[abstractLength]] words. (Enter '0' for no abstract)");
  		
  		$wrapper->setContent(ob_get_clean());
  		return $wrapper;
@@ -310,6 +319,7 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function updateFromWizard ( $values ) {
  		$this->setContent($values['content']);
+ 		$this->setRawDescription(intval($values['abstractLength']));
  	}
  	
  	/**
