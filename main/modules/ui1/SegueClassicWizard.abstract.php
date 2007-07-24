@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.4 2007/06/05 15:24:19 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.5 2007/07/24 19:17:20 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.4 2007/06/05 15:24:19 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.5 2007/07/24 19:17:20 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -316,7 +316,7 @@ class SegueClassicWizard
 		// Create the step text
 		ob_start();
 		
-		$property =& $step->addComponent("show_titles", new WRadioList());
+		$property =& $step->addComponent("show_titles", new WSelectList());
 		$property->addOption('default', _("use default"));
 		$property->addOption('true', _("override-show"));
 		$property->addOption('false', _("override-hide"));
@@ -328,21 +328,45 @@ class SegueClassicWizard
 				$property->setValue('true');
 			else if ($val === false)
 				$property->setValue('false');
+			
+			$parent =& $component->getParentComponent();
+		} else {
+			$parent = null;
 		}
 		
 
-		print "\n<strong>"._("Display Content Titles:")."</strong>";
-		print "\n<br/>[[show_titles]]";
+		print "\n<p><strong>"._("Display Content Titles:")."</strong> ";
+		print "\n[[show_titles]]";
 		
+		if ($parent) {
+			print "\n<br/>".str_replace('%1', 
+				(($parent->showDisplayNames())?_('show'):_('hide')),
+				_("Current default setting: %1"));
+		}
+		print "\n</p>";
 		
-// 		$property =& $step->addComponent("description", WTextArea::withRowsAndColumns(4,80));
-// 		if ($component)
-// 			$property->setValue($component->getDescription());
-// 		print "\n<h2>"._("Description")."</h2>";
-// 		print "\n"._("The Description for this content: ");
-// 		print "\n<br />[[description]]";
-// 		print "\n<div style='width: 400px'> &nbsp; </div>";
+		$property =& $step->addComponent("enable_comments", new WSelectList());
+		$property->addOption('default', _("use default"));
+		$property->addOption('true', _("override-enable"));
+		$property->addOption('false', _("override-disable"));
+		$property->setValue('default');
 		
+		if ($component) {
+			$val = $component->commentsEnabled();
+			if ($val === true)
+				$property->setValue('true');
+			else if ($val === false)
+				$property->setValue('false');
+		}
+		
+		print "\n<p><strong>"._("Enable Comments:")."</strong> ";
+		print "\n[[enable_comments]]";
+		if ($parent) {
+			print "\n<br/>".str_replace('%1', 
+				(($parent->showComments())?_('enabled'):_('disabled')),
+				_("Current default setting: %1"));
+		}
+		print "\n</p>";
 		
 		$step->setContent(ob_get_clean());
 		
@@ -360,6 +384,7 @@ class SegueClassicWizard
 	function saveDisplayOptionsStep ($values) {
 		$component =& $this->getSiteComponent();
 		$component->updateShowDisplayNames($values['show_titles']);
+		$component->updateCommentsEnabled($values['enable_comments']);
 		return true;
 	}
 	
