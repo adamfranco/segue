@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.5 2007/05/31 19:49:20 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.6 2007/07/25 16:31:34 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.5 2007/05/31 19:49:20 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.6 2007/07/25 16:31:34 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -211,7 +211,7 @@ class viewAction
 		print "<a href='".$harmoni->request->quickURL('home', 'welcome')."' title='"._("The Segue homepage")."'>";
 		print _("home")."</a> | ";
 		
-		print "<a href='".$harmoni->request->quickURL('ui2', 'list')."' title='"._("List of Segue sites")."'>";
+		print "<a href='".$harmoni->request->quickURL('portal', 'list')."' title='"._("List of Segue sites")."'>";
 		print _("site list")."</a>";
 		
 		$ret =& new Component(ob_get_clean(), BLANK, 2);

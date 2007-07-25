@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.8 2007/03/01 20:22:20 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.9 2007/07/25 16:31:27 adamfranco Exp $
  */
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.8 2007/03/01 20:22:20 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.9 2007/07/25 16:31:27 adamfranco Exp $
  */
 
 class SegueMenuGenerator {
@@ -53,12 +53,10 @@ class SegueMenuGenerator {
 		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);
 		
 		$mainMenu_item =& new MenuItemLink(
-			_("Site List"),
-			$harmoni->request->quickURL('ui2', "list"), 
-			($module == "ui2" && $action == 'list')?TRUE:FALSE,1);
-		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);
-	
-		
+			_("Portal"),
+			$harmoni->request->quickURL('portal', "list"), 
+			($module == "portal" && $action == 'list')?TRUE:FALSE,1);
+		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);		
 		
 		$mainMenu_item8 =& new MenuItemLink(
 			_("User Tools"),
