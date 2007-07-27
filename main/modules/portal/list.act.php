@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.1 2007/07/25 16:31:27 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.2 2007/07/27 17:19:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.1 2007/07/25 16:31:27 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.2 2007/07/27 17:19:43 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -44,7 +44,7 @@ class listAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Plugin Tests");
+		return _("Your Portal");
 	}
 	
 	/**
@@ -61,18 +61,41 @@ class listAction
 		$idManager =& Services::getService("Id");
 		$authZ =& Services::getService("AuthZ");
 		
+		if (RequestContext::value('user_interface')) {
+			$this->setUiModule(RequestContext::value('user_interface'));
+		}
+		
+		ob_start();
+		
+		// UI selection
+		print "\n\t<form action='".$harmoni->request->quickURL()."' method='post' style='float: right;'>";
+		$options = array ('ui1' => _("Classic Mode"), 'ui2' => _("New Mode"));
+		print "\n\t\t<select name='".RequestContext::name('user_interface')."'>";
+		foreach ($options as $key => $val) {
+			print "\n\t\t\t<option value='$key'";
+			print (($this->getUiModule() == $key)?" selected='selected'":"");
+			print ">$val</option>";
+		}
+		print "\n\t\t</select>";
+		print "\n\t\t<input type='submit' value='"._('Set interface')."'/>";
+		print "\n\t</form>";
+		
+		// Create Site Button
 		if ($authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.add_children"),
 				$idManager->getId("edu.middlebury.segue.sites_repository")))
 		{
-			ob_start();
-			print "\n\t<a href='";
-			print $harmoni->request->quickURL('ui1', "add");
+			
+			print "\n\t<div><a href='";
+			print $harmoni->request->quickURL($this->getUiModule(), "add");
 			print "' style='border: 1px solid; padding: 2px; text-align: center; text-decoration: none; margin: 2px;'>";
 			print _("Create New Site");
-			print "</a>";
-			$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), null, null, RIGHT, CENTER);
+			print "</a></div>";
+			
 		}
+		
+		print "\n\t<div style='clear: both;'></div>";
+		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), null, null, RIGHT, CENTER);
 		
 		$actionRows->add(new Heading(_("All Sites"), 1));
 		
@@ -91,6 +114,32 @@ class listAction
 		$resultPrinter =& new IteratorResultPrinter($assets, 1, 10, "printSiteShort", $harmoni);
 		$resultLayout =& $resultPrinter->getLayout("canView");
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
+	}
+	
+	/**
+	 * Answer the current UI module
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 7/27/07
+	 */
+	function getUiModule () {
+		if (!isset($_SESSION['UI_MODULE']))
+			$this->setUiModule('ui1');
+			
+		return $_SESSION['UI_MODULE'];
+	}
+	
+	/**
+	 * Set the UI module
+	 * 
+	 * @param string $module
+	 * @return void
+	 * @access public
+	 * @since 7/27/07
+	 */
+	function setUiModule ($module) {
+		$_SESSION['UI_MODULE'] = $module;
 	}
 }
 
@@ -135,12 +184,16 @@ function printSiteShort(& $asset, &$harmoni, $num) {
 	
 	ob_start();
 	$assetId =& $asset->getId();
-	print "\n\t<a href='".$harmoni->request->quickURL('ui1', 'view', array('node' => $assetId->getIdString()))."'>";
+	print "\n\t<a href='".$harmoni->request->quickURL($_SESSION['UI_MODULE'], 'view', array('node' => $assetId->getIdString()))."'>";
 	print "\n\t<strong>".htmlspecialchars($asset->getDisplayName())."</strong>";
 	print "\n\t</a>";
 	print "\n\t<br/>"._("ID#").": ".$assetId->getIdString();
-	print "\n\t<a href='".$harmoni->request->quickURL('ui1', 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
-	print "\n\t | <a href='".$harmoni->request->quickURL('ui1', 'deleteComponent', array('node' => $assetId->getIdString()))."'>"._("delete")."</a>";
+	print "\n\t<a href='".$harmoni->request->quickURL($_SESSION['UI_MODULE'], 'view', array('node' => $assetId->getIdString()))."'>"._("view")."</a>";
+	print "\n\t | <a href='".$harmoni->request->quickURL($_SESSION['UI_MODULE'], 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
+	if ($_SESSION['UI_MODULE'] == 'ui2') {
+		print "\n\t | <a href='".$harmoni->request->quickURL($_SESSION['UI_MODULE'], 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+	}
+	print "\n\t | <a href='".$harmoni->request->quickURL($_SESSION['UI_MODULE'], 'deleteComponent', array('node' => $assetId->getIdString()))."'>"._("delete")."</a>";
 	
 	$description =& HtmlString::withValue($asset->getDescription());
 	$description->trim(25);
