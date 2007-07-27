@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.12 2007/07/11 14:28:22 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.13 2007/07/27 17:20:21 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.12 2007/07/11 14:28:22 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.13 2007/07/27 17:20:21 adamfranco Exp $
  */
 class AssetSiteDirector
 	// implements SiteDirector 
@@ -504,6 +504,154 @@ class AssetSiteDirector
 		$siteComponent->deleteAndCleanUpData();
 		
 		unset($this->_createdSiteComponents[$id], $siteComponent);
+	}
+	
+	/*********************************************************
+	 * The following methods support working with site aliases.
+	 * Aliases are syntactically-meaningful user-specified 
+	 * identifiers for sites. Aliases are only guarenteed to be
+	 * unique within the scope of a given segue installation.
+	 *
+	 * Only site nodes can have aliases.
+	 *********************************************************/
+	
+	/**
+	 * Answer the alias for a site id if one exists or null if not found.
+	 * 
+	 * @param string $id
+	 * @return string OR null
+	 * @access public
+	 * @since 7/25/07
+	 */
+	function getAliasForSiteId ( $id ) {
+		$query =& new SelectQuery;
+		$query->addTable('segue_site_alias');
+		$query->addColumn('alias');
+		$query->addWhereEqual('site_id', $id);
+		
+		$dbc =& Services::getService('DBHandler');
+		$result =& $dbc->query($query, IMPORTER_CONNECTION);
+		if ($result->getNumberOfRows()) {
+			if ($result->field('alias') !== '') {
+				return $result->field('alias');
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Answer the site id for an alias or null if not found
+	 * 
+	 * @param string $alias
+	 * @return string OR null
+	 * @access public
+	 * @since 7/25/07
+	 */
+	function getSiteIdForAlias ( $alias ) {
+		$query =& new SelectQuery;
+		$query->addTable('segue_site_alias');
+		$query->addColumn('site_id');
+		$query->addWhereEqual('alias', $alias);
+		
+		$dbc =& Services::getService('DBHandler');
+		$result =& $dbc->query($query, IMPORTER_CONNECTION);
+		if ($result->getNumberOfRows()) {
+			if ($result->field('site_id') !== '') {
+				return $result->field('site_id');
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Set the alias for a site by id
+	 * 
+	 * @param string $id
+	 * @param string $alias
+	 * @return void
+	 * @access public
+	 * @since 7/25/07
+	 */
+	function setAlias ( $id, $alias ) {
+		if ($this->isAliasAvailable($alias)) {
+			$query =& new InsertQuery;
+			$query->addValue('site_id', $id);
+		} else {
+			$query =& new UpdateQuery;
+			$query->addWhereEqual('site_id', $id);
+		}
+		$query->setTable('segue_site_alias');
+		$query->addValue('alias', $alias);
+		
+		$dbc =& Services::getService('DBHandler');
+		$dbc->query($query, IMPORTER_CONNECTION);
+	}
+	
+	/**
+	 * Answer true if the alias is in use, false if it available.
+	 * 
+	 * @param string $alias
+	 * @return boolean
+	 * @access public
+	 * @since 7/25/07
+	 */
+	function isAliasAvailable ( $alias ) {
+		return (!is_null($this->getSiteIdForAlias($alias)));
+	}
+	
+/*********************************************************
+ * Owner Methods:
+ * These allow for the setting and retreval of the owner
+ * id of a site.
+ *********************************************************/
+	
+	/**
+	 * Answer site id strings that are owned by the current user
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 7/26/07
+	 */
+	function getSiteIdsOwnedByUser () {
+		$siteIds = array();
+		$authNManager =& Services::getService('AuthN');
+		$authTypes =& $authNManager->getAuthenticationTypes();
+		while ($authTypes->hasNext()) {
+			$authType =& $authTypes->next();
+			if ($authNManager->isUserAuthenticated($authType)) {
+				$siteIds = array_unique(array_merge($siteIds, 
+					$this->getSiteIdsOwnedByAgent($authNManager->getUserId($authType))));
+			}
+		}
+		
+		return $siteIds;
+	}
+	
+	/**
+	 * Answer site id strings that are owned by the current user
+	 * 
+	 * @param object Id $agentId
+	 * @return array
+	 * @access public
+	 * @since 7/26/07
+	 */
+	function getSiteIdsOwnedByAgent ( &$agentId ) {
+		$query =& new SelectQuery;
+		$query->addTable('segue_site_owner');
+		$query->addColumn('site_id');
+		$query->addWhereEqual('owner_id', $agentId->getIdString());
+		
+		$dbc =& Services::getService('DBHandler');
+		$result =& $dbc->query($query, IMPORTER_CONNECTION);
+		$siteIds = array();
+		while ($result->hasNext()) {
+			$row = $result->next();
+			$siteIds[] = $row['site_id'];
+		}
+		
+		return $siteIds;
 	}
 }
 
