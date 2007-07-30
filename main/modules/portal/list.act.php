@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.3 2007/07/30 17:07:46 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.4 2007/07/30 18:13:40 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.3 2007/07/30 17:07:46 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.4 2007/07/30 18:13:40 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -186,10 +186,10 @@ function printSiteShort(& $asset, &$action, $num) {
 	$centered->addSP(new TextAlignSP("center"));	
 	
 	// Use the alias instead of the Id if it is available.
-	$slogManager =& SlotManager::instance();
-	$siteAlias = $slotManager->getAliasForSiteId($assetId->getIdString());
-	if (!is_null($siteAlias))
-		$params = array('site' => $siteAlias);
+	$slotManager =& SlotManager::instance();
+	$slot =& $slotManager->getSlotForSiteId($assetId);
+	if (!is_null($slot)) 
+		$params = array('site' => $slot->getShortname());
 	else
 		$params = array('node' => $assetId->getIdString());
 	$viewUrl = $harmoni->request->quickURL($action->getUiModule(), 'view', $params);

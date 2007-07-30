@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.6 2007/07/25 16:31:34 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.7 2007/07/30 18:13:40 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.6 2007/07/25 16:31:34 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.7 2007/07/30 18:13:40 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -69,8 +69,7 @@ class viewAction
 			$repositoryManager->getRepository(
 				$idManager->getId('edu.middlebury.segue.sites_repository')));			
 		
-		if (!$nodeId = RequestContext::value("node"))
-			throwError(new Error('No site node specified.', 'SiteDisplay'));
+		$nodeId = $this->getNodeId();
 		
 		/*********************************************************
 		 * Aditional setup
@@ -161,6 +160,29 @@ class viewAction
 		
 		return $mainScreen;
 	}
+	
+	/**
+	 * Answer the nodeId
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 7/30/07
+	 */
+	function getNodeId () {
+		$slotManager =& SlotManager::instance();
+		if (RequestContext::value("site")) {
+			$slot =& $slotManager->getSlotForShortname(RequestContext::value("site"));
+			$siteId = $slot->getSiteId();
+			$nodeId = $siteId->getIdString();
+		} else if (RequestContext::value("node")) {
+			$nodeId = RequestContext::value("node");
+		}
+		
+		if (!$nodeId)
+			throwError(new Error('No site node specified.', 'SiteDisplay'));
+		
+		return $nodeId;
+	}
 
 	/**
 	 * Answer the appropriate site visitor for this action
@@ -173,7 +195,7 @@ class viewAction
 		if (!isset($this->visitor)) {
 			
 			$requestedNode =& $this->_director->getSiteComponentById(
-				RequestContext::value("node"));
+				$this->getNodeId());
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
 				$this->visitor =& new DetailViewModeSiteVisitor($requestedNode);
@@ -192,7 +214,7 @@ class viewAction
 	 */
 	function getBreadCrumbs () {
 		$node =& $this->_director->getSiteComponentById(
-				RequestContext::value("node"));
+				$this->getNodeId());
 		
 		return $node->acceptVisitor(new BreadCrumbsVisitor);
 	}
@@ -239,13 +261,13 @@ class viewAction
 			
 			print " | <a href='";
 			print $harmoni->request->quickURL('ui2', 'editview', array(
-					'node' => RequestContext::value("node")));
+					'node' => $this->getNodeId()));
 			print "' alt='"._("Go to Edit-Mode")."'>";
 			print _("edit")."</a>";
 			
 			print " | <a href='";
 			print $harmoni->request->quickURL('ui2', 'arrangeview', array(
-					'node' => RequestContext::value("node")));
+					'node' => $this->getNodeId()));
 			print "' alt='"._("Go to Arrange-Mode")."'>";
 			print _("arrange")."</a>";
 		}

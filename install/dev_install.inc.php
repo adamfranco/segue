@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.15 2007/07/27 17:20:21 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.16 2007/07/30 18:13:40 adamfranco Exp $
  */
 
 /*********************************************************
@@ -54,7 +54,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 			HARMONI_BASE."/SQL/sets/MySQL_sets.sql",
 			HARMONI_BASE."/SQL/shared/MySQL_shared.sql",
 			MYDIR."/main/SQL/PluginManager/MySQL_PluginManager.sql",
-			MYDIR."/main/SQL/SiteDisplay/MySQL_SiteDisplay.sql",
+			MYDIR."/main/SQL/MySQL_Slots.sql",
 		);
 		
 		foreach ($sqlFiles as $file) {
