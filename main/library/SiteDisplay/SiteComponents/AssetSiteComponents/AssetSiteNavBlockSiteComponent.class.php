@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.4 2007/07/30 18:48:46 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.5 2007/07/30 20:37:51 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.4 2007/07/30 18:48:46 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.5 2007/07/30 20:37:51 adamfranco Exp $
  */
 class AssetSiteNavBlockSiteComponent
 	extends AssetNavBlockSiteComponent
@@ -60,20 +60,6 @@ class AssetSiteNavBlockSiteComponent
 	function &getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		return $results;
-	}
-	
-	/**
-	 * Populate this object with default values
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 7/26/07
-	 */
-	function populateWithDefaults () {
-		parent::populateWithDefaults();
-		
-		$authNManager =& Services::getService('AuthN');
-		$this->setOwnerId($authNManager->getFirstUserId());
 	}
 	
 	/*********************************************************
