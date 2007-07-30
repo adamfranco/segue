@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.6 2007/05/24 18:46:26 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.7 2007/07/30 19:07:01 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.6 2007/05/24 18:46:26 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.7 2007/07/30 19:07:01 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -59,8 +59,8 @@ class ArrangeModeSiteVisitor
 		$outputHandler->setHead(
 			$outputHandler->getHead()
 			."
-		<script src='".MYPATH."/main/library/SiteDisplay/scriptaculous-js/lib/prototype.js' type='text/javascript'></script>
-		<script src='".MYPATH."/main/library/SiteDisplay/scriptaculous-js/src/scriptaculous.js' type='text/javascript'></script>
+		<script src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js' type='text/javascript'></script>
+		<script src='".MYPATH."/javascript/scriptaculous-js/src/scriptaculous.js' type='text/javascript'></script>
 
 		<style type='text/css'>
 			.drop_hover {

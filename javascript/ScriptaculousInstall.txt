@@ -5,7 +5,7 @@
    * To install, download scriptaculous from
    *	http://script.aculo.us/downloads
    * and unzip it into 
-   * 	main/library/SiteDisplay/scriptaculous-js/
+   * 	javascript/scriptaculous-js/
    * and replace the following method in the droppables class:
    *********************************************************/
    
