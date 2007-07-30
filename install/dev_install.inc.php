@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.16 2007/07/30 18:13:40 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.17 2007/07/30 21:01:09 adamfranco Exp $
  */
 
 /*********************************************************
@@ -272,7 +272,10 @@ if (!isset($_SESSION['table_setup_complete'])) {
 				$id =& $idManager->getId("edu.middlebury.authorization.modify_authorizations");
 				$function =& $authZManager->createFunction($id, "Modify Authorizations", "Modify Authorizations at qualifier.", $type, $qualifierHierarchyId);
 				$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);
-	
+				$id =& $idManager->getId("edu.middlebury.authorization.change_user");
+				$function =& $authZManager->createFunction($id, "Change User", "Act as another user.", $type, $qualifierHierarchyId);
+				$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);	
+				
 			// Administration Functions
 				$type =& new Type ("Authorization", "edu.middlebury.harmoni", "User Administration", "Functions for administering users.");
 	
