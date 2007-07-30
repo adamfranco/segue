@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.3 2007/07/30 17:07:46 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.4 2007/07/30 18:48:46 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.3 2007/07/30 17:07:46 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.4 2007/07/30 18:48:46 adamfranco Exp $
  */
 class AssetSiteNavBlockSiteComponent
 	extends AssetNavBlockSiteComponent
@@ -77,12 +77,12 @@ class AssetSiteNavBlockSiteComponent
 	}
 	
 	/*********************************************************
-	 * The following methods support working with site aliases.
-	 * Aliases are syntactically-meaningful user-specified 
-	 * identifiers for sites. Aliases are only guarenteed to be
+	 * The following methods support working with slots.
+	 * Slots are syntactically-meaningful user-specified 
+	 * identifiers for sites. Slots are only guarenteed to be
 	 * unique within the scope of a given segue installation.
 	 *
-	 * Only site nodes can have aliases.
+	 * Only site nodes can have slots.
 	 *********************************************************/
 	
 	/**
