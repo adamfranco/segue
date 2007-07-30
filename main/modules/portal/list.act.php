@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.2 2007/07/27 17:19:43 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.3 2007/07/30 17:07:46 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.2 2007/07/27 17:19:43 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.3 2007/07/30 17:07:46 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -110,8 +110,8 @@ class listAction
 		$assets =& $repository->getAssetsByType($siteType);
 		
 		
-		$harmoni =& Harmoni::instance();
-		$resultPrinter =& new IteratorResultPrinter($assets, 1, 10, "printSiteShort", $harmoni);
+		// Print out the results
+		$resultPrinter =& new IteratorResultPrinter($assets, 1, 10, "printSiteShort", $this);
 		$resultLayout =& $resultPrinter->getLayout("canView");
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
 	}
@@ -171,7 +171,10 @@ function canView( & $asset ) {
  * @access public
  * @since 1/18/06
  */
-function printSiteShort(& $asset, &$harmoni, $num) {
+function printSiteShort(& $asset, &$action, $num) {
+	$harmoni =& Harmoni::instance();
+	$assetId =& $asset->getId();
+			
 	$container =& new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
 	$fillContainerSC =& new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
 	$fillContainerSC->addSP(new MinHeightSP("88%"));
@@ -182,18 +185,27 @@ function printSiteShort(& $asset, &$harmoni, $num) {
 	$centered =& new StyleCollection("*.centered", "centered", "Centered", "Centered Text");
 	$centered->addSP(new TextAlignSP("center"));	
 	
+	// Use the alias instead of the Id if it is available.
+	$slogManager =& SlotManager::instance();
+	$siteAlias = $slotManager->getAliasForSiteId($assetId->getIdString());
+	if (!is_null($siteAlias))
+		$params = array('site' => $siteAlias);
+	else
+		$params = array('node' => $assetId->getIdString());
+	$viewUrl = $harmoni->request->quickURL($action->getUiModule(), 'view', $params);
+	
+	// Print out the content
 	ob_start();
-	$assetId =& $asset->getId();
-	print "\n\t<a href='".$harmoni->request->quickURL($_SESSION['UI_MODULE'], 'view', array('node' => $assetId->getIdString()))."'>";
+	print "\n\t<a href='".$viewUrl."'>";
 	print "\n\t<strong>".htmlspecialchars($asset->getDisplayName())."</strong>";
 	print "\n\t</a>";
 	print "\n\t<br/>"._("ID#").": ".$assetId->getIdString();
-	print "\n\t<a href='".$harmoni->request->quickURL($_SESSION['UI_MODULE'], 'view', array('node' => $assetId->getIdString()))."'>"._("view")."</a>";
-	print "\n\t | <a href='".$harmoni->request->quickURL($_SESSION['UI_MODULE'], 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
-	if ($_SESSION['UI_MODULE'] == 'ui2') {
-		print "\n\t | <a href='".$harmoni->request->quickURL($_SESSION['UI_MODULE'], 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+	print "\n\t<a href='".$viewUrl."'>"._("view")."</a>";
+	print "\n\t | <a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
+	if ($action->getUiModule() == 'ui2') {
+		print "\n\t | <a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
 	}
-	print "\n\t | <a href='".$harmoni->request->quickURL($_SESSION['UI_MODULE'], 'deleteComponent', array('node' => $assetId->getIdString()))."'>"._("delete")."</a>";
+	print "\n\t | <a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."'>"._("delete")."</a>";
 	
 	$description =& HtmlString::withValue($asset->getDescription());
 	$description->trim(25);
