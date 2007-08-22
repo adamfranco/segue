@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.7 2007/06/04 16:31:57 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.8 2007/08/22 20:04:47 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -14,16 +14,16 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
 
 
 /**
- * 
+ * This is an abstract class that makes it easy to add new editing actions
  * 
  * @package segue.modules.site
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.7 2007/06/04 16:31:57 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.8 2007/08/22 20:04:47 adamfranco Exp $
  */
-class EditModeSiteAction 
+abstract class EditModeSiteAction 
 	extends MainWindowAction
 {
 	/**
@@ -79,29 +79,7 @@ class EditModeSiteAction
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function processChanges ( &$director ) {
-		// Get the target organizer's Id & Cell
-		$targetId = RequestContext::value('destination');
-		preg_match("/^(.+)_cell:(.+)$/", $targetId, $matches);
-		$targetOrgId = $matches[1];
-		$targetCell = $matches[2];
-		
-		$component =& $director->getSiteComponentById(RequestContext::value('component'));
-		$newOrganizer =& $director->getSiteComponentById($targetOrgId);
-		$oldCellId = $newOrganizer->putSubcomponentInCell($component, $targetCell);
-		
-		// If the targetCell was a target for any menus, change their targets
-		// to the cell just vacated by the component we swapped with
-		if (in_array($targetId, $director->getFilledTargetIds($targetOrgId))) {
-			$menuIds = array_keys($director->getFilledTargetIds($targetOrgId), $targetId);
-			foreach ($menuIds as $menuId) {
-				$menuOrganizer =& $director->getSiteComponentById($menuId);
-				printpre(get_class($menuOrganizer));
-				
-				$menuOrganizer->updateTargetId($oldCellId);
-			}
-		}
-	}
+	abstract function processChanges ( SiteDirector $director );
 	
 	/**
 	 * Set up our SiteDirector and make any needed data available

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDirector.abstract.php,v 1.2 2006/04/05 18:18:16 adamfranco Exp $
+ * @version $Id: SiteDirector.abstract.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
  */ 
 
 /**
@@ -19,9 +19,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDirector.abstract.php,v 1.2 2006/04/05 18:18:16 adamfranco Exp $
+ * @version $Id: SiteDirector.abstract.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
  */
-class SiteDirector {
+interface SiteDirector {
 		
 	/**
 	 * Answer the RootSiteComponent for the site
@@ -31,9 +31,7 @@ class SiteDirector {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &getRootSiteComponent ( $id ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	function getRootSiteComponent ( $id );
 
 	/**
 	 * Answer true if the node of id $id is active
@@ -43,9 +41,7 @@ class SiteDirector {
 	 * @access public
 	 * @since 4/4/06
 	 */
-	function isActive ( $id ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	function isActive ( $id );
 	
 	/**
 	 * Answer the component that has a particular Id
@@ -55,9 +51,7 @@ class SiteDirector {
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function &getSiteComponentById ( $id ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	function getSiteComponentById ( $id );
 }
 
 ?>

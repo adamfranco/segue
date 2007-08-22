@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.2 2007/05/22 17:05:28 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.2 2007/05/22 17:05:28 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
  */
 class createSubMenuAction
 	extends EditModeSiteAction
@@ -35,7 +35,7 @@ class createSubMenuAction
 	 * @access public
 	 * @since 9/22/06
 	 */
-	function processChanges ( &$director ) {
+	function processChanges ( SiteDirector $director ) {
 		// Get the target organizer's Id & Cell
 		$parentNavBlockId = RequestContext::value('parent');
 		$parentNavBlock =& $director->getSiteComponentById($parentNavBlockId);

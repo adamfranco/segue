@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2007/06/07 14:28:17 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2007/08/22 20:04:47 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2007/06/07 14:28:17 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2007/08/22 20:04:47 adamfranco Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -172,16 +172,42 @@ class ControlsSiteVisitor {
 			$parent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', 'editContent', array(
-						'node' => $siteComponent->getId(),
+			$url = 	$harmoni->request->quickURL('ui1', 'reorder', array(
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->_action
 						));
-			$url = "#";
 			
-			print "\n\t\t\t\t\t<a href='".$url."'>";
+			$harmoni->request->startNamespace('reorder');
+			
+			$organizer = $siteComponent->getParentComponent();
+			$myCell = $organizer->getCellForSubcomponent($siteComponent);
+			
+			print "\n\t\t\t\t\t<a href='#' onclick=\"";
+			print 	"this.nextSibling.style.display='block'; ";
+			print 	"this.style.display='none'; ";
+			print 	"return false; ";
+			print	"\">";
 			print _("reorder");
 			print "</a>";
+			
+			print "<form action='".$url."' method='post' style='display: none'>";
+			print "\n\t<input type='hidden' name='".RequestContext::name('node')."' value='".$siteComponent->getId()."' />";
+			
+			print "\n\t<select name='".RequestContext::name('position')."' onchange='this.form.submit();'>";
+			for ($i = 0; $i < $organizer->getTotalNumberOfCells(); $i++) {
+				print "\n\t\t<option value='$i'";
+				if ($myCell == $i)
+					print " selected='selected'";
+				print ">".($i+1)."</option>";
+			}
+			print "\n\t</select>";
+			print "\n\t<input type='button' onclick=\"";
+			print 	"this.parentNode.previousSibling.style.display='inline'; ";
+			print 	"this.parentNode.style.display='none'; ";
+			print "\" value='"._("Cancel")."'/>";
+			print "\n\t\t\t\t\t</form>";
+			
+			$harmoni->request->endNamespace();
 		}
 	}
 	

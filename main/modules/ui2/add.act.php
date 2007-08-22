@@ -5,10 +5,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.2 2007/08/22 20:04:48 adamfranco Exp $
  */ 
 
-require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
+require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 
 /**
  * 
@@ -18,10 +18,10 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.1 2007/03/01 20:12:58 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.2 2007/08/22 20:04:48 adamfranco Exp $
  */
 class addAction 
-	extends EditModeSiteAction
+	extends MainWindowAction
 {
 	/**
 	 * Check Authorizations
@@ -241,6 +241,46 @@ class addAction
 		else
 			return $harmoni->request->quickURL('ui2', "list");
 	}
+	
+	/**
+	 * Set up our SiteDirector and make any needed data available
+	 * 
+	 * @return object SiteDirector
+	 * @access public
+	 * @since 4/14/06
+	 */
+	function &getSiteDirector () {
+		/*********************************************************
+		 * XML Version
+		 *********************************************************/
+// 		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
+// 		
+// 		$this->document =& new DOMIT_Document();
+// 		$this->document->setNamespaceAwareness(true);
+// 		$success = $this->document->loadXML($this->filename);
+// 
+// 		if ($success !== true) {
+// 			throwError(new Error("DOMIT error: ".$this->document->getErrorCode().
+// 				"<br/>\t meaning: ".$this->document->getErrorString()."<br/>", "SiteDisplay"));
+// 		}
+// 
+// 		$director =& new XmlSiteDirector($this->document);
+		
+		
+		/*********************************************************
+		 * Asset version
+		 *********************************************************/
+		$repositoryManager =& Services::getService('Repository');
+		$idManager =& Services::getService('Id');
+		
+		$director =& new AssetSiteDirector(
+			$repositoryManager->getRepository(
+				$idManager->getId('edu.middlebury.segue.sites_repository')));
+		
+		
+		return $director;
+	}
+	
 }
 
 ?>

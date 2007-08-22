@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.7 2007/04/13 19:59:16 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.8 2007/08/22 20:04:48 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.7 2007/04/13 19:59:16 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.8 2007/08/22 20:04:48 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -154,11 +154,7 @@ class AssetFlowOrganizerSiteComponent
 
 		$this->_element->removeChild($children[$cellOneIndex]);
 		
-		// indices change when child is removed in front of cellTwoIndex
-		if ($cellTwoIndex > $cellOneIndex)
-			$this->_element->insertBefore($temp, $children[$cellTwoIndex - 1]);
-		else
-			$this->_element->insertBefore($temp, $children[$cellTwoIndex]);
+		$this->_element->insertBefore($temp, $children[$cellTwoIndex]);
 		
 		$this->_saveXml();
 	}

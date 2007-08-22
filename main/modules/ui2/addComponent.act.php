@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.2 2007/05/22 17:05:28 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.2 2007/05/22 17:05:28 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -33,7 +33,7 @@ class addComponentAction
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function processChanges ( &$director ) {
+	function processChanges ( SiteDirector $director ) {
 		// Get the target organizer's Id & Cell
 		$targetOrgId = RequestContext::value('organizerId');
 		$targetCell = RequestContext::value('cellIndex');

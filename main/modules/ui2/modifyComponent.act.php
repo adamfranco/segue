@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modifyComponent.act.php,v 1.1 2007/03/01 20:12:59 adamfranco Exp $
+ * @version $Id: modifyComponent.act.php,v 1.2 2007/08/22 20:04:48 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/ModifySettingsSiteVisito
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modifyComponent.act.php,v 1.1 2007/03/01 20:12:59 adamfranco Exp $
+ * @version $Id: modifyComponent.act.php,v 1.2 2007/08/22 20:04:48 adamfranco Exp $
  */
 class modifyComponentAction 
 	extends EditModeSiteAction
@@ -34,7 +34,7 @@ class modifyComponentAction
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function processChanges ( &$director ) {		
+	function processChanges ( SiteDirector $director ) {		
 		$component =& $director->getSiteComponentById(RequestContext::value('node'));
 		$component->acceptVisitor(new ModifySettingsSiteVisitor());
 	}

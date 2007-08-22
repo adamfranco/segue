@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.14 2007/07/30 18:48:46 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.15 2007/08/22 20:04:48 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,10 +33,10 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.14 2007/07/30 18:48:46 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.15 2007/08/22 20:04:48 adamfranco Exp $
  */
 class AssetSiteDirector
-	// implements SiteDirector 
+	implements SiteDirector 
 {
 		
 	/**
@@ -106,7 +106,7 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &getRootSiteComponent ( $id = null ) {
+	function getRootSiteComponent ( $id ) {
 		if (!isset($this->_rootSiteComponent)) {
 			ArgumentValidator::validate($id, StringValidatorRule::getRule());
 			
@@ -302,7 +302,7 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function &getSiteComponentById ( $id ) {
+	function getSiteComponentById ( $id ) {
 		$idManager =& Services::getService('Id');
 		if (preg_match('/^(\w+)----(\w+)$/', $id, $matches)) {
 			$asset =& $this->_repository->getAsset(

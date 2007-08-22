@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.4 2007/06/07 14:28:17 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.5 2007/08/22 20:04:48 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.4 2007/06/07 14:28:17 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.5 2007/08/22 20:04:48 adamfranco Exp $
  */
 class deleteComponentAction 
 	extends EditModeSiteAction
@@ -33,7 +33,7 @@ class deleteComponentAction
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function processChanges ( &$director ) {		
+	function processChanges ( SiteDirector $director ) {		
 		$component =& $director->getSiteComponentById(RequestContext::value('node'));
 		
 		$this->findSafeReturnNode($director, $component);
