@@ -19,7 +19,7 @@
 CREATE TABLE segue_slot (
   shortname varchar(50) collate utf8_bin NOT NULL,
   site_id varchar(50) collate utf8_bin NOT NULL,
-  `type` enum('personal','class','other') collate utf8_bin NOT NULL default 'personal',
+  `type` enum('personal','course','custom') collate utf8_bin NOT NULL default 'personal',
   PRIMARY KEY  (shortname),
   KEY site_id (site_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -33,6 +33,7 @@ CREATE TABLE segue_slot (
 CREATE TABLE segue_slot_owner (
   shortname varchar(50) collate utf8_bin NOT NULL,
   owner_id varchar(75) collate utf8_bin NOT NULL,
+  removed int(1) default 0,
   KEY shortname (shortname),
   KEY owner_id (owner_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
