@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.1 2007/08/22 20:08:51 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.2 2007/08/22 21:56:37 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Slot.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.1 2007/08/22 20:08:51 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.2 2007/08/22 21:56:37 adamfranco Exp $
  */
 class PersonalSlot
 	extends Slot
@@ -56,16 +56,13 @@ class PersonalSlot
 	public static function getExternalSlotDefinitionsForUser () {
 		$authN = Services::getService("AuthN");
 		$idManager = Services::getService("Id");
+		$agentManager = Services::getService("Agent");
 		
 		$userId = $authN->getFirstUserId();
 // 		$userId = $idManager->getId("3"); // jadministrator
 		
 		$slots = array();
 		if (!$userId->isEqual($idManager->getId("edu.middlebury.agents.anonymous"))) {
-			$agentManager = Services::getService("Agent");
-			$agent = $agentManager->getAgent($userId);
-			
-						
 			// Match the groups the user is in against our configuration of
 			// groups whose members should have personal sites.
 			$ancestorSearchType =& new HarmoniType("Agent & Group Search",
@@ -84,15 +81,7 @@ class PersonalSlot
 			}
 			
 			if ($hasPersonal) {
-				$properties = $agent->getProperties();
-				
-				$email = null;
-				while ($properties->hasNext() && !$email) {
-					$email = $properties->next()->getProperty("email");
-				}
-				
-				$userShortName = substr($email, 0, strpos($email, '@'));
-				$slot = new PersonalSlot($userShortName);
+				$slot = new PersonalSlot(self::getPersonalShortname($userId));
 				$slot->populateOwnerId($userId);
 				
 				$slots[] = $slot;
@@ -100,6 +89,30 @@ class PersonalSlot
 		}
 		
 		return $slots;
+	}
+	
+	/**
+	 * Answer the user-shortname for an agentId
+	 * 
+	 * @param object Id $agentId
+	 * @return string
+	 * @access public
+	 * @since 8/22/07
+	 */
+	public function getPersonalShortname (Id $agentId) {
+		$agentManager = Services::getService("Agent");
+		$agent = $agentManager->getAgent($agentId);
+		
+		$properties = $agent->getProperties();		
+		$email = null;
+		while ($properties->hasNext() && !$email) {
+			$email = $properties->next()->getProperty("email");
+		}
+		
+		if (!$email)
+			throw new Exception("No email found for agentId, '$agentId'.");
+		
+		return substr($email, 0, strpos($email, '@'));
 	}
 	
 	/**

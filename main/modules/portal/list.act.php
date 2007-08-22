@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.5 2007/08/22 20:08:51 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.6 2007/08/22 21:56:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.5 2007/08/22 20:08:51 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.6 2007/08/22 21:56:37 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -205,7 +205,9 @@ class listAction
 		// If no site is created
 		else {
 			if ($slot->isUserOwner()) {
-				print " <a href='' class='create_site_link'>"._("Create Site")."</a>";
+				$harmoni = Harmoni::instance();
+				print " <a href='".$harmoni->request->quickURL($this->getUiModule(), 'add', array('slot' => $slot->getShortname()))."' class='create_site_link'>"._("Create Site")."</a>";
+				
 			} else {
 				print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
 			}

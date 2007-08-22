@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.2 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.3 2007/08/22 21:56:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.2 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.3 2007/08/22 21:56:37 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -32,12 +32,21 @@ class addAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check that the user can create an asset here.
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		 
-		return $authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.add_children"),
-			$idManager->getId("edu.middlebury.segue.sites_repository"));
+		if (RequestContext::value("slot")) {
+			$slotMgr = SlotManager::instance();
+			$slot = $slotMgr->getSlotByShortname(RequestContext::value("slot"));
+			if ($slot->isUserOwner())
+				return true;
+			else
+				return false;
+		} else {
+			$authZ =& Services::getService("AuthZ");
+			$idManager =& Services::getService("Id");
+			 
+			return $authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.add_children"),
+				$idManager->getId("edu.middlebury.segue.sites_repository"));
+		}
 	}
 	
 	/**
@@ -61,6 +70,7 @@ class addAction
 	function buildContent () {
 		$harmoni =& Harmoni::instance();
 		$harmoni->request->passthrough("parent_id");
+		$harmoni->request->passthrough("slot");
 		
 		$centerPane =& $this->getActionRows();
 		$cacheName = 'add_site_wizard_'.RequestContext::value('parent_id');
@@ -154,7 +164,47 @@ class addAction
 		$site->updateDescription($properties['namedescstep']['description']);
 		
 		$this->_siteId = $site->getId();
-		$siteId =& $idManager->getId($site->getId());
+		$siteId = $idManager->getId($site->getId());
+		
+		/*********************************************************
+		 * Save the siteId into the slot
+		 *********************************************************/
+		$slotMgr = SlotManager::instance();
+		
+		if (RequestContext::value('slot')) {
+			$slot = $slotMgr->getSlotByShortname(RequestContext::value('slot'));
+		} else {
+			$authN = Services::getService("AuthN");
+			$shortname = PersonalSlot::getPersonalShortname($authN->getFirstUserId());
+			$slot = new PersonalSlot($shortname."_".$siteId);
+			$slot->addOwner($authN->getFirstUserId());
+		}
+		
+		$slot->setSiteId($siteId);
+		
+		
+		/*********************************************************
+		 * Set Default "All-Access" permissions for slot owners
+		 *********************************************************/
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		$functions = array();
+		$functions[] = $idMgr->getId("edu.middlebury.authorization.view_authorizations");
+		$functions[] = $idMgr->getId("edu.middlebury.authorization.modify_authorizations");
+		
+		$functions[] = $idMgr->getId("edu.middlebury.authorization.add_children");
+		$functions[] = $idMgr->getId("edu.middlebury.authorization.modify");
+		$functions[] = $idMgr->getId("edu.middlebury.authorization.delete");
+		$functions[] = $idMgr->getId("edu.middlebury.authorization.remove_children");
+		
+		$functions[] = $idMgr->getId("edu.middlebury.authorization.view");
+		$functions[] = $idMgr->getId("edu.middlebury.authorization.comment");
+		
+		foreach ($slot->getOwners() as $ownerId) {
+			foreach($functions as $functionId) {
+				$authZ->createAuthorization($ownerId, $functionId, $siteId);
+			}
+		}
 		
 		
 		/*********************************************************
@@ -239,7 +289,7 @@ class addAction
 			return $harmoni->request->quickURL('ui2', "editview", array(
 				"node" => $this->_siteId));
 		else
-			return $harmoni->request->quickURL('ui2', "list");
+			return $harmoni->request->quickURL('portal', "list");
 	}
 	
 	/**
