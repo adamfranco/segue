@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.12 2007/08/22 20:08:50 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.13 2007/08/22 20:48:59 achapin Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
@@ -90,6 +90,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 		// iterate through registered plugins and install them
 		foreach ($plugins as $type) {
 			$pm->installPlugin($type);
+			$pm->enablePlugin($type);
 		}
 	} else {
 		$pm->_loadPlugins();
@@ -135,6 +136,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 		$properties =& new HarmoniProperties($nullType);
 		$agentMgr->createGroup("Segue Course-Groups", $groupType, "Groupings of Segue Course-Sections.", $properties, $idManager->getId("edu.middlebury.segue.coursegroups"));
 	}
+	
 
 	$_SESSION['post_config_setup_complete'] = TRUE;
 }

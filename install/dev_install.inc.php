@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.18 2007/08/22 20:08:50 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.19 2007/08/22 20:50:36 achapin Exp $
  */
 
 /*********************************************************
@@ -53,6 +53,9 @@ if (!isset($_SESSION['table_setup_complete'])) {
 			HARMONI_BASE."/SQL/logging/MySQL_Logging.sql",
 			HARMONI_BASE."/SQL/sets/MySQL_sets.sql",
 			HARMONI_BASE."/SQL/shared/MySQL_shared.sql",
+			HARMONI_BASE."/SQL/CourseManagement/MySQL_CourseManagement.sql",
+			HARMONI_BASE."/SQL/Grading/MySQL_Grading.sql",
+			HARMONI_BASE."/SQL/Scheduling/MySQL_Scheduling.sql",
 			MYDIR."/main/SQL/PluginManager/MySQL_PluginManager.sql",
 			MYDIR."/main/SQL/MySQL_Slots.sql",
 		);
@@ -102,7 +105,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 				$courseManagementId =& $idManager->getId($courseManagementIdString);
 				
 				$type =& new Type("NodeType","edu.middlebury","CourseManagement","These are top level nodes in the CourseManagement part of the Hierarchy");            
-				$authorizationHierarchy->createNode($courseManagementId,  $allOfConcertoId, $type,"Course Management","This node is the ancestor of all information about course management in the hierar
+				$authorizationHierarchy->createNode($courseManagementId,  $allOfSegueId, $type,"Course Management","This node is the ancestor of all information about course management in the hierar
 				chy");
 				$authorizationHierarchy->createNode($idManager->getId($courseManagementIdString.".canonicalcourses"),$courseManagementId,$type,"Canonical Courses","This node is the parent of all root l
 				evel canonical courses");

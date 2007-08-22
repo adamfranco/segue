@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: setup.inc.php,v 1.6 2007/08/22 20:08:50 adamfranco Exp $
+ * @version $Id: setup.inc.php,v 1.7 2007/08/22 20:50:36 achapin Exp $
  */
 
 /*********************************************************
@@ -86,9 +86,10 @@ $configs = array(
 					'post_config_setup',
 					'viewer',
 					'slots',
-					'coursemanagement',
+					'scheduling',
 					'grading',
-					'scheduling'
+					'coursemanagement'
+					
 				);
 
 foreach ($configs as $config) {
