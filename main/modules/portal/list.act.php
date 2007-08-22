@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.4 2007/07/30 18:13:40 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.5 2007/08/22 20:08:51 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.4 2007/07/30 18:13:40 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.5 2007/08/22 20:08:51 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -97,7 +97,7 @@ class listAction
 		print "\n\t<div style='clear: both;'></div>";
 		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), null, null, RIGHT, CENTER);
 		
-		$actionRows->add(new Heading(_("All Sites"), 1));
+		
 		
 		$repository =& $repositoryManager->getRepository(
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
@@ -107,6 +107,77 @@ class listAction
 							'edu.middlebury', 
 							'SiteNavBlock', 
 							'An Asset of this type is the root node of a Segue site.');
+		
+		$slotsPrinted = array();
+		$courseMgr = SegueCourseManager::instance();
+		$slotMgr = SlotManager::instance();
+		
+		/*********************************************************
+		 * Future Classes
+		 *********************************************************/
+		$actionRows->add(new Heading(_("Future Classes"), 2));
+		ob_start();
+		foreach ($courseMgr->getUsersFutureCourses(SORT_DESC) as $course) {
+			$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
+			$slotsPrinted[] = $slot->getShortname();
+			$this->printSlot($slot);
+		}
+		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), null, null, LEFT, CENTER);
+		
+		/*********************************************************
+		 * Current Classes
+		 *********************************************************/
+		$actionRows->add(new Heading(_("Current Classes"), 2));
+		ob_start();
+		foreach ($courseMgr->getUsersCurrentCourses(SORT_DESC) as $course) {
+			$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
+			$slotsPrinted[] = $slot->getShortname();
+			$this->printSlot($slot);
+		}
+		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), null, null, LEFT, CENTER);
+		
+		/*********************************************************
+		 * Past Classes
+		 *********************************************************/
+		$actionRows->add(new Heading(_("Past Classes"), 2));
+		ob_start();
+		foreach ($courseMgr->getUsersPastCourses(SORT_DESC) as $course) {
+			$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
+			$slotsPrinted[] = $slot->getShortname();
+			$this->printSlot($slot);
+		}
+		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), null, null, LEFT, CENTER);
+		
+		/*********************************************************
+		 * Personal Slots owned by the user
+		 *********************************************************/
+		$actionRows->add(new Heading(_("Personal Sites"), 2));
+		ob_start();
+		foreach ($slotMgr->getSlotsByType(Slot::personal) as $slot) {
+			if (!in_array($slot->getShortName(), $slotsPrinted)) {
+				$slotsPrinted[] = $slot->getShortname();
+				$this->printSlot($slot);
+			}
+		}
+		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), null, null, LEFT, CENTER);
+		
+		/*********************************************************
+		 * Other Slots owned by the user
+		 *********************************************************/
+		$actionRows->add(new Heading(_("Other Sites"), 2));
+		ob_start();
+		foreach ($slotMgr->getAllSlots() as $slot) {
+			if (!in_array($slot->getShortName(), $slotsPrinted)) {
+				$slotsPrinted[] = $slot->getShortname();
+				$this->printSlot($slot);
+			}
+		}
+		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), null, null, LEFT, CENTER);
+		
+		/*********************************************************
+		 * All Sites
+		 *********************************************************/
+		$actionRows->add(new Heading(_("All Sites"), 1));
 		$assets =& $repository->getAssetsByType($siteType);
 		
 		
@@ -114,6 +185,34 @@ class listAction
 		$resultPrinter =& new IteratorResultPrinter($assets, 1, 10, "printSiteShort", $this);
 		$resultLayout =& $resultPrinter->getLayout("canView");
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
+	}
+	
+	/**
+	 * Print out a slot
+	 * 
+	 * @param object Slot $slot
+	 * @return void
+	 * @access protected
+	 * @since 8/22/07
+	 */
+	protected function printSlot ( Slot $slot ) {
+		print "\n<div class='slot_row'>";
+		print $slot->getShortname();
+		if ($slot->getSiteId()) {
+			printpre("SiteId: ".$slot->getSiteId()->getIdString());
+// 			$site = $slot->getSite();
+		} 
+		// If no site is created
+		else {
+			if ($slot->isUserOwner()) {
+				print " <a href='' class='create_site_link'>"._("Create Site")."</a>";
+			} else {
+				print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
+			}
+		
+		}
+		
+		print "\n</div>";
 	}
 	
 	/**
@@ -187,11 +286,12 @@ function printSiteShort(& $asset, &$action, $num) {
 	
 	// Use the alias instead of the Id if it is available.
 	$slotManager =& SlotManager::instance();
-	$slot =& $slotManager->getSlotForSiteId($assetId);
-	if (!is_null($slot)) 
+	try {
+		$slot = $slotManager->getSlotBySiteId($assetId);
 		$params = array('site' => $slot->getShortname());
-	else
+	} catch (Exception $e) {
 		$params = array('node' => $assetId->getIdString());
+	}
 	$viewUrl = $harmoni->request->quickURL($action->getUiModule(), 'view', $params);
 	
 	// Print out the content

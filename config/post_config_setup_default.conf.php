@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.11 2007/05/22 20:17:59 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.12 2007/08/22 20:08:50 adamfranco Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
@@ -122,6 +122,18 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 			$importer->printErrorMessages();
 			exit;
 		}
+	}
+	
+	
+	/*********************************************************
+	 * Segue "CourseGroups" group
+	 *********************************************************/
+	$agentMgr = Services::getService("Agent");
+	if (!$agentMgr->isGroup($idManager->getId("edu.middlebury.segue.coursegroups"))) {
+		$groupType =& new Type ("System", "edu.middlebury", "SystemGroups", "Groups for administrators and others with special privileges.");
+		$nullType =& new Type ("System", "edu.middlebury.harmoni", "NULL");
+		$properties =& new HarmoniProperties($nullType);
+		$agentMgr->createGroup("Segue Course-Groups", $groupType, "Groupings of Segue Course-Sections.", $properties, $idManager->getId("edu.middlebury.segue.coursegroups"));
 	}
 
 	$_SESSION['post_config_setup_complete'] = TRUE;

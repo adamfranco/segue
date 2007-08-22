@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: gui_default.conf.php,v 1.4 2007/01/24 19:05:42 adamfranco Exp $
+ * @version $Id: gui_default.conf.php,v 1.5 2007/08/22 20:08:50 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../themes/SimpleThemeBlack/SimpleThemeBlack.class.php");
@@ -26,6 +26,7 @@ require_once(dirname(__FILE__)."/../themes/SimpleThemeBlack/SimpleThemeBlack.cla
 	$configuration->addProperty('character_set', $arg0 = 'utf-8');
 	$configuration->addProperty('document_type', $arg1 = 'text/html');
 	$configuration->addProperty('document_type_definition', $arg2 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">');
+	$configuration->addProperty('xmlns', $arg1 = 'http://www.w3.org/1999/xhtml');
 	
 	$arrayOfThemes[] = array("Generic Theme","GenericTheme");
 	$arrayOfThemes[] = array("Simple Theme","SimpleTheme");

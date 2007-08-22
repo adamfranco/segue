@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.17 2007/07/30 21:01:09 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.18 2007/08/22 20:08:50 adamfranco Exp $
  */
 
 /*********************************************************
@@ -91,6 +91,23 @@ if (!isset($_SESSION['table_setup_complete'])) {
 				// Create nodes for Qualifiers
 				$collectionsId =& $idManager->getId("edu.middlebury.repositories_root");
 				$authorizationHierarchy->createNode($collectionsId, $allOfSegueId, new DefaultQualifierType, "Segue Repositories", "All Repositories in Segue.");
+		
+		
+       /*********************************************************
+        * Script for setting up the CourseManagement Hierarchy
+        *********************************************************/     
+				// Create nodes 
+				
+				$courseManagementIdString = "edu.middlebury.coursemanagement";
+				$courseManagementId =& $idManager->getId($courseManagementIdString);
+				
+				$type =& new Type("NodeType","edu.middlebury","CourseManagement","These are top level nodes in the CourseManagement part of the Hierarchy");            
+				$authorizationHierarchy->createNode($courseManagementId,  $allOfConcertoId, $type,"Course Management","This node is the ancestor of all information about course management in the hierar
+				chy");
+				$authorizationHierarchy->createNode($idManager->getId($courseManagementIdString.".canonicalcourses"),$courseManagementId,$type,"Canonical Courses","This node is the parent of all root l
+				evel canonical courses");
+				$authorizationHierarchy->createNode($idManager->getId($courseManagementIdString.".coursegroups"),$courseManagementId,$type,"Course Groups","This node is the parent of all course groups 
+				in the hierarchy");
 		
 		/*********************************************************
 		 * Script for setting up the AgentManager Hierarchy
