@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.2 2007/08/22 20:08:51 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.3 2007/08/23 13:56:37 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/CourseSlot.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.2 2007/08/22 20:08:51 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.3 2007/08/23 13:56:37 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -197,7 +197,7 @@ class SlotManager {
 			if (count($slots) !== 1)
 				throw new Exception ("Mismached number of slots.");
 			
-			$slot = $slots[0];
+			$slot = current($slots);
 			$slot->mergeWithExternal();
 			$this->slots[$slot->getShortname()] = $slot;
 		} else {
