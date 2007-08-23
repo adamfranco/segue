@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2007/08/22 20:04:47 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.7 2007/08/23 17:57:45 achapin Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2007/08/22 20:04:47 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.7 2007/08/23 17:57:45 achapin Exp $
  */
 class ControlsSiteVisitor {
 	
@@ -49,7 +49,7 @@ class ControlsSiteVisitor {
 		$harmoni =& Harmoni::instance();
 		ob_start();
 		
-		print "\n<div style='text-align: right;'>";
+		print "\n<div class='ui1_controls'>";
 		
 // 		print "\n\t\t\t<form method='post'";
 // 		print " action='";
@@ -83,6 +83,20 @@ class ControlsSiteVisitor {
 // 		$harmoni->request->endNamespace();
 		return $controls;
 	}
+
+	/**
+	 * Prints delimiter between control items
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return ref string
+	 * @access public
+	 * @since 8/21/06
+	 */
+	
+	function printDelimiter ( &$siteComponent ) {
+		print " | ";
+	}
+
 	
 	/**
 	 * Print delete controls
@@ -322,9 +336,13 @@ class ControlsSiteVisitor {
 		$this->controlsStart($siteComponent);
 		
 		$this->printReorder($siteComponent);
+		$this->printDelimiter($siteComponent);
 		$this->printMove($siteComponent);
+		$this->printDelimiter($siteComponent);
 		$this->printEdit($siteComponent, 'editContent');
+		$this->printDelimiter($siteComponent);
 		$this->printDelete($siteComponent);
+		$this->printDelimiter($siteComponent);
 		$this->printVersions($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
@@ -342,8 +360,11 @@ class ControlsSiteVisitor {
 		$this->controlsStart($siteComponent);
 		
 		$this->printReorder($siteComponent);
+		$this->printDelimiter($siteComponent);
 		$this->printMove($siteComponent);
+		$this->printDelimiter($siteComponent);
 		$this->printEdit($siteComponent, 'editNav');
+		$this->printDelimiter($siteComponent);
 		$this->printDelete($siteComponent);
 // 		$this->printVersions($siteComponent);
 // 		$this->printAddSubMenu($siteComponent);

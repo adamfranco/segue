@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.12 2007/07/24 20:31:34 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.13 2007/08/23 17:57:45 achapin Exp $
  */
+ 
+require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
 
 /**
  * A Simple Plugin for making editable blocks of text
@@ -18,11 +20,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.12 2007/07/24 20:31:34 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.13 2007/08/23 17:57:45 achapin Exp $
  */
 class EduMiddleburyTextBlockPlugin
-	extends SeguePluginsAjaxPlugin
-// 	extends SeguePluginsPlugin
+// 	extends SeguePluginsAjaxPlugin
+	extends SeguePluginsPlugin
 {
 	/**
  	 * Answer a description of the the plugin (not the instance) to provide to 
@@ -48,6 +50,10 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function initialize () {
 		// Override as needed.
+		if (isset($_SESSION[$this->getId()."_textEditor"]))
+			$this->textEditor = $_SESSION[$this->getId()."_textEditor"];
+		else
+	 		$this->textEditor = 'fck';
  	}
  	
  	/**
@@ -61,11 +67,65 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 1/12/06
  	 */
  	function update ( $request ) {
- 		if ($this->getFieldValue('submit')) { 			
+ 		if ($this->getFieldValue('submit')) { 
+ 			
+ 			if ($this->getFieldValue('editor')) {
+ 				$this->textEditor = $this->getFieldValue('editor');
+ 				$_SESSION[$this->getId()."_textEditor"] = $this->textEditor;
+ 			}
+ 			
  			$this->setContent($this->cleanHTML($this->getFieldValue('content')));
  			$this->setRawDescription($this->getFieldValue('abstractLength'));
  			$this->logEvent('Modify Content', 'TextBlock content updated');
  		}
+ 	}
+ 	
+ 	/**
+ 	 * Get the editor specified by this->textEditor
+ 	 * 
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 8/22/07
+ 	 */
+ 	function getEditor () {
+		if ($this->textEditor == "none") {
+			print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
+		} else if ($this->textEditor == "fck") {
+			$this->getFckEditor();
+		} else {
+			throw new Exception("Supplied editor, '".$this->textEditor."', is not valid.");
+		}
+ 	}
+
+ 	/**
+ 	 * Get fckeditor specified by this->textEditor
+ 	 * 
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 8/22/07
+ 	 */
+ 	function getFckEditor () {
+ 		print "load fckeditor...";
+ 		
+ 	//	require_once(POLYPHONY_DIR."/javascript/fckeditor_create.php");
+ 		$harmoni = Harmoni::instance();
+ 		$filebrowserUrl = $harmoni->request->quickURL('fckeditor', 'filebrowser', array('node' => $this->getId()));
+		$config = <<< END
+		
+		
+END;
+		
+
+		
+		$oFCKeditor = new FCKeditor($this->getFieldName('content'));
+		$oFCKeditor->Config['CustomConfigurationsPath'] = POLYPHONY_PATH."/javascript/fckeditor_config.js";
+		
+		$oFCKeditor->BasePath	= POLYPHONY_PATH."/javascript/fckeditor/" ;
+		$oFCKeditor->Value		= $this->getContent();
+		$oFCKeditor->Height		= '400' ;
+		$oFCKeditor->ToolbarSet		= 'simple' ;
+		
+		$oFCKeditor->Create() ;
  	}
  	
  	/**
@@ -77,8 +137,16 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function printEditForm () {
  		print "\n".$this->formStartTagWithAction();
- 			
-		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
+ 		
+ 		//add editor select
+		print "\n\t<div align='right'>Current Editor: <select name='".$this->getFieldName('editor')."' onchange='this.form.submit()'>";
+		print "\n\t<option value='fck'".(($this->textEditor=='fck')?" selected='selected'":"").">FCKeditor</option>";
+		print "\n\t<option value='none'".(($this->textEditor=='none')?" selected='selected'":"").">None</option>";
+		print "\n\t</select></div>";
+
+ 		// replace with editor code
+ 		$this->getEditor();
+	//	print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
 		
 		print "\n\t<br/>";
 		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
@@ -140,7 +208,7 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function getMarkup () {
  		ob_start();
- 		
+ 		 		
  		if ($this->getFieldValue('edit') && $this->canModify()) {
 			$this->printEditForm();
  		} else if ($this->canView()) {

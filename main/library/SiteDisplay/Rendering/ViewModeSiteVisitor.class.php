@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.37 2007/07/20 20:21:23 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.38 2007/08/23 17:57:45 achapin Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -31,7 +31,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.37 2007/07/20 20:21:23 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.38 2007/08/23 17:57:45 achapin Exp $
  */
 class ViewModeSiteVisitor {
 		
@@ -125,7 +125,9 @@ class ViewModeSiteVisitor {
 		$pluginManager =& Services::getService('PluginManager');
 		$plugin =& $pluginManager->getPlugin($block->getAsset());
 		
+		$harmoni->request->passthrough('node');
 		print $plugin->executeAndGetMarkup($this->showPluginControls());
+		$harmoni->request->forget('node');
 		
 		if ($block->showComments()) {
 			$cm =& CommentManager::instance();
