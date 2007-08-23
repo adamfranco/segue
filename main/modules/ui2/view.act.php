@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.7 2007/07/30 18:13:40 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.8 2007/08/23 19:52:06 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.7 2007/07/30 18:13:40 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.8 2007/08/23 19:52:06 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -169,11 +169,10 @@ class viewAction
 	 * @since 7/30/07
 	 */
 	function getNodeId () {
-		$slotManager =& SlotManager::instance();
 		if (RequestContext::value("site")) {
-			$slot =& $slotManager->getSlotForShortname(RequestContext::value("site"));
-			$siteId = $slot->getSiteId();
-			$nodeId = $siteId->getIdString();
+			$slotManager = SlotManager::instance();
+			$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
+			$nodeId = $slot->getSiteId()->getIdString();
 		} else if (RequestContext::value("node")) {
 			$nodeId = RequestContext::value("node");
 		}
