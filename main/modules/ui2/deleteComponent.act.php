@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.5 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.6 2007/08/23 19:45:46 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.5 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.6 2007/08/23 19:45:46 adamfranco Exp $
  */
 class deleteComponentAction 
 	extends EditModeSiteAction
@@ -42,6 +42,14 @@ class deleteComponentAction
 		if ($organizer)
 			$organizer->detatchSubcomponent($component);
 
+		$rootSiteComponent = $director->getRootSiteComponent(RequestContext::value('node'));
+		// If we are deleting the site unhitch it from the slot
+		if ($rootSiteComponent->getId() == RequestContext::value('node')) {
+			$slotMgr = SlotManager::instance();
+			$idMgr = Services::getService("Id");
+			$slot = $slotMgr->getSlotBySiteId($idMgr->getId(RequestContext::value('node')));
+			$slot->deleteSiteId();
+		}
 		$director->deleteSiteComponent($component);
 	}
 	
@@ -62,7 +70,7 @@ class deleteComponentAction
 				array("node" => $this->_returnNode)));	
 		} else {
 			RequestContext::locationHeader($harmoni->request->quickURL(
-				"ui2", "list"));
+				"portal", "list"));
 		}
 	}
 	
