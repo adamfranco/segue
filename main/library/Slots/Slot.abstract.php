@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.2 2007/08/22 21:56:37 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.3 2007/08/23 14:25:14 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.2 2007/08/22 21:56:37 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.3 2007/08/23 14:25:14 adamfranco Exp $
  */
 abstract class Slot {
 	
@@ -383,6 +383,25 @@ abstract class Slot {
 		
 		$dbc = Services::getService('DBHandler');
 		$dbc->query($query, IMPORTER_CONNECTION);
+	}
+	
+	/**
+	 * Answer the Site for this slot
+	 * 
+	 * @return object Asset
+	 * @access public
+	 * @since 8/23/07
+	 */
+	public function getSiteAsset () {
+		if (is_null($this->getSiteId()))
+			throw new Exception("Cannot get a site Asset for a slot that doesn't have a siteId set ('".$this->getShortname()."').");
+		
+		$repositoryManager = Services::getService("Repository");
+		$idManager = Services::getService("Id");
+		$repository = $repositoryManager->getRepository(
+				$idManager->getId('edu.middlebury.segue.sites_repository'));
+		
+		return $repository->getAsset($this->getSiteId());
 	}
 	
 	/**
