@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.3 2007/08/23 14:25:14 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.4 2007/08/23 19:45:46 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.3 2007/08/23 14:25:14 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.4 2007/08/23 19:45:46 adamfranco Exp $
  */
 abstract class Slot {
 	
@@ -380,6 +380,25 @@ abstract class Slot {
 		$query->setTable('segue_slot');
 		$query->addWhereEqual('shortname', $this->getShortname());
 		$query->addValue('site_id', $siteId->getIdString());
+		
+		$dbc = Services::getService('DBHandler');
+		$dbc->query($query, IMPORTER_CONNECTION);
+	}
+	
+	/**
+	 * Delete the site id
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 8/22/07
+	 */
+	public function deleteSiteId () {
+		$this->recordInDB();
+			
+		$query = new UpdateQuery;
+		$query->setTable('segue_slot');
+		$query->addWhereEqual('shortname', $this->getShortname());
+		$query->addRawValue('site_id', 'NULL');
 		
 		$dbc = Services::getService('DBHandler');
 		$dbc->query($query, IMPORTER_CONNECTION);

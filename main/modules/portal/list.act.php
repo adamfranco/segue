@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.8 2007/08/23 14:25:15 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.9 2007/08/23 19:45:46 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.8 2007/08/23 14:25:15 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.9 2007/08/23 19:45:46 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -70,11 +70,29 @@ class listAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$actionRows =& $this->getActionRows();
-		$harmoni =& Harmoni::instance();
 		$repositoryManager =& Services::getService("Repository");
 		$idManager =& Services::getService("Id");
 		$authZ =& Services::getService("AuthZ");
+		$authN = Services::getService("AuthN");
+		$harmoni =& Harmoni::instance();
+		
+		// Creation of new personal slots
+		$harmoni->request->startNamespace('personal_slot');
+		if (RequestContext::value('slot_postfix') && PersonalSlot::hasPersonal()) {
+			$newSlotname = PersonalSlot::getPersonalShortname($authN->getFirstUserId())
+				."-".RequestContext::value('slot_postfix');
+			// Replace delimiting marks with an underscore
+			$newSlotname = preg_replace('/[\s\/=+.,()]+/i', '_', $newSlotname);
+			// Remove anything left over (other than letters/numbers/-/_)
+			$newSlotname = preg_replace('/[^a-z0-9_-]/i', '', $newSlotname);
+			
+			$slot = new PersonalSlot(strtolower($newSlotname));
+			$slot->addOwner($authN->getFirstUserId());
+		}
+		$harmoni->request->endNamespace();
+		
+		$actionRows =& $this->getActionRows();
+		
 		
 		if (RequestContext::value('user_interface')) {
 			$this->setUiModule(RequestContext::value('user_interface'));
@@ -159,7 +177,24 @@ class listAction
 		/*********************************************************
 		 * Personal Slots owned by the user
 		 *********************************************************/
-		$actionRows->add(new Heading(_("Personal Sites"), 2));
+		ob_start();
+		
+		if (PersonalSlot::hasPersonal()) {
+			$harmoni->request->startNamespace('personal_slot');
+			$url = $harmoni->request->quickURL();
+			print "\n<form class='add_slot_form' method='post' action='$url'>";
+			print "<strong>"._("Create a new placeholder:")."</strong><br/>";
+			print PersonalSlot::getPersonalShortname($authN->getFirstUserId());
+			print "-";
+			print "\n\t<input type='text' name='".RequestContext::name('slot_postfix')."' value='' size='10'/>";
+			print "\n\t<input type='submit' value='"._('Create')."'/>";
+			print "\n</form>\n";
+			$harmoni->request->endNamespace();
+		}
+		
+		print _("Personal Sites");
+		
+		$actionRows->add(new Heading(ob_get_clean(), 2));
 		foreach ($slotMgr->getSlotsByType(Slot::personal) as $slot) {
 			if (!in_array($slot->getShortName(), self::$slotsPrinted)) {
 				self::$slotsPrinted[] = $slot->getShortname();
@@ -212,6 +247,12 @@ class listAction
 				$harmoni = Harmoni::instance();
 				print " <a href='".$harmoni->request->quickURL($this->getUiModule(), 'add', array('slot' => $slot->getShortname()))."' class='create_site_link'>"._("Create Site")."</a>";
 				
+				$authN = Services::getService("AuthN");
+				if ($slot->getType() == 'personal' &&
+					$slot->getShortName() != PersonalSlot::getPersonalShortname($authN->getFirstUserId())) 
+				{
+					print " | "._("delete placeholder");
+				}
 			} else {
 				print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
 			}
@@ -306,16 +347,27 @@ function printSiteShort($asset, $action, $num) {
 	
 	// Print out the content
 	ob_start();
-	print "\n\t<a href='".$viewUrl."'>";
-	print "\n\t<strong>".htmlspecialchars($asset->getDisplayName())."</strong>";
-	print "\n\t</a>";
-	print "\n\t<br/>"._("ID#").": ".$assetId->getIdString();
+	print "\n\t<div class='portal_list_slotname'>";
+	if (isset($slot)) {
+		print $slot->getShortname();
+	} else {
+		print _("ID#").": ".$assetId->getIdString();
+	}
+	print "\n\t</div>";
+	print "\n\t<div class='portal_list_site_title'>";
+	print "\n\t\t<a href='".$viewUrl."'>";
+	print "\n\t\t\t<strong>".htmlspecialchars($asset->getDisplayName())."</strong>";
+	print "\n\t\t</a>";
+	print "\n\t</div>";
+	
+	print "\n\t<div class='portal_list_controls'>";
 	print "\n\t<a href='".$viewUrl."'>"._("view")."</a>";
 	print "\n\t | <a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
 	if ($action->getUiModule() == 'ui2') {
 		print "\n\t | <a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
 	}
 	print "\n\t | <a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."'>"._("delete")."</a>";
+	print "\n\t</div>";
 	
 	$description =& HtmlString::withValue($asset->getDescription());
 	$description->trim(25);

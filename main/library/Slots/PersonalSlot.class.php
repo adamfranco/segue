@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.2 2007/08/22 21:56:37 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.3 2007/08/23 19:45:46 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Slot.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.2 2007/08/22 21:56:37 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.3 2007/08/23 19:45:46 adamfranco Exp $
  */
 class PersonalSlot
 	extends Slot
@@ -54,14 +54,34 @@ class PersonalSlot
 	 * @since 8/14/07
 	 */
 	public static function getExternalSlotDefinitionsForUser () {
+		$slots = array();
+		if (self::hasPersonal()) {
+			$authN = Services::getService("AuthN");
+			$userId = $authN->getFirstUserId();
+			$slot = new PersonalSlot(self::getPersonalShortname($userId));
+			$slot->populateOwnerId($userId);
+			
+			$slots[] = $slot;
+		}
+		
+		return $slots;
+	}
+	
+	/**
+	 * Answer true if the user can create personal slots
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @static
+	 * @since 8/23/07
+	 */
+	public static function hasPersonal () {
 		$authN = Services::getService("AuthN");
 		$idManager = Services::getService("Id");
 		$agentManager = Services::getService("Agent");
 		
 		$userId = $authN->getFirstUserId();
-// 		$userId = $idManager->getId("3"); // jadministrator
 		
-		$slots = array();
 		if (!$userId->isEqual($idManager->getId("edu.middlebury.agents.anonymous"))) {
 			// Match the groups the user is in against our configuration of
 			// groups whose members should have personal sites.
@@ -69,26 +89,18 @@ class PersonalSlot
 													"edu.middlebury.harmoni","AncestorGroups");
 			$containingGroups =& $agentManager->getGroupsBySearch(
 							$userId, $ancestorSearchType);
-			$hasPersonal = false;
-			while (!$hasPersonal && $containingGroups->hasNext()) {
+			
+			while ($containingGroups->hasNext()) {
 				$group =& $containingGroups->next();
 				foreach (self::$validGroups as $validGroupId) {
 					if ($validGroupId->isEqual($group->getId())) {
-						$hasPersonal = true;
-						break;
+						return true;
 					}
 				}
 			}
-			
-			if ($hasPersonal) {
-				$slot = new PersonalSlot(self::getPersonalShortname($userId));
-				$slot->populateOwnerId($userId);
-				
-				$slots[] = $slot;
-			}
 		}
 		
-		return $slots;
+		return false;
 	}
 	
 	/**

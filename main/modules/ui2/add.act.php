@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.3 2007/08/22 21:56:37 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.4 2007/08/23 19:45:46 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.3 2007/08/22 21:56:37 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.4 2007/08/23 19:45:46 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -286,7 +286,7 @@ class addAction
 	function getReturnUrl () {
 		$harmoni =& Harmoni::instance();
 		if ($this->_siteId) 
-			return $harmoni->request->quickURL('ui2', "editview", array(
+			return $harmoni->request->quickURL($harmoni->request->getRequestedModule(), "editview", array(
 				"node" => $this->_siteId));
 		else
 			return $harmoni->request->quickURL('portal', "list");
