@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.1 2007/08/22 20:08:50 adamfranco Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.2 2007/08/23 20:10:09 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueCourseSection.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/SegueCourseGroup.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.1 2007/08/22 20:08:50 adamfranco Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.2 2007/08/23 20:10:09 achapin Exp $
  */
 class SegueCourseManager {
 
@@ -297,6 +297,10 @@ class SegueCourseManager {
 			$this->getCourseForGroupId($id);
 		
 		} catch (Exception $e) {
+			// If we didn't configure LDAP Authentication, we're not going to be able to use this
+			if (!class_exists('ClassTokenSearch'))
+				throw new Exception("LDAP Authentication is not configured.");
+			
 			// If we didn't have a CourseGroup or a loaded Course, look up the groupId
 			// Fetch the course group that matches the id passed.
 			$searchType =& new ClassTokenSearch();
