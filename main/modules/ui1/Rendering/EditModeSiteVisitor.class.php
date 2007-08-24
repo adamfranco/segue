@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.10 2007/08/24 20:36:47 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.11 2007/08/24 21:00:38 achapin Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.10 2007/08/24 20:36:47 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.11 2007/08/24 21:00:38 achapin Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -267,7 +267,7 @@ END;
 		print "\n\t\t<a href='";
 		print $harmoni->request->quickURL('ui1', $action, $params);
 		print "'>";
-		print "\n\t\t\t"._("Add new...");
+		print "\n\t\t\t"._("| Add new... |");
 		print "\n\t\t</a>";
 		print "\n\t</div>";
 		return ob_get_clean();
