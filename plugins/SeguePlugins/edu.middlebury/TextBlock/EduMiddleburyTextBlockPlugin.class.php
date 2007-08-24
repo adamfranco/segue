@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.14 2007/08/23 20:10:09 achapin Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.15 2007/08/24 20:36:47 achapin Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.14 2007/08/23 20:10:09 achapin Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.15 2007/08/24 20:36:47 achapin Exp $
  */
 class EduMiddleburyTextBlockPlugin
 // 	extends SeguePluginsAjaxPlugin
@@ -107,48 +107,14 @@ class EduMiddleburyTextBlockPlugin
  	function getFckEditor () {
  		print "load fckeditor...";
  		
- 	//	require_once(POLYPHONY_DIR."/javascript/fckeditor_create.php");
+ 		
  		$harmoni = Harmoni::instance();
 
-// 		$config = <<< END
-// FCKConfig.ToolbarSets["simple"] = [
-// 	['Source','-','Cut','Copy','Paste','PasteText','PasteWord','RemoveFormat','-'],
-// 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
-// 	'/',
-// 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-// 	['Link','Unlink','Anchor'],
-// 	['Image','Flash','Table','Rule','SpecialChar'],
-// 	'/',
-// 	['TextColor','BGColor'],
-// 	['OrderedList','UnorderedList','-','Outdent','Indent'],
-// 	['FontFormat','FontName','FontSize','FitWindow','About']
-// ] ;
-// FCKConfig.EnterMode = 'br' ;			// p | div | br
-// FCKConfig.ShiftEnterMode = 'p' ;	// p | div | br
-// 
-// FCKConfig.LinkDlgHideTarget		= false ;
-// FCKConfig.LinkDlgHideAdvanced	= false ;
-// 
-// FCKConfig.ImageDlgHideLink		= false ;
-// FCKConfig.ImageDlgHideAdvanced	= false ;
-// 
-// FCKConfig.FlashDlgHideAdvanced	= false ;
-// 
-// var _FileBrowserLanguage	= 'php' ;	// asp | aspx | cfm | lasso | perl | php | py
-// var _QuickUploadLanguage	= 'php' ;	// asp | aspx | cfm | lasso | php
-// 
-// FCKConfig.ImageBrowser = true ;
-// FCKConfig.ImageBrowserURL = '$filebrowserUrl?Type=Image&Connector=connectors/' + _FileBrowserLanguage + '/connector.' + _FileBrowserExtension ;
-// FCKConfig.ImageBrowserWindowWidth  = 700 ;
-// FCKConfig.ImageBrowserWindowHeight = 600 ;
-// 		
-// 		
-// END;
-		
 
-		
 		$oFCKeditor = new FCKeditor($this->getFieldName('content'));
 		
+		
+			
 		$oFCKeditor->Config['EnterMode'] = "br";
 		$oFCKeditor->Config['ShiftEnterMode'] = "p";
 		
@@ -166,10 +132,27 @@ class EduMiddleburyTextBlockPlugin
 		$oFCKeditor->Config['FlashDlgHideAdvanced'] = "false";
 		
 		
-		$oFCKeditor->BasePath	= POLYPHONY_PATH."/javascript/fckeditor/" ;
+		$oFCKeditor->BasePath	= POLYPHONY_PATH."/javascript/fckeditor/" ;		
+//		$oFCKeditor->Config['ToolbarSets'] = "simple";
+		
+// 		$oFCKeditor->Config['ToolbarSets']['simple'] = "[
+// 			['Source','-','Cut','Copy','Paste','PasteText','PasteWord','RemoveFormat','-'],
+// 			['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+// 			'/',
+// 			['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
+// 			['Link','Unlink','Anchor'],
+// 			['Image','Flash','Table','Rule','SpecialChar'],
+// 			'/',
+// 			['TextColor','BGColor'],
+// 			['OrderedList','UnorderedList','-','Outdent','Indent'],
+// 			['FontFormat','FontName','FontSize','FitWindow','About']
+// 		]" ;
+
+				
 		$oFCKeditor->Value		= $this->getContent();
 		$oFCKeditor->Height		= '400' ;
-// 		$oFCKeditor->ToolbarSet		= 'simple' ;
+//		$oFCKeditor->Width		= '400' ;
+//		$oFCKeditor->ToolbarSet		= 'simple' ;
 		
 		$oFCKeditor->Create() ;
  	}

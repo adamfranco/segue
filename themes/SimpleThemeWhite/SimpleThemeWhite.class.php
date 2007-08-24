@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.2 2007/08/23 19:45:46 adamfranco Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.3 2007/08/24 20:36:47 achapin Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -474,7 +474,7 @@ class SimpleThemeWhite extends Theme {
 
 			body {
 				background-color: #FFF8C6;
-				color: #FFF;
+				color: #000;
 				font-family: Verdana, sans-serif;
 				font-size:12px;
 				padding: 0px;
@@ -558,28 +558,28 @@ class SimpleThemeWhite extends Theme {
 			}
 			.block2BorderTL {
 				 margin-left: -4px;
-				 ma\rgin-left: -1px;
+				 margin-left: -1px;
 			}
 			html>body .block2BorderTL {
 				 margin-left: 0px;
 			}
 			.block2BorderTR {
 				 margin-right: -4px;
-				 ma\rgin-right: -1px;
+				 margin-right: -1px;
 			}
 			html>body .block2BorderTR {
 				 margin-right: 0px;
 			}
 			.block2BorderBL {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .block2BorderBL {
 				 margin-left: -0px;
 			}
 			.block2BorderBR {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .block2BorderBR {
 				 margin-left: 0px;
@@ -816,28 +816,28 @@ class SimpleThemeWhite extends Theme {
 			}
 			.heading1BorderTL {
 				 margin-left: -4px;
-				 ma\rgin-left: -1px;
+				 margin-left: -1px;
 			}
 			html>body .heading1BorderTL {
 				 margin-left: 0px;
 			}
 			.heading1BorderTR {
 				 margin-right: -4px;
-				 ma\rgin-right: -1px;
+				 margin-right: -1px;
 			}
 			html>body .heading1BorderTR {
 				 margin-right: 0px;
 			}
 			.heading1BorderBL {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .heading1BorderBL {
 				 margin-left: -0px;
 			}
 			.heading1BorderBR {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .heading1BorderBR {
 				 margin-left: 0px;
@@ -901,28 +901,28 @@ class SimpleThemeWhite extends Theme {
 			}
 			.heading2BorderTL {
 				 margin-left: -4px;
-				 ma\rgin-left: -1px;
+				 margin-left: -1px;
 			}
 			html>body .heading2BorderTL {
 				 margin-left: 0px;
 			}
 			.heading2BorderTR {
 				 margin-right: -4px;
-				 ma\rgin-right: -1px;
+				 margin-right: -1px;
 			}
 			html>body .heading2BorderTR {
 				 margin-right: 0px;
 			}
 			.heading2BorderBL {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .heading2BorderBL {
 				 margin-left: -0px;
 			}
 			.heading2BorderBR {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .heading2BorderBR {
 				 margin-left: 0px;
@@ -986,28 +986,28 @@ class SimpleThemeWhite extends Theme {
 			}
 			.heading3BorderTL {
 				 margin-left: -4px;
-				 ma\rgin-left: -1px;
+				 margin-left: -1px;
 			}
 			html>body .heading3BorderTL {
 				 margin-left: 0px;
 			}
 			.heading3BorderTR {
 				 margin-right: -4px;
-				 ma\rgin-right: -1px;
+				 margin-right: -1px;
 			}
 			html>body .heading3BorderTR {
 				 margin-right: 0px;
 			}
 			.heading3BorderBL {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .heading3BorderBL {
 				 margin-left: -0px;
 			}
 			.heading3BorderBR {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .heading3BorderBR {
 				 margin-left: 0px;
@@ -1071,28 +1071,28 @@ class SimpleThemeWhite extends Theme {
 			}
 			.heading4BorderTL {
 				 margin-left: -4px;
-				 ma\rgin-left: -1px;
+				 margin-left: -1px;
 			}
 			html>body .heading4BorderTL {
 				 margin-left: 0px;
 			}
 			.heading4BorderTR {
 				 margin-right: -4px;
-				 ma\rgin-right: -1px;
+				 margin-right: -1px;
 			}
 			html>body .heading4BorderTR {
 				 margin-right: 0px;
 			}
 			.heading4BorderBL {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .heading4BorderBL {
 				 margin-left: -0px;
 			}
 			.heading4BorderBR {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .heading4BorderBR {
 				 margin-left: 0px;
@@ -1161,21 +1161,21 @@ class SimpleThemeWhite extends Theme {
 			}
 			.header1BorderTR {
 				 margin-right: -4px;
-				 ma\rgin-right: -1px;
+				 margin-right: -1px;
 			}
 			html>body .header1BorderTR {
 				 margin-right: 0px;
 			}
 			.header1BorderBL {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .header1BorderBL {
 				 margin-left: -0px;
 			}
 			.header1BorderBR {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .header1BorderBR {
 				 margin-left: 0px;
@@ -1238,28 +1238,28 @@ class SimpleThemeWhite extends Theme {
 			}
 			.footer1BorderTL {
 				 margin-left: -4px;
-				 ma\rgin-left: -1px;
+				 margin-left: -1px;
 			}
 			html>body .footer1BorderTL {
 				 margin-left: 0px;
 			}
 			.footer1BorderTR {
 				 margin-right: -4px;
-				 ma\rgin-right: -1px;
+				 margin-right: -1px;
 			}
 			html>body .footer1BorderTR {
 				 margin-right: 0px;
 			}
 			.footer1BorderBL {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .footer1BorderBL {
 				 margin-left: -0px;
 			}
 			.footer1BorderBR {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .footer1BorderBR {
 				 margin-left: 0px;
@@ -1321,21 +1321,21 @@ class SimpleThemeWhite extends Theme {
 			}
 			.menu1BorderTL {
 				 margin-left: -4px;
-				 ma\rgin-left: -1px;
+				 margin-left: -1px;
 			}
 			html>body .menu1BorderTL {
 				 margin-left: 0px;
 			}
 			.menu1BorderTR {
 				 margin-right: -4px;
-				 ma\rgin-right: -1px;
+				 margin-right: -1px;
 			}
 			html>body .menu1BorderTR {
 				 margin-right: 0px;
 			}
 			.menu1BorderBL {
 				 margin-left: -3px;
-				 ma\rgin-left: 0px;
+				 margin-left: 0px;
 			}
 			html>body .menu1BorderBL {
 				 margin-left: -0px;
@@ -1375,7 +1375,6 @@ class SimpleThemeWhite extends Theme {
 			*.menuLink1_selected a {
 				display: block;
 				background-color: #ccc;
-				text-decoration: none;
 				color: #000;
 				padding: 5px;
 				font-size: 100%;
@@ -1482,6 +1481,15 @@ class SimpleThemeWhite extends Theme {
 				padding: 5px;
 				margin-left: 50px;
 			}
+			
+/*********************************************************
+ * Breadcrumbs
+ *********************************************************/
+
+	breadcrumbs {
+		text-align: right;
+		font-size: 10px;
+	}
 
 		
 /*********************************************************
@@ -1493,7 +1501,8 @@ class SimpleThemeWhite extends Theme {
 	}
 
 	.ui1_controls a {
-
+		text-align: right;
+		font-size: 10px;
 	}
 	
 /*********************************************************

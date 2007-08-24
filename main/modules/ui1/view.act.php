@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.7 2007/08/23 19:52:06 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.8 2007/08/24 20:36:46 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.7 2007/08/23 19:52:06 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.8 2007/08/24 20:36:46 achapin Exp $
  */
 class viewAction
 	extends displayAction {
@@ -74,7 +74,7 @@ class viewAction
 			throwError(new Error('No site node specified.', 'SiteDisplay'));
 		
 		/*********************************************************
-		 * Aditional setup
+		 * Additional setup
 		 *********************************************************/
 		$rootSiteComponent =& $this->_director->getRootSiteComponent($nodeId);
 		$this->rootSiteComponent =& $rootSiteComponent;
