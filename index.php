@@ -7,12 +7,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.5 2006/01/18 19:16:09 adamfranco Exp $
+ * @version $Id: index.php,v 1.6 2007/08/26 23:50:07 achapin Exp $
  */
 
 /*********************************************************
  * Define a Constant reference to this application directory.
  *********************************************************/
+error_reporting(E_ALL);
+ini_set('display_errors', true);
 
 define("MYDIR",dirname(__FILE__));
 

@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.4 2007/08/24 21:00:39 achapin Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.5 2007/08/26 23:50:09 achapin Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -281,11 +281,11 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Menu 1 style
-		$collection =& new CornersStyleCollection("*.menu1", "menu1", "Menu 1", "A 1st level menu.");
-		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
-		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
-		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
-		$collection->setBorderUrl("BottomRight", $imagePath."corner_BR.gif");
+// 		$collection =& new CornersStyleCollection("*.menu1", "menu1", "Menu 1", "A 1st level menu.");
+// 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
+// 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
+// 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
+// 		$collection->setBorderUrl("BottomRight", $imagePath."corner_BR.gif");
 		
 // 		$collection->addSP(new BackgroundColorSP("#eeeeee"));
 // 		$collection->addSP(new ColorSP("#000"));
@@ -293,7 +293,8 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new PaddingSP("10px"));
 // 		$collection->addSP(new MarginSP("1px"));
 // 		$collection->addSP(new TextAlignSP("left"));
-		$this->addStyleForComponentType($collection, MENU, 1);
+//		$this->addStyleForComponentType($collection, MENU, 1);
+
 		
 		// =====================================================================
 		// SubMenu 1 style
@@ -313,6 +314,12 @@ class SimpleThemeWhite extends Theme {
 		// =====================================================================
 		// Menu Unselected Link 1 style
 		$collection =& new StyleCollection("*.menuLink1_unselected a", "menuLink1_unselected", "Unselected Menu Link 1", "A 1st level unselected menu link.");
+		$collection =& new CornersStyleCollection("*.menuLink1_unselected", "menuLink1_unselected", "Menu 1", "A 1st level menu.");
+		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
+		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
+		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
+		$collection->setBorderUrl("BottomRight", $imagePath."corner_BR.gif");
+
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#eeeeee"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -327,6 +334,12 @@ class SimpleThemeWhite extends Theme {
 		// =====================================================================
 		// Menu Selected Link 1 style
 		$collection =& new StyleCollection("*.menuLink1_selected a", "menuLink1_selected", "Selected Menu Link 1", "A 1st level selected menu link.");
+		$collection =& new CornersStyleCollection("*.menuLink1_selected", "menuLink1_selected", "Menu 1", "A 1st level menu.");
+		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
+		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
+		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
+		$collection->setBorderUrl("BottomRight", $imagePath."corner_BR.gif");
+
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -1265,6 +1278,18 @@ class SimpleThemeWhite extends Theme {
 				 margin-left: 0px;
 			}
 
+
+
+/* In the CSS below, the numbers used are the following:
+    1px: the width of the border
+    3px: a fudge factor needed for IE5/win (see below)
+    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
+    14px: the width or height of the border image
+*/
+
+		/*********************************************************
+		 * Menu 1
+		 *********************************************************/
 			*.menu1 {
 				padding: 1px;
 				border: 0px;
@@ -1287,13 +1312,6 @@ class SimpleThemeWhite extends Theme {
 				font-size: 1px; line-height: 1px;
 			}
 
-
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 			.menu1BorderTL, .menu1BorderTR, .menu1BorderBL, .menu1BorderBR {
 				width: 14px; height: 14px;
 				padding: 0px; border: 0px;
@@ -1351,34 +1369,217 @@ class SimpleThemeWhite extends Theme {
 			*.subMenu1 {
 				margin-left: 10px;
 			}
+			
 
 			*.menuHeading1 {
 				display: block;
 				background-color: #eeeeee;
-				padding: 5px;
+				padding: 1px;
 			}
 
-			*.menuLink1_unselected a {
-				display: block;
-				background-color: #eeeeee;
-				color: #000;
-				padding: 5px;
-				font-size: 100%;
+		/*********************************************************
+		 * Menu 1 unselected
+		 *********************************************************/
+
+			*.menuLink1_unselected {
+				padding: 1px;
+				border: 0px;
 			}
+			
+			*.menuLink1_unselectedContent {
+				background-color: #d3d3d3;;
+				border: 1px solid #979797;
+				padding: 5px;
+				text-align: left;
+				color: #000000;
+				font-size: 100%;
+				padding-left: 5px;
+				margin: 0px;
+			}
+			
+		/*********************************************************
+		 * Menu 1 hover
+		 *********************************************************/
 
 			*.menuLink1_hover a:hover {
-				background-color: #ccc;
+				display: block;
+				background-color: #F5F5F5;
 				text-decoration: none;
 			}
 			
+		/*********************************************************
+		 * Menu 1 selected
+		 *********************************************************/
+
+			*.menuLink1_selected  {
+				padding: 1px;
+				border: 0px;
+			}
+
+
+
+			*.menuLink1_selectedContent {
+				background-color: #F5F5F5;
+				border: 1px solid #979797;
 
 			*.menuLink1_selected a {
 				display: block;
 				background-color: #ccc;
 				color: #000;
+
 				padding: 5px;
+				text-align: left;
+				color: #000000;
 				font-size: 100%;
+				padding-left: 10px;
+				margin: 0px;
 			}
+
+
+		/*********************************************************
+		 * Menu 1 unselected
+		 *********************************************************/
+
+
+			.menuLink1_unselectedTopCorners, .menuLink1_unselectedBottomCorners {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			.menuLink1_unselectedSpacer {
+				margin: 0px; padding: 0px; border: 0px;
+				clear: both;
+				font-size: 1px; line-height: 1px;
+			}
+			
+			.menuLink1_unselectedBorderTL, .menuLink1_unselectedBorderTR, .menuLink1_unselectedBorderBL, .menuLink1_unselectedBorderBR {
+				width: 14px; height: 14px;
+				padding: 0px; border: 0px;
+				z-index: 99;
+			}
+			.menuLink1_unselectedBorderTL, .menuLink1_unselectedBorderBL {
+				float: left;
+				clear: both;
+			}
+			.menuLink1_unselectedBorderTR, .menuLink1_unselectedBorderBR {
+				float: right;
+				clear: right;
+			}
+			.menuLink1_unselectedBorderTL {
+				margin: 0px 0px 0px 0px;
+			}
+			.menuLink1_unselectedBorderTR {
+				margin: -0px -0px 0px 0px;
+			}
+			.menuLink1_unselectedBorderBL {
+				margin: -14px 0px 0px 0px;
+			}
+			.menuLink1_unselectedBorderBR {
+				margin: -14px 0px 0px 0px;
+			}
+			.menuLink1_unselectedBorderTL {
+				 margin-left: -4px;
+				 margin-left: -1px;
+			}
+			html>body .menuLink1_unselectedBorderTL {
+				 margin-left: 0px;
+			}
+			.menuLink1_unselectedBorderTR {
+				 margin-right: -4px;
+				 margin-right: -1px;
+			}
+			html>body .menuLink1_unselectedBorderTR {
+				 margin-right: 0px;
+			}
+			.menuLink1_unselectedBorderBL {
+				 margin-left: -3px;
+				 margin-left: 0px;
+			}
+			html>body .menuLink1_unselectedBorderBL {
+				 margin-left: -0px;
+			}
+			.menuLink1_unselectedBorderBR {
+				 margin-left: -3px;
+				 margin-left: 0px;
+			}
+			html>body .menuLink1_unselectedBorderBR {
+				 margin-left: 0px;
+			}						
+			
+		/*********************************************************
+		 * Menu 1 selected
+		 *********************************************************/
+
+
+			.menuLink1_selectedTopCorners, .menuLink1_selectedBottomCorners {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			.menuLink1_selectedSpacer {
+				margin: 0px; padding: 0px; border: 0px;
+				clear: both;
+				font-size: 1px; line-height: 1px;
+			}
+			
+			.menuLink1_selectedBorderTL, .menuLink1_selectedBorderTR, .menuLink1_selectedBorderBL, .menuLink1_selectedBorderBR {
+				width: 14px; height: 14px;
+				padding: 0px; border: 0px;
+				z-index: 99;
+			}
+			.menuLink1_selectedBorderTL, .menuLink1_selectedBorderBL {
+				float: left;
+				clear: both;
+			}
+			.menuLink1_selectedBorderTR, .menuLink1_selectedBorderBR {
+				float: right;
+				clear: right;
+			}
+			.menuLink1_selectedBorderTL {
+				margin: 0px 0px 0px 0px;
+			}
+			.menuLink1_selectedBorderTR {
+				margin: -0px -0px 0px 0px;
+			}
+			.menuLink1_selectedBorderBL {
+				margin: -14px 0px 0px 0px;
+			}
+			.menuLink1_selectedBorderBR {
+				margin: -14px 0px 0px 0px;
+			}
+			.menuLink1_selectedBorderTL {
+				 margin-left: -4px;
+				 margin-left: -1px;
+			}
+			html>body .menuLink1_selectedBorderTL {
+				 margin-left: 0px;
+			}
+			.menuLink1_selectedBorderTR {
+				 margin-right: -4px;
+				 margin-right: -1px;
+			}
+			html>body .menuLink1_selectedBorderTR {
+				 margin-right: 0px;
+			}
+			.menuLink1_selectedBorderBL {
+				 margin-left: -3px;
+				 margin-left: 0px;
+			}
+			html>body .menuLink1_selectedBorderBL {
+				 margin-left: -0px;
+			}
+			.menuLink1_selectedBorderBR {
+				 margin-left: -3px;
+				 margin-left: 0px;
+			}
+			html>body .menuLink1_selectedBorderBR {
+				 margin-left: 0px;
+			}
+			
+
+		/*********************************************************
+		 * Menu 2
+		 *********************************************************/
 
 			*.menuLink2_unselected a {
 				display: block;
@@ -1492,9 +1693,9 @@ class SimpleThemeWhite extends Theme {
 	}
 
 		
-/*********************************************************
- * User Interface 1 CSS
- *********************************************************/
+/* UI 1 interface
+*/
+
 	.ui1_controls {
 		text-align: right;
 		font-size: 10px;
