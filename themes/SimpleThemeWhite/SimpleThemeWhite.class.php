@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.6 2007/08/26 23:52:20 achapin Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.7 2007/08/28 00:25:41 achapin Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -97,6 +97,21 @@ class SimpleThemeWhite extends Theme {
 // // 		$collection->addSP(new PaddingSP("10px"));
 // // 		$collection->addSP(new MarginSP("10px"));
 // 		$this->addStyleForComponentType($collection, BLOCK, 1);
+
+		// =====================================================================
+		// Append 1 style
+// 		$collection =& new CornersStyleCollection("*.append1", "append1", "append 1", "A style for append new... links.");
+// 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
+// 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
+// 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
+// 		$collection->setBorderUrl("BottomRight", $imagePath."corner_BR.gif");
+// 		
+// 		$this->addStyleForComponentType($collection, APPEND, 2);
+// 
+// 		$collection =& new StyleCollection("*.append1 a", "append1", "append1 Links", "Properties of links");
+// 		$this->addStyleForComponentType($collection, APPEND, 2);
+
+
 		
 		// =====================================================================
 		// Block 2 style
@@ -304,7 +319,13 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Menu Heading 1 style
-		$collection =& new StyleCollection("*.menuHeading1", "menuHeading1", "Menu Heading 1", "A 1st level menu heading.");
+//		$collection =& new StyleCollection("*.menuHeading1", "menuHeading1", "Menu Heading 1", "A 1st level menu heading.");
+		$collection =& new CornersStyleCollection("*.menuHeading1", "menuHeading1", "Menu 1", "A 1st level menu.");
+		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
+		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
+		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
+		$collection->setBorderUrl("BottomRight", $imagePath."corner_BR.gif");		
+		
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#eeeeee"));
 // 		$collection->addSP(new PaddingSP("5px"));
@@ -484,10 +505,23 @@ class SimpleThemeWhite extends Theme {
 	
 	
 		return "
+		
+/* In the CSS below, the numbers used are the following:
+    1px: the width of the border
+    3px: a fudge factor needed for IE5/win (see below)
+    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
+    14px: the width or height of the border image
+*/
+
+
+		/*********************************************************
+		 * general styles
+		 *********************************************************/
+
 
 			body {
 				background-color: #FFF8C6;
-				color: #FFF;
+				color: #000;
 				font-family: Verdana, sans-serif;
 				font-size:12px;
 				padding: 0px;
@@ -512,6 +546,96 @@ class SimpleThemeWhite extends Theme {
 				border: 0px solid #000;
 			}
 
+		/*********************************************************
+		 * Append 1 
+		 *********************************************************/
+
+			.append1 {
+				padding: 1px;
+				border: 0px;
+			}
+			.append1Content {
+				background-color: #FFFFFF;
+				color: #000;
+				border: 1px solid #979797;
+				padding: 10px;
+				text-align: left;
+				margin: 0px;
+			}
+			
+			
+			.append1TopCorners, .append1BottomCorners {
+				margin: 0px;
+				padding: 0px;
+			}
+			.append1Spacer {
+				margin: 0px; padding: 0px; border: 0px;
+				clear: both;
+				font-size: 1px; line-height: 1px;
+			}
+
+
+			.append1BorderTL, .append1BorderTR, .append1BorderBL, .append1BorderBR {
+				width: 14px; height: 14px;
+				padding: 0px; border: 0px;
+				z-index: 99;
+			}
+			.append1BorderTL, .append1BorderBL {
+				float: left;
+				clear: both;
+			}
+			.append1BorderTR, .append1BorderBR {
+				float: right;
+				clear: right;
+			}
+			.append1BorderTL {
+				margin: 0px 0px 0px 0px;
+			}
+			.append1BorderTR {
+				margin: -0px -0px 0px 0px;
+			}
+			.append1BorderBL {
+				margin: -14px 0px 0px 0px;
+			}
+			.append1BorderBR {
+				margin: -14px 0px 0px 0px;
+			}
+			.append1BorderTL {
+				 margin-left: -4px;
+				 ma\rgin-left: -1px;
+			}
+			html>body .append1BorderTL {
+				 margin-left: 0px;
+			}
+			.append1BorderTR {
+				 margin-right: -4px;
+				 ma\rgin-right: -1px;
+			}
+			html>body .append1BorderTR {
+				 margin-right: 0px;
+			}
+			.append1BorderBL {
+				 margin-left: -3px;
+				 ma\rgin-left: 0px;
+			}
+			html>body .append1BorderBL {
+				 margin-left: -0px;
+			}
+			.append1BorderBR {
+				 margin-left: -3px;
+				 ma\rgin-left: 0px;
+			}
+			html>body .append1BorderBR {
+				 margin-left: 0px;
+			}
+
+			*.append1 a {
+				color: #000;
+			}
+			
+		/*********************************************************
+		 * Block 2
+		 *********************************************************/
 
 			.block2 {
 				padding: 1px;
@@ -538,12 +662,6 @@ class SimpleThemeWhite extends Theme {
 			}
 
 
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 			.block2BorderTL, .block2BorderTR, .block2BorderBL, .block2BorderBR {
 				width: 14px; height: 14px;
 				padding: 0px; border: 0px;
@@ -602,6 +720,10 @@ class SimpleThemeWhite extends Theme {
 				color: #000;
 			}
 
+		/*********************************************************
+		 * Block 3
+		 *********************************************************/
+
 			*.block3 {
 				padding: 1px;
 				border: 0px;
@@ -624,13 +746,6 @@ class SimpleThemeWhite extends Theme {
 				font-size: 1px; line-height: 1px;
 			}
 
-
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 			.block3BorderTL, .block3BorderTR, .block3BorderBL, .block3BorderBR {
 				width: 14px; height: 14px;
 				padding: 0px; border: 0px;
@@ -685,6 +800,10 @@ class SimpleThemeWhite extends Theme {
 				 margin-left: 0px;
 			}
 
+		/*********************************************************
+		 * Block 4
+		 *********************************************************/
+
 			*.block4 {
 				padding: 1px;
 				border: 0px;
@@ -707,13 +826,6 @@ class SimpleThemeWhite extends Theme {
 				font-size: 1px; line-height: 1px;
 			}
 
-
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 			.block4BorderTL, .block4BorderTR, .block4BorderBL, .block4BorderBR {
 				width: 14px; height: 14px;
 				padding: 0px; border: 0px;
@@ -772,6 +884,10 @@ class SimpleThemeWhite extends Theme {
 				color: #000;
 			}
 
+		/*********************************************************
+		 * Heading 1
+		 *********************************************************/
+
 			*.heading1 {
 				padding: 1px;
 				border: 0px;
@@ -796,12 +912,6 @@ class SimpleThemeWhite extends Theme {
 			}
 
 
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 			.heading1BorderTL, .heading1BorderTR, .heading1BorderBL, .heading1BorderBR {
 				width: 14px; height: 14px;
 				padding: 0px; border: 0px;
@@ -856,6 +966,10 @@ class SimpleThemeWhite extends Theme {
 				 margin-left: 0px;
 			}
 
+		/*********************************************************
+		 * Heading 2
+		 *********************************************************/
+
 			*.heading2 {
 				padding: 1px;
 				border: 0px;
@@ -880,13 +994,6 @@ class SimpleThemeWhite extends Theme {
 				font-size: 1px; line-height: 1px;
 			}
 
-
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 			.heading2BorderTL, .heading2BorderTR, .heading2BorderBL, .heading2BorderBR {
 				width: 14px; height: 14px;
 				padding: 0px; border: 0px;
@@ -941,6 +1048,10 @@ class SimpleThemeWhite extends Theme {
 				 margin-left: 0px;
 			}
 
+		/*********************************************************
+		 * Heading 3
+		 *********************************************************/
+
 			*.heading3 {
 				padding: 1px;
 				border: 0px;
@@ -965,13 +1076,6 @@ class SimpleThemeWhite extends Theme {
 				font-size: 1px; line-height: 1px;
 			}
 
-
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 			.heading3BorderTL, .heading3BorderTR, .heading3BorderBL, .heading3BorderBR {
 				width: 14px; height: 14px;
 				padding: 0px; border: 0px;
@@ -1026,6 +1130,10 @@ class SimpleThemeWhite extends Theme {
 				 margin-left: 0px;
 			}
 
+		/*********************************************************
+		 * Heading 4
+		 *********************************************************/
+
 			*.heading4 {
 				padding: 1px;
 				border: 0px;
@@ -1050,13 +1158,6 @@ class SimpleThemeWhite extends Theme {
 				font-size: 1px; line-height: 1px;
 			}
 
-
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 			.heading4BorderTL, .heading4BorderTR, .heading4BorderBL, .heading4BorderBR {
 				width: 14px; height: 14px;
 				padding: 0px; border: 0px;
@@ -1110,6 +1211,98 @@ class SimpleThemeWhite extends Theme {
 			html>body .heading4BorderBR {
 				 margin-left: 0px;
 			}
+			
+		/*********************************************************
+		 * MenuHeading 1
+		 *********************************************************/
+
+			.menuHeading1 {
+				padding: 1px;
+				border: 0px;
+			}
+			.menuHeading1Content {
+				background-color: #FFFFFF;
+				color: #000;
+				border: 1px solid #979797;
+				padding: 10px;
+				text-align: left;
+				margin: 0px;
+			}
+			
+			
+			.menuHeading1TopCorners, .menuHeading1BottomCorners {
+				margin: 0px;
+				padding: 0px;
+			}
+			.menuHeading1Spacer {
+				margin: 0px; padding: 0px; border: 0px;
+				clear: both;
+				font-size: 1px; line-height: 1px;
+			}
+
+
+			.menuHeading1BorderTL, .menuHeading1BorderTR, .menuHeading1BorderBL, .menuHeading1BorderBR {
+				width: 14px; height: 14px;
+				padding: 0px; border: 0px;
+				z-index: 99;
+			}
+			.menuHeading1BorderTL, .menuHeading1BorderBL {
+				float: left;
+				clear: both;
+			}
+			.menuHeading1BorderTR, .menuHeading1BorderBR {
+				float: right;
+				clear: right;
+			}
+			.menuHeading1BorderTL {
+				margin: 0px 0px 0px 0px;
+			}
+			.menuHeading1BorderTR {
+				margin: -0px -0px 0px 0px;
+			}
+			.menuHeading1BorderBL {
+				margin: -14px 0px 0px 0px;
+			}
+			.menuHeading1BorderBR {
+				margin: -14px 0px 0px 0px;
+			}
+			.menuHeading1BorderTL {
+				 margin-left: -4px;
+				 margin-left: -1px;
+			}
+			html>body .menuHeading1BorderTL {
+				 margin-left: 0px;
+			}
+			.menuHeading1BorderTR {
+				 margin-right: -4px;
+				 margin-right: -1px;
+			}
+			html>body .menuHeading1BorderTR {
+				 margin-right: 0px;
+			}
+			.menuHeading1BorderBL {
+				 margin-left: -3px;
+				 margin-left: 0px;
+			}
+			html>body .menuHeading1BorderBL {
+				 margin-left: -0px;
+			}
+			.menuHeading1BorderBR {
+				 margin-left: -3px;
+				 margin-left: 0px;
+			}
+			html>body .menuHeading1BorderBR {
+				 margin-left: 0px;
+			}
+
+			*.menuHeading1 a {
+				color: #000;
+			}
+
+
+		/*********************************************************
+		 * Header 1
+		 *********************************************************/
 
 			*.header1 {
 				padding: 1px;
@@ -1133,13 +1326,6 @@ class SimpleThemeWhite extends Theme {
 				font-size: 1px; line-height: 1px;
 			}
 
-
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 			.header1BorderTL, .header1BorderTR, .header1BorderBL, .header1BorderBR {
 				width: 14px; height: 14px;
 				padding: 0px; border: 0px;
@@ -1194,6 +1380,10 @@ class SimpleThemeWhite extends Theme {
 				 margin-left: 0px;
 			}
 
+		/*********************************************************
+		 * Footer 1
+		 *********************************************************/
+
 			*.footer1 {
 				padding: 1px;
 				border: 0px;
@@ -1217,13 +1407,6 @@ class SimpleThemeWhite extends Theme {
 				font-size: 1px; line-height: 1px;
 			}
 
-
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 			.footer1BorderTL, .footer1BorderTR, .footer1BorderBL, .footer1BorderBR {
 				width: 14px; height: 14px;
 				padding: 0px; border: 0px;
@@ -1278,14 +1461,6 @@ class SimpleThemeWhite extends Theme {
 				 margin-left: 0px;
 			}
 
-
-
-/* In the CSS below, the numbers used are the following:
-    1px: the width of the border
-    3px: a fudge factor needed for IE5/win (see below)
-    4px: the width of the border (1px) plus the 3px IE5/win fudge factor
-    14px: the width or height of the border image
-*/
 
 		/*********************************************************
 		 * Menu 1
@@ -1378,7 +1553,7 @@ class SimpleThemeWhite extends Theme {
 			}
 
 		/*********************************************************
-		 * Menu 1 unselected
+		 * Menu 1 unselected content
 		 *********************************************************/
 
 			*.menuLink1_unselected {
@@ -1408,7 +1583,7 @@ class SimpleThemeWhite extends Theme {
 			}
 			
 		/*********************************************************
-		 * Menu 1 selected
+		 * Menu 1 selected content
 		 *********************************************************/
 
 			*.menuLink1_selected  {
@@ -1429,9 +1604,8 @@ class SimpleThemeWhite extends Theme {
 
 
 		/*********************************************************
-		 * Menu 1 unselected
+		 * Menu 1 unselected box
 		 *********************************************************/
-
 
 			.menuLink1_unselectedTopCorners, .menuLink1_unselectedBottomCorners {
 				margin: 0px;
@@ -1499,7 +1673,7 @@ class SimpleThemeWhite extends Theme {
 			}						
 			
 		/*********************************************************
-		 * Menu 1 selected
+		 * Menu 1 selected box
 		 *********************************************************/
 
 
@@ -1675,9 +1849,31 @@ class SimpleThemeWhite extends Theme {
 				margin-left: 50px;
 			}
 
+/*********************************************************
+ * Status | Commands 
+ *********************************************************/
+	.seguelinks {
+		text-align: left;
+		font-size: 10px;
+		margin-left: 10px;
+	}
+
+	.commands {
+		text-align: right;
+		font-size: 10px;
+		margin-right: 10px;
+		padding-bottom: 3px;
+	}
+
+	.breadcrumbs {
+		text-align: left;
+		font-size: 10px;
+		margin-right: 10px;
+	}
 		
-/* UI 1 interface
-*/
+/*********************************************************
+ * UI1 CSS
+ *********************************************************/
 
 	.ui1_controls {
 		text-align: right;

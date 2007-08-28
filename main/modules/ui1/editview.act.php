@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.3 2007/05/24 19:32:01 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.4 2007/08/28 00:25:41 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.3 2007/05/24 19:32:01 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.4 2007/08/28 00:25:41 achapin Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -94,6 +94,7 @@ class editviewAction
 		$harmoni =& Harmoni::instance();
 		
 		ob_start();
+		print "<div class='commands'>";
 		print "<a href='";
 		print $harmoni->request->quickURL('ui1', 'view', array(
 				'node' => RequestContext::value("node")));
@@ -101,7 +102,7 @@ class editviewAction
 		print _("view")."</a>";
 		
 		print " | "._("edit");
-				
+		print "</div>";		
 		$ret =& new Component(ob_get_clean(), BLANK, 2);
 		return $ret;
 	}

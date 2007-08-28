@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.8 2007/08/23 19:52:06 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.9 2007/08/28 00:25:41 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.8 2007/08/23 19:52:06 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.9 2007/08/28 00:25:41 achapin Exp $
  */
 class viewAction
 	extends displayAction {
@@ -114,6 +114,27 @@ class viewAction
 		
 		$mainScreen =& new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
 		
+		// :: login, links and commands
+		$this->headRow =& $mainScreen->add(
+			new Container($xLayout, BLOCK, 1), 
+			"95%", null, CENTER, TOP);
+			
+		$this->leftHeadColumn =& $this->headRow->add(
+			$this->getSegueLinksComponent(), 
+				null, null, LEFT, TOP);
+		
+		$rightHeadColumn =& $this->headRow->add(
+			new Container($yLayout, BLANK, 1), 
+			null, null, CENTER, TOP);
+
+		$rightHeadColumn->add($this->getLoginComponent(), 
+				null, null, RIGHT, TOP);
+		
+				
+		$rightHeadColumn->add($this->getCommandsComponent(), 
+				null, null, RIGHT, TOP);
+		
+		
 		// :: Top Row ::
 		$this->headRow =& $mainScreen->add(
 			new Container($xLayout, HEADER, 1), 
@@ -123,20 +144,7 @@ class viewAction
 			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"
 				."<div class='breadcrumbs'>".$this->getBreadCrumbs()."</div>"), 
 			null, null, LEFT, TOP);
-		
-		$rightHeadColumn =& $this->headRow->add(
-			new Container($yLayout, BLANK, 1), 
-			null, null, CENTER, TOP);
-		
-		$rightHeadColumn->add($this->getLoginComponent(), 
-				null, null, RIGHT, TOP);
-		
-		$rightHeadColumn->add($this->getSegueLinksComponent(), 
-				null, null, RIGHT, TOP);
 				
-		$rightHeadColumn->add($this->getCommandsComponent(), 
-				null, null, RIGHT, TOP);
-		
 		
 		// :: Site ::
 		$mainScreen->add($this->siteGuiComponent);
@@ -228,12 +236,18 @@ class viewAction
 	function &getSegueLinksComponent () {
 		$harmoni =& Harmoni::instance();
 		ob_start();
-		
-		print "<a href='".$harmoni->request->quickURL('home', 'welcome')."' title='"._("The Segue homepage")."'>";
-		print _("home")."</a> | ";
+		print "<div class='seguelinks'>";
 		
 		print "<a href='".$harmoni->request->quickURL('portal', 'list')."' title='"._("List of Segue sites")."'>";
-		print _("site list")."</a>";
+		print _("home")."</a> | ";
+		
+		//print "<a href='".$harmoni->request->quickURL('directory', 'users')."' title='"._("Segue User Directory")."'>";
+		print _("directory");
+		
+// 		print "<a href='".$harmoni->request->quickURL('about', 'welcome')."' title='"._("The Segue homepage")."'>";
+// 		print _("about")."</a>";
+
+		print "</div>";
 		
 		$ret =& new Component(ob_get_clean(), BLANK, 2);
 		return $ret;
@@ -256,6 +270,7 @@ class viewAction
 				$idManager->getId("edu.middlebury.authorization.modify"),
 				$idManager->getId($this->rootSiteComponent->getId())))
 		{
+			print "<div class='commands'>";
 			print _("view");
 			
 			print " | <a href='";
@@ -269,6 +284,7 @@ class viewAction
 					'node' => $this->getNodeId()));
 			print "' alt='"._("Go to Arrange-Mode")."'>";
 			print _("arrange")."</a>";
+			print "</div>";
 		}
 	
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.3 2007/05/04 18:06:10 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.4 2007/08/28 00:25:41 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.3 2007/05/04 18:06:10 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.4 2007/08/28 00:25:41 achapin Exp $
  */
 class arrangeviewAction
 	extends viewAction {
@@ -52,6 +52,7 @@ class arrangeviewAction
 		$harmoni =& Harmoni::instance();
 		
 		ob_start();
+		print "<div class='commands'>";
 		print "<a href='";
 		print $harmoni->request->quickURL('ui2', 'view', array(
 				'node' => RequestContext::value("node")));
@@ -65,6 +66,7 @@ class arrangeviewAction
 		print _("edit")."</a>";
 		
 		print " | "._("arrange");
+		print "</div>";
 				
 		$ret =& new Component(ob_get_clean(), BLANK, 2);
 		return $ret;

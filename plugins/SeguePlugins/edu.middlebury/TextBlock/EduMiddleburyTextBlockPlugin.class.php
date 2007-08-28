@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.15 2007/08/24 20:36:47 achapin Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.16 2007/08/28 00:25:41 achapin Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.15 2007/08/24 20:36:47 achapin Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.16 2007/08/28 00:25:41 achapin Exp $
  */
 class EduMiddleburyTextBlockPlugin
 // 	extends SeguePluginsAjaxPlugin
@@ -89,12 +89,65 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function getEditor () {
 		if ($this->textEditor == "none") {
-			print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
+			$this->getTextField();
+			//print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
 		} else if ($this->textEditor == "fck") {
 			$this->getFckEditor();
 		} else {
 			throw new Exception("Supplied editor, '".$this->textEditor."', is not valid.");
 		}
+ 	}
+ 	
+ 	 	/**
+ 	 * Print out a text field
+ 	 * 
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 8/27/07
+ 	 */
+ 	function getTextField () {
+ 		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
+ 		
+		// Image button
+		print "\n\t<input type='button' value='"._('Add Image')."' onclick=\"";
+		print "this.onUse = function (mediaFile) { ";
+		print 		"var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + mediaFile.getTitles()[0].escapeHTML() + '\'/>' ; ";
+		print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
+		print "}; "; 
+		print "MediaLibrary.run('".$this->getId()."', this); ";
+		print "\"/>";
+		
+		// File button
+		print "\n\t<input type='button' value='"._('Add File')."' onclick=\"";
+		print "this.onUse = function (mediaFile) { ";
+		print		"var downloadBar = document.createElement('div'); ";
+		print 		"var link = downloadBar.appendChild(document.createElement('a')); ";
+		print 		"link.href = mediaFile.getUrl().escapeHTML(); ";
+		print		"link.title = mediaFile.getTitles()[0].escapeHTML(); ";
+		
+		print		"var img = link.appendChild(document.createElement('img')); ";
+		print		"img.src = mediaFile.getThumbnailUrl(); ";
+		print		"img.align = 'left'; ";
+		print		"img.border = '0'; ";
+		
+		print		"var title = downloadBar.appendChild(document.createElement('div')); ";
+		print 		"title.innerHTML = mediaFile.getTitles()[0]; ";
+		print		"title.fontWeight = 'bold'; ";
+		
+		print		"var citation = downloadBar.appendChild(document.createElement('div')); ";
+		print 		"mediaFile.writeCitation(citation); ";
+		
+		print 		"var newString = '<div>' + downloadBar.innerHTML + '<div style=\'clear: both;\'></div></div>'; ";
+		print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
+		print "}; "; 
+		print "MediaLibrary.run('".$this->getId()."', this); ";
+		print "\"/>";
+		
+		print "\n\t<br/>";
+		print str_replace('%1',
+			"<input name='".$this->getFieldName('abstractLength')."' type='text' value='".intval($this->getRawDescription())."' onchange='return false;' size='3'/>",
+			_("Abstract to %1 words. (Enter '0' for no abstract)"));
+
  	}
 
  	/**
@@ -105,8 +158,6 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 8/22/07
  	 */
  	function getFckEditor () {
- 		print "load fckeditor...";
- 		
  		
  		$harmoni = Harmoni::instance();
 
@@ -169,8 +220,8 @@ class EduMiddleburyTextBlockPlugin
  		
  		//add editor select
 		print "\n\t<div align='right'>Current Editor: <select name='".$this->getFieldName('editor')."' onchange='this.form.submit()'>";
-		print "\n\t<option value='fck'".(($this->textEditor=='fck')?" selected='selected'":"").">FCKeditor</option>";
-		print "\n\t<option value='none'".(($this->textEditor=='none')?" selected='selected'":"").">None</option>";
+		print "\n\t<option value='fck'".(($this->textEditor=='none')?" selected='selected'":"").">FCKeditor</option>";
+		print "\n\t<option value='none'".(($this->textEditor=='fck')?" selected='selected'":"").">None</option>";
 		print "\n\t</select></div>";
 
  		// replace with editor code
@@ -181,47 +232,7 @@ class EduMiddleburyTextBlockPlugin
 		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
 		
 		print "\n\t<input type='button' value='"._('Cancel')."' onclick='".$this->locationSend()."'/>";
-		
-		// Image button
-		print "\n\t<input type='button' value='"._('Add Image')."' onclick=\"";
-		print "this.onUse = function (mediaFile) { ";
-		print 		"var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + mediaFile.getTitles()[0].escapeHTML() + '\'/>' ; ";
-		print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
-		print "}; "; 
-		print "MediaLibrary.run('".$this->getId()."', this); ";
-		print "\"/>";
-		
-		// File button
-		print "\n\t<input type='button' value='"._('Add File')."' onclick=\"";
-		print "this.onUse = function (mediaFile) { ";
-		print		"var downloadBar = document.createElement('div'); ";
-		print 		"var link = downloadBar.appendChild(document.createElement('a')); ";
-		print 		"link.href = mediaFile.getUrl().escapeHTML(); ";
-		print		"link.title = mediaFile.getTitles()[0].escapeHTML(); ";
-		
-		print		"var img = link.appendChild(document.createElement('img')); ";
-		print		"img.src = mediaFile.getThumbnailUrl(); ";
-		print		"img.align = 'left'; ";
-		print		"img.border = '0'; ";
-		
-		print		"var title = downloadBar.appendChild(document.createElement('div')); ";
-		print 		"title.innerHTML = mediaFile.getTitles()[0]; ";
-		print		"title.fontWeight = 'bold'; ";
-		
-		print		"var citation = downloadBar.appendChild(document.createElement('div')); ";
-		print 		"mediaFile.writeCitation(citation); ";
-		
-		print 		"var newString = '<div>' + downloadBar.innerHTML + '<div style=\'clear: both;\'></div></div>'; ";
-		print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
-		print "}; "; 
-		print "MediaLibrary.run('".$this->getId()."', this); ";
-		print "\"/>";
-		
-		print "\n\t<br/>";
-		print str_replace('%1',
-			"<input name='".$this->getFieldName('abstractLength')."' type='text' value='".intval($this->getRawDescription())."' onchange='return false;' size='3'/>",
-			_("Abstract to %1 words. (Enter '0' for no abstract)"));
-		
+				
 		print "\n</form>";
  	}
  	

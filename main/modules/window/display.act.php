@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.11 2007/01/08 21:26:29 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.12 2007/08/28 00:25:41 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.11 2007/01/08 21:26:29 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.12 2007/08/28 00:25:41 achapin Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.11 2007/01/08 21:26:29 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.12 2007/08/28 00:25:41 achapin Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -185,13 +185,13 @@ class displayAction
 			}
 		}
 		if ($users != '') {
-			print "\n<div style='text-align: right'><small>";
+			print "\n<div style='text-align: right; margin-right: 10px;'><small>";
 			if (count(explode("+", $users)) == 1)
-				print _("User: ").$users."\t";
+				print $users."\t";
 			else 
 				print _("Users: ").$users."\t";
 			
-			print "<a href='".$harmoni->request->quickURL("auth",
+			print " | <a href='".$harmoni->request->quickURL("auth",
 				"logout")."'>"._("Log Out")."</a></small></div>";
 		} else {
 			// set bookmarks for success and failure
@@ -204,7 +204,7 @@ class displayAction
 			$passwordField = $harmoni->request->getName("password");
 			$harmoni->request->endNamespace();
 			$harmoni->request->startNamespace("polyphony");
-			print  "\n<div style='text-align: right'>".
+			print  "\n<div style='text-align: right; margin-right: 10px;'>".
 				"\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
 				"' align='right' method='post'><small>".
