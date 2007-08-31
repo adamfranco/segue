@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.2 2007/07/20 19:16:53 adamfranco Exp $
+ * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.3 2007/08/31 17:35:07 achapin Exp $
  */ 
  
 require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.2 2007/07/20 19:16:53 adamfranco Exp $
+ * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.3 2007/08/31 17:35:07 achapin Exp $
  */
 class EditModeControlsSiteVisitor
 	extends ControlsSiteVisitor
@@ -34,7 +34,7 @@ class EditModeControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitNavBlock ( &$siteComponent ) {
+	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
 		$this->printShowDisplayNames($siteComponent);

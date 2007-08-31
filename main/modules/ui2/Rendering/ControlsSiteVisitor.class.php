@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2007/07/20 20:21:24 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2007/08/31 17:35:07 achapin Exp $
  */ 
+ 
+ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 
 /**
  * Returns the controls strings for each component type
@@ -18,9 +20,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.5 2007/07/20 20:21:24 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2007/08/31 17:35:07 achapin Exp $
  */
-class ControlsSiteVisitor {
+class ControlsSiteVisitor 
+	implements SiteVisitor
+{
 	
 	var $_action = 'editview';
 		
@@ -518,7 +522,7 @@ END;
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitBlock ( &$siteComponent ) {
+	public function visitBlock ( BlockSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
 		$this->printShowDisplayNames($siteComponent);
@@ -532,6 +536,19 @@ END;
 	}
 	
 	/**
+	 * Visit a Block
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @return mixed
+	 * @access public
+	 * @since 8/31/07
+	 */
+	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) {
+		$this->visitBlock($siteComponent);
+	}
+
+	
+	/**
 	 * Answer controls for NavBlock SiteComponents
 	 * 
 	 * @param SiteComponent $siteComponent
@@ -539,7 +556,7 @@ END;
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitNavBlock ( &$siteComponent ) {
+	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
 		$this->printShowDisplayNames($siteComponent);
@@ -552,7 +569,7 @@ END;
 		return $this->controlsEnd($siteComponent);
 	}
 	
-	function &visitSiteNavBlock ( &$siteComponent ) {
+	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
 		$this->printShowDisplayNames($siteComponent);
@@ -571,7 +588,7 @@ END;
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitFixedOrganizer ( &$siteComponent ) {
+	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
 		$this->printRowsColumns($siteComponent);
@@ -589,7 +606,7 @@ END;
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitNavOrganizer ( &$siteComponent ) {
+	public function visitNavOrganizer ( NavOrganizerSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
 		$this->printRowsColumns($siteComponent);
@@ -606,7 +623,7 @@ END;
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitFlowOrganizer ( &$siteComponent ) {
+	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
 		$this->printShowDisplayNames($siteComponent);
@@ -627,7 +644,7 @@ END;
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitMenuOrganizer ( &$siteComponent ) {
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
 		$this->printShowDisplayNames($siteComponent);

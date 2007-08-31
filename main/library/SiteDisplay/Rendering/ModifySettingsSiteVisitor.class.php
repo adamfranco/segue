@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.6 2007/07/20 20:21:23 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.7 2007/08/31 17:35:07 achapin Exp $
  */ 
+ 
+ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
 
 /**
  * This class works in conjunction with the ControlsSiteVisitor to apply changes
@@ -19,9 +21,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.6 2007/07/20 20:21:23 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.7 2007/08/31 17:35:07 achapin Exp $
  */
-class ModifySettingsSiteVisitor {
+class ModifySettingsSiteVisitor 
+	implements SiteVisitor
+{
 		
 	/**
 	 * print common controls
@@ -184,7 +188,7 @@ class ModifySettingsSiteVisitor {
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitBlock ( &$siteComponent ) {
+	public function visitBlock ( BlockSiteComponent $siteComponent ) {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyDisplayName($siteComponent);
@@ -195,6 +199,27 @@ class ModifySettingsSiteVisitor {
 		
 		return $this->modifyEnd($siteComponent);
 	}
+
+	/**
+	 * Visit a block and return the resulting GUI component. (A menu item)
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return object MenuItem 
+	 * @access public
+	 * @since 4/3/06
+	 */
+	public function visitBlockInMenu ( BlockSiteComponent $block ) {
+		$authZ =& Services::getService("AuthZ");
+		$idManager =& Services::getService("Id");	
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.view"), 
+			$idManager->getId($block->getId())))
+		{
+			$false = false;
+			return $false;
+		}
+	}
+
 	
 	/**
 	 * Answer controls for NavBlock SiteComponents
@@ -204,7 +229,7 @@ class ModifySettingsSiteVisitor {
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitNavBlock ( &$siteComponent ) {
+	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyDisplayName($siteComponent);
@@ -223,7 +248,7 @@ class ModifySettingsSiteVisitor {
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitSiteNavBlock ( &$siteComponent ) {
+	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyDisplayName($siteComponent);
@@ -242,7 +267,7 @@ class ModifySettingsSiteVisitor {
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitFixedOrganizer ( &$siteComponent ) {
+	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $siteComponent ) {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyRowsColumns($siteComponent);
@@ -262,7 +287,7 @@ class ModifySettingsSiteVisitor {
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitNavOrganizer ( &$siteComponent ) {
+	public function visitNavOrganizer ( NavOrganizerSiteComponent $siteComponent ) {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyRowsColumns($siteComponent);
@@ -282,7 +307,7 @@ class ModifySettingsSiteVisitor {
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitFlowOrganizer ( &$siteComponent ) {
+	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $siteComponent ) {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyRowsColumns($siteComponent);
@@ -302,7 +327,7 @@ class ModifySettingsSiteVisitor {
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &visitMenuOrganizer ( &$siteComponent ) {
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) {
 		$this->modifyStart($siteComponent);
 		
 		$this->applyDirection($siteComponent);

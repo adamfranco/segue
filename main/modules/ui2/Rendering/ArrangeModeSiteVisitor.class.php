@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.7 2007/07/30 19:07:01 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.8 2007/08/31 17:35:07 achapin Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.7 2007/07/30 19:07:01 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.8 2007/08/31 17:35:07 achapin Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -52,7 +52,7 @@ class ArrangeModeSiteVisitor
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitSiteNavBlock ( &$siteNavBlock ) {
+	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteNavBlock ) {
 		// enter links in our head to load needed javascript libraries
 		$harmoni =& Harmoni::instance();
 		$outputHandler =& $harmoni->getOutputHandler();
@@ -217,7 +217,7 @@ class ArrangeModeSiteVisitor
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitBlockInMenu ( &$block ) {
+	public function visitBlockInMenu ( BlockSiteComponent $block ) {
 		$guiContainer =& parent::visitBlockInMenu($block);
 		
 		if (!$guiContainer) {
@@ -261,7 +261,7 @@ class ArrangeModeSiteVisitor
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitNavBlock ( &$navBlock ) {
+	public function visitNavBlock ( NavBlockSiteComponent $navBlock ) {
 		$guiContainers =& parent::visitNavBlock($navBlock);
 		
 		if (!$guiContainers || !count($guiContainers)) {
@@ -308,7 +308,7 @@ class ArrangeModeSiteVisitor
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitFixedOrganizer ( &$organizer ) {
+	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $organizer ) {
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");
 		if ($authZ->isUserAuthorized(
@@ -395,7 +395,7 @@ class ArrangeModeSiteVisitor
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitNavOrganizer ( &$organizer ) {
+	public function visitNavOrganizer ( NavOrganizerSiteComponent $organizer ) {
 		return $this->visitFixedOrganizer($organizer);
 	}
 	
@@ -407,7 +407,7 @@ class ArrangeModeSiteVisitor
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitFlowOrganizer( &$organizer ) {
+	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $organizer ) {
 		$numCells = $organizer->getTotalNumberOfCells();
 		
 		if ($organizer->getNumRows() == 0)
@@ -498,7 +498,7 @@ class ArrangeModeSiteVisitor
 	 * @access publicZ
 	 * @since 4/3/06
 	 */
-	function &visitMenuOrganizer ( &$organizer ) {	
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {	
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");
 		

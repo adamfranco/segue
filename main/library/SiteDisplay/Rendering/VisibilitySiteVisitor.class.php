@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.7 2006/09/22 14:41:49 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.8 2007/08/31 17:35:07 achapin Exp $
  */ 
+ 
+require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
 
 /**
  * The VisibilityVisitor traverses the site hierarchy, recording the visibility of
@@ -19,9 +21,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.7 2006/09/22 14:41:49 adamfranco Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.8 2007/08/31 17:35:07 achapin Exp $
  */
-class VisibilitySiteVisitor {
+class VisibilitySiteVisitor 
+	implements SiteVisitor
+{
 		
 	/**
 	 * Constructor
@@ -36,20 +40,45 @@ class VisibilitySiteVisitor {
 	}
 	
 	/**
+	 * Visit any kind of SiteComponent and record its visibility
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @return array
+	 * @access public
+	 * @since 8/31/07
+	 */
+	private function visitSiteComponent ( SiteComponent $siteComponent) {
+		$this->_visibleComponents[$siteComponent->getId()] = $siteComponent;
+		$results = array();
+		$results['VisibleComponents'] = $this->_visibleComponents;
+		$results['FilledTargetIds'] = $this->_filledTargetIds;
+		return $results;
+	}
+	
+	/**
 	 * Visit a block and return the resulting GUI component.
 	 * 
 	 * @param object BlockSiteComponent $block
-	 * @return object Component 
+	 * @return array
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitBlock ( &$block ) {
-		$this->_visibleComponents[$block->getId()] =& $block;
-		$results = array();
-		$results['VisibleComponents'] =& $this->_visibleComponents;
-		$results['FilledTargetIds'] =& $this->_filledTargetIds;
-		return $results;
+	public function visitBlock ( BlockSiteComponent $block ) {
+		return $this->visitSiteComponent($block);
 	}
+	
+	/**
+	 * Visit a Block
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @return mixed
+	 * @access public
+	 * @since 8/31/07
+	 */
+	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) {
+		$this->visitBlock($siteComponent);
+	}
+
 	
 	/**
 	 * Visit a block and return the resulting GUI component.
@@ -59,7 +88,7 @@ class VisibilitySiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitNavBlock ( &$navBlock ) {		
+	public function visitNavBlock ( NavBlockSiteComponent $navBlock ) {		
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
 		if ($navBlock->isActive()) {
@@ -71,7 +100,7 @@ class VisibilitySiteVisitor {
 				$nestedMenuOrganizer->acceptVisitor($this);
 		}
 		
-		return $this->visitBlock($navBlock);
+		return $this->visitSiteComponent($navBlock);
 	}
 	
 	/**
@@ -83,7 +112,7 @@ class VisibilitySiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitSiteNavBlock ( &$siteNavBlock ) {
+	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteNavBlock ) {
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
 		if ($siteNavBlock->isActive()) {
@@ -91,7 +120,27 @@ class VisibilitySiteVisitor {
 			$childOrganizer->acceptVisitor($this);
 		}
 				
-		return $this->visitBlock($siteNavBlock);
+		return $this->visitSiteComponent($siteNavBlock);
+	}
+	
+	/**
+	 * Visit a fixed organizer and return the GUI component [a container] 
+	 * that corresponds to it. Traverse-to/add child components.
+	 * 
+	 * @param object OrganizerSiteComponent $organizer
+	 * @return object Component
+	 * @access private
+	 * @since 4/3/06
+	 */
+	private function visitOrganizer ( OrganizerSiteComponent $organizer ) {		
+		$numCells = $organizer->getTotalNumberOfCells();
+		for ($i = 0; $i < $numCells; $i++) {
+			$child =& $organizer->getSubcomponentForCell($i);
+			if (is_object($child))
+				$child->acceptVisitor($this);
+		}
+		
+		return $this->visitSiteComponent($organizer);
 	}
 
 	/**
@@ -103,15 +152,8 @@ class VisibilitySiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitFixedOrganizer ( &$organizer ) {		
-		$numCells = $organizer->getTotalNumberOfCells();
-		for ($i = 0; $i < $numCells; $i++) {
-			$child =& $organizer->getSubcomponentForCell($i);
-			if (is_object($child))
-				$child->acceptVisitor($this);
-		}
-		
-		return $this->visitBlock($organizer);
+	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $organizer ) {		
+		return $this->visitOrganizer($organizer);
 	}
 	
 	
@@ -124,8 +166,8 @@ class VisibilitySiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitNavOrganizer ( &$organizer ) {
-		return $this->visitFixedOrganizer($organizer);
+	public function visitNavOrganizer ( NavOrganizerSiteComponent $organizer ) {
+		return $this->visitOrganizer($organizer);
 	}
 	
 	/**
@@ -136,8 +178,8 @@ class VisibilitySiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitFlowOrganizer( &$organizer ) {
-		return $this->visitFixedOrganizer($organizer);
+	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $organizer ) {
+		return $this->visitOrganizer($organizer);
 	}
 	
 	/**
@@ -149,7 +191,7 @@ class VisibilitySiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitMenuOrganizer ( &$organizer ) {	
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {	
 		$this->_filledTargetIds[$organizer->getId()] = $organizer->getTargetId();
 		return $this->visitFlowOrganizer($organizer);
 	}

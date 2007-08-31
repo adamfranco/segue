@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.9 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.10 2007/08/31 17:35:07 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.9 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.10 2007/08/31 17:35:07 achapin Exp $
  */
 class DetailViewModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -87,7 +87,9 @@ class DetailViewModeSiteVisitor
 		$pluginManager =& Services::getService('PluginManager');
 		$plugin =& $pluginManager->getPlugin($block->getAsset());
 		
+		$harmoni->request->passthrough('node');
 		print $plugin->executeAndGetExtendedMarkup(false);
+		$harmoni->request->forget('node');
 		
 		return ob_get_clean();
 	}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.12 2007/08/31 16:34:58 achapin Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.13 2007/08/31 17:35:07 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.12 2007/08/31 16:34:58 achapin Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.13 2007/08/31 17:35:07 achapin Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -258,7 +258,7 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 7/27/06
 	 */
-	function &getParentNavOrganizer () {
+	function getParentNavOrganizer () {
 		$parent =& $this->getParentComponent();
 		if ($parent)
 			return $parent->getParentNavOrganizer();
