@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.16 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.17 2007/08/31 16:48:04 achapin Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.16 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.17 2007/08/31 16:48:04 achapin Exp $
  */
 class EduMiddleburyTextBlockPlugin
 // 	extends SeguePluginsAjaxPlugin
@@ -87,12 +87,12 @@ class EduMiddleburyTextBlockPlugin
  	 * @access public
  	 * @since 8/22/07
  	 */
- 	function getEditor () {
+ 	function printEditor () {
 		if ($this->textEditor == "none") {
-			$this->getTextField();
+			$this->printTextField();
 			//print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
 		} else if ($this->textEditor == "fck") {
-			$this->getFckEditor();
+			$this->printFckEditor();
 		} else {
 			throw new Exception("Supplied editor, '".$this->textEditor."', is not valid.");
 		}
@@ -105,7 +105,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @access public
  	 * @since 8/27/07
  	 */
- 	function getTextField () {
+ 	function printTextField () {
  		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
  		
 		// Image button
@@ -143,11 +143,6 @@ class EduMiddleburyTextBlockPlugin
 		print "MediaLibrary.run('".$this->getId()."', this); ";
 		print "\"/>";
 		
-		print "\n\t<br/>";
-		print str_replace('%1',
-			"<input name='".$this->getFieldName('abstractLength')."' type='text' value='".intval($this->getRawDescription())."' onchange='return false;' size='3'/>",
-			_("Abstract to %1 words. (Enter '0' for no abstract)"));
-
  	}
 
  	/**
@@ -157,7 +152,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @access public
  	 * @since 8/22/07
  	 */
- 	function getFckEditor () {
+ 	function printFckEditor () {
  		
  		$harmoni = Harmoni::instance();
 
@@ -220,13 +215,18 @@ class EduMiddleburyTextBlockPlugin
  		
  		//add editor select
 		print "\n\t<div align='right'>Current Editor: <select name='".$this->getFieldName('editor')."' onchange='this.form.submit()'>";
-		print "\n\t<option value='fck'".(($this->textEditor=='none')?" selected='selected'":"").">FCKeditor</option>";
-		print "\n\t<option value='none'".(($this->textEditor=='fck')?" selected='selected'":"").">None</option>";
+		print "\n\t<option value='fck'".(($this->textEditor=='fck')?" selected='selected'":"").">FCKeditor</option>";
+		print "\n\t<option value='none'".(($this->textEditor=='none')?" selected='selected'":"").">None</option>";
 		print "\n\t</select></div>";
 
  		// replace with editor code
- 		$this->getEditor();
+ 		$this->printEditor();
 	//	print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
+
+		print "\n\t<br/>";
+		print str_replace('%1',
+			"<input name='".$this->getFieldName('abstractLength')."' type='text' value='".intval($this->getRawDescription())."' onchange='return false;' size='3'/>",
+			_("Abstract to %1 words. (Enter '0' for no abstract)"));
 		
 		print "\n\t<br/>";
 		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
