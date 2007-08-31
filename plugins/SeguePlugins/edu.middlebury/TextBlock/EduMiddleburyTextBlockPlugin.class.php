@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.17 2007/08/31 16:48:04 achapin Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.18 2007/08/31 20:01:07 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.17 2007/08/31 16:48:04 achapin Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.18 2007/08/31 20:01:07 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 // 	extends SeguePluginsAjaxPlugin
@@ -178,27 +178,15 @@ class EduMiddleburyTextBlockPlugin
 		$oFCKeditor->Config['FlashDlgHideAdvanced'] = "false";
 		
 		
-		$oFCKeditor->BasePath	= POLYPHONY_PATH."/javascript/fckeditor/" ;		
-//		$oFCKeditor->Config['ToolbarSets'] = "simple";
+		$oFCKeditor->BasePath	= POLYPHONY_PATH."/javascript/fckeditor/" ;
 		
-// 		$oFCKeditor->Config['ToolbarSets']['simple'] = "[
-// 			['Source','-','Cut','Copy','Paste','PasteText','PasteWord','RemoveFormat','-'],
-// 			['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
-// 			'/',
-// 			['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-// 			['Link','Unlink','Anchor'],
-// 			['Image','Flash','Table','Rule','SpecialChar'],
-// 			'/',
-// 			['TextColor','BGColor'],
-// 			['OrderedList','UnorderedList','-','Outdent','Indent'],
-// 			['FontFormat','FontName','FontSize','FitWindow','About']
-// 		]" ;
+		$oFCKeditor->Config['CustomConfigurationsPath'] = MYPATH.'/javascript/fck_custom_config.js';
 
 				
 		$oFCKeditor->Value		= $this->getContent();
 		$oFCKeditor->Height		= '400' ;
 //		$oFCKeditor->Width		= '400' ;
-//		$oFCKeditor->ToolbarSet		= 'simple' ;
+		$oFCKeditor->ToolbarSet		= 'ContentBlock' ;
 		
 		$oFCKeditor->Create() ;
  	}

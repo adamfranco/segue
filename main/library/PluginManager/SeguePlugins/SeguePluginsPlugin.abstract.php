@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.33 2007/07/13 19:59:03 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.34 2007/08/31 20:01:07 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.33 2007/07/13 19:59:03 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.34 2007/08/31 20:01:07 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -295,7 +295,7 @@ class SeguePluginsPlugin {
 		// If this is a multipart form, we must do a normal 'submit'
 		// that includes a page refresh.
 		if ($isMultipart) {
-			return "<form action=".$this->url($parameters)." method='post' enctype='multipart/form-data'>";
+			return "<form action='".$this->url($parameters)."' method='post' enctype='multipart/form-data'>";
 		} 
 		// If the form is not a multipart form with file uploads, then we
 		// don't ned the enctype parameter.
@@ -304,7 +304,7 @@ class SeguePluginsPlugin {
 				$method = 'get';
 			else
 				$method = 'post';
-			return "<form action=".$this->url($parameters)." method='".$method."'>";
+			return "<form action='".$this->url($parameters)."' method='".$method."'>";
 		}
 	}
 	
