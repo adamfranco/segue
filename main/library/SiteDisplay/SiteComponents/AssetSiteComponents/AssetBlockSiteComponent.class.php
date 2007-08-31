@@ -6,8 +6,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.8 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.9 2007/08/31 16:03:46 achapin Exp $
  */ 
+require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.abstract.php");
 
 /**
  * The Block is a non-organizational site component. Blocks make up content
@@ -19,11 +20,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.8 2007/01/24 19:19:43 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.9 2007/08/31 16:03:46 achapin Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
-	// implements BlockSiteComponent
+	implements BlockSiteComponent
 {
 
 	/**
@@ -195,7 +196,7 @@ class AssetBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor, $inMenu = FALSE ) {
+	public function acceptVisitor ( $visitor, $inMenu = FALSE ) {
 		if ($inMenu)
 			return $visitor->visitBlockInMenu($this);
 		return $visitor->visitBlock($this);

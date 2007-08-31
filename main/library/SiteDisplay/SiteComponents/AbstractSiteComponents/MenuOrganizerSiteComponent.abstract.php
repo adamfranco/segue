@@ -6,8 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MenuOrganizerSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: MenuOrganizerSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/FlowOrganizerSiteComponent.abstract.php");
+
 
 /**
  * The Menu organizer site component.
@@ -18,23 +21,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MenuOrganizerSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: MenuOrganizerSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */
-class MenuOrganizerSiteComponent 
+interface MenuOrganizerSiteComponent 
 	extends FlowOrganizerSiteComponent
 {
 
-	/**
-	 * Accepts a visitor.
-	 * 
-	 * @param object Visitor
-	 * @return object Component
-	 * @access public
-	 * @since 4/3/06
-	 */
-	function &acceptVisitor ( &$visitor ) {
-		return $visitor->visitMenuOrganizer($this);
-	}
+
+
 }
 
 ?>

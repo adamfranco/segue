@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: SiteNavBlockSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/NavBlockSiteComponent.abstract.php");
 
 /**
  * The SiteNavBlockSiteComponent
@@ -18,23 +20,29 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: SiteNavBlockSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */
-class SiteNavBlockSiteComponent 
+interface SiteNavBlockSiteComponent 
 	extends NavBlockSiteComponent 
 {
-		
+	
+	/*********************************************************
+	 * The following methods support working with slots.
+	 * Slots are syntactically-meaningful user-specified 
+	 * identifiers for sites. Slots are only guarenteed to be
+	 * unique within the scope of a given segue installation.
+	 *
+	 * Only site nodes can have slots.
+	 *********************************************************/
+	
 	/**
-	 * Accepts a visitor.
+	 * Answer the slot for a site id.
 	 * 
-	 * @param object Visitor
-	 * @return object Component
+	 * @return object Slot
 	 * @access public
-	 * @since 4/3/06
+	 * @since 7/25/07
 	 */
-	function &acceptVisitor ( &$visitor ) {
-		return $visitor->visitSiteNavBlock($this);
-	}
+	function getSlot () ;
 	
 }
 

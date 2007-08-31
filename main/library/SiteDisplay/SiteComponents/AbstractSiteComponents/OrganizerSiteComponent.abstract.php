@@ -6,8 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: OrganizerSiteComponent.abstract.php,v 1.2 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: OrganizerSiteComponent.abstract.php,v 1.3 2007/08/31 16:03:45 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/OrganizerSiteComponent.abstract.php");
+
 
 /**
  * The Organizer subdivides its bounding cell and arranges its subcomponents in
@@ -19,9 +22,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: OrganizerSiteComponent.abstract.php,v 1.2 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: OrganizerSiteComponent.abstract.php,v 1.3 2007/08/31 16:03:45 achapin Exp $
  */
-class OrganizerSiteComponent
+interface OrganizerSiteComponent
 	extends SiteComponent
 {
 		
@@ -32,9 +35,7 @@ class OrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function getNumRows () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getNumRows () ;
 	
 	/**
 	 * Update the number of rows. The contents of this organizer may limit the
@@ -45,9 +46,7 @@ class OrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function updateNumRows ( $newRows ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function updateNumRows ( $newRows ) ;
 	
 	/**
 	 * Answer the integer number of columns
@@ -56,9 +55,7 @@ class OrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function getNumColumns () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getNumColumns () ;
 	
 	/**
 	 * Update the number of columns. The contents of this organizer may limit the
@@ -69,9 +66,7 @@ class OrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function updateNumColumns ( $newColumns ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function updateNumColumns ( $newColumns ) ;
 	
 	/**
 	 * Answer the total number of cells in this organizer. (Some may be empty)
@@ -80,9 +75,7 @@ class OrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function getTotalNumberOfCells () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getTotalNumberOfCells () ;
 	
 	/**
 	 * Answer the direction of indexing:
@@ -99,9 +92,7 @@ class OrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function getDirection () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getDirection () ;
 	
 	/**
 	 * Update the direction of indexing:
@@ -118,9 +109,7 @@ class OrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function updateDirection ( $direction ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function updateDirection ( $direction ) ;
 	
 	/**
 	 * Answer the subcomponent that is in a cell, null if empty
@@ -130,9 +119,16 @@ class OrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function &getSubcomponentForCell ( $cellIndex ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getSubcomponentForCell ( $cellIndex ) ;
+	
+	/**
+	 * Answer the NavOrganizer above this organizer.
+	 * 
+	 * @return object NavOrganizerSiteComponent
+	 * @access public
+	 * @since 4/11/06
+	 */
+	function getParentNavOrganizer () ;
 	
 }
 

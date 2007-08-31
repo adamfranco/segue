@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavBlockSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: NavBlockSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/BlockSiteComponent.abstract.php");
 
 /**
  * The NavBlock component is a hierarchal node that provides a gateway to a 
@@ -19,9 +21,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavBlockSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: NavBlockSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */
-class NavBlockSiteComponent
+interface NavBlockSiteComponent
 	extends BlockSiteComponent
 {
 		
@@ -33,9 +35,7 @@ class NavBlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function &getOrganizer () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getOrganizer () ;
 	
 	/**
 	 * Set the organizer for this NavBlock
@@ -45,9 +45,7 @@ class NavBlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function setOrganizer ( &$organizer ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function setOrganizer ( FixedOrganizerSiteComponent $organizer ) ;
 	
 	/**
 	 * Answer the target Id
@@ -56,22 +54,7 @@ class NavBlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function &getTargetId () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
-		
-	/**
-	 * Accepts a visitor.
-	 * 
-	 * @param object Visitor
-	 * @return object Component
-	 * @access public
-	 * @since 4/3/06
-	 */
-	function &acceptVisitor ( &$visitor ) {
-		return $visitor->visitNavBlock($this);
-	}
-
+	public function getTargetId () ;
 }
 
 ?>

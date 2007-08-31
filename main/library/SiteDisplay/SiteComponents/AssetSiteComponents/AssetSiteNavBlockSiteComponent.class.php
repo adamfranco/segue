@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.5 2007/07/30 20:37:51 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.6 2007/08/31 16:03:46 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteComponent.abstract.php");
 
 /**
  * The XML site nav block component.
@@ -18,11 +20,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.5 2007/07/30 20:37:51 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.6 2007/08/31 16:03:46 achapin Exp $
  */
 class AssetSiteNavBlockSiteComponent
 	extends AssetNavBlockSiteComponent
-	// implements SiteNavBlockSiteComponent
+	implements SiteNavBlockSiteComponent
 {	
 
 	/**
@@ -45,7 +47,7 @@ class AssetSiteNavBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	function acceptVisitor ( $visitor, $inMenu = FALSE  ) {
 		return $visitor->visitSiteNavBlock($this);
 	}
 	
@@ -78,8 +80,8 @@ class AssetSiteNavBlockSiteComponent
 	 * @access public
 	 * @since 7/25/07
 	 */
-	function &getSlot () {
-		$slotManager =& SlotManager::instance();
+	function getSlot () {
+		$slotManager = SlotManager::instance();
 		return $slotManager->getSlotForSiteId($this->getId());
 	}
 }

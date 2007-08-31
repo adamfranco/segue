@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.2 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.3 2007/08/31 16:03:46 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavOrganizerSiteComponent.abstract.php");
 
 /**
  * The Organizer that is the direct child of a NavBlock.
@@ -18,11 +20,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.2 2006/10/10 19:38:30 adamfranco Exp $
+ * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.3 2007/08/31 16:03:46 achapin Exp $
  */
 class AssetNavOrganizerSiteComponent
 	extends AssetFixedOrganizerSiteComponent 
-	// implements NavOrganizerSiteComponent
+	implements NavOrganizerSiteComponent
 {
 	
 	/**
@@ -45,7 +47,7 @@ class AssetNavOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	public function acceptVisitor ( $visitor, $inMenu = FALSE ) {
 		return $visitor->visitNavOrganizer($this);
 	}
 	
@@ -103,7 +105,7 @@ class AssetNavOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getParentNavOrganizer () {
+	public function getParentNavOrganizer () {
 		return $this;
 	}
 	
@@ -114,7 +116,7 @@ class AssetNavOrganizerSiteComponent
 	 * @access public
 	 * @since 7/28/06
 	 */
-	function &getMenuOrganizer () {		
+	public function getMenuOrganizer () {		
 		$parent =& $this->getParentComponent();
 		return $parent->getMenuOrganizer();
 	}

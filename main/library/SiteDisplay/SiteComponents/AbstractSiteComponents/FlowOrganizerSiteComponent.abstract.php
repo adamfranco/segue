@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FlowOrganizerSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: FlowOrganizerSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/OrganizerSiteComponent.abstract.php");
 
 /**
  * The Organizer subdivides its bounding cell and arranges its subcomponents in
@@ -19,36 +21,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FlowOrganizerSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: FlowOrganizerSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */
-class FlowOrganizerSiteComponent
+interface FlowOrganizerSiteComponent
 	extends OrganizerSiteComponent
 {
-
-	/**
-	 * Answer the maximum number of cells that can be displayed before overflowing
-	 * (i.e. to pagination, archiving, hiding, etc).
-	 * 
-	 * @return integer
-	 * @access public
-	 * @since 3/31/06
-	 */
-	function getMaxVisible () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
-	
-	/**
-	 * Update the maximum number of cells that can be displayed before overflowing
-	 * (i.e. to pagination, archiving, hiding, etc).
-	 * 
-	 * @param integer $newMaxVisible Greater than or equal to 1
-	 * @return void
-	 * @access public
-	 * @since 3/31/06
-	 */
-	function updateMaxVisible ( $newMaxVisible ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
 	
 	/**
 	 * Get the overflow style:
@@ -60,9 +37,7 @@ class FlowOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function getOverflowStyle () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getOverflowStyle () ;
 	
 	/**
 	 * Update the overflow style:
@@ -75,21 +50,17 @@ class FlowOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function updateOverflowStyle () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function updateOverflowStyle ( $overflowStyle ) ;
 	
 	/**
 	 * Add a subcomponent
 	 * 
-	 * @param object SiteComponent $siteComponent
+	 * @param object BlockSiteComponent $siteComponent
 	 * @return void
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function addSubcomponent ( &$siteComponent ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function addSubcomponent ( BlockSiteComponent $siteComponent ) ;
 	
 	/**
 	 * Move the contents of cellOneIndex before cellTwoIndex
@@ -100,9 +71,7 @@ class FlowOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function moveBefore ( $cellOneIndex, $cellTwoIndex ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function moveBefore ( $cellOneIndex, $cellTwoIndex ) ;
 	
 	/**
 	 * Move the contents of cellIndex to the end of the organizer
@@ -112,21 +81,7 @@ class FlowOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function moveToEnd ( $cellIndex ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
-	
-	/**
-	 * Accepts a visitor.
-	 * 
-	 * @param object Visitor
-	 * @return object Component
-	 * @access public
-	 * @since 4/3/06
-	 */
-	function &acceptVisitor ( &$visitor ) {
-		return $visitor->visitFlowOrganizer($this);
-	}
+	public function moveToEnd ( $cellIndex ) ;
 
 }
 

@@ -6,8 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.4 2006/10/11 19:00:09 adamfranco Exp $
+ * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.5 2007/08/31 16:03:46 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/../AbstractSiteComponents/MenuOrganizerSiteComponent.abstract.php");
+
 
 /**
  * The Menu organizer site component.
@@ -18,11 +21,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.4 2006/10/11 19:00:09 adamfranco Exp $
+ * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.5 2007/08/31 16:03:46 achapin Exp $
  */
 class AssetMenuOrganizerSiteComponent 
 	extends AssetFlowOrganizerSiteComponent
-	// implements MenuOrganizerSiteComponent
+	implements MenuOrganizerSiteComponent
 {
 	/**
 	 * Answer a displayName for this organizer. (Generally, a type or classification).
@@ -73,7 +76,7 @@ class AssetMenuOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	public function acceptVisitor ( $visitor, $inMenu = FALSE ) {
 		return $visitor->visitMenuOrganizer($this);
 	}
 	
@@ -140,7 +143,7 @@ class AssetMenuOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getParentNavOrganizer () {
+	public function getParentNavOrganizer () {
 		$parent =& $this->getParentComponent();
 		
 		// if this menu is nested, return the parent's nav organizer

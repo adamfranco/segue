@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: SiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */ 
 
 /**
@@ -20,9 +20,18 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: SiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */
-class SiteComponent {
+interface SiteComponent {
+	
+	/**
+	 * Answer the displayName
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 3/31/06
+	 */
+	public function getDisplayName () ;
 		
 	/**
 	 * Answer the Id
@@ -31,9 +40,7 @@ class SiteComponent {
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function getId () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getId () ;
 	
 	/**
 	 * Answer true if this component is active
@@ -42,21 +49,18 @@ class SiteComponent {
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function isActive () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay"));
-	}
+	public function isActive () ;
 	
 	/**
 	 * Accepts a visitor.
 	 * 
 	 * @param object Visitor
+	 * @param boolean $inMenu		This should be moved to another method at some point.
 	 * @return object Component
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay"));
-	}
+	public function acceptVisitor ( $visitor, $inMenu = FALSE ) ;
 }
 
 ?>

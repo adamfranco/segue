@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.10 2007/03/01 18:43:16 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.11 2007/08/31 16:03:46 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent.abstract.php");
 
 /**
  * The NavBlock component is a hierarchal node that provides a gateway to a 
@@ -19,11 +21,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.10 2007/03/01 18:43:16 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.11 2007/08/31 16:03:46 achapin Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
-	// implements NavBlockSiteComponent
+	implements NavBlockSiteComponent
 {
 
 	/**
@@ -72,7 +74,7 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &getOrganizer () {
+	public function getOrganizer () {
 		$child =& $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'NavOrganizer') {
@@ -125,7 +127,7 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function setOrganizer ( &$organizer ) {
+	public function setOrganizer ( FixedOrganizerSiteComponent $organizer ) {
 		$orgElement =& $organizer->getElement();
 		$child =& $this->_element->firstChild;
 		while ($child) {
@@ -160,7 +162,7 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	function acceptVisitor ( $visitor, $inMenu = FALSE  ) {
 		return $visitor->visitNavBlock($this);
 	}
 	

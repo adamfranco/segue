@@ -6,8 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.4 2007/01/12 16:57:13 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.5 2007/08/31 16:03:46 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteComponent.abstract.php");
+
 
 /**
  * The XML site nav block component.
@@ -18,11 +21,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.4 2007/01/12 16:57:13 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.5 2007/08/31 16:03:46 achapin Exp $
  */
 class AssetFixedOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
-	// implements FixedOrganizerSiteComponent
+	implements FixedOrganizerSiteComponent
 {
 
 	/**
@@ -45,7 +48,7 @@ class AssetFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function addSubcomponentToCell ( &$siteComponent, $cellIndex ) {
+	public function addSubcomponentToCell ( SiteComponent $siteComponent, $cellIndex ) {
 		$this->normalizeCells();
 		
 		$child =& $this->_element->firstChild;
@@ -286,7 +289,7 @@ class AssetFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	public function acceptVisitor ( $visitor, $inMenu = FALSE ) {
 		return $visitor->visitFixedOrganizer($this);
 	}
 	

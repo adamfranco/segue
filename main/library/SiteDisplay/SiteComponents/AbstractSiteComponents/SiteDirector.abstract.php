@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDirector.abstract.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: SiteDirector.abstract.php,v 1.4 2007/08/31 16:03:45 achapin Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDirector.abstract.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: SiteDirector.abstract.php,v 1.4 2007/08/31 16:03:45 achapin Exp $
  */
 interface SiteDirector {
 		
@@ -31,7 +31,7 @@ interface SiteDirector {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function getRootSiteComponent ( $id );
+	public function getRootSiteComponent ( $id );
 
 	/**
 	 * Answer true if the node of id $id is active
@@ -41,7 +41,7 @@ interface SiteDirector {
 	 * @access public
 	 * @since 4/4/06
 	 */
-	function isActive ( $id );
+	public function isActive ( $id );
 	
 	/**
 	 * Answer the component that has a particular Id
@@ -51,7 +51,7 @@ interface SiteDirector {
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function getSiteComponentById ( $id );
+	public function getSiteComponentById ( $id );
 }
 
 ?>

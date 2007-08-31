@@ -6,8 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.5 2007/05/22 17:05:27 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.6 2007/08/31 16:03:46 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponent.abstract.php");
+
 
 /**
  * The XML site nav block component.
@@ -18,11 +21,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.5 2007/05/22 17:05:27 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.6 2007/08/31 16:03:46 achapin Exp $
  */
-class AssetOrganizerSiteComponent
+abstract class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
-	// implements OrganizersiteComponent
+	implements OrganizersiteComponent
 {
 
 	/**
@@ -171,7 +174,7 @@ class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &getSubcomponentForCell ( $i ) {
+	function getSubcomponentForCell ( $i ) {
 		$childComponents =& $this->_getChildComponents();
 
 		// return the subcomponent or null
@@ -337,8 +340,8 @@ class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getParentNavOrganizer () {
-		$parent =& $this->getParentComponent();
+	function getParentNavOrganizer () {
+		$parent = $this->getParentComponent();
 		return $parent->getParentNavOrganizer();
 	}
 	

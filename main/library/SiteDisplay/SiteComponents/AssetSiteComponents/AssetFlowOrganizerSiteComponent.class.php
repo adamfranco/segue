@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.8 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.9 2007/08/31 16:03:46 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComponent.abstract.php");
 
 /**
  * The XML site nav block component.
@@ -18,11 +20,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.8 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.9 2007/08/31 16:03:46 achapin Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
-	// implements FlowOrganizerSiteComponent
+	implements FlowOrganizerSiteComponent
 {
 
 	/**
@@ -90,7 +92,7 @@ class AssetFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function addSubcomponent ( &$siteComponent ) {
+	public function addSubcomponent ( BlockSiteComponent $siteComponent ) {
 		$cell =& $this->_element->ownerDocument->createElement('cell');
 		$snippet =& $this->_element->ownerDocument->createElement($siteComponent->getComponentClass());
 		$snippet->setAttribute('id', $siteComponent->getId());
@@ -115,7 +117,7 @@ class AssetFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
+	public function putSubcomponentInCell ( BlockSiteComponent $siteComponent, $cellIndex ) {
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {			
 			// A cell will have no old parent if it is newly created.
@@ -228,7 +230,7 @@ class AssetFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	public function acceptVisitor ( $visitor, $inMenu = FALSE ) {
 		return $visitor->visitFlowOrganizer($this);
 	}
 	

@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.9 2007/07/20 20:21:24 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.10 2007/08/31 16:03:46 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
 
 /**
  * The site component is the root abstract class that all site components inherit
@@ -20,10 +22,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.9 2007/07/20 20:21:24 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.10 2007/08/31 16:03:46 achapin Exp $
  */
-class AssetSiteComponent 
-	// implements SiteComponent
+abstract class AssetSiteComponent 
+	implements SiteComponent
 {
 
 	/**
@@ -336,18 +338,6 @@ class AssetSiteComponent
 			$element->removeAttribute('width');
 		
 		$this->_saveXml();
-	}
-	
-	/**
-	 * Accepts a visitor.
-	 * 
-	 * @param object Visitor
-	 * @return object Component
-	 * @access public
-	 * @since 4/3/06
-	 */
-	function &acceptVisitor ( &$visitor ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay"));
 	}
 	
 /*********************************************************

@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FixedOrganizerSiteComponent.abstract.php,v 1.2 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: FixedOrganizerSiteComponent.abstract.php,v 1.3 2007/08/31 16:03:45 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/OrganizerSiteComponent.abstract.php");
 
 /**
  * The Organizer subdivides its bounding cell and arranges its subcomponents in
@@ -19,9 +21,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: FixedOrganizerSiteComponent.abstract.php,v 1.2 2006/09/18 16:23:32 adamfranco Exp $
+ * @version $Id: FixedOrganizerSiteComponent.abstract.php,v 1.3 2007/08/31 16:03:45 achapin Exp $
  */
-class FixedOrganizerSiteComponent
+interface FixedOrganizerSiteComponent
 	extends OrganizerSiteComponent
 {	
 	/**
@@ -33,9 +35,7 @@ class FixedOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function addSubcomponentToCell ( &$siteComponent, $cellIndex ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function addSubcomponentToCell ( SiteComponent $siteComponent, $cellIndex ) ;
 	
 	/**
 	 * Swap the contents of two cells
@@ -46,32 +46,8 @@ class FixedOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function swapCells ( $cellOneIndex, $cellTwoIndex ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function swapCells ( $cellOneIndex, $cellTwoIndex ) ;
 	
-	/**
-	 * Answer the number of cells. Cells are indexed from zero
-	 * 
-	 * @return integer
-	 * @access public
-	 * @since 9/18/06
-	 */
-	function getNumCells () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
-	
-	/**
-	 * Accepts a visitor.
-	 * 
-	 * @param object Visitor
-	 * @return object Component
-	 * @access public
-	 * @since 4/3/06
-	 */
-	function &acceptVisitor ( &$visitor ) {
-		return $visitor->visitFixedOrganizer($this);
-	}
 }
 
 ?>

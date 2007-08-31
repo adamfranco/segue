@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: BlockSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */ 
+
+require_once(dirname(__FILE__)."/SiteComponent.abstract.php");
 
 /**
  * The Block is a non-organizational site component. Blocks make up content
@@ -19,22 +21,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSiteComponent.abstract.php,v 1.1 2006/04/05 16:11:30 adamfranco Exp $
+ * @version $Id: BlockSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
  */
-class BlockSiteComponent
+interface BlockSiteComponent
 	extends SiteComponent
 {
-		
-	/**
-	 * Answer the displayName
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 3/31/06
-	 */
-	function getDisplayName () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
 	
 	/**
 	 * Update the displayName
@@ -44,9 +35,7 @@ class BlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function updateDisplayName ( $displayName ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function updateDisplayName ( $displayName ) ;
 	
 	/**
 	 * Answer the description
@@ -55,9 +44,7 @@ class BlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function getDescription () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getDescription () ;
 	
 	/**
 	 * Update the description
@@ -67,9 +54,7 @@ class BlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function updateDescription ( $description ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function updateDescription ( $description ) ;
 	
 	/**
 	 * Answer the HTML markup that represents the title of the block. This may
@@ -80,9 +65,7 @@ class BlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function getTitleMarkup () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getTitleMarkup () ;
 	
 	/**
 	 * Answer the contentMarkup
@@ -91,9 +74,7 @@ class BlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function getContentMarkup () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	public function getContentMarkup () ;
 	
 	/**
 	 * Update the contentMarkup
@@ -103,21 +84,7 @@ class BlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function updateContentMarkup ( $contentMarkup ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
-	
-	/**
-	 * Accepts a visitor.
-	 * 
-	 * @param object Visitor
-	 * @return object Component
-	 * @access public
-	 * @since 4/3/06
-	 */
-	function &acceptVisitor ( &$visitor ) {
-		return $visitor->visitBlock($this);
-	}
+	public function updateContentMarkup ( $contentMarkup ) ;
 
 }
 
