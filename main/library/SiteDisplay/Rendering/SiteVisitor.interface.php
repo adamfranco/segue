@@ -1,30 +1,36 @@
 <?php
 /**
- * @since 5/24/07
+ * @since 8/31/07
  * @package segue.libraries.site_display
  * 
- * @copyright Copyright &copy; 2005, Middlebury College
+ * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IsBlockVisitor.class.php,v 1.2 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: SiteVisitor.interface.php,v 1.1 2007/08/31 16:34:57 achapin Exp $
  */ 
 
-require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
-
 /**
- * Return true if passed to a block
+ * A visitor that can traverse the site hierarchy.
  * 
- * @since 5/24/07
+ * @since 8/31/07
  * @package segue.libraries.site_display
  * 
- * @copyright Copyright &copy; 2005, Middlebury College
+ * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IsBlockVisitor.class.php,v 1.2 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: SiteVisitor.interface.php,v 1.1 2007/08/31 16:34:57 achapin Exp $
  */
-class IsBlockVisitor 
-	implements SiteVisitor
-{
+interface SiteVisitor {
+		
+	/**
+	 * Visit a Block
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @return mixed
+	 * @access public
+	 * @since 8/31/07
+	 */
+	public function visitBlock ( BlockSiteComponent $siteComponent ) ;
 	
 	/**
 	 * Visit a Block
@@ -34,21 +40,7 @@ class IsBlockVisitor
 	 * @access public
 	 * @since 8/31/07
 	 */
-	public function visitBlock ( BlockSiteComponent $siteComponent ) {
-		return true;
-	}
-	
-	/**
-	 * Visit a Block
-	 * 
-	 * @param object BlockSiteComponent $siteComponent
-	 * @return mixed
-	 * @access public
-	 * @since 8/31/07
-	 */
-	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) {
-		return true;
-	}
+	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) ;
 	
 	/**
 	 * Visit a Navigation Block
@@ -58,9 +50,7 @@ class IsBlockVisitor
 	 * @access public
 	 * @since 8/31/07
 	 */
-	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
-		return false;
-	}
+	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) ;
 	
 	/**
 	 * Visit a Site Navigation Block
@@ -70,9 +60,7 @@ class IsBlockVisitor
 	 * @access public
 	 * @since 8/31/07
 	 */
-	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
-		return false;
-	}
+	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) ;
 	
 	/**
 	 * Visit a Fixed Organizer
@@ -82,9 +70,7 @@ class IsBlockVisitor
 	 * @access public
 	 * @since 8/31/07
 	 */
-	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $siteComponent ) {
-		return false;
-	}
+	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $siteComponent ) ;
 	
 	/**
 	 * Visit a the fixed Organizer of a nav block
@@ -94,9 +80,7 @@ class IsBlockVisitor
 	 * @access public
 	 * @since 8/31/07
 	 */
-	public function visitNavOrganizer ( NavOrganizerSiteComponent $siteComponent ) {
-		return false;
-	}
+	public function visitNavOrganizer ( NavOrganizerSiteComponent $siteComponent ) ;
 	
 	/**
 	 * Visit a Flow/Content Organizer
@@ -106,9 +90,7 @@ class IsBlockVisitor
 	 * @access public
 	 * @since 8/31/07
 	 */
-	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $siteComponent ) {
-		return false;
-	}
+	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $siteComponent ) ;
 	
 	/**
 	 * Visit a MenuOrganizerSiteComponent
@@ -118,9 +100,8 @@ class IsBlockVisitor
 	 * @access public
 	 * @since 8/31/07
 	 */
-	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) {
-		return false;
-	}
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) ;
+	
 }
 
 ?>

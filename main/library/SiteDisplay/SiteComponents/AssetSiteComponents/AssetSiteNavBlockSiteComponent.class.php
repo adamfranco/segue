@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.6 2007/08/31 16:03:46 achapin Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.7 2007/08/31 16:34:58 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteCompo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.6 2007/08/31 16:03:46 achapin Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.7 2007/08/31 16:34:58 achapin Exp $
  */
 class AssetSiteNavBlockSiteComponent
 	extends AssetNavBlockSiteComponent
@@ -47,7 +47,7 @@ class AssetSiteNavBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function acceptVisitor ( $visitor, $inMenu = FALSE  ) {
+	public function acceptVisitor ( SiteVisitor $visitor, $inMenu = FALSE ) {
 		return $visitor->visitSiteNavBlock($this);
 	}
 	

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.9 2007/08/31 16:03:46 achapin Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.10 2007/08/31 16:34:57 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.9 2007/08/31 16:03:46 achapin Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.10 2007/08/31 16:34:57 achapin Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -230,7 +230,7 @@ class AssetFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	public function acceptVisitor ( $visitor, $inMenu = FALSE ) {
+	public function acceptVisitor ( SiteVisitor $visitor, $inMenu = FALSE ) {
 		return $visitor->visitFlowOrganizer($this);
 	}
 	

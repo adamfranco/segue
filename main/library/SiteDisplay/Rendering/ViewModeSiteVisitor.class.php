@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.38 2007/08/23 17:57:45 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.39 2007/08/31 16:34:57 achapin Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -22,6 +22,8 @@ require_once(HARMONI."GUIManager/Layouts/XLayout.class.php");
 require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
 require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
 
+require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
+
 /**
  * The ViewModeVisitor traverses the site hierarchy, rendering each component.
  * 
@@ -31,9 +33,11 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.38 2007/08/23 17:57:45 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.39 2007/08/31 16:34:57 achapin Exp $
  */
-class ViewModeSiteVisitor {
+class ViewModeSiteVisitor 
+	implements SiteVisitor
+{
 		
 	/**
 	 * Constructor
@@ -68,7 +72,7 @@ class ViewModeSiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitBlock ( &$block ) {
+	public function visitBlock ( BlockSiteComponent $block ) {
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");	
 		if (!$authZ->isUserAuthorized(
@@ -200,7 +204,7 @@ class ViewModeSiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitBlockInMenu ( &$block ) {
+	public function visitBlockInMenu ( BlockSiteComponent $block ) {
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");	
 		if (!$authZ->isUserAuthorized(
@@ -235,7 +239,7 @@ class ViewModeSiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitNavBlock ( &$navBlock ) {
+	public function visitNavBlock ( NavBlockSiteComponent $navBlock ) {
 		$authZ =& Services::getService("AuthZ");
 		$idManager =& Services::getService("Id");	
 		if (!$authZ->isUserAuthorizedBelow(
@@ -299,7 +303,7 @@ class ViewModeSiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitSiteNavBlock ( &$siteNavBlock ) {
+	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteNavBlock ) {
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
 		$childOrganizer =& $siteNavBlock->getOrganizer();
@@ -342,7 +346,7 @@ class ViewModeSiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitFixedOrganizer ( &$organizer ) {
+	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $organizer ) {
 		$guiContainer =& new Container (new TableLayout($organizer->getNumColumns()),
 										BLANK,
 										1);
@@ -373,7 +377,7 @@ class ViewModeSiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitNavOrganizer ( &$organizer ) {
+	public function visitNavOrganizer ( NavOrganizerSiteComponent $organizer ) {
 		return $this->visitFixedOrganizer($organizer);
 	}
 	
@@ -385,7 +389,7 @@ class ViewModeSiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitFlowOrganizer( &$organizer ) {
+	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $organizer ) {
 		$numCells = $organizer->getTotalNumberOfCells();
 		
 		if ($organizer->getNumRows() == 0)
@@ -421,7 +425,7 @@ class ViewModeSiteVisitor {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitMenuOrganizer ( &$organizer ) {	
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {	
 		// Choose layout direction based on number of rows
 		if ($this->_menuNestingLevel) {
 			$layout =& new YLayout();

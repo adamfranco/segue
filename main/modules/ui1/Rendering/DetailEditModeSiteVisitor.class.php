@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.5 2007/07/20 20:21:24 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.6 2007/08/31 16:34:58 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.5 2007/07/20 20:21:24 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.6 2007/08/31 16:34:58 achapin Exp $
  */
 class DetailEditModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -127,7 +127,7 @@ class DetailEditModeSiteVisitor
 	 * @access public
 	 * @since 5/18/07
 	 */
-	function &visitFlowOrganizer( &$organizer ) {
+	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $organizer ) {
 		if ($organizer->getId() == $this->_flowOrgId) {
 			return $this->visitTargetBlock();
 		} else {
@@ -143,7 +143,7 @@ class DetailEditModeSiteVisitor
 	 * @access public
 	 * @since 5/18/07
 	 */
-	function &visitMenuOrganizer( &$organizer ) {
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {
 		if ($organizer->getId() == $this->_flowOrgId) {
 			return $this->visitTargetBlock();
 		} else {

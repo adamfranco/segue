@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.3 2007/08/31 16:03:46 achapin Exp $
+ * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.4 2007/08/31 16:34:58 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavOrganizerSiteCompo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.3 2007/08/31 16:03:46 achapin Exp $
+ * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.4 2007/08/31 16:34:58 achapin Exp $
  */
 class AssetNavOrganizerSiteComponent
 	extends AssetFixedOrganizerSiteComponent 
@@ -47,7 +47,7 @@ class AssetNavOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	public function acceptVisitor ( $visitor, $inMenu = FALSE ) {
+	public function acceptVisitor ( SiteVisitor $visitor, $inMenu = FALSE ) {
 		return $visitor->visitNavOrganizer($this);
 	}
 	

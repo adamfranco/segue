@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.8 2007/07/20 20:21:23 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.9 2007/08/31 16:34:57 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.8 2007/07/20 20:21:23 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.9 2007/08/31 16:34:57 achapin Exp $
  */
 class DetailViewModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -127,7 +127,7 @@ class DetailViewModeSiteVisitor
 	 * @access public
 	 * @since 5/18/07
 	 */
-	function &visitFlowOrganizer( &$organizer ) {
+	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $organizer ) {
 		if ($organizer->getId() == $this->_flowOrgId) {
 			return $this->visitTargetBlock();
 		} else {
@@ -143,7 +143,7 @@ class DetailViewModeSiteVisitor
 	 * @access public
 	 * @since 5/18/07
 	 */
-	function &visitMenuOrganizer( &$organizer ) {
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {
 		if ($organizer->getId() == $this->_flowOrgId) {
 			return $this->visitTargetBlock();
 		} else {

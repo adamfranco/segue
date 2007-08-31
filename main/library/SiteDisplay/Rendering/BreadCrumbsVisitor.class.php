@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.1 2007/05/31 19:49:20 adamfranco Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.2 2007/08/31 16:34:57 achapin Exp $
  */ 
+ 
+require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
 
 /**
  * Return a bread-crumbs string
@@ -18,9 +20,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.1 2007/05/31 19:49:20 adamfranco Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.2 2007/08/31 16:34:57 achapin Exp $
  */
-class BreadCrumbsVisitor {
+class BreadCrumbsVisitor 
+	implements SiteVisitor
+{
 
 	/**
 	 * Constructor
@@ -60,11 +64,23 @@ class BreadCrumbsVisitor {
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function &visitBlock ( &$block ) {
+	public function visitBlock ( BlockSiteComponent $block ) {
 		$this->addLink($block);
 		
 		$parent =& $block->getParentComponent();
 		return $parent->acceptVisitor($this);
+	}
+	
+	/**
+	 * Visit a Block
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @return mixed
+	 * @access public
+	 * @since 8/31/07
+	 */
+	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) {
+		$this->visitBlock($siteComponent);
 	}
 	
 	/**
@@ -75,7 +91,7 @@ class BreadCrumbsVisitor {
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function &visitNavBlock ( &$navBlock ) {		
+	public function visitNavBlock ( NavBlockSiteComponent $navBlock ) {		
 		return $this->visitBlock($navBlock);
 	}
 	
@@ -87,7 +103,7 @@ class BreadCrumbsVisitor {
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function &visitSiteNavBlock ( &$siteNavBlock ) {
+	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteNavBlock ) {
 		$this->addLink($siteNavBlock);
 		
 		$val = implode(
@@ -105,7 +121,7 @@ class BreadCrumbsVisitor {
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function &visitFixedOrganizer ( &$organizer ) {		
+	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $organizer ) {		
 		$parent =& $organizer->getParentComponent();
 		return $parent->acceptVisitor($this);
 	}
@@ -118,7 +134,7 @@ class BreadCrumbsVisitor {
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function &visitNavOrganizer ( &$organizer ) {
+	public function visitNavOrganizer ( NavOrganizerSiteComponent $organizer ) {
 		$parent =& $organizer->getParentComponent();
 		return $parent->acceptVisitor($this);
 	}
@@ -131,7 +147,7 @@ class BreadCrumbsVisitor {
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function &visitFlowOrganizer( &$organizer ) {
+	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $organizer ) {
 		$parent =& $organizer->getParentComponent();
 		return $parent->acceptVisitor($this);
 	}
@@ -144,7 +160,7 @@ class BreadCrumbsVisitor {
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function &visitMenuOrganizer ( &$organizer ) {	
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {	
 		$parent =& $organizer->getParentComponent();
 		return $parent->acceptVisitor($this);
 	}

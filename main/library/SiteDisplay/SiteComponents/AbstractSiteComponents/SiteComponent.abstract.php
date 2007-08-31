@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
+ * @version $Id: SiteComponent.abstract.php,v 1.3 2007/08/31 16:34:57 achapin Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
+ * @version $Id: SiteComponent.abstract.php,v 1.3 2007/08/31 16:34:57 achapin Exp $
  */
 interface SiteComponent {
 	
@@ -60,7 +60,7 @@ interface SiteComponent {
 	 * @access public
 	 * @since 4/3/06
 	 */
-	public function acceptVisitor ( $visitor, $inMenu = FALSE ) ;
+	public function acceptVisitor ( SiteVisitor $visitor, $inMenu = FALSE ) ;
 }
 
 ?>

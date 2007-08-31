@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.12 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.13 2007/08/31 16:34:58 achapin Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.12 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.13 2007/08/31 16:34:58 achapin Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -116,7 +116,7 @@ END;
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitBlockInMenu ( &$block ) {
+	public function visitBlockInMenu ( BlockSiteComponent $block ) {
 		$menuItem =& parent::visitBlockInMenu($block);
 		
 		// Create and return the component
@@ -139,7 +139,7 @@ END;
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitNavBlock ( &$navBlock ) {
+	public function visitNavBlock ( NavBlockSiteComponent $navBlock ) {
 		$menuItems =& parent::visitNavBlock($navBlock);
 		
 		if (!$menuItems)
@@ -165,7 +165,7 @@ END;
 	 * @access public
 	 * @since 1/15/07
 	 */
-	function &visitFlowOrganizer ( &$organizer ) {		
+	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $organizer ) {		
 		$numCells = $organizer->getTotalNumberOfCells();
 		
 		if ($organizer->getNumRows() == 0)
@@ -216,7 +216,7 @@ END;
 	 * @access public
 	 * @since 1/15/07
 	 */
-	function &visitMenuOrganizer ( &$organizer ) {
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {
 		$guiContainer =& parent::visitMenuOrganizer($organizer);
 		
 		// Add the "Append" form to the organizer
