@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.12 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: display.act.php,v 1.13 2007/09/03 22:57:21 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.12 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: display.act.php,v 1.13 2007/09/03 22:57:21 achapin Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.12 2007/08/28 00:25:41 achapin Exp $
+		 * @version $Id: display.act.php,v 1.13 2007/09/03 22:57:21 achapin Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -61,6 +61,21 @@ class displayAction
 		
 		
 		$mainScreen =& new Container($yLayout, BLOCK, 1);
+
+		// :: login, links and commands
+		$this->headRow =& $mainScreen->add(
+			new Container($xLayout, BLOCK, 1), 
+			"100%", null, CENTER, TOP);
+			
+		
+		$rightHeadColumn =& $this->headRow->add(
+			new Container($yLayout, BLANK, 1), 
+			null, null, CENTER, TOP);
+
+		$rightHeadColumn->add($this->getLoginComponent(), 
+				null, null, RIGHT, TOP);
+		
+
 		
 	// :: Top Row ::
 		// The top row for the logo and status bar.
@@ -74,9 +89,11 @@ class displayAction
 		// Language Bar
 		$harmoni->history->markReturnURL("polyphony/language/change");
 		$languageText = "\n<form action='".$harmoni->request->quickURL("language", "change")."' method='post'>";
-	$harmoni->request->startNamespace("polyphony");
-	$languageText .= "\n\t<div style='text-align: center'>\n\t<select name='".$harmoni->request->getName("language")."'>";
-	$harmoni->request->endNamespace();
+			
+		$harmoni->request->startNamespace("polyphony");
+		$languageText .= "\n\t<div style='text-align: right'>\n\t<select style='font-size: 10px' name='".$harmoni->request->getName("language")."'>";
+		$harmoni->request->endNamespace();
+		
 		$langLoc =& Services::getService('Lang');
 		$currentCode = $langLoc->getLanguage();
 		$languages = $langLoc->getLanguages();
@@ -87,16 +104,18 @@ class displayAction
 			$languageText .= $language."</option>";
 		}
 		$languageText .= "\n\t</select>";
-		$languageText .= "\n\t<input type='submit' />";
+		
+		
+		$languageText .= "\n\t<input class='button small' value='Set language'type='submit' />";
 		$languageText .= "\n\t</div>\n</form>";
 		
 		$languageBar =& new Component($languageText, BLANK, 1);
 		$headRow->add($languageBar, null, null, LEFT,TOP);
 		
 		// Pretty Login Box
-		$loginRow =& new Container($yLayout, OTHER, 1);
-		$headRow->add($loginRow, null, null, RIGHT, TOP);
-		$loginRow->add($this->getLoginComponent(), null, null, RIGHT, TOP);
+// 		$loginRow =& new Container($yLayout, OTHER, 1);
+// 		$headRow->add($loginRow, null, null, RIGHT, TOP);
+// 		$loginRow->add($this->getLoginComponent(), null, null, RIGHT, TOP);
 				
 		//Add the headerRow to the mainScreen
 		$mainScreen->add($headRow, "100%", null, LEFT, TOP);
@@ -208,11 +227,11 @@ class displayAction
 				"\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
 				"' align='right' method='post'><small>".
-				"\n\t"._("Username:")." <input type='text' size='8' 
+				"\n\t"._("Username:")." <input class='small' type='text' size='8' 
 					name='$usernameField'/>".
-				"\n\t"._("Password:")." <input type='password' size ='8' 
+				"\n\t"._("Password:")." <input class='small' type='password' size ='8' 
 					name='$passwordField'/>".
-				"\n\t <input type='submit' value='Log In' />".
+				"\n\t <input class='button small' type='submit' value='Log in' />".
 				"\n</small></form></div>\n";
 			$harmoni->request->endNamespace();
 		}		

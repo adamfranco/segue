@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ContentRssSiteVisitor.class.php,v 1.1 2007/08/31 16:43:52 achapin Exp $
+ * @version $Id: ContentRssSiteVisitor.class.php,v 1.2 2007/09/03 22:57:20 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.clas
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ContentRssSiteVisitor.class.php,v 1.1 2007/08/31 16:43:52 achapin Exp $
+ * @version $Id: ContentRssSiteVisitor.class.php,v 1.2 2007/09/03 22:57:20 achapin Exp $
  */
 class ContentRssSiteVisitor
 	extends ViewModeSiteVisitor
@@ -66,6 +66,11 @@ class ContentRssSiteVisitor
 		
 			$item->setTitle($block->getDisplayName());
 			$item->setDescription($this->getPluginContent($block));
+			$item->setLink($this->getDetailUrl($block->getId()));
+		//	$item->setPubDate();
+		//	$item->setLastBuildDate();
+		//	$item->setManagingEditor();
+
 			
 			return;
 		} else {		
@@ -163,6 +168,23 @@ class ContentRssSiteVisitor
 	function visitNavOrganizer ( NavOrganizerSiteComponent $organizer ) {
 		$this->visitFixedOrganizer($organizer);
 	}
+
+	/**
+	 * Answer the detail url of a block
+	 * 
+	 * @param string $id
+	 * @return string
+	 * @access public
+	 * @since 5/18/07
+	 */
+	function getDetailUrl ($id) {
+		$harmoni =& Harmoni::instance();
+		return $harmoni->request->quickURL(
+				$harmoni->request->getRequestedModule(),
+				"view",
+				array("node" => $id));
+	}
+
 	
 }
 

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.10 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.11 2007/09/03 22:57:21 achapin Exp $
  */ 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.abstract.php");
 
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.ab
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.10 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.11 2007/09/03 22:57:21 achapin Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -87,7 +87,7 @@ class AssetBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function getId () {
-		$id =& $this->_asset->getId();
+		$id = $this->_asset->getId();
 		return $id->getIdString();
 	}
 		

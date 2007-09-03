@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.9 2007/08/23 19:45:46 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.10 2007/09/03 22:57:21 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.9 2007/08/23 19:45:46 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.10 2007/09/03 22:57:21 achapin Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -103,14 +103,14 @@ class listAction
 		// UI selection
 		print "\n\t<form action='".$harmoni->request->quickURL()."' method='post' style='float: right;'>";
 		$options = array ('ui1' => _("Classic Mode"), 'ui2' => _("New Mode"));
-		print "\n\t\t<select name='".RequestContext::name('user_interface')."'>";
+		print "\n\t\t<select style='font-size: 10px' name='".RequestContext::name('user_interface')."'>";
 		foreach ($options as $key => $val) {
 			print "\n\t\t\t<option value='$key'";
 			print (($this->getUiModule() == $key)?" selected='selected'":"");
 			print ">$val</option>";
 		}
 		print "\n\t\t</select>";
-		print "\n\t\t<input type='submit' value='"._('Set interface')."'/>";
+		print "\n\t\t<input class='button small' type='submit' value='"._('Set UI')."'/>";
 		print "\n\t</form>";
 		
 		// Create Site Button
@@ -371,7 +371,7 @@ function printSiteShort($asset, $action, $num) {
 	
 	$description =& HtmlString::withValue($asset->getDescription());
 	$description->trim(25);
-	print  "\n\t<div style='font-size: smaller;'>".$description->asString()."</div>";	
+	print  "\n\t<div class='portal_list_site_description'>".$description->asString()."</div>";	
 	
 	$component =& new UnstyledBlock(ob_get_contents());
 	ob_end_clean();

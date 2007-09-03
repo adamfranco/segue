@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.39 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.40 2007/09/03 22:57:20 achapin Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.39 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.40 2007/09/03 22:57:20 achapin Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -84,6 +84,7 @@ class ViewModeSiteVisitor
 		}
 				
 		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
+	
 		
 		if ($this->showBlockTitle($block)) {
 			$guiContainer->add(
@@ -99,6 +100,9 @@ class ViewModeSiteVisitor
 				$this->getPluginContent($block),
 				STANDARD_BLOCK), 
 			$block->getWidth(), null, null, TOP);
+			
+// 		printpre("width:".$block->getWidth());
+// 		exit;
 		
 		return $guiContainer;
 	}
@@ -306,9 +310,10 @@ class ViewModeSiteVisitor
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteNavBlock ) {
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
+				
 		$childOrganizer =& $siteNavBlock->getOrganizer();
 		$childGuiComponent =& $childOrganizer->acceptVisitor($this);
-		
+				
 		// Check completeness and render any nodes still waiting for targets
 		foreach (array_keys($this->_missingTargets) as $targetId) {
 			if (!is_object($this->_emptyCellContainers[$targetId]))
@@ -323,6 +328,7 @@ class ViewModeSiteVisitor
 				$this->_emptyCellPlaceholders[$targetId],
 				$this->_missingTargets[$targetId], 
 				$width, '100%', null, TOP);
+				
 				
 			unset($this->_emptyCellContainers[$targetId]);
 			unset($this->_emptyCellPlaceholders[$targetId]);

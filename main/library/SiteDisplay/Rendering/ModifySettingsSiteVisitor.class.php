@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.7 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.8 2007/09/03 22:57:20 achapin Exp $
  */ 
  
  require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.7 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.8 2007/09/03 22:57:20 achapin Exp $
  */
 class ModifySettingsSiteVisitor 
 	implements SiteVisitor
@@ -255,6 +255,7 @@ class ModifySettingsSiteVisitor
 		$this->applyDescription($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}

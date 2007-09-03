@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.9 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: view.act.php,v 1.10 2007/09/03 22:57:21 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.9 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: view.act.php,v 1.10 2007/09/03 22:57:21 achapin Exp $
  */
 class viewAction
 	extends displayAction {
@@ -117,7 +117,7 @@ class viewAction
 		// :: login, links and commands
 		$this->headRow =& $mainScreen->add(
 			new Container($xLayout, BLOCK, 1), 
-			"95%", null, CENTER, TOP);
+			"100%", null, CENTER, TOP);
 			
 		$this->leftHeadColumn =& $this->headRow->add(
 			$this->getSegueLinksComponent(), 
@@ -141,13 +141,26 @@ class viewAction
 			"100%", null, CENTER, TOP);
 		
 		$this->leftHeadColumn =& $this->headRow->add(
-			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"
-				."<div class='breadcrumbs'>".$this->getBreadCrumbs()."</div>"), 
+			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"),
 			null, null, LEFT, TOP);
-				
-		
+
+		// :: Breadcrumb row ::
+		$this->breadcrumb =& $mainScreen->add(
+			new Container($xLayout, HEADER, 2), 
+			"100%", null, CENTER, TOP);
+			
+		$this->breadcrumb->add(
+			new UnstyledBlock("<div class='breadcrumbs'>".$this->getBreadCrumbs()."</div>"), 
+			null, null, LEFT, TOP);
+
+						
 		// :: Site ::
-		$mainScreen->add($this->siteGuiComponent);
+	//	$mainScreen->add($this->siteGuiComponent);
+		$mainScreen->add($this->siteGuiComponent,
+			$rootSiteComponent->getWidth(), null, CENTER, TOP);
+		
+// 		printpre("width:".$rootSiteComponent->getWidth());
+// 		exit;
 		
 		
 		// :: Footer ::

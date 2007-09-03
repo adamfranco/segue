@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.7 2007/09/03 22:57:21 achapin Exp $
  */ 
  
  require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.6 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.7 2007/09/03 22:57:21 achapin Exp $
  */
 class ControlsSiteVisitor 
 	implements SiteVisitor
@@ -576,7 +576,7 @@ END;
 		$this->printDisplayName($siteComponent);		
 		$this->printDescription($siteComponent);
 		$this->printCommentSettings($siteComponent);
-		
+		$this->printWidth($siteComponent);
 		return $this->controlsEnd($siteComponent);
 	}
 	
