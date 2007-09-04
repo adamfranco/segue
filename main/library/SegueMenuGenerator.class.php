@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.9 2007/07/25 16:31:27 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.10 2007/09/04 17:38:42 adamfranco Exp $
  */
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.9 2007/07/25 16:31:27 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.10 2007/09/04 17:38:42 adamfranco Exp $
  */
 
 class SegueMenuGenerator {
@@ -30,41 +30,41 @@ class SegueMenuGenerator {
 	 *		"module.action" .
 	 * @return object MenuLayout
 	 */
-	function &generateMainMenu($harmoni) {
+	function generateMainMenu($harmoni) {
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		
 		list($module, $action) = explode(".", $harmoni->request->getRequestedModuleAction());
 		
-		$mainMenu =& new Menu(new YLayout(), 1);
+		$mainMenu = new Menu(new YLayout(), 1);
 
 	// :: Home ::
-		$mainMenu_item =& new MenuItemLink(
+		$mainMenu_item = new MenuItemLink(
 			_("Home"), 
 			$harmoni->request->quickURL("home", "welcome"), 
 			($module == "home" && $action == "welcome")?TRUE:FALSE, 1);
 		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);
 
 
-		$mainMenu_item =& new MenuItemLink(
+		$mainMenu_item = new MenuItemLink(
 			_("Plugin Tests"),
 			$harmoni->request->quickURL("plugin_manager", "test"), 
 			($module == "plugin_manager")?TRUE:FALSE,1);
 		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);
 		
-		$mainMenu_item =& new MenuItemLink(
+		$mainMenu_item = new MenuItemLink(
 			_("Portal"),
 			$harmoni->request->quickURL('portal', "list"), 
 			($module == "portal" && $action == 'list')?TRUE:FALSE,1);
 		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);		
 		
-		$mainMenu_item8 =& new MenuItemLink(
+		$mainMenu_item8 = new MenuItemLink(
 			_("User Tools"),
 			$harmoni->request->quickURL("user", "main"), 
 			(ereg("^user$", $module))?TRUE:FALSE, 1);
 		$mainMenu->add($mainMenu_item8, "100%", null, LEFT, CENTER);
 		
-		$mainMenu_item7 =& new MenuItemLink(_("Admin Tools"),
+		$mainMenu_item7 = new MenuItemLink(_("Admin Tools"),
 			$harmoni->request->quickURL("admin", "main"), 
 			(ereg("^admin$",$module))?TRUE:FALSE, 1);
 		$mainMenu->add($mainMenu_item7, "100%", null, LEFT, CENTER);

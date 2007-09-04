@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.12 2007/07/20 20:21:23 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.13 2007/09/04 17:38:42 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.12 2007/07/20 20:21:23 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.13 2007/09/04 17:38:42 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -43,9 +43,9 @@ class CommentManager {
 	 * @since 5/26/05
 	 * @static
 	 */
-	function &instance () {
+	function instance () {
 		if (!defined("COMMENT_MANAGER_INSTANTIATED")) {
-			$GLOBALS['__commentManager'] =& new CommentManager();
+			$GLOBALS['__commentManager'] = new CommentManager();
 			define("COMMENT_MANAGER_INSTANTIATED", true);
 		}
 		
@@ -60,7 +60,7 @@ class CommentManager {
 	 * @since 7/3/07
 	 */
 	function CommentManager () {
-		$this->mediaFileType =& new Type ('segue', 'edu.middlebury', 'media_file',
+		$this->mediaFileType = new Type ('segue', 'edu.middlebury', 'media_file',
 				'A file that is uploaded to Segue.');
 		$this->_comments = array();
 		$this->_allComments = array();
@@ -76,25 +76,25 @@ class CommentManager {
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function &createRootComment ( &$assetOrId, &$type ) {
+	function createRootComment ( $assetOrId, $type ) {
 		if (method_exists($assetOrId, 'getId')) {
-			$asset =& $assetOrId;
-			$id =& $asset->getId();
+			$asset = $assetOrId;
+			$id = $asset->getId();
 		} else {
-			$repositoryManager =& Services::getService("Repository");
-			$idManager =& Services::getService("Id");
-			$repository =& $repositoryManager->getRepository(
+			$repositoryManager = Services::getService("Repository");
+			$idManager = Services::getService("Id");
+			$repository = $repositoryManager->getRepository(
 				$idManager->getId("edu.middlebury.segue.sites_repository"));
-			$asset =& $repository->getAsset($assetOrId);
-			$id =& $assetOrId;
+			$asset = $repository->getAsset($assetOrId);
+			$id = $assetOrId;
 		}
 		
-		$commentContainer =& $this->_getCommentContainer($asset);
+		$commentContainer = $this->_getCommentContainer($asset);
 		
-		$repository =& $asset->getRepository();
-		$commentAsset =& $repository->createAsset(_("(untitled)"), "", $type);
+		$repository = $asset->getRepository();
+		$commentAsset = $repository->createAsset(_("(untitled)"), "", $type);
 		$commentContainer->addAsset($commentAsset->getId());
-		$comment =& $this->getComment($commentAsset);
+		$comment = $this->getComment($commentAsset);
 		
 		// Clear our order caches
 		unset($this->_rootComments[$id->getIdString()]);
@@ -111,13 +111,13 @@ class CommentManager {
 	 * @access public
 	 * @since 7/12/07
 	 */
-	function &createReply ( &$parentId, &$type) {
-		$parent =& $this->getComment($parentId);
+	function createReply ( $parentId, $type) {
+		$parent = $this->getComment($parentId);
 		
-		$repository =& $parent->_asset->getRepository();
-		$replyAsset =& $repository->createAsset(_("(untitled)"), "", $type);
+		$repository = $parent->_asset->getRepository();
+		$replyAsset = $repository->createAsset(_("(untitled)"), "", $type);
 		$parent->_asset->addAsset($replyAsset->getId());
-		$reply =& $this->getComment($replyAsset);
+		$reply = $this->getComment($replyAsset);
 		
 		// Clear our order caches
 		unset($this->_allComments);
@@ -133,19 +133,19 @@ class CommentManager {
 	 * @access private
 	 * @since 7/9/07
 	 */
-	function &_getCommentContainer ( &$asset ) {
+	function _getCommentContainer ( $asset ) {
 		$commentContainerType = new Type('segue', 'edu.middlebury', 'comment_container', 'A container for Segue Comments');
-		$assets =& $asset->getAssets();
+		$assets = $asset->getAssets();
 		while ($assets->hasNext()) {
-			$child =& $assets->next();
+			$child = $assets->next();
 			if ($commentContainerType->isEqual($child->getAssetType())) {
 				return $child;
 			}
 		}
 		
 		// If the comment container doesn't exist, create it.
-		$repository =& $asset->getRepository();
-		$commentContainerAsset =& $repository->createAsset("Comments", "Comments on the parent Asset", $commentContainerType);
+		$repository = $asset->getRepository();
+		$commentContainerAsset = $repository->createAsset("Comments", "Comments on the parent Asset", $commentContainerType);
 		$asset->addAsset($commentContainerAsset->getId());
 		
 		return $commentContainerAsset;
@@ -159,30 +159,30 @@ class CommentManager {
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function &getComment ( &$assetOrId ) {
+	function getComment ( $assetOrId ) {
 		ArgumentValidator::validate($assetOrId, OrValidatorRule::getRule(
 			HasMethodsValidatorRule::getRule('getId'),
 			HasMethodsValidatorRule::getRule('getIdString')));
 		
 		if (method_exists($assetOrId, 'getId')) {
-			$asset =& $assetOrId;
-			$id =& $asset->getId();
+			$asset = $assetOrId;
+			$id = $asset->getId();
 		} else {
-			$id =& $assetOrId;
+			$id = $assetOrId;
 		}
 		
 		// Cache the comment if needed
 		if (!isset($this->_comments[$id->getIdString()])) {
 			// Get the assset if we were passed an Id only
 			if (!isset($asset)) {
-				$repositoryManager =& Services::getService("Repository");
-				$idManager =& Services::getService("Id");
-				$repository =& $repositoryManager->getRepository(
+				$repositoryManager = Services::getService("Repository");
+				$idManager = Services::getService("Id");
+				$repository = $repositoryManager->getRepository(
 					$idManager->getId("edu.middlebury.segue.sites_repository"));
-				$asset =& $repository->getAsset($id);
+				$asset = $repository->getAsset($id);
 			}
 			
-			$this->_comments[$id->getIdString()] =& new CommentNode($asset);
+			$this->_comments[$id->getIdString()] = new CommentNode($asset);
 		}
 		return $this->_comments[$id->getIdString()];
 	}
@@ -195,10 +195,10 @@ class CommentManager {
 	 * @access public
 	 * @since 7/12/07
 	 */
-	function deleteComment ( &$id ) {
-		$comment =& $this->getComment($id);
-		$asset =& $comment->_asset;
-		$repository =& $asset->getRepository();
+	function deleteComment ( $id ) {
+		$comment = $this->getComment($id);
+		$asset = $comment->_asset;
+		$repository = $asset->getRepository();
 		$repository->deleteAsset($id);
 		
 		unset($this->_comments[$id->getIdString()]);
@@ -216,34 +216,34 @@ class CommentManager {
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function &getRootComments ( &$assetOrId, $order = ASC ) {
+	function getRootComments ( $assetOrId, $order = ASC ) {
 		if (method_exists($assetOrId, 'getId')) {
-			$asset =& $assetOrId;
+			$asset = $assetOrId;
 		} else {
-			$repositoryManager =& Services::getService("Repository");
-			$idManager =& Services::getService("Id");
-			$repository =& $repositoryManager->getRepository(
+			$repositoryManager = Services::getService("Repository");
+			$idManager = Services::getService("Id");
+			$repository = $repositoryManager->getRepository(
 				$idManager->getId("edu.middlebury.segue.sites_repository"));
-			$asset =& $repository->getAsset($assetOrId);
+			$asset = $repository->getAsset($assetOrId);
 		}
 		
 		// Load the replies, their creation times into arrays for caching and 
 		// easy sorting.
-		$assetId =& $asset->getId();
+		$assetId = $asset->getId();
 		$assetIdString = $assetId->getIdString();
 		if (!isset($this->_rootComments[$assetIdString])) {
 			$this->_rootComments[$assetIdString] = array();
 			$this->_rootComments[$assetIdString]['ids'] = array();
 			$this->_rootComments[$assetIdString]['times'] = array();
 			
-			$commentContainer =& $this->_getCommentContainer($asset);
-			$children =& $commentContainer->getAssets();
+			$commentContainer = $this->_getCommentContainer($asset);
+			$children = $commentContainer->getAssets();
 			
 			while ($children->hasNext()) {
-				$child =& $children->next();
-				$comment =& $this->getComment($child);
-				$dateTime =& $comment->getCreationDate();
-				$this->_rootComments[$assetIdString]['ids'][] =& $comment->getId();
+				$child = $children->next();
+				$comment = $this->getComment($child);
+				$dateTime = $comment->getCreationDate();
+				$this->_rootComments[$assetIdString]['ids'][] = $comment->getId();
 				$this->_rootComments[$assetIdString]['times'][] = $dateTime->asString();
 			}
 		}
@@ -271,17 +271,17 @@ class CommentManager {
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function &getAllComments ( &$assetOrId, $order = ASC ) {
+	function getAllComments ( $assetOrId, $order = ASC ) {
 		if (method_exists($assetOrId, 'getId')) {
-			$asset =& $assetOrId;
-			$assetId =& $asset->getId();
+			$asset = $assetOrId;
+			$assetId = $asset->getId();
 		} else {
-			$repositoryManager =& Services::getService("Repository");
-			$idManager =& Services::getService("Id");
-			$repository =& $repositoryManager->getRepository(
+			$repositoryManager = Services::getService("Repository");
+			$idManager = Services::getService("Id");
+			$repository = $repositoryManager->getRepository(
 				$idManager->getId("edu.middlebury.segue.sites_repository"));
-			$asset =& $repository->getAsset($assetOrId);
-			$assetId =& $assetOrId;
+			$asset = $repository->getAsset($assetOrId);
+			$assetId = $assetOrId;
 		}
 		
 		// Load the replies, their creation times into arrays for caching and 
@@ -292,17 +292,17 @@ class CommentManager {
 			$this->_allComments[$assetIdString]['ids'] = array();
 			$this->_allComments[$assetIdString]['times'] = array();
 			
-			$rootComments =& $this->getRootComments($asset);
-			$allComments =& new MultiIteratorIterator();
+			$rootComments = $this->getRootComments($asset);
+			$allComments = new MultiIteratorIterator();
 			while ($rootComments->hasNext()) {
 				$allComments->addIterator(
 					$this->_getDescendentComments($rootComments->next()));
 			}
 			
 			while ($allComments->hasNext()) {
-				$comment =& $allComments->next();
-				$dateTime =& $comment->getCreationDate();
-				$this->_allComments[$assetIdString]['ids'][] =& $comment->getId();
+				$comment = $allComments->next();
+				$dateTime = $comment->getCreationDate();
+				$this->_allComments[$assetIdString]['ids'][] = $comment->getId();
 				$this->_allComments[$assetIdString]['times'][] = $dateTime->asSeconds();
 			}
 		}
@@ -327,8 +327,8 @@ class CommentManager {
 	 * @access public
 	 * @since 7/20/07
 	 */
-	function getNumComments ( &$assetOrId ) {
-		$comments =& $this->getAllComments($assetOrId);
+	function getNumComments ( $assetOrId ) {
+		$comments = $this->getAllComments($assetOrId);
 		return $comments->count();
 	}
 	
@@ -340,17 +340,17 @@ class CommentManager {
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function &_getDescendentComments ( &$comment ) {
+	function _getDescendentComments ( $comment ) {
 		ArgumentValidator::validate($comment, ExtendsValidatorRule::getRule('CommentNode'));
 		
 		$thisComment = array();
-		$thisComment[] =& $comment;	
-		$decendents =& new MultiIteratorIterator();
+		$thisComment[] = $comment;	
+		$decendents = new MultiIteratorIterator();
 		$decendents->addIterator(new HarmoniIterator($thisComment));
 		
-		$children =& $comment->getReplies();			
+		$children = $comment->getReplies();			
 		while ($children->hasNext()) {
-			$child =& $children->next();
+			$child = $children->next();
 			$decendents->addIterator($this->_getDescendentComments($child));
 		}
 		
@@ -364,8 +364,8 @@ class CommentManager {
 	 * @access public
 	 * @since 7/10/07
 	 */
-	function getHeadingMarkup ( &$asset ) {
-		$harmoni =& Harmoni::instance();
+	function getHeadingMarkup ( $asset ) {
+		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough('node');
 		$harmoni->request->startNamespace('comments');
 		ob_start();
@@ -387,8 +387,8 @@ class CommentManager {
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function getMarkup ( &$asset ) {
-		$harmoni =& Harmoni::instance();
+	function getMarkup ( $asset ) {
+		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough('node');
 		$harmoni->request->startNamespace('comments');
 		
@@ -399,14 +399,14 @@ class CommentManager {
 			$this->setDisplayMode(RequestContext::value('displayMode'));
 		
 		if (RequestContext::value('create_new_comment')) {
-			$comment =& $this->createRootComment($asset, Type::fromString(RequestContext::value('plugin_type')));
+			$comment = $this->createRootComment($asset, Type::fromString(RequestContext::value('plugin_type')));
 			$comment->updateSubject(RequestContext::value('title'));
 			$comment->enableEditForm();
 		}
 		
 		if (RequestContext::value('reply_parent') && RequestContext::value('plugin_type')) {
-			$idManager =& Services::getService('Id');
-			$comment =& $this->createReply(
+			$idManager = Services::getService('Id');
+			$comment = $this->createReply(
 				$idManager->getId(RequestContext::value('reply_parent')),
 				Type::fromString(RequestContext::value('plugin_type')));
 			$comment->updateSubject(RequestContext::value('title'));
@@ -414,7 +414,7 @@ class CommentManager {
 		}
 		
 		if (RequestContext::value('delete_comment')) {
-			$idManager =& Services::getService('Id');
+			$idManager = Services::getService('Id');
 			$this->deleteComment($idManager->getId(RequestContext::value('delete_comment')));
 		}
 		
@@ -424,7 +424,7 @@ class CommentManager {
 		
 		// New comment
 		print "\n<div style='float: left;'>";
-		$url =& $harmoni->request->mkURL();
+		$url = $harmoni->request->mkURL();
 		$url->setValue('create_new_comment', 'true');
 		print "\n\t<button ";
 		print "onclick=\"CommentPluginChooser.run(this, '".$url->write()."#".RequestContext::name('current')."', ''); return false;\">";
@@ -460,13 +460,13 @@ class CommentManager {
 		// Print out the Comments
 		print "\n<div id='".RequestContext::name('comments')."'>";
 		if ($this->getDisplayMode() == 'flat') {
-			$comments =& $this->getAllComments($asset, $this->getDisplayOrder());
+			$comments = $this->getAllComments($asset, $this->getDisplayOrder());
 		} else {
-			$comments =& $this->getRootComments($asset, $this->getDisplayOrder());
+			$comments = $this->getRootComments($asset, $this->getDisplayOrder());
 		}
 		
 		while ($comments->hasNext()) {
-			$comment =& $comments->next();
+			$comment = $comments->next();
 			// If this is a work in progress that has not had content added yet, 
 			// do not display it.
 			if ($comment->hasContent() || $comment->isAuthor()) {
@@ -547,8 +547,8 @@ class CommentManager {
 	 * @since 7/5/07
 	 */
 	function addHead () {
-		$harmoni =& Harmoni::instance();
-		$outputHandler =& $harmoni->getOutputHandler();
+		$harmoni = Harmoni::instance();
+		$outputHandler = $harmoni->getOutputHandler();
 		ob_start();
 		print $outputHandler->getHead();
 		

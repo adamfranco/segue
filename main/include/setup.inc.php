@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: setup.inc.php,v 1.7 2007/08/22 20:50:36 achapin Exp $
+ * @version $Id: setup.inc.php,v 1.8 2007/09/04 17:38:41 adamfranco Exp $
  */
 
 /*********************************************************
@@ -45,12 +45,12 @@ if (isset($_REQUEST["reset_segue"])
 	else
 		require_once (MYDIR.'/config/database_default.conf.php');
 	
-	$dbc =& Services::getService("DatabaseManager");
+	$dbc = Services::getService("DatabaseManager");
 	$tableList = $dbc->getTableList($dbID);
 	if (count($tableList)) {
 		$queryString = "DROP TABLE `".implode("`, `", $tableList)."`;";
 		print $queryString;
-		$query =& new GenericSQLQuery($queryString);
+		$query = new GenericSQLQuery($queryString);
 		$dbc->query($query, $dbID);
 	}
 }

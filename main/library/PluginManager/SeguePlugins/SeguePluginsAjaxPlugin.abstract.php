@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.14 2007/05/31 17:39:23 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.15 2007/09/04 17:38:42 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.14 2007/05/31 17:39:23 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.15 2007/09/04 17:38:42 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -286,7 +286,7 @@ END;
 		ArgumentValidator::validate($parameters, 
 			OptionalRule::getRule(ArrayValidatorRule::getRule()));
 		
-		$url =& $this->_baseUrl->deepCopy();
+		$url = $this->_baseUrl->deepCopy();
 		if (is_array($parameters) && count($parameters))
 			$url->setValues($parameters);
 		return $url->write();
@@ -301,8 +301,8 @@ END;
 	 * @since 1/17/06
 	 */
 	function _ajaxUrl ( $parameters = array() ) {
-		$harmoni =& Harmoni::instance();
-		$url =& $harmoni->request->mkURL('plugin_manager', 'update_ajax');
+		$harmoni = Harmoni::instance();
+		$url = $harmoni->request->mkURL('plugin_manager', 'update_ajax');
 	
 		$harmoni->request->startNamespace('plugin_manager');
 		
@@ -329,8 +329,8 @@ END;
 	 */
 	function writeAjaxLib () {
 		if (!isset($GLOBALS['ajaxLibWritten']) || !$GLOBALS['ajaxLibWritten']) {
-			$harmoni =& Harmoni::instance();
-			$outputHandler =& $harmoni->getOutputHandler();
+			$harmoni = Harmoni::instance();
+			$outputHandler = $harmoni->getOutputHandler();
 			$outputHandler->setHead(
 				$outputHandler->getHead()
 				.SeguePluginsAjaxPlugin::getPluginSystemJavascript());

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.8 2007/07/13 19:59:03 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.9 2007/09/04 17:38:42 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.8 2007/07/13 19:59:03 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.9 2007/09/04 17:38:42 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -32,8 +32,8 @@ class CommentNode {
 	 * @access public
 	 * @since 6/7/07
 	 */
-	function CommentNode ( &$asset ) {
-		$this->_asset =& $asset;
+	function CommentNode ( $asset ) {
+		$this->_asset = $asset;
 		$this->_enableEditForm = false;
 	}
 	
@@ -44,7 +44,7 @@ class CommentNode {
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function &getId () {
+	function getId () {
 		return $this->_asset->getId();
 	}
 	
@@ -56,7 +56,7 @@ class CommentNode {
 	 * @since 7/5/07
 	 */
 	function getIdString () {
-		$id =& $this->getId();
+		$id = $this->getId();
 		return $id->getIdString();
 	}
 	
@@ -67,7 +67,7 @@ class CommentNode {
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function &getCreationDate () {
+	function getCreationDate () {
 		return $this->_asset->getCreationDate();
 	}
 	
@@ -78,7 +78,7 @@ class CommentNode {
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function &getModificationDate () {
+	function getModificationDate () {
 		return $this->_asset->getModificationDate();
 	}
 	
@@ -118,8 +118,8 @@ class CommentNode {
 	function getBody () {
 		// Only return a body if we are authorized to view the comment
 		if ($this->canView()) {
-			$pluginManager =& Services::getService('PluginManager');
-			$plugin =& $pluginManager->getPlugin($this->_asset);
+			$pluginManager = Services::getService('PluginManager');
+			$plugin = $pluginManager->getPlugin($this->_asset);
 			
 			// We've just checked our view permission, so use true
 			$plugin->setCanViewFunction(create_function('$plugin', 'return true;'));
@@ -146,8 +146,8 @@ class CommentNode {
 	 */
 	function canView () {
 		if (!isset($this->_canView)) {
-			$azManager =& Services::getService("AuthZ");
-			$idManager =& Services::getService("Id");
+			$azManager = Services::getService("AuthZ");
+			$idManager = Services::getService("Id");
 			$this->_canView = $azManager->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.view_comments"),
 				$this->getId());
@@ -166,8 +166,8 @@ class CommentNode {
 	 */
 	function canModify () {
 		if (!isset($this->_canModify)) {
-			$azManager =& Services::getService("AuthZ");
-			$idManager =& Services::getService("Id");
+			$azManager = Services::getService("AuthZ");
+			$idManager = Services::getService("Id");
 			$this->_canModify = $azManager->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.comment"),
 				$this->getId());
@@ -189,7 +189,7 @@ class CommentNode {
 	 * @since 7/3/07
 	 */
 	function numReplies () {
-		$replies =& $this->getReplies();
+		$replies = $this->getReplies();
 		return $replies->count();
 	}
 	
@@ -202,23 +202,23 @@ class CommentNode {
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function &getReplies ( $order = ASC ) {
+	function getReplies ( $order = ASC ) {
 		// Load the replies, their creation times into arrays for caching and 
 		// easy sorting.
 		if (!isset($this->_replies)) {
 			$this->_replyIds = array();
 			$this->_replyTimes = array();
 			
-			$mediaFileType =& new Type ('segue', 'edu.middlebury', 'media_file',
+			$mediaFileType = new Type ('segue', 'edu.middlebury', 'media_file',
 				'A file that is uploaded to Segue.');
 				
-			$children =& $this->_asset->getAssets();
+			$children = $this->_asset->getAssets();
 			
 			while ($children->hasNext()) {
-				$child =& $children->next();
+				$child = $children->next();
 				if (!$mediaFileType->isEqual($child->getAssetType())) {
-					$dateTime =& $child->getCreationDate();
-					$this->_replyIds[] =& $child->getId();
+					$dateTime = $child->getCreationDate();
+					$this->_replyIds[] = $child->getId();
 					$this->_replyTimes[] = $dateTime->asString();
 				}
 			}
@@ -230,7 +230,7 @@ class CommentNode {
 		
 		$null = null;
 		$replies = new HarmoniIterator($null);
-		$commentManager =& CommentManager::instance();
+		$commentManager = CommentManager::instance();
 		foreach ($this->_replyIds as $id) {
 			$replies->add($commentManager->getComment($id));
 		}
@@ -256,13 +256,13 @@ class CommentNode {
 	 * @access public
 	 * @since 7/5/07
 	 */
-	function &getAuthor () {
-		$agentManager =& Services::getService('Agent');
+	function getAuthor () {
+		$agentManager = Services::getService('Agent');
 		
 		if ($this->_asset->getCreator()) {
 			return $agentManager->getAgent($this->_asset->getCreator());
 		} else {
-			$idManager =& Services::getService('Id');
+			$idManager = Services::getService('Id');
 			return $agentManager->getAgent($idManager->getId('edu.middlebury.agents.anonymous'));
 		}
 	}
@@ -275,19 +275,19 @@ class CommentNode {
 	 * @since 7/5/07
 	 */
 	function isAuthor () {
-		$author =& $this->getAuthor();
-		$authorId =& $author->getId();
+		$author = $this->getAuthor();
+		$authorId = $author->getId();
 		
-		$idManager =& Services::getService('Id');
-		$anonId =& $idManager->getId('edu.middlebury.agents.anonymous');
+		$idManager = Services::getService('Id');
+		$anonId = $idManager->getId('edu.middlebury.agents.anonymous');
 		if ($anonId->isEqual($authorId))
 			return false;
 		
-		$authN =& Services::getService("AuthN");
-		$agentM =& Services::getService("Agent");
-		$authTypes =& $authN->getAuthenticationTypes();
+		$authN = Services::getService("AuthN");
+		$agentM = Services::getService("Agent");
+		$authTypes = $authN->getAuthenticationTypes();
 		while ($authTypes->hasNext()) {
-			$authType =& $authTypes->next();
+			$authType = $authTypes->next();
 			if ($authorId->isEqual($authN->getUserId($authType))) {
 				return true;
 			}
@@ -304,8 +304,8 @@ class CommentNode {
 	 * @since 7/13/07
 	 */
 	function hasContent () {
-		$pluginManager =& Services::getService('PluginManager');
-		$plugin =& $pluginManager->getPlugin($this->_asset);
+		$pluginManager = Services::getService('PluginManager');
+		$plugin = $pluginManager->getPlugin($this->_asset);
 		return $plugin->hasContent();
 	}
 	
@@ -318,7 +318,7 @@ class CommentNode {
 	 * @since 7/5/07
 	 */
 	function getMarkup ($showThreadedReplies) {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		
 		ob_start();
 		print "\n\t<div class='comment' id='".$this->getIdString()."'>";
@@ -386,10 +386,10 @@ class CommentNode {
 		}
 		
 		print "\n\t\t\t<div class='comment_byline'>";
-		$author =& $this->getAuthor();
-		$date =& $this->getCreationDate();
+		$author = $this->getAuthor();
+		$date = $this->getCreationDate();
 		$dateString = $date->dayOfWeekName()." ".$date->monthName()." ".$date->dayOfMonth().", ".$date->year();
-		$time =& $date->asTime();
+		$time = $date->asTime();
 		print str_replace('%1', $author->getDisplayName(),
 				str_replace('%2', $dateString,
 					str_replace('%3', $time->string12(),
@@ -405,9 +405,9 @@ class CommentNode {
 		if ($showThreadedReplies) {
 			print "\n\t\t<div class='comment_replies'>";
 			
-			$replies =& $this->getReplies(ASC);
+			$replies = $this->getReplies(ASC);
 			while ($replies->hasNext()) {
-				$reply =& $replies->next();
+				$reply = $replies->next();
 				// If this is a work in progress that has not had content added yet, 
 				// do not display it.
 				if ($reply->hasContent() || $reply->isAuthor()) {

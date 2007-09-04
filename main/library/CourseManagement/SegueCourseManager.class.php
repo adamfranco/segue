@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.2 2007/08/23 20:10:09 achapin Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.3 2007/09/04 17:38:42 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueCourseSection.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/SegueCourseGroup.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.2 2007/08/23 20:10:09 achapin Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.3 2007/09/04 17:38:42 adamfranco Exp $
  */
 class SegueCourseManager {
 
@@ -129,14 +129,14 @@ class SegueCourseManager {
 	 */
 	public function getAllCourses ( Id $agentId, $sortDirection = SORT_ASC ) {
 		$agentManager = Services::getService("Agent");
-		$ancestorSearchType =& new HarmoniType("Agent & Group Search",
+		$ancestorSearchType = new HarmoniType("Agent & Group Search",
 												"edu.middlebury.harmoni","AncestorGroups");
-		$containingGroups =& $agentManager->getGroupsBySearch(
+		$containingGroups = $agentManager->getGroupsBySearch(
 						$agentId, $ancestorSearchType);
 						
 		$courseSections = array();
 		while ($containingGroups->hasNext()) {
-			$group =& $containingGroups->next();
+			$group = $containingGroups->next();
 			if (preg_match(self::$classGroupIdRegexp, $group->getId()->getIdString())) {
 				$courseSections[] = $this->getCourseForGroup($group);
 			}
@@ -303,7 +303,7 @@ class SegueCourseManager {
 			
 			// If we didn't have a CourseGroup or a loaded Course, look up the groupId
 			// Fetch the course group that matches the id passed.
-			$searchType =& new ClassTokenSearch();
+			$searchType = new ClassTokenSearch();
 			$string = "*".$id->getIdString()."*";
 			$dns = $searchType->getClassDNsBySearch($string);
 			

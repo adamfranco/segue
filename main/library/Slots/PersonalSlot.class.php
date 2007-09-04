@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.3 2007/08/23 19:45:46 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.4 2007/09/04 17:38:42 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Slot.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.3 2007/08/23 19:45:46 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.4 2007/09/04 17:38:42 adamfranco Exp $
  */
 class PersonalSlot
 	extends Slot
@@ -85,13 +85,13 @@ class PersonalSlot
 		if (!$userId->isEqual($idManager->getId("edu.middlebury.agents.anonymous"))) {
 			// Match the groups the user is in against our configuration of
 			// groups whose members should have personal sites.
-			$ancestorSearchType =& new HarmoniType("Agent & Group Search",
+			$ancestorSearchType = new HarmoniType("Agent & Group Search",
 													"edu.middlebury.harmoni","AncestorGroups");
-			$containingGroups =& $agentManager->getGroupsBySearch(
+			$containingGroups = $agentManager->getGroupsBySearch(
 							$userId, $ancestorSearchType);
 			
 			while ($containingGroups->hasNext()) {
-				$group =& $containingGroups->next();
+				$group = $containingGroups->next();
 				foreach (self::$validGroups as $validGroupId) {
 					if ($validGroupId->isEqual($group->getId())) {
 						return true;

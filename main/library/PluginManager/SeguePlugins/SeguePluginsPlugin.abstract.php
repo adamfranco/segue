@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.34 2007/08/31 20:01:07 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.35 2007/09/04 17:38:42 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.34 2007/08/31 20:01:07 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.35 2007/09/04 17:38:42 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -196,7 +196,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 5/8/07
  	 */
- 	function &getWizardComponent () {
+ 	function getWizardComponent () {
  		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
  	}
  	
@@ -243,7 +243,7 @@ class SeguePluginsPlugin {
 		ArgumentValidator::validate($parameters, 
 			OptionalRule::getRule(ArrayValidatorRule::getRule()));
 		
-		$url =& $this->_baseUrl->deepCopy();
+		$url = $this->_baseUrl->deepCopy();
 		if (is_array($parameters) && count($parameters))
 			$url->setValues($parameters);
 		return $url->write();
@@ -357,13 +357,13 @@ class SeguePluginsPlugin {
 	 * @since 1/13/06
 	 */
 	function getRawDescription () {
-		$idManager =& Services::getService("Id");
-		$parts =& $this->_asset->getPartsByPartStructure(
+		$idManager = Services::getService("Id");
+		$parts = $this->_asset->getPartsByPartStructure(
 			$idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"));
 		
 		if ($parts->hasNext()) {
-			$part =& $parts->next();
-			$value =& $part->getValue();
+			$part = $parts->next();
+			$value = $part->getValue();
 			return $value->asString();
 		} else {
 			return "";
@@ -383,22 +383,22 @@ class SeguePluginsPlugin {
 	 * @since 1/13/06
 	 */
 	function setRawDescription ( $description ) {
-		$idManager =& Services::getService("Id");
-		$parts =& $this->_asset->getPartsByPartStructure(
+		$idManager = Services::getService("Id");
+		$parts = $this->_asset->getPartsByPartStructure(
 			$idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"));
 		if ($parts->hasNext()) {
-			$part =& $parts->next();
+			$part = $parts->next();
 			$part->updateValue(String::fromString($description));
 		} else {
-			$records =& $this->_asset->getRecordsByRecordStructure(
+			$records = $this->_asset->getRecordsByRecordStructure(
 				$idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs"));
 			if ($records->hasNext()) {
-				$record =& $records->next();
+				$record = $records->next();
 			} else {
-				$record =& $this->_asset->createRecord($idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs"));
+				$record = $this->_asset->createRecord($idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs"));
 			}
 			
-			$part =& $record->createPart($idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"), String::fromString($description));
+			$part = $record->createPart($idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"), String::fromString($description));
 		}
 	}
 	
@@ -428,7 +428,7 @@ class SeguePluginsPlugin {
 	 * @since 1/13/06
 	 */
 	function getContent () {
-		$content =& $this->_asset->getContent();
+		$content = $this->_asset->getContent();
 		return $content->asString();
 	}
 	
@@ -443,7 +443,7 @@ class SeguePluginsPlugin {
 	 * @since 1/13/06
 	 */
 	function setContent ( $content ) {
-		$string =& Blob::withValue($content);
+		$string = Blob::withValue($content);
 		$this->_asset->updateContent($string);
 	}
 	
@@ -472,7 +472,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function &getDataRecords () {
+	function getDataRecords () {
 		return $this->data;
 	}
 
@@ -496,7 +496,7 @@ class SeguePluginsPlugin {
 	 * @since 1/26/06
 	 */
 	function cleanHTML ($htmlString) {
-		$htmlStringObj =& HtmlString::withValue($htmlString);
+		$htmlStringObj = HtmlString::withValue($htmlString);
  		$htmlStringObj->clean();
  		return $htmlStringObj->asString();
 	}
@@ -513,7 +513,7 @@ class SeguePluginsPlugin {
 	 * @since 1/26/06
 	 */
 	function trimHTML ($htmlString, $maxWords, $addElipses = true) {
-		$htmlStringObj =& HtmlString::withValue($htmlString);
+		$htmlStringObj = HtmlString::withValue($htmlString);
  		$htmlStringObj->trim($maxWords, $addElipses);
  		return $htmlStringObj->asString();
 	}
@@ -530,7 +530,7 @@ class SeguePluginsPlugin {
 	 * @since 1/26/06
 	 */
 	function stripTagsAndTrim ($htmlString, $maxWords, $addElipses = true) {
-		$htmlStringObj =& HtmlString::withValue($htmlString);
+		$htmlStringObj = HtmlString::withValue($htmlString);
  		$htmlStringObj->stripTagsAndTrim($maxWords, $addElipses);
  		return $htmlStringObj->asString();
 	}
@@ -547,8 +547,8 @@ class SeguePluginsPlugin {
 			$function = $this->_canModifyFunction;
 			return $function($this);
 		} else {
-			$azManager =& Services::getService("AuthZ");
-			$idManager =& Services::getService("Id");
+			$azManager = Services::getService("AuthZ");
+			$idManager = Services::getService("Id");
 			return $azManager->isUserAuthorized(
 					$idManager->getId("edu.middlebury.authorization.modify"),
 					$this->_asset->getId());
@@ -567,8 +567,8 @@ class SeguePluginsPlugin {
 			$function = $this->_canViewFunction;
 			return $function($this);
 		} else {
-			$azManager =& Services::getService("AuthZ");
-			$idManager =& Services::getService("Id");
+			$azManager = Services::getService("AuthZ");
+			$idManager = Services::getService("Id");
 			return $azManager->isUserAuthorized(
 					$idManager->getId("edu.middlebury.authorization.view"),
 					$this->_asset->getId());
@@ -600,7 +600,7 @@ class SeguePluginsPlugin {
 	 */
 	function getId () {
 		if (!isset($this->_id)) {
-			$id =& $this->_asset->getId();
+			$id = $this->_asset->getId();
 			$this->_id = $id->getIdString();
 		}
 		return $this->_id;			
@@ -615,7 +615,7 @@ class SeguePluginsPlugin {
 	 */
 	function getPluginDir () {
 		$dir = $this->_configuration->getProperty('plugin_dir')."/";
-		$type =& $this->_asset->getAssetType();
+		$type = $this->_asset->getAssetType();
 		$dir .= $type->getDomain()."/";
 		$dir .= $type->getAuthority()."/";
 		$dir .= $type->getKeyword()."/";
@@ -632,7 +632,7 @@ class SeguePluginsPlugin {
 	 */
 	function getPluginPath () {
 		$path = $this->_configuration->getProperty('plugin_path')."/";
-		$type =& $this->_asset->getAssetType();
+		$type = $this->_asset->getAssetType();
 		$path .= $type->getDomain()."/";
 		$path .= $type->getAuthority()."/";
 		$path .= $type->getKeyword()."/";
@@ -662,7 +662,7 @@ class SeguePluginsPlugin {
   *
   * MediaFiles are identified by a string id. To access a MediaFile
   * object use the MediaFile::withIdString() static accessor method:
-  *		$mediaFile =& MediaFile::withIdString('repositoryId=123&assetId=456&recordId=789');
+  *		$mediaFile = MediaFile::withIdString('repositoryId=123&assetId=456&recordId=789');
   *
   * MediaFiles provide access to Dublin Core metadata as as urls and file 
   * properties.
@@ -749,11 +749,11 @@ class SeguePluginsPlugin {
 	 * @since 1/26/06
 	 */
 	function getThumbnailURL ($idString, $fname) {
-		$harmoni =& Harmoni::Instance();
-		$idManager =& Services::getService("Id");
-		$repositoryId =& $idManager->getId(
+		$harmoni = Harmoni::Instance();
+		$idManager = Services::getService("Id");
+		$repositoryId = $idManager->getId(
 			"edu.middlebury.segue.sites_repository");
-		$assetId =& $this->_asset->getId();
+		$assetId = $this->_asset->getId();
 
 		$harmoni->request->StartNamespace('polyphony-repository');
 		$url = $harmoni->request->quickURL("repository", "viewthumbnail", 
@@ -782,16 +782,16 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/31/06
 	 */
-	function printFileRecord(&$fileData, &$parts) {
-		$idManager =& Services::getService("Id");
-		$moduleManager =& Services::getService("InOutModules");
+	function printFileRecord($fileData, $parts) {
+		$idManager = Services::getService("Id");
+		$moduleManager = Services::getService("InOutModules");
 		
-		$repositoryId =& $idManager->getId(
+		$repositoryId = $idManager->getId(
 			"edu.middlebury.segue.sites_repository");
-		$assetId =& $this->_asset->getId();
-		$rid =& $idManager->getId($fileData['assoc_file_id'][0]);
-		$record =& $this->_asset->getRecord($rid);
-		$rs =& $record->getRecordStructure();
+		$assetId = $this->_asset->getId();
+		$rid = $idManager->getId($fileData['assoc_file_id'][0]);
+		$record = $this->_asset->getRecord($rid);
+		$rs = $record->getRecordStructure();
 		
 		$setArray = array("FILE_NAME", "FILE_SIZE", "DIMENSIONS", 
 			"MIME_TYPE", "FILE_DATA");
@@ -799,7 +799,7 @@ class SeguePluginsPlugin {
 		$partStructureArray = array();
 		
 		foreach ($newArray as $part) {
-				$partStructureArray[] =& $rs->getPartStructure(
+				$partStructureArray[] = $rs->getPartStructure(
 					$idManager->getId($part));
 		}
 
@@ -817,11 +817,11 @@ class SeguePluginsPlugin {
 	 * @since 1/26/06
 	 */
 	function getFileURL ($idString, $fname) {
-		$harmoni =& Harmoni::Instance();
-		$idManager =& Services::getService("Id");
-		$repositoryId =& $idManager->getId(
+		$harmoni = Harmoni::Instance();
+		$idManager = Services::getService("Id");
+		$repositoryId = $idManager->getId(
 			"edu.middlebury.segue.sites_repository");
-		$assetId =& $this->_asset->getId();
+		$assetId = $this->_asset->getId();
 
 		$harmoni->request->StartNamespace('polyphony-repository');
 		$url = $harmoni->request->quickURL("repository", "viewfile", 
@@ -844,13 +844,13 @@ class SeguePluginsPlugin {
 	 * @since 1/26/06
 	 */
 	function getFileData ($idString) {
-		$idManager =& Services::getService("Id");
-		$id =& $idManager->getId($idString);
-		$fileRS =& $this->_asset->getRecord($id);
-		$data_id =& $idManager->getId("FILE_DATA");
-		$data =& $fileRS->getPartsByPartStructure($data_id);
+		$idManager = Services::getService("Id");
+		$id = $idManager->getId($idString);
+		$fileRS = $this->_asset->getRecord($id);
+		$data_id = $idManager->getId("FILE_DATA");
+		$data = $fileRS->getPartsByPartStructure($data_id);
 		if ($data->hasNext())
-			$datum =& $data->next();
+			$datum = $data->next();
 			
 		return $datum;
 	}
@@ -876,22 +876,22 @@ class SeguePluginsPlugin {
 		ArgumentValidator::validate($type, ChoiceValidatorRule::getRule('Event_Notice', 'Error'));
 		
 		if (Services::serviceRunning("Logging")) {
-			$loggingManager =& Services::getService("Logging");
-			$log =& $loggingManager->getLogForWriting("Segue");
-			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 							"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType =& new Type("logging", "edu.middlebury", $type,
+			$priorityType = new Type("logging", "edu.middlebury", $type,
 							"Normal events.");
 			
-			$item =& new AgentNodeEntryItem($category, $description);
+			$item = new AgentNodeEntryItem($category, $description);
 			$item->addNodeId($this->_asset->getId());
 			
 			// Get the site Id (Note: this creates a circular dependancy between
 			// the plugins package and the SiteDisplay Package.
-			$idManager =& Services::getService("Id");
-			$nodeId =& $this->_asset->getId();
-			$director =& new AssetSiteDirector($this->_asset->getRepository());	
-			$rootSiteComponent =& $director->getRootSiteComponent($nodeId->getIdString());
+			$idManager = Services::getService("Id");
+			$nodeId = $this->_asset->getId();
+			$director = new AssetSiteDirector($this->_asset->getRepository());	
+			$rootSiteComponent = $director->getRootSiteComponent($nodeId->getIdString());
 			
 			$item->addNodeId($idManager->getId($rootSiteComponent->getId()));
 			
@@ -923,15 +923,15 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/12/06
 	 */
-	function &newInstance ( &$asset, &$configuration ) {
+	function newInstance ( $asset, $configuration ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
 		ArgumentValidator::validate($configuration, ExtendsValidatorRule::getRule("Properties"));
 		$false = false;
 		
 
 
-		$type =& $asset->getAssetType();
-		$pluginManager =& Services::getService("PluginManager");
+		$type = $asset->getAssetType();
+		$pluginManager = Services::getService("PluginManager");
 		$pluginDir = $pluginManager->getPluginDir($type);
 		$pluginClass = $pluginManager->getPluginClass($type);
 		$pluginFile = $pluginDir.$pluginClass.".class.php";
@@ -952,7 +952,7 @@ class SeguePluginsPlugin {
 			return _("Error: Plugin class should not have a constructor method, '$pluginClass'.");
 		
 		// Instantiate the plugin
-		$plugin =& new $pluginClass;
+		$plugin = new $pluginClass;
 		
 		$plugin->setConfiguration($configuration);
 		$plugin->setAsset($asset);
@@ -1042,11 +1042,11 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/12/06
 	 */
-	function setConfiguration ( &$configuration ) {
+	function setConfiguration ( $configuration ) {
 		if (isset($this->_configuration))
 			throwError(new Error("Configuration already set.", "Plugin.abstract", true));
 			
-		$this->_configuration =& $configuration;
+		$this->_configuration = $configuration;
 	}
 	
 	/**
@@ -1057,13 +1057,13 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/12/06
 	 */
-	function setAsset ( &$asset ) {
+	function setAsset ( $asset ) {
 		if (isset($this->_asset))
 			throwError(new Error("Asset already set.", "Plugin.abstract", true));
 		
-		$this->_asset =& $asset;
+		$this->_asset = $asset;
 
-		$type =& $this->_asset->getAssetType();
+		$type = $this->_asset->getAssetType();
 
 		$this->_pluginDir = $this->_configuration->getProperty("plugin_dir")."/".$type->getDomain()."/".
 						$type->getAuthority()."/".$type->getKeyword()."/";
@@ -1096,10 +1096,10 @@ class SeguePluginsPlugin {
 	function executeAndGetMarkup ( $showControls = false, $extended = false ) {
 		$this->setShowControls($showControls);
 		
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace(
 			get_class($this).':'.$this->getId());
-		$this->_baseUrl =& $harmoni->request->mkURL();
+		$this->_baseUrl = $harmoni->request->mkURL();
 		
 		$this->update($this->_getRequestData());
 		
@@ -1194,29 +1194,29 @@ class SeguePluginsPlugin {
 // get the records from the asset.  load 'em up
 
 		// get all the records for this asset
-		$records =& $this->_asset->getRecords();
+		$records = $this->_asset->getRecords();
 		
 		// maintain record order
-		$sets =& Services::getService("Sets");
-		$recordOrder =& $sets->getPersistentSet($this->_asset->getId());
+		$sets = Services::getService("Sets");
+		$recordOrder = $sets->getPersistentSet($this->_asset->getId());
 		$ordered = array();
 		
 		while ($records->hasNext()) {
-			$record =& $records->next();
-			$rid =& $record->getId();
+			$record = $records->next();
+			$rid = $record->getId();
 			if (!$recordOrder->isInSet($rid))
 				$recordOrder->addItem($rid);
-			$ordered[$recordOrder->getPosition($rid)] =& $rid;
+			$ordered[$recordOrder->getPosition($rid)] = $rid;
 		}
 
 // @todo make sure the array exists for each structure, but not an instance yet
 
 		foreach ($ordered as $recid) {
-			$record =& $this->_asset->getRecord($recid);
+			$record = $this->_asset->getRecord($recid);
 			
 			// for each new recordstructure add an array for holding instances
-			$recordStructure =& $record->getRecordStructure();
-			$rsId =& $recordStructure->getId();
+			$recordStructure = $record->getRecordStructure();
+			$rsId = $recordStructure->getId();
 			$rsIdString = $rsId->getIdString();
 			if ($rsIdString != "FILE") {
 				$rsName = $recordStructure->getDisplayName();
@@ -1231,12 +1231,12 @@ class SeguePluginsPlugin {
 				$instance = count($this->data[$rsName]) - 1; // current instance
 	
 				// each instance populates its parts like the records
-				$parts =& $record->getParts();
+				$parts = $record->getParts();
 				while ($parts->hasNext()) {
-					$part =& $parts->next();
+					$part = $parts->next();
 	
 				// for each new partstructure add an array for holding instances
-					$partStructure =& $part->getPartStructure();
+					$partStructure = $part->getPartStructure();
 					$psName = $partStructure->getDisplayName();
 					if (!in_array($psName, 	
 							array_keys($this->data[$rsName][$instance]))) {
@@ -1245,14 +1245,14 @@ class SeguePluginsPlugin {
 					}
 					
 					// again with the instances
-					$partValue =& $part->getValue();
-					$id =& $part->getId();
+					$partValue = $part->getValue();
+					$id = $part->getId();
 					$idString = $id->getIdString();
 					$idArray = explode("::", $idString);
 					$this->data[$rsName][$instance][$psName][$idArray[2]] = 
 						$partValue->asString();
 					$this->_data_ids[$rsName][$instance][$psName][$idArray[2]]
-						=& $part->getId();
+						= $part->getId();
 				}
 			}
 		}
@@ -1312,10 +1312,10 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 		
 		// make them changes
 		if (isset($changes)) {
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 			foreach ($changes as $idString => $value) {
-				$id =& $idManager->getId($idString);
-				$part =& $this->_asset->getPart($id);
+				$id = $idManager->getId($idString);
+				$part = $this->_asset->getPart($id);
 				$part->updateValueFromString($value);
 			}
  		$this->_loadedData = $this->data;	// new data persisted
@@ -1331,12 +1331,12 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 1/27/06
 	 */
 	function _changeFileInfo () {
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		$changes = array();
 		foreach ($this->data['FILE'] as $instance => $file) {
-			$fpids =& $this->_data_ids['FILE'][$instance];
-			$lfile =& $this->_loadedData['FILE'][$instance];
-			$frecord =& $this->_asset->getRecord(
+			$fpids = $this->_data_ids['FILE'][$instance];
+			$lfile = $this->_loadedData['FILE'][$instance];
+			$frecord = $this->_asset->getRecord(
 				$idManager->getId($file['assoc_file_id'][0]));
 		
 			// delete_file can change
@@ -1352,15 +1352,15 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 			} else {
 				// new_file_path can change
 				if ($file['new_file_path'][0] != $lfile['new_file_path'][0]) { 
-					$fparts =& $this->_asset->getPartsByPartStructure(
+					$fparts = $this->_asset->getPartsByPartStructure(
 						$idManager->getId('FILE_DATA'));
-					$fpart =& $fparts->next();
+					$fpart = $fparts->next();
 					$fpart->updateValue(
 						file_get_contents($file['new_file_path'][0]));
 				}
 				if ($file['FILE_NAME'][0] != $lfile['FILE_NAME'][0]) {
 				// FILE_NAME can change
-					$fpart =& $this->_asset->getPart(
+					$fpart = $this->_asset->getPart(
 						$idManager->getId(
 						$fpids['FILE_NAME'][0]));
 					$fpart->updateValueFromString($file['FILE_NAME'][0]);
@@ -1398,8 +1398,8 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	function _populateFileInfo () {
 		// plugins get specific file information, can request URL or 
 		// data via functions defined above
-		$idManager =& Services::getService("Id");
-		$frecords =& $this->_asset->getRecordsByRecordStructure(
+		$idManager = Services::getService("Id");
+		$frecords = $this->_asset->getRecordsByRecordStructure(
 			$idManager->getId("FILE"));
 		$farray = array("FILE_DATA", "THUMBNAIL_DATA", "THUMBNAIL_MIME_TYPE", 
 			"THUMBNAIL_DIMENSIONS");
@@ -1409,14 +1409,14 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 		$this->_data_ids['FILE'] = array();
 
 		// maintain record order
-		$sets =& Services::getService("Sets");
-		$recordOrder =& $sets->getPersistentSet($this->_asset->getId());
+		$sets = Services::getService("Sets");
+		$recordOrder = $sets->getPersistentSet($this->_asset->getId());
 		$fordered = array();
 
 		// populate fordered array with current file records
 		while ($frecords->hasNext()) {
-			$frecord =& $frecords->next();
-			$frid =& $frecord->getId();
+			$frecord = $frecords->next();
+			$frid = $frecord->getId();
 			if (!$recordOrder->isInSet($frid))
 				$recordOrder->addItem($frid);
 			$fordered[$recordOrder->getPosition($frid)] = $frid;
@@ -1425,7 +1425,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 		// removing outdated id's in the set.		
 		$recordOrder->reset();
 		while ($recordOrder->hasNext()) {
-			$recId =& $recordOrder->next();
+			$recId = $recordOrder->next();
 			
 			if (!isset($fordered[$recordOrder->getPosition($recId)]))
 				$recordOrder->removeItem($recId);
@@ -1433,21 +1433,21 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 		
 		// populate the data array with the file data
 		foreach ($fordered as $frecid) {
-			$frecord =& $this->_asset->getRecord($frecid);
+			$frecord = $this->_asset->getRecord($frecid);
 			
 			$this->data['FILE'][] = array();
 			$this->_data_ids['FILE'][] = array();
 			
 			$instance = count($this->data['FILE']) - 1;
-			$file =& $this->data['FILE'][$instance];
-			$file_ids =& $this->_data_ids['FILE'][$instance];
+			$file = $this->data['FILE'][$instance];
+			$file_ids = $this->_data_ids['FILE'][$instance];
 
-			$parts =& $frecord->getParts();
+			$parts = $frecord->getParts();
 			while ($parts->hasNext()) {
-				$part =& $parts->next();
-				$id =& $part->getId();
-				$ps =& $part->getPartStructure();
-				$psid =& $ps->getId();
+				$part = $parts->next();
+				$id = $part->getId();
+				$ps = $part->getPartStructure();
+				$psid = $ps->getId();
 				$psidString = $psid->getIdString();
 				// plugin safe parts
 				if (!in_array($psidString, $farray)) {
@@ -1504,11 +1504,11 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 */
 	function getStructuresForPlugin () {
 		if (!isset($this->_structures)) {
-			$db =& Services::getService("DBHandler");
+			$db = Services::getService("DBHandler");
 			
-			$type =& $this->_asset->getAssetType();
+			$type = $this->_asset->getAssetType();
 			
-			$query =& new SelectQuery();
+			$query = new SelectQuery();
 			$query->addTable("plugin_manager");
 			$query->addTable("plugin_type", INNER_JOIN);
 			$query->addWhere("plugin_type.type_id = plugin_manager.FK_plugin_type");
@@ -1520,11 +1520,11 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 				addslashes($type->getKeyword())."'");
 			$query->addColumn("*");
 			
-			$results =& $db->query($query, IMPORTER_CONNECTION);
+			$results = $db->query($query, IMPORTER_CONNECTION);
 	
-			$id =& Services::getService("Id");
-			$rm =& Services::getService("Repository");
-			$sites_rep =& $rm->getRepository($id->getId(
+			$id = Services::getService("Id");
+			$rm = Services::getService("Repository");
+			$sites_rep = $rm->getRepository($id->getId(
 				"edu.middlebury.segue.sites_repository"));
 			
 			$structures = array();
@@ -1532,7 +1532,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 			while ($results->hasMoreRows()) {
 				$result = $results->next();
 				
-				$rs =& $sites_rep->getRecordStructure($id->getId(
+				$rs = $sites_rep->getRecordStructure($id->getId(
 					$result['plugin_manager.FK_schema']));
 				
 				$structures[$rs->getDisplayName()] =
@@ -1556,37 +1556,37 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 		// @todo take the data in $this->data[$rs][$instance] and create a 
 		// proper record for it in the database.
 		
-		$rm =& Services::getService("Repository");
-		$id =& Services::getService("Id");
-		$pm =& Services::getService("Plugs");
-		$dtm =& Services::getService("DataTypeManager");
+		$rm = Services::getService("Repository");
+		$id = Services::getService("Id");
+		$pm = Services::getService("Plugs");
+		$dtm = Services::getService("DataTypeManager");
 		
-		$sites_rep =& $rm->getRepository($id->getId(
+		$sites_rep = $rm->getRepository($id->getId(
 			"edu.middlebury.segue.sites_repository"));
 
 		// need: RecordStructureId, asset, data
 		$structures = $this->getStructuresForPlugin();
-		$rs =& $sites_rep->getRecordStructure($id->getId($structure[$dname]));
-		$partstructs =& $rs->getPartStructures();
+		$rs = $sites_rep->getRecordStructure($id->getId($structure[$dname]));
+		$partstructs = $rs->getPartStructures();
 		
-		$record =& $this->_asset->createRecord($id->getId($structures[$dname]));
+		$record = $this->_asset->createRecord($id->getId($structures[$dname]));
 		
 		while ($partstructs->hasNext()) {
-			$partstruct =& $partstructs->next();
-			$type =& $partstruct->getType();
+			$partstruct = $partstructs->next();
+			$type = $partstruct->getType();
 			// this is the class I need for the part object
 			$class = $dtm->primitiveClassForType($type->getKeyword());
 
 			foreach 
 				($this->data[$dname][$instance][$partstruct->getDisplayName()] 		
 					as $inst => $val) {
-				eval('$object =& '.$class.'::fromString($val);');
+				eval('$object = '.$class.'::fromString($val);');
 				if (!is_object($object)) {
 					throwError( new Error("PluginManager", "bad part object: creating instance", true));
 					// @todo handle an error here.
 				} else {
 					$part = $record->createPart($partstruct->getId(), $object);
-					$partId =& $part->getId();
+					$partId = $part->getId();
 					$this->_data_ids[$dname][$instance] = array();
 					$this->_data_ids[$dname][$instance][$partstruct->getDisplayName()] = array();
 					$this->_data_ids[$dname][$instance][$partstruct->getDisplayName()][$inst] = $partId->getIdString();

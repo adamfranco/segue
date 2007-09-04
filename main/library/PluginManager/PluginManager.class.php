@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.22 2007/08/22 20:48:59 achapin Exp $
+ * @version $Id: PluginManager.class.php,v 1.23 2007/09/04 17:38:42 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.22 2007/08/22 20:48:59 achapin Exp $
+ * @version $Id: PluginManager.class.php,v 1.23 2007/09/04 17:38:42 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -75,8 +75,8 @@ class PluginManager {
 	 * @access public
 	 * @since 1/24/06
 	 */
-	function assignConfiguration ( &$configuration ) {
-		$this->_configuration =& $configuration;
+	function assignConfiguration ( $configuration ) {
+		$this->_configuration = $configuration;
 	}
 
 	/**
@@ -102,8 +102,8 @@ class PluginManager {
 	 * 
 	 * @access public
 	 */
-	function assignOsidContext ( &$context ) { 
-		$this->_osidContext =& $context;
+	function assignOsidContext ( $context ) { 
+		$this->_osidContext = $context;
 	} 
 
 	/**
@@ -118,7 +118,7 @@ class PluginManager {
 			eval('$array = $this->_'.$arrayName.'Plugins;');
 			foreach ($array as $key => $keystring) {
 				if ($keystring) {
-					$array[$keystring] =& HarmoniType::fromString($keystring);					
+					$array[$keystring] = HarmoniType::fromString($keystring);					
 				}
 				unset($array[$key]);
 			}
@@ -143,7 +143,7 @@ class PluginManager {
 				$class = $this->getPluginClass($type);
 				
 				eval('$description = '.$class.'::getPluginDescription();');
-				$array[$key] =& new Type(
+				$array[$key] = new Type(
 					$type->getDomain(),
 					$type->getAuthority(),
 					$type->getKeyword(),
@@ -178,7 +178,7 @@ class PluginManager {
 	 * @access public
 	 * @since 6/1/07
 	 */
-	function _loadPluginFiles (&$type) {
+	function _loadPluginFiles ($type) {
 		// Clean type components to safe strings.
 		$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
 		$authority = preg_replace('/[^a-z_\-\.]/i', '', $type->getAuthority());
@@ -347,14 +347,14 @@ class PluginManager {
 	 * @access public
 	 * @since 1/24/06
 	 */
-	function &getPlugin ( &$asset ) {
-		$id =& $asset->getId();
+	function getPlugin ( $asset ) {
+		$id = $asset->getId();
 		$idstring = $id->getIdString();
 		if (!isset($this->_plugins[$idstring])) {
-			$type =& $asset->getAssetType();
+			$type = $asset->getAssetType();
 			$this->_loadPluginFiles($type);
 				
-			eval('$this->_plugins[$idstring] =& '.$this->getPluginClass($type).
+			eval('$this->_plugins[$idstring] = '.$this->getPluginClass($type).
 				'::newInstance($asset, $this->_configuration);');
 		}
 		if (!isset($this->_plugins[$idstring]) || !$this->_plugins[$idstring])
@@ -371,7 +371,7 @@ class PluginManager {
 	 * @access public
 	 * @since 1/12/07
 	 */
-	function getPluginClass ( &$type ) {
+	function getPluginClass ( $type ) {
 		if (!isset($this->_pluginClasses[$type->asString()])) {
 			// Clean type components to safe strings.
 			$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
@@ -399,7 +399,7 @@ class PluginManager {
 	 * @access public
 	 * @since 1/12/07
 	 */
-	function getPluginDir ( &$type ) {
+	function getPluginDir ( $type ) {
 		if (!isset($this->_pluginDirs[$type->asString()])) {
 			// Clean type components to safe strings.
 			$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
@@ -421,10 +421,10 @@ class PluginManager {
 	 * @access public
 	 * @since 6/4/07
 	 */
-	function getPluginIconUrl ( &$type ) {
+	function getPluginIconUrl ( $type ) {
 		$icon = $this->getPluginDir($type)."/icon.png";
 		if (file_exists($icon)) {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace('plugin_manager');
 			return $harmoni->request->quickURL('plugin_manager', 'icon',
 					array('type' => $type->asString()));
@@ -442,14 +442,14 @@ class PluginManager {
 	 * @since 3/6/06
 	 */
 	function getCurrentUser ($authNType = null) {
-		$authN =& Services::getService("AuthN");
+		$authN = Services::getService("AuthN");
 		if (is_null($authNType))
 			$authNType = $this->_configuration->getProperty('authN_priority');
-		$types =& $authN->getAuthenticationTypes();
+		$types = $authN->getAuthenticationTypes();
 		$users = array();
 		while ($types->hasNext()) {
-			$type =& $types->next();
-			$userId =& $authN->getUserId($type);
+			$type = $types->next();
+			$userId = $authN->getUserId($type);
 			$users[$type->getKeyword()] = $userId->getIdString();
 		}
 
@@ -466,13 +466,13 @@ class PluginManager {
 	 * @access public
 	 * @since 1/20/06
 	 */
-	function getPluginMarkup ( &$asset, $showControls = false, $extended = false ) {
+	function getPluginMarkup ( $asset, $showControls = false, $extended = false ) {
 		ob_start();
-		$type =& $asset->getAssetType();
+		$type = $asset->getAssetType();
 		if (in_array($type->printableString(), 
 				array_keys(/*$this->_enabledPlugins*/$this->getInstalledPlugins()))) {
 			
-			$plugin =& $this->getPlugin($asset);
+			$plugin = $this->getPlugin($asset);
 						
 			if (!is_object($plugin)) {
 				print $plugin;
@@ -494,7 +494,7 @@ class PluginManager {
 	 * @access public
 	 * @since 1/20/06
 	 */
-	function getExtendedPluginMarkup ( &$asset, $showControls = false) {
+	function getExtendedPluginMarkup ( $asset, $showControls = false) {
 		return $this->getPluginMarkup($asset, $showControls, true);
 	}
 	
@@ -506,8 +506,8 @@ class PluginManager {
 	 * @access public
 	 * @since 2/22/06
 	 */
-	function getPluginDescription ( &$asset ) {
-		$plugin =& $this->getPlugin($asset);
+	function getPluginDescription ( $asset ) {
+		$plugin = $this->getPlugin($asset);
 		
 		if ($plugin->getDescription())
 			return $plugin->getDescription();
@@ -525,16 +525,16 @@ class PluginManager {
 	 */
 	function installPlugin ($type) {
 	// @todo deal with new plugin readiness structure, and database tables
-		$authZ =& Services::getService("AuthZ");
+		$authZ = Services::getService("AuthZ");
 //		if ($authZ->isUserAuthorized("edu.middlebury.authorization.add_children", ??))	{
 			require_once(DOMIT); // for XML DOM
-			$dr =& Services::getService("Repository");
-			$dm =& Services::getService("DataTypeManager");
-			$db =& Services::getService("DBHandler");
-			$id =& Services::getService("Id");
+			$dr = Services::getService("Repository");
+			$dm = Services::getService("DataTypeManager");
+			$db = Services::getService("DBHandler");
+			$id = Services::getService("Id");
 
 			// a few things we need
-			$site_rep =& $dr->getRepository(
+			$site_rep = $dr->getRepository(
 				$id->getId("edu.middlebury.segue.sites_repository"));
 			$pluginDir = $this->getConfiguration('plugin_dir');
 			$types = $dm->getRegisteredTypes(); // for partstructures
@@ -546,7 +546,7 @@ class PluginManager {
 			$description = "The type for a $domain $authority $keyword plugin.";
 
 			// write the type to the database
-			$query =& new InsertQuery();
+			$query = new InsertQuery();
 			$query->setTable('plugin_type');
 			$query->setColumns( array("type_domain", "type_authority", "type_keyword", "type_description", "type_enabled"));
 			$query->addRowOfValues( array("'".addslashes($domain)."'", 
@@ -560,18 +560,18 @@ class PluginManager {
 
 			// if there is no file then the plugin has no data structures
 			if (is_file($xmlFile)) {
-				$document =& new DOMIT_Document();
+				$document = new DOMIT_Document();
 				$document->loadXML($xmlFile);
-				$recordStructures =& $document->documentElement->childNodes;
+				$recordStructures = $document->documentElement->childNodes;
 
 				// first create the recordstructure(s)
 				foreach ($recordStructures as $rs) {
 					if ($rs->hasAttribute("name")) {
 						$rsName = $rs->getAttribute("name");
-						$plugStruct =& $site_rep->createRecordStructure(
+						$plugStruct = $site_rep->createRecordStructure(
 							$rsName,
 							"This is the $rsName structure for holding data of the $domain $authority $keyword plugin", "", "");
-						$pSId =& $plugStruct->getId();
+						$pSId = $plugStruct->getId();
 						$partStructures = $rs->childNodes;
 						// now create the partstructure(s)
 						foreach ($partStructures as $ps) {
@@ -591,7 +591,7 @@ class PluginManager {
 						}
 						// write to the DB the plugin and its structures
 						$typeId = null;
-						$query2 =& new SelectQuery();
+						$query2 = new SelectQuery();
 						$query2->addTable("plugin_type");
 						$query2->addColumn("*");
 						$query2->addWhere("type_domain = '".addslashes($domain)."'");
@@ -600,12 +600,12 @@ class PluginManager {
 						$query2->addWhere("type_keyword = '".
 							addslashes($keyword)."'");
 						
-						$results =& $db->query($query2, IMPORTER_CONNECTION);
+						$results = $db->query($query2, IMPORTER_CONNECTION);
 						if ($results->getNumberOfRows() == 1) {
 							$result = $results->next();
 							$typeId = $result['type_id'];
 							$results->free();
-							$query3 =& new InsertQuery();
+							$query3 = new InsertQuery();
 							$query3->setTable("plugin_manager");
 							$query3->setColumns(array("FK_plugin_type",
 								"FK_schema"));
@@ -658,7 +658,7 @@ class PluginManager {
 	 * @since 8/22/07
 	 */
 	public function enablePlugin (Type $type) {
-			$db =& Services::getService("DBHandler");
+			$db = Services::getService("DBHandler");
 		// write the type to the database
 			$query = new UpdateQuery();
 			$query->setTable('plugin_type');
@@ -673,13 +673,13 @@ class PluginManager {
 
 	function _loadPlugins() {
 		// cache the installed plugins
-		$db =& Services::getService("DBHandler");
-		$pm =& Services::getService("Plugs");
+		$db = Services::getService("DBHandler");
+		$pm = Services::getService("Plugs");
 		$query = new SelectQuery();
 		$query->addTable("plugin_type");
 		$query->addColumn("*");
 		
-		$results =& $db->query($query, IMPORTER_CONNECTION);
+		$results = $db->query($query, IMPORTER_CONNECTION);
 		$dis = array();
 		$en = array();
 		while ($results->hasNext()) {
