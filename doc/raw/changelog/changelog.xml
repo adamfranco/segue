@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.13 2007/09/04 21:13:43 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.14 2007/09/04 21:44:10 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -21,6 +21,9 @@
 			replaced with
 					\1\2\3\4\5
 		</change>
+		<fix author='adam'>
+			MediaBrowser: Fixed notice that was causing an XML error.
+		</fix>
 		<fix author='adam'>
 			Removed plugin-tests link.
 		</fix>
