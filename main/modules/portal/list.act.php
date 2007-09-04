@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.10 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: list.act.php,v 1.11 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.10 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: list.act.php,v 1.11 2007/09/04 15:07:43 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -70,11 +70,11 @@ class listAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$repositoryManager =& Services::getService("Repository");
-		$idManager =& Services::getService("Id");
-		$authZ =& Services::getService("AuthZ");
+		$repositoryManager = Services::getService("Repository");
+		$idManager = Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
 		$authN = Services::getService("AuthN");
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		
 		// Creation of new personal slots
 		$harmoni->request->startNamespace('personal_slot');
@@ -91,7 +91,7 @@ class listAction
 		}
 		$harmoni->request->endNamespace();
 		
-		$actionRows =& $this->getActionRows();
+		$actionRows = $this->getActionRows();
 		
 		
 		if (RequestContext::value('user_interface')) {
@@ -132,7 +132,7 @@ class listAction
 		
 		
 		
-		$repository =& $repositoryManager->getRepository(
+		$repository = $repositoryManager->getRepository(
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
 		
 		
@@ -217,12 +217,12 @@ class listAction
 		 * All other Sites
 		 *********************************************************/
 		$actionRows->add(new Heading(_("All Other Sites You Can View"), 2));
-		$assets =& $repository->getAssetsByType($siteType);
+		$assets = $repository->getAssetsByType($siteType);
 		
 		
 		// Print out the results
-		$resultPrinter =& new IteratorResultPrinter($assets, 1, 10, "printSiteShort", $this);
-		$resultLayout =& $resultPrinter->getLayout("canView");
+		$resultPrinter = new IteratorResultPrinter($assets, 1, 10, "printSiteShort", $this);
+		$resultLayout = $resultPrinter->getLayout("canView");
 		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
 	}
 	
@@ -300,8 +300,8 @@ function canView( $asset ) {
 	if (in_array($asset->getId()->getIdString(), listAction::$sitesPrinted))
 		return false;
 	
-	$authZ =& Services::getService("AuthZ");
-	$idManager =& Services::getService("Id");
+	$authZ = Services::getService("AuthZ");
+	$idManager = Services::getService("Id");
 	
 	if ($authZ->isUserAuthorizedBelow($idManager->getId("edu.middlebury.authorization.view"), $asset->getId()))
 	{
@@ -320,23 +320,23 @@ function canView( $asset ) {
  * @since 1/18/06
  */
 function printSiteShort($asset, $action, $num) {
-	$harmoni =& Harmoni::instance();
-	$assetId =& $asset->getId();
+	$harmoni = Harmoni::instance();
+	$assetId = $asset->getId();
 	
 	listAction::$sitesPrinted[] = $assetId->getIdString();
 			
-	$container =& new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
-	$fillContainerSC =& new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
+	$container = new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
+	$fillContainerSC = new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
 	$fillContainerSC->addSP(new MinHeightSP("88%"));
 // 	$fillContainerSC->addSP(new WidthSP("100%"));
 // 	$fillContainerSC->addSP(new BorderSP("3px", "solid", "#F00"));
 	$container->addStyle($fillContainerSC);
 	
-	$centered =& new StyleCollection("*.centered", "centered", "Centered", "Centered Text");
+	$centered = new StyleCollection("*.centered", "centered", "Centered", "Centered Text");
 	$centered->addSP(new TextAlignSP("center"));	
 	
 	// Use the alias instead of the Id if it is available.
-	$slotManager =& SlotManager::instance();
+	$slotManager = SlotManager::instance();
 	try {
 		$slot = $slotManager->getSlotBySiteId($assetId);
 		$params = array('site' => $slot->getShortname());
@@ -369,11 +369,11 @@ function printSiteShort($asset, $action, $num) {
 	print "\n\t | <a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."'>"._("delete")."</a>";
 	print "\n\t</div>";
 	
-	$description =& HtmlString::withValue($asset->getDescription());
+	$description = HtmlString::withValue($asset->getDescription());
 	$description->trim(25);
 	print  "\n\t<div class='portal_list_site_description'>".$description->asString()."</div>";	
 	
-	$component =& new UnstyledBlock(ob_get_contents());
+	$component = new UnstyledBlock(ob_get_contents());
 	ob_end_clean();
 	$container->add($component, "100%", null, LEFT, TOP);
 	

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editContent.act.php,v 1.4 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: editContent.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/PluginManager/SeguePlugins/SeguePluginsAjaxPlu
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editContent.act.php,v 1.4 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: editContent.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
  */
 class editContentAction
 	extends SegueClassicWizard
@@ -51,8 +51,8 @@ class editContentAction
 		/*********************************************************
 		 * Other headers and footers
 		 *********************************************************/
-		$harmoni =& Harmoni::instance();
-		$outputHandler =& $harmoni->getOutputHandler();
+		$harmoni = Harmoni::instance();
+		$outputHandler = $harmoni->getOutputHandler();
 		
 		ob_start();
 		// Add our common Harmoni javascript libraries
@@ -77,18 +77,18 @@ class editContentAction
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &getTitleStep () {
-		$component =& $this->getSiteComponent();
-		$pluginManager =& Services::getService('PluginManager');
-		$plugin =& $pluginManager->getPlugin($component->getAsset());
+	function getTitleStep () {
+		$component = $this->getSiteComponent();
+		$pluginManager = Services::getService('PluginManager');
+		$plugin = $pluginManager->getPlugin($component->getAsset());
 		
-		$step =& new WizardStep();
+		$step = new WizardStep();
 		$step->setDisplayName(_("Title &amp; Content"));
 		
 		// Create the step text
 		ob_start();
 		
-		$property =& $step->addComponent("display_name", new WTextField());
+		$property = $step->addComponent("display_name", new WTextField());
 		$property->setSize(80);
 		if ($component)
 			$property->setValue($component->getDisplayName());
@@ -102,11 +102,11 @@ class editContentAction
 		
 		print "\n<p>\n\t<strong>"._("Content:")."</strong></p>\n\t";
 		if ($plugin->supportsWizard()) {
-			$property =& $step->addComponent("content", $plugin->getWizardComponent());
+			$property = $step->addComponent("content", $plugin->getWizardComponent());
 			
 			print "\n<div>[[content]]</div>";
 		} else {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace("plugin_manager");
 			$url = $harmoni->request->quickURL("plugin_manager", "viewplugin",
 				array("plugin_id" => $plugin->getId()));
@@ -127,9 +127,9 @@ class editContentAction
 	 * @since 5/11/07
 	 */
 	function saveTitleStep ($values) {
-		$component =& $this->getSiteComponent();
-		$pluginManager =& Services::getService('PluginManager');
-		$plugin =& $pluginManager->getPlugin($component->getAsset());
+		$component = $this->getSiteComponent();
+		$pluginManager = Services::getService('PluginManager');
+		$plugin = $pluginManager->getPlugin($component->getAsset());
 		
 		$value = trim($values['display_name']);
 		if (!$value)

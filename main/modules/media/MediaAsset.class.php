@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAsset.class.php,v 1.1 2007/04/27 20:20:19 adamfranco Exp $
+ * @version $Id: MediaAsset.class.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaFile.class.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/MediaFile.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAsset.class.php,v 1.1 2007/04/27 20:20:19 adamfranco Exp $
+ * @version $Id: MediaAsset.class.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */
 class MediaAsset {
 		
@@ -41,10 +41,10 @@ class MediaAsset {
 	 * @since 4/27/07
 	 * @static
 	 */
-	function &withAsset ( &$asset ) {
+	function withAsset ( $asset ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
 		
-		$mediaAsset =& new MediaAsset($asset);
+		$mediaAsset = new MediaAsset($asset);
 		return $mediaAsset;
 	}
 	
@@ -58,14 +58,14 @@ class MediaAsset {
 	 * @since 4/27/07
 	 * @static
 	 */
-	function &withIds ( &$repositoryId, &$assetId ) {
+	function withIds ( $repositoryId, $assetId ) {
 		ArgumentValidator::validate($repositoryId, ExtendsValidatorRule::getRule("Id"));
 		ArgumentValidator::validate($assetId, ExtendsValidatorRule::getRule("Id"));
 		
-		$repositoryManager =& Services::getService("Repository");
-		$repository =& $repositoryManager->getRepository($repositoryId);
+		$repositoryManager = Services::getService("Repository");
+		$repository = $repositoryManager->getRepository($repositoryId);
 		
-		$mediaAsset =& new MediaAsset($repository->getAsset($assetId));
+		$mediaAsset = new MediaAsset($repository->getAsset($assetId));
 		return $mediaAsset;
 	}
 	
@@ -79,13 +79,13 @@ class MediaAsset {
 	 * @since 4/27/07
 	 * @static
 	 */
-	function &withIdStrings ( $repositoryId, $assetId ) {
+	function withIdStrings ( $repositoryId, $assetId ) {
 		ArgumentValidator::validate($repositoryId, NonZeroLengthStringValidatorRule::getRule());
 		ArgumentValidator::validate($assetId, NonZeroLengthStringValidatorRule::getRule());
 		
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		
-		$mediaAsset =& MediaAsset::withIds(
+		$mediaAsset = MediaAsset::withIds(
 			$idManager->getId($repositoryId),
 			$idManager->getId($assetId));
 		
@@ -125,7 +125,7 @@ class MediaAsset {
 	 * @access public
 	 * @since 4/27/07
 	 */
-	function &getId () {
+	function getId () {
 		return $this->_asset->getId();
 	}
 	
@@ -137,7 +137,7 @@ class MediaAsset {
 	 * @since 4/27/07
 	 */
 	function getIdString () {
-		$id =& $this->_asset->getId();
+		$id = $this->_asset->getId();
 		return $id->getIdString();
 	}
 	
@@ -149,8 +149,8 @@ class MediaAsset {
 	 * @since 4/27/07
 	 */
 	function getRepositoryIdString () {
-		$repository =& $this->_asset->getRepository();
-		$repositoryId =& $repository->getId();
+		$repository = $this->_asset->getRepository();
+		$repositoryId = $repository->getId();
 		return $repositoryId->getIdString();
 	}
 	
@@ -161,7 +161,7 @@ class MediaAsset {
 	 * @access public
 	 * @since 4/27/07
 	 */
-	function &getModificationDate () {
+	function getModificationDate () {
 		return $this->_asset->getModificationDate();
 	}
 	
@@ -173,12 +173,12 @@ class MediaAsset {
 	 * @access public
 	 * @since 4/27/07
 	 */
-	function &getFileById ( &$id ) {
+	function getFileById ( $id ) {
 		ArgumentValidator::validate($id, ExtendsValidatorRule::getRule("Id"));
 		
 		if (!$this->_files[$id->getIdString()]) {
-			$record =& $this->_asset->getRecord($id);
-			$this->_files[$id->getIdString()] =& new MediaFile ($this, $record);
+			$record = $this->_asset->getRecord($id);
+			$this->_files[$id->getIdString()] = new MediaFile ($this, $record);
 		}
 		
 		return $this->_files[$id->getIdString()];
@@ -192,10 +192,10 @@ class MediaAsset {
 	 * @access public
 	 * @since 4/27/07
 	 */
-	function &getFileByIdString ( $id ) {
+	function getFileByIdString ( $id ) {
 		ArgumentValidator::validate($id, NonZeroLengthStringValidatorRule::getRule());
 		
-		$idManager =& Services::getService('Id');
+		$idManager = Services::getService('Id');
 		return $this->getFileById($idManager->getId($id));
 	}
 	
@@ -206,8 +206,8 @@ class MediaAsset {
 	 * @access public
 	 * @since 4/27/07
 	 */
-	function &getFiles () {
-		$records =& new MultiIteratorIterator;
+	function getFiles () {
+		$records = new MultiIteratorIterator;
 		$records->addIterator(
 			$this->_asset->getRecordsByRecordStructure(
 				$idManager->getId('FILE')));
@@ -217,10 +217,10 @@ class MediaAsset {
 		
 		$files = array();
 		while ($records->hasNext()) {
-			$files[] =& new MediaFile($this, $records->next());
+			$files[] = new MediaFile($this, $records->next());
 		}
 		
-		$mediaFiles =& new HarmoniIterator($files);
+		$mediaFiles = new HarmoniIterator($files);
 		return $mediaFiles;
 	}
 	
@@ -345,10 +345,10 @@ class MediaAsset {
 	 * @access protected
 	 * @since 4/27/07
 	 */
-	function MediaAsset ( &$asset ) {
+	function MediaAsset ( $asset ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
 		
-		$this->_asset =& $asset;
+		$this->_asset = $asset;
 	}
 	
 	/**
@@ -404,18 +404,18 @@ class MediaAsset {
 				'dc.rights'			=> array()
 			);
 			
-			$idManager =& Services::getService("Id");
-			$dcRecords =& $this->_asset->getRecordsByRecordStructure(
+			$idManager = Services::getService("Id");
+			$dcRecords = $this->_asset->getRecordsByRecordStructure(
 				$idManager->getId("dc"));
 		
 			if ($dcRecords->hasNext()) {
-				$record =& $dcRecords->next();
+				$record = $dcRecords->next();
 				foreach (array_keys($this->_dcValues) as $partIdString) {
-					$parts =& $record->getPartsByPartStructure(
+					$parts = $record->getPartsByPartStructure(
 						$idManager->getId($partIdString));
 					while ($parts->hasNext()) {
-						$part =& $parts->next();
-						$value =& $part->getValue();
+						$part = $parts->next();
+						$value = $part->getValue();
 						$this->_dcValues[$partIdString][] = $value->asString();
 					}
 				}
@@ -423,11 +423,11 @@ class MediaAsset {
 				// Add on date objects
 				$this->_dcValues['dc.date'] = array();
 				$partIdString = 'dc.date';
-				$parts =& $record->getPartsByPartStructure(
+				$parts = $record->getPartsByPartStructure(
 					$idManager->getId($partIdString));
 				while ($parts->hasNext()) {
-					$part =& $parts->next();
-					$this->_dcValues[$partIdString][] =& $part->getValue();
+					$part = $parts->next();
+					$this->_dcValues[$partIdString][] = $part->getValue();
 				}
 			} else {
 				$this->_dcValues['dc.date'] = array();

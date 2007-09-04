@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.14 2007/09/04 00:55:45 achapin Exp $
+ * @version $Id: display.act.php,v 1.15 2007/09/04 15:07:45 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.14 2007/09/04 00:55:45 achapin Exp $
+ * @version $Id: display.act.php,v 1.15 2007/09/04 15:07:45 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -33,14 +33,14 @@ class displayAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function &execute ( &$harmoni ) {
+	function execute ( $harmoni ) {
 		/**
 		 * @package segue.display
 		 * 
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.14 2007/09/04 00:55:45 achapin Exp $
+		 * @version $Id: display.act.php,v 1.15 2007/09/04 15:07:45 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -56,19 +56,19 @@ class displayAction
 		
 		require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
 				
-		$xLayout =& new XLayout();
-		$yLayout =& new YLayout();
+		$xLayout = new XLayout();
+		$yLayout = new YLayout();
 		
 		
-		$mainScreen =& new Container($yLayout, BLOCK, 1);
+		$mainScreen = new Container($yLayout, BLOCK, 1);
 
 		// :: login, links and commands
-		$this->headRow =& $mainScreen->add(
+		$this->headRow = $mainScreen->add(
 			new Container($xLayout, BLOCK, 1), 
 			"100%", null, CENTER, TOP);
 			
 		
-		$rightHeadColumn =& $this->headRow->add(
+		$rightHeadColumn = $this->headRow->add(
 			new Container($yLayout, BLANK, 1), 
 			null, null, CENTER, TOP);
 
@@ -79,10 +79,10 @@ class displayAction
 		
 	// :: Top Row ::
 		// The top row for the logo and status bar.
-		$headRow =& new Container($xLayout, HEADER, 1);
+		$headRow = new Container($xLayout, HEADER, 1);
 		
 		// The logo
-		$logo =& new Component("\n<a href='".MYPATH."/'> <img src='".LOGO_URL."' 
+		$logo = new Component("\n<a href='".MYPATH."/'> <img src='".LOGO_URL."' 
 							style='border: 0px;' alt='"._("Segue Logo'"). "/> </a>", BLANK, 1);
 		$headRow->add($logo, null, null, LEFT, TOP);
 		
@@ -94,7 +94,7 @@ class displayAction
 		$languageText .= "\n\t<div style='text-align: right'>\n\t<select style='font-size: 10px' name='".$harmoni->request->getName("language")."'>";
 		$harmoni->request->endNamespace();
 		
-		$langLoc =& Services::getService('Lang');
+		$langLoc = Services::getService('Lang');
 		$currentCode = $langLoc->getLanguage();
 		$languages = $langLoc->getLanguages();
 		ksort($languages);
@@ -109,11 +109,11 @@ class displayAction
 		$languageText .= "\n\t<input class='button small' value='Set language'type='submit' />&nbsp;";
 		$languageText .= "\n\t</div>\n</form>";
 		
-		$languageBar =& new Component($languageText, BLANK, 1);
+		$languageBar = new Component($languageText, BLANK, 1);
 		$headRow->add($languageBar, null, null, LEFT,BOTTOM);
 		
 		// Pretty Login Box
-// 		$loginRow =& new Container($yLayout, OTHER, 1);
+// 		$loginRow = new Container($yLayout, OTHER, 1);
 // 		$headRow->add($loginRow, null, null, RIGHT, TOP);
 // 		$loginRow->add($this->getLoginComponent(), null, null, RIGHT, TOP);
 				
@@ -121,21 +121,21 @@ class displayAction
 		$mainScreen->add($headRow, "100%", null, LEFT, TOP);
 		
 	// :: Center Pane ::
-		$centerPane =& new Container($xLayout, OTHER, 1);
+		$centerPane = new Container($xLayout, OTHER, 1);
 		$mainScreen->add($centerPane,"100%",null, LEFT, TOP);		
 		
 		// Main menu
-		$mainMenu =& SegueMenuGenerator::generateMainMenu($harmoni->getCurrentAction());
+		$mainMenu = SegueMenuGenerator::generateMainMenu($harmoni->getCurrentAction());
 		$centerPane->add($mainMenu,"140px",null, LEFT, TOP);
 		
 		// use the result from previous actions
 		if ($harmoni->printedResult) {
-			$contentDestination =& new Container($yLayout, OTHER, 1);
+			$contentDestination = new Container($yLayout, OTHER, 1);
 			$centerPane->add($contentDestination, null, null, LEFT, TOP);
 			$contentDestination->add(new Block($harmoni->printedResult, 1), null, null, TOP, CENTER);
 			$harmoni->printedResult = '';
 		} else {
-			$contentDestination =& $centerPane;
+			$contentDestination = $centerPane;
 		}
 		
 		// use the result from previous actions
@@ -145,15 +145,15 @@ class displayAction
 			$contentDestination->add(new Block($harmoni->result, STANDARD_BLOCK), null, null, CENTER, TOP);
 		
 		// Right Column
-		$rightColumn =& $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);
+		$rightColumn = $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);
 		// Basket
-		$basket =& Basket::instance();
+		$basket = Basket::instance();
 		$rightColumn->add($basket->getSmallBasketBlock(), "100%", null, LEFT, TOP);
 		if (ereg("^(collection|asset)\.browse$", $harmoni->getCurrentAction()))
 			$rightColumn->add(AssetPrinter::getMultiEditOptionsBlock(), "100%", null, LEFT, TOP);
 		
 	// :: Footer ::
-		$footer =& new Container (new XLayout, FOOTER, 1);
+		$footer = new Container (new XLayout, FOOTER, 1);
 		
 		$helpText = "<a target='_blank' href='";
 		$helpText .= $harmoni->request->quickURL("help", "browse_help");
@@ -177,19 +177,19 @@ class displayAction
 	 * @access public
 	 * @since 3/13/06
 	 */
-	function &getLoginComponent () {
+	function getLoginComponent () {
 		ob_start();
-		$harmoni =& Harmoni::instance();
-		$authN =& Services::getService("AuthN");
-		$agentM =& Services::getService("Agent");
-		$idM =& Services::getService("Id");
-		$authTypes =& $authN->getAuthenticationTypes();
+		$harmoni = Harmoni::instance();
+		$authN = Services::getService("AuthN");
+		$agentM = Services::getService("Agent");
+		$idM = Services::getService("Id");
+		$authTypes = $authN->getAuthenticationTypes();
 		$users = '';
 		while ($authTypes->hasNext()) {
-			$authType =& $authTypes->next();
-			$id =& $authN->getUserId($authType);
+			$authType = $authTypes->next();
+			$id = $authN->getUserId($authType);
 			if (!$id->isEqual($idM->getId('edu.middlebury.agents.anonymous'))) {
-				$agent =& $agentM->getAgent($id);
+				$agent = $agentM->getAgent($id);
 				$exists = false;
 				foreach (explode("+", $users) as $user) {
 					if ($agent->getDisplayName() == $user)
@@ -237,7 +237,7 @@ class displayAction
 		}		
 		
 
-		$loginForm =& new Component(ob_get_clean(), BLANK, 2);
+		$loginForm = new Component(ob_get_clean(), BLANK, 2);
 		
 		return $loginForm;
 	}

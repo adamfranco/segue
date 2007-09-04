@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update.act.php,v 1.2 2007/02/27 20:04:44 adamfranco Exp $
+ * @version $Id: update.act.php,v 1.3 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update.act.php,v 1.2 2007/02/27 20:04:44 adamfranco Exp $
+ * @version $Id: update.act.php,v 1.3 2007/09/04 15:07:43 adamfranco Exp $
  */
 class updateAction
 	extends MediaAction
@@ -34,10 +34,10 @@ class updateAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check that the user can access the media library
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
-		$fileAsset =& $this->getFileAsset();
+		$fileAsset = $this->getFileAsset();
 		
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"),
@@ -53,8 +53,8 @@ class updateAction
 	 */
 	function buildContent () {		
 		ob_start();
-		$idManager =& Services::getService("Id");
-		$fileAsset =& $this->getFileAsset();
+		$idManager = Services::getService("Id");
+		$fileAsset = $this->getFileAsset();
 		
 		if (!($displayName = RequestContext::value('displayName')))
 			$displayName = $_FILES['media_file']['name'];
@@ -65,7 +65,7 @@ class updateAction
 		$fileAsset->updateDisplayName($displayName);
 		$fileAsset->updateDescription($description);
 		
-		$dublinCoreRecords =& $fileAsset->getRecordsByRecordStructure(
+		$dublinCoreRecords = $fileAsset->getRecordsByRecordStructure(
 			$idManager->getId('dc'));
 		
 		if ($dublinCoreRecords->hasNext())
@@ -75,7 +75,7 @@ class updateAction
 		
 		foreach (array_keys($_FILES) as $fieldName) {
 			if (preg_match('/^file___(.+)$/', $fieldName, $matches)) {
-				$fileRecord =& $fileAsset->getRecord($idManager->getId($matches[1]));
+				$fileRecord = $fileAsset->getRecord($idManager->getId($matches[1]));
 				$this->updateFileRecord($fileAsset, $fileRecord, $fieldName);
 			} else if ($fieldName == 'media_file') {
 				$this->addFileRecord($fileAsset);
@@ -103,13 +103,13 @@ class updateAction
 	 * @access public
 	 * @since 2/14/07
 	 */
-	function &getFileAsset () {
+	function getFileAsset () {
 		if (!isset($this->_fileAsset)) {
-			$contentAsset =& $this->getContentAsset();
-			$repository =& $contentAsset->getRepository();
-			$idManager =& Services::getService("Id");
+			$contentAsset = $this->getContentAsset();
+			$repository = $contentAsset->getRepository();
+			$idManager = Services::getService("Id");
 			
-			$this->_fileAsset =& $repository->getAsset(
+			$this->_fileAsset = $repository->getAsset(
 				$idManager->getId(RequestContext::value('mediaAssetId')));
 		}
 		

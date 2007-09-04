@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list_plugins.act.php,v 1.1 2007/07/13 15:31:25 adamfranco Exp $
+ * @version $Id: list_plugins.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list_plugins.act.php,v 1.1 2007/07/13 15:31:25 adamfranco Exp $
+ * @version $Id: list_plugins.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */
 class list_pluginsAction 
 	extends XmlAction
@@ -43,11 +43,11 @@ class list_pluginsAction
 	 */
 	function execute () {
 		$this->start();
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace('plugin_manager');
 		
 		
-		$pluginManager =& Services::getService("Plugs");
+		$pluginManager = Services::getService("Plugs");
 		$types = $pluginManager->getEnabledPlugins();
 		
 		foreach ($types as $type) {

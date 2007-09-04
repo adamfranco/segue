@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.2 2006/03/07 18:02:35 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.3 2007/09/04 15:07:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.2 2006/03/07 18:02:35 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.3 2007/09/04 15:07:42 adamfranco Exp $
  */
 class mainAction 
 	extends MainWindowAction
@@ -53,8 +53,8 @@ class mainAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$actionRows =& $this->getActionRows();
-		$harmoni =& Harmoni::instance();
+		$actionRows = $this->getActionRows();
+		$harmoni = Harmoni::instance();
 		
 		$actionRows->add(new Heading(_("Agents &amp; Groups"), 2));
 		
@@ -74,7 +74,7 @@ class mainAction
 		print "</a></li>";
 		print "\n</ul>";
 		
-		$introText =& new Block(ob_get_contents(),2);
+		$introText = new Block(ob_get_contents(),2);
 		$actionRows->add($introText, "100%", null, CENTER, CENTER);
 		ob_end_clean();
 		
@@ -92,12 +92,12 @@ class mainAction
 		print "</a></li>";
 		print "\n</ul>";
 		
-		$introText =& new Block(ob_get_contents(),2);
+		$introText = new Block(ob_get_contents(),2);
 		$actionRows->add($introText, "100%", null, CENTER, CENTER);
 		ob_end_clean();
 		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");		
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");		
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"),
 			$idManager->getId("edu.middlebury.authorization.root"))) {
@@ -130,7 +130,7 @@ class mainAction
 			print "</a></li>";
 			print "\n</ul>";
 			
-			$introText =& new Block(ob_get_contents(), 2);
+			$introText = new Block(ob_get_contents(), 2);
 			$actionRows->add($introText, "100%", null, CENTER, CENTER);
 			ob_end_clean();
 		}
@@ -144,7 +144,7 @@ class mainAction
 		print "</a></li>";
 		print "\n</ul>";
 		
-		$introText =& new Block(ob_get_contents(),2);
+		$introText = new Block(ob_get_contents(),2);
 		$actionRows->add($introText, "100%", null, CENTER, CENTER);
 		ob_end_clean();
 	}

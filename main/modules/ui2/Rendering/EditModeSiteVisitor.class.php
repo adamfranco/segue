@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.9 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.10 2007/09/04 15:07:44 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.9 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.10 2007/09/04 15:07:44 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -37,7 +37,7 @@ class EditModeSiteVisitor
 	function EditModeSiteVisitor () {
 		$this->_action = 'editview';
 		
-		$this->_controlsVisitor =& new EditModeControlsSiteVisitor();
+		$this->_controlsVisitor = new EditModeControlsSiteVisitor();
 		$this->_controlsVisitor->setReturnAction($this->_action);
 		
 		
@@ -79,8 +79,8 @@ END;
 		
 		
 		
-		$harmoni =& Harmoni::instance();
-		$outputHandler =& $harmoni->getOutputHandler();
+		$harmoni = Harmoni::instance();
+		$outputHandler = $harmoni->getOutputHandler();
 		$outputHandler->setHead($outputHandler->getHead().ob_get_clean());
 	}
 	
@@ -93,7 +93,7 @@ END;
 	 * @since 1/15/07
 	 */
 	public function visitBlock ( BlockSiteComponent $block ) {
-		$guiContainer =& $this->addBlockControls($block, parent::visitBlock($block));			
+		$guiContainer = $this->addBlockControls($block, parent::visitBlock($block));			
 		
 		return $guiContainer;
 	}
@@ -107,10 +107,10 @@ END;
 	 * @access public
 	 * @since 5/24/07
 	 */
-	function &addBlockControls (&$block, &$guiContainer) {
+	function addBlockControls ($block, $guiContainer) {
 		// Add controls bar and border
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$block->getQualifierId()))
@@ -148,11 +148,11 @@ END;
 	 * @since 4/3/06
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $block ) {
-		$menuItem =& parent::visitBlockInMenu($block);
+		$menuItem = parent::visitBlockInMenu($block);
 		
 		// Add controls bar and border
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$block->getQualifierId()))
@@ -179,14 +179,14 @@ END;
 	 * @since 4/3/06
 	 */
 	public function visitNavBlock ( NavBlockSiteComponent $navBlock ) {
-		$menuItems =& parent::visitNavBlock($navBlock);
+		$menuItems = parent::visitNavBlock($navBlock);
 		
 		if (!$menuItems)
 			return $menuItems;
 		
 		// Add controls bar and border
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$navBlock->getQualifierId()))
@@ -226,35 +226,35 @@ END;
 		
 		$childGuiComponents = array();
 		for ($i = 0; $i < $numCells; $i++) {
-			$child =& $organizer->getSubcomponentForCell($i);
-			$childGuiComponent =& $child->acceptVisitor($this);
+			$child = $organizer->getSubcomponentForCell($i);
+			$childGuiComponent = $child->acceptVisitor($this);
 			// Filter out false entries returned due to lack of authorization
 			if ($childGuiComponent)
-				$childGuiComponents[] =& $childGuiComponent;
+				$childGuiComponents[] = $childGuiComponent;
 		}
 		
 		// Add the "Append" form to the organizer
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"), 
 			$organizer->getQualifierId()))
 		{
-			$pluginManager =& Services::getService("PluginManager");
-			$childGuiComponents[] =& new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins()));
+			$pluginManager = Services::getService("PluginManager");
+			$childGuiComponents[] = new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins()));
 		}
 		
-		$resultPrinter =& new ArrayResultPrinter($childGuiComponents,
+		$resultPrinter = new ArrayResultPrinter($childGuiComponents,
 									$organizer->getNumColumns(), $cellsPerPage);
 		$resultPrinter->setRenderDirection($organizer->getDirection());
 		$resultPrinter->setNamespace('pages_'.$organizer->getId());
 		$resultPrinter->addLinksStyleProperty(new MarginTopSP("10px"));
 		
-		$guiContainer =& $resultPrinter->getLayout();
+		$guiContainer = $resultPrinter->getLayout();
 		
 		// Add controls bar and border
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
@@ -282,11 +282,11 @@ END;
 	 * @since 1/15/07
 	 */
 	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {
-		$guiContainer =& parent::visitMenuOrganizer($organizer);
+		$guiContainer = parent::visitMenuOrganizer($organizer);
 		
 		// Add the "Append" form to the organizer
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"), 
 			$organizer->getQualifierId()))
@@ -297,15 +297,15 @@ END;
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
 	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
-			$pluginManager =& Services::getService("PluginManager");
+			$pluginManager = Services::getService("PluginManager");
 			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
-			$childComponent =& $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed), 2), null, '100%', null, TOP);
+			$childComponent = $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed), 2), null, '100%', null, TOP);
 		}
 				
 		// Add controls bar and border
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
@@ -335,7 +335,7 @@ END;
 	 */
 	function getAddFormHTML ($organizerId, $cellIndex, $allowed) {
 		ob_start();
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		print "\n<form action='";
 		print $harmoni->request->quickURL('ui2', 'addComponent', 
 				array('returnNode' => RequestContext::value('node'),

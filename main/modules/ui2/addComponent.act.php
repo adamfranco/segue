@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.4 2007/09/04 15:07:44 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.4 2007/09/04 15:07:44 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -38,14 +38,14 @@ class addComponentAction
 		$targetOrgId = RequestContext::value('organizerId');
 		$targetCell = RequestContext::value('cellIndex');
 		
-		$organizer =& $director->getSiteComponentById($targetOrgId);
+		$organizer = $director->getSiteComponentById($targetOrgId);
 		$director->getRootSiteComponent($targetOrgId);
 		
-		$componentType =& Type::fromString(RequestContext::value('componentType'));
+		$componentType = Type::fromString(RequestContext::value('componentType'));
 		if ($componentType->getDomain() == 'segue-multipart')
-			$component =& $this->createMultipartComponent($director, $componentType, $organizer);
+			$component = $this->createMultipartComponent($director, $componentType, $organizer);
 		else
-			$component =& $director->createSiteComponent($componentType, $organizer);
+			$component = $director->createSiteComponent($componentType, $organizer);
 		
 		$oldCellId = $organizer->putSubcomponentInCell($component, $targetCell);
 		
@@ -55,7 +55,7 @@ class addComponentAction
 		if ($componentType->isEqual(new Type('segue', 'edu.middlebury', 'MenuOrganizer'))) {
 			$menuTarget = RequestContext::value('menuTarget');
 			if ($menuTarget == 'NewCellInNavOrg') {
-				$navOrganizer =& $organizer->getParentNavOrganizer();
+				$navOrganizer = $organizer->getParentNavOrganizer();
 				$navOrganizer->updateNumColumns($navOrganizer->getNumColumns() + 1);
 				$menuTarget = $navOrganizer->getId()."_cell:".($navOrganizer->getLastIndexFilled() + 1);
 			}
@@ -74,13 +74,13 @@ class addComponentAction
 	 * @access public
 	 * @since 1/15/07
 	 */
-	function &createMultipartComponent ( &$director, &$componentType, &$organizer ) {
+	function createMultipartComponent ( $director, $componentType, $organizer ) {
 		
 		switch ($componentType->getKeyword()) {
 			case 'SubMenu_multipart':
-				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
-				$subMenu =& $director->createSiteComponent($director->MenuOrganizerType, $component);
-				$navOrganizer =& $component->getOrganizer();
+				$component = $director->createSiteComponent($director->NavBlockType, $organizer);
+				$subMenu = $director->createSiteComponent($director->MenuOrganizerType, $component);
+				$navOrganizer = $component->getOrganizer();
 				
 				// If the parent menu is vertical, nest the sub-menu by default.
 				if (preg_match('/^(Top-Bottom|Bottom-Top)\//i', $organizer->getDirection())) {
@@ -99,9 +99,9 @@ class addComponentAction
 				$subMenu->updateDirection('Top-Bottom/Left-Right');
 				break;
 			case 'SidebarSubMenu_multipart':
-				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
-				$subMenu =& $director->createSiteComponent($director->MenuOrganizerType, $component);
-				$navOrganizer =& $component->getOrganizer();
+				$component = $director->createSiteComponent($director->NavBlockType, $organizer);
+				$subMenu = $director->createSiteComponent($director->MenuOrganizerType, $component);
+				$navOrganizer = $component->getOrganizer();
 				
 				// If the parent menu is vertical, nest the sub-menu by default.
 				if (preg_match('/^(Top-Bottom|Bottom-Top)\//i', $organizer->getDirection())) {
@@ -118,24 +118,24 @@ class addComponentAction
 				}
 				
 				$subMenu->updateTargetId($navOrganizer->getId()."_cell:".$targetIndex);
-				$contentOrganizer =& $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
+				$contentOrganizer = $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
 				$navOrganizer->putSubcomponentInCell($contentOrganizer, $targetIndex + 1);
 				$subMenu->updateDirection('Top-Bottom/Left-Right');
 				break;		
 			case 'ContentPage_multipart':
-				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
-				$navOrganizer =& $component->getOrganizer();
-				$contentOrganizer =& $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
+				$component = $director->createSiteComponent($director->NavBlockType, $organizer);
+				$navOrganizer = $component->getOrganizer();
+				$contentOrganizer = $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
 				$navOrganizer->putSubcomponentInCell($contentOrganizer, 0);
 				break;
 			case 'SidebarContentPage_multipart':
-				$component =& $director->createSiteComponent($director->NavBlockType, $organizer);
-				$navOrganizer =& $component->getOrganizer();
-				$contentOrganizer =& $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
+				$component = $director->createSiteComponent($director->NavBlockType, $organizer);
+				$navOrganizer = $component->getOrganizer();
+				$contentOrganizer = $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
 				$navOrganizer->putSubcomponentInCell($contentOrganizer, 0);
 				
 				$navOrganizer->updateNumColumns(2);
-				$contentOrganizer =& $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
+				$contentOrganizer = $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
 				$navOrganizer->putSubcomponentInCell($contentOrganizer, 1);
 				break;
 			default:

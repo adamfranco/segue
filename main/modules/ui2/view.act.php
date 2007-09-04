@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.10 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: view.act.php,v 1.11 2007/09/04 15:07:44 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.10 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: view.act.php,v 1.11 2007/09/04 15:07:44 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -40,12 +40,12 @@ class viewAction
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &execute () {
-		$harmoni =& Harmoni::instance();
+	function execute () {
+		$harmoni = Harmoni::instance();
 		/*********************************************************
 		 * XML Version
 		 *********************************************************/
-// 		$testDocument =& new DOMIT_Document();
+// 		$testDocument = new DOMIT_Document();
 // 		$testDocument->setNamespaceAwareness(true);
 // 		$success = $testDocument->loadXML(MYDIR."/main/library/SiteDisplay/test/testSite.xml");
 // 
@@ -54,7 +54,7 @@ class viewAction
 // 				"<br/>\t meaning: ".$testDocument->getErrorString()."<br/>", "SiteDisplay"));
 // 		}
 // 
-// 		$director =& new XmlSiteDirector($testDocument);
+// 		$director = new XmlSiteDirector($testDocument);
 // 		
 // 		if (!$nodeId = RequestContext::value("node"))
 // 			$nodeId = "1";
@@ -62,10 +62,10 @@ class viewAction
 		/*********************************************************
 		 * Asset version
 		 *********************************************************/
-		$repositoryManager =& Services::getService('Repository');
-		$idManager =& Services::getService('Id');
+		$repositoryManager = Services::getService('Repository');
+		$idManager = Services::getService('Id');
 		
-		$this->_director =& new AssetSiteDirector(
+		$this->_director = new AssetSiteDirector(
 			$repositoryManager->getRepository(
 				$idManager->getId('edu.middlebury.segue.sites_repository')));			
 		
@@ -74,18 +74,18 @@ class viewAction
 		/*********************************************************
 		 * Aditional setup
 		 *********************************************************/
-		$rootSiteComponent =& $this->_director->getRootSiteComponent($nodeId);
-		$this->rootSiteComponent =& $rootSiteComponent;
+		$rootSiteComponent = $this->_director->getRootSiteComponent($nodeId);
+		$this->rootSiteComponent = $rootSiteComponent;
 		
-		$visitor =& $this->getSiteVisitor();
+		$visitor = $this->getSiteVisitor();
 		
-		$this->siteGuiComponent =& $rootSiteComponent->acceptVisitor($visitor);
+		$this->siteGuiComponent = $rootSiteComponent->acceptVisitor($visitor);
 		
 		
 		/*********************************************************
 		 * Other headers and footers
 		 *********************************************************/
-		$outputHandler =& $harmoni->getOutputHandler();
+		$outputHandler = $harmoni->getOutputHandler();
 		
 		// Remove any existing title tags from the head text
 		print preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead());
@@ -108,22 +108,22 @@ class viewAction
 		$outputHandler->setHead(ob_get_clean());
 		
 				
-		$xLayout =& new XLayout();
-		$yLayout =& new YLayout();
+		$xLayout = new XLayout();
+		$yLayout = new YLayout();
 		
 		
-		$mainScreen =& new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
+		$mainScreen = new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		// :: login, links and commands
-		$this->headRow =& $mainScreen->add(
+		$this->headRow = $mainScreen->add(
 			new Container($xLayout, BLOCK, 1), 
 			"100%", null, CENTER, TOP);
 			
-		$this->leftHeadColumn =& $this->headRow->add(
+		$this->leftHeadColumn = $this->headRow->add(
 			$this->getSegueLinksComponent(), 
 				null, null, LEFT, TOP);
 		
-		$rightHeadColumn =& $this->headRow->add(
+		$rightHeadColumn = $this->headRow->add(
 			new Container($yLayout, BLANK, 1), 
 			null, null, CENTER, TOP);
 
@@ -136,16 +136,16 @@ class viewAction
 		
 		
 		// :: Top Row ::
-		$this->headRow =& $mainScreen->add(
+		$this->headRow = $mainScreen->add(
 			new Container($xLayout, HEADER, 1), 
 			"100%", null, CENTER, TOP);
 		
-		$this->leftHeadColumn =& $this->headRow->add(
+		$this->leftHeadColumn = $this->headRow->add(
 			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"),
 			null, null, LEFT, TOP);
 
 		// :: Breadcrumb row ::
-		$this->breadcrumb =& $mainScreen->add(
+		$this->breadcrumb = $mainScreen->add(
 			new Container($xLayout, HEADER, 2), 
 			"100%", null, CENTER, TOP);
 			
@@ -164,7 +164,7 @@ class viewAction
 		
 		
 		// :: Footer ::
-		$footer =& $mainScreen->add(
+		$footer = $mainScreen->add(
 			new Container (new XLayout, FOOTER, 1),
 			"100%", null, RIGHT, BOTTOM);
 		
@@ -211,16 +211,16 @@ class viewAction
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function &getSiteVisitor () {
+	function getSiteVisitor () {
 		if (!isset($this->visitor)) {
 			
-			$requestedNode =& $this->_director->getSiteComponentById(
+			$requestedNode = $this->_director->getSiteComponentById(
 				$this->getNodeId());
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
-				$this->visitor =& new DetailViewModeSiteVisitor($requestedNode);
+				$this->visitor = new DetailViewModeSiteVisitor($requestedNode);
 			else
-				$this->visitor =& new ViewModeSiteVisitor();
+				$this->visitor = new ViewModeSiteVisitor();
 		}
 		return $this->visitor;
 	}
@@ -233,7 +233,7 @@ class viewAction
 	 * @since 5/31/07
 	 */
 	function getBreadCrumbs () {
-		$node =& $this->_director->getSiteComponentById(
+		$node = $this->_director->getSiteComponentById(
 				$this->getNodeId());
 		
 		return $node->acceptVisitor(new BreadCrumbsVisitor);
@@ -246,8 +246,8 @@ class viewAction
 	 * @access public
 	 * @since 1/12/07
 	 */
-	function &getSegueLinksComponent () {
-		$harmoni =& Harmoni::instance();
+	function getSegueLinksComponent () {
+		$harmoni = Harmoni::instance();
 		ob_start();
 		print "<div class='seguelinks'>";
 		
@@ -262,7 +262,7 @@ class viewAction
 
 		print "</div>";
 		
-		$ret =& new Component(ob_get_clean(), BLANK, 2);
+		$ret = new Component(ob_get_clean(), BLANK, 2);
 		return $ret;
 	}
 	
@@ -273,10 +273,10 @@ class viewAction
 	 * @access public
 	 * @since 1/12/07
 	 */
-	function &getCommandsComponent () {
-		$harmoni =& Harmoni::instance();
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+	function getCommandsComponent () {
+		$harmoni = Harmoni::instance();
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
 		ob_start();
 		if ($authZ->isUserAuthorized(
@@ -301,7 +301,7 @@ class viewAction
 		}
 	
 		
-		$ret =& new Component(ob_get_clean(), BLANK, 2);
+		$ret = new Component(ob_get_clean(), BLANK, 2);
 		return $ret;
 	}
 }

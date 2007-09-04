@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.5 2007/09/04 00:55:45 achapin Exp $
+ * @version $Id: addContent.act.php,v 1.6 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/SingleStepWizard.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.5 2007/09/04 00:55:45 achapin Exp $
+ * @version $Id: addContent.act.php,v 1.6 2007/09/04 15:07:43 adamfranco Exp $
  */
 class addContentAction
 	extends SegueClassicWizard
@@ -34,8 +34,8 @@ class addContentAction
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &getAuthFunctionId () {
-		$idManager =& Services::getService("Id");
+	function getAuthFunctionId () {
+		$idManager = Services::getService("Id");
 		return $idManager->getId("edu.middlebury.authorization.add_children");
 	}
 	
@@ -47,9 +47,9 @@ class addContentAction
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &createWizard () {
+	function createWizard () {
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SingleStepWizard::withText(
+		$wizard = SingleStepWizard::withText(
 				"<div>\n" .
 				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
 				"<tr>\n" .
@@ -64,7 +64,7 @@ class addContentAction
 				"[[_steps]]" .
 				"</div>\n"
 		);
-		$saveButton =& $wizard->getSaveButton();
+		$saveButton = $wizard->getSaveButton();
 		$saveButton->setLabel(_("Create >>"));
 		
 		$wizard->addStep("content", $this->getContentStep());
@@ -83,7 +83,7 @@ class addContentAction
 	 * @since 5/9/07
 	 */
 	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
+		$wizard = $this->getWizard($cacheName);
 		
 		// If all properties validate then go through the steps nessisary to
 		// save the data.
@@ -106,16 +106,16 @@ class addContentAction
 	 * @access public
 	 * @since 6/1/07
 	 */
-	function &getContentStep () {
-		$pluginManager =& Services::getService('PluginManager');
+	function getContentStep () {
+		$pluginManager = Services::getService('PluginManager');
 		
-		$step =& new WizardStep();
+		$step = new WizardStep();
 		$step->setDisplayName(_("Create New Content"));
 		
-		$property =& $step->addComponent("organizerId", new WHiddenField());
+		$property = $step->addComponent("organizerId", new WHiddenField());
 		$property->setValue(RequestContext::value('organizerId'));
 		
-		$property =& $step->addComponent("type", new WSaveWithChoiceButtonList());
+		$property = $step->addComponent("type", new WSaveWithChoiceButtonList());
 		
 		$plugins = $pluginManager->getEnabledPlugins();
 		
@@ -160,11 +160,11 @@ class addContentAction
 	 * @since 6/4/07
 	 */
 	function saveContentStep ($values) {
-		$director =& $this->getSiteDirector();
-		$organizer =& $this->getSiteComponentForIdString($values['organizerId']);
-		$componentType =& Type::fromString($values['type']);
+		$director = $this->getSiteDirector();
+		$organizer = $this->getSiteComponentForIdString($values['organizerId']);
+		$componentType = Type::fromString($values['type']);
 		
-		$component =& $director->createSiteComponent($componentType, $organizer);
+		$component = $director->createSiteComponent($componentType, $organizer);
 		
 		$this->_newId = $component->getId();
 		return true;
@@ -179,7 +179,7 @@ class addContentAction
 	 */
 	function getReturnUrl () {
 		if (isset($this->_newId)) {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			return $harmoni->request->quickURL(
 				'ui1', 'editContent',
 				array('node' => $this->_newId,

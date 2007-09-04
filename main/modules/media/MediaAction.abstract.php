@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.6 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.7 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.6 2007/04/27 15:13:31 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.7 2007/09/04 15:07:43 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -35,7 +35,7 @@ class MediaAction
 	 * @since 1/29/07
 	 */
 	function MediaAction () {
-		$this->mediaFileType =& new Type ('segue', 'edu.middlebury', 'media_file',
+		$this->mediaFileType = new Type ('segue', 'edu.middlebury', 'media_file',
 			'A file that is uploaded to Segue.');
 		if (method_exists($this, 'XmlAction'))
 			$this->XmlAction();	
@@ -50,10 +50,10 @@ class MediaAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check that the user can access the media library
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
-		$contentAsset =& $this->getContentAsset();
+		$contentAsset = $this->getContentAsset();
 		
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"),
@@ -95,13 +95,13 @@ class MediaAction
 	 * @access public
 	 * @since 1/26/07
 	 */
-	function &getContentAsset () {
+	function getContentAsset () {
 		if (!isset($this->_contentAsset)) {
-			$idManager =& Services::getService("Id");
-			$repositoryManager =& Services::getService("Repository");
-			$repository =& $repositoryManager->getRepository(
+			$idManager = Services::getService("Id");
+			$repositoryManager = Services::getService("Repository");
+			$repository = $repositoryManager->getRepository(
 				$idManager->getId('edu.middlebury.segue.sites_repository'));
-			$this->_contentAsset =& $repository->getAsset(
+			$this->_contentAsset = $repository->getAsset(
 				$idManager->getId(RequestContext::value('assetId')));
 		}
 		
@@ -117,9 +117,9 @@ class MediaAction
 	 * @access public
 	 * @since 1/26/07
 	 */
-	function getAssetXml (&$asset) {
-		$idManager =& Services::getService("Id");
-		$authZ =& Services::getService("AuthZ");
+	function getAssetXml ($asset) {
+		$idManager = Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
 		
 		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"),
@@ -130,9 +130,9 @@ class MediaAction
 		
 		ob_start();
 		
-		$assetId =& $asset->getId();
-		$repository =& $asset->getRepository();
-		$repositoryId =& $repository->getId();
+		$assetId = $asset->getId();
+		$repository = $asset->getRepository();
+		$repositoryId = $repository->getId();
 		print "\n\t<asset id=\"".$assetId->getIdString()."\" repositoryId=\"".$repositoryId->getIdString()."\">";
 		
 		print "\n\t\t<displayName><![CDATA[";
@@ -144,7 +144,7 @@ class MediaAction
 		print "]]></description>";
 		
 		print "\n\t\t<modificationDate><![CDATA[";
-		$date =& $asset->getModificationDate();
+		$date = $asset->getModificationDate();
 		print $date->asString();
 		print "]]></modificationDate>";
 		
@@ -166,19 +166,19 @@ class MediaAction
 		/*********************************************************
 		 * Files
 		 *********************************************************/
- 		$fileRecords =& $asset->getRecordsByRecordStructure(
+ 		$fileRecords = $asset->getRecordsByRecordStructure(
  			$idManager->getId('FILE'));
  		while ($fileRecords->hasNext()) {
- 			$fileRecord =& $fileRecords->next();
- 			$fileRecordId =& $fileRecord->getId();
+ 			$fileRecord = $fileRecords->next();
+ 			$fileRecordId = $fileRecord->getId();
 			print "\n\t\t<file id=\"".$fileRecordId->getIdString()."\">";
 			
-			$parts =& $fileRecord->getPartsByPartStructure($idManager->getId("FILE_NAME"));
-			$part =& $parts->next();
+			$parts = $fileRecord->getPartsByPartStructure($idManager->getId("FILE_NAME"));
+			$part = $parts->next();
 			print "\n\t\t\t<name><![CDATA[".$part->getValue()."]]></name>";
 			
-			$parts =& $fileRecord->getPartsByPartStructure($idManager->getId("FILE_SIZE"));
-			$part =& $parts->next();
+			$parts = $fileRecord->getPartsByPartStructure($idManager->getId("FILE_SIZE"));
+			$part = $parts->next();
 			print "\n\t\t\t<size>".$part->getValue()."</size>";
 			
 			print "\n\t\t\t<url><![CDATA[";
@@ -197,53 +197,53 @@ class MediaAction
 		/*********************************************************
 		 * Dublin Core
 		 *********************************************************/
-		$records =& $asset->getRecordsByRecordStructure(
+		$records = $asset->getRecordsByRecordStructure(
  			$idManager->getId('dc'));
  		if ($records->hasNext()) {
-	 		$record =& $records->next();
-	 		$recordId =& $record->getId();
+	 		$record = $records->next();
+	 		$recordId = $record->getId();
 			print "\n\t\t<dublinCore id=\"".$recordId->getIdString()."\">";
 			
-			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.title"));
+			$parts = $record->getPartsByPartStructure($idManager->getId("dc.title"));
 			if ($parts->hasNext()) {
-				$part =& $parts->next();
-				$valueObj =& $part->getValue();
+				$part = $parts->next();
+				$valueObj = $part->getValue();
 				print "\n\t\t\t<title><![CDATA[".$valueObj->asString()."]]></title>";
 			}
 			
-			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.description"));
+			$parts = $record->getPartsByPartStructure($idManager->getId("dc.description"));
 			if ($parts->hasNext()) {
-				$part =& $parts->next();
-				$valueObj =& $part->getValue();
+				$part = $parts->next();
+				$valueObj = $part->getValue();
 				print "\n\t\t\t<description><![CDATA[".$valueObj->asString()."]]></description>";
 			}
 			
-			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.creator"));
+			$parts = $record->getPartsByPartStructure($idManager->getId("dc.creator"));
 			if ($parts->hasNext()) {
-				$part =& $parts->next();
-				$valueObj =& $part->getValue();
+				$part = $parts->next();
+				$valueObj = $part->getValue();
 				print "\n\t\t\t<creator><![CDATA[".$valueObj->asString()."]]></creator>";
 			}
 			
-			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.source"));
+			$parts = $record->getPartsByPartStructure($idManager->getId("dc.source"));
 			if ($parts->hasNext()) {
-				$part =& $parts->next();
-				$valueObj =& $part->getValue();
+				$part = $parts->next();
+				$valueObj = $part->getValue();
 				print "\n\t\t\t<source><![CDATA[".$valueObj->asString()."]]></source>";
 			}
 			
-			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.publisher"));
+			$parts = $record->getPartsByPartStructure($idManager->getId("dc.publisher"));
 			if ($parts->hasNext()) {
-				$part =& $parts->next();
-				$valueObj =& $part->getValue();
+				$part = $parts->next();
+				$valueObj = $part->getValue();
 				print "\n\t\t\t<publisher><![CDATA[".$valueObj->asString()."]]></publisher>";
 			}
 			
-			$parts =& $record->getPartsByPartStructure($idManager->getId("dc.date"));
+			$parts = $record->getPartsByPartStructure($idManager->getId("dc.date"));
 			if ($parts->hasNext()) {
-				$part =& $parts->next();
-				$valueObj =& $part->getValue();
-				$date =& $valueObj->asDate();
+				$part = $parts->next();
+				$valueObj = $part->getValue();
+				$date = $valueObj->asDate();
 				print "\n\t\t\t<date><![CDATA[";
 				print $date->asString();
 				print "]]></date>";
@@ -266,10 +266,10 @@ class MediaAction
 	 * @access public
 	 * @since 1/30/07
 	 */
-	function addFileRecord ( &$asset ) {
-		$idManager =& Services::getService("Id");
+	function addFileRecord ( $asset ) {
+		$idManager = Services::getService("Id");
 		
-		$record =& $asset->createRecord($idManager->getId("FILE"));
+		$record = $asset->createRecord($idManager->getId("FILE"));
 		$this->updateFileRecord($asset, $record);
 	}
 	
@@ -281,10 +281,10 @@ class MediaAction
 	 * @access public
 	 * @since 1/30/07
 	 */
-	function addDublinCoreRecord ( &$asset ) {
-		$idManager =& Services::getService("Id");
+	function addDublinCoreRecord ( $asset ) {
+		$idManager = Services::getService("Id");
 		
-		$record =& $asset->createRecord($idManager->getId("dc"));
+		$record = $asset->createRecord($idManager->getId("dc"));
 		
 		$this->updateDublinCoreRecord($asset, $record);
 	}
@@ -297,8 +297,8 @@ class MediaAction
 	 * @access public
 	 * @since 1/30/07
 	 */
-	function updateFileRecord ( &$asset, &$record, $fieldName = 'media_file') {
-		$idManager =& Services::getService("Id");
+	function updateFileRecord ( $asset, $record, $fieldName = 'media_file') {
+		$idManager = Services::getService("Id");
 		
 		$name = $_FILES[$fieldName]['name'];
 		$tmpName = $_FILES[$fieldName]['tmp_name'];			
@@ -307,27 +307,27 @@ class MediaAction
 		// application/octet-stream type, see if we can figure out the
 		// type.
 		if (!$mimeType || $mimeType == 'application/octet-stream') {
-			$mime =& Services::getService("MIME");
+			$mime = Services::getService("MIME");
 			$mimeType = $mime->getMimeTypeForFileName($name);
 		}
 		
-		$parts =& $record->getPartsByPartStructure($idManager->getId("FILE_DATA"));
-		$part =& $parts->next();
+		$parts = $record->getPartsByPartStructure($idManager->getId("FILE_DATA"));
+		$part = $parts->next();
 		$part->updateValue(file_get_contents($tmpName));
 		
-		$parts =& $record->getPartsByPartStructure($idManager->getId("FILE_NAME"));
-		$part =& $parts->next();
+		$parts = $record->getPartsByPartStructure($idManager->getId("FILE_NAME"));
+		$part = $parts->next();
 		$part->updateValue($name);
 		
-		$parts =& $record->getPartsByPartStructure($idManager->getId("MIME_TYPE"));
-		$part =& $parts->next();
+		$parts = $record->getPartsByPartStructure($idManager->getId("MIME_TYPE"));
+		$part = $parts->next();
 		$part->updateValue($mimeType);
 		
 		
 		/*********************************************************
 		 * Thumbnail Generation
 		 *********************************************************/
-		$imageProcessor =& Services::getService("ImageProcessor");
+		$imageProcessor = Services::getService("ImageProcessor");
 					
 		// If our image format is supported by the image processor,
 		// generate a thumbnail.
@@ -339,18 +339,18 @@ class MediaAction
 				if (!isset($results['file_url']))
 					$sourceData = file_get_contents($results['file_url']);
 				
-				$parts =& $record->getPartsByPartStructure($idManager->getId("FILE_SIZE"));
-				$part =& $parts->next();
+				$parts = $record->getPartsByPartStructure($idManager->getId("FILE_SIZE"));
+				$part = $parts->next();
 				$part->updateValue(strval(strlen($sourceData)));
 			}
 		
 			$thumbnailData = $imageProcessor->generateThumbnailData($mimeType, $sourceData);
 		}
 		
-		$parts =& $record->getPartsByPartStructure($idManager->getId("THUMBNAIL_DATA"));
-		$thumbDataPart =& $parts->next();
-		$parts =& $record->getPartsByPartStructure($idManager->getId("THUMBNAIL_MIME_TYPE"));
-		$thumbMimeTypePart =& $parts->next();
+		$parts = $record->getPartsByPartStructure($idManager->getId("THUMBNAIL_DATA"));
+		$thumbDataPart = $parts->next();
+		$parts = $record->getPartsByPartStructure($idManager->getId("THUMBNAIL_MIME_TYPE"));
+		$thumbMimeTypePart = $parts->next();
 		
 		if ($thumbnailData) {
 			$thumbDataPart->updateValue($thumbnailData);
@@ -373,8 +373,8 @@ class MediaAction
 	 * @access public
 	 * @since 1/30/07
 	 */
-	function updateDublinCoreRecord ( &$asset, &$record ) {
-		$idManager =& Services::getService("Id");
+	function updateDublinCoreRecord ( $asset, $record ) {
+		$idManager = Services::getService("Id");
 		
 		$value = String::fromString($asset->getDisplayName());
 		$id = $idManager->getId("dc.title");
@@ -411,11 +411,11 @@ class MediaAction
 	 * @access public
 	 * @since 1/30/07
 	 */
-	function updateSingleValuedPart ( &$record, &$partStructureId, &$value ) {
+	function updateSingleValuedPart ( $record, $partStructureId, $value ) {
 		if (is_object($value) && $value->asString()) {
-			$parts =& $record->getPartsByPartStructure($partStructureId);
+			$parts = $record->getPartsByPartStructure($partStructureId);
 			if ($parts->hasNext()) {
-				$part =& $parts->next();
+				$part = $parts->next();
 				$part->updateValue($value);
 			} else {
 				$record->createPart($partStructureId, $value);
@@ -424,9 +424,9 @@ class MediaAction
 		
 		// Remove existing parts
 		else {
-			$parts =& $record->getPartsByPartStructure($partStructureId);
+			$parts = $record->getPartsByPartStructure($partStructureId);
 			while ($parts->hasNext()) {
-				$part =& $parts->next();
+				$part = $parts->next();
 				$record->deletePart($part->getId());
 			}
 		}

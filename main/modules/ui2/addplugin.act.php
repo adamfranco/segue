@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.2 2007/03/01 20:22:20 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.3 2007/09/04 15:07:44 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.2 2007/03/01 20:22:20 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.3 2007/09/04 15:07:44 adamfranco Exp $
  */
 class addpluginAction 
 	extends MainWindowAction
@@ -32,8 +32,8 @@ class addpluginAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check that the user can create an asset here.
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		 
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"),
@@ -59,18 +59,18 @@ class addpluginAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$harmoni =& Harmoni::instance();
-		$idManager =& Services::getService("Id");
-		$repositoryManager =& Services::getService("Repository");
-		$repository =& $repositoryManager->getRepository(
+		$harmoni = Harmoni::instance();
+		$idManager = Services::getService("Id");
+		$repositoryManager = Services::getService("Repository");
+		$repository = $repositoryManager->getRepository(
 				$idManager->getId("edu.middlebury.segue.sites_repository"));
 		
-		$parentAsset =& $repository->getAsset(
+		$parentAsset = $repository->getAsset(
 				$idManager->getId(RequestContext::value('parent_id')));
 		
-		$type =& Type::fromString(urldecode(RequestContext::value('type')));
+		$type = Type::fromString(urldecode(RequestContext::value('type')));
 		
-		$asset =& $repository->createAsset("Default Title", 
+		$asset = $repository->createAsset("Default Title", 
 										"", 
 										$type);
 		
@@ -78,18 +78,18 @@ class addpluginAction
 		
 		// Log the success or failure
 		if (Services::serviceRunning("Logging")) {
-			$loggingManager =& Services::getService("Logging");
-			$log =& $loggingManager->getLogForWriting("Segue");
-			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 							"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
 							"Normal events.");
 			
-			$item =& new AgentNodeEntryItem("Create Content", "Plugin added: ".Type::typeToString($type));
+			$item = new AgentNodeEntryItem("Create Content", "Plugin added: ".Type::typeToString($type));
 			$item->addNodeId($asset->getId());
 			$item->addNodeId($parentAsset->getId());
-			$renderer =& NodeRenderer::forAsset($asset);
-			$siteRenderer =& $renderer->getSiteRenderer();
+			$renderer = NodeRenderer::forAsset($asset);
+			$siteRenderer = $renderer->getSiteRenderer();
 			$item->addNodeId($siteRenderer->getId());
 			
 			$log->appendLogWithTypes($item,	$formatType, $priorityType);

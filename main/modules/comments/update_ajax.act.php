@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.1 2007/07/11 20:15:22 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.2 2007/09/04 15:07:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.1 2007/07/11 20:15:22 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.2 2007/09/04 15:07:42 adamfranco Exp $
  */
 class update_ajaxAction 
 	extends Action
@@ -32,7 +32,7 @@ class update_ajaxAction
 	 * @since 7/11/07
 	 */
 	function isAuthorizedToExecute () {
-		$comment =& $this->getComment();
+		$comment = $this->getComment();
 		return $comment->canModify();
 	}
 	
@@ -44,11 +44,11 @@ class update_ajaxAction
 	 * @since 7/11/07
 	 */
 	function execute () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough('node');
 		$harmoni->request->startNamespace('comments');
 		
-		$comment =& $this->getComment();
+		$comment = $this->getComment();
 		
 		if (RequestContext::value('subject')) {
 			$comment->updateSubject(RequestContext::value('subject'));
@@ -88,11 +88,11 @@ class update_ajaxAction
 	 * @access public
 	 * @since 7/11/07
 	 */
-	function &getComment () {
-		$idManager =& Services::getService("Id");
-		$commentId =& $idManager->getId(
+	function getComment () {
+		$idManager = Services::getService("Id");
+		$commentId = $idManager->getId(
 			RequestContext::value('comment_id'));
-		$commentManager =& CommentManager::instance();
+		$commentManager = CommentManager::instance();
 		return $commentManager->getComment($commentId);
 	}
 }

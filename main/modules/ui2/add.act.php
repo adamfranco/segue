@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.4 2007/08/23 19:45:46 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.5 2007/09/04 15:07:44 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.4 2007/08/23 19:45:46 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.5 2007/09/04 15:07:44 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -40,8 +40,8 @@ class addAction
 			else
 				return false;
 		} else {
-			$authZ =& Services::getService("AuthZ");
-			$idManager =& Services::getService("Id");
+			$authZ = Services::getService("AuthZ");
+			$idManager = Services::getService("Id");
 			 
 			return $authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.add_children"),
@@ -68,11 +68,11 @@ class addAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough("parent_id");
 		$harmoni->request->passthrough("slot");
 		
-		$centerPane =& $this->getActionRows();
+		$centerPane = $this->getActionRows();
 		$cacheName = 'add_site_wizard_'.RequestContext::value('parent_id');
 		
 		$this->runWizard ( $cacheName, $centerPane );
@@ -97,27 +97,27 @@ class addAction
 	 * @access public
 	 * @since 4/28/05
 	 */
-	function &createWizard () {
-		$idManager =& Services::getService("Id");
-		$repositoryManager =& Services::getService("Repository");
-		$repository =& $repositoryManager->getRepository(
+	function createWizard () {
+		$idManager = Services::getService("Id");
+		$repositoryManager = Services::getService("Repository");
+		$repository = $repositoryManager->getRepository(
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
 		
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
+		$wizard = SimpleStepWizard::withDefaultLayout();
 		
 		// :: Name and Description ::
-		$step =& $wizard->addStep("namedescstep", new WizardStep());
+		$step = $wizard->addStep("namedescstep", new WizardStep());
 		$step->setDisplayName(_("Name &amp; Description"));
 		
 		// Create the properties.
-		$displayNameProp =& $step->addComponent("display_name", new WTextField());
+		$displayNameProp = $step->addComponent("display_name", new WTextField());
 		$displayNameProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
 		$displayNameProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
 	// 	$displayNameProp->setDefaultValue(_("Default Asset Name"));
 //		$displayNameProp->setErrorString(" <span style='color: #f00'>* "._("The name must not start with a space.")."</span>");
 		
-		$descriptionProp =& $step->addComponent("description", WTextArea::withRowsAndColumns(5,30));
+		$descriptionProp = $step->addComponent("description", WTextArea::withRowsAndColumns(5,30));
 	// 	$descriptionProp->setDefaultValue(_("Default Asset description."));
 		
 		// Create the step text
@@ -146,19 +146,19 @@ class addAction
 	 * @since 4/28/05
 	 */
 	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
+		$wizard = $this->getWizard($cacheName);
 		
 		if (!$wizard->validate()) return false;
 		
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		$properties = $wizard->getAllValues();
 		
 		
 		/*********************************************************
 		 * Create the site Asset
 		 *********************************************************/			
-		$director =& $this->getSiteDirector();
-		$site =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'SiteNavBlock'), $null = null);
+		$director = $this->getSiteDirector();
+		$site = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'SiteNavBlock'), $null = null);
 		
 		$site->updateDisplayName($properties['namedescstep']['display_name']);
 		$site->updateDescription($properties['namedescstep']['description']);
@@ -210,47 +210,47 @@ class addAction
 		/*********************************************************
 		 * Create our default child assets
 		 *********************************************************/
-		$siteOrganizer =& $site->getOrganizer();
+		$siteOrganizer = $site->getOrganizer();
 		$siteOrganizer->updateNumColumns('2');
 		
-		$mainMenu =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'MenuOrganizer'), $siteOrganizer);
+		$mainMenu = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'MenuOrganizer'), $siteOrganizer);
 		$siteOrganizer->putSubcomponentInCell($mainMenu, 0);
 		$menuTarget = $siteOrganizer->getId()."_cell:1";
 		$mainMenu->updateTargetId($menuTarget);
 		$mainMenu->updateDirection('Top-Bottom/Left-Right');
 		
 		
-		$page1 =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'NavBlock'), $mainMenu);
+		$page1 = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'NavBlock'), $mainMenu);
 		$page1->updateDisplayName(_('My First Page'));
 		$page1->updateDescription(_('This is the first page in the site, added by default.'));
 		
-		$page1Org =& $page1->getOrganizer();
-		$page1ContentOrg =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $page1Org);
+		$page1Org = $page1->getOrganizer();
+		$page1ContentOrg = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $page1Org);
 		$page1Org->putSubcomponentInCell($page1ContentOrg, 0);
 		
-		$page1Content =& $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page1ContentOrg);
+		$page1Content = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page1ContentOrg);
 		$page1Content->updateDisplayName(_('My First Content'));
 		$page1Content->updateDescription(_('This is the first content in this page, added by default.'));
 		
-		$page1Content =& $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page1ContentOrg);
+		$page1Content = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page1ContentOrg);
 		$page1Content->updateDisplayName(_('My Second Content'));
 		$page1Content->updateDescription(_('This is the second content in this page, added by default.'));
 		
 		
 		
-		$page2 =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'NavBlock'), $mainMenu);
+		$page2 = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'NavBlock'), $mainMenu);
 		$page2->updateDisplayName(_('My Second Page'));
 		$page2->updateDescription(_('This is the second page in the site, added by default.'));
 		
-		$page2Org =& $page2->getOrganizer();
-		$page2ContentOrg =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $page2Org);
+		$page2Org = $page2->getOrganizer();
+		$page2ContentOrg = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $page2Org);
 		$page2Org->putSubcomponentInCell($page2ContentOrg, 0);
 		
-		$page2Content =& $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page2ContentOrg);
+		$page2Content = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page2ContentOrg);
 		$page2Content->updateDisplayName(_('My Third Content'));
 		$page2Content->updateDescription(_('This is the first content in this page, added by default.'));
 		
-		$page2Content =& $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page2ContentOrg);
+		$page2Content = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page2ContentOrg);
 		$page2Content->updateDisplayName(_('My Fourth Content'));
 		$page2Content->updateDescription(_('This is the second content in this page, added by default.'));
 		
@@ -259,14 +259,14 @@ class addAction
 		 * Log the success or failure
 		 *********************************************************/
 		if (Services::serviceRunning("Logging")) {
-			$loggingManager =& Services::getService("Logging");
-			$log =& $loggingManager->getLogForWriting("Segue");
-			$formatType =& new Type("logging", "edu.middlebury", "AgentsAndNodes",
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
 							"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType =& new Type("logging", "edu.middlebury", "Event_Notice",
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
 							"Normal events.");
 			
-			$item =& new AgentNodeEntryItem("Create Site", "Site added");
+			$item = new AgentNodeEntryItem("Create Site", "Site added");
 			$item->addNodeId($siteId);
 			
 			$log->appendLogWithTypes($item,	$formatType, $priorityType);
@@ -284,7 +284,7 @@ class addAction
 	 * @since 4/28/05
 	 */
 	function getReturnUrl () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		if ($this->_siteId) 
 			return $harmoni->request->quickURL($harmoni->request->getRequestedModule(), "editview", array(
 				"node" => $this->_siteId));
@@ -299,13 +299,13 @@ class addAction
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function &getSiteDirector () {
+	function getSiteDirector () {
 		/*********************************************************
 		 * XML Version
 		 *********************************************************/
 // 		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
 // 		
-// 		$this->document =& new DOMIT_Document();
+// 		$this->document = new DOMIT_Document();
 // 		$this->document->setNamespaceAwareness(true);
 // 		$success = $this->document->loadXML($this->filename);
 // 
@@ -314,16 +314,16 @@ class addAction
 // 				"<br/>\t meaning: ".$this->document->getErrorString()."<br/>", "SiteDisplay"));
 // 		}
 // 
-// 		$director =& new XmlSiteDirector($this->document);
+// 		$director = new XmlSiteDirector($this->document);
 		
 		
 		/*********************************************************
 		 * Asset version
 		 *********************************************************/
-		$repositoryManager =& Services::getService('Repository');
-		$idManager =& Services::getService('Id');
+		$repositoryManager = Services::getService('Repository');
+		$idManager = Services::getService('Id');
 		
-		$director =& new AssetSiteDirector(
+		$director = new AssetSiteDirector(
 			$repositoryManager->getRepository(
 				$idManager->getId('edu.middlebury.segue.sites_repository')));
 		

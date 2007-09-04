@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.6 2007/09/04 00:55:45 achapin Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.7 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.6 2007/09/04 00:55:45 achapin Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.7 2007/09/04 15:07:43 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -37,7 +37,7 @@ class SegueClassicWizard
 	 */
 	function isAuthorizedToExecute () {
 		// Check that the user can access this collection
-		$authZ =& Services::getService("AuthZ");
+		$authZ = Services::getService("AuthZ");
 		return $authZ->isUserAuthorized(
 					$this->getAuthFunctionId(), 
 					$this->getQualifierId());
@@ -50,8 +50,8 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &getAuthFunctionId () {
-		$idManager =& Services::getService("Id");
+	function getAuthFunctionId () {
+		$idManager = Services::getService("Id");
 		return $idManager->getId("edu.middlebury.authorization.modify");
 	}
 	
@@ -62,8 +62,8 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &getQualifierId () {
-		$component =& $this->getSiteComponent();
+	function getQualifierId () {
+		$component = $this->getSiteComponent();
 		return $component->getQualifierId();
 	}
 	
@@ -76,7 +76,7 @@ class SegueClassicWizard
 	 * @since 5/8/07
 	 */
 	function getSiteComponent () {
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		return $this->getSiteComponentForId(
 			$idManager->getId(RequestContext::value("node")));
 	}
@@ -89,8 +89,8 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function getSiteComponentForId ( &$id ) {
-		$director =& $this->getSiteDirector();
+	function getSiteComponentForId ( $id ) {
+		$director = $this->getSiteDirector();
 		return $director->getSiteComponentById($id->getIdString());
 	}
 	
@@ -102,8 +102,8 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 6/4/07
 	 */
-	function &getSiteComponentForIdString ( $id ) {
-		$director =& $this->getSiteDirector();
+	function getSiteComponentForIdString ( $id ) {
+		$director = $this->getSiteDirector();
 		return $director->getSiteComponentById($id);
 	}
 	
@@ -115,10 +115,10 @@ class SegueClassicWizard
 	 * @since 5/8/07
 	 */
 	function buildContent () {
-		$centerPane =& $this->getActionRows();
-		$qualifierId =& $this->getQualifierId();
+		$centerPane = $this->getActionRows();
+		$qualifierId = $this->getQualifierId();
 		$cacheName = get_class($this).'_'.$qualifierId->getIdString();
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough("node");
 		$harmoni->request->passthrough("returnNode");
 		$harmoni->request->passthrough("returnAction");
@@ -134,9 +134,9 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &createWizard () {
+	function createWizard () {
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
+		$wizard = SimpleStepWizard::withDefaultLayout();
 		
 		$wizard->addStep("namedesc", $this->getTitleStep());
 		$wizard->addStep("display", $this->getDisplayOptionsStep());
@@ -156,7 +156,7 @@ class SegueClassicWizard
 	 * @since 5/9/07
 	 */
 	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
+		$wizard = $this->getWizard($cacheName);
 		
 		// If all properties validate then go through the steps nessisary to
 		// save the data.
@@ -184,7 +184,7 @@ class SegueClassicWizard
 	 * @since 5/8/07
 	 */
 	function getReturnUrl () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->forget("returnNode");
 		$harmoni->request->forget("returnAction");
 		return $harmoni->request->quickURL(
@@ -199,14 +199,14 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function &getSiteDirector () {
+	function getSiteDirector () {
 			if (!isset($this->_director)) {
 			/*********************************************************
 			 * XML Version
 			 *********************************************************/
 	// 		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
 	// 		
-	// 		$this->document =& new DOMIT_Document();
+	// 		$this->document = new DOMIT_Document();
 	// 		$this->document->setNamespaceAwareness(true);
 	// 		$success = $this->document->loadXML($this->filename);
 	// 
@@ -215,16 +215,16 @@ class SegueClassicWizard
 	// 				"<br/>\t meaning: ".$this->document->getErrorString()."<br/>", "SiteDisplay"));
 	// 		}
 	// 
-	// 		$director =& new XmlSiteDirector($this->document);
+	// 		$director = new XmlSiteDirector($this->document);
 			
 			
 			/*********************************************************
 			 * Asset version
 			 *********************************************************/
-			$repositoryManager =& Services::getService('Repository');
-			$idManager =& Services::getService('Id');
+			$repositoryManager = Services::getService('Repository');
+			$idManager = Services::getService('Id');
 			
-			$this->_director =& new AssetSiteDirector(
+			$this->_director = new AssetSiteDirector(
 				$repositoryManager->getRepository(
 					$idManager->getId('edu.middlebury.segue.sites_repository')));
 		}
@@ -244,16 +244,16 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &getTitleStep () {
-		$component =& $this->getSiteComponent();
+	function getTitleStep () {
+		$component = $this->getSiteComponent();
 		
-		$step =& new WizardStep();
+		$step = new WizardStep();
 		$step->setDisplayName(_("Title &amp; Description"));
 		
 		// Create the step text
 		ob_start();
 		
-		$property =& $step->addComponent("display_name", new WTextField());
+		$property = $step->addComponent("display_name", new WTextField());
 		$property->setSize(80);
 		if ($component)
 			$property->setValue($component->getDisplayName());
@@ -265,7 +265,7 @@ class SegueClassicWizard
 		print "\n<br />[[display_name]]</p>";
 		
 		
-		$property =& $step->addComponent("description", WTextArea::withRowsAndColumns(4,80));
+		$property = $step->addComponent("description", WTextArea::withRowsAndColumns(4,80));
 		if ($component)
 			$property->setValue($component->getDescription());
 		print "\n<p><strong>"._("Description:")."</strong>";
@@ -287,7 +287,7 @@ class SegueClassicWizard
 	 * @since 5/9/07
 	 */
 	function saveTitleStep ($values) {
-		$component =& $this->getSiteComponent();
+		$component = $this->getSiteComponent();
 		
 		$value = trim($values['display_name']);
 		if (!$value)
@@ -307,16 +307,16 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &getDisplayOptionsStep () {
-		$component =& $this->getSiteComponent();
+	function getDisplayOptionsStep () {
+		$component = $this->getSiteComponent();
 		
-		$step =& new WizardStep();
+		$step = new WizardStep();
 		$step->setDisplayName(_("Display Options"));
 		
 		// Create the step text
 		ob_start();
 		
-		$property =& $step->addComponent("show_titles", new WSelectList());
+		$property = $step->addComponent("show_titles", new WSelectList());
 		$property->addOption('default', _("use default"));
 		$property->addOption('true', _("override-show"));
 		$property->addOption('false', _("override-hide"));
@@ -329,7 +329,7 @@ class SegueClassicWizard
 			else if ($val === false)
 				$property->setValue('false');
 			
-			$parent =& $component->getParentComponent();
+			$parent = $component->getParentComponent();
 		} else {
 			$parent = null;
 		}
@@ -345,7 +345,7 @@ class SegueClassicWizard
 		}
 		print "\n</p>";
 		
-		$property =& $step->addComponent("enable_comments", new WSelectList());
+		$property = $step->addComponent("enable_comments", new WSelectList());
 		$property->addOption('default', _("use default"));
 		$property->addOption('true', _("override-enable"));
 		$property->addOption('false', _("override-disable"));
@@ -382,7 +382,7 @@ class SegueClassicWizard
 	 * @since 5/9/07
 	 */
 	function saveDisplayOptionsStep ($values) {
-		$component =& $this->getSiteComponent();
+		$component = $this->getSiteComponent();
 		$component->updateShowDisplayNames($values['show_titles']);
 		$component->updateCommentsEnabled($values['enable_comments']);
 		return true;
@@ -395,16 +395,16 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &getStatusStep () {
-		$component =& $this->getSiteComponent();
+	function getStatusStep () {
+		$component = $this->getSiteComponent();
 		
-		$step =& new WizardStep();
+		$step = new WizardStep();
 		$step->setDisplayName(_("Status"));
 		
 		// Create the step text
 		ob_start();
 		
-		$property =& $step->addComponent("status", new WRadioList());
+		$property = $step->addComponent("status", new WRadioList());
 		$property->addOption('published', _("Published"));
 		$property->addOption('draft', _("Draft"));
 		$property->addOption('date', _("Published durring period _____ to _______"));
@@ -422,7 +422,7 @@ class SegueClassicWizard
 		print "\n<br/>[[status]]";
 		
 		
-// 		$property =& $step->addComponent("description", WTextArea::withRowsAndColumns(4,80));
+// 		$property = $step->addComponent("description", WTextArea::withRowsAndColumns(4,80));
 // 		if ($component)
 // 			$property->setValue($component->getDescription());
 // 		print "\n<h2>"._("Description")."</h2>";

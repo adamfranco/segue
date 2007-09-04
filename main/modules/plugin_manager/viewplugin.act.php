@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewplugin.act.php,v 1.3 2007/06/05 15:23:41 adamfranco Exp $
+ * @version $Id: viewplugin.act.php,v 1.4 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewplugin.act.php,v 1.3 2007/06/05 15:23:41 adamfranco Exp $
+ * @version $Id: viewplugin.act.php,v 1.4 2007/09/04 15:07:43 adamfranco Exp $
  */
 class viewpluginAction 
 	extends Action
@@ -41,14 +41,14 @@ class viewpluginAction
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function &execute () {
+	function execute () {
 		ob_start();
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		
 		/*********************************************************
 		 * Other headers and footers
 		 *********************************************************/
-		$outputHandler =& $harmoni->getOutputHandler();
+		$outputHandler = $harmoni->getOutputHandler();
 		
 		
 		// Add our common Harmoni javascript libraries
@@ -74,15 +74,15 @@ class viewpluginAction
 		$harmoni->request->endNamespace();
 			
 		// Get the plugin asset object
-		$repositoryManager =& Services::getService("Repository");
-		$idManager =& Services::getService("Id");
-		$repository =& $repositoryManager->getRepository(
+		$repositoryManager = Services::getService("Repository");
+		$idManager = Services::getService("Id");
+		$repository = $repositoryManager->getRepository(
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
 		
-		$asset =& $repository->getAsset($idManager->getId($id));
+		$asset = $repository->getAsset($idManager->getId($id));
 
-		$pluginManager =& Services::getService("Plugs");
-		$plugin =& $pluginManager->getPlugin($asset);
+		$pluginManager = Services::getService("Plugs");
+		$plugin = $pluginManager->getPlugin($asset);
 
 		
 		if (!is_object($plugin)) {
@@ -96,7 +96,7 @@ class viewpluginAction
 		
 // 		exit();
 
-		$block =& new UnstyledBlock(ob_get_clean());
+		$block = new UnstyledBlock(ob_get_clean());
 		return $block;
 	}
 }

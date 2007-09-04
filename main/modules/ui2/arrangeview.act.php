@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.4 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: arrangeview.act.php,v 1.5 2007/09/04 15:07:44 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.4 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: arrangeview.act.php,v 1.5 2007/09/04 15:07:44 adamfranco Exp $
  */
 class arrangeviewAction
 	extends viewAction {
@@ -36,8 +36,8 @@ class arrangeviewAction
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function &getSiteVisitor () {
-		$visitor =& new ArrangeModeSiteVisitor();
+	function getSiteVisitor () {
+		$visitor = new ArrangeModeSiteVisitor();
 		return $visitor;
 	}
 	
@@ -48,8 +48,8 @@ class arrangeviewAction
 	 * @access public
 	 * @since 1/12/07
 	 */
-	function &getCommandsComponent () {
-		$harmoni =& Harmoni::instance();
+	function getCommandsComponent () {
+		$harmoni = Harmoni::instance();
 		
 		ob_start();
 		print "<div class='commands'>";
@@ -68,7 +68,7 @@ class arrangeviewAction
 		print " | "._("arrange");
 		print "</div>";
 				
-		$ret =& new Component(ob_get_clean(), BLANK, 2);
+		$ret = new Component(ob_get_clean(), BLANK, 2);
 		return $ret;
 	}
 }

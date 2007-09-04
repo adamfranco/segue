@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.7 2007/08/23 19:46:54 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.8 2007/09/04 15:07:44 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.7 2007/08/23 19:46:54 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.8 2007/09/04 15:07:44 adamfranco Exp $
  */
 class deleteComponentAction 
 	extends EditModeSiteAction
@@ -34,11 +34,11 @@ class deleteComponentAction
 	 * @since 4/14/06
 	 */
 	function processChanges ( SiteDirector $director ) {		
-		$component =& $director->getSiteComponentById(RequestContext::value('node'));
+		$component = $director->getSiteComponentById(RequestContext::value('node'));
 		
 		$this->findSafeReturnNode($director, $component);
 		
-		$organizer =& $component->getParentComponent();
+		$organizer = $component->getParentComponent();
 		if ($organizer)
 			$organizer->detatchSubcomponent($component);
 
@@ -65,7 +65,7 @@ class deleteComponentAction
 	 * @since 10/16/06
 	 */
 	function returnToCallerPage () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		if ($this->_returnNode) {
 			if (!$action = RequestContext::value('returnAction'))
 				 $action = "editview";
@@ -88,18 +88,18 @@ class deleteComponentAction
 	 * @access public
 	 * @since 10/16/06
 	 */
-	function findSafeReturnNode ( &$director, &$componentToDelete ) {
+	function findSafeReturnNode ( $director, $componentToDelete ) {
 		if (RequestContext::value('returnNode')) {
 			// Traverse up to see if the componentToDelete is an ancestor of the 
 			// return node or the return node itself.
-			$node =& $director->getSiteComponentById(RequestContext::value('returnNode'));
+			$node = $director->getSiteComponentById(RequestContext::value('returnNode'));
 			while ($node) {
 				if ($componentToDelete->getId() == $node->getId()) {
-					$parentComponent =& $componentToDelete->getParentComponent();
+					$parentComponent = $componentToDelete->getParentComponent();
 					$this->_returnNode = $parentComponent->getId();
 					return;
 				}
-				$node =& $node->getParentComponent();
+				$node = $node->getParentComponent();
 			}
 			
 			// If the return node isn't going to be deleted, just use it.

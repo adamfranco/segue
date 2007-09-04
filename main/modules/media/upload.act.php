@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.4 2007/02/27 20:04:44 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.4 2007/02/27 20:04:44 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
  */
 class uploadAction
 	extends MediaAction
@@ -35,10 +35,10 @@ class uploadAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check that the user can access the media library
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
-		$contentAsset =& $this->getContentAsset();
+		$contentAsset = $this->getContentAsset();
 		
 		return ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"),
@@ -66,7 +66,7 @@ class uploadAction
 			$this->error('Uploaded file is empty');
 		
 		ob_start();
-		$newFileAsset =& $this->createFileAsset();
+		$newFileAsset = $this->createFileAsset();
 		if ($error = ob_get_clean())
 			$this->error($error);
 		
@@ -82,9 +82,9 @@ class uploadAction
 	 * @access public
 	 * @since 1/26/07
 	 */
-	function &createFileAsset () {
-		$contentAsset =& $this->getContentAsset();
-		$repository =& $contentAsset->getRepository();
+	function createFileAsset () {
+		$contentAsset = $this->getContentAsset();
+		$repository = $contentAsset->getRepository();
 		
 		if (!($displayName = RequestContext::value('displayName')))
 			$displayName = $_FILES['media_file']['name'];
@@ -93,7 +93,7 @@ class uploadAction
 			$description = '';
 		
 		// Create the asset
-		$asset =& $repository->createAsset(
+		$asset = $repository->createAsset(
 					$displayName,
 					$description,
 					$this->mediaFileType);

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editFlowOrg.act.php,v 1.1 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: editFlowOrg.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editFlowOrg.act.php,v 1.1 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: editFlowOrg.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */
 class editFlowOrgAction
 	extends SegueClassicWizard
@@ -45,9 +45,9 @@ class editFlowOrgAction
 	 * @access public
 	 * @since 5/11/07
 	 */
-	function &createWizard () {
+	function createWizard () {
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withDefaultLayout();
+		$wizard = SimpleStepWizard::withDefaultLayout();
 		
 		$wizard->addStep("display", $this->getDisplayOptionsStep());
 		
@@ -65,7 +65,7 @@ class editFlowOrgAction
 	 * @since 5/11/07
 	 */
 	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
+		$wizard = $this->getWizard($cacheName);
 		
 		// If all properties validate then go through the steps nessisary to
 		// save the data.
@@ -88,9 +88,9 @@ class editFlowOrgAction
 	 * @access public
 	 * @since 5/11/07
 	 */
-	function &getDisplayOptionsStep () {
-		$component =& $this->getSiteComponent();
-		$step =& parent::getDisplayOptionsStep();
+	function getDisplayOptionsStep () {
+		$component = $this->getSiteComponent();
+		$step = parent::getDisplayOptionsStep();
 		
 		ob_start();
 		$this->printRowsColumns($component, $step);
@@ -113,7 +113,7 @@ class editFlowOrgAction
 		if (!parent::saveDisplayOptionsStep($values)) {
 			return false;
 		}
-		$component =& $this->getSiteComponent();
+		$component = $this->getSiteComponent();
 		$this->saveRowsColumns($component, $values);
 		$this->saveDirection($component, $values);
 		$this->saveWidth($component, $values);
@@ -129,8 +129,8 @@ class editFlowOrgAction
 	 * @access public
 	 * @since 5/13/07
 	 */
-	function printRowsColumns ( &$siteComponent, &$step ) {		
-		$property =& $step->addComponent('rows', new WSelectList);
+	function printRowsColumns ( $siteComponent, $step ) {		
+		$property = $step->addComponent('rows', new WSelectList);
 		$property->setValue(trim($siteComponent->getNumRows()));
 		
 		$property->addOption(0, _("Unlimited"));
@@ -138,7 +138,7 @@ class editFlowOrgAction
 			$property->addOption($i, $i);
 		}
 		
-		$property =& $step->addComponent('columns', new WSelectList);
+		$property = $step->addComponent('columns', new WSelectList);
 		$property->setValue(trim($siteComponent->getNumColumns()));
 		
 		for ($i = 1; $i <= 10; $i++) {
@@ -161,7 +161,7 @@ class editFlowOrgAction
 	 * @access public
 	 * @since 5/15/07
 	 */
-	function saveRowsColumns ( &$component, $values ) {
+	function saveRowsColumns ( $component, $values ) {
 		$component->updateNumRows($values['rows']);
 		$component->updateNumColumns($values['columns']);
 		return true;
@@ -175,8 +175,8 @@ class editFlowOrgAction
 	 * @access public
 	 * @since 5/13/07
 	 */
-	function printDirection ( &$siteComponent, &$step ) {
-		$property =& $step->addComponent('direction', new WSelectList);
+	function printDirection ( $siteComponent, $step ) {
+		$property = $step->addComponent('direction', new WSelectList);
 		$property->setValue($siteComponent->getDirection());
 		
 		$directions = array(
@@ -208,7 +208,7 @@ class editFlowOrgAction
 	 * @access public
 	 * @since 5/15/07
 	 */
-	function saveDirection ( &$component, $values ) {
+	function saveDirection ( $component, $values ) {
 		$component->updateDirection($values['direction']);
 		return true;
 	}
@@ -221,8 +221,8 @@ class editFlowOrgAction
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printWidth ( &$siteComponent, &$step ) {
-		$property =& $step->addComponent('width', new WTextField);
+	function printWidth ( $siteComponent, $step ) {
+		$property = $step->addComponent('width', new WTextField);
 		$property->setValue($siteComponent->getWidth());
 		$property->setSize(6);
 		$property->setErrorRule(new WECRegex("^([0-9]+(px|%))?$"));
@@ -244,7 +244,7 @@ class editFlowOrgAction
 	 * @access public
 	 * @since 5/15/07
 	 */
-	function saveWidth ( &$component, $values ) {
+	function saveWidth ( $component, $values ) {
 		$component->updateWidth($values['width']);
 		return true;
 	}

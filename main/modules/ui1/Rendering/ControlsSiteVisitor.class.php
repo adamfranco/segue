@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/09/04 00:55:45 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/09/04 15:07:44 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/09/04 00:55:45 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/09/04 15:07:44 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	implements SiteVisitor
@@ -49,8 +49,8 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function controlsStart ( &$siteComponent ) {
-		$harmoni =& Harmoni::instance();
+	function controlsStart ( $siteComponent ) {
+		$harmoni = Harmoni::instance();
 		ob_start();
 		
 		print "\n<div class='ui1_controls'>";
@@ -76,14 +76,14 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &controlsEnd ( &$siteComponent ) {
+	function controlsEnd ( $siteComponent ) {
 // 		print "\n\t\t\t\t<div style='text-align: right;'>";
 // 		print "<input type='submit' value='"._("Apply Changes")."'/>";
 		print "</div>";
 // 		print "\n\t\t\t</form>";
 		
 		$controls = ob_get_clean();
-// 		$harmoni =& Harmoni::instance();
+// 		$harmoni = Harmoni::instance();
 // 		$harmoni->request->endNamespace();
 		return $controls;
 	}
@@ -97,7 +97,7 @@ class ControlsSiteVisitor
 	 * @since 8/21/06
 	 */
 	
-	function printDelimiter ( &$siteComponent ) {
+	function printDelimiter ( $siteComponent ) {
 		print " | ";
 	}
 
@@ -110,10 +110,10 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printDelete ( &$siteComponent ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		$harmoni =& Harmoni::instance();
+	function printDelete ( $siteComponent ) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
 		
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.delete"), 
@@ -149,10 +149,10 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 5/7/07
 	 */
-	function printEdit ( &$siteComponent, $action ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		$harmoni =& Harmoni::instance();
+	function printEdit ( $siteComponent, $action ) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
 		
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
@@ -179,12 +179,12 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 5/7/07
 	 */
-	function printReorder ( &$siteComponent ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		$harmoni =& Harmoni::instance();
+	function printReorder ( $siteComponent ) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
 		
-		$parent =& $siteComponent->getParentComponent();
+		$parent = $siteComponent->getParentComponent();
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$parent->getQualifierId()))
@@ -237,10 +237,10 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 5/7/07
 	 */
-	function printMove ( &$siteComponent ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		$harmoni =& Harmoni::instance();
+	function printMove ( $siteComponent ) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
 		
 		$url = 	$harmoni->request->quickURL('ui1', 'editContentWizard', array(
 						'node' => $siteComponent->getId(),
@@ -263,10 +263,10 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 5/7/07
 	 */
-	function printVersions ( &$siteComponent ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		$harmoni =& Harmoni::instance();
+	function printVersions ( $siteComponent ) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
 		
 		$url = 	$harmoni->request->quickURL('ui1', 'versions', array(
 						'node' => $siteComponent->getId(),
@@ -287,9 +287,9 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 9/22/06
 	 */
-	function printAddSubMenu ( &$siteComponent ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+	function printAddSubMenu ( $siteComponent ) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
 		print "\n\t\t\t\t<div style='font-weight: bold;'>";
 		print _("Sub-Menu: ");
@@ -297,9 +297,9 @@ class ControlsSiteVisitor
 		if ($siteComponent->subMenuExists()) {
 			print _("created");
 		} else {
-			$parentMenuOrganizer =& $siteComponent->getMenuOrganizer();
+			$parentMenuOrganizer = $siteComponent->getMenuOrganizer();
 			
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			$message = _("Are you sure that you wish to create a submenu?");
 			$url = str_replace('&amp;', '&', 
 					$harmoni->request->quickURL('ui1', 'createSubMenu', array(
@@ -442,9 +442,9 @@ class ControlsSiteVisitor
 	 * @since 4/17/06
 	 */
 	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $siteComponent ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		$harmoni =& Harmoni::instance();
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
 		
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
@@ -485,9 +485,9 @@ class ControlsSiteVisitor
 	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) {
 // 		$this->controlsStart($siteComponent);
 		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		$harmoni =& Harmoni::instance();
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
 		
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 

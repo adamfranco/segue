@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.4 2007/09/04 00:55:45 achapin Exp $
+ * @version $Id: addMenuContent.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.4 2007/09/04 00:55:45 achapin Exp $
+ * @version $Id: addMenuContent.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -35,9 +35,9 @@ class addMenuContentAction
 	 * @access public
 	 * @since 6/5/07
 	 */
-	function &createWizard () {
+	function createWizard () {
 		// Instantiate the wizard, then add our steps.
-		$wizard =& SimpleStepWizard::withText(
+		$wizard = SimpleStepWizard::withText(
 				"<div>\n" .
 				"[[_stepsBar]]" .
 				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
@@ -56,12 +56,12 @@ class addMenuContentAction
 				"[[_steps]]" .
 				"</div>\n"
 			);
-		$saveButton =& $wizard->getSaveButton();
+		$saveButton = $wizard->getSaveButton();
 		$saveButton->setLabel(_("Create >>"));
 		
 		$wizard->addStep("nav", $this->getNavStep());
 		
-		$step =& $this->getContentStep();
+		$step = $this->getContentStep();
 		$step->setDisplayName(_("Create New Menu Content"));
 		$wizard->addStep("content", $step);
 		
@@ -79,7 +79,7 @@ class addMenuContentAction
 	 * @since 5/9/07
 	 */
 	function saveWizard ( $cacheName ) {
-		$wizard =& $this->getWizard($cacheName);
+		$wizard = $this->getWizard($cacheName);
 		
 		// If all properties validate then go through the steps nessisary to
 		// save the data.
@@ -107,16 +107,16 @@ class addMenuContentAction
 	 * @access public
 	 * @since 6/1/07
 	 */
-	function &getNavStep () {
-		$pluginManager =& Services::getService('PluginManager');
+	function getNavStep () {
+		$pluginManager = Services::getService('PluginManager');
 		
-		$step =& new WizardStep();
+		$step = new WizardStep();
 		$step->setDisplayName(_("Create New Navigation"));
 		
-		$property =& $step->addComponent("organizerId", new WHiddenField());
+		$property = $step->addComponent("organizerId", new WHiddenField());
 		$property->setValue(RequestContext::value('organizerId'));
 		
-		$property =& $step->addComponent("type", new WSaveWithChoiceButtonList());
+		$property = $step->addComponent("type", new WSaveWithChoiceButtonList());
 		
 		$navTypes = $this->getNavTypes();
 		
@@ -159,12 +159,12 @@ class addMenuContentAction
 	 * @since 6/5/07
 	 */
 	function saveNavStep ($values) {
-		$director =& $this->getSiteDirector();
-		$organizer =& $this->getSiteComponentForIdString($values['organizerId']);
-		$componentType =& Type::fromString($values['type']);
+		$director = $this->getSiteDirector();
+		$organizer = $this->getSiteComponentForIdString($values['organizerId']);
+		$componentType = Type::fromString($values['type']);
 		
 		if ($componentType->getDomain() == 'segue-multipart')
-			$component =& addComponentAction::createMultipartComponent($director, $componentType, $organizer);
+			$component = addComponentAction::createMultipartComponent($director, $componentType, $organizer);
 		else
 			return false;
 		
@@ -219,7 +219,7 @@ class addMenuContentAction
 	 */
 	function getReturnUrl () {
 		if (isset($this->_newIsNav) && $this->_newIsNav && isset($this->_newId)) {
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			return $harmoni->request->quickURL(
 				'ui1', 'editNav',
 				array('node' => $this->_newId,

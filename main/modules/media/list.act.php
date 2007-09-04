@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.1 2007/01/29 21:26:09 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.1 2007/01/29 21:26:09 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */
 class listAction
 	extends MediaAction
@@ -34,13 +34,13 @@ class listAction
 	 * @since 1/26/07
 	 */
 	function buildContent () {		
-		$contentAsset =& $this->getContentAsset();
+		$contentAsset = $this->getContentAsset();
 		
 		
 		$this->start();
 		$children = $contentAsset->getAssets();
 		while ($children->hasNext()) {
-			$child =& $children->next();
+			$child = $children->next();
 			if ($this->mediaFileType->isEqual($child->getAssetType()))
 				print $this->getAssetXml($child);
 		}

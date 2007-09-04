@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.2 2007/04/30 16:29:27 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.3 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAsset.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.2 2007/04/30 16:29:27 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.3 2007/09/04 15:07:43 adamfranco Exp $
  */
 class MediaFile {
 		
@@ -37,11 +37,11 @@ class MediaFile {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	function &withIdString ( $idString) {
+	function withIdString ( $idString) {
 		if (preg_match('/^repositoryId=(.+)&assetId=(.+)&recordId=(.+)$/', 
 			$idString, $matches)) 
 		{
-			$obj =& MediaFile::withIdStrings($matches[1], $matches[2], $matches[3]);
+			$obj = MediaFile::withIdStrings($matches[1], $matches[2], $matches[3]);
 			return $obj;
 		} else {
 			$null = null;
@@ -59,16 +59,16 @@ class MediaFile {
 	 * @since 4/27/07
 	 * @static
 	 */
-	function &withIds ( &$repositoryId, &$assetId, &$recordId  ) {
+	function withIds ( $repositoryId, $assetId, $recordId  ) {
 		ArgumentValidator::validate($repositoryId, ExtendsValidatorRule::getRule("Id"));
 		ArgumentValidator::validate($assetId, ExtendsValidatorRule::getRule("Id"));
 		ArgumentValidator::validate($recordId, ExtendsValidatorRule::getRule("Id"));
 		
-		$repositoryManager =& Services::getService("Repository");
-		$repository =& $repositoryManager->getRepository($repositoryId);
-		$asset =& $repository->getAsset($assetId);
+		$repositoryManager = Services::getService("Repository");
+		$repository = $repositoryManager->getRepository($repositoryId);
+		$asset = $repository->getAsset($assetId);
 		
-		$mediaFile =& new MediaFile(
+		$mediaFile = new MediaFile(
 			MediaAsset::withAsset($asset),
 			$asset->getRecord($recordId));
 		return $mediaFile;
@@ -84,14 +84,14 @@ class MediaFile {
 	 * @since 4/27/07
 	 * @static
 	 */
-	function &withIdStrings ( $repositoryId, $assetId, $recordId ) {
+	function withIdStrings ( $repositoryId, $assetId, $recordId ) {
 		ArgumentValidator::validate($repositoryId, NonZeroLengthStringValidatorRule::getRule());
 		ArgumentValidator::validate($assetId, NonZeroLengthStringValidatorRule::getRule());
 		ArgumentValidator::validate($recordId, NonZeroLengthStringValidatorRule::getRule());
 		
-		$idManager =& Services::getService("Id");
+		$idManager = Services::getService("Id");
 		
-		$mediaFile =& MediaFile::withIds(
+		$mediaFile = MediaFile::withIds(
 			$idManager->getId($repositoryId),
 			$idManager->getId($assetId),
 			$idManager->getId($recordId));
@@ -123,8 +123,8 @@ class MediaFile {
 	 * @access public
 	 * @since 4/27/07
 	 */
-	function &getSize () {
-		$size =& ByteSize::withValue($this->_getPartValue('FILE_SIZE'));
+	function getSize () {
+		$size = ByteSize::withValue($this->_getPartValue('FILE_SIZE'));
 		return $size;
 	}
 	
@@ -169,7 +169,7 @@ class MediaFile {
 	 * @since 4/27/07
 	 */
 	function getUrl () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->StartNamespace('polyphony-repository');
 		$url = $harmoni->request->quickURL("repository", "viewfile", 
 				array(
@@ -189,7 +189,7 @@ class MediaFile {
 	 * @since 4/27/07
 	 */
 	function getThumbnailUrl () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		$harmoni->request->StartNamespace('polyphony-repository');
 		$url = $harmoni->request->quickURL("repository", "viewthumbnail", 
 				array(
@@ -323,9 +323,9 @@ class MediaFile {
 	 * @access public
 	 * @since 4/27/07
 	 */
-	function MediaFile ( &$mediaAsset, &$record ) {
-		$this->_record =& $record;
-		$this->_mediaAsset =& $mediaAsset;
+	function MediaFile ( $mediaAsset, $record ) {
+		$this->_record = $record;
+		$this->_mediaAsset = $mediaAsset;
 	}
 	
 	/**
@@ -337,11 +337,11 @@ class MediaFile {
 	 * @since 4/27/07
 	 */
 	function _getPartValue ($partIdString) {
-		$idManager =& Services::getService("Id");
-		$parts =& $this->_record->getPartsByPartStructure(
+		$idManager = Services::getService("Id");
+		$parts = $this->_record->getPartsByPartStructure(
 					$idManager->getId($partIdString));
 		while ($parts->hasNext()) {
-			$part =& $parts->next();
+			$part = $parts->next();
 			return $part->getValue();
 		}
 		
@@ -356,7 +356,7 @@ class MediaFile {
 	 * @since 4/30/07
 	 */
 	function _getRecordIdString () {
-		$id =& $this->_record->getId();
+		$id = $this->_record->getId();
 		return $id->getIdString();
 	}
 	
@@ -393,7 +393,7 @@ class MediaFile {
 	 * @access protected
 	 * @since 4/27/07
 	 */
-	function &_getAsset () {
+	function _getAsset () {
 		return $this->_mediaAsset;
 	}
 }

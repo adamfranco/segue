@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.4 2007/09/04 15:07:44 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.3 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.4 2007/09/04 15:07:44 adamfranco Exp $
  */
 class createSubMenuAction
 	extends EditModeSiteAction
@@ -38,15 +38,15 @@ class createSubMenuAction
 	function processChanges ( SiteDirector $director ) {
 		// Get the target organizer's Id & Cell
 		$parentNavBlockId = RequestContext::value('parent');
-		$parentNavBlock =& $director->getSiteComponentById($parentNavBlockId);
+		$parentNavBlock = $director->getSiteComponentById($parentNavBlockId);
 		$director->getRootSiteComponent($parentNavBlockId);		
-		$navOrganizer =& $parentNavBlock->getOrganizer();
+		$navOrganizer = $parentNavBlock->getOrganizer();
 		
 		// Crete the submenu
-		$subMenu =& $director->createSiteComponent(new Type('segue', 'edu.middlebury', "MenuOrganizer"), $parentNavBlock);
+		$subMenu = $director->createSiteComponent(new Type('segue', 'edu.middlebury', "MenuOrganizer"), $parentNavBlock);
 		
 		// If the parent menu is vertical, nest the sub-menu by default.
-		$parentMenu =& $parentNavBlock->getParentComponent();
+		$parentMenu = $parentNavBlock->getParentComponent();
 		
 		if (preg_match('/^(Top-Bottom|Bottom-Top)\//i', $parentMenu->getDirection())) {
 			$parentNavBlock->makeNested($subMenu);

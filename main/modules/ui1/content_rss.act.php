@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content_rss.act.php,v 1.1 2007/08/31 16:43:52 achapin Exp $
+ * @version $Id: content_rss.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY_DIR."/main/library/AbstractActions/RSSAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/ContentRssSiteVisitor.cl
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content_rss.act.php,v 1.1 2007/08/31 16:43:52 achapin Exp $
+ * @version $Id: content_rss.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */
 class content_rssAction
 	extends RSSAction
@@ -63,8 +63,8 @@ class content_rssAction
 		/*********************************************************
 		 * Asset version
 		 *********************************************************/
-		$repositoryManager =& Services::getService('Repository');
-		$idManager =& Services::getService('Id');
+		$repositoryManager = Services::getService('Repository');
+		$idManager = Services::getService('Id');
 		
 		$this->_director = new AssetSiteDirector(
 			$repositoryManager->getRepository(
@@ -77,7 +77,7 @@ class content_rssAction
 		 * Additional setup
 		 *********************************************************/
 		$siteComponent = $this->_director->getSiteComponentById($nodeId);
-		$rootSiteComponent =& $this->_director->getRootSiteComponent($nodeId);
+		$rootSiteComponent = $this->_director->getRootSiteComponent($nodeId);
 		
 		try {
 			$this->setTitle($siteComponent->getDisplayName().': '.$siteComponent->getDisplayName());

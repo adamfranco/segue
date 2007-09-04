@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.5 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: editview.act.php,v 1.6 2007/09/04 15:07:44 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.5 2007/08/28 00:25:41 achapin Exp $
+ * @version $Id: editview.act.php,v 1.6 2007/09/04 15:07:44 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -37,16 +37,16 @@ class editviewAction
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function &getSiteVisitor () {
+	function getSiteVisitor () {
 		if (!isset($this->visitor)) {
 			
-			$requestedNode =& $this->_director->getSiteComponentById(
+			$requestedNode = $this->_director->getSiteComponentById(
 				RequestContext::value("node"));
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
-				$this->visitor =& new DetailEditModeSiteVisitor($requestedNode);
+				$this->visitor = new DetailEditModeSiteVisitor($requestedNode);
 			else
-				$this->visitor =& new EditModeSiteVisitor();
+				$this->visitor = new EditModeSiteVisitor();
 		}
 		return $this->visitor;
 	}
@@ -58,17 +58,17 @@ class editviewAction
 	 * @access public
 	 * @since 1/18/07
 	 */
-	function &execute () {
-		$mainScreen =& parent::execute();
+	function execute () {
+		$mainScreen = parent::execute();
 		
 		// Add controls bar and border
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$this->rootSiteComponent->getQualifierId()))
 		{
-			$visitor =& $this->getSiteVisitor();
+			$visitor = $this->getSiteVisitor();
 			$controlsHTML = $visitor->getBarPreHTML('#090')
 				.$visitor->getControlsHTML(
 					"<em>"._("Site")."</em>", 
@@ -89,8 +89,8 @@ class editviewAction
 	 * @access public
 	 * @since 1/12/07
 	 */
-	function &getCommandsComponent () {
-		$harmoni =& Harmoni::instance();
+	function getCommandsComponent () {
+		$harmoni = Harmoni::instance();
 		
 		ob_start();
 		print "<div class='commands'>";
@@ -109,7 +109,7 @@ class editviewAction
 		print _("arrange")."</a>";
 		print "</div>";
 				
-		$ret =& new Component(ob_get_clean(), BLANK, 2);
+		$ret = new Component(ob_get_clean(), BLANK, 2);
 		return $ret;
 	}
 }

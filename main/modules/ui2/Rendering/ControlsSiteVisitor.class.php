@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.7 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.8 2007/09/04 15:07:44 adamfranco Exp $
  */ 
  
  require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.7 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.8 2007/09/04 15:07:44 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	implements SiteVisitor
@@ -49,8 +49,8 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function controlsStart ( &$siteComponent ) {
-		$harmoni =& Harmoni::instance();
+	function controlsStart ( $siteComponent ) {
+		$harmoni = Harmoni::instance();
 		ob_start();
 		
 		print "\n\t\t\t<form method='post'";
@@ -74,14 +74,14 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &controlsEnd ( &$siteComponent ) {
+	function controlsEnd ( $siteComponent ) {
 		print "\n\t\t\t\t<div style='text-align: right;'>";
 		print "<input type='submit' value='"._("Apply Changes")."'/>";
 		print "</div>";
 		print "\n\t\t\t</form>";
 		
 		$controls = ob_get_clean();
-// 		$harmoni =& Harmoni::instance();
+// 		$harmoni = Harmoni::instance();
 // 		$harmoni->request->endNamespace();
 		return $controls;
 	}
@@ -94,10 +94,10 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printDelete ( &$siteComponent ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
-		$harmoni =& Harmoni::instance();
+	function printDelete ( $siteComponent ) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
 		$message = _("Are you sure that you wish to delete this component and all of its children?");
 		$url = 	$harmoni->request->quickURL('ui2', 'deleteComponent', array(
 					'node' => $siteComponent->getId(),
@@ -132,9 +132,9 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 9/22/06
 	 */
-	function printAddSubMenu ( &$siteComponent ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+	function printAddSubMenu ( $siteComponent ) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
 		print "\n\t\t\t\t<div style='font-weight: bold;'>";
 		print _("Sub-Menu: ");
@@ -142,9 +142,9 @@ class ControlsSiteVisitor
 		if ($siteComponent->subMenuExists()) {
 			print _("created");
 		} else {
-			$parentMenuOrganizer =& $siteComponent->getMenuOrganizer();
+			$parentMenuOrganizer = $siteComponent->getMenuOrganizer();
 			
-			$harmoni =& Harmoni::instance();
+			$harmoni = Harmoni::instance();
 			$message = _("Are you sure that you wish to create a submenu?");
 			$url = str_replace('&amp;', '&', 
 					$harmoni->request->quickURL('ui2', 'createSubMenu', array(
@@ -179,14 +179,14 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printDisplayName ( &$siteComponent ) {
+	function printDisplayName ( $siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
 		print _('Title: ');
 		print "<input type='text' size='25' ";
 		print " name='".RequestContext::name('displayName')."'";
 		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteComponent->getQualifierId()))
@@ -206,12 +206,12 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 1/16/07
 	 */
-	function printShowDisplayNames ( &$siteComponent ) {
+	function printShowDisplayNames ( $siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
 		print "<strong>"._('Display Block Titles: ')."</strong>";
 		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteComponent->getQualifierId()))
@@ -253,12 +253,12 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 7/16/07
 	 */
-	function printCommentSettings ( &$siteComponent ) {
+	function printCommentSettings ( $siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
 		print "<strong>"._('Enable Comments: ')."</strong>";
 		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteComponent->getQualifierId()))
@@ -300,7 +300,7 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 1/16/07
 	 */
-	function printDescription ( &$siteComponent ) {
+	function printDescription ( $siteComponent ) {
 		print "\n\t\t\t\t<table cellpadding='0' cellspacing='0'><tr><td valign='top'>";
 		print "<div style='font-weight: bold;'>"._('Description: ')."</div>";
 		print "<div style='font-size: smaller; width: 125px;'>"
@@ -308,8 +308,8 @@ class ControlsSiteVisitor
 		print "\n\t\t\t\t\t</td><td valign='top'><textarea rows='5' cols='25'";
 		print " name='".RequestContext::name('description')."'";
 		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteComponent->getQualifierId()))
@@ -330,12 +330,12 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printWidth ( &$siteComponent ) {
+	function printWidth ( $siteComponent ) {
 		print "<div style='font-weight: bold;'>"._('Maximum Width Guideline: ');
 		print "<input type='text' size='6' ";
 		print " name='".RequestContext::name('width')."'";
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteComponent->getQualifierId()))
@@ -356,14 +356,14 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printRowsColumns ( &$siteComponent ) {
+	function printRowsColumns ( $siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
 		$minCells = $siteComponent->getMinNumCells();
 		print "\n\t\t\t\t\t"._('Rows: ');
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'";
 		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteComponent->getQualifierId()))
@@ -430,15 +430,15 @@ END;
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printFlowRowsColumns ( &$siteComponent ) {
+	function printFlowRowsColumns ( $siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
 		$numRows = $siteComponent->getNumRows();
 		$numColumns = $siteComponent->getNumColumns();
 		print "\n\t\t\t\t\t"._('Columns: ');
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('columns')."'";
 		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteComponent->getQualifierId()))
@@ -477,13 +477,13 @@ END;
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printDirection ( &$siteComponent ) {
+	function printDirection ( $siteComponent ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
 		print "\n\t\t\t\t\t"._('Index Direction: ');
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('direction')."'";
 		
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteComponent->getQualifierId()))

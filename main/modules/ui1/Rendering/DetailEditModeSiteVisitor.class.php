@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.7 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.8 2007/09/04 15:07:44 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.7 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.8 2007/09/04 15:07:44 adamfranco Exp $
  */
 class DetailEditModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -34,11 +34,11 @@ class DetailEditModeSiteVisitor
 	 * @access public
 	 * @since 5/18/07
 	 */
-	function DetailEditModeSiteVisitor ( &$node ) {
+	function DetailEditModeSiteVisitor ( $node ) {
 		$this->EditModeSiteVisitor();
 		
-		$this->_node =& $node;
-		$this->_flowOrg =& $node->getParentComponent();
+		$this->_node = $node;
+		$this->_flowOrg = $node->getParentComponent();
 		$this->_flowOrgId = $this->_flowOrg->getId();
 	}
 	
@@ -50,13 +50,13 @@ class DetailEditModeSiteVisitor
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &visitTargetBlock () {
-		$block =& $this->_node;
+	function visitTargetBlock () {
+		$block = $this->_node;
 		
-		$guiContainer =& parent::visitBlock($block);
+		$guiContainer = parent::visitBlock($block);
 		
 		if ($guiContainer && $block->showComments()) {
-			$commentManager =& CommentManager::instance();
+			$commentManager = CommentManager::instance();
 			
 			$guiContainer->add(
 					new Heading(
@@ -80,11 +80,11 @@ class DetailEditModeSiteVisitor
 	 * @access public
 	 * @since 5/23/07
 	 */
-	function getPluginContent ( &$block ) {
+	function getPluginContent ( $block ) {
 		ob_start();
-		$harmoni =& Harmoni::instance();
-		$pluginManager =& Services::getService('PluginManager');
-		$plugin =& $pluginManager->getPlugin($block->getAsset());
+		$harmoni = Harmoni::instance();
+		$pluginManager = Services::getService('PluginManager');
+		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
 		$harmoni->request->passthrough('node');
 		print $plugin->executeAndGetExtendedMarkup(false);
@@ -102,7 +102,7 @@ class DetailEditModeSiteVisitor
 	 * @access public
 	 * @since 5/24/07
 	 */
-	function showBlockTitle ( &$block ) {
+	function showBlockTitle ( $block ) {
 		return true;
 	}
 	
@@ -114,7 +114,7 @@ class DetailEditModeSiteVisitor
 	 * @access public
 	 * @since 5/18/07
 	 */
-	function getBlockTitle ( &$block ) {
+	function getBlockTitle ( $block ) {
 		if ($block->getId() == $this->_node->getId())
 			return $block->getDisplayName()." &raquo; "._("Detail");
 		else

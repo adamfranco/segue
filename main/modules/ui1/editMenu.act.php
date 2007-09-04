@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editMenu.act.php,v 1.1 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: editMenu.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/editFlowOrg.act.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/editFlowOrg.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editMenu.act.php,v 1.1 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: editMenu.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
  */
 class editMenuAction
 	extends editFlowOrgAction
@@ -35,7 +35,7 @@ class editMenuAction
 	 * @access public
 	 * @since 5/13/07
 	 */
-	function printRowsColumns ( &$siteComponent, &$step ) {		
+	function printRowsColumns ( $siteComponent, $step ) {		
 	
 	}
 	
@@ -48,7 +48,7 @@ class editMenuAction
 	 * @access public
 	 * @since 5/15/07
 	 */
-	function saveRowsColumns ( &$component, $values ) {
+	function saveRowsColumns ( $component, $values ) {
 		return true;
 	}
 	
