@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.8 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: VisibilitySiteVisitor.class.php,v 1.8 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: VisibilitySiteVisitor.class.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
  */
 class VisibilitySiteVisitor 
 	implements SiteVisitor
@@ -92,10 +92,10 @@ class VisibilitySiteVisitor
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
 		if ($navBlock->isActive()) {
-			$childOrganizer =& $navBlock->getOrganizer();
+			$childOrganizer = $navBlock->getOrganizer();
 			$childOrganizer->acceptVisitor($this);
 			
-			$nestedMenuOrganizer =& $navBlock->getNestedMenuOrganizer();
+			$nestedMenuOrganizer = $navBlock->getNestedMenuOrganizer();
 			if (!is_null($nestedMenuOrganizer))
 				$nestedMenuOrganizer->acceptVisitor($this);
 		}
@@ -116,7 +116,7 @@ class VisibilitySiteVisitor
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
 		if ($siteNavBlock->isActive()) {
-			$childOrganizer =& $siteNavBlock->getOrganizer();
+			$childOrganizer = $siteNavBlock->getOrganizer();
 			$childOrganizer->acceptVisitor($this);
 		}
 				
@@ -135,7 +135,7 @@ class VisibilitySiteVisitor
 	private function visitOrganizer ( OrganizerSiteComponent $organizer ) {		
 		$numCells = $organizer->getTotalNumberOfCells();
 		for ($i = 0; $i < $numCells; $i++) {
-			$child =& $organizer->getSubcomponentForCell($i);
+			$child = $organizer->getSubcomponentForCell($i);
 			if (is_object($child))
 				$child->acceptVisitor($this);
 		}

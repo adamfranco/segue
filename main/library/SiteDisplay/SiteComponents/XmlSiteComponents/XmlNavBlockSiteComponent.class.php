@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.15 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.15 2007/01/12 21:59:17 adamfranco Exp $
+ * @version $Id: XmlNavBlockSiteComponent.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
  */
 class XmlNavBlockSiteComponent
 	extends XmlBlockSiteComponent
@@ -46,17 +46,17 @@ class XmlNavBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &getOrganizer () {
-		$child =& $this->_element->firstChild;
+	function getOrganizer () {
+		$child = $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'NavOrganizer') {
-				$navOrg =& $child;
-				$navOrgObj =& $this->_director->getSiteComponent($navOrg);
+				$navOrg = $child;
+				$navOrgObj = $this->_director->getSiteComponent($navOrg);
 			}
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		if (!isset($navOrgObj)) {
-			$navOrgObj =& $this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "NavOrganizer"));
+			$navOrgObj = $this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "NavOrganizer"));
 			$navOrgObj->updateNumRows('1');
 			$navOrgObj->updateNumColumns('1');
 		}
@@ -72,18 +72,18 @@ class XmlNavBlockSiteComponent
 	 * @access public
 	 * @since 9/20/06
 	 */
-	function &getNestedMenuOrganizer () {
+	function getNestedMenuOrganizer () {
 		$menuOrgObj = null;
-		$child =& $this->_element->firstChild;
+		$child = $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'MenuOrganizer') {
-				$menuOrg =& $child;
-				$menuOrgObj =& $this->_director->getSiteComponent($menuOrg);
+				$menuOrg = $child;
+				$menuOrgObj = $this->_director->getSiteComponent($menuOrg);
 			}
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 // 		if (!isset($menuOrgObj)) {
-// 			$menuOrgObj =& $this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "MenuOrganizer"));
+// 			$menuOrgObj = $this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "MenuOrganizer"));
 // 		}
 		return $menuOrgObj;
 		
@@ -98,15 +98,15 @@ class XmlNavBlockSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function setOrganizer ( &$organizer ) {
-		$orgElement =& $organizer->getElement();
-		$child =& $this->_element->firstChild;
+	function setOrganizer ( $organizer ) {
+		$orgElement = $organizer->getElement();
+		$child = $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'NavOrganizer') {
 				$this->_element->replaceChild($orgElement, $child);				
 				return;	
 			}
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		// organizer not found... create it
 		$this->_element->appendChild($orgElement);
@@ -120,7 +120,7 @@ class XmlNavBlockSiteComponent
 	 * @since 4/12/06
 	 */
 	function getTargetId () {
-		$menuOrg =& $this->getParentComponent();
+		$menuOrg = $this->getParentComponent();
 		return $menuOrg->getTargetId();
 	}
 
@@ -132,7 +132,7 @@ class XmlNavBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	function acceptVisitor ( $visitor ) {
 		return $visitor->visitNavBlock($this);
 	}
 	
@@ -144,9 +144,9 @@ class XmlNavBlockSiteComponent
 	 * @access public
 	 * @since 9/22/06
 	 */
-	function makeNested ( &$menuOrganizer ) {
+	function makeNested ( $menuOrganizer ) {
 		// A cell will have no old parent if it is newly created.
-		if ($oldParent =& $menuOrganizer->getParentComponent()) {
+		if ($oldParent = $menuOrganizer->getParentComponent()) {
 			if (method_exists($oldParent, 'getCellForSubcomponent'))
 				$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($menuOrganizer);
 			else 
@@ -171,7 +171,7 @@ class XmlNavBlockSiteComponent
 	 * @access public
 	 * @since 9/22/06
 	 */
-	function detatchSubcomponent ( &$subcomponent ) {
+	function detatchSubcomponent ( $subcomponent ) {
 		$this->_element->removeChild($subcomponent->getElement());
 	}
 	
@@ -183,7 +183,7 @@ class XmlNavBlockSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -192,15 +192,15 @@ class XmlNavBlockSiteComponent
 			return $results;
 		}
 		
-		$possibleDestinations =& $this->_director->getVisibleComponents();
-		$parent =& $this->getParentComponent();
+		$possibleDestinations = $this->_director->getVisibleComponents();
+		$parent = $this->getParentComponent();
 		foreach (array_keys($possibleDestinations) as $id) {
 			if ($id == $parent->getId())
 				continue;
 			
 			switch (strtolower(get_class($possibleDestinations[$id]))) {
 				case 'xmlmenuorganizersitecomponent':
-					$results[$id] =& $possibleDestinations[$id];
+					$results[$id] = $possibleDestinations[$id];
 					break;
 				default:
 					break;
@@ -217,8 +217,8 @@ class XmlNavBlockSiteComponent
 	 * @access public
 	 * @since 7/27/06
 	 */
-	function &getParentNavOrganizer () {
-		$parent =& $this->getParentComponent();
+	function getParentNavOrganizer () {
+		$parent = $this->getParentComponent();
 		if ($parent)
 			return $parent->getParentNavOrganizer();
 		else {
@@ -234,7 +234,7 @@ class XmlNavBlockSiteComponent
 	 * @access public
 	 * @since 7/28/06
 	 */
-	function &getMenuOrganizer () {
+	function getMenuOrganizer () {
 		return $this->getParentComponent();
 	}
 	
@@ -249,7 +249,7 @@ class XmlNavBlockSiteComponent
 		if (!is_null($this->getNestedMenuOrganizer()))
 			return TRUE;
 		else {
-			$organizer =& $this->getOrganizer();
+			$organizer = $this->getOrganizer();
 			return $organizer->subMenuExists();
 		}
 	}

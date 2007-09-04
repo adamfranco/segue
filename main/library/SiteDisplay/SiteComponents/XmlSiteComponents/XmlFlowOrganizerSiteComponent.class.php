@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.15 2006/09/22 19:38:08 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.15 2006/09/22 19:38:08 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -89,8 +89,8 @@ class XmlFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function addSubcomponent ( &$siteComponent ) {
-		$cell =& $this->_element->ownerDocument->createElement('cell');
+	function addSubcomponent ( $siteComponent ) {
+		$cell = $this->_element->ownerDocument->createElement('cell');
 		$cell->appendChild($siteComponent->getElement());
 		$this->_element->appendChild($cell);
 		// this is only for single page load deletes (testing)
@@ -107,11 +107,11 @@ class XmlFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
+	function putSubcomponentInCell ( $siteComponent, $cellIndex ) {
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {
 			// A cell will have no old parent if it is newly created.
-			if ($oldParent =& $siteComponent->getParentComponent()) {
+			if ($oldParent = $siteComponent->getParentComponent()) {
 				$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
 				$oldParent->detatchSubcomponent($siteComponent);
 			} else {
@@ -140,9 +140,9 @@ class XmlFlowOrganizerSiteComponent
 	 */
 	function moveBefore ( $cellOneIndex, $cellTwoIndex ) {
 		// child DOMIT_Elements in an array
-		$children =& $this->_element->childNodes;
+		$children = $this->_element->childNodes;
 
-		$temp =& $children[$cellOneIndex];
+		$temp = $children[$cellOneIndex];
 
 		$this->_element->removeChild($children[$cellOneIndex]);
 		
@@ -162,7 +162,7 @@ class XmlFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function moveToEnd ( $cellIndex ) {
-		$temp =& $this->_element->childNodes[$cellIndex];
+		$temp = $this->_element->childNodes[$cellIndex];
 		$this->_element->removeChild($temp);
 		$this->_element->appendChild($temp);
 	}
@@ -175,12 +175,12 @@ class XmlFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 4/12/06
 	 */
-	function detatchSubcomponent ( &$subcomponent ) {
+	function detatchSubcomponent ( $subcomponent ) {
 		$cellIndex = $this->getCellForSubcomponent($subcomponent);
 		
-		$cell =& $this->_element->firstChild;
+		$cell = $this->_element->firstChild;
 		while ($cellIndex) {
-			$cell =& $cell->nextSibling;
+			$cell = $cell->nextSibling;
 			$cellIndex--;
 		}
 		$this->_element->removeChild($cell);
@@ -195,9 +195,9 @@ class XmlFlowOrganizerSiteComponent
 	 * @since 4/3/06
 	 */
 	function deleteSubcomponentInCell ( $i ) {
-		$cell =& $this->_element->firstChild;
+		$cell = $this->_element->firstChild;
 		while ($i) {
-			$cell =& $cell->nextSibling;
+			$cell = $cell->nextSibling;
 			$i--;
 		}
 		$this->_element->removeChild($cell);
@@ -213,7 +213,7 @@ class XmlFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	function acceptVisitor ( $visitor ) {
 		return $visitor->visitFlowOrganizer($this);
 	}
 	
@@ -244,7 +244,7 @@ class XmlFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -254,12 +254,12 @@ class XmlFlowOrganizerSiteComponent
 		}
 		
 		
-		$visibleComponents =& $this->_director->getVisibleComponents();
+		$visibleComponents = $this->_director->getVisibleComponents();
 		foreach (array_keys($visibleComponents) as $id) {
 			if (strtolower("XmlFixedOrganizerSiteComponent") == strtolower(get_class($visibleComponents[$id]))
 				|| strtolower("XmlNavOrganizerSiteComponent") == strtolower(get_class($visibleComponents[$id])))
 			{
-					$results[$id] =& $visibleComponents[$id];
+					$results[$id] = $visibleComponents[$id];
 			}
 		}
 		

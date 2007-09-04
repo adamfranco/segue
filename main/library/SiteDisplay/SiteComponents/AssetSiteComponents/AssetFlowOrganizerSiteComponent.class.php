@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.10 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.11 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.10 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.11 2007/09/04 15:05:33 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -93,8 +93,8 @@ class AssetFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	public function addSubcomponent ( BlockSiteComponent $siteComponent ) {
-		$cell =& $this->_element->ownerDocument->createElement('cell');
-		$snippet =& $this->_element->ownerDocument->createElement($siteComponent->getComponentClass());
+		$cell = $this->_element->ownerDocument->createElement('cell');
+		$snippet = $this->_element->ownerDocument->createElement($siteComponent->getComponentClass());
 		$snippet->setAttribute('id', $siteComponent->getId());
 		$cell->appendChild($snippet);
 		$this->_element->appendChild($cell);
@@ -121,7 +121,7 @@ class AssetFlowOrganizerSiteComponent
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {			
 			// A cell will have no old parent if it is newly created.
-			if ($oldParent =& $siteComponent->getParentComponent()) {
+			if ($oldParent = $siteComponent->getParentComponent()) {
 				$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
 				$oldParent->detatchSubcomponent($siteComponent);
 			} else {
@@ -150,9 +150,9 @@ class AssetFlowOrganizerSiteComponent
 	 */
 	function moveBefore ( $cellOneIndex, $cellTwoIndex ) {
 		// child DOMIT_Elements in an array
-		$children =& $this->_element->childNodes;
+		$children = $this->_element->childNodes;
 
-		$temp =& $children[$cellOneIndex];
+		$temp = $children[$cellOneIndex];
 
 		$this->_element->removeChild($children[$cellOneIndex]);
 		
@@ -170,7 +170,7 @@ class AssetFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function moveToEnd ( $cellIndex ) {
-		$temp =& $this->_element->childNodes[$cellIndex];
+		$temp = $this->_element->childNodes[$cellIndex];
 		$this->_element->removeChild($temp);
 		$this->_element->appendChild($temp);
 		
@@ -185,12 +185,12 @@ class AssetFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 4/12/06
 	 */
-	function detatchSubcomponent ( &$subcomponent ) {
+	function detatchSubcomponent ( $subcomponent ) {
 		$cellIndex = $this->getCellForSubcomponent($subcomponent);
 		
-		$cell =& $this->_element->firstChild;
+		$cell = $this->_element->firstChild;
 		while ($cellIndex) {
-			$cell =& $cell->nextSibling;
+			$cell = $cell->nextSibling;
 			$cellIndex--;
 		}
 		$this->_element->removeChild($cell);
@@ -210,9 +210,9 @@ class AssetFlowOrganizerSiteComponent
 	 * @since 4/3/06
 	 */
 	function deleteSubcomponentInCell ( $i ) {
-		$cell =& $this->_element->firstChild;
+		$cell = $this->_element->firstChild;
 		while ($i) {
-			$cell =& $cell->nextSibling;
+			$cell = $cell->nextSibling;
 			$i--;
 		}
 		$this->_element->removeChild($cell);
@@ -254,7 +254,7 @@ class AssetFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 1/12/07
 	 */
-	function isOrganizer ( &$type ) {
+	function isOrganizer ( $type ) {
 		foreach ($this->_director->organizerTypes as $orgType) {
 			if ($type->isEqual($orgType))
 				return true;	
@@ -278,7 +278,7 @@ class AssetFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -288,12 +288,12 @@ class AssetFlowOrganizerSiteComponent
 		}
 		
 		
-		$visibleComponents =& $this->_director->getVisibleComponents();
+		$visibleComponents = $this->_director->getVisibleComponents();
 		foreach (array_keys($visibleComponents) as $id) {
 			if (preg_match('/^.*FixedOrganizerSiteComponent$/i', get_class($visibleComponents[$id]))
 				|| preg_match('/^.*NavOrganizerSiteComponent$/i', get_class($visibleComponents[$id])))
 			{
-					$results[$id] =& $visibleComponents[$id];
+					$results[$id] = $visibleComponents[$id];
 			}
 		}
 		

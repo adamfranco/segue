@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.10 2007/08/31 16:03:46 achapin Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.11 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.10 2007/08/31 16:03:46 achapin Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.11 2007/09/04 15:05:33 adamfranco Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -37,15 +37,15 @@ abstract class AssetSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function AssetSiteComponent ( &$director, &$asset, &$element) {
+	function AssetSiteComponent ( $director, $asset, $element) {
 		ArgumentValidator::validate($director, ExtendsValidatorRule::getRule('AssetSiteDirector'));
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule('Asset'));
 		ArgumentValidator::validate($element, OptionalRule::getRule(
 			ExtendsValidatorRule::getRule('DOMIT_Node')));
 		
-		$this->_director =& $director;
-		$this->_asset =& $asset;
-		$this->_element =& $element;
+		$this->_director = $director;
+		$this->_asset = $asset;
+		$this->_element = $element;
 	}
 	
 	/**
@@ -92,7 +92,7 @@ abstract class AssetSiteComponent
 	 * @access public
 	 * @since 1/12/07
 	 */
-	function &getAsset () {
+	function getAsset () {
 		return $this->_asset;
 	}
 	
@@ -103,8 +103,8 @@ abstract class AssetSiteComponent
 	 * @access public
 	 * @since 2/28/07
 	 */
-	function &getQualifierId () {
-		$asset =& $this->getAsset();
+	function getQualifierId () {
+		$asset = $this->getAsset();
 		return $asset->getId();
 	}
 		
@@ -117,7 +117,7 @@ abstract class AssetSiteComponent
 	 */
 	function getId () {
 		if ($this->_element->hasAttribute('id')) {
-			$assetId =& $this->_asset->getId();
+			$assetId = $this->_asset->getId();
 			return $assetId->getIdString()."----".$this->_element->getAttribute('id');
 		} else
 			throwError( new Error("No id available", "XmlSiteComponents"));
@@ -130,7 +130,7 @@ abstract class AssetSiteComponent
 	 * @access public
 	 * @since 4/18/06
 	 */
-	function &getDirector () {
+	function getDirector () {
 		return $this->_director;
 	}
 	
@@ -141,7 +141,7 @@ abstract class AssetSiteComponent
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function &getElement () {
+	function getElement () {
 		return $this->_element;
 	}
 	
@@ -152,8 +152,8 @@ abstract class AssetSiteComponent
 	 * @access public
 	 * @since 4/10/06
 	 */
-	function &getParentComponent () {
-		$parentElement =& $this->_director->_getParentWithId($this->getElement());
+	function getParentComponent () {
+		$parentElement = $this->_director->_getParentWithId($this->getElement());
 		if ($parentElement)
 			return $this->_director->getSiteComponentFromXml($this->_asset, $parentElement);
 		else if ($this->_asset)
@@ -184,7 +184,7 @@ abstract class AssetSiteComponent
 	 * @since 1/17/07
 	 */
 	function showDisplayNames () {
-		$element =& $this->getElement();
+		$element = $this->getElement();
 		
 		if (!$element->hasAttribute('showDisplayNames'))
 			return 'default';
@@ -207,7 +207,7 @@ abstract class AssetSiteComponent
 	 * @since 1/17/07
 	 */
 	function updateShowDisplayNames ( $showDisplayNames ) {
-		$element =& $this->getElement();
+		$element = $this->getElement();
 		
 		if ($showDisplayNames === true || $showDisplayNames === 'true')
 			$element->setAttribute('showDisplayNames', 'true');
@@ -229,7 +229,7 @@ abstract class AssetSiteComponent
 	 */
 	function showDisplayName () {
 		if ($this->showDisplayNames() === 'default') {
-			$parent =& $this->getParentComponent();
+			$parent = $this->getParentComponent();
 			
 			if ($parent)
 				return $parent->showDisplayName();
@@ -251,7 +251,7 @@ abstract class AssetSiteComponent
 	 * @since 7/20/07
 	 */
 	function updateCommentsEnabled ( $commentsEnabled ) {
-		$element =& $this->getElement();
+		$element = $this->getElement();
 		
 		if ($commentsEnabled === true || $commentsEnabled === 'true')
 			$element->setAttribute('commentsEnabled', 'true');
@@ -272,7 +272,7 @@ abstract class AssetSiteComponent
 	 * @since 7/20/07
 	 */
 	function commentsEnabled () {
-		$element =& $this->getElement();
+		$element = $this->getElement();
 		
 		if (!$element->hasAttribute('commentsEnabled'))
 			return 'default';
@@ -295,7 +295,7 @@ abstract class AssetSiteComponent
 	 */
 	function showComments () {
 		if ($this->commentsEnabled() === 'default') {
-			$parent =& $this->getParentComponent();
+			$parent = $this->getParentComponent();
 			
 			if ($parent)
 				return $parent->showComments();
@@ -315,7 +315,7 @@ abstract class AssetSiteComponent
 	 * @since 1/19/07
 	 */
 	function getWidth () {
-		$element =& $this->getElement();
+		$element = $this->getElement();
 		if ($element->hasAttribute('width'))
 			return $element->getAttribute('width');
 		else
@@ -331,7 +331,7 @@ abstract class AssetSiteComponent
 	 * @since 1/19/07
 	 */
 	function updateWidth ($width) {
-		$element =& $this->getElement();
+		$element = $this->getElement();
 		if (preg_match('/^[0-9]+(px|%)$/i', $width))
 			$element->setAttribute('width', $width);
 		else
@@ -352,7 +352,7 @@ abstract class AssetSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay"));
 	}
 	
@@ -370,10 +370,10 @@ abstract class AssetSiteComponent
 	function _saveXml () {
 		printpre("<hr/><h2>Saving AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
 		print("<h3>Previous XML</h3>");
-		$oldContent =& $this->_asset->getContent();
+		$oldContent = $this->_asset->getContent();
 		printpre(htmlentities($oldContent->asString()));
 		print("<h3>New XML</h3>");
-		$element =& $this->getElement();
+		$element = $this->getElement();
 		printpre($element->ownerDocument->toNormalizedString(true));
 // 		exit;
 		

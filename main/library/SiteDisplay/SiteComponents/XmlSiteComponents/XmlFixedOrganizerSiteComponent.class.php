@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.23 2006/09/22 19:38:08 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.24 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.23 2006/09/22 19:38:08 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.24 2007/09/04 15:05:33 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -45,10 +45,10 @@ class XmlFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	function addSubcomponentToCell ( &$siteComponent, $cellIndex ) {
+	function addSubcomponentToCell ( $siteComponent, $cellIndex ) {
 		$this->normalizeCells();
 		
-		$child =& $this->_element->firstChild;
+		$child = $this->_element->firstChild;
 		$i = 0;
 		$success = false;
 		while ($child && !$success) {			
@@ -61,7 +61,7 @@ class XmlFixedOrganizerSiteComponent
 					throwError( new Error("Cell Not Empty", "SiteComponents"));
 				}
 			} else {
-				$child =& $child->nextSibling;
+				$child = $child->nextSibling;
 				$i++;
 			}
 		}
@@ -81,11 +81,11 @@ class XmlFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/12/06
 	 */
-	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
+	function putSubcomponentInCell ( $siteComponent, $cellIndex ) {
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {
 			// A cell will have no old parent if it is newly created.
-			if ($oldParent =& $siteComponent->getParentComponent()) {
+			if ($oldParent = $siteComponent->getParentComponent()) {
 				if (method_exists($oldParent, 'getCellForSubcomponent'))
 					$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
 				else 
@@ -119,11 +119,11 @@ class XmlFixedOrganizerSiteComponent
 		$this->normalizeCells();
 		
         // child DOMIT_Elements in an array
-        $children =& $this->_element->childNodes;
+        $children = $this->_element->childNodes;
         // cells
-        $cell_one =& $children[$cellOneIndex];
-        $cell_two =& $children[$cellTwoIndex];
-        $temp =& $this->_element->ownerDocument->createElement('temp');
+        $cell_one = $children[$cellOneIndex];
+        $cell_two = $children[$cellTwoIndex];
+        $temp = $this->_element->ownerDocument->createElement('temp');
         
         $this->_element->replaceChild($temp, $cell_one);
         $this->_element->replaceChild($cell_one, $cell_two);
@@ -243,9 +243,9 @@ class XmlFixedOrganizerSiteComponent
 	 * @since 4/3/06
 	 */
 	function deleteSubcomponentInCell ( $i ) {
-		$cell =& $this->_element->firstChild;
+		$cell = $this->_element->firstChild;
 		while ($i) {
-			$cell =& $cell->nextSibling;
+			$cell = $cell->nextSibling;
 			$i--;
 		}
 		$cell->removeChild($cell->firstChild);
@@ -261,7 +261,7 @@ class XmlFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	function acceptVisitor ( $visitor ) {
 		return $visitor->visitFixedOrganizer($this);
 	}
 	
@@ -277,7 +277,7 @@ class XmlFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleComponentsForPossibleAdditionToCell ( $cellIndex ) {
+	function getVisibleComponentsForPossibleAdditionToCell ( $cellIndex ) {
 		// If this cell is in use, only reordering of components already
 		// in this organizer is allowed (FixedOrganizer)
 		if (in_array($this->getId().'_cell:'.$cellIndex, $this->_director->getFilledTargetIds())
@@ -303,7 +303,7 @@ class XmlFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -313,18 +313,18 @@ class XmlFixedOrganizerSiteComponent
 		}
 		
 		// The parent NavOrganizer is a possible destination
-		$parentNav =& $this->getParentNavOrganizer();
-		$results[$parentNav->getId()] =& $parentNav;
+		$parentNav = $this->getParentNavOrganizer();
+		$results[$parentNav->getId()] = $parentNav;
 		
 		// As are FixedOrganizers that are below the parent NavOrganizer, but
 		// not below me.
-		$parentNavsFixedOrganizers =& $parentNav->getFixedOrganizers();
+		$parentNavsFixedOrganizers = $parentNav->getFixedOrganizers();
 		
 		$myFixedOrganizerIds = array_keys($this->getFixedOrganizers());
 		
 		foreach (array_keys($parentNavsFixedOrganizers) as $id) {
 			if ($id != $this->getId() && !in_array($id, $myFixedOrganizerIds))
-				$results[$id] =& $parentNavsFixedOrganizers[$id];
+				$results[$id] = $parentNavsFixedOrganizers[$id];
 		}
 		
 		return $results;
@@ -337,13 +337,13 @@ class XmlFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getFixedOrganizers () {
+	function getFixedOrganizers () {
 		$results = array();
 		
-		$children =& $this->_getChildComponents();
+		$children = $this->_getChildComponents();
 		foreach (array_keys($children) as $key) {
 			if (strtolower("XmlFixedOrganizerSiteComponent") == strtolower(get_class($children[$key])))
-				$results[$children[$key]->getId()] =& $children[$key];
+				$results[$children[$key]->getId()] = $children[$key];
 		}
 		
 		return $results;
@@ -358,7 +358,7 @@ class XmlFixedOrganizerSiteComponent
 	 */
 	function subMenuExists () {
 		// Check all children, Menu Organizers will return true.
-		$children =& $this->_getChildComponents();
+		$children = $this->_getChildComponents();
 		foreach (array_keys($children) as $key) {
 			if (is_object($children[$key]) && $children[$key]->subMenuExists())
 				return TRUE;

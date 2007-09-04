@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavOrganizerSiteComponent.class.php,v 1.3 2006/07/28 19:01:09 adamfranco Exp $
+ * @version $Id: XmlNavOrganizerSiteComponent.class.php,v 1.4 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlNavOrganizerSiteComponent.class.php,v 1.3 2006/07/28 19:01:09 adamfranco Exp $
+ * @version $Id: XmlNavOrganizerSiteComponent.class.php,v 1.4 2007/09/04 15:05:33 adamfranco Exp $
  */
 class XmlNavOrganizerSiteComponent
 	extends XmlFixedOrganizerSiteComponent 
@@ -33,7 +33,7 @@ class XmlNavOrganizerSiteComponent
 	 * @since 4/10/06
 	 */
 	function getDisplayName () {
-		$parent =& $this->getParentComponent();
+		$parent = $this->getParentComponent();
 		return $parent->getDisplayName()._(" <em>Organizer</em>");
 	}
 	
@@ -45,7 +45,7 @@ class XmlNavOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	function acceptVisitor ( $visitor ) {
 		return $visitor->visitNavOrganizer($this);
 	}
 	
@@ -63,7 +63,7 @@ class XmlNavOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {		
+	function getVisibleDestinationsForPossibleAddition () {		
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -73,23 +73,23 @@ class XmlNavOrganizerSiteComponent
 		}
 		
 		// The parent NavOrganizer is a possible destination
-		$parent =& $this->getParentComponent();
-		$parentNav =& $parent->getParentNavOrganizer();
+		$parent = $this->getParentComponent();
+		$parentNav = $parent->getParentNavOrganizer();
 		if ($parentNav)
-			$results[$parentNav->getId()] =& $parentNav;
+			$results[$parentNav->getId()] = $parentNav;
 		else
 			return $results;
 		
 		
 		// As are FixedOrganizers that are below the parent NavOrganizer, but
 		// not below me.
-		$parentNavsFixedOrganizers =& $parentNav->getFixedOrganizers();
+		$parentNavsFixedOrganizers = $parentNav->getFixedOrganizers();
 		
 		$myFixedOrganizerIds = array_keys($this->getFixedOrganizers());
 		
 		foreach (array_keys($parentNavsFixedOrganizers) as $id) {
 			if ($id != $this->getId() && !in_array($id, $myFixedOrganizerIds))
-				$results[$id] =& $parentNavsFixedOrganizers[$id];
+				$results[$id] = $parentNavsFixedOrganizers[$id];
 		}
 		
 		return $results;
@@ -102,7 +102,7 @@ class XmlNavOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getParentNavOrganizer () {
+	function getParentNavOrganizer () {
 		return $this;
 	}
 	
@@ -113,8 +113,8 @@ class XmlNavOrganizerSiteComponent
 	 * @access public
 	 * @since 7/28/06
 	 */
-	function &getMenuOrganizer () {		
-		$parent =& $this->getParentComponent();
+	function getMenuOrganizer () {		
+		$parent = $this->getParentComponent();
 		return $parent->getMenuOrganizer();
 	}
 }

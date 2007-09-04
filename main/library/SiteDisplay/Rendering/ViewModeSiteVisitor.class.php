@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.40 2007/09/03 22:57:20 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.41 2007/09/04 15:05:32 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.40 2007/09/03 22:57:20 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.41 2007/09/04 15:05:32 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -73,8 +73,8 @@ class ViewModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	public function visitBlock ( BlockSiteComponent $block ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");	
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");	
 		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"), 
 			$idManager->getId($block->getId())))
@@ -83,7 +83,7 @@ class ViewModeSiteVisitor
 			return $false;
 		}
 				
-		$guiContainer =& new Container (	new YLayout, BLOCK, 1);
+		$guiContainer = new Container (	new YLayout, BLOCK, 1);
 	
 		
 		if ($this->showBlockTitle($block)) {
@@ -115,7 +115,7 @@ class ViewModeSiteVisitor
 	 * @access public
 	 * @since 5/24/07
 	 */
-	function showBlockTitle ( &$block ) {
+	function showBlockTitle ( $block ) {
 		return $block->showDisplayName();
 	}
 	
@@ -127,18 +127,18 @@ class ViewModeSiteVisitor
 	 * @access public
 	 * @since 5/23/07
 	 */
-	function getPluginContent ( &$block ) {
+	function getPluginContent ( $block ) {
 		ob_start();
-		$harmoni =& Harmoni::instance();
-		$pluginManager =& Services::getService('PluginManager');
-		$plugin =& $pluginManager->getPlugin($block->getAsset());
+		$harmoni = Harmoni::instance();
+		$pluginManager = Services::getService('PluginManager');
+		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
 		$harmoni->request->passthrough('node');
 		print $plugin->executeAndGetMarkup($this->showPluginControls());
 		$harmoni->request->forget('node');
 		
 		if ($block->showComments()) {
-			$cm =& CommentManager::instance();
+			$cm = CommentManager::instance();
 			print "\n<div style='float: right; margin-left: 10px;'>";
 			print "\n\t<a href='".$this->getDetailUrl($block->getId())."#";
 			$harmoni->request->startNamespace("comments");
@@ -180,7 +180,7 @@ class ViewModeSiteVisitor
 	 * @access public
 	 * @since 5/18/07
 	 */
-	function getBlockTitle ( &$block ) {
+	function getBlockTitle ( $block ) {
 		return "<a href='".$this->getDetailUrl($block->getId())."'>".$block->getDisplayName()."</a>";
 	}
 	
@@ -193,7 +193,7 @@ class ViewModeSiteVisitor
 	 * @since 5/18/07
 	 */
 	function getDetailUrl ($id) {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		return $harmoni->request->quickURL(
 				$harmoni->request->getRequestedModule(),
 				$harmoni->request->getRequestedAction(),
@@ -209,8 +209,8 @@ class ViewModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $block ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");	
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");	
 		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"), 
 			$idManager->getId($block->getId())))
@@ -219,7 +219,7 @@ class ViewModeSiteVisitor
 			return $false;
 		}
 		
-		$pluginManager =& Services::getService('PluginManager');
+		$pluginManager = Services::getService('PluginManager');
 		// Create and return the component
 		ob_start();
 		
@@ -231,7 +231,7 @@ class ViewModeSiteVisitor
 		
 		print "<div>".$this->getPluginContent($block)."</div>";
 		
-		$menuItem =& new MenuItem(ob_get_clean(), 1);
+		$menuItem = new MenuItem(ob_get_clean(), 1);
 		return $menuItem;
 	}
 	
@@ -244,8 +244,8 @@ class ViewModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	public function visitNavBlock ( NavBlockSiteComponent $navBlock ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");	
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");	
 		if (!$authZ->isUserAuthorizedBelow(
 			$idManager->getId("edu.middlebury.authorization.view"), 
 			$idManager->getId($navBlock->getId())))
@@ -257,7 +257,7 @@ class ViewModeSiteVisitor
 		$menuItems = array();
 		
 		// Create the menu item
-		$menuItems[] =& new MenuItemLinkWithAdditionalHtml(
+		$menuItems[] = new MenuItemLinkWithAdditionalHtml(
 							$navBlock->getTitleMarkup(),
 							$this->getUrlForComponent($navBlock->getId()),
 							$navBlock->isActive(),
@@ -270,8 +270,8 @@ class ViewModeSiteVisitor
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
 		if ($navBlock->isActive()) {
-			$childOrganizer =& $navBlock->getOrganizer();
-			$childGuiComponent =& $childOrganizer->acceptVisitor($this);
+			$childOrganizer = $navBlock->getOrganizer();
+			$childGuiComponent = $childOrganizer->acceptVisitor($this);
 			
 			if (isset($this->_emptyCellContainers[$navBlock->getTargetId()])) {
 				$this->_emptyCellContainers[$navBlock->getTargetId()]->insertAtPlaceholder(
@@ -281,14 +281,14 @@ class ViewModeSiteVisitor
 				unset($this->_emptyCellContainers[$navBlock->getTargetId()],
 					$this->_emptyCellPlaceholders[$navBlock->getTargetId()]);
 			} else {
-				$this->_missingTargets[$navBlock->getTargetId()] =& $childGuiComponent;
+				$this->_missingTargets[$navBlock->getTargetId()] = $childGuiComponent;
 				$this->_missingTargetWidths[$navBlock->getTargetId()] = $childOrganizer->getWidth();
 			}
 			
-			$nestedMenuOrganizer =& $navBlock->getNestedMenuOrganizer();
+			$nestedMenuOrganizer = $navBlock->getNestedMenuOrganizer();
 			if (!is_null($nestedMenuOrganizer)) {
 				$this->_menuNestingLevel++;
-				$menuItems[] =& $nestedMenuOrganizer->acceptVisitor($this);
+				$menuItems[] = $nestedMenuOrganizer->acceptVisitor($this);
 			} else {
 				$this->_menuNestingLevel = 0;
 			}
@@ -311,8 +311,8 @@ class ViewModeSiteVisitor
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
 				
-		$childOrganizer =& $siteNavBlock->getOrganizer();
-		$childGuiComponent =& $childOrganizer->acceptVisitor($this);
+		$childOrganizer = $siteNavBlock->getOrganizer();
+		$childGuiComponent = $childOrganizer->acceptVisitor($this);
 				
 		// Check completeness and render any nodes still waiting for targets
 		foreach (array_keys($this->_missingTargets) as $targetId) {
@@ -353,19 +353,19 @@ class ViewModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $organizer ) {
-		$guiContainer =& new Container (new TableLayout($organizer->getNumColumns()),
+		$guiContainer = new Container (new TableLayout($organizer->getNumColumns()),
 										BLANK,
 										1);
 		
 		$numCells = $organizer->getTotalNumberOfCells();
 		for ($i = 0; $i < $numCells; $i++) {
-			$child =& $organizer->getSubcomponentForCell($i);
+			$child = $organizer->getSubcomponentForCell($i);
 			if (is_object($child)) {
-				$childComponent =& $child->acceptVisitor($this);
+				$childComponent = $child->acceptVisitor($this);
 				if ($childComponent)
 					$guiContainer->add($childComponent, $child->getWidth(), null, null, TOP );
 			} else {
-				$this->_emptyCellContainers[$organizer->getId().'_cell:'.$i] =& $guiContainer;
+				$this->_emptyCellContainers[$organizer->getId().'_cell:'.$i] = $guiContainer;
 				$this->_emptyCellPlaceholders[$organizer->getId().'_cell:'.$i] = $guiContainer->addPlaceholder();
 			}
 		}
@@ -406,14 +406,14 @@ class ViewModeSiteVisitor
 		
 		$childGuiComponents = array();
 		for ($i = 0; $i < $numCells; $i++) {
-			$child =& $organizer->getSubcomponentForCell($i);
-			$childGuiComponent =& $child->acceptVisitor($this);
+			$child = $organizer->getSubcomponentForCell($i);
+			$childGuiComponent = $child->acceptVisitor($this);
 			// Filter out false entries returned due to lack of authorization
 			if ($childGuiComponent)
-				$childGuiComponents[] =& $childGuiComponent;
+				$childGuiComponents[] = $childGuiComponent;
 		}
 		
-		$resultPrinter =& new ArrayResultPrinter($childGuiComponents,
+		$resultPrinter = new ArrayResultPrinter($childGuiComponents,
 									$organizer->getNumColumns(), $cellsPerPage);
 		$resultPrinter->setRenderDirection($organizer->getDirection());
 		$resultPrinter->setNamespace('pages_'.$organizer->getId());
@@ -434,26 +434,26 @@ class ViewModeSiteVisitor
 	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {	
 		// Choose layout direction based on number of rows
 		if ($this->_menuNestingLevel) {
-			$layout =& new YLayout();
+			$layout = new YLayout();
 		} else if ($organizer->getDirection() == "Left-Right/Top-Bottom") {
-			$layout =& new XLayout();
+			$layout = new XLayout();
 		} else if ($organizer->getDirection() == "Right-Left/Top-Bottom") {
-			$layout =& new XLayout();
+			$layout = new XLayout();
 			$layout->setRenderDirection("Right-Left/Top-Bottom");
 		} else {
-			$layout =& new YLayout();
+			$layout = new YLayout();
 		}
 		
 		if ($this->_menuNestingLevel)
-			$guiContainer =& new SubMenu ( $layout, $this->_menuNestingLevel);
+			$guiContainer = new SubMenu ( $layout, $this->_menuNestingLevel);
 		else
-			$guiContainer =& new Menu ( $layout, 1);
+			$guiContainer = new Menu ( $layout, 1);
 		
 		$hasChildComponents = false;
 		$numCells = $organizer->getTotalNumberOfCells();
 		for ($i = 0; $i < $numCells; $i++) {
-			$child =& $organizer->getSubcomponentForCell($i);
-			$childGuiComponents =& $child->acceptVisitor($this, true);
+			$child = $organizer->getSubcomponentForCell($i);
+			$childGuiComponents = $child->acceptVisitor($this, true);
 			if ($childGuiComponents === false || (is_array($childGuiComponents) && !count($childGuiComponents))) {
 				// do nothing
 			} else if (is_array($childGuiComponents)) {
@@ -484,7 +484,7 @@ class ViewModeSiteVisitor
 	 * @since 4/4/06
 	 */
 	function getUrlForComponent ( $id ) {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		return $harmoni->request->quickURL(
 			$harmoni->request->getRequestedModule(), 
 			$harmoni->request->getRequestedAction(),

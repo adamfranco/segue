@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ContentRssSiteVisitor.class.php,v 1.2 2007/09/03 22:57:20 achapin Exp $
+ * @version $Id: ContentRssSiteVisitor.class.php,v 1.3 2007/09/04 15:05:32 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.clas
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ContentRssSiteVisitor.class.php,v 1.2 2007/09/03 22:57:20 achapin Exp $
+ * @version $Id: ContentRssSiteVisitor.class.php,v 1.3 2007/09/04 15:05:32 adamfranco Exp $
  */
 class ContentRssSiteVisitor
 	extends ViewModeSiteVisitor
@@ -56,8 +56,8 @@ class ContentRssSiteVisitor
 	 * @since 4/3/06
 	 */
 	function visitBlock ( BlockSiteComponent $block ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");	
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");	
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"), 
 			$idManager->getId($block->getId())))
@@ -178,7 +178,7 @@ class ContentRssSiteVisitor
 	 * @since 5/18/07
 	 */
 	function getDetailUrl ($id) {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		return $harmoni->request->quickURL(
 				$harmoni->request->getRequestedModule(),
 				"view",

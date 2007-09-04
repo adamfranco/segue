@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.8 2007/09/03 22:57:20 achapin Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.8 2007/09/03 22:57:20 achapin Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
  */
 class ModifySettingsSiteVisitor 
 	implements SiteVisitor
@@ -35,7 +35,7 @@ class ModifySettingsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function modifyStart ( &$siteComponent ) {
+	function modifyStart ( $siteComponent ) {
 // 		$harmoni->request->startNamespace('controls_form_'.$siteComponent->getId());
 	}
 	
@@ -47,8 +47,8 @@ class ModifySettingsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function &modifyEnd ( &$siteComponent ) {
-// 		$harmoni =& Harmoni::instance();
+	function modifyEnd ( $siteComponent ) {
+// 		$harmoni = Harmoni::instance();
 // 		$harmoni->request->endNamespace();
 		$null = null;
 		return $null;
@@ -62,7 +62,7 @@ class ModifySettingsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function applyDisplayName ( &$siteComponent ) {
+	function applyDisplayName ( $siteComponent ) {
 		if(RequestContext::value('displayName') 
 			&& RequestContext::value('displayName') != $siteComponent->getDisplayName())
 		{
@@ -78,7 +78,7 @@ class ModifySettingsSiteVisitor
 	 * @access public
 	 * @since 1/16/07
 	 */
-	function applyDescription ( &$siteComponent ) {
+	function applyDescription ( $siteComponent ) {
 		if(RequestContext::value('description') 
 			&& RequestContext::value('description') != $siteComponent->getDescription())
 		{
@@ -94,7 +94,7 @@ class ModifySettingsSiteVisitor
 	 * @access public
 	 * @since 1/16/07
 	 */
-	function applyShowDisplayNames ( &$siteComponent ) {
+	function applyShowDisplayNames ( $siteComponent ) {
 		if(RequestContext::value('showDisplayNames') 
 			&& RequestContext::value('showDisplayNames') !== $siteComponent->showDisplayNames())
 		{
@@ -110,7 +110,7 @@ class ModifySettingsSiteVisitor
 	 * @access public
 	 * @since 1/16/07
 	 */
-	function applyCommentsEnabled ( &$siteComponent ) {
+	function applyCommentsEnabled ( $siteComponent ) {
 		if(RequestContext::value('commentsEnabled') 
 			&& RequestContext::value('commentsEnabled') !== $siteComponent->commentsEnabled())
 		{
@@ -126,7 +126,7 @@ class ModifySettingsSiteVisitor
 	 * @access public
 	 * @since 1/16/07
 	 */
-	function applyWidth ( &$siteComponent ) {
+	function applyWidth ( $siteComponent ) {
 		if(RequestContext::value('width') 
 			&& RequestContext::value('width') !== $siteComponent->getWidth())
 		{
@@ -142,7 +142,7 @@ class ModifySettingsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function applyRowsColumns ( &$siteComponent ) {
+	function applyRowsColumns ( $siteComponent ) {
 		if(RequestContext::value('rows') != $siteComponent->getNumRows()) {
 			$siteComponent->updateNumRows(RequestContext::value('rows'));
 		}
@@ -160,7 +160,7 @@ class ModifySettingsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function applyDirection ( &$siteComponent ) {
+	function applyDirection ( $siteComponent ) {
 		$directions = array(
 			"Left-Right/Top-Bottom" => _("Left-Right/Top-Bottom"),
 			"Top-Bottom/Left-Right" => _("Top-Bottom/Left-Right"),
@@ -209,8 +209,8 @@ class ModifySettingsSiteVisitor
 	 * @since 4/3/06
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $block ) {
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");	
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");	
 		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"), 
 			$idManager->getId($block->getId())))

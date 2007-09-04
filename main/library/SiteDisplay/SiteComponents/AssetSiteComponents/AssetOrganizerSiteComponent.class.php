@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.6 2007/08/31 16:03:46 achapin Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.7 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponen
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.6 2007/08/31 16:03:46 achapin Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.7 2007/09/04 15:05:33 adamfranco Exp $
  */
 abstract class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -175,7 +175,7 @@ abstract class AssetOrganizerSiteComponent
 	 * @since 4/3/06
 	 */
 	function getSubcomponentForCell ( $i ) {
-		$childComponents =& $this->_getChildComponents();
+		$childComponents = $this->_getChildComponents();
 
 		// return the subcomponent or null
 		if (isset($childComponents[$i])) {
@@ -194,8 +194,8 @@ abstract class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 4/12/06
 	 */
-	function getCellForSubcomponent ( &$siteComponent ) {
-		$childComponents =& $this->_getChildComponents();
+	function getCellForSubcomponent ( $siteComponent ) {
+		$childComponents = $this->_getChildComponents();
 		foreach($childComponents as $index => $component) {
 			if (is_object($component) && $component->getId() == $siteComponent->getId())
 				return $index;
@@ -216,7 +216,7 @@ abstract class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 4/12/06
 	 */
-	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
+	function putSubcomponentInCell ( $siteComponent, $cellIndex ) {
 		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
 	}
 	
@@ -228,15 +228,15 @@ abstract class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 4/12/06
 	 */
-	function detatchSubcomponent ( &$subcomponent ) {
+	function detatchSubcomponent ( $subcomponent ) {
 		$cellIndex = $this->getCellForSubcomponent($subcomponent);
 		
 		$childAssetIdsBelowSubcomponent = $this->_getAssetIdsBelowElement(
 			$subcomponent->getElement());
 		
-		$cell =& $this->_element->firstChild;
+		$cell = $this->_element->firstChild;
 		while ($cellIndex) {
-			$cell =& $cell->nextSibling;
+			$cell = $cell->nextSibling;
 			$cellIndex--;
 		}
 		$cell->removeChild($subcomponent->getElement());
@@ -246,7 +246,7 @@ abstract class AssetOrganizerSiteComponent
 		// Ensure that any assets referenced in the XML are removed from our asset.
 		$childAssetIdsBelowSubcomponent = $this->_getAssetIdsBelowElement(
 			$subcomponent->getElement());
-		$idManager =& Services::getService('Id');
+		$idManager = Services::getService('Id');
 		foreach ($childAssetIdsBelowSubcomponent as $idString) {
 			$this->_asset->removeAsset($idManager->getId($idString), TRUE);
 		}
@@ -262,7 +262,7 @@ abstract class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 10/6/06
 	 */
-	function _getAssetIdsBelowElement ( &$element ) {
+	function _getAssetIdsBelowElement ( $element ) {
 		$assetIds = array();
 		
 		// If this element is a Block or NavBlock it is represented by an asset
@@ -271,10 +271,10 @@ abstract class AssetOrganizerSiteComponent
 		{
 			$assetIds[] = $element->getAttribute('id');
 		} else {		
-			$child =& $element->firstChild;
+			$child = $element->firstChild;
 			while ($child) {
 				$assetIds = array_merge($assetIds, $this->_getAssetIdsBelowElement($child));
-				$child =& $child->nextSibling;
+				$child = $child->nextSibling;
 			}
 		}
 				
@@ -301,12 +301,12 @@ abstract class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 4/4/06
 	 */
-	function &_getChildComponents ($force = false) {
+	function _getChildComponents ($force = false) {
 		// load the data array
 		if ($force || !isset($this->_childComponents) || !is_array($this->_childComponents)) {
 			$this->_childComponents = array();
 			
-			$child =& $this->_element->firstChild;
+			$child = $this->_element->firstChild;
 			while ($child) {
 				if ($child->nodeName == 'cell') {
 					if ($child->firstChild) {
@@ -314,20 +314,20 @@ abstract class AssetOrganizerSiteComponent
 						
 						// If we are creating organizers, do so from our xml
 						if (preg_match('/^.*Organizer$/', $child->firstChild->nodeName)) {
-							$this->_childComponents[] =& $this->_director->getSiteComponentFromXml(
+							$this->_childComponents[] = $this->_director->getSiteComponentFromXml(
 								$this->_asset, $child->firstChild);
 						} 
 						// Otherwise (for Blocks, navblocks, etc, get the asset 
 						// by Id from the director
 						else {
-							$this->_childComponents[] =& $this->_director->getSiteComponentById(
+							$this->_childComponents[] = $this->_director->getSiteComponentById(
 								$child->firstChild->getAttribute('id'));
 						}
 					} else {
 						$this->_childComponents[] = null;
 					}
 				}
-				$child =& $child->nextSibling;
+				$child = $child->nextSibling;
 			}
 		}
 		return $this->_childComponents;
@@ -357,17 +357,17 @@ abstract class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleComponentsForPossibleAdditionToCell ( $cellIndex ) {
+	function getVisibleComponentsForPossibleAdditionToCell ( $cellIndex ) {
 		// merge our current subcomponents and any other component to be
 		// added. (This is for the Flow/Menu organizers, as well as the
 		// empty case for Fixed organizers.
-		$addableComponents =& $this->getVisibleComponentsForPossibleAddition($cellIndex);
-		$movableSubcomponents =& $this->getSubcomponentsNotInCell($cellIndex);
+		$addableComponents = $this->getVisibleComponentsForPossibleAddition($cellIndex);
+		$movableSubcomponents = $this->getSubcomponentsNotInCell($cellIndex);
 		$results = array();
 		foreach (array_keys($addableComponents) as $id)
-			$results[$id] =& $addableComponents[$id];
+			$results[$id] = $addableComponents[$id];
 		foreach (array_keys($movableSubcomponents) as $id)
-			$results[$id] =& $movableSubcomponents[$id];
+			$results[$id] = $movableSubcomponents[$id];
 		return $results;
 		
 	}
@@ -380,12 +380,12 @@ abstract class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getSubcomponentsNotInCell ($i) {
-		$childComponents =& $this->_getChildComponents();
+	function getSubcomponentsNotInCell ($i) {
+		$childComponents = $this->_getChildComponents();
 		$results = array();
 		foreach (array_keys($childComponents) as $index) {
 			if ($index != $i && is_object($childComponents[$index]))
-				$results[$childComponents[$index]->getId()] =& $childComponents[$index];
+				$results[$childComponents[$index]->getId()] = $childComponents[$index];
 		}
 		return $results;
 	}
@@ -397,7 +397,7 @@ abstract class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleComponentsForPossibleAddition ($cellIndex) {
+	function getVisibleComponentsForPossibleAddition ($cellIndex) {
 		$results = array();
 		
 		// If not authorized to add children, return an empty array;
@@ -409,20 +409,20 @@ abstract class AssetOrganizerSiteComponent
 		// get the id of the item in this cell so that we can allow dropping
 		// on this item only, rather than any cell in the organizer.
 		// This is used for dropping nested menus.
-		$currentComponentInCell =& $this->getSubcomponentForCell($cellIndex);
+		$currentComponentInCell = $this->getSubcomponentForCell($cellIndex);
 		if ($currentComponentInCell)
 			$currentIdInCell = $currentComponentInCell->getId();
 		else
 			$currentIdInCell = null;
 		
-		$visibleComponents =& $this->_director->getVisibleComponents();
+		$visibleComponents = $this->_director->getVisibleComponents();
 		foreach (array_keys($visibleComponents) as $id) {
-			$possibleDestinations =& $visibleComponents[$id]->getVisibleDestinationsForPossibleAddition();
+			$possibleDestinations = $visibleComponents[$id]->getVisibleDestinationsForPossibleAddition();
 			foreach (array_keys($possibleDestinations) as $destId) {
 				
 				// See if this organizer or the current element is listed as a possible destination.
 				if ($destId == $this->getId() || ($currentIdInCell && $destId == $currentIdInCell)) {
-					$results[$id] =& $visibleComponents[$id];
+					$results[$id] = $visibleComponents[$id];
 					break;
 				}
 			}

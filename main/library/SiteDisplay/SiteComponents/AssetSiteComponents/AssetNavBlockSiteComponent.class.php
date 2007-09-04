@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.13 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.14 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.13 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.14 2007/09/04 15:05:33 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -38,8 +38,8 @@ class AssetNavBlockSiteComponent
 	function populateWithDefaults () {
 		parent::populateWithDefaults();
 		
-		$xmlDocument =& $this->_director->getXmlDocumentFromAsset($this->_asset);
-		$this->_element =& $xmlDocument->createElement($this->getComponentClass());
+		$xmlDocument = $this->_director->getXmlDocumentFromAsset($this->_asset);
+		$this->_element = $xmlDocument->createElement($this->getComponentClass());
 		$xmlDocument->appendChild($this->_element);
 				
 		$this->setOrganizer($this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "NavOrganizer"), $this));
@@ -63,7 +63,7 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function &getElement () {
+	function getElement () {
 		return $this->_element;
 	}
 		
@@ -75,16 +75,16 @@ class AssetNavBlockSiteComponent
 	 * @since 4/3/06
 	 */
 	public function getOrganizer () {
-		$child =& $this->_element->firstChild;
+		$child = $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'NavOrganizer') {
-				$navOrg =& $child;
-				$navOrgObj =& $this->_director->getSiteComponentFromXml($this->_asset, $navOrg);
+				$navOrg = $child;
+				$navOrgObj = $this->_director->getSiteComponentFromXml($this->_asset, $navOrg);
 			}
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		if (!isset($navOrgObj)) {
-			$navOrgObj =& $this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "NavOrganizer"), $this);
+			$navOrgObj = $this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "NavOrganizer"), $this);
 			$navOrgObj->updateNumRows('1');
 			$navOrgObj->updateNumColumns('1');
 		}
@@ -100,19 +100,19 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 9/20/06
 	 */
-	function &getNestedMenuOrganizer () {
+	function getNestedMenuOrganizer () {
 		$menuOrgObj = null;
-		$child =& $this->_element->firstChild;
+		$child = $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'MenuOrganizer') {
-				$menuOrg =& $child;
-				$menuOrgObj =& $this->_director->getSiteComponentFromXml(
+				$menuOrg = $child;
+				$menuOrgObj = $this->_director->getSiteComponentFromXml(
 									$this->_asset, $menuOrg);
 			}
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 // 		if (!isset($menuOrgObj)) {
-// 			$menuOrgObj =& $this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "MenuOrganizer"));
+// 			$menuOrgObj = $this->_director->createSiteComponent(new Type('segue', 'edu.middlebury', "MenuOrganizer"));
 // 		}
 		return $menuOrgObj;
 		
@@ -128,14 +128,14 @@ class AssetNavBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	public function setOrganizer ( FixedOrganizerSiteComponent $organizer ) {
-		$orgElement =& $organizer->getElement();
-		$child =& $this->_element->firstChild;
+		$orgElement = $organizer->getElement();
+		$child = $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'NavOrganizer') {
 				$this->_element->replaceChild($orgElement, $child);				
 				return;	
 			}
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		// organizer not found... create it
 		$this->_element->appendChild($orgElement);
@@ -150,7 +150,7 @@ class AssetNavBlockSiteComponent
 	 * @since 4/12/06
 	 */
 	function getTargetId () {
-		$menuOrg =& $this->getParentComponent();
+		$menuOrg = $this->getParentComponent();
 		return $menuOrg->getTargetId();
 	}
 
@@ -174,9 +174,9 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 9/22/06
 	 */
-	function makeNested ( &$menuOrganizer ) {
+	function makeNested ( $menuOrganizer ) {
 		// A cell will have no old parent if it is newly created.
-		if ($oldParent =& $menuOrganizer->getParentComponent()) {
+		if ($oldParent = $menuOrganizer->getParentComponent()) {
 			if (method_exists($oldParent, 'getCellForSubcomponent'))
 				$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($menuOrganizer);
 			else 
@@ -195,7 +195,7 @@ class AssetNavBlockSiteComponent
 		// Ensure that any assets referenced in the XML are added to our asset.
 		$childAssetIdsBelowSubcomponent = $menuOrganizer->_getAssetIdsBelowElement(
 			$menuOrganizer->getElement());
-		$idManager =& Services::getService('Id');
+		$idManager = Services::getService('Id');
 		foreach ($childAssetIdsBelowSubcomponent as $idString) {
 			$this->_asset->addAsset($idManager->getId($idString));
 		}
@@ -213,7 +213,7 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 9/22/06
 	 */
-	function detatchSubcomponent ( &$subcomponent ) {
+	function detatchSubcomponent ( $subcomponent ) {
 		$this->_element->removeChild($subcomponent->getElement());
 		$this->_saveXml();
 	}
@@ -226,7 +226,7 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -235,8 +235,8 @@ class AssetNavBlockSiteComponent
 			return $results;
 		}
 		
-		$possibleDestinations =& $this->_director->getVisibleComponents();
-		$parent =& $this->getParentComponent();
+		$possibleDestinations = $this->_director->getVisibleComponents();
+		$parent = $this->getParentComponent();
 		foreach (array_keys($possibleDestinations) as $id) {
 // 			if ($id == $parent->getId())
 // 				continue;
@@ -244,7 +244,7 @@ class AssetNavBlockSiteComponent
 			if (preg_match('/^.*MenuOrganizerSiteComponent$/i', 
 				get_class($possibleDestinations[$id]))) 
 			{
-				$results[$id] =& $possibleDestinations[$id];
+				$results[$id] = $possibleDestinations[$id];
 			}
 		}
 		
@@ -259,7 +259,7 @@ class AssetNavBlockSiteComponent
 	 * @since 7/27/06
 	 */
 	function getParentNavOrganizer () {
-		$parent =& $this->getParentComponent();
+		$parent = $this->getParentComponent();
 		if ($parent)
 			return $parent->getParentNavOrganizer();
 		else {
@@ -275,7 +275,7 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 7/28/06
 	 */
-	function &getMenuOrganizer () {
+	function getMenuOrganizer () {
 		return $this->getParentComponent();
 	}
 	
@@ -290,7 +290,7 @@ class AssetNavBlockSiteComponent
 		if (!is_null($this->getNestedMenuOrganizer()))
 			return TRUE;
 		else {
-			$organizer =& $this->getOrganizer();
+			$organizer = $this->getOrganizer();
 			return $organizer->subMenuExists();
 		}
 	}
@@ -311,10 +311,10 @@ class AssetNavBlockSiteComponent
 	function _saveXml () {
 		printpre("<hr/><h2>Saving AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
 		print("<h3>Previous XML</h3>");
-		$oldContent =& $this->_asset->getContent();
+		$oldContent = $this->_asset->getContent();
 		printpre(htmlentities($oldContent->asString()));
 		print("<h3>New XML</h3>");
-		$element =& $this->getElement();
+		$element = $this->getElement();
 		printpre($element->ownerDocument->toNormalizedString(true));
 // 		exit;
 		

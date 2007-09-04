@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.15 2007/01/12 21:59:18 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteDirector.class.php,v 1.15 2007/01/12 21:59:18 adamfranco Exp $
+ * @version $Id: XmlSiteDirector.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
  */
 class XmlSiteDirector
 	// implements SiteDirector 
@@ -48,7 +48,7 @@ class XmlSiteDirector
 	 * @since 4/3/06
 	 */
 	function XmlSiteDirector ( $xmlDocument ) {
-		$this->_document =& $xmlDocument;
+		$this->_document = $xmlDocument;
 		$this->_activeNodes = array();
 		$this->_createdSiteComponents = array();
 	}
@@ -61,13 +61,13 @@ class XmlSiteDirector
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &getRootSiteComponent ( $id = null ) {
+	function getRootSiteComponent ( $id = null ) {
 		if (!isset($this->_rootSiteComponent)) {
 			ArgumentValidator::validate($id, StringValidatorRule::getRule());
-			$currentElement =& $this->_document->getElementByID($id, false);
+			$currentElement = $this->_document->getElementByID($id, false);
 			
 			$this->activateDefaultsDown($currentElement);
-			$this->_rootSiteComponent =& $this->traverseUpToRootSiteComponent($currentElement);
+			$this->_rootSiteComponent = $this->traverseUpToRootSiteComponent($currentElement);
 		}
 		return $this->_rootSiteComponent;
 	}
@@ -80,14 +80,14 @@ class XmlSiteDirector
 	 * @access public
 	 * @since 4/4/06
 	 */
-	function &traverseUpToRootSiteComponent ( $currentElement ) {
+	function traverseUpToRootSiteComponent ( $currentElement ) {
 		ArgumentValidator::validate($currentElement, ExtendsValidatorRule::getRule("DOMIT_Element"));
 		if (!in_array($currentElement->getAttribute('id'), $this->_activeNodes))
 			$this->_activeNodes[] = $currentElement->getAttribute('id');
 		
 		// Traverse Active Up
 		if ($currentElement->nodeName == 'SiteNavBlock') {
-			$component =& new XmlSiteNavBlockSiteComponent($this, $currentElement);
+			$component = new XmlSiteNavBlockSiteComponent($this, $currentElement);
 			return $component;
 		} else
 			return $this->traverseUpToRootSiteComponent(
@@ -114,10 +114,10 @@ class XmlSiteDirector
 				$this->_activeNodes[] = $currentElement->getAttribute('id');
 			
 			$navFound = FALSE;
-			$child =& $currentElement->firstChild;
+			$child = $currentElement->firstChild;
 			while ($child && !$navFound) {
 				$navFound = $this->activateDefaultsDown($child);
-				$child =& $child->nextSibling;
+				$child = $child->nextSibling;
 			}
 			
 			return TRUE;
@@ -127,10 +127,10 @@ class XmlSiteDirector
 		// is a NavBlock
 		else if ($currentElement->nodeType == 1) {
 			$navFound = FALSE;
-			$child =& $currentElement->firstChild;
+			$child = $currentElement->firstChild;
 			while ($child && !$navFound) {
 				$navFound = $this->activateDefaultsDown($child);
-				$child =& $child->nextSibling;
+				$child = $child->nextSibling;
 			}
 			
 			if ($navFound && $currentElement->hasAttribute('id')
@@ -163,8 +163,8 @@ class XmlSiteDirector
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function &getSiteComponentById ( $id ) {
-		$element =& $this->_document->getElementByID($id, false);
+	function getSiteComponentById ( $id ) {
+		$element = $this->_document->getElementByID($id, false);
 		return $this->getSiteComponent($element);
 	}
 	
@@ -176,11 +176,11 @@ class XmlSiteDirector
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function &getSiteComponent ( &$element ) {
+	function getSiteComponent ( $element ) {
 		$id = $element->getAttribute('id');
 		if (!isset($this->_createdSiteComponents[$id])) {
 			$class = "Xml".ucfirst($element->nodeName)."SiteComponent";
-			$this->_createdSiteComponents[$id] =& new $class($this, $element);
+			$this->_createdSiteComponents[$id] = new $class($this, $element);
 		}
 		return $this->_createdSiteComponents[$id];
 	}
@@ -193,13 +193,13 @@ class XmlSiteDirector
 	 * @access public
 	 * @since 4/10/06
 	 */
-	function &getVisibleComponents ($id = null) {
+	function getVisibleComponents ($id = null) {
 		if (!isset($this->_visibleComponents)) {
-			$visibilityVisitor =& new VisibilitySiteVisitor;
-			$rootSiteComponent =& $this->getRootSiteComponent($id);
-			$visiblityArray =& $rootSiteComponent->acceptVisitor($visibilityVisitor);
-			$this->_visibleComponents =& $visiblityArray['VisibleComponents'];
-			$this->_filledTargetIds =& $visiblityArray['FilledTargetIds'];
+			$visibilityVisitor = new VisibilitySiteVisitor;
+			$rootSiteComponent = $this->getRootSiteComponent($id);
+			$visiblityArray = $rootSiteComponent->acceptVisitor($visibilityVisitor);
+			$this->_visibleComponents = $visiblityArray['VisibleComponents'];
+			$this->_filledTargetIds = $visiblityArray['FilledTargetIds'];
 		}
 		return $this->_visibleComponents;
 	}
@@ -228,10 +228,10 @@ class XmlSiteDirector
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &_getParentWithId ( &$element ) {
+	function _getParentWithId ( $element ) {
 		ArgumentValidator::validate($element, ExtendsValidatorRule::getRule("DOMIT_Element"));
 		
-		$extendsRule =& ExtendsValidatorRule::getRule("DOMIT_Element");
+		$extendsRule = ExtendsValidatorRule::getRule("DOMIT_Element");
 		
 		if ($extendsRule->check($element->parentNode)) {
 			if ($element->parentNode->hasAttribute('id'))
@@ -256,17 +256,17 @@ class XmlSiteDirector
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function &createSiteComponent ( $componentType, &$parentComponent ) {
+	function createSiteComponent ( $componentType, $parentComponent ) {
 		// $parentComponent is unused in this implementation, but is used
 		// by other storage implementations.
 		
 		$class = 'Xml'.$componentType->getKeyword.'SiteComponent';
-		$element =& $this->_document->createElement($componentClass);
-		$idManager =& Services::getService('Id');
-		$newId =& $idManager->createId();
+		$element = $this->_document->createElement($componentClass);
+		$idManager = Services::getService('Id');
+		$newId = $idManager->createId();
 		$newId = $newId->getIdString();
 		$element->setAttribute('id', $newId);
-		$this->_createdSiteComponents[$newId] =& new $class($this, $element);
+		$this->_createdSiteComponents[$newId] = new $class($this, $element);
 		$this->_createdSiteComponents[$newId]->populateWithDefaults();
 		
 		// @todo Log SiteComponent creation here
@@ -282,7 +282,7 @@ class XmlSiteDirector
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function deleteSiteComponent ( &$siteComponent ) {
+	function deleteSiteComponent ( $siteComponent ) {
 		// @todo log SiteComponent deletion here
 		
 		unset($this->_createdSiteComponents[$siteComponent->getId()],

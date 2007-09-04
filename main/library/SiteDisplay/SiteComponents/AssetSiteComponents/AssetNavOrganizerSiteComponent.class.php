@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.4 2007/08/31 16:34:58 achapin Exp $
+ * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.5 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavOrganizerSiteCompo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.4 2007/08/31 16:34:58 achapin Exp $
+ * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.5 2007/09/04 15:05:33 adamfranco Exp $
  */
 class AssetNavOrganizerSiteComponent
 	extends AssetFixedOrganizerSiteComponent 
@@ -35,7 +35,7 @@ class AssetNavOrganizerSiteComponent
 	 * @since 4/10/06
 	 */
 	function getDisplayName () {
-		$parent =& $this->getParentComponent();
+		$parent = $this->getParentComponent();
 		return $parent->getDisplayName()._(" <em>Organizer</em>");
 	}
 	
@@ -65,7 +65,7 @@ class AssetNavOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {		
+	function getVisibleDestinationsForPossibleAddition () {		
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -75,24 +75,24 @@ class AssetNavOrganizerSiteComponent
 		}
 		
 		// The parent NavOrganizer is a possible destination
-		$parent =& $this->getParentComponent();
-		$parentNav =& $parent->getParentNavOrganizer();
+		$parent = $this->getParentComponent();
+		$parentNav = $parent->getParentNavOrganizer();
 		
 		if ($parentNav)
-			$results[$parentNav->getId()] =& $parentNav;
+			$results[$parentNav->getId()] = $parentNav;
 		else
 			return $results;
 		
 		
 		// As are FixedOrganizers that are below the parent NavOrganizer, but
 		// not below me.
-		$parentNavsFixedOrganizers =& $parentNav->getFixedOrganizers();
+		$parentNavsFixedOrganizers = $parentNav->getFixedOrganizers();
 		
 		$myFixedOrganizerIds = array_keys($this->getFixedOrganizers());
 		
 		foreach (array_keys($parentNavsFixedOrganizers) as $id) {
 			if ($id != $this->getId() && !in_array($id, $myFixedOrganizerIds))
-				$results[$id] =& $parentNavsFixedOrganizers[$id];
+				$results[$id] = $parentNavsFixedOrganizers[$id];
 		}
 		
 		return $results;
@@ -117,7 +117,7 @@ class AssetNavOrganizerSiteComponent
 	 * @since 7/28/06
 	 */
 	public function getMenuOrganizer () {		
-		$parent =& $this->getParentComponent();
+		$parent = $this->getParentComponent();
 		return $parent->getMenuOrganizer();
 	}
 }

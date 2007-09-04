@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.2 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.3 2007/09/04 15:05:32 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.2 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.3 2007/09/04 15:05:32 adamfranco Exp $
  */
 class BreadCrumbsVisitor 
 	implements SiteVisitor
@@ -46,8 +46,8 @@ class BreadCrumbsVisitor
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function addLink ( &$node ) {
-		$harmoni =& Harmoni::instance();
+	function addLink ( $node ) {
+		$harmoni = Harmoni::instance();
 		$this->_links[] = "<a href='"
 							.$harmoni->request->quickUrl(
 								$harmoni->request->getRequestedModule(),
@@ -67,7 +67,7 @@ class BreadCrumbsVisitor
 	public function visitBlock ( BlockSiteComponent $block ) {
 		$this->addLink($block);
 		
-		$parent =& $block->getParentComponent();
+		$parent = $block->getParentComponent();
 		return $parent->acceptVisitor($this);
 	}
 	
@@ -122,7 +122,7 @@ class BreadCrumbsVisitor
 	 * @since 5/31/07
 	 */
 	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $organizer ) {		
-		$parent =& $organizer->getParentComponent();
+		$parent = $organizer->getParentComponent();
 		return $parent->acceptVisitor($this);
 	}
 	
@@ -135,7 +135,7 @@ class BreadCrumbsVisitor
 	 * @since 5/31/07
 	 */
 	public function visitNavOrganizer ( NavOrganizerSiteComponent $organizer ) {
-		$parent =& $organizer->getParentComponent();
+		$parent = $organizer->getParentComponent();
 		return $parent->acceptVisitor($this);
 	}
 	
@@ -148,7 +148,7 @@ class BreadCrumbsVisitor
 	 * @since 5/31/07
 	 */
 	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $organizer ) {
-		$parent =& $organizer->getParentComponent();
+		$parent = $organizer->getParentComponent();
 		return $parent->acceptVisitor($this);
 	}
 	
@@ -161,7 +161,7 @@ class BreadCrumbsVisitor
 	 * @since 5/31/07
 	 */
 	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {	
-		$parent =& $organizer->getParentComponent();
+		$parent = $organizer->getParentComponent();
 		return $parent->acceptVisitor($this);
 	}
 	

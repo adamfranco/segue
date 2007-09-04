@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.15 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.15 2007/08/22 20:04:48 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
  */
 class AssetSiteDirector
 	implements SiteDirector 
@@ -47,8 +47,8 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function AssetSiteDirector ( &$repository ) {
-		$this->_repository =& $repository;
+	function AssetSiteDirector ( $repository ) {
+		$this->_repository = $repository;
 		$this->_activeNodes = array();
 		$this->_createdSiteComponents = array();
 		$this->_xmlDocuments = array();
@@ -56,32 +56,32 @@ class AssetSiteDirector
 		// Asset Types
 		$this->siteDisplayTypes = array();
 		
-		$this->SiteNavBlockType =& new Type('segue', 'edu.middlebury', 'SiteNavBlock');
-		$this->siteDisplayTypes[] =& $this->SiteNavBlockType;
+		$this->SiteNavBlockType = new Type('segue', 'edu.middlebury', 'SiteNavBlock');
+		$this->siteDisplayTypes[] = $this->SiteNavBlockType;
 		
-		$this->NavBlockType =& new Type('segue', 'edu.middlebury', 'NavBlock');
-		$this->siteDisplayTypes[] =& $this->NavBlockType;
+		$this->NavBlockType = new Type('segue', 'edu.middlebury', 'NavBlock');
+		$this->siteDisplayTypes[] = $this->NavBlockType;
 		
-		$this->BlockType =& new Type('segue', 'edu.middlebury', 'Block');
-		$this->siteDisplayTypes[] =& $this->BlockType;
+		$this->BlockType = new Type('segue', 'edu.middlebury', 'Block');
+		$this->siteDisplayTypes[] = $this->BlockType;
 		
 		$this->organizerTypes = array();
 		
-		$this->FixedOrganizerType =& new Type('segue', 'edu.middlebury', 'FixedOrganizer');
-		$this->siteDisplayTypes[] =& $this->FixedOrganizerType;
-		$this->organizerTypes[] =& $this->FixedOrganizerType;
+		$this->FixedOrganizerType = new Type('segue', 'edu.middlebury', 'FixedOrganizer');
+		$this->siteDisplayTypes[] = $this->FixedOrganizerType;
+		$this->organizerTypes[] = $this->FixedOrganizerType;
 		
-		$this->NavOrganizerType =& new Type('segue', 'edu.middlebury', 'NavOrganizer');
-		$this->siteDisplayTypes[] =& $this->NavOrganizerType;
-		$this->organizerTypes[] =& $this->NavOrganizerType;
+		$this->NavOrganizerType = new Type('segue', 'edu.middlebury', 'NavOrganizer');
+		$this->siteDisplayTypes[] = $this->NavOrganizerType;
+		$this->organizerTypes[] = $this->NavOrganizerType;
 		
-		$this->FlowOrganizerType =& new Type('segue', 'edu.middlebury', 'FlowOrganizer');
-		$this->siteDisplayTypes[] =& $this->FlowOrganizerType;
-		$this->organizerTypes[] =& $this->FlowOrganizerType;
+		$this->FlowOrganizerType = new Type('segue', 'edu.middlebury', 'FlowOrganizer');
+		$this->siteDisplayTypes[] = $this->FlowOrganizerType;
+		$this->organizerTypes[] = $this->FlowOrganizerType;
 		
-		$this->MenuOrganizerType =& new Type('segue', 'edu.middlebury', 'MenuOrganizer');
-		$this->siteDisplayTypes[] =& $this->MenuOrganizerType;
-		$this->organizerTypes[] =& $this->MenuOrganizerType;
+		$this->MenuOrganizerType = new Type('segue', 'edu.middlebury', 'MenuOrganizer');
+		$this->siteDisplayTypes[] = $this->MenuOrganizerType;
+		$this->organizerTypes[] = $this->MenuOrganizerType;
 	}
 	
 	/**
@@ -110,16 +110,16 @@ class AssetSiteDirector
 		if (!isset($this->_rootSiteComponent)) {
 			ArgumentValidator::validate($id, StringValidatorRule::getRule());
 			
-			$idManager =& Services::getService("Id");
+			$idManager = Services::getService("Id");
 			
 			if (preg_match('/^(\w+)----(\w+)$/', $id, $matches))
-				$currentAsset =& $this->_repository->getAsset(
+				$currentAsset = $this->_repository->getAsset(
 						$idManager->getId($matches[1]));
 			else
-				$currentAsset =& $this->_repository->getAsset($idManager->getId($id));
+				$currentAsset = $this->_repository->getAsset($idManager->getId($id));
 			
 			$this->activateDefaultsDownAsset($currentAsset);
-			$this->_rootSiteComponent =& $this->traverseUpToRootSiteComponent($currentAsset);
+			$this->_rootSiteComponent = $this->traverseUpToRootSiteComponent($currentAsset);
 		}
 		return $this->_rootSiteComponent;
 	}
@@ -132,25 +132,25 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/4/06
 	 */
-	function &traverseUpToRootSiteComponent ( $currentAsset ) {
+	function traverseUpToRootSiteComponent ( $currentAsset ) {
 		ArgumentValidator::validate($currentAsset, ExtendsValidatorRule::getRule("Asset"));
 		
-		$id =& $currentAsset->getId();
+		$id = $currentAsset->getId();
 		
 		if (!in_array($id->getIdString(), $this->_activeNodes))
 			$this->_activeNodes[] = $id->getIdString();
 		
 		// Traverse Active Up
-		$siteNavType =& $this->SiteNavBlockType;
+		$siteNavType = $this->SiteNavBlockType;
 		if ($siteNavType->isEqual($currentAsset->getAssetType())) {
-			$xmlDocument =& $this->getXmlDocumentFromAsset($currentAsset);
-			$component =& new AssetSiteNavBlockSiteComponent($this, $currentAsset, $xmlDocument->documentElement);
+			$xmlDocument = $this->getXmlDocumentFromAsset($currentAsset);
+			$component = new AssetSiteNavBlockSiteComponent($this, $currentAsset, $xmlDocument->documentElement);
 			return $component;
 		} else {
-			$parentAssets =& $currentAsset->getParents();
+			$parentAssets = $currentAsset->getParents();
 			while ($parentAssets->hasNext()) {
-				$parent =& $parentAssets->next();
-				$parentType =& $parent->getAssetType();
+				$parent = $parentAssets->next();
+				$parentType = $parent->getAssetType();
 				if (preg_match('/segue/i', $parentType->getDomain()))
 					return $this->traverseUpToRootSiteComponent($parent);
 			}
@@ -175,18 +175,18 @@ class AssetSiteDirector
 		if ($this->NavBlockType->isEqual($currentAsset->getAssetType())
 			|| $this->SiteNavBlockType->isEqual($currentAsset->getAssetType()))
 		{
-			$id =& $currentAsset->getId();
+			$id = $currentAsset->getId();
 			if (!in_array($id->getIdString(), $this->_activeNodes))
 				$this->_activeNodes[] = $id->getIdString();
 			
 			// Get the Nav's XML to traverse
-			$xmlDocument =& $this->getXmlDocumentFromAsset($currentAsset);
+			$xmlDocument = $this->getXmlDocumentFromAsset($currentAsset);
 			
-			$child =& $xmlDocument->documentElement->firstChild;
+			$child = $xmlDocument->documentElement->firstChild;
 			$navFound = FALSE;
 			while ($child && !$navFound) {
 				$navFound = $this->activateDefaultsDownXml($child);
-				$child =& $child->nextSibling;
+				$child = $child->nextSibling;
 			}
 			
 			return TRUE;
@@ -214,8 +214,8 @@ class AssetSiteDirector
 			if (!$currentElement->getAttribute('id'))
 				throwError(new Error("No id attribute in: ".$currentElement->toNormalizedString(true)."\nWithin document: ".$currentElement->ownerDocument->toNormalizedString(true)));
 			
-			$idManager =& Services::getService('Id');
-			$asset =& $this->_repository->getAsset($idManager->getId(
+			$idManager = Services::getService('Id');
+			$asset = $this->_repository->getAsset($idManager->getId(
 							$currentElement->getAttribute('id')));
 			
 			return $this->activateDefaultsDownAsset($asset);
@@ -225,10 +225,10 @@ class AssetSiteDirector
 		// is a NavBlock
 		else if ($currentElement->nodeType == 1) {
 			$navFound = FALSE;
-			$child =& $currentElement->firstChild;
+			$child = $currentElement->firstChild;
 			while ($child && !$navFound) {
 				$navFound = $this->activateDefaultsDownXml($child);
-				$child =& $child->nextSibling;
+				$child = $child->nextSibling;
 			}
 			
 			if ($navFound && $currentElement->hasAttribute('id')
@@ -249,20 +249,19 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 9/25/06
 	 */
-	function &getXmlDocumentFromAsset ( &$asset ) {
+	function getXmlDocumentFromAsset ( $asset ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule('Asset'));
 		
-		$id =& $asset->getId();
+		$id = $asset->getId();
 		$assetIdString = $id->getIdString();
 		if (!$this->NavBlockType->isEqual($asset->getAssetType())
 			&& !$this->SiteNavBlockType->isEqual($asset->getAssetType()))
 		{
-			$null = null;
-			return $null;
+			throw new NonNavException ('Wrong Asset Type to retrieve XML document from.');
 		}
 		
 		if (!isset($this->_xmlDocuments[$assetIdString])) {
-			$this->_xmlDocuments[$assetIdString] =& new DOMIT_Document();
+			$this->_xmlDocuments[$assetIdString] = new DOMIT_Document();
 			$this->_xmlDocuments[$assetIdString]->setNamespaceAwareness(true);
 			$assetContent = $asset->getContent();
 			
@@ -303,12 +302,12 @@ class AssetSiteDirector
 	 * @since 4/5/06
 	 */
 	function getSiteComponentById ( $id ) {
-		$idManager =& Services::getService('Id');
+		$idManager = Services::getService('Id');
 		if (preg_match('/^(\w+)----(\w+)$/', $id, $matches)) {
-			$asset =& $this->_repository->getAsset(
+			$asset = $this->_repository->getAsset(
 						$idManager->getId($matches[1]));
-			$xmlDoc =& $this->getXmlDocumentFromAsset($asset);
-			$element =& $xmlDoc->getElementByID($matches[2], false);
+			$xmlDoc = $this->getXmlDocumentFromAsset($asset);
+			$element = $xmlDoc->getElementByID($matches[2], false);
 			return $this->getSiteComponentFromXml($asset, $element);
 		} else {
 			return $this->getSiteComponentFromAsset(
@@ -325,13 +324,13 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function &getSiteComponentFromAsset ( &$asset ) {
+	function getSiteComponentFromAsset ( $asset ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule('Asset'));
 		
-		$id =& $asset->getId();
+		$id = $asset->getId();
 		$idString = $id->getIdString();
 		if (!isset($this->_createdSiteComponents[$idString])) {
-			$type =& $asset->getAssetType();
+			$type = $asset->getAssetType();
 			foreach ($this->siteDisplayTypes as $siteDisplayType) {
 				if ($type->isEqual($siteDisplayType)) {
 					$typeKey = ucfirst($type->getKeyword());
@@ -342,10 +341,15 @@ class AssetSiteDirector
 				$typeKey = 'Block';
 			$class = "Asset".$typeKey."SiteComponent";
 			
-			$xmlDocument =& $this->getXmlDocumentFromAsset($asset);
+			try {
+			$xmlDocument = $this->getXmlDocumentFromAsset($asset);
+				$documentElement = $xmlDocument->documentElement;
+			} catch (NonNavException $e) {
+				$documentElement = null;
+			}
 			
 			
-			$this->_createdSiteComponents[$idString] =& new $class($this, $asset, $xmlDocument->documentElement);
+			$this->_createdSiteComponents[$idString] = new $class($this, $asset, $documentElement);
 		}
 		return $this->_createdSiteComponents[$idString];
 	}
@@ -358,14 +362,14 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function &getSiteComponentFromXml ( &$asset, &$element ) {
+	function getSiteComponentFromXml ( $asset, $element ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule('Asset'));
 		ArgumentValidator::validate($element, ExtendsValidatorRule::getRule('DOMIT_Node'));
 		
 		$id = $element->getAttribute('id');
 		if (!isset($this->_createdSiteComponents[$id])) {
 			$class = "Asset".ucfirst($element->nodeName)."SiteComponent";
-			$this->_createdSiteComponents[$id] =& new $class($this, $asset, $element);
+			$this->_createdSiteComponents[$id] = new $class($this, $asset, $element);
 		}
 		return $this->_createdSiteComponents[$id];
 	}
@@ -378,13 +382,13 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/10/06
 	 */
-	function &getVisibleComponents ($id = null) {
+	function getVisibleComponents ($id = null) {
 		if (!isset($this->_visibleComponents)) {
-			$visibilityVisitor =& new VisibilitySiteVisitor;
-			$rootSiteComponent =& $this->getRootSiteComponent($id);
-			$visiblityArray =& $rootSiteComponent->acceptVisitor($visibilityVisitor);
-			$this->_visibleComponents =& $visiblityArray['VisibleComponents'];
-			$this->_filledTargetIds =& $visiblityArray['FilledTargetIds'];
+			$visibilityVisitor = new VisibilitySiteVisitor;
+			$rootSiteComponent = $this->getRootSiteComponent($id);
+			$visiblityArray = $rootSiteComponent->acceptVisitor($visibilityVisitor);
+			$this->_visibleComponents = $visiblityArray['VisibleComponents'];
+			$this->_filledTargetIds = $visiblityArray['FilledTargetIds'];
 		}
 		return $this->_visibleComponents;
 	}
@@ -413,10 +417,10 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &_getParentWithId ( &$element ) {
+	function _getParentWithId ( $element ) {
 		ArgumentValidator::validate($element, ExtendsValidatorRule::getRule("DOMIT_Element"));
 		
-		$extendsRule =& ExtendsValidatorRule::getRule("DOMIT_Element");
+		$extendsRule = ExtendsValidatorRule::getRule("DOMIT_Element");
 		
 		if ($extendsRule->check($element->parentNode)) {
 			if ($element->parentNode->hasAttribute('id'))
@@ -440,7 +444,7 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function &createSiteComponent ( $componentType, &$parentComponent ) {
+	function createSiteComponent ( $componentType, $parentComponent ) {
 // 		throwError(new Error("Should we be getting here?"));
 
 		foreach ($this->siteDisplayTypes as $siteDisplayType) {
@@ -456,13 +460,13 @@ class AssetSiteDirector
 		
 		// For blocks, create an asset for them
 		if (preg_match('/^.*BlockSiteComponent$/', $class)) {
-			$asset =& $this->_repository->createAsset("Untitled", "",
+			$asset = $this->_repository->createAsset("Untitled", "",
 						$componentType);
-			$assetId =& $asset->getId();
+			$assetId = $asset->getId();
 			$element = null;
 			$newId = $assetId->getIdString();
 			
-			$this->_createdSiteComponents[$newId] =& new $class($this, $asset, $element);
+			$this->_createdSiteComponents[$newId] = new $class($this, $asset, $element);
 			$this->_createdSiteComponents[$newId]->populateWithDefaults();
 			
 			if (!$componentType->isEqual($this->SiteNavBlockType)) {
@@ -471,16 +475,16 @@ class AssetSiteDirector
 		} 
 		// For Organizers, use the parent's asset.
 		else {
-			$asset =& $parentComponent->_asset;
+			$asset = $parentComponent->_asset;
 			
-			$parentElement =& $parentComponent->getElement();
-			$element =& $parentElement->ownerDocument->createElement($typeKey);
-			$idManager =& Services::getService('Id');
-			$newIdObj =& $idManager->createId();
+			$parentElement = $parentComponent->getElement();
+			$element = $parentElement->ownerDocument->createElement($typeKey);
+			$idManager = Services::getService('Id');
+			$newIdObj = $idManager->createId();
 			$newId = $newIdObj->getIdString();
 			$element->setAttribute('id', $newId);
 			
-			$this->_createdSiteComponents[$newId] =& new $class($this, $asset, $element);
+			$this->_createdSiteComponents[$newId] = new $class($this, $asset, $element);
 			$this->_createdSiteComponents[$newId]->populateWithDefaults();
 		}
 		
@@ -497,7 +501,7 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/6/06
 	 */
-	function deleteSiteComponent ( &$siteComponent ) {
+	function deleteSiteComponent ( $siteComponent ) {
 		// @todo log SiteComponent deletion here
 		
 		$id = $siteComponent->getId();
@@ -506,5 +510,23 @@ class AssetSiteDirector
 		unset($this->_createdSiteComponents[$id], $siteComponent);
 	}
 }
+
+/**
+ * An exception to throw when trying to get nav information from a non-nav asset.
+ * 
+ * @since 8/31/07
+ * @package segue.libraries.site_display
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: AssetSiteDirector.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
+ */
+class NonNavException
+	extends Exception
+{
+	
+}
+
 
 ?>

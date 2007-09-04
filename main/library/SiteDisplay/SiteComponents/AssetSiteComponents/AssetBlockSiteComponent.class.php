@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.11 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.12 2007/09/04 15:05:32 adamfranco Exp $
  */ 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.abstract.php");
 
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.ab
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.11 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.12 2007/09/04 15:05:32 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -48,7 +48,7 @@ class AssetBlockSiteComponent
 	 * @since 10/16/06
 	 */
 	function deleteAndCleanUpData () {
-		$repository =& $this->_asset->getRepository();
+		$repository = $this->_asset->getRepository();
 		$repository->deleteAsset($this->_asset->getId());
 	}
 	
@@ -59,11 +59,11 @@ class AssetBlockSiteComponent
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function &getElement () {
+	function getElement () {
 		if (!isset($this->_element)) {
-			$parentComponent =& $this->getParentComponent();
-			$parentElement =& $parentComponent->getElement();
-			$this->_element =& $parentElement->ownerDocument->getElementByID($this->getId(), false);
+			$parentComponent = $this->getParentComponent();
+			$parentElement = $parentComponent->getElement();
+			$this->_element = $parentElement->ownerDocument->getElementByID($this->getId(), false);
 		}
 		return $this->_element;
 	}
@@ -171,7 +171,7 @@ class AssetBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function getContentMarkup () {
-		$content =& $this->_asset->getContent();
+		$content = $this->_asset->getContent();
 		return $content->asString();
 	}
 	
@@ -184,7 +184,7 @@ class AssetBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateContentMarkup ( $contentMarkup ) {
-		$content =& Blob::fromString($contentMarkup);
+		$content = Blob::fromString($contentMarkup);
 		$this->_asset->updateContent($content);
 	}
 	
@@ -209,15 +209,15 @@ class AssetBlockSiteComponent
 	 * @access public
 	 * @since 4/10/06
 	 */
-	function &getParentComponent () {
-		$parentAssets =& $this->_asset->getParents();
+	function getParentComponent () {
+		$parentAssets = $this->_asset->getParents();
 		while ($parentAssets->hasNext()) {
-			$parentAsset =& $parentAssets->next();
-			$parentAssetType =& $parentAsset->getAssetType();
+			$parentAsset = $parentAssets->next();
+			$parentAssetType = $parentAsset->getAssetType();
 			if ($parentAssetType->getDomain() == 'segue') {
-				$parentXMLDoc =& $this->_director->getXmlDocumentFromAsset($parentAsset);
-				$myElement =& $parentXMLDoc->getElementByID($this->getId(), false);
-				$parentElement =& $this->_director->_getParentWithId($myElement);
+				$parentXMLDoc = $this->_director->getXmlDocumentFromAsset($parentAsset);
+				$myElement = $parentXMLDoc->getElementByID($this->getId(), false);
+				$parentElement = $this->_director->_getParentWithId($myElement);
 				if ($parentElement)
 					return $this->_director->getSiteComponentFromXml($parentAsset, $parentElement);
 			}
@@ -235,7 +235,7 @@ class AssetBlockSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -244,8 +244,8 @@ class AssetBlockSiteComponent
 			return $results;
 		}
 		
-		$possibleDestinations =& $this->_director->getVisibleComponents();
-		$parent =& $this->getParentComponent();
+		$possibleDestinations = $this->_director->getVisibleComponents();
+		$parent = $this->getParentComponent();
 		foreach (array_keys($possibleDestinations) as $id) {
 			if ($id == $parent->getId())
 				continue;
@@ -253,7 +253,7 @@ class AssetBlockSiteComponent
 			if (preg_match('/^.*(Menu|Flow)OrganizerSiteComponent$/i', 
 				get_class($possibleDestinations[$id]))) 
 			{
-				$results[$id] =& $possibleDestinations[$id];
+				$results[$id] = $possibleDestinations[$id];
 			}
 		}
 		
@@ -275,12 +275,12 @@ class AssetBlockSiteComponent
 	function _saveXml () {
 		printpre("<hr/><h2>Saving Parent AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
 		print("<h3>Previous XML</h3>");
-		$parentComponent =& $this->getParentComponent();
-		$parentAsset =& $parentComponent->getAsset();
-		$oldContent =& $parentAsset->getContent();
+		$parentComponent = $this->getParentComponent();
+		$parentAsset = $parentComponent->getAsset();
+		$oldContent = $parentAsset->getContent();
 		printpre(htmlentities($oldContent->asString()));
 		print("<h3>New XML</h3>");
-		$element =& $this->getElement();
+		$element = $this->getElement();
 		printpre($element->ownerDocument->toNormalizedString(true));
 // 		exit;
 		

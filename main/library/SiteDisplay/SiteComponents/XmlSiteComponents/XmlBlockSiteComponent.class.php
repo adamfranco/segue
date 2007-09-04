@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.9 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.10 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.9 2006/04/14 21:03:25 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.10 2007/09/04 15:05:33 adamfranco Exp $
  */
 class XmlBlockSiteComponent
 	extends XmlSiteComponent
@@ -47,11 +47,11 @@ class XmlBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function getDisplayName () {
-		$child =& $this->_element->firstChild;
+		$child = $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'displayName')
 				return $child->getText();
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		
 		return _('Default Name');
@@ -66,17 +66,17 @@ class XmlBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateDisplayName ( $displayName ) {
-		$child =& $this->_element->firstChild;
-		$cdata =& $this->_element->ownerDocument->createCDATASection($displayName);
+		$child = $this->_element->firstChild;
+		$cdata = $this->_element->ownerDocument->createCDATASection($displayName);
 		while ($child) {
 			if ($child->nodeName == 'displayName') {
 				$child->replaceChild($cdata, $child->firstChild);				
 				return;	
 			}
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		// displayName not found... create it
-		$newElement =& $this->_element->ownerDocument->createElement('displayName');
+		$newElement = $this->_element->ownerDocument->createElement('displayName');
 		$newElement->appendChild($cdata);
 		$this->_element->appendChild($newElement);
 	}
@@ -89,11 +89,11 @@ class XmlBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function getDescription () {
-		$child =& $this->_element->firstChild;
+		$child = $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'description')
 				return $child->getText();
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		
 		return _('');
@@ -108,17 +108,17 @@ class XmlBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateDescription ( $description ) {
-		$child =& $this->_element->firstChild;
-		$cdata =& $this->_element->ownerDocument->createCDATASection($description);
+		$child = $this->_element->firstChild;
+		$cdata = $this->_element->ownerDocument->createCDATASection($description);
 		while ($child) {
 			if ($child->nodeName == 'description') {
 				$child->replaceChild($cdata, $child->firstChild);				
 				return;	
 			}
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		// description not found... create it
-		$newElement =& $this->_element->ownerDocument->createElement('description');
+		$newElement = $this->_element->ownerDocument->createElement('description');
 		$newElement->appendChild($cdata);
 		$this->_element->appendChild($newElement);
 	}
@@ -133,11 +133,11 @@ class XmlBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function getTitleMarkup () {
-		$child =& $this->_element->firstChild;
+		$child = $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'titleMarkup')
 				return $child->getText();
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		
 		// default case
@@ -153,17 +153,17 @@ class XmlBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateTitleMarkup ( $titleMarkup ) {
-		$child =& $this->_element->firstChild;
-		$cdata =& $this->_element->ownerDocument->createCDATASection($titleMarkup);
+		$child = $this->_element->firstChild;
+		$cdata = $this->_element->ownerDocument->createCDATASection($titleMarkup);
 		while ($child) {
 			if ($child->nodeName == 'titleMarkup') {
 				$child->replaceChild($cdata, $child->firstChild);				
 				return;	
 			}
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		// titleMarkup not found... create it
-		$newElement =& $this->_element->ownerDocument->createElement('titleMarkup');
+		$newElement = $this->_element->ownerDocument->createElement('titleMarkup');
 		$newElement->appendChild($cdata);
 		$this->_element->appendChild($newElement);
 	}
@@ -177,11 +177,11 @@ class XmlBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function getContentMarkup () {
-		$child =& $this->_element->firstChild;
+		$child = $this->_element->firstChild;
 		while ($child) {
 			if ($child->nodeName == 'contentMarkup')
 				return $child->getText();
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		
 		return _('');
@@ -196,17 +196,17 @@ class XmlBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateContentMarkup ( $contentMarkup ) {
-		$child =& $this->_element->firstChild;
-		$cdata =& $this->_element->ownerDocument->createCDATASection($contentMarkup);
+		$child = $this->_element->firstChild;
+		$cdata = $this->_element->ownerDocument->createCDATASection($contentMarkup);
 		while ($child) {
 			if ($child->nodeName == 'contentMarkup') {
 				$child->replaceChild($cdata, $child->firstChild);				
 				return;	
 			}
-			$child =& $child->nextSibling;
+			$child = $child->nextSibling;
 		}
 		// contentMarkup not found... create it
-		$newElement =& $this->_element->ownerDocument->createElement('contentMarkup');
+		$newElement = $this->_element->ownerDocument->createElement('contentMarkup');
 		$newElement->appendChild($cdata);
 		$this->_element->appendChild($newElement);
 	}
@@ -219,7 +219,7 @@ class XmlBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor, $inMenu = FALSE ) {
+	function acceptVisitor ( $visitor, $inMenu = FALSE ) {
 		if ($inMenu)
 			return $visitor->visitBlockInMenu($this);
 		return $visitor->visitBlock($this);
@@ -233,7 +233,7 @@ class XmlBlockSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -242,8 +242,8 @@ class XmlBlockSiteComponent
 			return $results;
 		}
 		
-		$possibleDestinations =& $this->_director->getVisibleComponents();
-		$parent =& $this->getParentComponent();
+		$possibleDestinations = $this->_director->getVisibleComponents();
+		$parent = $this->getParentComponent();
 		foreach (array_keys($possibleDestinations) as $id) {
 			if ($id == $parent->getId())
 				continue;
@@ -256,7 +256,7 @@ class XmlBlockSiteComponent
 				case 'xmlnavorganizersitecomponent':
 					break;
 				default:
-					$results[$id] =& $possibleDestinations[$id];
+					$results[$id] = $possibleDestinations[$id];
 					break;
 			}
 		}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.8 2007/01/17 21:21:59 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.9 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteComponent.class.php,v 1.8 2007/01/17 21:21:59 adamfranco Exp $
+ * @version $Id: XmlSiteComponent.class.php,v 1.9 2007/09/04 15:05:33 adamfranco Exp $
  */
 class XmlSiteComponent 
 	// implements SiteComponent
@@ -35,9 +35,9 @@ class XmlSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function XmlSiteComponent ( &$director, &$element) {
-		$this->_director =& $director;
-		$this->_element =& $element;
+	function XmlSiteComponent ( $director, $element) {
+		$this->_director = $director;
+		$this->_element = $element;
 	}
 	
 	/**
@@ -72,7 +72,7 @@ class XmlSiteComponent
 	 * @access public
 	 * @since 4/18/06
 	 */
-	function &getDirector () {
+	function getDirector () {
 		return $this->_director;
 	}
 	
@@ -83,7 +83,7 @@ class XmlSiteComponent
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function &getElement () {
+	function getElement () {
 		return $this->_element;
 	}
 	
@@ -94,8 +94,8 @@ class XmlSiteComponent
 	 * @access public
 	 * @since 4/10/06
 	 */
-	function &getParentComponent () {
-		$parentElement =& $this->_director->_getParentWithId($this->getElement());
+	function getParentComponent () {
+		$parentElement = $this->_director->_getParentWithId($this->getElement());
 		if ($parentElement)
 			return $this->_director->getSiteComponent($parentElement);
 		else {
@@ -163,7 +163,7 @@ class XmlSiteComponent
 	 */
 	function showDisplayName () {
 		if ($this->showDisplayNames() === 'default') {
-			$parent =& $this->getParentComponent();
+			$parent = $this->getParentComponent();
 			
 			if ($parent)
 				return $parent->showDisplayName();
@@ -183,7 +183,7 @@ class XmlSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	function acceptVisitor ( $visitor ) {
 		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay"));
 	}
 	
@@ -199,7 +199,7 @@ class XmlSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay"));
 	}
 }

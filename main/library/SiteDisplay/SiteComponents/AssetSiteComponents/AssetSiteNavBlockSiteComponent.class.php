@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.7 2007/08/31 16:34:58 achapin Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.8 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteCompo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.7 2007/08/31 16:34:58 achapin Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.8 2007/09/04 15:05:33 adamfranco Exp $
  */
 class AssetSiteNavBlockSiteComponent
 	extends AssetNavBlockSiteComponent
@@ -59,7 +59,7 @@ class AssetSiteNavBlockSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		return $results;
 	}

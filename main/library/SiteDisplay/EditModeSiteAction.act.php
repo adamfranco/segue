@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.8 2007/08/22 20:04:47 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.8 2007/08/22 20:04:47 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
  */
 abstract class EditModeSiteAction 
 	extends MainWindowAction
@@ -35,8 +35,8 @@ abstract class EditModeSiteAction
 	 */
 	function isAuthorizedToExecute () {
 		// Check that the user can create an asset here.
-		$authZ =& Services::getService("AuthZ");
-		$idManager =& Services::getService("Id");
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
 		
 		return true;
 // 		return $authZ->isUserAuthorized(
@@ -63,7 +63,7 @@ abstract class EditModeSiteAction
 	 * @since 4/26/05
 	 */
 	function buildContent () {
-		$director =& $this->getSiteDirector();
+		$director = $this->getSiteDirector();
 		
 		$this->processChanges($director);
 		
@@ -88,13 +88,13 @@ abstract class EditModeSiteAction
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function &getSiteDirector () {
+	function getSiteDirector () {
 		/*********************************************************
 		 * XML Version
 		 *********************************************************/
 // 		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
 // 		
-// 		$this->document =& new DOMIT_Document();
+// 		$this->document = new DOMIT_Document();
 // 		$this->document->setNamespaceAwareness(true);
 // 		$success = $this->document->loadXML($this->filename);
 // 
@@ -103,16 +103,16 @@ abstract class EditModeSiteAction
 // 				"<br/>\t meaning: ".$this->document->getErrorString()."<br/>", "SiteDisplay"));
 // 		}
 // 
-// 		$director =& new XmlSiteDirector($this->document);
+// 		$director = new XmlSiteDirector($this->document);
 		
 		
 		/*********************************************************
 		 * Asset version
 		 *********************************************************/
-		$repositoryManager =& Services::getService('Repository');
-		$idManager =& Services::getService('Id');
+		$repositoryManager = Services::getService('Repository');
+		$idManager = Services::getService('Id');
 		
-		$director =& new AssetSiteDirector(
+		$director = new AssetSiteDirector(
 			$repositoryManager->getRepository(
 				$idManager->getId('edu.middlebury.segue.sites_repository')));
 		
@@ -167,7 +167,7 @@ abstract class EditModeSiteAction
 	 * @since 10/16/06
 	 */
 	function returnToCallerPage () {
-		$harmoni =& Harmoni::instance();
+		$harmoni = Harmoni::instance();
 		if (!($returnAction = RequestContext::value('returnAction')))
 			$returnAction = 'editview';
 			

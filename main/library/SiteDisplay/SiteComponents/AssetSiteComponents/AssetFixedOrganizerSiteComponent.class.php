@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.6 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.7 2007/09/04 15:05:32 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteCom
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.6 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.7 2007/09/04 15:05:32 adamfranco Exp $
  */
 class AssetFixedOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -51,7 +51,7 @@ class AssetFixedOrganizerSiteComponent
 	public function addSubcomponentToCell ( SiteComponent $siteComponent, $cellIndex ) {
 		$this->normalizeCells();
 		
-		$child =& $this->_element->firstChild;
+		$child = $this->_element->firstChild;
 		$i = 0;
 		$success = false;
 		while ($child && !$success) {			
@@ -64,7 +64,7 @@ class AssetFixedOrganizerSiteComponent
 					throwError( new Error("Cell Not Empty", "SiteComponents"));
 				}
 			} else {
-				$child =& $child->nextSibling;
+				$child = $child->nextSibling;
 				$i++;
 			}
 		}
@@ -77,7 +77,7 @@ class AssetFixedOrganizerSiteComponent
 		// Ensure that any assets referenced in the XML are added to our asset.
 		$childAssetIdsBelowSubcomponent = $this->_getAssetIdsBelowElement(
 			$siteComponent->getElement());
-		$idManager =& Services::getService('Id');
+		$idManager = Services::getService('Id');
 		foreach ($childAssetIdsBelowSubcomponent as $idString) {
 			$this->_asset->addAsset($idManager->getId($idString));
 		}
@@ -94,12 +94,12 @@ class AssetFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/12/06
 	 */
-	function putSubcomponentInCell ( &$siteComponent, $cellIndex ) {
+	function putSubcomponentInCell ( $siteComponent, $cellIndex ) {
 		$this->normalizeCells();
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {
 			// A cell will have no old parent if it is newly created.
-			if ($oldParent =& $siteComponent->getParentComponent()) {
+			if ($oldParent = $siteComponent->getParentComponent()) {
 				if (method_exists($oldParent, 'getCellForSubcomponent'))
 					$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
 				else 
@@ -133,11 +133,11 @@ class AssetFixedOrganizerSiteComponent
 		$this->normalizeCells();
 		
         // child DOMIT_Elements in an array
-        $children =& $this->_element->childNodes;
+        $children = $this->_element->childNodes;
         // cells
-        $cell_one =& $children[$cellOneIndex];
-        $cell_two =& $children[$cellTwoIndex];
-        $temp =& $this->_element->ownerDocument->createElement('temp');
+        $cell_one = $children[$cellOneIndex];
+        $cell_two = $children[$cellTwoIndex];
+        $temp = $this->_element->ownerDocument->createElement('temp');
         
         $this->_element->replaceChild($temp, $cell_one);
         $this->_element->replaceChild($cell_one, $cell_two);
@@ -269,9 +269,9 @@ class AssetFixedOrganizerSiteComponent
 	 * @since 4/3/06
 	 */
 	function deleteSubcomponentInCell ( $i ) {
-		$cell =& $this->_element->firstChild;
+		$cell = $this->_element->firstChild;
 		while ($i) {
-			$cell =& $cell->nextSibling;
+			$cell = $cell->nextSibling;
 			$i--;
 		}
 		$cell->removeChild($cell->firstChild);
@@ -305,7 +305,7 @@ class AssetFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleComponentsForPossibleAdditionToCell ( $cellIndex ) {
+	function getVisibleComponentsForPossibleAdditionToCell ( $cellIndex ) {
 		// If this cell is in use, only reordering of components already
 		// in this organizer is allowed (FixedOrganizer)
 		if (in_array($this->getId().'_cell:'.$cellIndex, $this->_director->getFilledTargetIds())
@@ -331,7 +331,7 @@ class AssetFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -341,18 +341,18 @@ class AssetFixedOrganizerSiteComponent
 		}
 		
 		// The parent NavOrganizer is a possible destination
-		$parentNav =& $this->getParentNavOrganizer();
-		$results[$parentNav->getId()] =& $parentNav;
+		$parentNav = $this->getParentNavOrganizer();
+		$results[$parentNav->getId()] = $parentNav;
 		
 		// As are FixedOrganizers that are below the parent NavOrganizer, but
 		// not below me.
-		$parentNavsFixedOrganizers =& $parentNav->getFixedOrganizers();
+		$parentNavsFixedOrganizers = $parentNav->getFixedOrganizers();
 		
 		$myFixedOrganizerIds = array_keys($this->getFixedOrganizers());
 		
 		foreach (array_keys($parentNavsFixedOrganizers) as $id) {
 			if ($id != $this->getId() && !in_array($id, $myFixedOrganizerIds))
-				$results[$id] =& $parentNavsFixedOrganizers[$id];
+				$results[$id] = $parentNavsFixedOrganizers[$id];
 		}
 		
 		return $results;
@@ -365,10 +365,10 @@ class AssetFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getFixedOrganizers () {
+	function getFixedOrganizers () {
 		$results = array();
 		
-		$children =& $this->_getChildComponents();
+		$children = $this->_getChildComponents();
 		foreach (array_keys($children) as $key) {
 // 			if ($children[$key]) {
 // 				print "<hr/>";
@@ -377,7 +377,7 @@ class AssetFixedOrganizerSiteComponent
 // 			}
 			if (preg_match('/^.*FixedOrganizerSiteComponent$/i', get_class($children[$key]))) 
 			{
-				$results[$children[$key]->getId()] =& $children[$key];
+				$results[$children[$key]->getId()] = $children[$key];
 				
 			}
 		}
@@ -394,7 +394,7 @@ class AssetFixedOrganizerSiteComponent
 	 */
 	function subMenuExists () {
 		// Check all children, Menu Organizers will return true.
-		$children =& $this->_getChildComponents();
+		$children = $this->_getChildComponents();
 		foreach (array_keys($children) as $key) {
 			if (is_object($children[$key]) && $children[$key]->subMenuExists())
 				return TRUE;

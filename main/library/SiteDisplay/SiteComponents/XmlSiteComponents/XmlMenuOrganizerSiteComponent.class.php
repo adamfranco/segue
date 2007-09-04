@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.8 2006/09/22 19:38:08 adamfranco Exp $
+ * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.9 2007/09/04 15:05:33 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.8 2006/09/22 19:38:08 adamfranco Exp $
+ * @version $Id: XmlMenuOrganizerSiteComponent.class.php,v 1.9 2007/09/04 15:05:33 adamfranco Exp $
  */
 class XmlMenuOrganizerSiteComponent 
 	extends XmlFlowOrganizerSiteComponent
@@ -69,7 +69,7 @@ class XmlMenuOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function &acceptVisitor ( &$visitor ) {
+	function acceptVisitor ( $visitor ) {
 		return $visitor->visitMenuOrganizer($this);
 	}
 	
@@ -100,7 +100,7 @@ class XmlMenuOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getVisibleDestinationsForPossibleAddition () {
+	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		
 		// If not authorized to remove this item, return an empty array;
@@ -110,19 +110,19 @@ class XmlMenuOrganizerSiteComponent
 		}
 		
 		// The parent NavOrganizer is a possible destination
-		$parentNav =& $this->getParentNavOrganizer();
-		$results[$parentNav->getId()] =& $parentNav;
+		$parentNav = $this->getParentNavOrganizer();
+		$results[$parentNav->getId()] = $parentNav;
 		
 		// Add our parent NavBlock
-		$parentNavBlock =& $parentNav->getParentComponent();
-		$results[$parentNavBlock->getId()] =& $parentNavBlock;
+		$parentNavBlock = $parentNav->getParentComponent();
+		$results[$parentNavBlock->getId()] = $parentNavBlock;
 		
 		// As are FixedOrganizers that are below the parent NavOrganizer, but
 		// not below me.
-		$parentNavsFixedOrganizers =& $parentNav->getFixedOrganizers();
+		$parentNavsFixedOrganizers = $parentNav->getFixedOrganizers();
 				
 		foreach (array_keys($parentNavsFixedOrganizers) as $id) {
-			$results[$id] =& $parentNavsFixedOrganizers[$id];
+			$results[$id] = $parentNavsFixedOrganizers[$id];
 		}
 		
 		return $results;
@@ -135,8 +135,8 @@ class XmlMenuOrganizerSiteComponent
 	 * @access public
 	 * @since 4/11/06
 	 */
-	function &getParentNavOrganizer () {
-		$parent =& $this->getParentComponent();
+	function getParentNavOrganizer () {
+		$parent = $this->getParentComponent();
 		
 		// if this menu is nested, return the parent's nav organizer
 		if (strtolower(get_class($parent)) == "xmlnavblocksitecomponent")
