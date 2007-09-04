@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.12 2007/09/04 16:10:32 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.12 2007/09/04 16:10:32 achapin Exp $
  */
 class viewAction
 	extends displayAction {
@@ -111,8 +111,12 @@ class viewAction
 		$xLayout = new XLayout();
 		$yLayout = new YLayout();
 		
+		$allWrapper = new Container($yLayout, BLANK, 1);
 		
 		$mainScreen = new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
+		
+		$allWrapper->add($mainScreen,
+			$rootSiteComponent->getWidth(), null, CENTER, TOP);
 		
 		// :: login, links and commands
 		$this->headRow = $mainScreen->add(
@@ -155,9 +159,9 @@ class viewAction
 
 						
 		// :: Site ::
-	//	$mainScreen->add($this->siteGuiComponent);
-		$mainScreen->add($this->siteGuiComponent,
-			$rootSiteComponent->getWidth(), null, CENTER, TOP);
+		$mainScreen->add($this->siteGuiComponent);
+		// $mainScreen->add($this->siteGuiComponent,
+// 			$rootSiteComponent->getWidth(), null, CENTER, TOP);
 		
 // 		printpre("width:".$rootSiteComponent->getWidth());
 // 		exit;
@@ -179,7 +183,7 @@ class viewAction
 		$footer->add(new UnstyledBlock($footerText), "50%", null, RIGHT, BOTTOM);
 		
 		
-		return $mainScreen;
+		return $allWrapper;
 	}
 	
 	/**
