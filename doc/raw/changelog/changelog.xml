@@ -5,12 +5,15 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.11 2007/09/04 20:47:07 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.12 2007/09/04 21:10:49 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-alpha" date="The Future">
+		<important author='adam'>
+			As of this version, Segue no longer supports PHP4. Please use PHP5 or later.
+		</important>
 		<change author='adam'>
 			Removing ampersands for compatability with other PHP5 code.
 			The BBEdit-grep string used for the find and replace was:
@@ -18,6 +21,9 @@
 			replaced with
 					\1\2\3\4\5
 		</change>
+		<fix author='adam'>
+			UI2: Max-width guideline now can be cleared.
+		</fix>
 		<fix author='adam'>	
 			Now using an empty default cookie domain to better work out of the box.
 		</fix>

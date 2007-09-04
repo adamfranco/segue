@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.10 2007/09/04 21:10:49 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.10 2007/09/04 21:10:49 adamfranco Exp $
  */
 class ModifySettingsSiteVisitor 
 	implements SiteVisitor
@@ -127,7 +127,7 @@ class ModifySettingsSiteVisitor
 	 * @since 1/16/07
 	 */
 	function applyWidth ( $siteComponent ) {
-		if(RequestContext::value('width') 
+		if(!is_null(RequestContext::value('width')) 
 			&& RequestContext::value('width') !== $siteComponent->getWidth())
 		{
 			$siteComponent->updateWidth(RequestContext::value('width'));
