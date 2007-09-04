@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.13 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: display.act.php,v 1.14 2007/09/04 00:55:45 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.13 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: display.act.php,v 1.14 2007/09/04 00:55:45 achapin Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.13 2007/09/03 22:57:21 achapin Exp $
+		 * @version $Id: display.act.php,v 1.14 2007/09/04 00:55:45 achapin Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -106,11 +106,11 @@ class displayAction
 		$languageText .= "\n\t</select>";
 		
 		
-		$languageText .= "\n\t<input class='button small' value='Set language'type='submit' />";
+		$languageText .= "\n\t<input class='button small' value='Set language'type='submit' />&nbsp;";
 		$languageText .= "\n\t</div>\n</form>";
 		
 		$languageBar =& new Component($languageText, BLANK, 1);
-		$headRow->add($languageBar, null, null, LEFT,TOP);
+		$headRow->add($languageBar, null, null, LEFT,BOTTOM);
 		
 		// Pretty Login Box
 // 		$loginRow =& new Container($yLayout, OTHER, 1);
@@ -204,7 +204,7 @@ class displayAction
 			}
 		}
 		if ($users != '') {
-			print "\n<div style='text-align: right; margin-right: 10px;'><small>";
+			print "\n<div style='text-align: right; margin-right: 10px; margin-bottom: 3px;'><small>";
 			if (count(explode("+", $users)) == 1)
 				print $users."\t";
 			else 
@@ -223,7 +223,7 @@ class displayAction
 			$passwordField = $harmoni->request->getName("password");
 			$harmoni->request->endNamespace();
 			$harmoni->request->startNamespace("polyphony");
-			print  "\n<div style='text-align: right; margin-right: 10px;'>".
+			print  "\n<div style='text-align: right; margin-right: 10px; margin-bottom: 3px;'>".
 				"\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
 				"' align='right' method='post'><small>".

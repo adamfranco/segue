@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.5 2007/07/24 19:17:20 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.6 2007/09/04 00:55:45 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.5 2007/07/24 19:17:20 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.6 2007/09/04 00:55:45 achapin Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -75,7 +75,7 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &getSiteComponent () {
+	function getSiteComponent () {
 		$idManager =& Services::getService("Id");
 		return $this->getSiteComponentForId(
 			$idManager->getId(RequestContext::value("node")));
@@ -89,7 +89,7 @@ class SegueClassicWizard
 	 * @access public
 	 * @since 5/8/07
 	 */
-	function &getSiteComponentForId ( &$id ) {
+	function getSiteComponentForId ( &$id ) {
 		$director =& $this->getSiteDirector();
 		return $director->getSiteComponentById($id->getIdString());
 	}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.4 2007/06/07 19:39:53 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.5 2007/09/04 00:55:45 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/Wizard/SingleStepWizard.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.4 2007/06/07 19:39:53 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.5 2007/09/04 00:55:45 achapin Exp $
  */
 class addContentAction
 	extends SegueClassicWizard
@@ -126,7 +126,7 @@ class addContentAction
 			print "\n<div>";
 			$icon = $pluginManager->getPluginIconUrl($pType);
 			if ($icon) {
-				print "\n\t<img src='".$icon."' width='200px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
+				print "\n\t<img src='".$icon."' width='300px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
 			}
 			print "\n\t<div>".$pType->getDescription()."</div>";
 			print "\n</div>";

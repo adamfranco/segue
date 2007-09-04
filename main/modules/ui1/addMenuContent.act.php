@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.3 2007/06/07 19:39:53 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.4 2007/09/04 00:55:45 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.3 2007/06/07 19:39:53 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.4 2007/09/04 00:55:45 achapin Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -125,7 +125,7 @@ class addMenuContentAction
 			print " <strong>".$navArray['name']."</strong>";
 			print "\n<div>";
 			$icon = MYPATH."/icons/".$navArray['icon'];
-			print "\n\t<img src='".$icon."' width='200px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
+			print "\n\t<img src='".$icon."' width='300px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
 			print "\n\t<div>".$navArray['description']."</div>";
 			print "\n</div>";
 			print "\n<div style='clear: both;'></div>";
@@ -185,26 +185,26 @@ class addMenuContentAction
 		$types = array();
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart'),
-				"name" => _("Content Page"),
-				"description" => _("A single page of content."),
+				"name" => _("Single Column Page"),
+				"description" => _("Chose this for a single column page in which you can append any number of content blocks."),
 				"icon" => "Page.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart'),
-				"name" => _("Content Page with Sidebar"),
-				"description" => _("A single page of content with a sidebar that will be present when the page is viewed."),
+				"name" => _("Two Column Page"),
+				"description" => _("Chose this if you want a page with two columns into which you can append any number of content blocks."),
 				"icon" => "PageWithSideBar.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart'),
-				"name" => _("Sub-Menu"),
-				"description" => _("This option adds a new level of navigation under which Content Pages or other Sub-Menus can be added."),
+				"name" => _("Nested Pages"),
+				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of nested sub-pages to the current page."),
 				"icon" => "SubMenu.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart'),
-				"name" => _("Sub-Menu with Sidebar"),
-				"description" => _("This option adds a new level of navigation under which Content Pages or other Sub-Menus can be added. A sidebar will also be present whenever any of the pages in this Sub-Menu are viewed."),
+				"name" => _("Nested Pages with Sidebar"),
+				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of nested sub-pages to the current page AND include a right sidebar for content common to all these sub-pages!"),
 				"icon" => "SubMenuWithSideBar.png"
 			);
 		return $types;

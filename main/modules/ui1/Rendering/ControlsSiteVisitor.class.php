@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.8 2007/08/31 16:34:58 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/09/04 00:55:45 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.8 2007/08/31 16:34:58 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/09/04 00:55:45 achapin Exp $
  */
 class ControlsSiteVisitor 
 	implements SiteVisitor
@@ -461,7 +461,7 @@ class ControlsSiteVisitor
 			
 			print "\n\t\t\t\t<div style='text-align: center;'>";
 			print "\n\t\t\t\t\t<a href='".$url."'>";
-			print _("page display options");
+			print _("[ page display options ]");
 			print "</a>";
 			print "\n\t\t\t\t</div>";
 			
@@ -504,7 +504,7 @@ class ControlsSiteVisitor
 			
 			print "\n\t\t\t\t<div style='text-align: center;'>";
 			print "\n\t\t\t\t\t<a href='".$url."'>";
-			print _("menu display options");
+			print _("[ menu display options ]");
 			print "</a>";
 			print "\n\t\t\t\t</div>";
 			
