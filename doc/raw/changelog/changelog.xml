@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.12 2007/09/04 21:10:49 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.13 2007/09/04 21:13:43 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -21,6 +21,9 @@
 			replaced with
 					\1\2\3\4\5
 		</change>
+		<fix author='adam'>
+			Removed plugin-tests link.
+		</fix>
 		<fix author='adam'>
 			UI2: Max-width guideline now can be cleared.
 		</fix>
