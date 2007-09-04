@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.9 2007/07/13 19:59:03 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.10 2007/09/04 17:39:23 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.9 2007/07/13 19:59:03 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.10 2007/09/04 17:39:23 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SeguePluginsAjaxPlugin
@@ -175,7 +175,7 @@ class EduMiddleburyDownloadPlugin
 	function getDownloadBar () {
 		ob_start();
 		
-		$file =& $this->getMediaFile();
+		$file = $this->getMediaFile();
 		if ($file) {
 			print "\n";				
 			print "\n<div>";
@@ -194,7 +194,7 @@ class EduMiddleburyDownloadPlugin
 			print "<strong>"._("Download this file")."</strong>";
 			print "</a>";
 			
-			$size =& $file->getSize();
+			$size = $file->getSize();
 			
 			if ($size->value()) {
 				$sizeString = $size->asString();
@@ -227,7 +227,7 @@ class EduMiddleburyDownloadPlugin
 	 * @access public
 	 * @since 4/25/07
 	 */
-	function getCitation (&$mediaFile) {
+	function getCitation ($mediaFile) {
 		ob_start();
 
 		if ($mediaFile->getCreator()) {			
@@ -270,10 +270,10 @@ class EduMiddleburyDownloadPlugin
 	 * @access public
 	 * @since 4/25/07
 	 */
-	function &getMediaFile () {
+	function getMediaFile () {
 		if (!isset($this->_mediaFile)) {
 			if ($this->getContent()) {
-				$this->_mediaFile =& MediaFile::withIdString($this->getContent());				
+				$this->_mediaFile = MediaFile::withIdString($this->getContent());				
 			} else {
 				$null = null;
 				return $null;

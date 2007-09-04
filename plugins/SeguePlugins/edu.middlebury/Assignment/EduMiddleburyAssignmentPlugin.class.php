@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.1 2007/01/12 19:39:13 adamfranco Exp $
+ * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.2 2007/09/04 17:39:22 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.1 2007/01/12 19:39:13 adamfranco Exp $
+ * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.2 2007/09/04 17:39:22 adamfranco Exp $
  */
 class EduMiddleburyAssignmentPlugin
 	extends SeguePluginsAjaxPlugin
@@ -48,7 +48,7 @@ class EduMiddleburyAssignmentPlugin
  	 */
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) {
-			$title =& HtmlString::withValue($this->getFieldValue('title'));
+			$title = HtmlString::withValue($this->getFieldValue('title'));
  			$title->clean();
  			$this->setTitle($title->asString());
 
@@ -61,7 +61,7 @@ class EduMiddleburyAssignmentPlugin
 	// @todo update the assignment array
 
 		// for each response array
-		$response =& $this->data['SegueResponse'][0];
+		$response = $this->data['SegueResponse'][0];
 
 			// check all of the reading 
 			foreach ($response['SegueResponseReading'] as $j => $read) {
@@ -98,7 +98,7 @@ class EduMiddleburyAssignmentPlugin
  			
 			// if there is an assignment print it
 			if (isset($this->data['SegueAssignment'])) {
-				$assignment =& $this->data['SegueAssignment'][0];
+				$assignment = $this->data['SegueAssignment'][0];
 			
 	 			print "\n\t<input type='text' name='"
 		 			.$this->getFieldName('title')."' value='".$this->getTitle()
@@ -147,7 +147,7 @@ class EduMiddleburyAssignmentPlugin
 
 			// if there is an assignment print it
 			if (isset($this->data['SegueAssignment'][0])) {
-				$assignment =& $this->data['SegueAssignment'][0];
+				$assignment = $this->data['SegueAssignment'][0];
 
 				// are there reading assignments if so put a header
 				if (isset($assignment['SegueAssignmentReading'][0]))
