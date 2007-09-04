@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.8 2007/09/03 22:57:21 achapin Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.9 2007/09/04 20:28:32 adamfranco Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -61,7 +61,7 @@ class SimpleThemeWhite extends Theme {
 // 		
 // 		// =====================================================================
 // 		// global Theme style
-// 		$collection =& new StyleCollection("body", null, "Global Style", "Style settings affecting the overall look and feel.");
+// 		$collection = new StyleCollection("body", null, "Global Style", "Style settings affecting the overall look and feel.");
 // 		$collection->addSP(new BackgroundColorSP("#FFF8C6"));
 // 		//$collection->addSP(new BackgroundImageSP("http://slug.middlebury.edu/~achapin/segue2/themes/SimpleThemeWhite/images/black-gray.jpg"));
 // 		$collection->addSP(new ColorSP("#FFF"));
@@ -71,28 +71,28 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new MarginSP("10px"));
 // 		$this->addGlobalStyle($collection);
 // 
-// 		$collection =& new StyleCollection("a", null, "Link Style", "Style settings affecting the look and feel of links.");
+// 		$collection = new StyleCollection("a", null, "Link Style", "Style settings affecting the look and feel of links.");
 // 		$collection->addSP(new TextDecorationSP("none"));
 // 		$collection->addSP(new ColorSP("#000"));
 // 		$collection->addSP(new CursorSP("pointer"));
 // // 		$collection->addSP(new FontWeightSP("bold"));
 // 		$this->addGlobalStyle($collection);
 // // 
-// 		$collection =& new StyleCollection("a:hover", null, "Link Hover Style", "Style settings affecting the look and feel of hover links.");
+// 		$collection = new StyleCollection("a:hover", null, "Link Hover Style", "Style settings affecting the look and feel of hover links.");
 // 		$collection->addSP(new TextDecorationSP("underline"));
 // 		$this->addGlobalStyle($collection);
 // // 
 // 		
-// 		$collection =& new StyleCollection(".thumbnail_image", null, "Thumbnail Images", "Style settings affecting the look and feel of Thumbnail images.");
+// 		$collection = new StyleCollection(".thumbnail_image", null, "Thumbnail Images", "Style settings affecting the look and feel of Thumbnail images.");
 // 		$collection->addSP(new BorderSP("1px", "solid", "#000"));
 // 		$this->addGlobalStyle($collection);
 // 		
-// 		$collection =& new StyleCollection(".thumbnail_icon", null, "Thumbnail Icons", "Style settings affecting the look and feel of Thumbnail icons.");
+// 		$collection = new StyleCollection(".thumbnail_icon", null, "Thumbnail Icons", "Style settings affecting the look and feel of Thumbnail icons.");
 // 		$collection->addSP(new BorderSP("0px", "solid", "#000"));
 // 		$this->addGlobalStyle($collection);
 // 		// =====================================================================
 // 		// Block 1 style
-// 		$collection =& new StyleCollection("*.block1", "block1", "Block 1", "The main block where normally all of the page content goes in.");
+// 		$collection = new StyleCollection("*.block1", "block1", "Block 1", "The main block where normally all of the page content goes in.");
 // // 		$collection->addSP(new BackgroundColorSP("#DDD"));
 // // 		$collection->addSP(new PaddingSP("10px"));
 // // 		$collection->addSP(new MarginSP("10px"));
@@ -100,7 +100,7 @@ class SimpleThemeWhite extends Theme {
 
 		// =====================================================================
 		// Append 1 style
-// 		$collection =& new CornersStyleCollection("*.append1", "append1", "append 1", "A style for append new... links.");
+// 		$collection = new CornersStyleCollection("*.append1", "append1", "append 1", "A style for append new... links.");
 // 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 // 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 // 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -108,14 +108,14 @@ class SimpleThemeWhite extends Theme {
 // 		
 // 		$this->addStyleForComponentType($collection, APPEND, 2);
 // 
-// 		$collection =& new StyleCollection("*.append1 a", "append1", "append1 Links", "Properties of links");
+// 		$collection = new StyleCollection("*.append1 a", "append1", "append1 Links", "Properties of links");
 // 		$this->addStyleForComponentType($collection, APPEND, 2);
 
 
 		
 		// =====================================================================
 		// Block 2 style
-		$collection =& new CornersStyleCollection("*.block2", "block2", "Block 2", "A 2nd level block. Used for standard content");
+		$collection = new CornersStyleCollection("*.block2", "block2", "Block 2", "A 2nd level block. Used for standard content");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -130,13 +130,13 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new TextAlignSP("left"));
 		$this->addStyleForComponentType($collection, BLOCK, 2);
 
-		$collection =& new StyleCollection("*.block2 a", "block2", "Block 2 Links", "Properties of links");
+		$collection = new StyleCollection("*.block2 a", "block2", "Block 2 Links", "Properties of links");
 // 		$collection->addSP(new ColorSP("#000"));
 		$this->addStyleForComponentType($collection, BLOCK, 2);
 	
 		// =====================================================================
 		// Block 3 style
-		$collection =& new CornersStyleCollection("*.block3", "block3", "Block 3", "A 3rd level block. Used for emphasized content such as Wizards.");
+		$collection = new CornersStyleCollection("*.block3", "block3", "Block 3", "A 3rd level block. Used for emphasized content such as Wizards.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -151,7 +151,7 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new TextAlignSP("left"));		
 		$this->addStyleForComponentType($collection, BLOCK, 3);
 		
-// 		$collection =& new StyleCollection("*.block3 .thumbnail", "block3", "Block 4 Links", "Properties of links");
+// 		$collection = new StyleCollection("*.block3 .thumbnail", "block3", "Block 4 Links", "Properties of links");
 // 		$collection->addSP(new BorderSP("2px", "solid", "#000"));
 // 		$this->addStyleForComponentType($collection, BLOCK, 3);
 		
@@ -159,7 +159,7 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Block 4 style
-		$collection =& new CornersStyleCollection("*.block4", "block4", "Block 4", "A 4th level block. Used for alerts and highlit dialog boxes.");
+		$collection = new CornersStyleCollection("*.block4", "block4", "Block 4", "A 4th level block. Used for alerts and highlit dialog boxes.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -174,14 +174,14 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new TextAlignSP("left"));
 // 		$this->addStyleForComponentType($collection, BLOCK, 4);
 // 		
-// 		$collection =& new StyleCollection("*.block4 a", "block4", "Block 4 Links", "Properties of links");
+// 		$collection = new StyleCollection("*.block4 a", "block4", "Block 4 Links", "Properties of links");
 // 		$collection->addSP(new ColorSP("#000"));
 		$this->addStyleForComponentType($collection, BLOCK, 4);
 		
 		
 		// =====================================================================
 		// Heading 1 style
-		$collection =& new CornersStyleCollection("*.heading1", "heading1", "Heading 1", "A 1st level heading.");
+		$collection = new CornersStyleCollection("*.heading1", "heading1", "Heading 1", "A 1st level heading.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -200,7 +200,7 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Heading 2 style
-		$collection =& new CornersStyleCollection("*.heading2", "heading2", "Heading 2", "A 2nd level heading.");
+		$collection = new CornersStyleCollection("*.heading2", "heading2", "Heading 2", "A 2nd level heading.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -219,7 +219,7 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Heading 3 style
-		$collection =& new CornersStyleCollection("*.heading3", "heading3", "Heading 3", "A 3rd level heading.");
+		$collection = new CornersStyleCollection("*.heading3", "heading3", "Heading 3", "A 3rd level heading.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -238,7 +238,7 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Heading 4 style
-		$collection =& new CornersStyleCollection("*.heading4", "heading4", "Heading 4", "A 4th level heading.");
+		$collection = new CornersStyleCollection("*.heading4", "heading4", "Heading 4", "A 4th level heading.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -258,7 +258,7 @@ class SimpleThemeWhite extends Theme {
 
 		// =====================================================================
 		// Header 1 style
-		$collection =& new CornersStyleCollection("*.header1", "header1", "Header 1", "A 1st level header.");
+		$collection = new CornersStyleCollection("*.header1", "header1", "Header 1", "A 1st level header.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -277,7 +277,7 @@ class SimpleThemeWhite extends Theme {
 
 		// =====================================================================
 		// Footer 1 style
-		$collection =& new CornersStyleCollection("*.footer1", "footer1", "Footer 1", "A 1st level footer.");
+		$collection = new CornersStyleCollection("*.footer1", "footer1", "Footer 1", "A 1st level footer.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -296,7 +296,7 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Menu 1 style
-// 		$collection =& new CornersStyleCollection("*.menu1", "menu1", "Menu 1", "A 1st level menu.");
+// 		$collection = new CornersStyleCollection("*.menu1", "menu1", "Menu 1", "A 1st level menu.");
 // 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 // 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 // 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -313,14 +313,14 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// SubMenu 1 style
-		$styleCollection =& new StyleCollection("*.subMenu1", "subMenu1", "SubMenu 1", "A 1st level sub-menu.");
+		$styleCollection = new StyleCollection("*.subMenu1", "subMenu1", "SubMenu 1", "A 1st level sub-menu.");
 		$styleCollection->addSP(new MarginLeftSP("10px"));
 		$this->addStyleForComponentType($styleCollection, SUB_MENU, 1);
 		
 		// =====================================================================
 		// Menu Heading 1 style
-//		$collection =& new StyleCollection("*.menuHeading1", "menuHeading1", "Menu Heading 1", "A 1st level menu heading.");
-		$collection =& new CornersStyleCollection("*.menuHeading1", "menuHeading1", "Menu 1", "A 1st level menu.");
+//		$collection = new StyleCollection("*.menuHeading1", "menuHeading1", "Menu Heading 1", "A 1st level menu heading.");
+		$collection = new CornersStyleCollection("*.menuHeading1", "menuHeading1", "Menu 1", "A 1st level menu.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -334,8 +334,8 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Menu Unselected Link 1 style
-		$collection =& new StyleCollection("*.menuLink1_unselected a", "menuLink1_unselected", "Unselected Menu Link 1", "A 1st level unselected menu link.");
-		$collection =& new CornersStyleCollection("*.menuLink1_unselected", "menuLink1_unselected", "Menu 1", "A 1st level menu.");
+		$collection = new StyleCollection("*.menuLink1_unselected a", "menuLink1_unselected", "Unselected Menu Link 1", "A 1st level unselected menu link.");
+		$collection = new CornersStyleCollection("*.menuLink1_unselected", "menuLink1_unselected", "Menu 1", "A 1st level menu.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -348,14 +348,14 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new FontSizeSP("larger"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 1);
 		
-		$collection =& new StyleCollection("*.menuLink1_hover a:hover", "menuLink1_hover", "Menu Link 1 Hover", "A 1st level menu link hover behavior.");
+		$collection = new StyleCollection("*.menuLink1_hover a:hover", "menuLink1_hover", "Menu Link 1 Hover", "A 1st level menu link hover behavior.");
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 1);
 		
 		// =====================================================================
 		// Menu Selected Link 1 style
-		$collection =& new StyleCollection("*.menuLink1_selected a", "menuLink1_selected", "Selected Menu Link 1", "A 1st level selected menu link.");
-		$collection =& new CornersStyleCollection("*.menuLink1_selected", "menuLink1_selected", "Menu 1", "A 1st level menu.");
+		$collection = new StyleCollection("*.menuLink1_selected a", "menuLink1_selected", "Selected Menu Link 1", "A 1st level selected menu link.");
+		$collection = new CornersStyleCollection("*.menuLink1_selected", "menuLink1_selected", "Menu 1", "A 1st level menu.");
 		$collection->setBorderUrl("TopLeft", $imagePath."corner_TL.gif");
 		$collection->setBorderUrl("TopRight", $imagePath."corner_TR.gif");
 		$collection->setBorderUrl("BottomLeft", $imagePath."corner_BL.gif");
@@ -370,7 +370,7 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Menu Unselected Link 2 style
-		$collection =& new StyleCollection("*.menuLink2_unselected a", "menuLink2_unselected", "Unselected Menu Link ", "A 2nd level unselected menu link.");
+		$collection = new StyleCollection("*.menuLink2_unselected a", "menuLink2_unselected", "Unselected Menu Link ", "A 2nd level unselected menu link.");
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#eeeeee"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -378,13 +378,13 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new MarginLeftSP("10px"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 2);
 		
-		$collection =& new StyleCollection("*.menuLink2_hover a:hover", "menuLink2_hover", "Menu Link 2 Hover", "A 2nd level menu link hover behavior.");
+		$collection = new StyleCollection("*.menuLink2_hover a:hover", "menuLink2_hover", "Menu Link 2 Hover", "A 2nd level menu link hover behavior.");
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 2);
 		
 		// =====================================================================
 		// Menu Selected Link 2 style
-		$collection =& new StyleCollection("*.menuLink2_selected a", "menuLink2_selected", "Selected Menu Link 2", "A 2nd level selected menu link.");
+		$collection = new StyleCollection("*.menuLink2_selected a", "menuLink2_selected", "Selected Menu Link 2", "A 2nd level selected menu link.");
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -394,7 +394,7 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Menu Unselected Link 3 style
-		$collection =& new StyleCollection("*.menuLink3_unselected a", "menuLink3_unselected", "Unselected Menu Link ", "A 3nd level unselected menu link.");
+		$collection = new StyleCollection("*.menuLink3_unselected a", "menuLink3_unselected", "Unselected Menu Link ", "A 3nd level unselected menu link.");
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#eeeeee"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -402,13 +402,13 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new MarginLeftSP("20px"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 3);
 		
-		$collection =& new StyleCollection("*.menuLink3_hover a:hover", "menuLink3_hover", "Menu Link 3 Hover", "A 3nd level menu link hover behavior.");
+		$collection = new StyleCollection("*.menuLink3_hover a:hover", "menuLink3_hover", "Menu Link 3 Hover", "A 3nd level menu link hover behavior.");
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 3);
 		
 		// =====================================================================
 		// Menu Selected Link 3 style
-		$collection =& new StyleCollection("*.menuLink3_selected a", "menuLink3_selected", "Selected Menu Link 3", "A 3nd level selected menu link.");
+		$collection = new StyleCollection("*.menuLink3_selected a", "menuLink3_selected", "Selected Menu Link 3", "A 3nd level selected menu link.");
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -418,7 +418,7 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Menu Unselected Link 4 style
-		$collection =& new StyleCollection("*.menuLink4_unselected a", "menuLink4_unselected", "Unselected Menu Link ", "A 4nd level unselected menu link.");
+		$collection = new StyleCollection("*.menuLink4_unselected a", "menuLink4_unselected", "Unselected Menu Link ", "A 4nd level unselected menu link.");
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#eeeeee"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -426,13 +426,13 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new MarginLeftSP("30px"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 4);
 		
-		$collection =& new StyleCollection("*.menuLink4_hover a:hover", "menuLink4_hover", "Menu Link 4 Hover", "A 4nd level menu link hover behavior.");
+		$collection = new StyleCollection("*.menuLink4_hover a:hover", "menuLink4_hover", "Menu Link 4 Hover", "A 4nd level menu link hover behavior.");
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 4);
 		
 		// =====================================================================
 		// Menu Selected Link 4 style
-		$collection =& new StyleCollection("*.menuLink4_selected a", "menuLink4_selected", "Selected Menu Link 4", "A 4nd level selected menu link.");
+		$collection = new StyleCollection("*.menuLink4_selected a", "menuLink4_selected", "Selected Menu Link 4", "A 4nd level selected menu link.");
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -442,7 +442,7 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Menu Unselected Link 5 style
-		$collection =& new StyleCollection("*.menuLink5_unselected a", "menuLink5_unselected", "Unselected Menu Link ", "A 5nd level unselected menu link.");
+		$collection = new StyleCollection("*.menuLink5_unselected a", "menuLink5_unselected", "Unselected Menu Link ", "A 5nd level unselected menu link.");
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#eeeeee"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -450,13 +450,13 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new MarginLeftSP("40px"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 5);
 		
-		$collection =& new StyleCollection("*.menuLink5_hover a:hover", "menuLink5_hover", "Menu Link 5 Hover", "A 5nd level menu link hover behavior.");
+		$collection = new StyleCollection("*.menuLink5_hover a:hover", "menuLink5_hover", "Menu Link 5 Hover", "A 5nd level menu link hover behavior.");
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 5);
 		
 		// =====================================================================
 		// Menu Selected Link 5 style
-		$collection =& new StyleCollection("*.menuLink5_selected a", "menuLink5_selected", "Selected Menu Link 5", "A 5nd level selected menu link.");
+		$collection = new StyleCollection("*.menuLink5_selected a", "menuLink5_selected", "Selected Menu Link 5", "A 5nd level selected menu link.");
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -466,7 +466,7 @@ class SimpleThemeWhite extends Theme {
 		
 		// =====================================================================
 		// Menu Unselected Link 6 style
-		$collection =& new StyleCollection("*.menuLink6_unselected a", "menuLink6_unselected", "Unselected Menu Link ", "A 6nd level unselected menu link.");
+		$collection = new StyleCollection("*.menuLink6_unselected a", "menuLink6_unselected", "Unselected Menu Link ", "A 6nd level unselected menu link.");
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#eeeeee"));
 //  		$collection->addSP(new ColorSP("#000"));
@@ -474,13 +474,13 @@ class SimpleThemeWhite extends Theme {
 // 		$collection->addSP(new MarginLeftSP("50px"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 6);
 		
-		$collection =& new StyleCollection("*.menuLink6_hover a:hover", "menuLink6_hover", "Menu Link 6 Hover", "A 6nd level menu link hover behavior.");
+		$collection = new StyleCollection("*.menuLink6_hover a:hover", "menuLink6_hover", "Menu Link 6 Hover", "A 6nd level menu link hover behavior.");
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 		$this->addStyleForComponentType($collection, MENU_ITEM_LINK_UNSELECTED, 6);
 		
 		// =====================================================================
 		// Menu Selected Link 6 style
-		$collection =& new StyleCollection("*.menuLink6_selected a", "menuLink6_selected", "Selected Menu Link 6", "A 6nd level selected menu link.");
+		$collection = new StyleCollection("*.menuLink6_selected a", "menuLink6_selected", "Selected Menu Link 6", "A 6nd level selected menu link.");
 // 		$collection->addSP(new DisplaySP("block"));
 // 		$collection->addSP(new BackgroundColorSP("#ccc"));
 //  		$collection->addSP(new ColorSP("#000"));
