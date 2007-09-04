@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: gui_default.conf.php,v 1.5 2007/08/22 20:08:50 adamfranco Exp $
+ * @version $Id: gui_default.conf.php,v 1.6 2007/09/04 18:00:42 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../themes/SimpleThemeBlack/SimpleThemeBlack.class.php");
@@ -19,7 +19,7 @@ require_once(dirname(__FILE__)."/../themes/SimpleThemeBlack/SimpleThemeBlack.cla
 // :: GUIManager setup ::
 	define("LOGO_URL", MYPATH."/themes/SimpleThemeBlack/images/logo.gif");
 	
-	$configuration =& new ConfigurationProperties;
+	$configuration = new ConfigurationProperties;
 	$configuration->addProperty('database_index', $dbID);
 	$configuration->addProperty('database_name', $dbName);
 	$configuration->addProperty('default_theme', new SimpleThemeBlack);

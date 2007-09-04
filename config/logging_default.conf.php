@@ -10,9 +10,9 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: logging_default.conf.php,v 1.1 2006/03/03 17:21:06 adamfranco Exp $
+ * @version $Id: logging_default.conf.php,v 1.2 2007/09/04 18:00:43 adamfranco Exp $
  */
  
- 	$configuration =& new ConfigurationProperties;
+ 	$configuration = new ConfigurationProperties;
 	$configuration->addProperty('database_index', $dbID);
 	Services::startManagerAsService("LoggingManager", $context, $configuration);

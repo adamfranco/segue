@@ -9,18 +9,18 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.13 2007/08/22 20:48:59 achapin Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.14 2007/09/04 18:00:43 adamfranco Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
-	$repositoryManager =& Services::getService("Repository");
-	$idManager =& Services::getService("Id");
-	$siteRepositoryId =& $idManager->getId("edu.middlebury.segue.sites_repository");
+	$repositoryManager = Services::getService("Repository");
+	$idManager = Services::getService("Id");
+	$siteRepositoryId = $idManager->getId("edu.middlebury.segue.sites_repository");
 
-	$repositories =& $repositoryManager->getRepositories();
+	$repositories = $repositoryManager->getRepositories();
 	$siteRepositoryExists = FALSE;
 	while ($repositories->hasNext()) {
-		$repository =& $repositories->next();
+		$repository = $repositories->next();
 		if ($siteRepositoryId->isEqual($repository->getId())) {
 			$siteRepositoryExists = TRUE;
 			break;
@@ -29,24 +29,24 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	
 	if (!$siteRepositoryExists) {
 
-		$siteRepositoryType =& new Type (
+		$siteRepositoryType = new Type (
 						'System Repositories', 
 						'edu.middlebury.segue', 
 						'Site',
 						'A Repository for holding the sites of Segue');
-		$repository =& $repositoryManager->createRepository(
+		$repository = $repositoryManager->createRepository(
 								  "All Sites",
 								  "This is a Repository that holds all of the Sites in Segue.",
 								  $siteRepositoryType,
 								  $siteRepositoryId);
 	}
 
-	$schemas =& $repository->getRecordStructures();
+	$schemas = $repository->getRecordStructures();
 	$pluginSchemaExists = false;
 	$pluginSchemaId = $idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs");
 	
 	while ($schemas->hasNext()) {
-		$schema =& $schemas->next();
+		$schema = $schemas->next();
 		if ($pluginSchemaId->isEqual($schema->getId())) {
 			$pluginSchemaExists = TRUE;
 		}
@@ -57,7 +57,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	 *********************************************************/	
 	if (!$pluginSchemaExists) {
 			
-		$schema =& $repository->createRecordStructure(
+		$schema = $repository->createRecordStructure(
 							"Segue Plugin RecordStructure", 
 							"This is the RecordStruction used for common Segue Plugin data.", 
 							"text/plain", 
@@ -76,13 +76,13 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	}
 	
 	// check if Install default plugins
-	$db =& Services::getService("DBHandler");
-	$pm =& Services::getService("Plugs");
+	$db = Services::getService("DBHandler");
+	$pm = Services::getService("Plugs");
 	$query = new SelectQuery();
 	$query->addTable("plugin_type");
 	$query->addColumn("*");
 	
-	$results =& $db->query($query, IMPORTER_CONNECTION);
+	$results = $db->query($query, IMPORTER_CONNECTION);
 
 	if ($results->getNumberOfRows() == 0) {
 		// install default (registered) plugins
@@ -100,11 +100,11 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	
 	
 	// Check for the dublin core record structure
-	$dcId =& $idManager->getId('dc');
+	$dcId = $idManager->getId('dc');
 	$dcExists = FALSE;
-	$recStructs =& $repository->getRecordStructures();
+	$recStructs = $repository->getRecordStructures();
 	while ($recStructs->hasNext()) {
-		$recStruct =& $recStructs->next();
+		$recStruct = $recStructs->next();
 		if ($dcId->isEqual($recStruct->getId())) {
 			$dcExists = true;
 			break;
@@ -113,7 +113,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	
 	if (!$dcExists) {
 		$array = array();
-		$importer =& XMLRepositoryImporter::withObject(
+		$importer = XMLRepositoryImporter::withObject(
 			$array,
 			$repository,
 			MYDIR."/sampledata/SchemaInstallCollection.xml", 
@@ -131,9 +131,9 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	 *********************************************************/
 	$agentMgr = Services::getService("Agent");
 	if (!$agentMgr->isGroup($idManager->getId("edu.middlebury.segue.coursegroups"))) {
-		$groupType =& new Type ("System", "edu.middlebury", "SystemGroups", "Groups for administrators and others with special privileges.");
-		$nullType =& new Type ("System", "edu.middlebury.harmoni", "NULL");
-		$properties =& new HarmoniProperties($nullType);
+		$groupType = new Type ("System", "edu.middlebury", "SystemGroups", "Groups for administrators and others with special privileges.");
+		$nullType = new Type ("System", "edu.middlebury.harmoni", "NULL");
+		$properties = new HarmoniProperties($nullType);
 		$agentMgr->createGroup("Segue Course-Groups", $groupType, "Groupings of Segue Course-Sections.", $properties, $idManager->getId("edu.middlebury.segue.coursegroups"));
 	}
 	

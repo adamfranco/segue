@@ -10,11 +10,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: agent_default.conf.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
+ * @version $Id: agent_default.conf.php,v 1.3 2007/09/04 18:00:42 adamfranco Exp $
  */
  
 // :: Set up the AgentManager ::
-	$configuration =& new ConfigurationProperties;
+	$configuration = new ConfigurationProperties;
 	// default agent Flavor is one that can be editted
 	$agentFlavor="HarmoniEditableAgent";
 	$agentHierarchyId = "edu.middlebury.authorization.hierarchy";

@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: harmoni_default.conf.php,v 1.14 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: harmoni_default.conf.php,v 1.15 2007/09/04 18:00:42 adamfranco Exp $
  */
 
 // :: set up the $harmoni object :: 
@@ -43,5 +43,5 @@
 	
 	$harmoni->setPostProcessAction("window.display", $postProcessIgnoreList);
 	
-	$context =& new OsidContext;
+	$context = new OsidContext;
 	$context->assignContext('harmoni', $harmoni);
