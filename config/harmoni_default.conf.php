@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: harmoni_default.conf.php,v 1.15 2007/09/04 18:00:42 adamfranco Exp $
+ * @version $Id: harmoni_default.conf.php,v 1.16 2007/09/04 20:47:07 adamfranco Exp $
  */
 
 // :: set up the $harmoni object :: 
@@ -24,7 +24,7 @@
 	// inadvertant session fixation problems.
 	$harmoni->config->set("sessionUseOnlyCookies",true);
 	$harmoni->config->set("sessionCookiePath","/");
-	$harmoni->config->set("sessionCookieDomain","middlebury.edu");
+	$harmoni->config->set("sessionCookieDomain","");
 	
 	// tell harmoni to post-process all actions with this specified action.
 	// the action takes the result from previous actions and builds a display
