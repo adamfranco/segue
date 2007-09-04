@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.7 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.8 2007/09/04 21:23:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.7 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.8 2007/09/04 21:23:37 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -407,7 +407,7 @@ class SegueClassicWizard
 		$property = $step->addComponent("status", new WRadioList());
 		$property->addOption('published', _("Published"));
 		$property->addOption('draft', _("Draft"));
-		$property->addOption('date', _("Published durring period _____ to _______"));
+		$property->addOption('date', _("Published during period _____ to _______"));
 		
 // 		if ($component) {
 // 			$val = $component->showDisplayNames();

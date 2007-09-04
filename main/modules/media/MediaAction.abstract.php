@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.7 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.8 2007/09/04 21:23:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.7 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.8 2007/09/04 21:23:37 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -352,7 +352,7 @@ class MediaAction
 		$parts = $record->getPartsByPartStructure($idManager->getId("THUMBNAIL_MIME_TYPE"));
 		$thumbMimeTypePart = $parts->next();
 		
-		if ($thumbnailData) {
+		if (isset($thumbnailData) && $thumbnailData) {
 			$thumbDataPart->updateValue($thumbnailData);
 			$thumbMimeTypePart->updateValue($imageProcessor->getThumbnailFormat());
 		}
