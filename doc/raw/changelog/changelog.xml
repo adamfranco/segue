@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.16 2007/09/05 15:10:34 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.17 2007/09/05 15:23:53 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -21,6 +21,9 @@
 			replaced with
 					\1\2\3\4\5
 		</change>
+		<fix author='adam'>
+			Now prints "untitled" if menu/page title isn't specified.
+		</fix>
 		<fix author='adam'>
 			Plugins: Now properly ends the plugin_manager namespace, fixing a bug in 
 			the add-content wizards.
