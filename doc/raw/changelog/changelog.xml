@@ -5,42 +5,45 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.17 2007/09/05 15:23:53 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.18 2007/09/05 16:29:30 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-alpha" date="The Future">
-		<important author='adam'>
+		<important author='adam' date='2007-09-04'>
 			As of this version, Segue no longer supports PHP4. Please use PHP5 or later.
 		</important>
-		<change author='adam'>
+		<change author='adam' date='2007-09-04'>
 			Removing ampersands for compatability with other PHP5 code.
 			The BBEdit-grep string used for the find and replace was:
 					(function )&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$)
 			replaced with
 					\1\2\3\4\5
 		</change>
-		<fix author='adam'>
+		
+		
+		
+		<fix author='adam' date='2007-09-05'>
 			Now prints "untitled" if menu/page title isn't specified.
 		</fix>
-		<fix author='adam'>
+		<fix author='adam' date='2007-09-05'>
 			Plugins: Now properly ends the plugin_manager namespace, fixing a bug in 
 			the add-content wizards.
 		</fix>
-		<fix author='adam'>
+		<fix author='adam' date='2007-09-05'>
 			UI1: Adding site editing action to UI1
 		</fix>
-		<fix author='adam'>
+		<fix author='adam' date='2007-09-04'>
 			MediaBrowser: Fixed notice that was causing an XML error.
 		</fix>
-		<fix author='adam'>
+		<fix author='adam' date='2007-09-04'>
 			Removed plugin-tests link.
 		</fix>
-		<fix author='adam'>
+		<fix author='adam' date='2007-09-04'>
 			UI2: Max-width guideline now can be cleared.
 		</fix>
-		<fix author='adam'>	
+		<fix author='adam' date='2007-09-04'>	
 			Now using an empty default cookie domain to better work out of the box.
 		</fix>
 		<new author='adam'>

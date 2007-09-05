@@ -25,6 +25,76 @@
 <h2>Version 2.0.0-alpha</h2>
 <h3>The Future</h3>
 <ul>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span> Change:  
+			As of this version, Segue no longer supports PHP4. Please use PHP5 or later.
+		 (<em>2007-09-04 - Adam Franco</em>)</li>
+		<li> Change:  
+			Removing ampersands for compatability with other PHP5 code.
+			The BBEdit-grep string used for the find and replace was:
+					(function )&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$)
+			replaced with
+					\1\2\3\4\5
+		 (<em>2007-09-04 - Adam Franco</em>)</li>
+		
+		
+		
+		<li> Bug Fix:  
+			Now prints "untitled" if menu/page title isn't specified.
+		 (<em>2007-09-05 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			Plugins: Now properly ends the plugin_manager namespace, fixing a bug in 
+			the add-content wizards.
+		 (<em>2007-09-05 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			UI1: Adding site editing action to UI1
+		 (<em>2007-09-05 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			MediaBrowser: Fixed notice that was causing an XML error.
+		 (<em>2007-09-04 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			Removed plugin-tests link.
+		 (<em>2007-09-04 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			UI2: Max-width guideline now can be cleared.
+		 (<em>2007-09-04 - Adam Franco</em>)</li>
+		<li> Bug Fix:  	
+			Now using an empty default cookie domain to better work out of the box.
+		 (<em>2007-09-04 - Adam Franco</em>)</li>
+		<li> New feature:  
+			Comments: New comment/discussion library.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Plugins: Now can supply custom authorization functions to the plugin
+			to enable usage outside of the preconcieved authorization system.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Plugins now return a description and icon for display to the user.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Added breadcrumbs to the site view.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Ajax updates now respect normal/extended state.
+		 (<em>Adam Franco</em>)</li>
+		<li> Change:  
+			Detail mode now forces plugin titles to be shown.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Plugins can now specify a separate/different 'extended content'.
+		 (<em>Adam Franco</em>)</li>
+		<li> Change:  
+			Creating sub-menus now adds non-nested menus when the parent menu is horizontal.
+		 (<em>Adam Franco</em>)</li>
+		<li> Change:  
+			DOM cache is now cleared when moving/adding/removing site nodes.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Classic-mode site-building user interface added.
+		 (<em>Adam Franco</em>)</li>
+		<li> New feature:  
+			Site-building user interface added.
+		 (<em>Adam Franco</em>)</li>
 		<li> New feature:  
 			Plug-in system added.
 		 (<em>Adam Franco, Christopher Shubert</em>)</li>

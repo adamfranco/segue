@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.11 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.12 2007/09/05 16:29:30 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.11 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.12 2007/09/05 16:29:30 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -134,7 +134,10 @@ class AssetFlowOrganizerSiteComponent
 			$oldCellId = $this->getId()."_cell:".$currentIndex;
 		}
 		
-		$this->moveBefore($currentIndex, $cellIndex);
+		if ($currentIndex >= $cellIndex)
+			$this->moveBefore($currentIndex, $cellIndex);
+		else
+			$this->moveBefore($currentIndex, $cellIndex + 1);
 		
 		return $oldCellId;
 	}
@@ -152,11 +155,12 @@ class AssetFlowOrganizerSiteComponent
 		// child DOMIT_Elements in an array
 		$children = $this->_element->childNodes;
 
-		$temp = $children[$cellOneIndex];
+		$temp1 = $children[$cellOneIndex];
+		$temp2 = $children[$cellTwoIndex];
 
-		$this->_element->removeChild($children[$cellOneIndex]);
+		$this->_element->removeChild($temp1);
 		
-		$this->_element->insertBefore($temp, $children[$cellTwoIndex]);
+		$this->_element->insertBefore($temp1, $temp2);
 		
 		$this->_saveXml();
 	}
