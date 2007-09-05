@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.19 2007/09/04 17:39:23 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.20 2007/09/05 22:13:25 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.19 2007/09/04 17:39:23 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.20 2007/09/05 22:13:25 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 // 	extends SeguePluginsAjaxPlugin
@@ -353,7 +353,7 @@ class EduMiddleburyTextBlockPlugin
  		$wrapper = new WComponentCollection;
  		ob_start();
  		
- 		$property = $wrapper->addComponent('content', WTextArea::withRowsAndColumns(20, 80));
+ 		$property = $wrapper->addComponent('content', HtmlTextArea::withRowsAndColumns(20, 80));
  		$property->setValue($this->getContent());
  		
  		$property = $wrapper->addComponent('abstractLength', new WTextField);
