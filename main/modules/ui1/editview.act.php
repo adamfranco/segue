@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.6 2007/09/05 14:09:35 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.6 2007/09/05 14:09:35 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -73,7 +73,9 @@ class editviewAction
 			$harmoni = Harmoni::instance();
 			
 			print "\n<a href='".$harmoni->request->quickURL("ui1", "editSite", 
-				array("node" => $siteId->getIdString()))."'>";
+				array("node" => $siteId->getIdString(),
+				"returnNode" => RequestContext::value("node"),
+				"returnAction" => $harmoni->request->getRequestedAction()))."'>";
 			print "\n\t<input type='button' value='"._("Edit Site Settings")."'/>";
 			print "\n</a>";
 			

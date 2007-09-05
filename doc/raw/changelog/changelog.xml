@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.14 2007/09/04 21:44:10 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.15 2007/09/05 14:09:35 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -21,6 +21,9 @@
 			replaced with
 					\1\2\3\4\5
 		</change>
+		<fix author='adam'>
+			Adding site editing action to UI1
+		</fix>
 		<fix author='adam'>
 			MediaBrowser: Fixed notice that was causing an XML error.
 		</fix>
