@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.15 2007/09/05 14:09:35 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.16 2007/09/05 15:10:34 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -22,7 +22,11 @@
 					\1\2\3\4\5
 		</change>
 		<fix author='adam'>
-			Adding site editing action to UI1
+			Plugins: Now properly ends the plugin_manager namespace, fixing a bug in 
+			the add-content wizards.
+		</fix>
+		<fix author='adam'>
+			UI1: Adding site editing action to UI1
 		</fix>
 		<fix author='adam'>
 			MediaBrowser: Fixed notice that was causing an XML error.
