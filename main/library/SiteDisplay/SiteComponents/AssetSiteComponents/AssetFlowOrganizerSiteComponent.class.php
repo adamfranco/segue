@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.12 2007/09/05 16:29:30 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.13 2007/09/06 22:02:16 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.12 2007/09/05 16:29:30 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.13 2007/09/06 22:02:16 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -134,7 +134,9 @@ class AssetFlowOrganizerSiteComponent
 			$oldCellId = $this->getId()."_cell:".$currentIndex;
 		}
 		
-		if ($currentIndex >= $cellIndex)
+		if ($currentIndex == $cellIndex) {
+			// do nothing
+		} else if ($currentIndex > $cellIndex)
 			$this->moveBefore($currentIndex, $cellIndex);
 		else
 			$this->moveBefore($currentIndex, $cellIndex + 1);
@@ -156,7 +158,10 @@ class AssetFlowOrganizerSiteComponent
 		$children = $this->_element->childNodes;
 
 		$temp1 = $children[$cellOneIndex];
-		$temp2 = $children[$cellTwoIndex];
+		if (isset($children[$cellTwoIndex]))
+			$temp2 = $children[$cellTwoIndex];
+		else
+			$temp2 = null;
 
 		$this->_element->removeChild($temp1);
 		

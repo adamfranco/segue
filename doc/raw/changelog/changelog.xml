@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.19 2007/09/05 16:31:55 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.20 2007/09/06 22:02:16 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -22,6 +22,12 @@
 					\1\2\3\4\5
 		</change>
 		
+		<fix author='adam' date='2007-09-06'>
+			Menus can now be moved without causing errors.
+		</fix>
+		<fix author='adam' date='2007-09-06'>
+			Content can now be appended in arrange mode.
+		</fix>
 		<fix author='adam' date='2007-09-05'>
 			Reordering now works consistantly due to a change in the 
 			AssetFlowOrganizerSiteComponent->putSubcomponentInCell() algorithm.
