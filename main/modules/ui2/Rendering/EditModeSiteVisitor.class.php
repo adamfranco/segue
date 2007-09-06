@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.10 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.11 2007/09/06 21:07:11 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.10 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.11 2007/09/06 21:07:11 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -347,7 +347,7 @@ END;
 			print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
 		//print "\n\t<div class='block2Content' style='text-align: center;'";
 		print "\n\t<div style='text-align: center;'";
-		print "onclick='this.style.display=\"none\"; this.nextSibling.nextSibling.style.display=\"block\";'";
+		print " onclick='this.style.display=\"none\"; this.nextSibling.nextSibling.style.display=\"block\";'";
 		print ">";
 		print "\n\t\t"._("Append new...");
 		print "\n\t</div>";
@@ -442,7 +442,7 @@ END;
 		print "\n\t\t</td>";
 		print "\n\t\t<td style='text-align: right;'>";
 		print "\n\t\t\t\t<span class='controls_link'"
-			."style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
+			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
 			.">";
 		print "\n\t\t\t"._("Show Controls");
 		print "\n\t\t\t</span>";
