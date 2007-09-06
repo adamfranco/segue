@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.20 2007/09/05 22:13:25 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.21 2007/09/06 17:36:04 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.20 2007/09/05 22:13:25 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.21 2007/09/06 17:36:04 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 // 	extends SeguePluginsAjaxPlugin
@@ -351,10 +351,16 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function getWizardComponent () {
  		$wrapper = new WComponentCollection;
+ 		$harmoni = Harmoni::instance();
  		ob_start();
  		
  		$property = $wrapper->addComponent('content', HtmlTextArea::withRowsAndColumns(20, 80));
  		$property->setValue($this->getContent());
+ 		$property->chooseEditor('fck');
+ 		
+ 		$fckTextArea = $property->getEditor('fck');
+ 		$fckTextArea->enableFileBrowsingAtUrl(
+ 			$harmoni->request->quickURL('fckeditor', 'filebrowser', array('node' => $this->getId())));
  		
  		$property = $wrapper->addComponent('abstractLength', new WTextField);
  		$property->setSize(3);
