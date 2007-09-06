@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.3 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.4 2007/09/06 21:47:59 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.3 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.4 2007/09/06 21:47:59 adamfranco Exp $
  */
 class moveComponentAction 
 	extends EditModeSiteAction
@@ -59,19 +59,22 @@ class moveComponentAction
 			
 		}
 		
+// 		printpre("targetId: ".$targetId);
 // 		printpre("targetOrgId: ".$targetOrgId);
 // 		printpre("targetCell: ".$targetCell);
 // 		printpre("componentId: ".RequestContext::value('component'));
+		
+		$filledTargetIds = $director->getFilledTargetIds($targetOrgId);
 		
 		$newOrganizer = $director->getSiteComponentById($targetOrgId);
 		$oldCellId = $newOrganizer->putSubcomponentInCell($component, $targetCell);
 		
 // 		printpre("oldCellId: ".$oldCellId);
-		
+
 		// If the targetCell was a target for any menus, change their targets
 		// to the cell just vacated by the component we swapped with
-		if (in_array($targetId, $director->getFilledTargetIds($targetOrgId))) {
-			$menuIds = array_keys($director->getFilledTargetIds($targetOrgId), $targetId);
+		if (in_array($targetId, $filledTargetIds)) {
+			$menuIds = array_keys($filledTargetIds, $targetId);
 			foreach ($menuIds as $menuId) {
 				$menuOrganizer = $director->getSiteComponentById($menuId);
 				printpre(get_class($menuOrganizer));
