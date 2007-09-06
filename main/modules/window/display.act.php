@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.15 2007/09/04 15:07:45 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.16 2007/09/06 20:15:16 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.15 2007/09/04 15:07:45 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.16 2007/09/06 20:15:16 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.15 2007/09/04 15:07:45 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.16 2007/09/06 20:15:16 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -240,6 +240,50 @@ class displayAction
 		$loginForm = new Component(ob_get_clean(), BLANK, 2);
 		
 		return $loginForm;
+	}
+	
+	/**
+	 * Get the form for switching to a different UI mode.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 9/6/07
+	 */
+	public function getUiSwitchForm ($targetAction = 'view') {
+		$harmoni = Harmoni::instance();
+		$harmoni->request->passthrough('node');
+		$harmoni->request->passthrough('site');
+		ob_start();
+		print "\n\t<form action='".$harmoni->request->quickURL('XXXMODULEXXX','XXXACTIONXXX')."' method='post' ";
+		print "style='display: inline;'>";
+		$harmoni->request->forget('node');
+		$harmoni->request->forget('site');
+		
+		$options = array ('ui1' => _("Classic Mode"), 'ui2' => _("New Mode"));
+		
+		print "\n\t\t<select style='font-size: 10px' name='".RequestContext::name('user_interface')."' ";
+		
+		print "onchange=\"";
+		print "var module = this.value; ";
+		print "var action = '".$targetAction."'; ";
+		print "var url = this.form.action; ";
+// 		print "alert(url); ";
+		print "url = url.replace(/XXXMODULEXXX/, module); ";
+		print "url = url.replace(/XXXACTIONXXX/, action); ";
+		print "url = url.urlDecodeAmpersands(); ";
+// 		print "alert(url); ";
+		print "window.location = url; ";
+		print "return false;";
+		
+		print "\">";
+		foreach ($options as $key => $val) {
+			print "\n\t\t\t<option value='$key'";
+			print (($harmoni->request->getRequestedModule() == $key)?" selected='selected'":"");
+			print ">$val</option>";
+		}
+		print "\n\t\t</select>";
+		print "\n\t</form>";
+		return ob_get_clean();
 	}
 }
 

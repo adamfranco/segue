@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.12 2007/09/06 20:15:15 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.11 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.12 2007/09/06 20:15:15 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -282,6 +282,7 @@ class viewAction
 		$idManager = Services::getService("Id");
 		
 		ob_start();
+		
 		if ($authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.modify"),
 				$idManager->getId($this->rootSiteComponent->getId())))
@@ -294,6 +295,9 @@ class viewAction
 					'node' => $this->getNodeId()));
 			print "' alt='"._("Go to Edit-Mode")."'>";
 			print _("edit")."</a>";
+			
+			print " | ".self::getUiSwitchForm();
+			
 			print "</div>";
 		}
 	

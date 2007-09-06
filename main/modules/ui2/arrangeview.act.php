@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.5 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.6 2007/09/06 20:15:15 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.5 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.6 2007/09/06 20:15:15 adamfranco Exp $
  */
 class arrangeviewAction
 	extends viewAction {
@@ -66,6 +66,7 @@ class arrangeviewAction
 		print _("edit")."</a>";
 		
 		print " | "._("arrange");
+		print " | ".self::getUiSwitchForm('editview');
 		print "</div>";
 				
 		$ret = new Component(ob_get_clean(), BLANK, 2);

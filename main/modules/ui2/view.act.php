@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.12 2007/09/04 16:10:32 achapin Exp $
+ * @version $Id: view.act.php,v 1.13 2007/09/06 20:15:16 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.12 2007/09/04 16:10:32 achapin Exp $
+ * @version $Id: view.act.php,v 1.13 2007/09/06 20:15:16 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -288,6 +288,7 @@ class viewAction
 				$idManager->getId($this->rootSiteComponent->getId())))
 		{
 			print "<div class='commands'>";
+			
 			print _("view");
 			
 			print " | <a href='";
@@ -301,6 +302,8 @@ class viewAction
 					'node' => $this->getNodeId()));
 			print "' alt='"._("Go to Arrange-Mode")."'>";
 			print _("arrange")."</a>";
+			
+			print " | ".self::getUiSwitchForm();
 			print "</div>";
 		}
 	

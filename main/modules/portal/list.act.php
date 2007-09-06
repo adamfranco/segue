@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.11 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.12 2007/09/06 20:15:13 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.11 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.12 2007/09/06 20:15:13 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -103,14 +103,15 @@ class listAction
 		// UI selection
 		print "\n\t<form action='".$harmoni->request->quickURL()."' method='post' style='float: right;'>";
 		$options = array ('ui1' => _("Classic Mode"), 'ui2' => _("New Mode"));
-		print "\n\t\t<select style='font-size: 10px' name='".RequestContext::name('user_interface')."'>";
+		print "\n\t\t<select style='font-size: 10px' name='".RequestContext::name('user_interface')."'";
+		print " onchange='this.form.submit();'";
+		print ">";
 		foreach ($options as $key => $val) {
 			print "\n\t\t\t<option value='$key'";
 			print (($this->getUiModule() == $key)?" selected='selected'":"");
 			print ">$val</option>";
 		}
 		print "\n\t\t</select>";
-		print "\n\t\t<input class='button small' type='submit' value='"._('Set UI')."'/>";
 		print "\n\t</form>";
 		
 		// Create Site Button

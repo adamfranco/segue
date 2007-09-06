@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.6 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.7 2007/09/06 20:15:16 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.6 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.7 2007/09/06 20:15:16 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -107,6 +107,7 @@ class editviewAction
 				'node' => RequestContext::value("node")));
 		print "' title='"._("Go to Arrange-Mode")."'>";
 		print _("arrange")."</a>";
+		print " | ".self::getUiSwitchForm('editview');
 		print "</div>";
 				
 		$ret = new Component(ob_get_clean(), BLANK, 2);
