@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.4 2007/09/06 21:47:59 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.5 2007/09/06 21:48:12 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.4 2007/09/06 21:47:59 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.5 2007/09/06 21:48:12 adamfranco Exp $
  */
 class moveComponentAction 
 	extends EditModeSiteAction
@@ -77,7 +77,7 @@ class moveComponentAction
 			$menuIds = array_keys($filledTargetIds, $targetId);
 			foreach ($menuIds as $menuId) {
 				$menuOrganizer = $director->getSiteComponentById($menuId);
-				printpre(get_class($menuOrganizer));
+// 				printpre(get_class($menuOrganizer));
 				
 				$menuOrganizer->updateTargetId($oldCellId);
 			}
