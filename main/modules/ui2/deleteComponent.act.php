@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.8 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.9 2007/09/07 20:41:44 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.8 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.9 2007/09/07 20:41:44 adamfranco Exp $
  */
 class deleteComponentAction 
 	extends EditModeSiteAction
@@ -54,6 +54,7 @@ class deleteComponentAction
 				
 			}
 		}
+		
 		$director->deleteSiteComponent($component);
 	}
 	

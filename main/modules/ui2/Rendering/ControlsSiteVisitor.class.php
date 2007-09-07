@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.8 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/09/07 20:41:44 adamfranco Exp $
  */ 
  
  require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.8 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/09/07 20:41:44 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	implements SiteVisitor
@@ -113,7 +113,7 @@ class ControlsSiteVisitor
 		{
 			print 	"if (confirm(\"".$message."\")) {";
 			print 		" var url = \"".$url."\"; ";
-			print 		"window.location = url.urlDecodeAmpersands(); ";
+			print 		"window.location = url.urlDecodeAmpersands(); return false;";
 			print 	"} ";
 		} else {
 			print "alert(\""._('You are not authorized to delete this item.')."\"); return false;";
