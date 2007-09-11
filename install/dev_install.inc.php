@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.20 2007/09/04 17:45:46 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.21 2007/09/11 19:10:45 adamfranco Exp $
  */
 
 /*********************************************************
@@ -41,27 +41,21 @@ if (!isset($_SESSION['table_setup_complete'])) {
 		/*********************************************************
 		 * Create the needed database tables
 		 *********************************************************/
-		$sqlFiles = array (
-			HARMONI_BASE."/SQL/Agent/MySQL_Agent.sql",
-			HARMONI_BASE."/SQL/AuthN/MySQL_Example_Authentication.sql",
-			HARMONI_BASE."/SQL/AuthN/MySQL_AgentTokenMapping.sql",
-			HARMONI_BASE."/SQL/AuthZ/MySQL_AuthZ.sql",
-			HARMONI_BASE."/SQL/dataManager/MySQL_dataManager.sql",
-			HARMONI_BASE."/SQL/DigitalRepository/MySQL_DigitalRepository.sql",
-			HARMONI_BASE."/SQL/hierarchy/MySQL_hierarchy.sql",
-			HARMONI_BASE."/SQL/Id/MySQL_Id.sql",
-			HARMONI_BASE."/SQL/logging/MySQL_Logging.sql",
-			HARMONI_BASE."/SQL/sets/MySQL_sets.sql",
-			HARMONI_BASE."/SQL/shared/MySQL_shared.sql",
-			HARMONI_BASE."/SQL/CourseManagement/MySQL_CourseManagement.sql",
-			HARMONI_BASE."/SQL/Grading/MySQL_Grading.sql",
-			HARMONI_BASE."/SQL/Scheduling/MySQL_Scheduling.sql",
-			MYDIR."/main/SQL/PluginManager/MySQL_PluginManager.sql",
-			MYDIR."/main/SQL/MySQL_Slots.sql",
-		);
-		
-		foreach ($sqlFiles as $file) {
-			SQLUtils::runSQLfile($file, $dbID);
+		switch ($dbHandler->getDatabaseType($dbID)) {
+			case MYSQL:
+				SQLUtils::runSQLdir(HARMONI_BASE."/SQL/MySQL", $dbID);
+				SQLUtils::runSQLdir(MYDIR."/main/SQL/MySQL", $dbID);
+				break;
+			case POSTGRESQL:
+				SQLUtils::runSQLdir(HARMONI_BASE."/SQL/PostgreSQL", $dbID);
+				SQLUtils::runSQLdir(MYDIR."/main/SQL/PostgreSQL", $dbID);
+				break;
+			case ORACLE:
+				SQLUtils::runSQLdir(HARMONI_BASE."/SQL/PostgreSQL", $dbID);
+				SQLUtils::runSQLdir(MYDIR."/main/SQL/PostgreSQL", $dbID);
+				break;
+			default:
+				throw new Exception("Database schemas are not defined for specified database type.");
 		}
 		
 		

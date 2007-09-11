@@ -4,7 +4,7 @@
 -- @copyright Copyright &copy; 2005, Middlebury College
 -- @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 --
--- @version $Id: MySQL_PluginManager.sql,v 1.2 2007/09/11 18:00:02 adamfranco Exp $
+-- @version $Id: PluginManager.sql,v 1.1 2007/09/11 19:10:46 adamfranco Exp $
 -- */
 -- --------------------------------------------------------
 
