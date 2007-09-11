@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.21 2007/09/07 20:41:43 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.22 2007/09/11 18:00:01 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -21,6 +21,12 @@
 			replaced with
 					\1\2\3\4\5
 		</change>
+		<important author='adam' date='2007-09-11'>
+			In order to support PostgreSQL without refactoring of the Database Handler,
+			column names have been all made lowercase. To update a currently populated
+			harmoni database to the new names, run the following updater script:
+			harmoni/core/DBHandler/db_updater.php
+		</important>
 		
 		<fix author='adam' date='2007-09-07'>
 			Nav Items can now be deleted without causing errors.

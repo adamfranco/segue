@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.24 2007/09/05 15:10:36 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.25 2007/09/11 18:00:04 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.24 2007/09/05 15:10:36 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.25 2007/09/11 18:00:04 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -608,8 +608,8 @@ class PluginManager {
 							$results->free();
 							$query3 = new InsertQuery();
 							$query3->setTable("plugin_manager");
-							$query3->setColumns(array("FK_plugin_type",
-								"FK_schema"));
+							$query3->setColumns(array("fk_plugin_type",
+								"fk_schema"));
 							$query3->addRowOfValues(array (
 								"'".addslashes($typeId)."'",
 								"'".addslashes($pSId->getIdString())."'"));

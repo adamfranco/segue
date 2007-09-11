@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.35 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.36 2007/09/11 18:00:04 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.35 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.36 2007/09/11 18:00:04 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -1511,7 +1511,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 			$query = new SelectQuery();
 			$query->addTable("plugin_manager");
 			$query->addTable("plugin_type", INNER_JOIN);
-			$query->addWhere("plugin_type.type_id = plugin_manager.FK_plugin_type");
+			$query->addWhere("plugin_type.type_id = plugin_manager.fk_plugin_type");
 			$query->addWhere("plugin_type.type_domain = '".
 				addslashes($type->getDomain())."'");
 			$query->addWhere("plugin_type.type_authority = '".
@@ -1533,10 +1533,10 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 				$result = $results->next();
 				
 				$rs = $sites_rep->getRecordStructure($id->getId(
-					$result['plugin_manager.FK_schema']));
+					$result['plugin_manager.fk_schema']));
 				
 				$structures[$rs->getDisplayName()] =
-					$result['plugin_manager.FK_schema'];
+					$result['plugin_manager.fk_schema'];
 			}
 			$this->_structures = $structures;
 		}

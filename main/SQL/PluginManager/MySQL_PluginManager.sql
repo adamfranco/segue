@@ -4,7 +4,7 @@
 -- @copyright Copyright &copy; 2005, Middlebury College
 -- @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 --
--- @version $Id: MySQL_PluginManager.sql,v 1.1 2006/03/13 14:53:20 cws-midd Exp $
+-- @version $Id: MySQL_PluginManager.sql,v 1.2 2007/09/11 18:00:02 adamfranco Exp $
 -- */
 -- --------------------------------------------------------
 
@@ -13,9 +13,9 @@
 -- 
 
 CREATE TABLE plugin_manager (
-  FK_plugin_type int(10) unsigned NOT NULL default '0',
-  FK_schema varchar(255) NOT NULL default '0',
-  PRIMARY KEY  (FK_plugin_type,FK_schema)
+  fk_plugin_type int(10) unsigned NOT NULL default '0',
+  fk_schema varchar(255) NOT NULL default '0',
+  PRIMARY KEY  (fk_plugin_type,fk_schema)
 ) 
 CHARACTER SET utf8
 TYPE=InnoDB;
