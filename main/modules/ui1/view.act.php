@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.12 2007/09/06 20:15:15 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.13 2007/09/12 22:54:34 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.12 2007/09/06 20:15:15 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.13 2007/09/12 22:54:34 achapin Exp $
  */
 class viewAction
 	extends displayAction {
@@ -113,13 +113,17 @@ class viewAction
 		$xLayout = new XLayout();
 		$yLayout = new YLayout();
 		
+		$allWrapper = new Container($yLayout, BLANK, 1);
 		
 		$mainScreen = new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
+		
+		$allWrapper->add($mainScreen,
+			$rootSiteComponent->getWidth(), null, CENTER, TOP);
 
 		// :: login, links and commands
 		$this->headRow = $mainScreen->add(
 			new Container($xLayout, BLOCK, 1), 
-			"96%", null, CENTER, TOP);
+			"100%", null, CENTER, TOP);
 			
 		$this->leftHeadColumn = $this->headRow->add(
 			$this->getSegueLinksComponent(), 
@@ -181,7 +185,7 @@ class viewAction
 		$footer->add(new UnstyledBlock($footerText), "50%", null, RIGHT, BOTTOM);
 		
 		
-		return $mainScreen;
+		return $allWrapper;
 	}
 
 	/**
