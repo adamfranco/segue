@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.7 2007/09/06 20:15:15 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.8 2007/09/12 23:12:24 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.7 2007/09/06 20:15:15 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.8 2007/09/12 23:12:24 achapin Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -69,6 +69,10 @@ class editviewAction
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteId))
 		{
+		
+			$rootSiteComponent = $this->_director->getRootSiteComponent($siteId);
+			$this->rootSiteComponent = $rootSiteComponent;
+			
 			ob_start();
 			$harmoni = Harmoni::instance();
 			
@@ -79,7 +83,7 @@ class editviewAction
 			print "\n\t<input type='button' value='"._("Edit Site Settings")."'/>";
 			print "\n</a>";
 			
-			$mainScreen->add(new UnstyledBlock(ob_get_clean()), null, null, RIGHT, BOTTOM);
+			$mainScreen->add(new UnstyledBlock(ob_get_clean()), $rootSiteComponent->getWidth(), null, CENTER, BOTTOM);
 		}
 		
 		return $mainScreen;
