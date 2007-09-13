@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.11 2007/09/06 21:07:11 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.12 2007/09/13 18:11:17 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.11 2007/09/06 21:07:11 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.12 2007/09/13 18:11:17 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -227,10 +227,12 @@ END;
 		$childGuiComponents = array();
 		for ($i = 0; $i < $numCells; $i++) {
 			$child = $organizer->getSubcomponentForCell($i);
-			$childGuiComponent = $child->acceptVisitor($this);
-			// Filter out false entries returned due to lack of authorization
-			if ($childGuiComponent)
-				$childGuiComponents[] = $childGuiComponent;
+			if ($child) {
+				$childGuiComponent = $child->acceptVisitor($this);
+				// Filter out false entries returned due to lack of authorization
+				if ($childGuiComponent)
+					$childGuiComponents[] = $childGuiComponent;
+			}
 		}
 		
 		// Add the "Append" form to the organizer
