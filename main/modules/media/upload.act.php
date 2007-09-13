@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.6 2007/09/13 19:06:29 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.6 2007/09/13 19:06:29 adamfranco Exp $
  */
 class uploadAction
 	extends MediaAction
@@ -65,10 +65,14 @@ class uploadAction
 		if (!$_FILES['media_file']['size'])
 			$this->error('Uploaded file is empty');
 		
-		ob_start();
-		$newFileAsset = $this->createFileAsset();
-		if ($error = ob_get_clean())
-			$this->error($error);
+		try {
+			ob_start();
+			$newFileAsset = $this->createFileAsset();
+			if ($error = ob_get_clean())
+				$this->error($error);
+		} catch (Exception $e) {
+			$this->error($e->getMessage());
+		}		
 		
 		$this->start();
 		print $this->getAssetXml($newFileAsset);
