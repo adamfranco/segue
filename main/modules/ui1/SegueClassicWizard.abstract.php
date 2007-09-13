@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.9 2007/09/05 14:09:35 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.10 2007/09/13 01:41:37 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.9 2007/09/05 14:09:35 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.10 2007/09/13 01:41:37 achapin Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -373,6 +373,8 @@ class SegueClassicWizard
 		}
 		print "\n</p>";
 		
+		$this->printWidth($component, $step);
+		
 		$step->setContent(ob_get_clean());
 		
 		return $step;
@@ -390,6 +392,7 @@ class SegueClassicWizard
 		$component = $this->getSiteComponent();
 		$component->updateShowDisplayNames($values['show_titles']);
 		$component->updateCommentsEnabled($values['enable_comments']);
+		$this->saveWidth($component, $values);
 		return true;
 	}
 	
@@ -453,6 +456,42 @@ class SegueClassicWizard
 	function saveStatusStep ($values) {
 		return true;
 	}
+	
+	/**
+	 * Print width controls
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 4/17/06
+	 */
+	function printWidth ( $siteComponent, $step ) {
+		$property = $step->addComponent('width', new WTextField);
+		$property->setValue($siteComponent->getWidth());
+		$property->setSize(6);
+		$property->setErrorRule(new WECRegex("^([0-9]+(px|%))?$"));
+		$property->setErrorText(_("Must be blank or in either pixel or percent form; e.g. '150px', 200px', '100%', '50%', etc."));
+		
+		print "<div style='font-weight: bold;'>"._('Maximum Width Guideline: ');
+		print "[[width]]";
+		print "</div>";
+		print "<div style='font-size: smaller;'>"
+			._("If desired, enter a width in either pixel or percent form; e.g. '150px', 200px', '100%', '50%', etc.<br/><strong>Note:</strong> This width is a guideline and is not guarenteed to be enforced. Content will fill the page, using this guideline where possible. Content inside of this container may stretch it beyond the specified width.")."</div>";		
+	}
+	
+	/**
+	 * Save the width results
+	 * 
+	 * @param object SiteComponent $component
+	 * @param array $values
+	 * @return boolean
+	 * @access public
+	 * @since 5/15/07
+	 */
+	function saveWidth ( $component, $values ) {
+		$component->updateWidth($values['width']);
+		return true;
+	}	
 }
 
 ?>
