@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.3 2007/08/23 13:56:37 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.4 2007/09/13 16:09:42 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/CourseSlot.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.3 2007/08/23 13:56:37 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.4 2007/09/13 16:09:42 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -304,7 +304,7 @@ class SlotManager {
 			if ($result->field('shortname') !== '') {
 				$slotType = $result->field('type');
 				if (!isset($this->slotTypes[$slotType]))
-					throw new Exception ("Unknown SlotType, '$slotType'.");
+					throw new Exception ("Unknown SlotType, '$slotType'. Should be one of (".implode(", ", array_keys($this->slotTypes)).").");
 				
 				$slotClass = $this->slotTypes[$slotType];
 				$slot = new $slotClass ($result->field('shortname'), true);

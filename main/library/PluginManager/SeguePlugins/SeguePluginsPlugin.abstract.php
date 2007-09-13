@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.36 2007/09/11 18:00:04 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.37 2007/09/13 16:09:41 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.36 2007/09/11 18:00:04 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.37 2007/09/13 16:09:41 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -1510,8 +1510,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 			
 			$query = new SelectQuery();
 			$query->addTable("plugin_manager");
-			$query->addTable("plugin_type", INNER_JOIN);
-			$query->addWhere("plugin_type.type_id = plugin_manager.fk_plugin_type");
+			$query->addTable("plugin_type", INNER_JOIN, "plugin_type.type_id = plugin_manager.fk_plugin_type");
 			$query->addWhere("plugin_type.type_domain = '".
 				addslashes($type->getDomain())."'");
 			$query->addWhere("plugin_type.type_authority = '".

@@ -18,8 +18,8 @@
 
 CREATE TABLE segue_slot (
   shortname varchar(50)NOT NULL,
-  site_id varchar(50) NOT NULL,
-  "type" char(10) NOT NULL default 'personal',
+  site_id varchar(50) default NULL,
+  "type" varchar(10) NOT NULL default 'personal',
   PRIMARY KEY  (shortname)
 );
 
@@ -33,7 +33,7 @@ CREATE INDEX segue_slot_site_id_index ON segue_slot (site_id);
 CREATE TABLE segue_slot_owner (
   shortname varchar(50) NOT NULL,
   owner_id varchar(75) NOT NULL,
-  removed boolean default '0'
+  removed smallint default '0'
 );
 
 ALTER TABLE ONLY segue_slot_owner

@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.14 2007/09/04 18:00:43 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.15 2007/09/13 16:09:41 adamfranco Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
@@ -78,6 +78,9 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	// check if Install default plugins
 	$db = Services::getService("DBHandler");
 	$pm = Services::getService("Plugs");
+	
+	$db->beginTransaction(IMPORTER_CONNECTION);
+	
 	$query = new SelectQuery();
 	$query->addTable("plugin_type");
 	$query->addColumn("*");
@@ -97,6 +100,8 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	}
 	
 	$results->free();
+	
+	$db->beginTransaction(IMPORTER_CONNECTION);
 	
 	
 	// Check for the dublin core record structure

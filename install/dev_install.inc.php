@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.22 2007/09/13 03:26:27 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.23 2007/09/13 16:09:41 adamfranco Exp $
  */
 
 /*********************************************************
@@ -38,6 +38,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 		/*********************************************************
 		 * Create the needed database tables
 		 *********************************************************/
+		$dbHandler->beginTransaction($dbID);
 		switch ($dbHandler->getDatabaseType($dbID)) {
 			case MYSQL:
 				SQLUtils::runSQLdir(HARMONI_BASE."/SQL/MySQL", $dbID);
@@ -54,8 +55,9 @@ if (!isset($_SESSION['table_setup_complete'])) {
 			default:
 				throw new Exception("Database schemas are not defined for specified database type.");
 		}
-		
-		
+// 		$dbHandler->commitTransaction($dbID);
+// 		
+// 		$dbHandler->beginTransaction($dbID);
 		/*********************************************************
 		 * Script for setting up the Authorization Hierarchy
 		 *********************************************************/
@@ -319,6 +321,8 @@ if (!isset($_SESSION['table_setup_complete'])) {
 	
 // 		print "\n<br> ...done";
 		$_SESSION['table_setup_complete'] = TRUE;
+		
+		$dbHandler->commitTransaction($dbID);
 		
 		RequestContext::locationHeader($_SERVER['REQUEST_URI']);
 	}

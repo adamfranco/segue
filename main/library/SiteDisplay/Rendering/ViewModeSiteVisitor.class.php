@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.42 2007/09/05 15:23:53 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.43 2007/09/13 16:09:42 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.42 2007/09/05 15:23:53 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.43 2007/09/13 16:09:42 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -411,10 +411,12 @@ class ViewModeSiteVisitor
 		$childGuiComponents = array();
 		for ($i = 0; $i < $numCells; $i++) {
 			$child = $organizer->getSubcomponentForCell($i);
-			$childGuiComponent = $child->acceptVisitor($this);
-			// Filter out false entries returned due to lack of authorization
-			if ($childGuiComponent)
-				$childGuiComponents[] = $childGuiComponent;
+			if ($child) {
+				$childGuiComponent = $child->acceptVisitor($this);
+				// Filter out false entries returned due to lack of authorization
+				if ($childGuiComponent)
+					$childGuiComponents[] = $childGuiComponent;
+			}
 		}
 		
 		$resultPrinter = new ArrayResultPrinter($childGuiComponents,
@@ -457,16 +459,18 @@ class ViewModeSiteVisitor
 		$numCells = $organizer->getTotalNumberOfCells();
 		for ($i = 0; $i < $numCells; $i++) {
 			$child = $organizer->getSubcomponentForCell($i);
-			$childGuiComponents = $child->acceptVisitor($this, true);
-			if ($childGuiComponents === false || (is_array($childGuiComponents) && !count($childGuiComponents))) {
-				// do nothing
-			} else if (is_array($childGuiComponents)) {
-				$hasChildComponents = true;
-				foreach (array_keys($childGuiComponents) as $key)
-					$guiContainer->add($childGuiComponents[$key]);
-			} else {
-				$hasChildComponents = true;
-				$guiContainer->add($childGuiComponents);
+			if ($child) {
+				$childGuiComponents = $child->acceptVisitor($this, true);
+				if ($childGuiComponents === false || (is_array($childGuiComponents) && !count($childGuiComponents))) {
+					// do nothing
+				} else if (is_array($childGuiComponents)) {
+					$hasChildComponents = true;
+					foreach (array_keys($childGuiComponents) as $key)
+						$guiContainer->add($childGuiComponents[$key]);
+				} else {
+					$hasChildComponents = true;
+					$guiContainer->add($childGuiComponents);
+				}
 			}
 		}
 // 		if ($hasChildComponents)

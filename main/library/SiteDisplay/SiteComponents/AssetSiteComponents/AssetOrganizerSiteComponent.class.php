@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.7 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.8 2007/09/13 16:09:42 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponen
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.7 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.8 2007/09/13 16:09:42 adamfranco Exp $
  */
 abstract class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -309,19 +309,27 @@ abstract class AssetOrganizerSiteComponent
 			$child = $this->_element->firstChild;
 			while ($child) {
 				if ($child->nodeName == 'cell') {
-					if ($child->firstChild) {
-// 						printpre($child->firstChild->nodeName);
+					// Iterate through the nodes in the cell untill we find an 
+					// an element (and not a text node).
+					$componentNode = null;
+					if ($child->firstChild)
+						$componentNode = $child->firstChild;
+					while ($componentNode && $componentNode->nextSibling && $componentNode->nodeType != DOMIT_ELEMENT_NODE)
+						$componentNode = $componentNode->nextSibling;
+						
+					if ($componentNode) {
+// 						printpre($componentNode->nodeName);
 						
 						// If we are creating organizers, do so from our xml
-						if (preg_match('/^.*Organizer$/', $child->firstChild->nodeName)) {
+						if (preg_match('/^.*Organizer$/', $componentNode->nodeName)) {
 							$this->_childComponents[] = $this->_director->getSiteComponentFromXml(
-								$this->_asset, $child->firstChild);
+								$this->_asset, $componentNode);
 						} 
 						// Otherwise (for Blocks, navblocks, etc, get the asset 
 						// by Id from the director
 						else {
 							$this->_childComponents[] = $this->_director->getSiteComponentById(
-								$child->firstChild->getAttribute('id'));
+								$componentNode->getAttribute('id'));
 						}
 					} else {
 						$this->_childComponents[] = null;

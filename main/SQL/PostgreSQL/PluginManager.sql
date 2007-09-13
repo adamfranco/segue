@@ -4,7 +4,7 @@
 -- @copyright Copyright &copy; 2005, Middlebury College
 -- @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 --
--- @version $Id: PluginManager.sql,v 1.1 2007/09/13 02:59:14 adamfranco Exp $
+-- @version $Id: PluginManager.sql,v 1.2 2007/09/13 16:09:41 adamfranco Exp $
 -- */
 -- --------------------------------------------------------
 
@@ -18,7 +18,7 @@ CREATE TABLE plugin_type (
   type_authority varchar(255) NOT NULL,
   type_keyword varchar(255) NOT NULL,
   type_description text,
-  type_enabled boolean,
+  type_enabled smallint,
   PRIMARY KEY  (type_id)
 );
 
