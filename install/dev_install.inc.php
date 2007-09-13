@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.21 2007/09/11 19:10:45 adamfranco Exp $
+ * @version $Id: dev_install.inc.php,v 1.22 2007/09/13 03:26:27 adamfranco Exp $
  */
 
 /*********************************************************
@@ -23,11 +23,8 @@ if (!isset($_SESSION['table_setup_complete'])) {
 	 * Check for existing data in the database
 	 *********************************************************/
 	$dbHandler = Services::getService("DatabaseManager");
-	$query = new GenericSQLQuery();
-	$query->addSQLQuery("SHOW TABLES");
-	$genericResult = $dbHandler->query($query, $dbID);
-	$result = $genericResult->returnAsSelectQueryResult();
-	if ($result->hasNext()) {
+	$tables = $dbHandler->getTableList($dbID);
+	if (count($tables)) {
 		$_SESSION['table_setup_complete'] = TRUE;
 // 		RequestContext::locationHeader($_SERVER['REQUEST_URI']);
 // 		
