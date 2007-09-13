@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.22 2007/09/11 18:00:01 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.23 2007/09/13 16:11:56 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -28,6 +28,12 @@
 			harmoni/core/DBHandler/db_updater.php
 		</important>
 		
+		<fix author='adam' date='2007-09-13'>
+			Fixed SQL statements to work with PostgreSQL.
+		</fix>
+		<fix author='adam' date='2007-09-13'>
+			SiteDisplay: Fixed some assumptions of cells containting Element nodes.
+		</fix>
 		<fix author='adam' date='2007-09-07'>
 			Nav Items can now be deleted without causing errors.
 		</fix>
