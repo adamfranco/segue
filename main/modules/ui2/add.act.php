@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.5 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.6 2007/09/14 20:41:22 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.5 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.6 2007/09/14 20:41:22 achapin Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -211,13 +211,36 @@ class addAction
 		 * Create our default child assets
 		 *********************************************************/
 		$siteOrganizer = $site->getOrganizer();
-		$siteOrganizer->updateNumColumns('2');
+		//$siteOrganizer->updateNumColumns('2');
 		
-		$mainMenu = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'MenuOrganizer'), $siteOrganizer);
-		$siteOrganizer->putSubcomponentInCell($mainMenu, 0);
-		$menuTarget = $siteOrganizer->getId()."_cell:1";
+		$siteOrganizer->updateNumRows('3');
+		$siteOrganizer->updateNumColumns('1');
+
+		$headerRowOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $siteOrganizer);
+		$siteOrganizer->putSubcomponentInCell($headerRowOrganizer, 0);
+		$headerRowOrganizer->updateShowDisplayNames ('false');
+		$headerRowContent = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $headerRowOrganizer);
+		$headerRowContent->updateDisplayName($properties['namedescstep']['display_name']);
+		$headerRowContent->updateDescription(_('This is the header of this site, added by default.'));
+		$headerRowContent->updateContentMarkup($properties['namedescstep']['display_name']);
+		
+		$MainOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FixedOrganizer'), $siteOrganizer);
+		$siteOrganizer->putSubcomponentInCell($MainOrganizer, 1);
+		$MainOrganizer->updateNumColumns('2');
+		
+		$mainMenu = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'MenuOrganizer'), $MainOrganizer);
+		$MainOrganizer->putSubcomponentInCell($mainMenu, 0);
+		$menuTarget = $MainOrganizer->getId()."_cell:1";
 		$mainMenu->updateTargetId($menuTarget);
 		$mainMenu->updateDirection('Top-Bottom/Left-Right');
+		
+		
+		
+// 		$mainMenu = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'MenuOrganizer'), $siteOrganizer);
+// 		$siteOrganizer->putSubcomponentInCell($mainMenu, 0);
+// 		$menuTarget = $siteOrganizer->getId()."_cell:1";
+// 		$mainMenu->updateTargetId($menuTarget);
+// 		$mainMenu->updateDirection('Top-Bottom/Left-Right');
 		
 		
 		$page1 = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'NavBlock'), $mainMenu);
@@ -253,6 +276,14 @@ class addAction
 		$page2Content = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page2ContentOrg);
 		$page2Content->updateDisplayName(_('My Fourth Content'));
 		$page2Content->updateDescription(_('This is the second content in this page, added by default.'));
+
+		$footerRowOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $siteOrganizer);
+		$siteOrganizer->putSubcomponentInCell($footerRowOrganizer, 2);
+		$footerRowOrganizer->updateShowDisplayNames ('false');
+		$footerRowContent = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $footerRowOrganizer);
+		$footerRowContent->updateDisplayName(_('My Footer'));
+		$footerRowContent->updateDescription(_('This is the footer of this site, added by default.'));
+		$footerRowContent->updateContentMarkup(_('My Footer'));
 		
 		
 		/*********************************************************

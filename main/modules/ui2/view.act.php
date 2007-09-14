@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.13 2007/09/06 20:15:16 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.14 2007/09/14 20:41:22 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.13 2007/09/06 20:15:16 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.14 2007/09/14 20:41:22 achapin Exp $
  */
 class viewAction
 	extends displayAction {
@@ -140,13 +140,13 @@ class viewAction
 		
 		
 		// :: Top Row ::
-		$this->headRow = $mainScreen->add(
-			new Container($xLayout, HEADER, 1), 
-			"100%", null, CENTER, TOP);
+// 		$this->headRow = $mainScreen->add(
+// 			new Container($xLayout, HEADER, 1), 
+// 			"100%", null, CENTER, TOP);
 		
-		$this->leftHeadColumn = $this->headRow->add(
-			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"),
-			null, null, LEFT, TOP);
+// 		$this->leftHeadColumn = $this->headRow->add(
+// 			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"),
+// 			null, null, LEFT, TOP);
 
 		// :: Breadcrumb row ::
 		$this->breadcrumb = $mainScreen->add(
