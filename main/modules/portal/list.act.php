@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.12 2007/09/06 20:15:13 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.13 2007/09/14 20:41:23 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.12 2007/09/06 20:15:13 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.13 2007/09/14 20:41:23 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -367,7 +367,7 @@ function printSiteShort($asset, $action, $num) {
 	if ($action->getUiModule() == 'ui2') {
 		print "\n\t | <a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
 	}
-	print "\n\t | <a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."'>"._("delete")."</a>";
+	print "\n\t | <a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
 	print "\n\t</div>";
 	
 	$description = HtmlString::withValue($asset->getDescription());
