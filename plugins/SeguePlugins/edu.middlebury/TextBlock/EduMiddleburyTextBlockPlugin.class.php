@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.23 2007/09/19 21:01:21 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.24 2007/09/19 21:25:58 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.23 2007/09/19 21:01:21 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.24 2007/09/19 21:25:58 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 // 	extends SeguePluginsAjaxPlugin
@@ -54,6 +54,10 @@ class EduMiddleburyTextBlockPlugin
 			$this->textEditor = $_SESSION[$this->getId()."_textEditor"];
 		else
 	 		$this->textEditor = 'fck';
+	 	
+		$this->editing = false;
+		$this->workingContent = null;
+		$this->workingAbstractLength = null;
  	}
  	
  	/**
@@ -67,19 +71,158 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 1/12/06
  	 */
  	function update ( $request ) {
- 		if ($this->getFieldValue('submit')) { 
- 			
- 			if ($this->getFieldValue('editor')) {
- 				$this->textEditor = $this->getFieldValue('editor');
- 				$_SESSION[$this->getId()."_textEditor"] = $this->textEditor;
- 			}
- 			
+ 		if ($this->getFieldValue('edit'))
+	 		$this->editing = true;
+	 	
+ 		if ($this->getFieldValue('submit')) {  			
  			$this->setContent($this->cleanHTML($this->getFieldValue('content')));
- 			$this->setRawDescription($this->getFieldValue('abstractLength'));
+ 			$this->setRawDescription(intval($this->getFieldValue('abstractLength')));
  			$this->logEvent('Modify Content', 'TextBlock content updated');
- 		}
+ 		} else if ($this->getFieldValue('editor')) {
+			$this->textEditor = $this->getFieldValue('editor');
+			$_SESSION[$this->getId()."_textEditor"] = $this->textEditor;
+			
+			$this->editing = true;
+			$this->workingContent = $this->cleanHTML($this->getFieldValue('content'));
+			$this->workingAbstractLength = intval($this->getFieldValue('abstractLength'));
+		}
+ 		
+ 		
  	}
  	
+ 	/**
+ 	 * Update from environmental ($_REQUEST) data.
+ 	 * Plugin writers should override this method with their own functionality
+ 	 * as needed.
+ 	 * 
+ 	 * @param array $request
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/12/06
+ 	 */
+ 	function getMarkup () {
+ 		ob_start();
+ 		 		
+ 		if ($this->editing && $this->canModify()) {
+			$this->printEditForm();
+ 		} else if ($this->canView()) {
+ 			if ($this->shouldShowControls()) {
+				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
+ 			}
+ 			
+ 			if ($this->hasContent()) {
+				$abstractLength = intval($this->getRawDescription());
+				if ($abstractLength) {
+					print "\n".$this->trimHTML($this->getContent(), $abstractLength);
+				} else {
+					print "\n".$this->getContent();
+				}
+			} else {
+				print "\n<div class='plugin_empty'>";
+				print _("No text has been added yet. ");
+				if ($this->shouldShowControls()) {
+					print "<br/>"._("Click the 'edit' link to choose a file. ");
+				}
+				print "</div>";
+			}
+		 	
+	 		
+	 		if ($this->shouldShowControls()) {
+				print "\n</div>";
+				print "\n<div style='text-align: right; white-space: nowrap;'>";
+				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._("edit")."</a>";
+				print "\n</div>";
+			}
+				
+ 		}
+ 		
+ 		return ob_get_clean();
+ 	}
+ 	
+ 	/**
+ 	 * Return the markup that represents the plugin in and expanded form.
+ 	 * This method will be called when looking at a "detail view" of the plugin
+ 	 * where the representation of the plugin will be the focus of the page
+ 	 * rather than just one of many elements.
+ 	 * Override this method in your plugin as needed.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 5/23/07
+ 	 */
+ 	function getExtendedMarkup () {
+ 		ob_start();
+ 		
+ 		if ($this->editing && $this->canModify()) {
+			$this->printEditForm();
+ 		} else if ($this->canView()) {
+ 			if ($this->shouldShowControls()) {
+				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
+ 			}
+	 		print "\n".$this->getContent();
+	 		
+	 		if ($this->shouldShowControls()) {
+				print "\n</div>";
+				print "\n<div style='text-align: right; white-space: nowrap;'>";
+				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._("edit")."</a>";
+				print "\n</div>";
+			}
+				
+ 		}
+ 		
+ 		return ob_get_clean();
+ 	}
+ 	
+ 	/**
+ 	 * Generate a plain-text or HTML description string for the plugin instance.
+ 	 * This may simply be a stored 'raw description' string, it could be generated
+ 	 * from other content in the plugin instance, or some combination there-of.
+ 	 * Override this method in your plugin as needed.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 5/22/07
+ 	 */
+ 	function generateDescription () {
+ 		return $this->trimHTML($this->getMarkup(), 50);
+ 	}
+ 	
+ 	 	/**
+ 	 * Print out the editing form
+ 	 * 
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 5/23/07
+ 	 */
+ 	function printEditForm () {
+ 		print "\n".$this->formStartTagWithAction();
+ 		
+ 		//add editor select
+		print "\n\t<div align='right'>Current Editor: <select name='".$this->getFieldName('editor')."' onchange='this.form.submit()'>";
+		print "\n\t<option value='fck'".(($this->textEditor=='fck')?" selected='selected'":"").">Rich-Text Editor</option>";
+		print "\n\t<option value='none'".(($this->textEditor=='none')?" selected='selected'":"").">None</option>";
+		print "\n\t</select></div>";
+
+ 		// replace with editor code
+ 		$this->printEditor();
+	//	print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
+
+		print "\n\t<br/>";
+		if (is_null($this->workingAbstractLength))
+			$length = intval($this->getRawDescription());
+		else
+			$length = intval($this->workingAbstractLength);
+		print str_replace('%1',
+			"<input name='".$this->getFieldName('abstractLength')."' type='text' value='".$length."' onchange='return false;' size='3'/>",
+			_("Abstract to %1 words. (Enter '0' for no abstract)"));
+		
+		print "\n\t<br/>";
+		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
+		
+		print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
+				
+		print "\n</form>";
+ 	}
  	/**
  	 * Get the editor specified by this->textEditor
  	 * 
@@ -90,7 +233,6 @@ class EduMiddleburyTextBlockPlugin
  	function printEditor () {
 		if ($this->textEditor == "none") {
 			$this->printTextField();
-			//print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
 		} else if ($this->textEditor == "fck") {
 			$this->printFckEditor();
 		} else {
@@ -106,7 +248,12 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 8/27/07
  	 */
  	function printTextField () {
- 		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
+ 		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>";
+ 		if (is_null($this->workingContent))
+	 		print $this->getContent();
+	 	else
+	 		print $this->workingContent;
+ 		print "</textarea>";
  		
 		// Image button
 		print "\n\t<input type='button' value='"._('Add Image')."' onclick=\"";
@@ -182,143 +329,17 @@ class EduMiddleburyTextBlockPlugin
 		
 		$oFCKeditor->Config['CustomConfigurationsPath'] = MYPATH.'/javascript/fck_custom_config.js';
 
-				
-		$oFCKeditor->Value		= $this->getContent();
+		
+		if (is_null($this->workingContent))
+	 		$oFCKeditor->Value = $this->getContent();
+	 	else
+	 		$oFCKeditor->Value = $this->workingContent;
+	 	
 		$oFCKeditor->Height		= '400' ;
 //		$oFCKeditor->Width		= '400' ;
 		$oFCKeditor->ToolbarSet		= 'ContentBlock' ;
 		
 		$oFCKeditor->Create() ;
- 	}
- 	
- 	/**
- 	 * Print out the editing form
- 	 * 
- 	 * @return void
- 	 * @access public
- 	 * @since 5/23/07
- 	 */
- 	function printEditForm () {
- 		print "\n".$this->formStartTagWithAction();
- 		
- 		//add editor select
-		print "\n\t<div align='right'>Current Editor: <select name='".$this->getFieldName('editor')."' onchange='this.form.submit()'>";
-		print "\n\t<option value='fck'".(($this->textEditor=='fck')?" selected='selected'":"").">FCKeditor</option>";
-		print "\n\t<option value='none'".(($this->textEditor=='none')?" selected='selected'":"").">None</option>";
-		print "\n\t</select></div>";
-
- 		// replace with editor code
- 		$this->printEditor();
-	//	print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
-
-		print "\n\t<br/>";
-		print str_replace('%1',
-			"<input name='".$this->getFieldName('abstractLength')."' type='text' value='".intval($this->getRawDescription())."' onchange='return false;' size='3'/>",
-			_("Abstract to %1 words. (Enter '0' for no abstract)"));
-		
-		print "\n\t<br/>";
-		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
-		
-		print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
-				
-		print "\n</form>";
- 	}
- 	
- 	/**
- 	 * Update from environmental ($_REQUEST) data.
- 	 * Plugin writers should override this method with their own functionality
- 	 * as needed.
- 	 * 
- 	 * @param array $request
- 	 * @return void
- 	 * @access public
- 	 * @since 1/12/06
- 	 */
- 	function getMarkup () {
- 		ob_start();
- 		 		
- 		if ($this->getFieldValue('edit') && $this->canModify()) {
-			$this->printEditForm();
- 		} else if ($this->canView()) {
- 			if ($this->shouldShowControls()) {
-				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
- 			}
- 			
- 			if ($this->hasContent()) {
-				$abstractLength = intval($this->getRawDescription());
-				if ($abstractLength) {
-					print "\n".$this->trimHTML($this->getContent(), $abstractLength);
-				} else {
-					print "\n".$this->getContent();
-				}
-			} else {
-				print "\n<div class='plugin_empty'>";
-				print _("No text has been added yet. ");
-				if ($this->shouldShowControls()) {
-					print "<br/>"._("Click the 'edit' link to choose a file. ");
-				}
-				print "</div>";
-			}
-		 	
-	 		
-	 		if ($this->shouldShowControls()) {
-				print "\n</div>";
-				print "\n<div style='text-align: right; white-space: nowrap;'>";
-				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._("edit")."</a>";
-				print "\n</div>";
-			}
-				
- 		}
- 		
- 		return ob_get_clean();
- 	}
- 	
- 	/**
- 	 * Return the markup that represents the plugin in and expanded form.
- 	 * This method will be called when looking at a "detail view" of the plugin
- 	 * where the representation of the plugin will be the focus of the page
- 	 * rather than just one of many elements.
- 	 * Override this method in your plugin as needed.
- 	 * 
- 	 * @return string
- 	 * @access public
- 	 * @since 5/23/07
- 	 */
- 	function getExtendedMarkup () {
- 		ob_start();
- 		
- 		if ($this->getFieldValue('edit') && $this->canModify()) {
-			$this->printEditForm();
- 		} else if ($this->canView()) {
- 			if ($this->shouldShowControls()) {
-				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
- 			}
-	 		print "\n".$this->getContent();
-	 		
-	 		if ($this->shouldShowControls()) {
-				print "\n</div>";
-				print "\n<div style='text-align: right; white-space: nowrap;'>";
-				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._("edit")."</a>";
-				print "\n</div>";
-			}
-				
- 		}
- 		
- 		return ob_get_clean();
- 	}
- 	
- 	/**
- 	 * Generate a plain-text or HTML description string for the plugin instance.
- 	 * This may simply be a stored 'raw description' string, it could be generated
- 	 * from other content in the plugin instance, or some combination there-of.
- 	 * Override this method in your plugin as needed.
- 	 * 
- 	 * @return string
- 	 * @access public
- 	 * @since 5/22/07
- 	 */
- 	function generateDescription () {
- 		return $this->trimHTML($this->getMarkup(), 50);
  	}
  	
  	/*********************************************************
