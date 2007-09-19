@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.15 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.16 2007/09/19 21:01:20 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.15 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.16 2007/09/19 21:01:20 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -63,7 +63,7 @@ class SeguePluginsAjaxPlugin
 	 * passed.
 	 *
 	 * Use this method, e.g.:
-	 *		"onclick=".$this->sendToJS(array('item' => 123))
+	 *		"onclick='".$this->locationSend(array('item' => 123))."'"
 	 * instead of the following:
 	 * 		"onclick='window.location=\"".$this->url(array('item' => 123))."\"'"
 	 * 

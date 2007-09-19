@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.37 2007/09/13 16:09:41 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.38 2007/09/19 21:01:20 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.37 2007/09/13 16:09:41 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.38 2007/09/19 21:01:20 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -250,6 +250,24 @@ class SeguePluginsPlugin {
 	}
 	
 	/**
+	 * Answer a Javascript command -- in quoted string form -- to send the window to 
+	 * an internal url with the  parameters passed.
+	 *
+	 * Use this method, e.g.:
+	 *		"onclick=".$this->locationSend(array('item' => 123))
+	 * instead of the following:
+	 * 		"onclick='window.location=\"".$this->url(array('item' => 123))."\"'"
+	 * 
+	 * @param array $parameters Associative array ('name' => 'value')
+	 * @return string
+	 * @access public
+	 * @since 1/16/06
+	 */
+	function locationSendString ( $parameters = array() ) {		
+		return "'".$this->locationSend($parameters)."'";
+	}
+	
+	/**
 	 * Answer a Javascript command to send the window to an internal url with the 
 	 * parameters passed.
 	 *
@@ -264,7 +282,7 @@ class SeguePluginsPlugin {
 	 * @since 1/16/06
 	 */
 	function locationSend ( $parameters = array() ) {		
-		return "'window.location=\"".$this->url($parameters)."\"'";
+		return "window.location=\"".$this->url($parameters)."\"";
 	}
 	
 	/**

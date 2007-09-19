@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.2 2007/09/04 17:39:22 adamfranco Exp $
+ * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.3 2007/09/19 21:01:21 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.2 2007/09/04 17:39:22 adamfranco Exp $
+ * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.3 2007/09/19 21:01:21 adamfranco Exp $
  */
 class EduMiddleburyAssignmentPlugin
 	extends SeguePluginsAjaxPlugin
@@ -140,7 +140,7 @@ class EduMiddleburyAssignmentPlugin
  			print "\n\t<br/>";
  			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
  			
- 			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSend()."/>";
+ 			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
  			
 			print "\n</form>";
  		} else if ($this->canView()) {

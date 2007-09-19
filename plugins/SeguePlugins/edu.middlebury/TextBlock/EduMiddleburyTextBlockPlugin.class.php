@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.22 2007/09/19 20:49:26 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.23 2007/09/19 21:01:21 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.22 2007/09/19 20:49:26 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.23 2007/09/19 21:01:21 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 // 	extends SeguePluginsAjaxPlugin
@@ -219,7 +219,7 @@ class EduMiddleburyTextBlockPlugin
 		print "\n\t<br/>";
 		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
 		
-		print "\n\t<input type='button' value='"._('Cancel')."' onclick='".$this->locationSend()."'/>";
+		print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
 				
 		print "\n</form>";
  	}
@@ -241,7 +241,7 @@ class EduMiddleburyTextBlockPlugin
 			$this->printEditForm();
  		} else if ($this->canView()) {
  			if ($this->shouldShowControls()) {
-				print "\n<div onclick=\"if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}\">";
+				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
  			}
  			
  			if ($this->hasContent()) {
