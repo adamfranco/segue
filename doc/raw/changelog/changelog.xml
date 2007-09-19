@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.24 2007/09/14 20:41:22 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.25 2007/09/19 20:49:26 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -28,6 +28,9 @@
 			harmoni/core/DBHandler/db_updater.php
 		</important>
 		
+		<fix author='adam' date='2007-09-19'>
+			Media Library: Panel now recenters as items are added.
+		</fix>
 		<fix author='adam' date='2007-09-14'>
 			Added a warning before deleting sites via the portal.
 		</fix>
