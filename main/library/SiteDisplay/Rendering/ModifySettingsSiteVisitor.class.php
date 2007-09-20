@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.10 2007/09/04 21:10:49 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.11 2007/09/20 19:06:57 adamfranco Exp $
  */ 
  
  require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.10 2007/09/04 21:10:49 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.11 2007/09/20 19:06:57 adamfranco Exp $
  */
 class ModifySettingsSiteVisitor 
 	implements SiteVisitor
@@ -130,7 +130,10 @@ class ModifySettingsSiteVisitor
 		if(!is_null(RequestContext::value('width')) 
 			&& RequestContext::value('width') !== $siteComponent->getWidth())
 		{
-			$siteComponent->updateWidth(RequestContext::value('width'));
+			if (preg_match('/([0-9]+)\s*(px|%|em)/i', RequestContext::value('width'), $matches))
+				$siteComponent->updateWidth($matches[1].strtolower($matches[2]));
+			else
+				$siteComponent->updateWidth('');
 		}
 	}
 	

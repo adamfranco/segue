@@ -5,11 +5,16 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.32 2007/09/20 17:14:15 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.33 2007/09/20 19:06:57 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
+	<version number="2.0.0-beta-2" date="The Future">
+		<fix author='adam' date='2007-09-20' ref='1798916' reftype='bug'>
+			UI2: Now whitespace won't prevent widths from saving.
+		</fix>
+	</version>
 	<version number="2.0.0-beta-1" date="2007-09-20">
 		<important author='adam' date='2007-09-04'>
 			As of this version, Segue no longer supports PHP4. Please use PHP5 or later.
