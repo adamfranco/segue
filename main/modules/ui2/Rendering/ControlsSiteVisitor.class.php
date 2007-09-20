@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/09/07 20:41:44 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/09/20 19:46:39 adamfranco Exp $
  */ 
  
  require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.9 2007/09/07 20:41:44 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/09/20 19:46:39 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	implements SiteVisitor
@@ -106,7 +106,7 @@ class ControlsSiteVisitor
 					));
 		
 		print "\n\t\t\t\t<div style='margin-top: 5px; margin-bottom: 5px;'>";
-		print "\n\t\t\t\t\t<button onclick='";
+		print "\n\t\t\t\t\t<input type='button' onclick='";
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.delete"), 
 			$siteComponent->getQualifierId()))
@@ -118,9 +118,9 @@ class ControlsSiteVisitor
 		} else {
 			print "alert(\""._('You are not authorized to delete this item.')."\"); return false;";
 		}
-		print "'>";
+		print "' value='";
 		print _("delete");
-		print "</button>";
+		print "'/>";
 		print "\n\t\t\t\t</div>";
 	}
 	

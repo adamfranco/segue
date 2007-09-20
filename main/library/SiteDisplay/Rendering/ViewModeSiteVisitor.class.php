@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.43 2007/09/13 16:09:42 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.44 2007/09/20 19:46:39 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.43 2007/09/13 16:09:42 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.44 2007/09/20 19:46:39 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -473,11 +473,24 @@ class ViewModeSiteVisitor
 				}
 			}
 		}
-// 		if ($hasChildComponents)
-			return $guiContainer;
 		
-		$false = false;
-		return $false;
+		// Add a placeholder if no content exists so that the screen doesn't stretch
+		if (!$hasChildComponents) {	
+			$noticeComponent = new UnstyledBlock(' &nbsp; ', 1);
+			if (isset($this->_emptyCellContainers[$organizer->getTargetId()])) {
+				$this->_emptyCellContainers[$organizer->getTargetId()]->insertAtPlaceholder(
+					$this->_emptyCellPlaceholders[$organizer->getTargetId()],
+					$noticeComponent, null, null, null, TOP);
+					
+				unset($this->_emptyCellContainers[$organizer->getTargetId()],
+					$this->_emptyCellPlaceholders[$organizer->getTargetId()]);
+			} else {
+				$this->_missingTargets[$organizer->getTargetId()] = $noticeComponent;
+				$this->_missingTargetWidths[$organizer->getTargetId()] = null;
+			}
+		}
+		
+		return $guiContainer;
 	}
 	
 	/**
