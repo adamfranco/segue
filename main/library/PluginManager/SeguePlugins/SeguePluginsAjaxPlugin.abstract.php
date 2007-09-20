@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.16 2007/09/19 21:01:20 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.17 2007/09/20 15:05:17 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.16 2007/09/19 21:01:20 adamfranco Exp $
+ * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.17 2007/09/20 15:05:17 adamfranco Exp $
  */
 class SeguePluginsAjaxPlugin 
 	extends SeguePluginsPlugin
@@ -146,6 +146,19 @@ class SeguePluginsAjaxPlugin
 				// Ensure that we have a non-escaped url
 				destination = destination.replace(/&amp;/gi, '&');
 				
+				// Force updating of any FCK Editor fields.
+				// This will simply cause the FCK Editor html text to be
+				// written to the hidden fields that are actually submitted.
+				// There shouldn't be a problem with doing this for fields not 
+				// being submitted at the moment. We just need to make sure that
+				// it happens before we look for the value of a field.
+				if ((typeof(window.FCKeditorAPI) != "undefined")) {
+					for ( var name in FCKeditorAPI.__Instances ) {
+						var oEditor = FCKeditorAPI.__Instances[ name ];
+						oEditor.UpdateLinkedField();
+					}
+				}
+				
 				// Build a "name1=val1&name2=val2..." string
 				var fields = new Array();
 				for (var i = 0; i < form.elements.length; i++)
@@ -194,6 +207,7 @@ class SeguePluginsAjaxPlugin
 								// only if we get a good load should we continue.
 								if (req.status == 200) {
 									//get the plugin element
+// 									alert(req.responseText);
 									var pluginResponseElement = req.responseXML.firstChild;
 									
 									

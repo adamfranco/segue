@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.24 2007/09/19 21:25:58 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.25 2007/09/20 15:05:17 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,11 +20,11 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.24 2007/09/19 21:25:58 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.25 2007/09/20 15:05:17 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
-// 	extends SeguePluginsAjaxPlugin
-	extends SeguePluginsPlugin
+	extends SeguePluginsAjaxPlugin
+// 	extends SeguePluginsPlugin
 {
 	/**
  	 * Answer a description of the the plugin (not the instance) to provide to 
@@ -74,7 +74,7 @@ class EduMiddleburyTextBlockPlugin
  		if ($this->getFieldValue('edit'))
 	 		$this->editing = true;
 	 	
- 		if ($this->getFieldValue('submit')) {  			
+ 		if ($this->getFieldValue('submit_pressed')) {	
  			$this->setContent($this->cleanHTML($this->getFieldValue('content')));
  			$this->setRawDescription(intval($this->getFieldValue('abstractLength')));
  			$this->logEvent('Modify Content', 'TextBlock content updated');
@@ -198,7 +198,11 @@ class EduMiddleburyTextBlockPlugin
  		print "\n".$this->formStartTagWithAction();
  		
  		//add editor select
-		print "\n\t<div align='right'>Current Editor: <select name='".$this->getFieldName('editor')."' onchange='this.form.submit()'>";
+		print "\n\t<div align='right'>Current Editor: <select name='".$this->getFieldName('editor')."' onchange='";
+		// FCK editor is getting in the way of form submission and not triggering an onsubmit event when the form
+		// is submitted via this.form.submit().
+		print ' if (this.form.onsubmit) {this.form.onsubmit(); this.form.submit();} else {this.form.submit();} ';
+		print "'>";
 		print "\n\t<option value='fck'".(($this->textEditor=='fck')?" selected='selected'":"").">Rich-Text Editor</option>";
 		print "\n\t<option value='none'".(($this->textEditor=='none')?" selected='selected'":"").">None</option>";
 		print "\n\t</select></div>";
@@ -217,7 +221,9 @@ class EduMiddleburyTextBlockPlugin
 			_("Abstract to %1 words. (Enter '0' for no abstract)"));
 		
 		print "\n\t<br/>";
-		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
+		
+		print "\n\t<input type='hidden' value='' name='".$this->getFieldName('submit_pressed')."'/>";
+		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."' onclick='this.form.elements[\"".$this->getFieldName('submit_pressed')."\"].value = \"true\"; '/>";
 		
 		print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
 				
@@ -248,7 +254,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 8/27/07
  	 */
  	function printTextField () {
- 		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>";
+ 		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' style='width: 100%;'>";
  		if (is_null($this->workingContent))
 	 		print $this->getContent();
 	 	else
@@ -256,7 +262,7 @@ class EduMiddleburyTextBlockPlugin
  		print "</textarea>";
  		
 		// Image button
-		print "\n\t<input type='button' value='"._('Add Image')."' onclick=\"";
+		print "\n\t<br/><input type='button' value='"._('Add Image')."' onclick=\"";
 		print "this.onUse = function (mediaFile) { ";
 		print 		"var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + mediaFile.getTitles()[0].escapeHTML() + '\'/>' ; ";
 		print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
@@ -288,7 +294,7 @@ class EduMiddleburyTextBlockPlugin
 		print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
 		print "}; "; 
 		print "MediaLibrary.run('".$this->getId()."', this); ";
-		print "\"/>";
+		print "\"/><br/>";
 		
  	}
 

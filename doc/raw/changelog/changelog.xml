@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.27 2007/09/19 21:25:58 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.28 2007/09/20 15:05:16 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -28,6 +28,15 @@
 			harmoni/core/DBHandler/db_updater.php
 		</important>
 		
+		<fix author='adam' date='2007-09-20'>
+			TextBlock: Now works with both editors as an AJAX Plugin.
+		</fix>
+		<fix author='adam' date='2007-09-20'>
+			AJAX Plugins: Now updates textareas that use the FCK Editor before submitting.
+		</fix>
+		<fix author='adam' date='2007-09-20'>
+			TextBlock: Now uses a full-width text field.
+		</fix>
 		<fix author='adam' date='2007-09-19'>
 			TextBlock: Now can reliably switch between editors in non-wizard mode.
 		</fix>
