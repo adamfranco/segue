@@ -3,7 +3,7 @@
 Name: Segue ChangeLog
 
 
-v. 2.0.0-alpha-1 (2007-09-20)
+v. 2.0.0-beta-1 (2007-09-20)
 ----------------------------------------------------
 		
 	**** IMPORTANT *** Change: 
@@ -25,6 +25,10 @@ v. 2.0.0-alpha-1 (2007-09-20)
 		(2007-09-11 - Adam Franco)
 		
 		
+	* Change: 
+		
+		Libraries: Moved default location of harmoni and polyphony to segue/main/.
+		(2007-09-20 - Adam Franco)
 		
 	* Bug Fix: #1798996 
 		Comments: Refreshing page after deleting a comment no longer results in an

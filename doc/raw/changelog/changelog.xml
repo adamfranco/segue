@@ -5,12 +5,12 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.31 2007/09/20 17:07:07 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.32 2007/09/20 17:14:15 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
-	<version number="2.0.0-alpha-1" date="2007-09-20">
+	<version number="2.0.0-beta-1" date="2007-09-20">
 		<important author='adam' date='2007-09-04'>
 			As of this version, Segue no longer supports PHP4. Please use PHP5 or later.
 		</important>
@@ -28,7 +28,9 @@
 			harmoni/core/DBHandler/db_updater.php
 		</important>
 		
-		
+		<change author='adam' date='2007-09-20'>
+			Libraries: Moved default location of harmoni and polyphony to segue/main/.
+		</change>
 		<fix author='adam' date='2007-09-20' ref='1798996' reftype='bug'>
 			Comments: Refreshing page after deleting a comment no longer results in
 			an uncaught exception.
