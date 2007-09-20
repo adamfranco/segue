@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.13 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.14 2007/09/20 17:01:54 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.13 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.14 2007/09/20 17:01:54 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -415,7 +415,15 @@ class CommentManager {
 		
 		if (RequestContext::value('delete_comment')) {
 			$idManager = Services::getService('Id');
-			$this->deleteComment($idManager->getId(RequestContext::value('delete_comment')));
+			
+			try {
+				$this->deleteComment($idManager->getId(
+					RequestContext::value('delete_comment')));
+			} catch (Exception $e) {
+				// In case we have a delete_comment id in the url that no longer exists,
+				// just catch any exceptions. See the following bug:
+				// http://sourceforge.net/tracker/index.php?func=detail&aid=1798996&group_id=82171&atid=565234
+			}
 		}
 		
 		$this->addHead();

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.25 2007/09/20 15:05:17 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.26 2007/09/20 17:01:54 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.25 2007/09/20 15:05:17 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.26 2007/09/20 17:01:54 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -121,7 +121,7 @@ class EduMiddleburyTextBlockPlugin
 				print "\n<div class='plugin_empty'>";
 				print _("No text has been added yet. ");
 				if ($this->shouldShowControls()) {
-					print "<br/>"._("Click the 'edit' link to choose a file. ");
+					print "<br/>"._("Click the 'edit' link to add content. ");
 				}
 				print "</div>";
 			}

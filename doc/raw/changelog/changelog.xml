@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.28 2007/09/20 15:05:16 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.29 2007/09/20 17:01:54 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -28,6 +28,11 @@
 			harmoni/core/DBHandler/db_updater.php
 		</important>
 		
+		
+		<fix author='adam' date='2007-09-20' ref='1798996' reftype='bug'>
+			Comments: Refreshing page after deleting a comment no longer throws
+			an exception
+		</fix>
 		<fix author='adam' date='2007-09-20'>
 			TextBlock: Now works with both editors as an AJAX Plugin.
 		</fix>
