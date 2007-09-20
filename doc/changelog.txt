@@ -3,7 +3,7 @@
 Name: Segue ChangeLog
 
 
-v. 2.0.0-alpha (The Future)
+v. 2.0.0-alpha-1 (2007-09-20)
 ----------------------------------------------------
 		
 	**** IMPORTANT *** Change: 
@@ -17,8 +17,84 @@ v. 2.0.0-alpha (The Future)
 		)&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$) replaced with \1\2\3\4\5
 		(2007-09-04 - Adam Franco)
 		
+	**** IMPORTANT *** Change: 
+		In order to support PostgreSQL without refactoring of the Database Handler,
+		column names have been all made lowercase. To update a currently populated
+		harmoni database to the new names, run the following updater script:
+		harmoni/core/DBHandler/db_updater.php 
+		(2007-09-11 - Adam Franco)
 		
 		
+		
+	* Bug Fix: #1798996 
+		Comments: Refreshing page after deleting a comment no longer results in an
+		uncaught exception.
+		(2007-09-20 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		TextBlock: Now works with both editors as an AJAX Plugin.
+		(2007-09-20 - Adam Franco)
+		
+	* Bug Fix: 
+		AJAX Plugins: Now updates textareas that use the FCK Editor before
+		submitting. 
+		(2007-09-20 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		TextBlock: Now uses a full-width text field.
+		(2007-09-20 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		TextBlock: Now can reliably switch between editors in non-wizard mode.
+		(2007-09-19 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		Plugins: Fixed some javascript quoting errors.
+		(2007-09-19 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		Media Library: Panel now recenters as items are added.
+		(2007-09-19 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		Added a warning before deleting sites via the portal.
+		(2007-09-14 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		Fixed SQL statements to work with PostgreSQL.
+		(2007-09-13 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		SiteDisplay: Fixed some assumptions of cells containting Element nodes.
+		(2007-09-13 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		Nav Items can now be deleted without causing errors.
+		(2007-09-07 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		Menus can now be moved without causing errors.
+		(2007-09-06 - Adam Franco)
+		
+	* Bug Fix: 
+		
+		Content can now be appended in arrange mode.
+		(2007-09-06 - Adam Franco)
+		
+	* Bug Fix: 
+		Reordering now works consistantly due to a change in the
+		AssetFlowOrganizerSiteComponent-&gt;putSubcomponentInCell() algorithm.
+		(2007-09-05 - Adam Franco)
 		
 	* Bug Fix: 
 		

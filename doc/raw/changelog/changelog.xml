@@ -5,12 +5,12 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.30 2007/09/20 17:02:39 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.31 2007/09/20 17:07:07 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
-	<version number="2.0.0-alpha" date="The Future">
+	<version number="2.0.0-alpha-1" date="2007-09-20">
 		<important author='adam' date='2007-09-04'>
 			As of this version, Segue no longer supports PHP4. Please use PHP5 or later.
 		</important>

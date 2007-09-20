@@ -22,8 +22,8 @@
 </head>
 <body>
 <h1>Segue ChangeLog</h1>
-<h2>Version 2.0.0-alpha</h2>
-<h3>The Future</h3>
+<h2>Version 2.0.0-alpha-1</h2>
+<h3>2007-09-20</h3>
 <ul>
 		<li>
 <span style="color: red">*** IMPORTANT ***</span> Change:  
@@ -36,9 +36,60 @@
 			replaced with
 					\1\2\3\4\5
 		 (<em>2007-09-04 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span> Change:  
+			In order to support PostgreSQL without refactoring of the Database Handler,
+			column names have been all made lowercase. To update a currently populated
+			harmoni database to the new names, run the following updater script:
+			harmoni/core/DBHandler/db_updater.php
+		 (<em>2007-09-11 - Adam Franco</em>)</li>
 		
 		
-		
+		<li> Bug Fix: <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798996&amp;group_id=82171&amp;atid=565234">
+        			#1798996</a> 
+			Comments: Refreshing page after deleting a comment no longer results in
+			an uncaught exception.
+		 (<em>2007-09-20 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			TextBlock: Now works with both editors as an AJAX Plugin.
+		 (<em>2007-09-20 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			AJAX Plugins: Now updates textareas that use the FCK Editor before submitting.
+		 (<em>2007-09-20 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			TextBlock: Now uses a full-width text field.
+		 (<em>2007-09-20 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			TextBlock: Now can reliably switch between editors in non-wizard mode.
+		 (<em>2007-09-19 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			Plugins: Fixed some javascript quoting errors.
+		 (<em>2007-09-19 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			Media Library: Panel now recenters as items are added.
+		 (<em>2007-09-19 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			Added a warning before deleting sites via the portal.
+		 (<em>2007-09-14 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			Fixed SQL statements to work with PostgreSQL.
+		 (<em>2007-09-13 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			SiteDisplay: Fixed some assumptions of cells containting Element nodes.
+		 (<em>2007-09-13 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			Nav Items can now be deleted without causing errors.
+		 (<em>2007-09-07 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			Menus can now be moved without causing errors.
+		 (<em>2007-09-06 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			Content can now be appended in arrange mode.
+		 (<em>2007-09-06 - Adam Franco</em>)</li>
+		<li> Bug Fix:  
+			Reordering now works consistantly due to a change in the 
+			AssetFlowOrganizerSiteComponent-&gt;putSubcomponentInCell() algorithm.
+		 (<em>2007-09-05 - Adam Franco</em>)</li>
 		<li> Bug Fix:  
 			Now prints "untitled" if menu/page title isn't specified.
 		 (<em>2007-09-05 - Adam Franco</em>)</li>
