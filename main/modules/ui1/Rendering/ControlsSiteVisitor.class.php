@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.11 2007/09/20 20:52:15 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,13 +20,20 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.11 2007/09/20 20:52:15 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	implements SiteVisitor
 {
 	
 	var $_action = 'editview';
+	
+	/**
+	 * @var boolean $reorderJsPrinted;  
+	 * @access private
+	 * @since 9/20/07
+	 */
+	private $reorderJsPrinted = false;
 		
 	/**
 	 * Set the action to return to
@@ -66,6 +73,62 @@ class ControlsSiteVisitor
 // 		print ">";
 		
 // 		$harmoni->request->startNamespace('controls_form_'.$siteComponent->getId());
+
+		if (!$this->reorderJsPrinted) {
+			$js = <<<END
+		<script type='text/javascript'>
+		// <![CDATA[
+		
+			/**
+			 * Show all of the reorder forms for the children of an organizer.
+			 * 
+			 * @param string organizerId
+			 * @return void
+			 * @access public
+			 * @since 9/20/07
+			 */
+			function showReorder (organizerId) {
+				var links = document.getElementsByClassName('reorder_link_' + organizerId);
+				var forms = document.getElementsByClassName('reorder_form_' + organizerId);
+				
+				for (var i = 0; i < links.length; i++) {
+					links[i].style.display = 'none';
+				}
+				
+				for (var i = 0; i < forms.length; i++) {
+					forms[i].style.display = 'block';
+				}
+			}
+			
+			/**
+			 * Hide all of the reorder forms for the children of an organizer.
+			 * 
+			 * @param string organizerId
+			 * @return void
+			 * @access public
+			 * @since 9/20/07
+			 */
+			function hideReorder (organizerId) {
+				var links = document.getElementsByClassName('reorder_link_' + organizerId);
+				var forms = document.getElementsByClassName('reorder_form_' + organizerId);
+				
+				for (var i = 0; i < links.length; i++) {
+					links[i].style.display = 'inline';
+				}
+				
+				for (var i = 0; i < forms.length; i++) {
+					forms[i].style.display = 'none';
+				}
+			}
+		
+		// ]]>
+		</script>
+		
+END;
+			$output = $harmoni->getOutputHandler();
+			$output->setHead($output->getHead().$js);
+		
+		}
 	}
 	
 	/**
@@ -180,6 +243,46 @@ class ControlsSiteVisitor
 	 * @since 5/7/07
 	 */
 	function printReorder ( $siteComponent ) {
+		$this->printReorderLink($siteComponent);
+		$this->printReorderForm($siteComponent);
+	}
+	
+	/**
+	 * Print the reorder link
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 9/20/07
+	 */
+	public function printReorderLink (SiteComponent $siteComponent) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
+		
+		$parent = $siteComponent->getParentComponent();
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$parent->getQualifierId()))
+		{			
+			print "\n\t\t\t\t\t<a href='#' class='reorder_link_".$parent->getId()."' onclick=\"";
+			print 	"showReorder('".$parent->getId()."'); ";
+			print 	"return false; ";
+			print	"\">";
+			print _("reorder");
+			print "</a>";
+		}
+	}
+	
+	/**
+	 * Print the reorder form
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 9/20/07
+	 */
+	public function printReorderForm (SiteComponent $siteComponent) {
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		$harmoni = Harmoni::instance();
@@ -200,15 +303,7 @@ class ControlsSiteVisitor
 			$organizer = $siteComponent->getParentComponent();
 			$myCell = $organizer->getCellForSubcomponent($siteComponent);
 			
-			print "\n\t\t\t\t\t<a href='#' onclick=\"";
-			print 	"this.nextSibling.style.display='block'; ";
-			print 	"this.style.display='none'; ";
-			print 	"return false; ";
-			print	"\">";
-			print _("reorder");
-			print "</a>";
-			
-			print "<form action='".$url."' method='post' style='display: none'>";
+			print "\n\t\t\t\t\t<form class='ui1_controls reorder_form_".$parent->getId()."' action='".$url."' method='post' style='display: none'>";
 			print "\n\t<input type='hidden' name='".RequestContext::name('node')."' value='".$siteComponent->getId()."' />";
 			
 			print "\n\t<select name='".RequestContext::name('position')."' onchange='this.form.submit();'>";
@@ -220,8 +315,7 @@ class ControlsSiteVisitor
 			}
 			print "\n\t</select>";
 			print "\n\t<input type='button' onclick=\"";
-			print 	"this.parentNode.previousSibling.style.display='inline'; ";
-			print 	"this.parentNode.style.display='none'; ";
+			print 	"hideReorder('".$parent->getId()."'); ";
 			print "\" value='"._("Cancel")."'/>";
 			print "\n\t\t\t\t\t</form>";
 			

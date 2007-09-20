@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.15 2007/09/13 16:09:42 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.16 2007/09/20 20:52:15 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.15 2007/09/13 16:09:42 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.16 2007/09/20 20:52:15 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -150,6 +150,10 @@ END;
 		$idManager = Services::getService("Id");
 		if ($navBlock->isActive()) {
 			$menuItems[0]->setPostHTML($navBlock->acceptVisitor($this->_controlsVisitor));
+		} else {
+			ob_start();
+			$this->_controlsVisitor->printReorderForm($navBlock);
+			$menuItems[0]->setPostHTML(ob_get_clean());
 		}
 		
 		return $menuItems;
