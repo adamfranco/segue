@@ -5,12 +5,15 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.33 2007/09/20 19:06:57 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.34 2007/09/20 19:09:30 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-beta-2" date="The Future">
+		<change author='adam' date='2007-09-20' ref='1798937' reftype='bug'>
+			UI1: Status step placeholder not shown to user.
+		</change>
 		<fix author='adam' date='2007-09-20' ref='1798916' reftype='bug'>
 			UI2: Now whitespace won't prevent widths from saving.
 		</fix>
