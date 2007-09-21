@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.7 2007/09/04 18:00:42 adamfranco Exp $
+ * @version $Id: index.php,v 1.8 2007/09/21 16:16:40 adamfranco Exp $
  */
 
 /*********************************************************
@@ -26,7 +26,7 @@ else
 define("MYPATH", $protocol."://".$_SERVER['HTTP_HOST'].str_replace(
 												"\\", "/", 
 												dirname($_SERVER['PHP_SELF'])));
-define("MYURL", MYPATH."/index.php");
+define("MYURL", trim(MYPATH, '/')."/index.php");
 
 define("LOAD_GUI", true);
 
