@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.15 2007/09/13 16:09:41 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.16 2007/09/21 15:45:11 adamfranco Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
@@ -101,7 +101,7 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 	
 	$results->free();
 	
-	$db->beginTransaction(IMPORTER_CONNECTION);
+	$db->commitTransaction(IMPORTER_CONNECTION);
 	
 	
 	// Check for the dublin core record structure
