@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.13 2007/09/21 19:59:28 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.14 2007/09/21 20:38:17 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.13 2007/09/21 19:59:28 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.14 2007/09/21 20:38:17 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -225,22 +225,22 @@ END;
 		return $menuItems;
 	}
 	
-// 	/**
-// 	 * Answer additional HTML to go after the nav title.
-// 	 * 
-// 	 * @param object  NavBlockSiteComponent $navBlock
-// 	 * @return string
-// 	 * @access public
-// 	 * @since 9/21/07
-// 	 */
-// 	public function getAdditionalNavHTML (NavBlockSiteComponent $navBlock) {
-// 		ob_start();		
-// 		print "\n<div class='ui2_reorder'>";
-// 		$this->_controlsVisitor->printReorderLink($navBlock);
-// 		$this->_controlsVisitor->printReorderForm($navBlock);
-// 		print "\n</div>";
-// 		return ob_get_clean();
-// 	}
+	/**
+	 * Answer additional HTML to go after the nav title.
+	 * 
+	 * @param object  NavBlockSiteComponent $navBlock
+	 * @return string
+	 * @access public
+	 * @since 9/21/07
+	 */
+	public function getAdditionalNavHTML (NavBlockSiteComponent $navBlock) {
+		ob_start();		
+		print "\n<div class='ui2_reorder'>";
+		$this->_controlsVisitor->printReorderLink($navBlock);
+		$this->_controlsVisitor->printReorderForm($navBlock);
+		print "\n</div>";
+		return ob_get_clean();
+	}
 	
 	
 	/**
