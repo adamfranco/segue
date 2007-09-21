@@ -5,12 +5,18 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.38 2007/09/21 15:49:24 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.39 2007/09/21 19:59:27 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-beta-2" date="The Future">
+		<new author='adam' date='2007-09-21' ref='1798938' reftype='bug'>
+			UI2: Added Classic Mode-style reordering.
+		</new>
+		<fix author='adam' date='2007-09-21'>
+			Trimming extra slashes from the url
+		</fix>
 		<change author='adam' date='2007-09-21'>
 			Now using Alex's new theme as the default.
 		</change>

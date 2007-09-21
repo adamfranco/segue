@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.12 2007/09/13 18:11:17 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.13 2007/09/21 19:59:28 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.12 2007/09/13 18:11:17 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.13 2007/09/21 19:59:28 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -129,6 +129,26 @@ END;
 	}
 	
 	/**
+	 * Answer the title of a block
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return string
+	 * @access public
+	 * @since 5/18/07
+	 */
+	function getBlockTitle ( $block ) {
+		ob_start();		
+		print "\n<div class='ui2_reorder'>";
+		$this->_controlsVisitor->printReorderLink($block);
+		$this->_controlsVisitor->printReorderForm($block);
+		print "\n</div>";
+		
+		print parent::getBlockTitle($block);
+		
+		return ob_get_clean();
+	}
+	
+	/**
 	 * Answer true if plugin controls should be shown.
 	 * 
 	 * @return boolean
@@ -204,6 +224,23 @@ END;
 		
 		return $menuItems;
 	}
+	
+// 	/**
+// 	 * Answer additional HTML to go after the nav title.
+// 	 * 
+// 	 * @param object  NavBlockSiteComponent $navBlock
+// 	 * @return string
+// 	 * @access public
+// 	 * @since 9/21/07
+// 	 */
+// 	public function getAdditionalNavHTML (NavBlockSiteComponent $navBlock) {
+// 		ob_start();		
+// 		print "\n<div class='ui2_reorder'>";
+// 		$this->_controlsVisitor->printReorderLink($navBlock);
+// 		$this->_controlsVisitor->printReorderForm($navBlock);
+// 		print "\n</div>";
+// 		return ob_get_clean();
+// 	}
 	
 	
 	/**

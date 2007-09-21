@@ -6,9 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/09/20 19:46:39 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.11 2007/09/21 19:59:28 adamfranco Exp $
  */ 
  
+ require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
  require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 
 /**
@@ -20,14 +21,25 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.10 2007/09/20 19:46:39 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.11 2007/09/21 19:59:28 adamfranco Exp $
  */
 class ControlsSiteVisitor 
+	extends GeneralControlsSiteVisitor
 	implements SiteVisitor
 {
 	
-	var $_action = 'editview';
-		
+	/**
+	 * Constructor
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 9/21/07
+	 */
+	public function __construct () {
+		$this->module = "ui2";
+		$this->action = "editview";
+	}
+	
 	/**
 	 * Set the action to return to
 	 * 
@@ -37,7 +49,7 @@ class ControlsSiteVisitor
 	 * @since 1/16/07
 	 */
 	function setReturnAction ($returnAction) {
-		$this->_action = $returnAction;
+		$this->action = $returnAction;
 	}
 	
 	
@@ -58,12 +70,13 @@ class ControlsSiteVisitor
 		print $harmoni->request->quickURL('ui2', 'modifyComponent',
 				array('node' => $siteComponent->getId(),
 					"returnNode" => RequestContext::value('node'),
-					'returnAction' => $this->_action));
+					'returnAction' => $this->action));
 		print "'";
 		print " class='controls_form'";
 		print ">";
 		
 // 		$harmoni->request->startNamespace('controls_form_'.$siteComponent->getId());
+		$this->printReorderJS();
 	}
 	
 	/**
@@ -102,7 +115,7 @@ class ControlsSiteVisitor
 		$url = 	$harmoni->request->quickURL('ui2', 'deleteComponent', array(
 					'node' => $siteComponent->getId(),
 					'returnNode' => RequestContext::value('node'),
-					'returnAction' => $this->_action
+					'returnAction' => $this->action
 					));
 		
 		print "\n\t\t\t\t<div style='margin-top: 5px; margin-bottom: 5px;'>";
@@ -150,7 +163,7 @@ class ControlsSiteVisitor
 					$harmoni->request->quickURL('ui2', 'createSubMenu', array(
 						'parent' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
-						'returnAction' => $this->_action,
+						'returnAction' => $this->action,
 						'direction' => urlencode($parentMenuOrganizer->getDirection()))));
 			
 			print "\n\t\t\t\t\t<button onclick='";

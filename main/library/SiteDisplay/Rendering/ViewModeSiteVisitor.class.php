@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.44 2007/09/20 19:46:39 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.45 2007/09/21 19:59:28 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.44 2007/09/20 19:46:39 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.45 2007/09/21 19:59:28 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -269,7 +269,7 @@ class ViewModeSiteVisitor
 							null,
 							null,
 							$navBlock->getDescription(),
-							'');
+							$this->getAdditionalNavHTML($navBlock));
 		
 		// Traverse our child organizer, and place it in the _missingTargets array
 		// if our target is not available.
@@ -300,6 +300,18 @@ class ViewModeSiteVisitor
 		
 		// return the menu items
 		return $menuItems;
+	}
+	
+	/**
+	 * Answer additional HTML to go after the nav title.
+	 * 
+	 * @param object  NavBlockSiteComponent $navBlock
+	 * @return string
+	 * @access public
+	 * @since 9/21/07
+	 */
+	public function getAdditionalNavHTML (NavBlockSiteComponent $navBlock) {
+		return '';
 	}
 	
 	/**
