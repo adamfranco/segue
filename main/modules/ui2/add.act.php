@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.7 2007/09/24 19:55:52 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.8 2007/09/24 20:56:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.7 2007/09/24 19:55:52 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.8 2007/09/24 20:56:10 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -220,9 +220,9 @@ class addAction
 		$siteOrganizer->putSubcomponentInCell($headerRowOrganizer, 0);
 		$headerRowOrganizer->updateShowDisplayNames ('false');
 		$headerRowContent = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $headerRowOrganizer);
-		$headerRowContent->updateDisplayName($properties['namedescstep']['display_name']);
+		$headerRowContent->updateDisplayName(_('Site Header'));
 		$headerRowContent->updateDescription(_('This is the header of this site, added by default.'));
-		$headerRowContent->updateContentMarkup($properties['namedescstep']['display_name']);
+		$headerRowContent->updateContentMarkup("<span style='font-size: large;'>".$properties['namedescstep']['display_name']."</span>");
 		
 		$MainOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FixedOrganizer'), $siteOrganizer);
 		$siteOrganizer->putSubcomponentInCell($MainOrganizer, 1);
@@ -281,10 +281,10 @@ class addAction
 		$footerRowOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $siteOrganizer);
 		$siteOrganizer->putSubcomponentInCell($footerRowOrganizer, 2);
 		$footerRowOrganizer->updateShowDisplayNames ('false');
-		$footerRowContent = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $footerRowOrganizer);
-		$footerRowContent->updateDisplayName(_('My Footer'));
-		$footerRowContent->updateDescription(_('This is the footer of this site, added by default.'));
-		$footerRowContent->updateContentMarkup(_('My Footer'));
+// 		$footerRowContent = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $footerRowOrganizer);
+// 		$footerRowContent->updateDisplayName(_('My Footer'));
+// 		$footerRowContent->updateDescription(_('This is the footer of this site, added by default.'));
+// 		$footerRowContent->updateContentMarkup(_('My Footer'));
 		
 		
 		/*********************************************************

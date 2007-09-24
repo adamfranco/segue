@@ -5,12 +5,15 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.40 2007/09/24 20:49:09 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.41 2007/09/24 20:56:10 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-beta-2" date="The Future">
+		<change author='adam' date='2007-09-24'>
+			SiteCreation: Default site no longer has a footer.
+		</change>
 		<change author='adam' date='2007-09-24' ref='1799049' reftype='fr'>
 			UI1: Editing controls for header and footer are now hidden in Classic Mode 
 			and accessible through the "Site Settings" wizard.
