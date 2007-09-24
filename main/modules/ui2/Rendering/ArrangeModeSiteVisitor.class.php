@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.9 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.10 2007/09/24 20:49:10 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.9 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.10 2007/09/24 20:49:10 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -35,8 +35,8 @@ class ArrangeModeSiteVisitor
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function ArrangeModeSiteVisitor () {
-		$this->EditModeSiteVisitor();
+	function __construct () {
+		parent::__construct();
 		$this->_action = 'arrangeview';
 		
 		$this->_controlsVisitor = new ControlsSiteVisitor();

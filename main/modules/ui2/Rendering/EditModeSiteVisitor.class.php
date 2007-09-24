@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.14 2007/09/21 20:38:17 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.15 2007/09/24 20:49:10 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.14 2007/09/21 20:38:17 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.15 2007/09/24 20:49:10 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -34,14 +34,14 @@ class EditModeSiteVisitor
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function EditModeSiteVisitor () {
+	function __construct () {
 		$this->_action = 'editview';
 		
 		$this->_controlsVisitor = new EditModeControlsSiteVisitor();
 		$this->_controlsVisitor->setReturnAction($this->_action);
 		
 		
-		$this->ViewModeSiteVisitor();
+		parent::__construct();
 		$this->_classNames = array(
 			'Block' => _('Block'),
 			'NavBlock' => _('Nav. Item'),

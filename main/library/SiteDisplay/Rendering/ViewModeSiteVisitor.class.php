@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.46 2007/09/24 19:51:37 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.47 2007/09/24 20:49:09 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.46 2007/09/24 19:51:37 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.47 2007/09/24 20:49:09 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -46,7 +46,7 @@ class ViewModeSiteVisitor
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function ViewModeSiteVisitor () {
+	function __construct () {
 		/*********************************************************
 		 * cell placeholders: 
 		 *		target_id => [empty] GUI container object.

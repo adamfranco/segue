@@ -6,13 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.8 2007/09/12 23:12:24 achapin Exp $
+ * @version $Id: editview.act.php,v 1.9 2007/09/24 20:49:09 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
-require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
+require_once(dirname(__FILE__)."/Rendering/NoHeaderFooterEditModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/Rendering/DetailEditModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/view.act.php");
 
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.8 2007/09/12 23:12:24 achapin Exp $
+ * @version $Id: editview.act.php,v 1.9 2007/09/24 20:49:09 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -46,7 +46,7 @@ class editviewAction
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
 				$this->visitor = new DetailEditModeSiteVisitor($requestedNode);
 			else
-				$this->visitor = new EditModeSiteVisitor();
+				$this->visitor = new NoHeaderFooterEditModeSiteVisitor();
 		}
 		return $this->visitor;
 	}

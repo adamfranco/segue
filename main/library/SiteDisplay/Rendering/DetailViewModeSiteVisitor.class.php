@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.11 2007/09/04 15:05:32 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.12 2007/09/24 20:49:09 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.11 2007/09/04 15:05:32 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.12 2007/09/24 20:49:09 adamfranco Exp $
  */
 class DetailViewModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -35,8 +35,8 @@ class DetailViewModeSiteVisitor
 	 * @access public
 	 * @since 5/18/07
 	 */
-	function DetailViewModeSiteVisitor ( $node ) {
-		$this->ViewModeSiteVisitor();
+	function __construct ( $node ) {
+		parent::__construct();
 		
 		$this->_node = $node;
 		$this->_flowOrg = $node->getParentComponent();
@@ -118,7 +118,10 @@ class DetailViewModeSiteVisitor
 	 * @since 5/24/07
 	 */
 	function showBlockTitle ( $block ) {
-		return true;
+		if ($block->getId() == $this->_node->getId())
+			return true;
+		else
+			return $block->showDisplayName();
 	}
 	
 	/**

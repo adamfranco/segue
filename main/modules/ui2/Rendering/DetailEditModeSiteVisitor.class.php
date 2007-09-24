@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.7 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.8 2007/09/24 20:49:10 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.7 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.8 2007/09/24 20:49:10 adamfranco Exp $
  */
 class DetailEditModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -34,8 +34,8 @@ class DetailEditModeSiteVisitor
 	 * @access public
 	 * @since 5/18/07
 	 */
-	function DetailEditModeSiteVisitor ( $node ) {
-		$this->EditModeSiteVisitor();
+	function __construct ( $node ) {
+		parent::__construct();
 		
 		$this->_node = $node;
 		$this->_flowOrg = $node->getParentComponent();
