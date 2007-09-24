@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.6 2007/09/14 20:41:22 achapin Exp $
+ * @version $Id: add.act.php,v 1.7 2007/09/24 19:55:52 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.6 2007/09/14 20:41:22 achapin Exp $
+ * @version $Id: add.act.php,v 1.7 2007/09/24 19:55:52 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -229,6 +229,7 @@ class addAction
 		$MainOrganizer->updateNumColumns('2');
 		
 		$mainMenu = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'MenuOrganizer'), $MainOrganizer);
+		$mainMenu->updateWidth("200px");
 		$MainOrganizer->putSubcomponentInCell($mainMenu, 0);
 		$menuTarget = $MainOrganizer->getId()."_cell:1";
 		$mainMenu->updateTargetId($menuTarget);
