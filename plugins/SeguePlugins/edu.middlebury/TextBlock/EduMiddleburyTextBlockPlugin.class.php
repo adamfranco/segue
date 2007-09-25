@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.26 2007/09/20 17:01:54 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.27 2007/09/25 13:30:31 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.26 2007/09/20 17:01:54 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.27 2007/09/25 13:30:31 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -159,7 +159,16 @@ class EduMiddleburyTextBlockPlugin
  			if ($this->shouldShowControls()) {
 				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
  			}
-	 		print "\n".$this->getContent();
+ 			if ($this->hasContent()) {
+		 		print "\n".$this->getContent();
+	 		} else {
+				print "\n<div class='plugin_empty'>";
+				print _("No text has been added yet. ");
+				if ($this->shouldShowControls()) {
+					print "<br/>"._("Click the 'edit' link to add content. ");
+				}
+				print "</div>";
+			}
 	 		
 	 		if ($this->shouldShowControls()) {
 				print "\n</div>";
