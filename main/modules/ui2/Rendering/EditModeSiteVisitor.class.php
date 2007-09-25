@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.16 2007/09/25 14:33:02 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.17 2007/09/25 15:48:31 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.16 2007/09/25 14:33:02 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.17 2007/09/25 15:48:31 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -390,9 +390,9 @@ END;
 		print " onclick='this.style.display=\"none\"; this.nextSibling.nextSibling.style.display=\"block\";'";
 		print ">";
 		if ($isMenu)
-			print "\n\t\t\t"._("Add Menu Item");
+			print "\n\t\t\t"._("+ Menu Item");
 		else
-			print "\n\t\t\t"._("Add Content");
+			print "\n\t\t\t"._("+ Content");
 		print "\n\t</a>";
 		print "\n\t<div style='display: none'>";
 		

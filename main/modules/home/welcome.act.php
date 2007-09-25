@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: welcome.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: welcome.act.php,v 1.6 2007/09/25 15:48:31 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: welcome.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: welcome.act.php,v 1.6 2007/09/25 15:48:31 adamfranco Exp $
  */
 class welcomeAction 
 	extends MainWindowAction
@@ -60,12 +60,11 @@ class welcomeAction
 		print "</p>\n<p>";
 		
 		$actionRows->add(
-			new Block(ob_get_contents(), STANDARD_BLOCK), 
+			new Block(ob_get_clean(), STANDARD_BLOCK), 
 			"100%", 
 			null, 
 			CENTER, 
 			CENTER);
-		ob_end_clean();
 	}	
 }
 

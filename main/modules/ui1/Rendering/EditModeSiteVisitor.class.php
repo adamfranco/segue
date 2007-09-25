@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.18 2007/09/25 14:33:01 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.19 2007/09/25 15:48:31 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.18 2007/09/25 14:33:01 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.19 2007/09/25 15:48:31 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -336,9 +336,9 @@ END;
 		print $harmoni->request->quickURL('ui1', $action, $params);
 		print "'>";
 		if ($isMenu)
-			print "\n\t\t\t"._("Add Menu Item");
+			print "\n\t\t\t"._("+ Menu Item");
 		else
-			print "\n\t\t\t"._("Add Content");
+			print "\n\t\t\t"._("+ Content");
 		print "\n\t\t</a>";
 		print "\n\t</div>";
 		return ob_get_clean();
