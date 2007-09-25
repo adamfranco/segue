@@ -6,6 +6,21 @@ Name: Segue ChangeLog
 v. 2.0.0-beta-2 (2007-09-25)
 ----------------------------------------------------
 		
+	* Bug Fix: 
+		
+		MediaLibrary: Now extends screen after uploading files.
+		(2007-09-25 - Adam Franco)
+		
+	* Bug Fix: #1798905 
+		
+		MediaLibrary: Now displays errors and continues rather than failing.
+		(2007-09-25 - Adam Franco)
+		
+	* Change: 
+		
+		MediaLibrary: Now logs exceptions.
+		(2007-09-25 - Adam Franco)
+		
 	* Bug Fix: #1798905 
 		TextBlock Plugin: Now the Media Library always recieves the correct assetId
 		And uploads to the correct Asset.
