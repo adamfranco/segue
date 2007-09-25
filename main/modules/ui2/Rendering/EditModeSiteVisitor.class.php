@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.15 2007/09/24 20:49:10 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.16 2007/09/25 14:33:02 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
 require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
+require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
 
 /**
  * The edit-mode site visitor renders the site for editing, displaying controls.
@@ -21,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.15 2007/09/24 20:49:10 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.16 2007/09/25 14:33:02 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -339,7 +340,7 @@ END;
 			$pluginManager = Services::getService("PluginManager");
 			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
-			$childComponent = $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed), 2), null, '100%', null, TOP);
+			$childComponent = $guiContainer->add(new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed, true), 2), null, '100%', null, TOP);
 		}
 				
 		// Add controls bar and border
@@ -372,7 +373,7 @@ END;
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function getAddFormHTML ($organizerId, $cellIndex, $allowed) {
+	function getAddFormHTML ($organizerId, $cellIndex, $allowed, $isMenu = FALSE) {
 		ob_start();
 		$harmoni = Harmoni::instance();
 		print "\n<form action='";
@@ -385,11 +386,14 @@ END;
 		if (!is_null($cellIndex))
 			print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
 		//print "\n\t<div class='block2Content' style='text-align: center;'";
-		print "\n\t<div style='text-align: center;'";
+		print "\n\t<a style='text-align: center; display: block;'";
 		print " onclick='this.style.display=\"none\"; this.nextSibling.nextSibling.style.display=\"block\";'";
 		print ">";
-		print "\n\t\t"._("Append new...");
-		print "\n\t</div>";
+		if ($isMenu)
+			print "\n\t\t\t"._("Add Menu Item");
+		else
+			print "\n\t\t\t"._("Add Content");
+		print "\n\t</a>";
 		print "\n\t<div style='display: none'>";
 		
 		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";

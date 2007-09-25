@@ -5,12 +5,16 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.43 2007/09/25 14:07:30 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.44 2007/09/25 14:32:59 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-beta-2" date="The Future">
+		<change author='adam' date='2007-09-25' ref='1802062' reftype='fr'>
+			UI1/UI2: 'Append New...' has been renamed to 'Add Content' or 'Add Menu Item'
+			as apropriate.
+		</change>
 		<change author='adam' date='2007-09-25' ref='1799053' reftype='bug'>
 			UI1/UI2: "2-column page" is now renamed back to "Page with Sidebar". 
 			As well, the "sidebar" organizers now have their default widths set to 200px

@@ -6,12 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.17 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.18 2007/09/25 14:33:01 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
 require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
+require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
 
 /**
  * The edit-mode site visitor renders the site for editing, displaying controls.
@@ -22,7 +23,7 @@ require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.17 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.18 2007/09/25 14:33:01 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -300,7 +301,7 @@ END;
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
 	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
 			
-			$childComponent = $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), null, 'addMenuContent'), 2), null, '100%', null, TOP);
+			$childComponent = $guiContainer->add(new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, 'addMenuContent', true), 2), null, '100%', CENTER, TOP);
 		}
 				
 		$guiContainer->setPreHTML($organizer->acceptVisitor($this->_controlsVisitor));
@@ -318,7 +319,7 @@ END;
 	 * @access public
 	 * @since 4/14/06
 	 */
-	function getAddFormHTML ($organizerId, $cellIndex, $action = 'addContent') {
+	function getAddFormHTML ($organizerId, $cellIndex, $action = 'addContent', $isMenu = FALSE) {
 		ob_start();
 		$harmoni = Harmoni::instance();
 
@@ -330,11 +331,14 @@ END;
 		if (!is_null($cellIndex))
 			$params['cellIndex'] = $cellIndex;
 		
-		print "\n\t<div style='white-space: nowrap;'>";
+		print "\n\t<div style='white-space: nowrap; text-align: center;'>";
 		print "\n\t\t<a href='";
 		print $harmoni->request->quickURL('ui1', $action, $params);
 		print "'>";
-		print "\n\t\t\t"._("Append new...");
+		if ($isMenu)
+			print "\n\t\t\t"._("Add Menu Item");
+		else
+			print "\n\t\t\t"._("Add Content");
 		print "\n\t\t</a>";
 		print "\n\t</div>";
 		return ob_get_clean();
