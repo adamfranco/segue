@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.9 2007/09/25 21:56:12 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.8 2007/09/25 21:55:16 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.9 2007/09/25 21:56:12 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.8 2007/09/25 21:55:16 adamfranco Exp $
  */
 class uploadAction
 	extends MediaAction
@@ -104,7 +104,6 @@ class uploadAction
 		try {
 			$this->addFileRecord($asset);
 		} catch (Exception $e) {
-			logException($e);
 			$this->nonFatalError($e->getMessage());
 		}
 		
