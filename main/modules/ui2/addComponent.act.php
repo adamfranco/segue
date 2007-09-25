@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.4 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.5 2007/09/25 14:07:32 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.4 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.5 2007/09/25 14:07:32 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -121,6 +121,7 @@ class addComponentAction
 				$contentOrganizer = $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
 				$navOrganizer->putSubcomponentInCell($contentOrganizer, $targetIndex + 1);
 				$subMenu->updateDirection('Top-Bottom/Left-Right');
+				$contentOrganizer->updateWidth("200px");
 				break;		
 			case 'ContentPage_multipart':
 				$component = $director->createSiteComponent($director->NavBlockType, $organizer);
@@ -134,9 +135,11 @@ class addComponentAction
 				$contentOrganizer = $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
 				$navOrganizer->putSubcomponentInCell($contentOrganizer, 0);
 				
+				// Sidebar
 				$navOrganizer->updateNumColumns(2);
 				$contentOrganizer = $director->createSiteComponent($director->FlowOrganizerType, $navOrganizer);
 				$navOrganizer->putSubcomponentInCell($contentOrganizer, 1);
+				$contentOrganizer->updateWidth("200px");
 				break;
 			default:
 				throwError(new Error("Unknown multipart component: '".$componentType->asString()."'", __CLASS__));

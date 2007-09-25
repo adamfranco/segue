@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.6 2007/09/25 14:07:32 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.6 2007/09/25 14:07:32 adamfranco Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -191,20 +191,20 @@ class addMenuContentAction
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart'),
-				"name" => _("Two Column Page"),
-				"description" => _("Chose this if you want a page with two columns into which you can append any number of content blocks."),
+				"name" => _("Page with Sidebar"),
+				"description" => _("Chose this if you want a page with a main column and a sidebar column."),
 				"icon" => "PageWithSideBar.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart'),
-				"name" => _("Nested Pages"),
-				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of nested sub-pages to the current page."),
+				"name" => _("Sub Menu"),
+				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of sub-pages."),
 				"icon" => "SubMenu.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart'),
-				"name" => _("Nested Pages with Sidebar"),
-				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of nested sub-pages to the current page AND include a right sidebar for content common to all these sub-pages!"),
+				"name" => _("Sub Menu with Sidebar"),
+				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of sub-pages AND include a right sidebar for content common to all these sub-pages!"),
 				"icon" => "SubMenuWithSideBar.png"
 			);
 		return $types;
