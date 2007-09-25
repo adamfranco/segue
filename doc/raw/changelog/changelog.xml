@@ -5,12 +5,15 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.46 2007/09/25 18:32:22 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.47 2007/09/25 19:46:18 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-beta-2" date="2007-09-25">
+		<change author='adam' date='2007-09-25'>
+			MediaLibrary: Now logs exceptions.
+		</change>
 		<fix author='adam' date='2007-09-25' ref='1798905' reftype='bug'>
 			TextBlock Plugin: Now the Media Library always recieves the correct assetId
 			And uploads to the correct Asset.
