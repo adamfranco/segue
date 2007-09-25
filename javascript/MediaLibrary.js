@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.13 2007/09/25 21:55:16 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.13 2007/09/25 21:55:16 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -115,7 +115,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.13 2007/09/25 21:55:16 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -354,7 +354,8 @@ function FileLibrary ( owner, assetId, caller, container ) {
 			var errors = responseElement.getElementsByTagName('error');
 			if (errors.length) {
 				for (var i = 0; i < errors.length; i++) {
-					throw new Error( errors[i].firstChild.data );
+					alert(errors[i].firstChild.data);
+// 					throw new Error( errors[i].firstChild.data );
 				}
 			}
 		} catch (error) {
@@ -408,7 +409,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.13 2007/09/25 21:55:16 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -506,7 +507,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.13 2007/09/25 21:55:16 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -553,7 +554,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.13 2007/09/25 21:55:16 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -938,7 +939,8 @@ function MediaAsset ( assetId, xmlElement, library ) {
 			var errors = responseElement.getElementsByTagName('error');
 			if (errors.length) {
 				for (var i = 0; i < errors.length; i++) {
-					throw new Error( errors[i].firstChild.data );
+					alert(errors[i].firstChild.data);
+// 					throw new Error( errors[i].firstChild.data );
 				}
 			}
 		} catch (error) {
@@ -977,7 +979,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.13 2007/09/25 21:55:16 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
