@@ -5,12 +5,21 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.44 2007/09/25 14:32:59 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.45 2007/09/25 14:49:16 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-beta-2" date="The Future">
+		<new author='adam' date='2007-09-25'>
+			Changlog links and display now work.
+		</new>
+		<fix author='adam' date='2007-09-25'>
+			Footer cleaned up and now showing correct version.
+		</fix>
+		<change author='adam' date='2007-09-25'>
+			UI1: 'Edit Site Settings' button is now on the right side of the page.
+		</change>
 		<change author='adam' date='2007-09-25' ref='1802062' reftype='fr'>
 			UI1/UI2: 'Append New...' has been renamed to 'Add Content' or 'Add Menu Item'
 			as apropriate.
