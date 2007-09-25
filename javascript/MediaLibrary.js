@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.11 2007/09/19 20:49:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.11 2007/09/19 20:49:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -42,6 +42,12 @@ function MediaLibrary ( assetId, callingElement ) {
 	 * @since 1/26/07
 	 */
 	MediaLibrary.prototype.init = function ( assetId, callingElement ) {
+		if (!assetId || !assetId.length) {
+			var message = "Required parameter, assetId, does not have a value";
+// 			alert(message);
+			throw message;
+		}
+		
 		MediaLibrary.superclass.init.call(this, 
 								"Media Library",
 								15,
@@ -109,7 +115,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.11 2007/09/19 20:49:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -402,7 +408,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.11 2007/09/19 20:49:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -500,7 +506,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.11 2007/09/19 20:49:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -547,7 +553,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.11 2007/09/19 20:49:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -971,7 +977,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.11 2007/09/19 20:49:26 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.12 2007/09/25 18:32:23 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {

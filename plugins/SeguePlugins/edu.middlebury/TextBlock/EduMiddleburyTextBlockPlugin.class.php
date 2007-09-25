@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.27 2007/09/25 13:30:31 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.29 2007/09/25 18:36:43 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.27 2007/09/25 13:30:31 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.29 2007/09/25 18:36:43 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -315,19 +315,17 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 8/22/07
  	 */
  	function printFckEditor () {
- 		
- 		$harmoni = Harmoni::instance();
-
-
 		$oFCKeditor = new FCKeditor($this->getFieldName('content'));
-		
-		
 			
 		$oFCKeditor->Config['EnterMode'] = "br";
 		$oFCKeditor->Config['ShiftEnterMode'] = "p";
 		
 		$oFCKeditor->Config['ImageBrowser'] = "true";
+		
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace('fckeditor');
 		$oFCKeditor->Config['ImageBrowserURL'] = str_replace('&amp;', '&', $harmoni->request->quickURL('fckeditor', 'filebrowser', array('node' => $this->getId())));
+		$harmoni->request->endNamespace();
 		$oFCKeditor->Config['ImageBrowserWindowWidth'] = "700";
 		$oFCKeditor->Config['ImageBrowserWindowHeight'] = "600";
 		
@@ -395,8 +393,10 @@ class EduMiddleburyTextBlockPlugin
  		$property->chooseEditor('fck');
  		
  		$fckTextArea = $property->getEditor('fck');
+ 		$harmoni->request->startNamespace('fckeditor');
  		$fckTextArea->enableFileBrowsingAtUrl(
  			$harmoni->request->quickURL('fckeditor', 'filebrowser', array('node' => $this->getId())));
+ 		$harmoni->request->endNamespace();
  		
  		$property = $wrapper->addComponent('abstractLength', new WTextField);
  		$property->setSize(3);

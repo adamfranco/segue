@@ -3,8 +3,13 @@
 Name: Segue ChangeLog
 
 
-v. 2.0.0-beta-2 (The Future)
+v. 2.0.0-beta-2 (2007-09-25)
 ----------------------------------------------------
+		
+	* Bug Fix: #1798905 
+		TextBlock Plugin: Now the Media Library always recieves the correct assetId
+		And uploads to the correct Asset.
+		(2007-09-25 - Adam Franco)
 		
 	* New feature: 
 		
