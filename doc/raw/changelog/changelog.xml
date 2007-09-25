@@ -5,12 +5,15 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.48 2007/09/25 21:55:14 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.49 2007/09/25 22:11:42 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue ChangeLog">
 	<version number="2.0.0-beta-2" date="2007-09-25">
+		<fix author='adam' date='2007-09-25'>
+			MediaLibrary: Now extends screen after uploading files.
+		</fix>
 		<fix author='adam' date='2007-09-25' ref='1798905' reftype='bug'>
 			MediaLibrary: Now displays errors and continues rather than failing.
 		</fix>
