@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.29 2007/09/25 18:36:43 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.28 2007/09/25 18:32:24 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.29 2007/09/25 18:36:43 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.28 2007/09/25 18:32:24 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SeguePluginsAjaxPlugin
@@ -393,10 +393,8 @@ class EduMiddleburyTextBlockPlugin
  		$property->chooseEditor('fck');
  		
  		$fckTextArea = $property->getEditor('fck');
- 		$harmoni->request->startNamespace('fckeditor');
  		$fckTextArea->enableFileBrowsingAtUrl(
  			$harmoni->request->quickURL('fckeditor', 'filebrowser', array('node' => $this->getId())));
- 		$harmoni->request->endNamespace();
  		
  		$property = $wrapper->addComponent('abstractLength', new WTextField);
  		$property->setSize(3);
