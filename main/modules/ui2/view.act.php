@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.14 2007/09/14 20:41:22 achapin Exp $
+ * @version $Id: view.act.php,v 1.15 2007/09/25 15:19:00 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.14 2007/09/14 20:41:22 achapin Exp $
+ * @version $Id: view.act.php,v 1.15 2007/09/25 15:19:00 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -177,10 +177,8 @@ class viewAction
 		$helpText .= "'>"._("Help")."</a>";
 		$footer->add(new UnstyledBlock($helpText), "50%", null, LEFT, BOTTOM);
 		
-		$footerText = "Segue v.2.0-Alpha &copy;2006 Middlebury College: <a href=''>";
-		$footerText .= _("credits");
-		$footerText .= "</a>";
-		$footer->add(new UnstyledBlock($footerText), "50%", null, RIGHT, BOTTOM);
+		$footer->add(new UnstyledBlock(displayAction::getVersionText()), "50%", null, RIGHT, BOTTOM);
+
 		
 		
 		return $allWrapper;

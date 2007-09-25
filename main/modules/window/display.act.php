@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.17 2007/09/25 14:49:16 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.18 2007/09/25 15:19:00 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.17 2007/09/25 14:49:16 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.18 2007/09/25 15:19:00 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -40,7 +40,7 @@ class displayAction
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.17 2007/09/25 14:49:16 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.18 2007/09/25 15:19:00 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -161,6 +161,21 @@ class displayAction
 		$footer->add(new UnstyledBlock($helpText), "50%", null, LEFT, BOTTOM);
 		
 		
+		$footer->add(new UnstyledBlock(self::getVersionText()), "50%", null, RIGHT, BOTTOM);
+		
+		$mainScreen->add($footer, "100%", null, RIGHT, BOTTOM);
+
+		return $mainScreen;
+	}
+	
+	/**
+	 * Answer the version and copyright text
+	 *
+	 * @return string
+	 * @access public
+	 * @since 9/25/07
+	 */
+	public static function getVersionText () {
 		// Version
 		if (!isset($_SESSION['SegueVersion'])) {
 			$document = new DOMDocument();
@@ -179,15 +194,14 @@ class displayAction
 			}
 		}
 		
-		$footerText = "<a href='".$harmoni->request->quickURL('window', 'changelog')."' target='_blank'>Segue v.".$_SESSION['SegueVersion']."</a> &nbsp; &nbsp; &nbsp; ";
-		$footerText .= "&copy;".$_SESSION['SegueCopyrightYear']." Middlebury College  &nbsp; &nbsp; &nbsp; <a href='http://segue.sourceforge.net'>";
-		$footerText .= _("about");
-		$footerText .= "</a>";
-		$footer->add(new UnstyledBlock($footerText), "50%", null, RIGHT, BOTTOM);
+		$harmoni = Harmoni::instance();
+		ob_start();
+		print "<a href='".$harmoni->request->quickURL('window', 'changelog')."' target='_blank'>Segue v.".$_SESSION['SegueVersion']."</a> &nbsp; &nbsp; &nbsp; ";
+		print "&copy;".$_SESSION['SegueCopyrightYear']." Middlebury College  &nbsp; &nbsp; &nbsp; <a href='http://segue.sourceforge.net'>";
+		print _("about");
+		print "</a>";
 		
-		$mainScreen->add($footer, "100%", null, RIGHT, BOTTOM);
-
-		return $mainScreen;
+		return ob_get_clean();
 	}
 	
 	/**
