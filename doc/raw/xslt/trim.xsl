@@ -105,6 +105,24 @@
 		</xsl:choose>
 	</xsl:template>
 	
+	<xsl:template name="nl2br">
+		<xsl:param name="stringIn"/>
+		<xsl:choose>
+
+			<xsl:when test="contains($stringIn,'&#x0A;')">
+				<xsl:value-of select="substring-before($stringIn, '&#x0A;')"/>
+				<xsl:text>&#x0A;</xsl:text><br/>
+				<xsl:call-template name="nl2br">
+					<xsl:with-param name="stringIn" select="substring-after($stringIn,'&#x0A;')"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+
+				<xsl:value-of select="$stringIn"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 	
 	
 	<xsl:template name="addNewlines">
@@ -112,7 +130,20 @@
 		<xsl:param name="currentLine" />
 		<xsl:param name="remainingString" />
 		<xsl:param name="maxCharacters" />
+		<xsl:param name="tabs" />
 		
+		<xsl:variable name="lineStart">
+			<xsl:choose>
+					<!-- First Line -->
+					<xsl:when test="not(string-length($completedLines))">
+						<xsl:value-of select="''"/>
+					</xsl:when>
+					<!-- Remaining lines. -->
+					<xsl:otherwise>
+						<xsl:value-of select="concat('&#x0A;',$tabs)"/>
+					</xsl:otherwise>
+				</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="currentLineLength" select="string-length($currentLine)"/>
 		<xsl:variable name="remainingStringLength" select="string-length($remainingString)"/>
 		
@@ -123,29 +154,59 @@
 				<xsl:choose>
 					<!-- If we don't have any completed lines just add ours -->
 					<xsl:when test="not(string-length($completedLines))">
-						<xsl:value-of select="concat('&#x0A;&#x09;&#x09;', $currentLine, $remainingString)"/>
+						<xsl:value-of select="concat($lineStart, $currentLine, $remainingString)"/>
 					</xsl:when>
 					<!-- Otherwise add ours to the already completed ones -->
 					<xsl:otherwise>
-						<xsl:value-of select="concat($completedLines, '&#x0A;&#x09;&#x09;', $currentLine, '&#x20;', $remainingString)"/>
+						<xsl:value-of select="concat($completedLines, $lineStart, $currentLine, '&#x20;', $remainingString)"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
 			
 			<!-- Otherwise, add the next word and continue -->
 			<xsl:otherwise>
-				<xsl:variable name="nextWord">
+				<xsl:variable name="tmpNextWord">
 					<xsl:choose>
 						<!-- Normal Case -->
+						
 						<xsl:when test="contains($remainingString, '&#x20;')">
-							<xsl:value-of name="nextWord" select="substring-before($remainingString, '&#x20;')"/>
+							<xsl:value-of name="tmpNextWord" select="substring-before($remainingString, '&#x20;')"/>
 						</xsl:when>
 						<!-- If we only have one word remaining, it is our next word -->
 						<xsl:otherwise>
-							<xsl:value-of name="nextWord" select="$remainingString"/>
+							<xsl:value-of name="tmpNextWord" select="$remainingString"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+				
+				<xsl:variable name="nextWord">
+					<xsl:choose>
+						<!-- if we have a existing newline, force-create a new line -->
+						<xsl:when test="contains($tmpNextWord, '&#x0A;')">
+							<xsl:value-of name="nextWord" select="substring-before($tmpNextWord, '&#x0A;')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of name="nextWord" select="$tmpNextWord"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				
+				<xsl:variable name="nextLineBegin">
+					<xsl:choose>
+						<!-- if we have a existing newline, force-create a new line -->
+						<xsl:when test="contains($tmpNextWord, '&#x0A;')">
+							<xsl:call-template name="SubstringReplace">
+								<xsl:with-param name="stringIn" select="substring-after($tmpNextWord, '&#x0A;')"/>
+								<xsl:with-param name="substringIn" select="'&#x0A;'"/>
+								<xsl:with-param name="substringOut" select="concat('&#x0A;', $tabs)"/>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of name="nextLineBegin" select="''"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				
 				<xsl:variable name="nextWordLength" select="1 + string-length($nextWord)"/>
 				<xsl:variable name="newRemainingString" select="substring-after($remainingString, '&#x20;')"/>
 				
@@ -156,7 +217,31 @@
 							<!-- Add the current lines to the completed lines -->
 							<xsl:with-param name="completedLines" select="$completedLines"/>
 							<xsl:with-param name="currentLine" select="$nextWord"/>
+							<xsl:with-param name="tabs" select="$tabs"/>
 							<xsl:with-param name="remainingString" select="$newRemainingString"/>
+							<xsl:with-param name="maxCharacters" select="$maxCharacters"/>
+						</xsl:call-template>
+					</xsl:when>
+					
+					<!-- If we have a manual line break, add it -->
+					<xsl:when test="string-length($nextLineBegin)">
+						<xsl:call-template name="addNewlines">
+							<!-- Add the current lines to the completed lines -->
+							<xsl:with-param name="completedLines">
+								<xsl:choose>
+									<!-- If we don't have any completed lines just add ours -->
+									<xsl:when test="not(string-length($completedLines))">
+										<xsl:value-of select="concat($currentLine, '&#x20;', $nextWord)"/>
+									</xsl:when>
+									<!-- Otherwise add ours to the already completed ones -->
+									<xsl:otherwise>
+										<xsl:value-of select="concat($completedLines, $lineStart, concat($currentLine, '&#x20;', $nextWord))"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:with-param>
+							<xsl:with-param name="currentLine" select="$nextLineBegin"/>
+							<xsl:with-param name="remainingString" select="$newRemainingString"/>
+							<xsl:with-param name="tabs" select="$tabs"/>
 							<xsl:with-param name="maxCharacters" select="$maxCharacters"/>
 						</xsl:call-template>
 					</xsl:when>
@@ -174,12 +259,13 @@
 									</xsl:when>
 									<!-- Otherwise add ours to the already completed ones -->
 									<xsl:otherwise>
-										<xsl:value-of select="concat($completedLines, '&#x0A;&#x09;&#x09;', $currentLine)"/>
+										<xsl:value-of select="concat($completedLines, $lineStart, $currentLine)"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:with-param>
 							<xsl:with-param name="currentLine" select="$nextWord"/>
 							<xsl:with-param name="remainingString" select="$newRemainingString"/>
+							<xsl:with-param name="tabs" select="$tabs"/>
 							<xsl:with-param name="maxCharacters" select="$maxCharacters"/>
 						</xsl:call-template>
 					</xsl:when>
@@ -190,6 +276,7 @@
 							<xsl:with-param name="completedLines" select="$completedLines"/>
 							<xsl:with-param name="currentLine" select="concat($currentLine, '&#x20;', $nextWord)"/>
 							<xsl:with-param name="remainingString" select="$newRemainingString"/>
+							<xsl:with-param name="tabs" select="$tabs"/>
 							<xsl:with-param name="maxCharacters" select="$maxCharacters"/>
 						</xsl:call-template>
 					</xsl:otherwise>

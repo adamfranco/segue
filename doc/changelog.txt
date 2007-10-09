@@ -1,23 +1,22 @@
 
 
-Name: Segue ChangeLog
+Name: Segue Change Log
+
 
 
 v. 2.0.0-beta-2 (2007-09-25)
 ----------------------------------------------------
+
 		
 	* Bug Fix: 
-		
 		MediaLibrary: Now extends screen after uploading files.
 		(2007-09-25 - Adam Franco)
 		
 	* Bug Fix: #1798905 
-		
 		MediaLibrary: Now displays errors and continues rather than failing.
 		(2007-09-25 - Adam Franco)
 		
 	* Change: 
-		
 		MediaLibrary: Now logs exceptions.
 		(2007-09-25 - Adam Franco)
 		
@@ -27,17 +26,14 @@ v. 2.0.0-beta-2 (2007-09-25)
 		(2007-09-25 - Adam Franco)
 		
 	* New feature: 
-		
 		Changlog links and display now work.
 		(2007-09-25 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Footer cleaned up and now showing correct version.
 		(2007-09-25 - Adam Franco)
 		
 	* Change: 
-		
 		UI1: 'Edit Site Settings' button is now on the right side of the page.
 		(2007-09-25 - Adam Franco)
 		
@@ -53,12 +49,10 @@ v. 2.0.0-beta-2 (2007-09-25)
 		(2007-09-25 - Adam Franco)
 		
 	* Bug Fix: #1801625 
-		
 		SiteDisplay: Now 'Read More' links aren't shown if no text is present.
 		(2007-09-25 - Adam Franco)
 		
 	* Change: 
-		
 		SiteCreation: Default site no longer has a footer.
 		(2007-09-24 - Adam Franco)
 		
@@ -68,7 +62,6 @@ v. 2.0.0-beta-2 (2007-09-25)
 		(2007-09-24 - Adam Franco)
 		
 	* Change: 
-		
 		Site visitors now use PHP5-style __construct() methods.
 		(2007-09-24 - Adam Franco)
 		
@@ -78,27 +71,22 @@ v. 2.0.0-beta-2 (2007-09-25)
 		(2007-09-24 - Adam Franco)
 		
 	* Change: 
-		
 		Now the default main menu has a 200px width setting.
 		(2007-09-24 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		SiteDisplay: Now empty content organizers collapse cleanly.
 		(2007-09-24 - Adam Franco)
 		
 	* New feature: #1798938 
-		
 		UI2: Added Classic Mode-style reordering.
 		(2007-09-21 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Trimming extra slashes from the url
 		(2007-09-21 - Adam Franco)
 		
 	* Change: 
-		
 		Now using Alex's new theme as the default.
 		(2007-09-21 - Adam Franco)
 		
@@ -108,7 +96,6 @@ v. 2.0.0-beta-2 (2007-09-25)
 		(2007-09-21 - Adam Franco)
 		
 	* Bug Fix: #1798939 
-		
 		UI1: Reordering forms now appear for all sibling elements.
 		(2007-09-20 - Adam Franco)
 		
@@ -123,20 +110,18 @@ v. 2.0.0-beta-2 (2007-09-25)
 		(2007-09-20 - Adam Franco)
 		
 	* Change: #1798937 
-		
 		UI1: Status step placeholder not shown to user.
 		(2007-09-20 - Adam Franco)
 		
 	* Bug Fix: #1798916 
-		
 		UI2: Now whitespace won't prevent widths from saving.
 		(2007-09-20 - Adam Franco)
 	
 v. 2.0.0-beta-1 (2007-09-20)
 ----------------------------------------------------
+
 		
 	**** IMPORTANT *** Change: 
-		
 		Asof this version, Segue no longer supports PHP4. Please use PHP5 or later.
 		(2007-09-04 - Adam Franco)
 		
@@ -155,7 +140,6 @@ v. 2.0.0-beta-1 (2007-09-20)
 		
 		
 	* Change: 
-		
 		Libraries: Moved default location of harmoni and polyphony to segue/main/.
 		(2007-09-20 - Adam Franco)
 		
@@ -165,7 +149,6 @@ v. 2.0.0-beta-1 (2007-09-20)
 		(2007-09-20 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		TextBlock: Now works with both editors as an AJAX Plugin.
 		(2007-09-20 - Adam Franco)
 		
@@ -175,52 +158,42 @@ v. 2.0.0-beta-1 (2007-09-20)
 		(2007-09-20 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		TextBlock: Now uses a full-width text field.
 		(2007-09-20 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		TextBlock: Now can reliably switch between editors in non-wizard mode.
 		(2007-09-19 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Plugins: Fixed some javascript quoting errors.
 		(2007-09-19 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Media Library: Panel now recenters as items are added.
 		(2007-09-19 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Added a warning before deleting sites via the portal.
 		(2007-09-14 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Fixed SQL statements to work with PostgreSQL.
 		(2007-09-13 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		SiteDisplay: Fixed some assumptions of cells containting Element nodes.
 		(2007-09-13 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Nav Items can now be deleted without causing errors.
 		(2007-09-07 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Menus can now be moved without causing errors.
 		(2007-09-06 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Content can now be appended in arrange mode.
 		(2007-09-06 - Adam Franco)
 		
@@ -230,7 +203,6 @@ v. 2.0.0-beta-1 (2007-09-20)
 		(2007-09-05 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Now prints "untitled" if menu/page title isn't specified.
 		(2007-09-05 - Adam Franco)
 		
@@ -240,32 +212,26 @@ v. 2.0.0-beta-1 (2007-09-20)
 		(2007-09-05 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		UI1: Adding site editing action to UI1
 		(2007-09-05 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		MediaBrowser: Fixed notice that was causing an XML error.
 		(2007-09-04 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Removed plugin-tests link.
 		(2007-09-04 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		UI2: Max-width guideline now can be cleared.
 		(2007-09-04 - Adam Franco)
 		
 	* Bug Fix: 
-		
 		Now using an empty default cookie domain to better work out of the box.
 		(2007-09-04 - Adam Franco)
 		
 	* New feature: 
-		
 		Comments: New comment/discussion library.
 		(Adam Franco)
 		
@@ -275,27 +241,22 @@ v. 2.0.0-beta-1 (2007-09-20)
 		(Adam Franco)
 		
 	* New feature: 
-		
 		Plugins now return a description and icon for display to the user.
 		(Adam Franco)
 		
 	* New feature: 
-		
 		Added breadcrumbs to the site view.
 		(Adam Franco)
 		
 	* New feature: 
-		
 		Ajax updates now respect normal/extended state.
 		(Adam Franco)
 		
 	* Change: 
-		
 		Detail mode now forces plugin titles to be shown.
 		(Adam Franco)
 		
 	* New feature: 
-		
 		Plugins can now specify a separate/different 'extended content'.
 		(Adam Franco)
 		
@@ -305,32 +266,26 @@ v. 2.0.0-beta-1 (2007-09-20)
 		(Adam Franco)
 		
 	* Change: 
-		
 		DOM cache is now cleared when moving/adding/removing site nodes.
 		(Adam Franco)
 		
 	* New feature: 
-		
 		Classic-mode site-building user interface added.
 		(Adam Franco)
 		
 	* New feature: 
-		
 		Site-building user interface added.
 		(Adam Franco)
 		
 	* New feature: 
-		
 		Plug-in system added.
 		(Adam Franco, Christopher Shubert)
 		
 	* New feature: 
-		
 		Site rendering system added.
 		(Adam Franco)
 		
 	* New feature: 
-		
 		Everything is new.
 		(Adam Franco)
 	

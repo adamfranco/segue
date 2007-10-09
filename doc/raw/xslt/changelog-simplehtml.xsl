@@ -5,11 +5,13 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog-simplehtml.xsl,v 1.2 2007/09/05 16:29:30 adamfranco Exp $
+ @version $Id: changelog-simplehtml.xsl,v 1.3 2007/10/09 18:47:56 adamfranco Exp $
  -->
  
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+<xsl:import href="trim.xsl"/>
+<xsl:import href="paragraphs.xsl"/>
 <!--
 ///////////////////////////////////////////////////////////////////////
 // changelog
@@ -35,17 +37,33 @@
 			li {
 				padding-bottom: 3px;
 			}
+			
 		</style>
-		<title><xsl:value-of select="@name" /></title>
+		<title><xsl:value-of select="@name" /> Change Log</title>
 
 	</head>
 	<body>
-		<h1><xsl:value-of select="@name" /></h1>
+		<h1><xsl:value-of select="@name" /> Change Log</h1>
 	
 	
 <xsl:for-each select="version">
 		<h2>Version <xsl:value-of select="@number" /></h2>
 		<xsl:if test="@date!=''"><h3><xsl:value-of select="@date" /></h3></xsl:if>
+		
+		<xsl:choose>
+			<xsl:when test="string-length(releaseNotes)">
+				<p>
+				<xsl:call-template name="nl2br">
+					<xsl:with-param name="stringIn">
+						<xsl:call-template name="singleLineParagraphs">
+							<xsl:with-param name="s" select="releaseNotes"/>
+						</xsl:call-template>
+					</xsl:with-param>
+				</xsl:call-template>
+				
+				</p>
+			</xsl:when>
+		</xsl:choose>
 
 		<ul>
 			<xsl:apply-templates />
@@ -63,7 +81,7 @@
 ///////////////////////////////////////////////////////////////////////
 -->
 <xsl:template match="fix">
-	<li> Bug Fix: <xsl:call-template name="entry" /></li>	
+	<li> <b>Bug Fix:</b> <xsl:call-template name="entry" /></li>	
 </xsl:template>
 
 <!--
@@ -72,7 +90,7 @@
 ///////////////////////////////////////////////////////////////////////
 -->
 <xsl:template match="change">
-	<li> Change: <xsl:call-template name="entry" /></li>
+	<li> <b>Change:</b> <xsl:call-template name="entry" /></li>
 </xsl:template>
 
 <!--
@@ -81,7 +99,7 @@
 ///////////////////////////////////////////////////////////////////////
 -->
 <xsl:template match="new">
-	<li> New feature: <xsl:call-template name="entry" /></li>
+	<li> <b>New feature:</b> <xsl:call-template name="entry" /></li>
 </xsl:template>
 
 <!--
@@ -90,7 +108,7 @@
 ///////////////////////////////////////////////////////////////////////
 -->
 <xsl:template match="important">
-	<li> <span style='color: red'>*** IMPORTANT ***</span> Change: <xsl:call-template name="entry" /></li>
+	<li> <span style='color: red'>*** IMPORTANT ***</span> <b>Change:</b> <xsl:call-template name="entry" /></li>
 </xsl:template>
 
 <!--
@@ -116,7 +134,14 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:if>
-	<xsl:text> </xsl:text><xsl:value-of select="." />
+	<xsl:text> </xsl:text>
+	<xsl:call-template name="nl2br">
+		<xsl:with-param name="stringIn">
+			<xsl:call-template name="singleLineParagraphs">
+				<xsl:with-param name="s" select="."/>
+			</xsl:call-template>
+		</xsl:with-param>
+	</xsl:call-template>
 	<xsl:if test="@author">
 		<xsl:text> (</xsl:text>
 		<em>
@@ -147,5 +172,8 @@
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
+
+<!-- Ignore the releaseNotes data as we've already used it. -->
+<xsl:template match="releaseNotes"></xsl:template>
 
 </xsl:stylesheet>
