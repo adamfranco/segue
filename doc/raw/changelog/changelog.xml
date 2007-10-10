@@ -5,11 +5,20 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.50 2007/10/09 18:47:56 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.51 2007/10/10 23:57:11 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0.0-beta-3" date="The Future">
+		<releaseNotes>
+			<##>
+		</releaseNotes>
+		<fix author='adam' date='2007-10-10'>
+			Fixing a number of E_STRICT notices and improving the class and interface
+			hierarchies.
+		</fix>
+	</version>
 	<version number="2.0.0-beta-2" date="2007-09-25">
 		<fix author='adam' date='2007-09-25'>
 			MediaLibrary: Now extends screen after uploading files.
