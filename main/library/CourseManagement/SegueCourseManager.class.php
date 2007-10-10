@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.3 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.4 2007/10/10 22:58:46 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueCourseSection.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/SegueCourseGroup.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.3 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.4 2007/10/10 22:58:46 adamfranco Exp $
  */
 class SegueCourseManager {
 
@@ -48,24 +48,26 @@ class SegueCourseManager {
 
 	
 	/**
-	 * @var object SegueCourseManager $instance;  
-	 * @access private
-	 * @static
-	 * @since 8/14/07
-	 */
-	private static $instance;
-	
+ 	 * @var object  $instance;  
+ 	 * @access private
+ 	 * @since 10/10/07
+ 	 * @static
+ 	 */
+ 	private static $instance;
+
 	/**
-	 * Answer the instance of this object
+	 * This class implements the Singleton pattern. There is only ever
+	 * one instance of the this class and it is accessed only via the 
+	 * ClassName::instance() method.
 	 * 
-	 * @return object SegueCourseManager
+	 * @return object 
 	 * @access public
-	 * @since 8/14/07
+	 * @since 5/26/05
+	 * @static
 	 */
 	public static function instance () {
-		if(!self::$instance) {
-			self::$instance = new SegueCourseManager();
-		}
+		if (!isset(self::$instance))
+			self::$instance = new SegueCourseManager;
 		
 		return self::$instance;
 	}

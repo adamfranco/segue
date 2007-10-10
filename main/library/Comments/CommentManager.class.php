@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.14 2007/09/20 17:01:54 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.15 2007/10/10 22:58:45 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,38 +28,43 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.14 2007/09/20 17:01:54 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.15 2007/10/10 22:58:45 adamfranco Exp $
  */
 class CommentManager {
 		
 	/**
-	 * Get the instance of the object.
+ 	 * @var object  $instance;  
+ 	 * @access private
+ 	 * @since 10/10/07
+ 	 * @static
+ 	 */
+ 	private static $instance;
+
+	/**
 	 * This class implements the Singleton pattern. There is only ever
-	 * one instance of the object and it is accessed only via the 
-	 * CommentManager::instance() method.
+	 * one instance of the this class and it is accessed only via the 
+	 * ClassName::instance() method.
 	 * 
-	 * @return object Harmoni
+	 * @return object 
 	 * @access public
 	 * @since 5/26/05
 	 * @static
 	 */
-	function instance () {
-		if (!defined("COMMENT_MANAGER_INSTANTIATED")) {
-			$GLOBALS['__commentManager'] = new CommentManager();
-			define("COMMENT_MANAGER_INSTANTIATED", true);
-		}
+	public static function instance () {
+		if (!isset(self::$instance))
+			self::$instance = new CommentManager;
 		
-		return $GLOBALS['__commentManager'];
+		return self::$instance;
 	}
 	
 	/**
 	 * Constructor
 	 * 
 	 * @return void
-	 * @access public
+	 * @access private
 	 * @since 7/3/07
 	 */
-	function CommentManager () {
+	private function __construct () {
 		$this->mediaFileType = new Type ('segue', 'edu.middlebury', 'media_file',
 				'A file that is uploaded to Segue.');
 		$this->_comments = array();

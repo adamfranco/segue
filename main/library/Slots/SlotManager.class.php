@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.4 2007/09/13 16:09:42 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.5 2007/10/10 22:58:47 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -26,29 +26,31 @@ require_once(dirname(__FILE__)."/CourseSlot.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.4 2007/09/13 16:09:42 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.5 2007/10/10 22:58:47 adamfranco Exp $
  */
 class SlotManager {
 		
 	/**
-	 * @var object SlotManager $instance;  
-	 * @access private
-	 * @static
-	 * @since 8/14/07
-	 */
-	private static $instance;
-	
+ 	 * @var object  $instance;  
+ 	 * @access private
+ 	 * @since 10/10/07
+ 	 * @static
+ 	 */
+ 	private static $instance;
+
 	/**
-	 * Answer the instance of this object
+	 * This class implements the Singleton pattern. There is only ever
+	 * one instance of the this class and it is accessed only via the 
+	 * ClassName::instance() method.
 	 * 
-	 * @return object SlotManager
+	 * @return object 
 	 * @access public
-	 * @since 8/14/07
+	 * @since 5/26/05
+	 * @static
 	 */
 	public static function instance () {
-		if(!self::$instance) {
-			self::$instance = new SlotManager();
-		}
+		if (!isset(self::$instance))
+			self::$instance = new SlotManager;
 		
 		return self::$instance;
 	}
