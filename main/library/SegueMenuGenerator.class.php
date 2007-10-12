@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.11 2007/09/04 21:13:12 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.12 2007/10/12 19:18:38 adamfranco Exp $
  */
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.11 2007/09/04 21:13:12 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.12 2007/10/12 19:18:38 adamfranco Exp $
  */
 
 class SegueMenuGenerator {
@@ -30,7 +30,7 @@ class SegueMenuGenerator {
 	 *		"module.action" .
 	 * @return object MenuLayout
 	 */
-	function generateMainMenu($harmoni) {
+	function generateMainMenu() {
 		
 		$harmoni = Harmoni::instance();
 		

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.18 2007/09/25 15:19:00 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.19 2007/10/12 19:18:38 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.18 2007/09/25 15:19:00 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.19 2007/10/12 19:18:38 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -33,14 +33,14 @@ class displayAction
 	 * @access public
 	 * @since 4/25/05
 	 */
-	function execute ( $harmoni ) {
+	function execute () {
 		/**
 		 * @package segue.display
 		 * 
 		 * @copyright Copyright &copy; 2005, Middlebury College
 		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 		 *
-		 * @version $Id: display.act.php,v 1.18 2007/09/25 15:19:00 adamfranco Exp $
+		 * @version $Id: display.act.php,v 1.19 2007/10/12 19:18:38 adamfranco Exp $
 		 */
 		 
 		require_once(HARMONI."GUIManager/Components/Header.class.php");
