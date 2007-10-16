@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.51 2007/10/10 23:57:11 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.52 2007/10/16 13:46:22 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -240,10 +240,17 @@
 		<name short="alex">Alex Chapin</name>
 		<name short="chris">Christopher Shubert</name>
 	</authors>
-	<groupid>82171</groupid>
 	<reftypes>
-		<reftype name="bug">565234</reftype>
-		<reftype name="fr">565237</reftype>
-		<reftype name="task"></reftype>
+		<reftype name="segue_bug" group="82171" tracker='565234'/>
+		<reftype name="segue_fr" group="82171" tracker='565237'/>
+		<reftype name="segue_patch" group="82171" tracker='565236'/>
+		
+		<reftype name="harmoni_bug" group="82873" tracker='567473'/>
+		<reftype name="harmoni_fr" group="82873" tracker='567476'/>
+		<reftype name="harmoni_patch" group="82873" tracker='567475'/>
+		
+		<reftype name="concerto_bug" group="88266" tracker='586054'/>
+		<reftype name="concerto_fr" group="88266" tracker='586057'/>
+		<reftype name="concerto_patch" group="88266" tracker='586056'/>
 	</reftypes>
 </changelog>

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog-simplehtml.xsl,v 1.4 2007/10/11 16:28:13 adamfranco Exp $
+ @version $Id: changelog-simplehtml.xsl,v 1.5 2007/10/16 13:46:23 adamfranco Exp $
  -->
  
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -121,10 +121,11 @@
 		<xsl:choose>
 			<xsl:when test="@reftype">
 				<xsl:variable name="reftype" select="@reftype" />
-				<xsl:variable name="trackerid" select="//reftypes/reftype[@name = $reftype]" />
+				<xsl:variable name="group" select="//reftypes/reftype[@name = $reftype]/@group" />
+				<xsl:variable name="tracker" select="//reftypes/reftype[@name = $reftype]/@tracker" />
         		<a>
         			<xsl:attribute name="href">
-        				http://sourceforge.net/tracker/index.php?func=detail&amp;aid=<xsl:value-of select="@ref" />&amp;group_id=<xsl:value-of select="//groupid" />&amp;atid=<xsl:value-of select="$trackerid" />
+        				http://sourceforge.net/tracker/index.php?func=detail&amp;aid=<xsl:value-of select="@ref" />&amp;group_id=<xsl:value-of select="$group" />&amp;atid=<xsl:value-of select="$tracker" />
         			</xsl:attribute>
         			#<xsl:value-of select="@ref" />
         		</a>
