@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.53 2007/10/22 15:38:30 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.54 2007/10/22 15:40:42 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2007-10-22' ref='1810360' reftype='concerto_bug'>
+			MediaLibrary panel now works in IE. Needed to explicitly add tbody 
+			elements to tables.
+		</fix>
 		<fix author='adam' date='2007-10-10'>
 			Fixing a number of E_STRICT notices and improving the class and interface
 			hierarchies.

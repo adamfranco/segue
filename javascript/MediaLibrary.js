@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.14 2007/09/25 22:11:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.14 2007/09/25 22:11:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -115,7 +115,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.14 2007/09/25 22:11:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -411,7 +411,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.14 2007/09/25 22:11:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -471,10 +471,11 @@ function AssetLibrary ( owner, assetId, caller, container ) {
 		}
 		
 		var table = this.uploadForm.appendChild(document.createElement('table'));
-		var row1 = table.appendChild(document.createElement('tr'));
-		var row2 = table.appendChild(document.createElement('tr'));
-		var row3 = table.appendChild(document.createElement('tr'));
-		var row4 = table.appendChild(document.createElement('tr'));
+		var tbody = table.appendChild(document.createElement('tbody'));
+		var row1 = tbody.appendChild(document.createElement('tr'));
+		var row2 = tbody.appendChild(document.createElement('tr'));
+		var row3 = tbody.appendChild(document.createElement('tr'));
+		var row4 = tbody.appendChild(document.createElement('tr'));
 		
 		this.addFieldToRow(row1, 'File', 'file', 'media_file', '', {'size': '10'});
 		this.addFieldToRow(row2, 'Name/Title', 'text', 'displayName', '');
@@ -509,7 +510,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.14 2007/09/25 22:11:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -556,7 +557,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.14 2007/09/25 22:11:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -830,10 +831,11 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		}		
 		
 		var table = this.uploadForm.appendChild(document.createElement('table'));
+		var tbody = table.appendChild(document.createElement('tbody'));
 		
 		if (this.files.length) {
 			for (var i = 0; i < this.files.length; i++) {
-				var row = table.appendChild(document.createElement('tr'));
+				var row = tbody.appendChild(document.createElement('tr'));
 				var heading = row.appendChild(document.createElement('th'));
 				heading.innerHTML = 'File: ';
 				
@@ -875,24 +877,24 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		}
 		// Allow the user to add a file
 		else {
-			this.addFieldToRow(table.appendChild(document.createElement('tr')),
+			this.addFieldToRow(tbody.appendChild(document.createElement('tr')),
 				'File', 'file', 'media_file', '', {'size': '10'});
 		}
 			
-		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+		this.addFieldToRow(tbody.appendChild(document.createElement('tr')),
 			'Name/Title', 'text', 'displayName', this.displayName);
-		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+		this.addFieldToRow(tbody.appendChild(document.createElement('tr')),
 			'Description', 'text', 'description', this.description);
-		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+		this.addFieldToRow(tbody.appendChild(document.createElement('tr')),
 			'Author/Creator', 'text', 'creator', this.creator || '');
 		
-		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+		this.addFieldToRow(tbody.appendChild(document.createElement('tr')),
 			'Source', 'text', 'source', this.source || '');
-		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+		this.addFieldToRow(tbody.appendChild(document.createElement('tr')),
 			'Publisher', 'text', 'publisher', this.publisher || '');
-		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+		this.addFieldToRow(tbody.appendChild(document.createElement('tr')),
 			'[Pub.] Date', 'text', 'date', this.date || '');
-		this.addFieldToRow(table.appendChild(document.createElement('tr')),
+		this.addFieldToRow(tbody.appendChild(document.createElement('tr')),
 			'', 'submit', 'submit', 'Submit');
 		
 		
@@ -981,7 +983,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.14 2007/09/25 22:11:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
