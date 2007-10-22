@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- 
- @package concerto.docs
+ @package segue.docs
  
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.52 2007/10/16 13:46:22 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.53 2007/10/22 15:38:30 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
 	<version number="2.0.0-beta-3" date="The Future">
 		<releaseNotes>
-			<##>
+			
 		</releaseNotes>
 		<fix author='adam' date='2007-10-10'>
 			Fixing a number of E_STRICT notices and improving the class and interface

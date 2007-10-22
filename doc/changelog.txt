@@ -4,6 +4,16 @@ Name: Segue Change Log
 
 
 
+v. 2.0.0-beta-3 (The Future)
+----------------------------------------------------
+
+		
+		
+	* Bug Fix: 
+		Fixing a number of E_STRICT notices and improving the class and interface
+		hierarchies. 
+		(2007-10-10 - Adam Franco)
+	
 v. 2.0.0-beta-2 (2007-09-25)
 ----------------------------------------------------
 

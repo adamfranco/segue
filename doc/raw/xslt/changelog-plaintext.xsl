@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog-plaintext.xsl,v 1.5 2007/10/11 16:28:13 adamfranco Exp $
+ @version $Id: changelog-plaintext.xsl,v 1.6 2007/10/22 15:38:30 adamfranco Exp $
  -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:import href="trim.xsl"/>
@@ -129,12 +129,18 @@ v. <xsl:value-of select="@number" /><xsl:if test="@date!=''"> (<xsl:value-of sel
 			</xsl:call-template>
 		</xsl:when>
 		<xsl:otherwise>
+			<xsl:variable name="author">
+				<xsl:call-template name="trim">
+					<xsl:with-param name="s" select="$str"/>
+				</xsl:call-template>
+			</xsl:variable>
+		
 			<xsl:choose>
-				<xsl:when test="//authors/name[@short=$str]">
-					<xsl:value-of select="//authors/name[@short=$str]" />
+				<xsl:when test="//authors/name[@short=$author]">
+					<xsl:value-of select="//authors/name[@short=$author]" />
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="$str" />
+					<xsl:value-of select="$author" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:otherwise>
@@ -143,6 +149,7 @@ v. <xsl:value-of select="@number" /><xsl:if test="@date!=''"> (<xsl:value-of sel
 
 <xsl:template name="reporters">
 	<xsl:param name="str"/>
+	
 	<xsl:choose>
 	<xsl:when test="contains($str,',')">
 		<xsl:call-template name="reporters">
@@ -154,18 +161,24 @@ v. <xsl:value-of select="@number" /><xsl:if test="@date!=''"> (<xsl:value-of sel
 		</xsl:call-template>
 	</xsl:when>
 	<xsl:otherwise>
+		<xsl:variable name="reporter">
+			<xsl:call-template name="trim">
+				<xsl:with-param name="s" select="$str"/>
+			</xsl:call-template>
+		</xsl:variable>
+	
 		<xsl:choose>
-			<xsl:when test="//reporters/reporter[@short=$str]">
-				<xsl:value-of select="//reporters/reporter[@short=$str]/name" />
+			<xsl:when test="//reporters/reporter[@short=$reporter]">
+				<xsl:value-of select="//reporters/reporter[@short=$reporter]/name" />
 				<xsl:choose>
-					<xsl:when test="//reporters/reporter[@short=$str]/institution">
+					<xsl:when test="//reporters/reporter[@short=$reporter]/institution">
 						 <xsl:text> of </xsl:text>
-						<xsl:value-of select="//reporters/reporter[@short=$str]/institution" />
+						<xsl:value-of select="//reporters/reporter[@short=$reporter]/institution" />
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="$str" />
+				<xsl:value-of select="$reporter" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:otherwise>
