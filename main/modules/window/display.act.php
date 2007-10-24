@@ -5,11 +5,24 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.19 2007/10/12 19:18:38 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.20 2007/10/24 20:44:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
+ 
+require_once(HARMONI."GUIManager/Components/Header.class.php");
+require_once(HARMONI."GUIManager/Components/Menu.class.php");
+require_once(HARMONI."GUIManager/Components/MenuItemHeading.class.php");
+require_once(HARMONI."GUIManager/Components/MenuItemLink.class.php");
+require_once(HARMONI."GUIManager/Components/Heading.class.php");
+require_once(HARMONI."GUIManager/Components/Footer.class.php");
+require_once(HARMONI."GUIManager/Container.class.php");
+
+require_once(HARMONI."GUIManager/Layouts/XLayout.class.php");
+require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
+
+require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
 
 /**
  * build the frame of the window
@@ -19,12 +32,22 @@ require_once(POLYPHONY."/main/library/Basket/Basket.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.19 2007/10/12 19:18:38 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.20 2007/10/24 20:44:41 adamfranco Exp $
  */
 class displayAction 
 	extends Action
 {
-		
+	/**
+	 * AuthZ
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 10/24/07
+	 */
+	public function isAuthorizedToExecute () {
+		return true;
+	}
+	
 	/**
 	 * Execute the Action
 	 * 
@@ -34,27 +57,7 @@ class displayAction
 	 * @since 4/25/05
 	 */
 	function execute () {
-		/**
-		 * @package segue.display
-		 * 
-		 * @copyright Copyright &copy; 2005, Middlebury College
-		 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
-		 *
-		 * @version $Id: display.act.php,v 1.19 2007/10/12 19:18:38 adamfranco Exp $
-		 */
-		 
-		require_once(HARMONI."GUIManager/Components/Header.class.php");
-		require_once(HARMONI."GUIManager/Components/Menu.class.php");
-		require_once(HARMONI."GUIManager/Components/MenuItemHeading.class.php");
-		require_once(HARMONI."GUIManager/Components/MenuItemLink.class.php");
-		require_once(HARMONI."GUIManager/Components/Heading.class.php");
-		require_once(HARMONI."GUIManager/Components/Footer.class.php");
-		require_once(HARMONI."GUIManager/Container.class.php");
-		
-		require_once(HARMONI."GUIManager/Layouts/XLayout.class.php");
-		require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
-		
-		require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
+		$harmoni = Harmoni::instance();
 				
 		$xLayout = new XLayout();
 		$yLayout = new YLayout();

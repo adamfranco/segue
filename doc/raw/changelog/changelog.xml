@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.54 2007/10/22 15:40:42 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.55 2007/10/24 20:44:40 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -18,7 +18,7 @@
 			MediaLibrary panel now works in IE. Needed to explicitly add tbody 
 			elements to tables.
 		</fix>
-		<fix author='adam' date='2007-10-10'>
+		<fix author='adam' date='2007-10-10' ref='1819563' reftype='bug'>
 			Fixing a number of E_STRICT notices and improving the class and interface
 			hierarchies.
 		</fix>
