@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.10 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.11 2007/10/25 16:06:25 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.10 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.11 2007/10/25 16:06:25 adamfranco Exp $
  */
 class uploadAction
 	extends MediaAction
@@ -108,7 +108,33 @@ class uploadAction
 			$this->nonFatalError($e->getMessage());
 		}
 		
-		$this->addDublinCoreRecord($asset);
+		try {
+			$this->addDublinCoreRecord($asset);
+		} catch (Exception $e) {
+			HarmoniErrorHandler::logException($e, 'Segue');
+			$this->nonFatalError($e->getMessage());
+		}
+		
+		// Log the success or failure
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			$item = new AgentNodeEntryItem("Media Library", "File uploaded with id '".$asset->getId()->getIdString()."' and filename '".$_FILES['media_file']['name']."'");
+			$item->addNodeId($asset->getId());
+			$item->addNodeId($contentAsset->getId());
+			
+			$idManager = Services::getService("Id");
+			$director = AssetSiteDirector::forAsset($contentAsset);
+			$site = $director->getRootSiteComponent($contentAsset->getId()->getIdString());
+			$item->addNodeId($idManager->getId($site->getId()));
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
 		
 		return $asset;
 	}

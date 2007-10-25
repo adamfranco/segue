@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.3 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.4 2007/10/25 16:06:25 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addplugin.act.php,v 1.3 2007/09/04 15:07:44 adamfranco Exp $
+ * @version $Id: addplugin.act.php,v 1.4 2007/10/25 16:06:25 adamfranco Exp $
  */
 class addpluginAction 
 	extends MainWindowAction
@@ -88,9 +88,11 @@ class addpluginAction
 			$item = new AgentNodeEntryItem("Create Content", "Plugin added: ".Type::typeToString($type));
 			$item->addNodeId($asset->getId());
 			$item->addNodeId($parentAsset->getId());
-			$renderer = NodeRenderer::forAsset($asset);
-			$siteRenderer = $renderer->getSiteRenderer();
-			$item->addNodeId($siteRenderer->getId());
+			
+			$idManager = Services::getService("Id");
+			$director = AssetSiteDirector::forAsset($asset);
+			$site = $director->getRootSiteComponent($asset->getId()->getIdString());
+			$item->addNodeId($idManager->getId($site->getId()));
 			
 			$log->appendLogWithTypes($item,	$formatType, $priorityType);
 		}

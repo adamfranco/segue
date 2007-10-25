@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.1 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.2 2007/10/25 16:06:25 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/update.act.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/update.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.1 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.2 2007/10/25 16:06:25 adamfranco Exp $
  */
 class deleteAction
 	extends updateAction
@@ -50,8 +50,35 @@ class deleteAction
 			ob_start();
 			
 			$fileAsset = $this->getFileAsset();
+			
+			$fileAssetId = $fileAsset->getId();
+			$contentAsset = $this->getContentAsset();
+			
 			$repository = $fileAsset->getRepository();
 			$repository->deleteAsset($fileAsset->getId());
+			
+			// Log the success or failure
+			if (Services::serviceRunning("Logging")) {
+				$loggingManager = Services::getService("Logging");
+				$log = $loggingManager->getLogForWriting("Segue");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+								"Normal events.");
+				
+				$message = "File deleted with id '".$fileAssetId->getIdString()."'.";
+
+				$item = new AgentNodeEntryItem("Media Library", $message);
+				$item->addNodeId($fileAssetId);
+				$item->addNodeId($contentAsset->getId());
+				
+				$idManager = Services::getService("Id");
+				$director = AssetSiteDirector::forAsset($contentAsset);
+				$site = $director->getRootSiteComponent($contentAsset->getId()->getIdString());
+				$item->addNodeId($idManager->getId($site->getId()));
+				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			}
 			
 			$error = ob_get_clean();
 			if ($error)

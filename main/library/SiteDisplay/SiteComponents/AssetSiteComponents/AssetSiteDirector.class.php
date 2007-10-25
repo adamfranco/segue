@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.17 2007/10/25 16:06:25 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,11 +33,24 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.17 2007/10/25 16:06:25 adamfranco Exp $
  */
 class AssetSiteDirector
 	implements SiteDirector 
 {
+
+	/**
+	 * Create an instance of the Director for a particular Asset
+	 * 
+	 * @param object Asset $asset
+	 * @return object AssetSiteDirector
+	 * @access public
+	 * @since 10/25/07
+	 * @static
+	 */
+	public static function forAsset (Asset $asset) {
+		return new AssetSiteDirector($asset->getRepository());
+	}
 		
 	/**
 	 * Answer a new Asset Site Director
@@ -47,7 +60,7 @@ class AssetSiteDirector
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function AssetSiteDirector ( $repository ) {
+	public function __construct ( Repository $repository ) {
 		$this->_repository = $repository;
 		$this->_activeNodes = array();
 		$this->_createdSiteComponents = array();
@@ -520,7 +533,7 @@ class AssetSiteDirector
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.17 2007/10/25 16:06:25 adamfranco Exp $
  */
 class NonNavException
 	extends Exception
