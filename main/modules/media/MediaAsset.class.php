@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAsset.class.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: MediaAsset.class.php,v 1.3 2007/10/25 20:27:40 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaFile.class.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/MediaFile.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAsset.class.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: MediaAsset.class.php,v 1.3 2007/10/25 20:27:40 adamfranco Exp $
  */
 class MediaAsset {
 		
@@ -41,7 +41,7 @@ class MediaAsset {
 	 * @since 4/27/07
 	 * @static
 	 */
-	function withAsset ( $asset ) {
+	public static function withAsset ( $asset ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
 		
 		$mediaAsset = new MediaAsset($asset);
@@ -58,7 +58,7 @@ class MediaAsset {
 	 * @since 4/27/07
 	 * @static
 	 */
-	function withIds ( $repositoryId, $assetId ) {
+	public static function withIds ( $repositoryId, $assetId ) {
 		ArgumentValidator::validate($repositoryId, ExtendsValidatorRule::getRule("Id"));
 		ArgumentValidator::validate($assetId, ExtendsValidatorRule::getRule("Id"));
 		
@@ -79,7 +79,7 @@ class MediaAsset {
 	 * @since 4/27/07
 	 * @static
 	 */
-	function withIdStrings ( $repositoryId, $assetId ) {
+	public static function withIdStrings ( $repositoryId, $assetId ) {
 		ArgumentValidator::validate($repositoryId, NonZeroLengthStringValidatorRule::getRule());
 		ArgumentValidator::validate($assetId, NonZeroLengthStringValidatorRule::getRule());
 		

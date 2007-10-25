@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.3 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.4 2007/10/25 20:27:40 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAsset.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.3 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.4 2007/10/25 20:27:40 adamfranco Exp $
  */
 class MediaFile {
 		
@@ -36,8 +36,9 @@ class MediaFile {
 	 * @return object MediaFile
 	 * @access public
 	 * @since 4/30/07
+	 * @static
 	 */
-	function withIdString ( $idString) {
+	public static function withIdString ( $idString) {
 		if (preg_match('/^repositoryId=(.+)&assetId=(.+)&recordId=(.+)$/', 
 			$idString, $matches)) 
 		{
@@ -59,7 +60,7 @@ class MediaFile {
 	 * @since 4/27/07
 	 * @static
 	 */
-	function withIds ( $repositoryId, $assetId, $recordId  ) {
+	public static function withIds ( $repositoryId, $assetId, $recordId  ) {
 		ArgumentValidator::validate($repositoryId, ExtendsValidatorRule::getRule("Id"));
 		ArgumentValidator::validate($assetId, ExtendsValidatorRule::getRule("Id"));
 		ArgumentValidator::validate($recordId, ExtendsValidatorRule::getRule("Id"));
@@ -84,7 +85,7 @@ class MediaFile {
 	 * @since 4/27/07
 	 * @static
 	 */
-	function withIdStrings ( $repositoryId, $assetId, $recordId ) {
+	public static function withIdStrings ( $repositoryId, $assetId, $recordId ) {
 		ArgumentValidator::validate($repositoryId, NonZeroLengthStringValidatorRule::getRule());
 		ArgumentValidator::validate($assetId, NonZeroLengthStringValidatorRule::getRule());
 		ArgumentValidator::validate($recordId, NonZeroLengthStringValidatorRule::getRule());
