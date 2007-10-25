@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update.act.php,v 1.3 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: update.act.php,v 1.4 2007/10/25 14:06:50 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,11 +20,24 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update.act.php,v 1.3 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: update.act.php,v 1.4 2007/10/25 14:06:50 adamfranco Exp $
  */
 class updateAction
 	extends MediaAction
 {
+	
+	/**
+	 * Answer the authorization function used for this action
+	 * 
+	 * @return object Id
+	 * @access protected
+	 * @since 10/25/07
+	 */
+	protected function getAuthorizationFunction () {
+		$idManager = Services::getService("Id");
+		return $idManager->getId("edu.middlebury.authorization.modify");
+	}
+	
 	/**
 	 * Check authorization
 	 * 
@@ -35,12 +48,11 @@ class updateAction
 	function isAuthorizedToExecute () {
 		// Check that the user can access the media library
 		$authZ = Services::getService("AuthZ");
-		$idManager = Services::getService("Id");
 		
 		$fileAsset = $this->getFileAsset();
 		
 		return $authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"),
+			$this->getAuthorizationFunction(),
 			$fileAsset->getId());
 	}
 		
@@ -51,7 +63,7 @@ class updateAction
 	 * @access public
 	 * @since 1/26/07
 	 */
-	function buildContent () {		
+	public function buildContent () {		
 		ob_start();
 		$idManager = Services::getService("Id");
 		$fileAsset = $this->getFileAsset();
@@ -100,10 +112,10 @@ class updateAction
 	 * Answer the file asset
 	 * 
 	 * @return object Asset
-	 * @access public
+	 * @access protected
 	 * @since 2/14/07
 	 */
-	function getFileAsset () {
+	protected function getFileAsset () {
 		if (!isset($this->_fileAsset)) {
 			$contentAsset = $this->getContentAsset();
 			$repository = $contentAsset->getRepository();

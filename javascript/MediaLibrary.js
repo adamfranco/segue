@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -115,7 +115,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -411,7 +411,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -510,7 +510,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -557,7 +557,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -682,6 +682,65 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		}
 		
 		return this.entryElement;
+	}
+	
+	/**
+	 * Delete the media asset
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 10/25/07
+	 */
+	MediaAsset.prototype.deleteAsset = function () {
+		var req = Harmoni.createRequest();
+		var url = Harmoni.quickUrl('media', 'delete', {'assetId': this.assetId, 'mediaAssetId': this.id});
+		if (req) {
+			// Define a variable to point at this mediaAsset that will be in the
+			// scope of the request-processing function, since 'this' will (at that
+			// point) be that function.
+			var mediaAsset = this;
+
+			req.onreadystatechange = function () {
+				// only if req shows "loaded"
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200) {
+						if (!req.responseXML)
+							alert(req.responseText);
+						mediaAsset.completeDelete(req.responseXML);
+					} else {
+						throw new Error("There was a problem retrieving the XML data: " +
+							req.statusText);
+					}
+				}
+			} 
+			
+			req.open("GET", url, true);
+			req.send(null);
+		} else {
+			throw new Error("Error: Unable to execute AJAX request. Please upgrade your browser.");
+		}
+	}
+	
+	/**
+	 * Complete the deletion of the asset, cleaning up the UI
+	 * 
+	 * @param DOM_Document xmldoc
+	 * @return void
+	 * @access public
+	 * @since 10/25/07
+	 */
+	MediaAsset.prototype.completeDelete = function (xmldoc) {
+		
+		var errors = xmldoc.getElementsByTagName('error');
+		if (errors.length) {
+			for (var i = 0; i < errors.length; i++) {
+				alert('Error: ' + errors[i].firstChild.data);
+				throw new Error(errors[i].firstChild.data);
+			}
+		}
+		
+		this.entryElement.parentNode.removeChild(this.entryElement);
 	}
 	
 	/**
@@ -983,7 +1042,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.15 2007/10/22 15:40:42 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {

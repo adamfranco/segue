@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.55 2007/10/24 20:44:40 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.56 2007/10/25 14:06:49 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -21,6 +21,9 @@
 		<fix author='adam' date='2007-10-10' ref='1819563' reftype='bug'>
 			Fixing a number of E_STRICT notices and improving the class and interface
 			hierarchies.
+		</fix>
+		<fix author='adam' date='2007-10-25' ref='1802310' reftype='bug'>
+			MediaLibrary: Can now delete files.
 		</fix>
 	</version>
 	<version number="2.0.0-beta-2" date="2007-09-25">
