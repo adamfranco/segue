@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update.act.php,v 1.5 2007/10/25 16:06:25 adamfranco Exp $
+ * @version $Id: update.act.php,v 1.6 2007/10/25 17:18:06 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update.act.php,v 1.5 2007/10/25 16:06:25 adamfranco Exp $
+ * @version $Id: update.act.php,v 1.6 2007/10/25 17:18:06 adamfranco Exp $
  */
 class updateAction
 	extends MediaAction
@@ -68,15 +68,48 @@ class updateAction
 		$idManager = Services::getService("Id");
 		$fileAsset = $this->getFileAsset();
 		
-		if (!($displayName = RequestContext::value('displayName')))
-			$displayName = $_FILES['media_file']['name'];
+		// Update the files
+		$oldFilename = null;
+		$newFilename = null;
+		foreach (array_keys($_FILES) as $fieldName) {
+			if (preg_match('/^file___(.+)$/', $fieldName, $matches)) {
+				$fileRecord = $fileAsset->getRecord($idManager->getId($matches[1]));
+				$filenameParts = $fileRecord->getPartsByPartStructure($idManager->getId("FILE_NAME"));
+				$oldFilename = $filenameParts->next()->getValue();
+				$newFilename = $_FILES[$fieldName]['name'];
+				$this->updateFileRecord($fileAsset, $fileRecord, $fieldName);
+			} else if ($fieldName == 'media_file') {
+				$oldFilename = null;
+				$newFilename = $_FILES[$fieldName]['name'];
+				$this->addFileRecord($fileAsset);
+			}
+		}
 		
-		if (!($description = RequestContext::value('description')))
-			$description = '';
+		// Update the displayname
+		// 
+		// If the displayname in the form is the old filename, update it to the
+		// new filename
+		if (RequestContext::value('displayName') 
+			&& RequestContext::value('displayName') == $oldFilename
+			&& $newFilename)
+		{
+			$fileAsset->updateDisplayName($newFilename);
+		}
+		// Otherwise use the new value in the form if one exists
+		else if (RequestContext::value('displayName') 
+			&& RequestContext::value('displayName') != $fileAsset->getDisplayName())
+		{
+			$fileAsset->updateDisplayName(RequestContext::value('displayName'));
+		}
 		
-		$fileAsset->updateDisplayName($displayName);
-		$fileAsset->updateDescription($description);
+		// Update the description if needed.
+		if (!RequestContext::value('description')) {
+			$fileAsset->updateDescription('');
+		} else if (RequestContext::value('description') != $fileAsset->getDescription()) {
+			$fileAsset->updateDescription(RequestContext::value('description'));
+		}
 		
+		// Update the other metadata.
 		$dublinCoreRecords = $fileAsset->getRecordsByRecordStructure(
 			$idManager->getId('dc'));
 		
@@ -85,16 +118,6 @@ class updateAction
 		else
 			$this->addDublinCoreRecord($fileAsset);
 		
-		foreach (array_keys($_FILES) as $fieldName) {
-			if (preg_match('/^file___(.+)$/', $fieldName, $matches)) {
-				$fileRecord = $fileAsset->getRecord($idManager->getId($matches[1]));
-				$newFileName = $_FILES[$fieldName]['name'];
-				$this->updateFileRecord($fileAsset, $fileRecord, $fieldName);
-			} else if ($fieldName == 'media_file') {
-				$newFileName = $_FILES[$fieldName]['name'];
-				$this->addFileRecord($fileAsset);
-			}
-		}
 		
 		// Log the success or failure
 		if (Services::serviceRunning("Logging")) {
@@ -106,8 +129,8 @@ class updateAction
 							"Normal events.");
 			
 			$message = "File updated with id '".$fileAsset->getId()->getIdString()."'";
-			if (isset($newFileName))
-				$message .= " and new filename '".$newFileName."'";
+			if (isset($newFilename))
+				$message .= " and new filename '".$newFilename."'";
 			$item = new AgentNodeEntryItem("Media Library", $message);
 			$item->addNodeId($fileAsset->getId());
 			$item->addNodeId($this->getContentAsset()->getId());

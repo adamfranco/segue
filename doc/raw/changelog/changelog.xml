@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.57 2007/10/25 16:50:09 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.58 2007/10/25 17:18:06 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -28,6 +28,11 @@
 		<fix author='adam' date='2007-10-25' ref='1819999' reftype='bug'>
 			MediaLibrary: Thumbnails are now refreshed when uploading new files.
 		</fix>
+		<change author='adam' date='2007-10-25'>
+			MediaLibrary: When uploading a replacement file, if the submitted title
+			is the same as the original filename, the title will be updated to the
+			new filename.
+		</change>
 	</version>
 	<version number="2.0.0-beta-2" date="2007-09-25">
 		<fix author='adam' date='2007-09-25'>
