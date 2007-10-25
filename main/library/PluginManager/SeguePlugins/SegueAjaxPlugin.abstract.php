@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.17 2007/09/20 15:05:17 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.3 2007/10/25 20:27:00 adamfranco Exp $
  */ 
 
-require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
+require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
 
 /**
  * Abstract class that all AjaxPlugins must extend
@@ -20,10 +20,10 @@ require_once(dirname(__FILE__)."/SeguePluginsPlugin.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAjaxPlugin.abstract.php,v 1.17 2007/09/20 15:05:17 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.3 2007/10/25 20:27:00 adamfranco Exp $
  */
-class SeguePluginsAjaxPlugin 
-	extends SeguePluginsPlugin
+abstract class SegueAjaxPlugin 
+	extends SeguePluginsTemplate
 {
  	
 /*********************************************************
@@ -38,13 +38,6 @@ class SeguePluginsAjaxPlugin
  * other Harmoni APIs, constants, global variables, or
  * the super-globals $_GET, $_POST, $_REQUEST, $_COOKIE.
  *********************************************************/
- 	
-/*********************************************************
- * Instance Methods - API
- *
- * Use these methods in your plugin as needed, but do not 
- * override them.
- *********************************************************/
 	
 	/**
 	 * Answer a Url string with the array values added as parameters.
@@ -54,7 +47,7 @@ class SeguePluginsAjaxPlugin
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function href ( $parameters = array() ) {		
+	final public function href ( $parameters = array() ) {		
 		return "href='Javascript:".$this->locationSend($parameters)."'";
 	}
 	
@@ -72,7 +65,7 @@ class SeguePluginsAjaxPlugin
 	 * @access public
 	 * @since 1/16/06
 	 */
-	function locationSend ( $parameters = array() ) {
+	final public function locationSend ( $parameters = array() ) {
 		ArgumentValidator::validate($parameters, 
 			OptionalRule::getRule(ArrayValidatorRule::getRule()));
 			
@@ -96,7 +89,7 @@ class SeguePluginsAjaxPlugin
 	 * @access public
 	 * @since 1/16/06
 	 */
-	function formStartTagWithAction ( $parameters = array(), $method = 'post', 
+	final public function formStartTagWithAction ( $parameters = array(), $method = 'post', 
 		$isMultipart = false ) 
 	{
 		// If this is a multipart form, we must do a normal 'submit'
@@ -126,8 +119,9 @@ class SeguePluginsAjaxPlugin
 	 * @return string
 	 * @access public
 	 * @since 1/16/06
+	 * @static
 	 */
-	function getPluginSystemJavascript () {
+	final public static function getPluginSystemJavascript () {
 		ob_start();
 		print<<<END
 		
@@ -264,6 +258,12 @@ END;
 /*********************************************************
  * Instance Methods - Not in API
  *********************************************************/
+ 	/**
+ 	 * @var boolean $_isExtended;  
+ 	 * @access private
+ 	 * @since 10/25/07
+ 	 */
+ 	private $_isExtended;
 	
 	/**
 	 * Answer the markup for this plugin
@@ -274,7 +274,7 @@ END;
 	 * @access public
 	 * @since 1/20/06
 	 */
-	function executeAndGetMarkup ( $showControls = false, $extended = false ) {
+	final public function executeAndGetMarkup ( $showControls = false, $extended = false ) {
 		$this->_isExtended = $extended;
 		
 		$markup = parent::executeAndGetMarkup($showControls, $extended);
@@ -296,7 +296,7 @@ END;
 	 * @access private
 	 * @since 1/13/06
 	 */
-	function _url ( $parameters = array() ) {		
+	private function _url ( $parameters = array() ) {		
 		ArgumentValidator::validate($parameters, 
 			OptionalRule::getRule(ArrayValidatorRule::getRule()));
 		
@@ -314,7 +314,7 @@ END;
 	 * @access public
 	 * @since 1/17/06
 	 */
-	function _ajaxUrl ( $parameters = array() ) {
+	private function _ajaxUrl ( $parameters = array() ) {
 		$harmoni = Harmoni::instance();
 		$url = $harmoni->request->mkURL('plugin_manager', 'update_ajax');
 	
@@ -341,13 +341,13 @@ END;
 	 * @since 5/9/07
 	 * @static
 	 */
-	function writeAjaxLib () {
+	final public static function writeAjaxLib () {
 		if (!isset($GLOBALS['ajaxLibWritten']) || !$GLOBALS['ajaxLibWritten']) {
 			$harmoni = Harmoni::instance();
 			$outputHandler = $harmoni->getOutputHandler();
 			$outputHandler->setHead(
 				$outputHandler->getHead()
-				.SeguePluginsAjaxPlugin::getPluginSystemJavascript());
+				.self::getPluginSystemJavascript());
 			$GLOBALS['ajaxLibWritten'] = true;	
 		}
 	}

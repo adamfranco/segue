@@ -6,12 +6,15 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.39 2007/10/25 17:44:11 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.1 2007/10/25 20:27:00 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
+
+require_once(dirname(__FILE__)."/SeguePluginsDriverAPI.interface.php");
+require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
 
 /**
  * Abstract class that all Plugins must extend
@@ -22,195 +25,13 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.39 2007/10/25 17:44:11 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.1 2007/10/25 20:27:00 adamfranco Exp $
  */
-class SeguePluginsPlugin {
+abstract class SeguePluginsDriver 
+	implements SeguePluginsDriverAPI, SeguePluginsAPI
+{
  	
-/*********************************************************
- * Instance Methods/Variables - API
- *
- * These are the methods that plugins can and should use 
- * to interact with their environment. 
- * 		Valid additional APIs outside of the methods below:
- *			- OSID interfaces (accessed through Plugin->getManager($managerName))
- *
- * To preserve portability, plugins should not access 
- * other Harmoni APIs, constants, global variables, or
- * the super-globals $_GET, $_POST, $_REQUEST, $_COOKIE.
- *********************************************************/
-/*********************************************************
- * Object Variables - API
- *********************************************************/
-	/**
-	 * @var array $data; 4-dimensional array holding plugin data 
-	 * @access private
-	 * @since 3/1/06
-	 */
-	var $data;
 
-/*********************************************************
- * Instance Methods - API - Override in Children
- *
- * Override these methods to implement the functionality of
- * a plugin.
- *********************************************************/
- 	
- 	/**
- 	 * Answer a description of the the plugin (not the instance) to provide to 
- 	 * users when choosing between what plugin to create.
- 	 * 
- 	 * @return string
- 	 * @access public
- 	 * @since 6/1/07
- 	 * @static
- 	 */
- 	public static function getPluginDescription () {
- 		return _("Override this method in your plugin.");
- 	}
- 	
- 	/**
- 	 * Initialize this Plugin. 
- 	 * Plugin writers should override this method with their own functionality
- 	 * as needed.  This is where you would make more complex data that your 
- 	 * plugin needs.
- 	 * 
- 	 * @return void
- 	 * @access public
- 	 * @since 1/12/06
- 	 */
- 	public function initialize () {
-		// Override as needed.
- 	}
- 	
- 	/**
- 	 * Update from environmental ($_REQUEST) data.
- 	 * Plugin writers should override this method with their own functionality
- 	 * as needed.
- 	 * 
- 	 * @param array $request
- 	 * @return void
- 	 * @access public
- 	 * @since 1/12/06
- 	 */
- 	public function update ( $request ) {
- 		// Override as needed.
- 	}
- 	
- 	/**
- 	 * Return the markup that represents the plugin.
- 	 * Plugin writers should override this method with their own functionality
- 	 * as needed.
- 	 * 
- 	 * @return string
- 	 * @access public
- 	 * @since 1/12/06
- 	 */
- 	public function getMarkup () {
- 		return _("<p>Override this method to display your pluggin.</p>");
- 	}
- 	
- 	/**
- 	 * Return the markup that represents the plugin in and expanded form.
- 	 * This method will be called when looking at a "detail view" of the plugin
- 	 * where the representation of the plugin will be the focus of the page
- 	 * rather than just one of many elements.
- 	 * Override this method in your plugin as needed.
- 	 * 
- 	 * @return string
- 	 * @access public
- 	 * @since 5/23/07
- 	 */
- 	public function getExtendedMarkup () {
- 		return $this->getMarkup();
- 	}
- 	
- 	/**
- 	 * Answer the label to use when linking to the plugin's extented markup.
- 	 * For a text-based plugin this may be the default, 'read more >>', for
- 	 * an image plugin it might be something like "Large View", etc.
- 	 * 
- 	 * @return string
- 	 * @access public
- 	 * @since 5/23/07
- 	 */
- 	public function getExtendedLinkLabel () {
- 		return _("read more &raquo;");
- 	}
- 	
- 	/**
- 	 * Generate a plain-text or HTML description string for the plugin instance.
- 	 * This may simply be a stored 'raw description' string, it could be generated
- 	 * from other content in the plugin instance, or some combination there-of.
- 	 * Override this method in your plugin as needed.
- 	 * 
- 	 * @return string
- 	 * @access public
- 	 * @since 5/22/07
- 	 */
- 	public function generateDescription () {
- 		return $this->getRawDescription();
- 	}
- 	
- 	/**
- 	 * Answer true if this instance of a plugin 'has content'. This method is called
- 	 * to determine if the plugin instance is ready to be 'published' or is a newly-created
- 	 * placeholder awaiting content addition. If the plugin has no appreciable 
- 	 * difference between have content or not, this method should return true. For
- 	 * example: an interactive calendar plugin should probably be 'published' 
- 	 * whether or not events have been added to it.
- 	 * 
- 	 * @return boolean
- 	 * @access public
- 	 * @since 7/13/07
- 	 */
- 	public function hasContent () {
- 		// Override as needed
- 		return true;
- 	}
- 	
- 	/*********************************************************
- 	 * The following three methods allow plugins to work within
- 	 * the "Segue Classic" user interface.
- 	 *
- 	 * If plugins do not support the wizard directly, then their
- 	 * markup with 'show controls' enabled will be put directly 
- 	 * in the wizard.
- 	 *********************************************************/
- 	/**
- 	 * Answer true if this plugin natively supports editing via wizard components.
- 	 * Override to return true if you implement the getWizardComponent(), 
- 	 * and updateFromWizard() methods.
- 	 * 
- 	 * @return boolean
- 	 * @access public
- 	 * @since 5/9/07
- 	 */
- 	public function supportsWizard () {
- 		return false;
- 	}
- 	/**
- 	 * Return the a {@link WizardComponent} to allow editing of your
- 	 * plugin in the Wizard.
- 	 * 
- 	 * @return object WizardComponent
- 	 * @access public
- 	 * @since 5/8/07
- 	 */
- 	public function getWizardComponent () {
- 		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
- 	}
- 	
- 	/**
- 	 * Update the component from an array of values
- 	 * 
- 	 * @param array $values
- 	 * @return void
- 	 * @access public
- 	 * @since 5/8/07
- 	 */
- 	public function updateFromWizard ( $values ) {
- 		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
- 	}
  	
 /*********************************************************
  * Instance Methods - API
@@ -220,18 +41,6 @@ class SeguePluginsPlugin {
  *********************************************************/
 	
 	/**
-	 * Answer an href tag string with the array values added as parameters to 
-	 * an internal url.
-	 * 
-	 * @param array $parameters Associative array ('name' => 'value')
-	 * @return string
-	 * @access public
-	 * @since 4/30/07
-	 */
-	function href ( $parameters = array() ) {
-		return "href='".$this->url($parameters)."'";
-	}
-	/**
 	 * Answer an internal Url string with the array values added as parameters.
 	 * 
 	 * @param array $parameters Associative array ('name' => 'value')
@@ -239,7 +48,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function url ( $parameters = array() ) {		
+	final public function url ( $parameters = array() ) {		
 		ArgumentValidator::validate($parameters, 
 			OptionalRule::getRule(ArrayValidatorRule::getRule()));
 		
@@ -263,67 +72,8 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/16/06
 	 */
-	function locationSendString ( $parameters = array() ) {		
+	final public function locationSendString ( $parameters = array() ) {		
 		return "'".$this->locationSend($parameters)."'";
-	}
-	
-	/**
-	 * Answer a Javascript command to send the window to an internal url with the 
-	 * parameters passed.
-	 *
-	 * Use this method, e.g.:
-	 *		"onclick=".$this->locationSend(array('item' => 123))
-	 * instead of the following:
-	 * 		"onclick='window.location=\"".$this->url(array('item' => 123))."\"'"
-	 * 
-	 * @param array $parameters Associative array ('name' => 'value')
-	 * @return string
-	 * @access public
-	 * @since 1/16/06
-	 */
-	function locationSend ( $parameters = array() ) {		
-		return "window.location=\"".$this->url($parameters)."\"";
-	}
-	
-	/**
-	 * Answer a url with the parameters passed, for a form. As well, specify
-	 * an optional boolean second parameter, 'isMultipart' if this is a multipart
-	 * form with file uploads.
-	 *
-	 * Use this method, e.g.:
-	 *		$this->formTagWithAction(array('item' => 123), false);
-	 * instead of the following:
-	 * 		"<form action='".$this->url(array('item' => 123))."' method='post>";
-	 *
-	 * Usage of this method instead of manually writing the form start tag
-	 * is optional, but will allow the plugin to more easily be ported to being
-	 * an 'AjaxPlugin' later on as the AjaxPlugin redefines the behavior of
-	 * this method.
-	 * 
-	 * @param array $parameters Associative array ('name' => 'value')
-	 * @param string $method post OR get
-	 * @param boolean $isMultipart
-	 * @return string
-	 * @access public
-	 * @since 1/16/06
-	 */
-	function formStartTagWithAction ( $parameters = array(), $method = 'post', 
-		$isMultipart = false ) 
-	{
-		// If this is a multipart form, we must do a normal 'submit'
-		// that includes a page refresh.
-		if ($isMultipart) {
-			return "<form action='".$this->url($parameters)."' method='post' enctype='multipart/form-data'>";
-		} 
-		// If the form is not a multipart form with file uploads, then we
-		// don't ned the enctype parameter.
-		else {
-			if (strtolower($method) == 'get')
-				$method = 'get';
-			else
-				$method = 'post';
-			return "<form action='".$this->url($parameters)."' method='".$method."'>";
-		}
 	}
 	
 	/**
@@ -336,7 +86,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getFieldName ( $name ) {
+	final public function getFieldName ( $name ) {
 		return RequestContext::name($name);
 	}
 	
@@ -348,7 +98,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getFieldValue ( $name ) {
+	final public function getFieldValue ( $name ) {
 		return RequestContext::value($name);
 	}
 	
@@ -359,7 +109,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getTitle () {
+	final public function getTitle () {
 		return $this->_asset->getDisplayName();
 	}
 	
@@ -374,7 +124,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getRawDescription () {
+	final public function getRawDescription () {
 		$idManager = Services::getService("Id");
 		$parts = $this->_asset->getPartsByPartStructure(
 			$idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"));
@@ -400,7 +150,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function setRawDescription ( $description ) {
+	final public function setRawDescription ( $description ) {
 		$idManager = Services::getService("Id");
 		$parts = $this->_asset->getPartsByPartStructure(
 			$idManager->getId("Repository::edu.middlebury.segue.sites_repository::edu.middlebury.segue.segue_plungin_rs.raw_description"));
@@ -432,7 +182,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/20/06
 	 */
-	function getDescription () {
+	final public function getDescription () {
 		return $this->_asset->getDescription();
 	}
 	
@@ -445,7 +195,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getContent () {
+	final public function getContent () {
 		$content = $this->_asset->getContent();
 		return $content->asString();
 	}
@@ -460,7 +210,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function setContent ( $content ) {
+	final public function setContent ( $content ) {
 		$string = Blob::withValue($content);
 		$this->_asset->updateContent($string);
 	}
@@ -490,7 +240,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function getDataRecords () {
+	final public function getDataRecords () {
 		return $this->data;
 	}
 
@@ -501,7 +251,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/18/06
 	 */
-	function updateDataRecords () {
+	final public function updateDataRecords () {
 		$this->_storeData();
 	}
 	
@@ -513,7 +263,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/26/06
 	 */
-	function cleanHTML ($htmlString) {
+	final public function cleanHTML ($htmlString) {
 		$htmlStringObj = HtmlString::withValue($htmlString);
  		$htmlStringObj->clean();
  		return $htmlStringObj->asString();
@@ -530,7 +280,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/26/06
 	 */
-	function trimHTML ($htmlString, $maxWords, $addElipses = true) {
+	final public function trimHTML ($htmlString, $maxWords, $addElipses = true) {
 		$htmlStringObj = HtmlString::withValue($htmlString);
  		$htmlStringObj->trim($maxWords, $addElipses);
  		return $htmlStringObj->asString();
@@ -547,7 +297,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/26/06
 	 */
-	function stripTagsAndTrim ($htmlString, $maxWords, $addElipses = true) {
+	final public function stripTagsAndTrim ($htmlString, $maxWords, $addElipses = true) {
 		$htmlStringObj = HtmlString::withValue($htmlString);
  		$htmlStringObj->stripTagsAndTrim($maxWords, $addElipses);
  		return $htmlStringObj->asString();
@@ -560,7 +310,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/16/06
 	 */
-	function canModify () {
+	final public function canModify () {
 		if (isset($this->_canModifyFunction)) {
 			$function = $this->_canModifyFunction;
 			return $function($this);
@@ -580,7 +330,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/16/06
 	 */
-	function canView () {
+	final public function canView () {
 		if (isset($this->_canViewFunction)) {
 			$function = $this->_canViewFunction;
 			return $function($this);
@@ -602,7 +352,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 2/22/06
 	 */
-	function shouldShowControls () {
+	final public function shouldShowControls () {
 		if ($this->_showControls && $this->canModify())
 			return true;
 		else
@@ -616,7 +366,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/17/06
 	 */
-	function getId () {
+	final public function getId () {
 		if (!isset($this->_id)) {
 			$id = $this->_asset->getId();
 			$this->_id = $id->getIdString();
@@ -631,7 +381,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/19/06
 	 */
-	function getPluginDir () {
+	final public function getPluginDir () {
 		$dir = $this->_configuration->getProperty('plugin_dir')."/";
 		$type = $this->_asset->getAssetType();
 		$dir .= $type->getDomain()."/";
@@ -648,7 +398,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/19/06
 	 */
-	function getPluginPath () {
+	final public function getPluginPath () {
 		$path = $this->_configuration->getProperty('plugin_path')."/";
 		$type = $this->_asset->getAssetType();
 		$path .= $type->getDomain()."/";
@@ -766,7 +516,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/26/06
 	 */
-	function getThumbnailURL ($idString, $fname) {
+	final public function getThumbnailURL ($idString, $fname) {
 		$harmoni = Harmoni::Instance();
 		$idManager = Services::getService("Id");
 		$repositoryId = $idManager->getId(
@@ -800,7 +550,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/31/06
 	 */
-	function printFileRecord($fileData, $parts) {
+	final public function printFileRecord($fileData, $parts) {
 		$idManager = Services::getService("Id");
 		$moduleManager = Services::getService("InOutModules");
 		
@@ -834,7 +584,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/26/06
 	 */
-	function getFileURL ($idString, $fname) {
+	final public function getFileURL ($idString, $fname) {
 		$harmoni = Harmoni::Instance();
 		$idManager = Services::getService("Id");
 		$repositoryId = $idManager->getId(
@@ -861,7 +611,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/26/06
 	 */
-	function getFileData ($idString) {
+	final public function getFileData ($idString) {
 		$idManager = Services::getService("Id");
 		$id = $idManager->getId($idString);
 		$fileRS = $this->_asset->getRecord($id);
@@ -888,7 +638,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 3/6/06
 	 */
-	function logEvent ($category, $description, $type = 'Event_Notice') {
+	final public function logEvent ($category, $description, $type = 'Event_Notice') {
 		ArgumentValidator::validate($category, StringValidatorRule::getRule());
 		ArgumentValidator::validate($description, StringValidatorRule::getRule());
 		ArgumentValidator::validate($type, ChoiceValidatorRule::getRule('Event_Notice', 'Error'));
@@ -990,7 +740,7 @@ class SeguePluginsPlugin {
 	 * @access private
 	 * @since 1/17/06
 	 */
-	var $_id;
+	private $_id;
 	
 	/**
 	 * If true, editing controls will be displayed (assuming authorization)
@@ -998,56 +748,56 @@ class SeguePluginsPlugin {
 	 * @access private
 	 * @since 2/22/06
 	 */
-	var $_showControls = false;
+	private $_showControls = false;
 	
 	/**
 	 * @var object URLWriter $_baseURL; URL for the plugin w/o mods
 	 * @access private
 	 * @since 3/1/06
 	 */
-	var $_baseURL;
+	private $_baseURL;
 	
 	/**
 	 * @var object HarmoniAsset $_asset; the asset that contains the plugin data 
 	 * @access private
 	 * @since 3/1/06
 	 */
-	var $_asset;
+	private $_asset;
 	
 	/**
 	 * @var object HarmoniConfiguration $_configuration; holds config data 
 	 * @access private
 	 * @since 3/1/06
 	 */
-	var $_configuration;
+	private $_configuration;
 	
 	/**
 	 * @var string $_pluginDir; filesystem path to appropriate plugin class 
 	 * @access private
 	 * @since 3/1/06
 	 */
-	var $_pluginDir;
+	private $_pluginDir;
 	
 	/**
 	 * @var aray $_data_ids; parallel structure to 'data' w/ part ids
 	 * @access private
 	 * @since 3/1/06
 	 */
-	var $_data_ids;
+	private $_data_ids;
 	
 	/**
 	 * @var array $_loadedData; the data that persisted since the last change
 	 * @access private
 	 * @since 3/1/06
 	 */
-	var $_loadedData;
+	private $_loadedData;
 	
 	/**
 	 * @var array $_structures; array mapping 'data' indices to structure ids 
 	 * @access private
 	 * @since 3/1/06
 	 */
-	var $_structures;
+	private $_structures;
 	
 /*********************************************************
  * Instance Methods - Non-API
@@ -1061,7 +811,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/12/06
 	 */
-	function setConfiguration ( $configuration ) {
+	final public function setConfiguration ( $configuration ) {
 		if (isset($this->_configuration))
 			throwError(new Error("Configuration already set.", "Plugin.abstract", true));
 			
@@ -1076,7 +826,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/12/06
 	 */
-	function setAsset ( $asset ) {
+	final public function setAsset ( $asset ) {
 		if (isset($this->_asset))
 			throwError(new Error("Asset already set.", "Plugin.abstract", true));
 		
@@ -1098,7 +848,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 2/22/06
 	 */
-	function setShowControls ($showControls) {
+	final public function setShowControls ($showControls) {
 		ArgumentValidator::validate($showControls, BooleanValidatorRule::getRule());
 		$this->_showControls = $showControls;
 	}
@@ -1112,7 +862,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function executeAndGetMarkup ( $showControls = false, $extended = false ) {
+	public function executeAndGetMarkup ( $showControls = false, $extended = false ) {
 		$this->setShowControls($showControls);
 		
 		$harmoni = Harmoni::instance();
@@ -1152,7 +902,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 5/23/07
 	 */
-	function executeAndGetExtendedMarkup ( $showControls = false) {
+	final public function executeAndGetExtendedMarkup ( $showControls = false) {
 		return $this->executeAndGetMarkup($showControls, true);
 	}
 	
@@ -1164,7 +914,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 5/23/07
 	 */
-	function hasExtendedMarkup () {
+	final public function hasExtendedMarkup () {
 		$showControls = $this->_showControls;
 		$this->_showControls = false;
 		
@@ -1178,13 +928,47 @@ class SeguePluginsPlugin {
 	}
 	
 	/**
+	 * Set a custom function for checking if the user can modify the plugin.
+	 * This function must accept the plugin as its only argument and return
+	 * a boolean. Use the create_function() method to create an anonymous function.
+	 *
+	 * This may be used to allow the plugin to make use of alternate authorization
+	 * systems or settings.
+	 * 
+	 * @param string $function
+	 * @return void
+	 * @access public
+	 * @since 7/5/07
+	 */
+	final public function setCanModifyFunction ($function) {
+		$this->_canModifyFunction = $function;
+	}
+	
+	/**
+	 * Set a custom function for checking if the user can modify the plugin.
+	 * This function must accept the plugin as its only argument and return
+	 * a boolean. Use the create_function() method to create an anonymous function.
+	 *
+	 * This may be used to allow the plugin to make use of alternate authorization
+	 * systems or settings.
+	 * 
+	 * @param string $function
+	 * @return void
+	 * @access public
+	 * @since 7/5/07
+	 */
+	final public function setCanViewFunction ($function) {
+		$this->_canViewFunction = $function;
+	}
+	
+	/**
 	 * Answer the REQUEST data for this plugin instance.
 	 * 
 	 * @return array
 	 * @access private
 	 * @since 1/13/06
 	 */
-	function _getRequestData () {
+	final private function _getRequestData () {
 		return array();
 	}
 	
@@ -1196,7 +980,7 @@ class SeguePluginsPlugin {
 	 * @access private
 	 * @since 1/12/06
 	 */
-	function _loadData () {
+	final private function _loadData () {
 		// one array for the data, a second for the persistence of ids
 		if (isset($this->data))
 			unset($this->data, $this->_data_ids);
@@ -1289,7 +1073,7 @@ class SeguePluginsPlugin {
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function _storeData () {
+	final private function _storeData () {
 		if (isset($changes))
 			unset($changes);
 		// only change things when you must
@@ -1349,7 +1133,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @access private
 	 * @since 1/27/06
 	 */
-	function _changeFileInfo () {
+	final private function _changeFileInfo () {
 		$idManager = Services::getService("Id");
 		$changes = array();
 		foreach ($this->data['FILE'] as $instance => $file) {
@@ -1414,7 +1198,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @access private
 	 * @since 1/27/06
 	 */
-	function _populateFileInfo () {
+	final private function _populateFileInfo () {
 		// plugins get specific file information, can request URL or 
 		// data via functions defined above
 		$idManager = Services::getService("Id");
@@ -1489,7 +1273,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @access public
 	 * @since 1/13/06
 	 */
-	function _dataChanged () {
+	final private function _dataChanged () {
 		// @todo test different implementations of this function
 		$new = serialize($this->data);
 		$old = serialize($this->_loadedData);
@@ -1505,7 +1289,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @access private
 	 * @since 1/13/06
 	 */
-	function _fileDataChanged () {
+	final private function _fileDataChanged () {
 		// @todo test different implementations of this function
 		$new = serialize($this->data['FILE']);
 		$old = serialize($this->_loadedData['FILE']);
@@ -1521,7 +1305,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @access public
 	 * @since 3/1/06
 	 */
-	function getStructuresForPlugin () {
+	final public function getStructuresForPlugin () {
 		if (!isset($this->_structures)) {
 			$db = Services::getService("DBHandler");
 			
@@ -1570,7 +1354,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @access private
 	 * @since 3/1/06
 	 */
-	function _createInstance ($dname, $instance) {
+	final private function _createInstance ($dname, $instance) {
 		// @todo take the data in $this->data[$rs][$instance] and create a 
 		// proper record for it in the database.
 		
@@ -1611,40 +1395,6 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Set a custom function for checking if the user can modify the plugin.
-	 * This function must accept the plugin as its only argument and return
-	 * a boolean. Use the create_function() method to create an anonymous function.
-	 *
-	 * This may be used to allow the plugin to make use of alternate authorization
-	 * systems or settings.
-	 * 
-	 * @param string $function
-	 * @return void
-	 * @access public
-	 * @since 7/5/07
-	 */
-	function setCanModifyFunction ($function) {
-		$this->_canModifyFunction = $function;
-	}
-	
-	/**
-	 * Set a custom function for checking if the user can modify the plugin.
-	 * This function must accept the plugin as its only argument and return
-	 * a boolean. Use the create_function() method to create an anonymous function.
-	 *
-	 * This may be used to allow the plugin to make use of alternate authorization
-	 * systems or settings.
-	 * 
-	 * @param string $function
-	 * @return void
-	 * @access public
-	 * @since 7/5/07
-	 */
-	function setCanViewFunction ($function) {
-		$this->_canViewFunction = $function;
 	}
 }
 ?>

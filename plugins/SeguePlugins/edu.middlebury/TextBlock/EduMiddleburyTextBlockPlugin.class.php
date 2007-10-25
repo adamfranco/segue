@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.30 2007/10/25 17:44:13 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.31 2007/10/25 20:27:01 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,11 +20,11 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.30 2007/10/25 17:44:13 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.31 2007/10/25 20:27:01 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
-	extends SeguePluginsAjaxPlugin
-// 	extends SeguePluginsPlugin
+	extends SegueAjaxPlugin
+// 	extends SeguePlugin
 {
 	/**
  	 * Answer a description of the the plugin (not the instance) to provide to 

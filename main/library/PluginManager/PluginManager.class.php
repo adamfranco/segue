@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.25 2007/09/11 18:00:04 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.26 2007/10/25 20:27:00 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.25 2007/09/11 18:00:04 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.26 2007/10/25 20:27:00 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -187,9 +187,7 @@ class PluginManager {
 		
 		if ($this->isPluginDomain($domain)) {
 			require_once(MYDIR."/main/library/PluginManager/"
-				.$domain."/".$domain."Plugin.abstract.php");
-			require_once(MYDIR."/main/library/PluginManager/"
-				.$domain."/".$domain."AjaxPlugin.abstract.php");
+				.$domain."/include.php");
 			require_once($this->getPluginDir($type)
 				.$this->getPluginClass($type).".class.php");
 			

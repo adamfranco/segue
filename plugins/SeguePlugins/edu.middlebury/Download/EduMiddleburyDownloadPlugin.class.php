@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.12 2007/10/25 17:44:12 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.13 2007/10/25 20:27:00 adamfranco Exp $
  */
 
 /**
@@ -18,11 +18,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.12 2007/10/25 17:44:12 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.13 2007/10/25 20:27:00 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
-	extends SeguePluginsAjaxPlugin
-// 	extends SeguePluginsPlugin
+	extends SegueAjaxPlugin
+// 	extends SeguePlugin
 {
 	/**
  	 * Answer a description of the the plugin (not the instance) to provide to 
