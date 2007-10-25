@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.4 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.5 2007/10/25 17:44:12 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Slot.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.4 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.5 2007/10/25 17:44:12 adamfranco Exp $
  */
 class PersonalSlot
 	extends Slot
@@ -110,8 +110,9 @@ class PersonalSlot
 	 * @return string
 	 * @access public
 	 * @since 8/22/07
+	 * @static
 	 */
-	public function getPersonalShortname (Id $agentId) {
+	public static function getPersonalShortname (Id $agentId) {
 		$agentManager = Services::getService("Agent");
 		$agent = $agentManager->getAgent($agentId);
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.17 2007/10/25 17:44:12 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.16 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: XmlFlowOrganizerSiteComponent.class.php,v 1.17 2007/10/25 17:44:12 adamfranco Exp $
  */
 class XmlFlowOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -213,7 +213,7 @@ class XmlFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function acceptVisitor ( $visitor ) {
+	function acceptVisitor ( SiteVisitor $visitor ) {
 		return $visitor->visitFlowOrganizer($this);
 	}
 	

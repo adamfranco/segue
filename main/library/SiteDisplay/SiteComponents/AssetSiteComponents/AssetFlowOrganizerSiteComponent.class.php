@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.13 2007/09/06 22:02:16 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.14 2007/10/25 17:44:12 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.13 2007/09/06 22:02:16 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.14 2007/10/25 17:44:12 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -117,7 +117,9 @@ class AssetFlowOrganizerSiteComponent
 	 * @access public
 	 * @since 3/31/06
 	 */
-	public function putSubcomponentInCell ( BlockSiteComponent $siteComponent, $cellIndex ) {
+	public function putSubcomponentInCell ( SiteComponent $siteComponent, $cellIndex ) {
+		ArgumentValidator::validate($siteComponent, ExtendsValidatorRule::getRule('BlockSiteComponent'));
+		
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {			
 			// A cell will have no old parent if it is newly created.

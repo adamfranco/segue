@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.10 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.11 2007/10/25 17:44:12 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.10 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.11 2007/10/25 17:44:12 adamfranco Exp $
  */
 class XmlBlockSiteComponent
 	extends XmlSiteComponent
@@ -219,7 +219,7 @@ class XmlBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function acceptVisitor ( $visitor, $inMenu = FALSE ) {
+	function acceptVisitor ( SiteVisitor $visitor, $inMenu = FALSE ) {
 		if ($inMenu)
 			return $visitor->visitBlockInMenu($this);
 		return $visitor->visitBlock($this);

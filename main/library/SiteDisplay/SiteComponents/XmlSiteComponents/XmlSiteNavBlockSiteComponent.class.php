@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteNavBlockSiteComponent.class.php,v 1.4 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: XmlSiteNavBlockSiteComponent.class.php,v 1.5 2007/10/25 17:44:12 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlSiteNavBlockSiteComponent.class.php,v 1.4 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: XmlSiteNavBlockSiteComponent.class.php,v 1.5 2007/10/25 17:44:12 adamfranco Exp $
  */
 class XmlSiteNavBlockSiteComponent
 	extends XmlNavBlockSiteComponent
@@ -45,7 +45,7 @@ class XmlSiteNavBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function acceptVisitor ( $visitor ) {
+	function acceptVisitor ( SiteVisitor $visitor, $inMenu = FALSE ) {
 		return $visitor->visitSiteNavBlock($this);
 	}
 	

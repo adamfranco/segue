@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.12 2007/10/12 19:18:38 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.13 2007/10/25 17:44:11 adamfranco Exp $
  */
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.12 2007/10/12 19:18:38 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.13 2007/10/25 17:44:11 adamfranco Exp $
  */
 
 class SegueMenuGenerator {
@@ -29,8 +29,9 @@ class SegueMenuGenerator {
 	 * @param string $actionString A dotted-pair action string of the form
 	 *		"module.action" .
 	 * @return object MenuLayout
+	 * @static
 	 */
-	function generateMainMenu() {
+	static function generateMainMenu() {
 		
 		$harmoni = Harmoni::instance();
 		

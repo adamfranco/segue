@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.38 2007/09/19 21:01:20 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.39 2007/10/25 17:44:11 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsPlugin.abstract.php,v 1.38 2007/09/19 21:01:20 adamfranco Exp $
+ * @version $Id: SeguePluginsPlugin.abstract.php,v 1.39 2007/10/25 17:44:11 adamfranco Exp $
  */
 class SeguePluginsPlugin {
  	
@@ -64,7 +64,7 @@ class SeguePluginsPlugin {
  	 * @since 6/1/07
  	 * @static
  	 */
- 	function getPluginDescription () {
+ 	public static function getPluginDescription () {
  		return _("Override this method in your plugin.");
  	}
  	
@@ -78,7 +78,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 1/12/06
  	 */
- 	function initialize () {
+ 	public function initialize () {
 		// Override as needed.
  	}
  	
@@ -92,7 +92,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 1/12/06
  	 */
- 	function update ( $request ) {
+ 	public function update ( $request ) {
  		// Override as needed.
  	}
  	
@@ -105,7 +105,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 1/12/06
  	 */
- 	function getMarkup () {
+ 	public function getMarkup () {
  		return _("<p>Override this method to display your pluggin.</p>");
  	}
  	
@@ -120,7 +120,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 5/23/07
  	 */
- 	function getExtendedMarkup () {
+ 	public function getExtendedMarkup () {
  		return $this->getMarkup();
  	}
  	
@@ -133,7 +133,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 5/23/07
  	 */
- 	function getExtendedLinkLabel () {
+ 	public function getExtendedLinkLabel () {
  		return _("read more &raquo;");
  	}
  	
@@ -147,7 +147,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 5/22/07
  	 */
- 	function generateDescription () {
+ 	public function generateDescription () {
  		return $this->getRawDescription();
  	}
  	
@@ -163,7 +163,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 7/13/07
  	 */
- 	function hasContent () {
+ 	public function hasContent () {
  		// Override as needed
  		return true;
  	}
@@ -185,7 +185,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 5/9/07
  	 */
- 	function supportsWizard () {
+ 	public function supportsWizard () {
  		return false;
  	}
  	/**
@@ -196,7 +196,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 5/8/07
  	 */
- 	function getWizardComponent () {
+ 	public function getWizardComponent () {
  		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
  	}
  	
@@ -208,7 +208,7 @@ class SeguePluginsPlugin {
  	 * @access public
  	 * @since 5/8/07
  	 */
- 	function updateFromWizard ( $values ) {
+ 	public function updateFromWizard ( $values ) {
  		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
  	}
  	
@@ -940,8 +940,9 @@ class SeguePluginsPlugin {
 	 * @return object Plugin OR string (error string) on error.
 	 * @access public
 	 * @since 1/12/06
+	 * @static
 	 */
-	function newInstance ( $asset, $configuration ) {
+	public static function newInstance ( $asset, $configuration ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
 		ArgumentValidator::validate($configuration, ExtendsValidatorRule::getRule("Properties"));
 		$false = false;

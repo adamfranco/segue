@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: harmoni_default.conf.php,v 1.16 2007/09/04 20:47:07 adamfranco Exp $
+ * @version $Id: harmoni_default.conf.php,v 1.17 2007/10/25 17:44:10 adamfranco Exp $
  */
 
 // :: set up the $harmoni object :: 
@@ -45,3 +45,12 @@
 	
 	$context = new OsidContext;
 	$context->assignContext('harmoni', $harmoni);
+	
+	
+	
+/*********************************************************
+ * Set the default timezone if not set.
+ *********************************************************/
+if (!ini_get('date.timezone')) {
+	ini_set('date.timezone', 'America/New_York');
+}

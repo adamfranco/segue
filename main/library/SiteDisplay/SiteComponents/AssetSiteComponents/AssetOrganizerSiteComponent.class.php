@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.8 2007/09/13 16:09:42 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.9 2007/10/25 17:44:12 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponen
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.8 2007/09/13 16:09:42 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.9 2007/10/25 17:44:12 adamfranco Exp $
  */
 abstract class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -216,9 +216,7 @@ abstract class AssetOrganizerSiteComponent
 	 * @access public
 	 * @since 4/12/06
 	 */
-	function putSubcomponentInCell ( $siteComponent, $cellIndex ) {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay")); 
-	}
+	abstract function putSubcomponentInCell ( SiteComponent $siteComponent, $cellIndex );
 	
 	/**
 	 * Remove a subcomponent, but don't delete it from the director completely.

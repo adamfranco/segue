@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.24 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.25 2007/10/25 17:44:12 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.24 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: XmlFixedOrganizerSiteComponent.class.php,v 1.25 2007/10/25 17:44:12 adamfranco Exp $
  */
 class XmlFixedOrganizerSiteComponent
 	extends XmlOrganizerSiteComponent 
@@ -261,7 +261,7 @@ class XmlFixedOrganizerSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function acceptVisitor ( $visitor ) {
+	function acceptVisitor ( SiteVisitor $visitor ) {
 		return $visitor->visitFixedOrganizer($this);
 	}
 	
