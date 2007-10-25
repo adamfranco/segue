@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.56 2007/10/25 14:06:49 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.57 2007/10/25 16:50:09 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -24,6 +24,9 @@
 		</fix>
 		<fix author='adam' date='2007-10-25' ref='1802310' reftype='bug'>
 			MediaLibrary: Can now delete files.
+		</fix>
+		<fix author='adam' date='2007-10-25' ref='1819999' reftype='bug'>
+			MediaLibrary: Thumbnails are now refreshed when uploading new files.
 		</fix>
 	</version>
 	<version number="2.0.0-beta-2" date="2007-09-25">

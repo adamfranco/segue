@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -115,7 +115,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -411,7 +411,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -510,7 +510,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -557,7 +557,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -1024,7 +1024,21 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		
 		for (var i = 0; i < responseElement.childNodes.length; i++) {
 			if (responseElement.childNodes[i].nodeName == 'asset') {
-				this.init(this.assetId, responseElement.childNodes[i]);
+				this.init(this.assetId, responseElement.childNodes[i], this.library);
+				
+				// refresh our row.
+				if (this.entryElement) {
+					var nextSibling = this.entryElement.nextSibling;
+					var parent = this.entryElement.parentNode;
+					parent.removeChild(this.entryElement);
+					parent.insertBefore(this.getEntryElement(), nextSibling);
+					
+					// Refresh the thumbnail images.
+					for (var i = 0; i < this.files.length; i++) {
+						this.files[i].refreshThumbnail();
+					}
+				}
+				
 				break;
 			}
 		}
@@ -1042,7 +1056,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.16 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
@@ -1093,17 +1107,33 @@ function MediaFile ( xmlElement, asset, library) {
 		var imageLink = fileDiv.appendChild(document.createElement('a'));
 		imageLink.href = this.url;
 		
-		var img = imageLink.appendChild(document.createElement('img'));
-		img.src = this.thumbnailUrl;
-		img.align = 'center';
+		this.thumbnail = imageLink.appendChild(document.createElement('img'));
+		this.thumbnail.src = this.thumbnailUrl;
+		this.thumbnail.align = 'center';
 		
 // 		var url = this.url;
 // 		this.img.onclick = function () {
 // 			window.open (url, this.recordId, "height=400,width=600,resizable=yes,scrollbars=yes");
 // 		}
-		img.className = 'thumbnail link';
+		this.thumbnail.className = 'thumbnail link';
 		
 // 		container.appendChild(this.img);
+	}
+	
+	/**
+	 * Refresh the thumbnail image
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 10/25/07
+	 */
+	MediaFile.prototype.refreshThumbnail = function () {
+		if (this.thumbnail) {
+			if (this.thumbnail.src.match(/\?/))
+				this.thumbnail.src = this.thumbnail.src + '&refresh=' + Math.random();
+			else
+				this.thumbnail.src = this.thumbnail.src + '?refresh=' + Math.random();
+		}
 	}
 	
 	
