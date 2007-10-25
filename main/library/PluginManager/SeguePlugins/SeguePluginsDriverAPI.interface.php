@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.1 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.2 2007/10/25 21:06:24 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.1 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.2 2007/10/25 21:06:24 adamfranco Exp $
  */
 interface SeguePluginsDriverAPI {
 		
@@ -49,42 +49,12 @@ interface SeguePluginsDriverAPI {
 	 * @since 1/12/06
 	 * @static
 	 */
-	public static function newInstance ( $asset, $configuration );
+	public static function newInstance ( Asset $asset, Properties $configuration );
 	
 	
 /*********************************************************
  * Instance Methods - Non-API
  *********************************************************/
-	
-	/**
-	 * Set the plugin's environmental configuration
-	 * 
-	 * @param object ConfigurationProperties $configuration
-	 * @return void
-	 * @access public
-	 * @since 1/12/06
-	 */
-	public function setConfiguration ( $configuration );
-	
-	/**
-	 * Inialize ourselves with our data-source asset
-	 * 
-	 * @param object Asset $asset
-	 * @return void
-	 * @access public
-	 * @since 1/12/06
-	 */
-	public function setAsset ( $asset );
-	
-	/**
-	 * Set the status of showControls.
-	 * 
-	 * @param boolean $showControls
-	 * @return void
-	 * @access public
-	 * @since 2/22/06
-	 */
-	public function setShowControls ($showControls);
 	
 	/**
 	 * Execute the plugin and return its markup.
@@ -147,7 +117,6 @@ interface SeguePluginsDriverAPI {
 	 * @since 7/5/07
 	 */
 	public function setCanViewFunction ($function);
-	
 }
 
 ?>

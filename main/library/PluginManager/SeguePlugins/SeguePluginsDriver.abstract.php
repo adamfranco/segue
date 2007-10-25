@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.1 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.2 2007/10/25 21:06:24 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.1 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.2 2007/10/25 21:06:24 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -692,17 +692,15 @@ abstract class SeguePluginsDriver
 	 * @since 1/12/06
 	 * @static
 	 */
-	public static function newInstance ( $asset, $configuration ) {
-		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
-		ArgumentValidator::validate($configuration, ExtendsValidatorRule::getRule("Properties"));
-		$false = false;
-		
-
-
+	public static function newInstance ( Asset $asset, Properties $configuration ) {
 		$type = $asset->getAssetType();
 		$pluginManager = Services::getService("PluginManager");
 		$pluginDir = $pluginManager->getPluginDir($type);
 		$pluginClass = $pluginManager->getPluginClass($type);
+		
+		if (preg_match('/[^a-z0-9_]/i', $pluginClass))
+			throw new Exception("Invalid plugin class, '".$pluginClass."'.");
+		
 		$pluginFile = $pluginDir.$pluginClass.".class.php";
 		
 		
@@ -808,10 +806,10 @@ abstract class SeguePluginsDriver
 	 * 
 	 * @param object ConfigurationProperties $configuration
 	 * @return void
-	 * @access public
+	 * @access private
 	 * @since 1/12/06
 	 */
-	final public function setConfiguration ( $configuration ) {
+	final private function setConfiguration ( $configuration ) {
 		if (isset($this->_configuration))
 			throwError(new Error("Configuration already set.", "Plugin.abstract", true));
 			
@@ -823,10 +821,10 @@ abstract class SeguePluginsDriver
 	 * 
 	 * @param object Asset $asset
 	 * @return void
-	 * @access public
+	 * @access private
 	 * @since 1/12/06
 	 */
-	final public function setAsset ( $asset ) {
+	final private function setAsset ( $asset ) {
 		if (isset($this->_asset))
 			throwError(new Error("Asset already set.", "Plugin.abstract", true));
 		
@@ -845,10 +843,10 @@ abstract class SeguePluginsDriver
 	 * 
 	 * @param boolean $showControls
 	 * @return void
-	 * @access public
+	 * @access private
 	 * @since 2/22/06
 	 */
-	final public function setShowControls ($showControls) {
+	final private function setShowControls ($showControls) {
 		ArgumentValidator::validate($showControls, BooleanValidatorRule::getRule());
 		$this->_showControls = $showControls;
 	}

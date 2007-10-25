@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.26 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.27 2007/10/25 21:06:23 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.26 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.27 2007/10/25 21:06:23 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -180,9 +180,18 @@ class PluginManager {
 	 */
 	function _loadPluginFiles ($type) {
 		// Clean type components to safe strings.
-		$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
-		$authority = preg_replace('/[^a-z_\-\.]/i', '', $type->getAuthority());
-		$keyword = preg_replace('/[^a-z_\-]/i', '', $type->getKeyword());
+		$domain = $type->getDomain();
+		$authority = $type->getAuthority();
+		$keyword = $type->getKeyword();
+		
+		if (preg_match('/[^a-z0-9_\-\s]/i', $domain))
+			throw new Exception("Invalid plugin domain, '".$domain."'.");
+		
+		if (preg_match('/([^a-z0-9_\-\s\.]|\.{2,})/i', $authority))
+			throw new Exception("Invalid plugin authority, '".$authority."'.");
+			
+		if (preg_match('/[^a-z0-9_\-]/i', $keyword))
+			throw new Exception("Invalid plugin keyword, '".$keyword."'.");
 		
 		
 		if ($this->isPluginDomain($domain)) {
@@ -372,9 +381,18 @@ class PluginManager {
 	function getPluginClass ( $type ) {
 		if (!isset($this->_pluginClasses[$type->asString()])) {
 			// Clean type components to safe strings.
-			$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
-			$authority = preg_replace('/[^a-z_\-\.]/i', '', $type->getAuthority());
-			$keyword = preg_replace('/[^a-z_\-]/i', '', $type->getKeyword());
+			$domain = $type->getDomain();
+			$authority = $type->getAuthority();
+			$keyword = $type->getKeyword();
+			
+			if (preg_match('/[^a-z0-9_\-\s]/i', $domain))
+				throw new Exception("Invalid plugin domain, '".$domain."'.");
+			
+			if (preg_match('/([^a-z0-9_\-\s\.]|\.{2,})/i', $authority))
+				throw new Exception("Invalid plugin authority, '".$authority."'.");
+				
+			if (preg_match('/[^a-z0-9_\-]/i', $keyword))
+				throw new Exception("Invalid plugin keyword, '".$keyword."'.");
 			
 			// Convert an authority like 'edu.middlebury' to 'EduMiddlebury'
 			// for use in classnames.
@@ -400,9 +418,18 @@ class PluginManager {
 	function getPluginDir ( $type ) {
 		if (!isset($this->_pluginDirs[$type->asString()])) {
 			// Clean type components to safe strings.
-			$domain = preg_replace('/[^a-z_\-]/i', '', $type->getDomain());			
-			$authority = preg_replace('/[^a-z_\-\.]/i', '', $type->getAuthority());
-			$keyword = preg_replace('/[^a-z_\-]/i', '', $type->getKeyword());
+			$domain = $type->getDomain();
+			$authority = $type->getAuthority();
+			$keyword = $type->getKeyword();
+			
+			if (preg_match('/[^a-z0-9_\-\s]/i', $domain))
+				throw new Exception("Invalid plugin domain, '".$domain."'.");
+			
+			if (preg_match('/([^a-z0-9_\-\s\.]|\.{2,})/i', $authority))
+				throw new Exception("Invalid plugin authority, '".$authority."'.");
+				
+			if (preg_match('/[^a-z0-9_\-]/i', $keyword))
+				throw new Exception("Invalid plugin keyword, '".$keyword."'.");
 			
 			$this->_pluginDirs[$type->asString()] = MYDIR."/plugins/".$domain."/"
 						.$authority."/".$keyword."/";
