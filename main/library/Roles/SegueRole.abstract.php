@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRole.abstract.php,v 1.1 2007/11/05 21:09:03 adamfranco Exp $
+ * @version $Id: SegueRole.abstract.php,v 1.2 2007/11/05 21:46:43 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRole.abstract.php,v 1.1 2007/11/05 21:09:03 adamfranco Exp $
+ * @version $Id: SegueRole.abstract.php,v 1.2 2007/11/05 21:46:43 adamfranco Exp $
  */
 abstract class SegueRole {
 	
@@ -117,6 +117,13 @@ abstract class SegueRole {
 	 */
 	public function apply (Id $agentId, Id $qualifierId) {
 		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		
+		if (!$authZ->isUserAuthorized(
+				$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
+				$qualifierId))
+			throw new PermissionDeniedException("Cannot modify authorizations here.");
+		
 		$authorizations = $authZ->getExplicitAZs($agentId, null, $qualifierId, true);
 		
 		// Delete Conflicting functions. We leave functions that the roles don't know about.

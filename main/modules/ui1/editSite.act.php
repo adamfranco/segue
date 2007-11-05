@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.3 2007/11/05 21:11:32 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.4 2007/11/05 21:46:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.3 2007/11/05 21:11:32 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.4 2007/11/05 21:46:43 adamfranco Exp $
  */
 class editSiteAction
 	extends SegueClassicWizard
@@ -53,7 +53,11 @@ class editSiteAction
 		$wizard = SimpleStepWizard::withDefaultLayout();
 		
 		$wizard->addStep("namedesc", $this->getTitleStep());
-		$wizard->addStep("permissions", $this->getPermissionsStep());
+		try {
+			$wizard->addStep("permissions", $this->getPermissionsStep());
+		} catch (PermissionDeniedException $e) {
+		
+		}
 		$wizard->addStep("display", $this->getDisplayOptionsStep());		
 		$wizard->addStep("header", $this->getHeaderStep());
 		
@@ -80,8 +84,10 @@ class editSiteAction
 			
 			if (!$this->saveTitleStep($properties['namedesc']))
 				return FALSE;
-			if (!$this->savePermissionsStep($properties['permissions']))
-				return FALSE;
+			
+			if (isset($properties['permissions']))
+				if (!$this->savePermissionsStep($properties['permissions']))
+					return FALSE;
 			if (!$this->saveDisplayOptionsStep($properties['display']))
 				return FALSE;
 			if (!$this->saveStatusStep($properties['status']))
@@ -141,17 +147,27 @@ class editSiteAction
 	public function getPermissionsStep () {
 		$step =  new WizardStep();
 		$step->setDisplayName(_("Site-Wide Permissions"));
+		$property = $step->addComponent("perms_table", new RowRadioMatrix);
 		
 		$roleMgr = SegueRoleManager::instance();
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
 		
-		$property = $step->addComponent("perms_table", new RowRadioMatrix);
+		$siteId = $idMgr->getId($this->getSiteComponent()->getId());
+		
+		
+		// Add the options
 		foreach($roleMgr->getRoles() as $role)
 			$property->addOption($role->getIdString(), $role->getDisplayName(), $role->getDescription());
 		
-		$idMgr = Services::getService("Id");
+		// Make the whole property read-only if we can view but not modify authorizations
+		if (!$authZ->isUserAuthorized(
+				$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
+				$siteId))
+		{
+			$property->setEnabled(false);
+		}
 		
-		
-		$siteId = $idMgr->getId($this->getSiteComponent()->getId());
 		
 		// Everyone
 		$agentId = $idMgr->getId('edu.middlebury.agents.everyone');		
@@ -163,6 +179,12 @@ class editSiteAction
 		$property->addField("institute", _("Institute Users"), 
 			$roleMgr->getAgentsRole($agentId, $siteId)->getIdString(), 
 			">=");
+		
+		
+		// Make the everyone and institute groups unable to be given adminstrator privelidges
+		$property->makeDisabled('everyone', 'admin');
+		$property->makeDisabled('institute', 'admin');
+		
 
 // 		$property->addSpacer();
 // 		$property->addField("private", _("All Faculty"), 'no_access');
@@ -198,17 +220,28 @@ class editSiteAction
 		$instituteId = $idMgr->getId('edu.middlebury.agents.users');
 		
 		$everyoneRole = $roleMgr->getRole($roles['everyone']);
+		// Ensure that Everyone is not set to admin
+		if ($everyoneRole->getIdString() == 'admin')
+			$everyoneRole = $roleMgr->getRole('editor');
+		
 		$instituteRole = $roleMgr->getRole($roles['institute']);
+		// Ensure that Institute is not set to admin
+		if ($instituteRole->getIdString() == 'admin')
+			$instituteRole = $roleMgr->getRole('editor');
 		
 		// Apply the Everyone Role.
-		$everyoneRole->apply($everyoneId, $siteId);
+		try {
+			$everyoneRole->apply($everyoneId, $siteId);
+			
+			// If the roles are equal, clear out the explicit institute AZs
+			// as institute users will get implicit AZs from Everyone
+			if ($instituteRole->isEqualTo($everyoneRole)) {
+				$roleMgr->clearRoleAZs($instituteId, $siteId);
+			} else {
+				$instituteRole->apply($instituteId, $siteId);
+			}
+		} catch (PermissionDeniedException $e) {
 		
-		// If the roles are equal, clear out the explicit institute AZs
-		// as institute users will get implicit AZs from Everyone
-		if ($instituteRole->isEqualTo($everyoneRole)) {
-			$roleMgr->clearRoleAZs($instituteId, $siteId);
-		} else {
-			$instituteRole->apply($instituteId, $siteId);
 		}
 		
 		return true;

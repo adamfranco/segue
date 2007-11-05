@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.1 2007/11/05 21:09:03 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.2 2007/11/05 21:46:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NoAccess_SegueRole.class.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Custom_SegueRole.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.1 2007/11/05 21:09:03 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.2 2007/11/05 21:46:43 adamfranco Exp $
  */
 class SegueRoleManager
 	
@@ -160,9 +160,15 @@ class SegueRoleManager
 	 * @since 11/5/07
 	 */
 	public function getAgentsRole (Id $agentId, Id $qualifierId) {
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		
+		if (!$authZ->isUserAuthorized(
+				$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
+				$qualifierId))
+			throw new PermissionDeniedException("Cannot view authorizations here.");
 	
 		// Load the functions explicitly set for this agent at this qualifier
-		$authZ = Services::getService("AuthZ");
 		$authorizations = $authZ->getAllAZs($agentId, null, $qualifierId, true);
 		$functions = array();
 		while ($authorizations->hasNext()) {
@@ -189,6 +195,13 @@ class SegueRoleManager
 	 * @since 11/5/07
 	 */
 	public function getAgentsExplicitRole (Id $agentId, Id $qualifierId) {
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		
+		if (!$authZ->isUserAuthorized(
+				$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
+				$qualifierId))
+			throw new PermissionDeniedException("Cannot view authorizations here.");
 	
 		// Load the functions explicitly set for this agent at this qualifier
 		$authZ = Services::getService("AuthZ");
@@ -218,6 +231,13 @@ class SegueRoleManager
 	 * @since 11/5/07
 	 */
 	public function getAgentsImplicitRole (Id $agentId, Id $qualifierId) {
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		
+		if (!$authZ->isUserAuthorized(
+				$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
+				$qualifierId))
+			throw new PermissionDeniedException("Cannot view authorizations here.");
 	
 		// Load the functions explicitly set for this agent at this qualifier
 		$authZ = Services::getService("AuthZ");
