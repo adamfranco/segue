@@ -6,11 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editNav.act.php,v 1.1 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: editNav.act.php,v 1.2 2007/11/05 21:10:57 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
-require_once(MYDIR."/main/library/PluginManager/SeguePlugins/SeguePluginsAjaxPlugin.abstract.php");
 
 /**
  * This action provides a wizard for editing a navigation node
@@ -21,7 +20,7 @@ require_once(MYDIR."/main/library/PluginManager/SeguePlugins/SeguePluginsAjaxPlu
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editNav.act.php,v 1.1 2007/05/15 16:48:24 adamfranco Exp $
+ * @version $Id: editNav.act.php,v 1.2 2007/11/05 21:10:57 adamfranco Exp $
  */
 class editNavAction
 	extends SegueClassicWizard

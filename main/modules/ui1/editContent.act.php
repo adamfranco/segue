@@ -6,11 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editContent.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: editContent.act.php,v 1.6 2007/11/05 21:10:57 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
-require_once(MYDIR."/main/library/PluginManager/SeguePlugins/SeguePluginsAjaxPlugin.abstract.php");
+require_once(MYDIR."/main/library/PluginManager/SeguePlugins/SegueAjaxPlugin.abstract.php");
 
 /**
  * This action provides a wizard for editing 
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/PluginManager/SeguePlugins/SeguePluginsAjaxPlu
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editContent.act.php,v 1.5 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: editContent.act.php,v 1.6 2007/11/05 21:10:57 adamfranco Exp $
  */
 class editContentAction
 	extends SegueClassicWizard
@@ -46,7 +46,7 @@ class editContentAction
 	 * @since 5/8/07
 	 */
 	function buildContent () {
-		SeguePluginsAjaxPlugin::writeAjaxLib();
+		SegueAjaxPlugin::writeAjaxLib();
 		
 		/*********************************************************
 		 * Other headers and footers
