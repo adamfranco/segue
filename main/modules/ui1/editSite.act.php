@@ -6,11 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.2 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.3 2007/11/05 21:11:32 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
-require_once(MYDIR."/main/library/PluginManager/SeguePlugins/SeguePluginsAjaxPlugin.abstract.php");
 require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
 
 /**
@@ -22,7 +21,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.2 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.3 2007/11/05 21:11:32 adamfranco Exp $
  */
 class editSiteAction
 	extends SegueClassicWizard
@@ -39,6 +38,8 @@ class editSiteAction
 		return _("Edit Site");
 	}
 	
+	
+	
 	/**
 	 * Create a new Wizard for this action. Caching of this Wizard is handled by
 	 * {@link getWizard()} and does not need to be implemented here.
@@ -48,11 +49,48 @@ class editSiteAction
 	 * @since 9/24/07
 	 */
 	function createWizard () {
-		$wizard = parent::createWizard();
+		// Instantiate the wizard, then add our steps.
+		$wizard = SimpleStepWizard::withDefaultLayout();
 		
+		$wizard->addStep("namedesc", $this->getTitleStep());
+		$wizard->addStep("permissions", $this->getPermissionsStep());
+		$wizard->addStep("display", $this->getDisplayOptionsStep());		
 		$wizard->addStep("header", $this->getHeaderStep());
 		
 		return $wizard;
+	}
+	
+	/**
+	 * Save our results. Tearing down and unsetting the Wizard is handled by
+	 * in {@link runWizard()} and does not need to be implemented here.
+	 * 
+	 * @param string $cacheName
+	 * @return boolean TRUE if save was successful and tear-down/cleanup of the
+	 *		Wizard should ensue.
+	 * @access public
+	 * @since 5/9/07
+	 */
+	function saveWizard ( $cacheName ) {
+		$wizard = $this->getWizard($cacheName);
+		
+		// If all properties validate then go through the steps nessisary to
+		// save the data.
+		if ($wizard->validate()) {
+			$properties = $wizard->getAllValues();
+			
+			if (!$this->saveTitleStep($properties['namedesc']))
+				return FALSE;
+			if (!$this->savePermissionsStep($properties['permissions']))
+				return FALSE;
+			if (!$this->saveDisplayOptionsStep($properties['display']))
+				return FALSE;
+			if (!$this->saveStatusStep($properties['status']))
+				return FALSE;
+			
+			return TRUE;
+		} else {
+			return FALSE;
+		}
 	}
 	
 	/**
@@ -91,6 +129,89 @@ class editSiteAction
 		$step->setContent(ob_get_clean());
 		
 		return $step;
+	}
+	
+	/**
+	 * Answer a step for changing site-wide permissions.
+	 * 
+	 * @return object WizardStep
+	 * @access public
+	 * @since 11/1/07
+	 */
+	public function getPermissionsStep () {
+		$step =  new WizardStep();
+		$step->setDisplayName(_("Site-Wide Permissions"));
+		
+		$roleMgr = SegueRoleManager::instance();
+		
+		$property = $step->addComponent("perms_table", new RowRadioMatrix);
+		foreach($roleMgr->getRoles() as $role)
+			$property->addOption($role->getIdString(), $role->getDisplayName(), $role->getDescription());
+		
+		$idMgr = Services::getService("Id");
+		
+		
+		$siteId = $idMgr->getId($this->getSiteComponent()->getId());
+		
+		// Everyone
+		$agentId = $idMgr->getId('edu.middlebury.agents.everyone');		
+		$property->addField("everyone", _("The World"), 
+			$roleMgr->getAgentsExplicitRole($agentId, $siteId)->getIdString());
+		
+		// @todo This should be edu.middlebury.agents.institute
+		$agentId = $idMgr->getId('edu.middlebury.agents.users');
+		$property->addField("institute", _("Institute Users"), 
+			$roleMgr->getAgentsRole($agentId, $siteId)->getIdString(), 
+			">=");
+
+// 		$property->addSpacer();
+// 		$property->addField("private", _("All Faculty"), 'no_access');
+		
+		
+		ob_start();
+		
+		print "[[perms_table]]";
+		
+		$step->setContent(ob_get_clean());
+		
+		return $step;
+	}
+	
+	/**
+	 * Save the permissions
+	 * 
+	 * @param array $values
+	 * @return boolean
+	 * @access public
+	 * @since 11/5/07
+	 */
+	public function savePermissionsStep (array $values) {
+		$roles = $values['perms_table'];
+		
+		$roleMgr = SegueRoleManager::instance();
+		$idMgr = Services::getService("Id");
+		
+		$siteId = $idMgr->getId($this->getSiteComponent()->getId());
+		
+		$everyoneId = $idMgr->getId('edu.middlebury.agents.everyone');
+		// @todo This should be edu.middlebury.agents.institute
+		$instituteId = $idMgr->getId('edu.middlebury.agents.users');
+		
+		$everyoneRole = $roleMgr->getRole($roles['everyone']);
+		$instituteRole = $roleMgr->getRole($roles['institute']);
+		
+		// Apply the Everyone Role.
+		$everyoneRole->apply($everyoneId, $siteId);
+		
+		// If the roles are equal, clear out the explicit institute AZs
+		// as institute users will get implicit AZs from Everyone
+		if ($instituteRole->isEqualTo($everyoneRole)) {
+			$roleMgr->clearRoleAZs($instituteId, $siteId);
+		} else {
+			$instituteRole->apply($instituteId, $siteId);
+		}
+		
+		return true;
 	}
 }
 

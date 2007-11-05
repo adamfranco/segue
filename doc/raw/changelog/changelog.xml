@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.59 2007/10/25 20:27:40 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.60 2007/11/05 21:11:32 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,13 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2007-11-05' ref='1799950' reftype='fr'>
+			Permissions: New 'Role' system to provide an abstraction over the 
+			particular combinations of authorizations.
+		</new>
+		<new author='adam' date='2007-11-05' ref='1799950' reftype='fr'>
+			Permissions: New Site-Wide-Permissions user interface.
+		</new>
 		<fix author='adam' date='2007-10-22' ref='1810360' reftype='concerto_bug'>
 			MediaLibrary panel now works in IE. Needed to explicitly add tbody 
 			elements to tables.
