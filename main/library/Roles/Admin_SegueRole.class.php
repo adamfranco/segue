@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Admin_SegueRole.class.php,v 1.1 2007/11/05 21:09:03 adamfranco Exp $
+ * @version $Id: Admin_SegueRole.class.php,v 1.2 2007/11/06 14:17:58 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueRole.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SegueRole.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Admin_SegueRole.class.php,v 1.1 2007/11/05 21:09:03 adamfranco Exp $
+ * @version $Id: Admin_SegueRole.class.php,v 1.2 2007/11/06 14:17:58 adamfranco Exp $
  */
 class Admin_SegueRole
 	extends SegueRole
@@ -43,10 +43,6 @@ class Admin_SegueRole
 		$this->addFunction($idMgr->getId("edu.middlebury.authorization.view_comments"));
 		
 		$this->addFunction($idMgr->getId("edu.middlebury.authorization.add_children"));
-		
-		$this->addFunction($idMgr->getId("edu.middlebury.authorization.modify"));
-		$this->addFunction($idMgr->getId("edu.middlebury.authorization.delete"));
-		$this->addFunction($idMgr->getId("edu.middlebury.authorization.remove_children"));
 		
 		$this->addFunction($idMgr->getId("edu.middlebury.authorization.modify"));
 		$this->addFunction($idMgr->getId("edu.middlebury.authorization.delete"));
