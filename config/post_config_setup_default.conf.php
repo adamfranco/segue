@@ -9,7 +9,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: post_config_setup_default.conf.php,v 1.16 2007/09/21 15:45:11 adamfranco Exp $
+ * @version $Id: post_config_setup_default.conf.php,v 1.17 2007/11/07 19:00:52 adamfranco Exp $
  */
 if (!isset($_SESSION['post_config_setup_complete'])) {
 	// Exhibition Repository
@@ -140,6 +140,16 @@ if (!isset($_SESSION['post_config_setup_complete'])) {
 		$nullType = new Type ("System", "edu.middlebury.harmoni", "NULL");
 		$properties = new HarmoniProperties($nullType);
 		$agentMgr->createGroup("Segue Course-Groups", $groupType, "Groupings of Segue Course-Sections.", $properties, $idManager->getId("edu.middlebury.segue.coursegroups"));
+	}
+	
+	/*********************************************************
+	 * Institute users group
+	 *********************************************************/
+	if (!$agentMgr->isGroup($idManager->getId("edu.middlebury.institute"))) {
+		$groupType = new Type ("System", "edu.middlebury", "SystemGroups", "Groups for administrators and others with special privileges.");
+		$nullType = new Type ("System", "edu.middlebury.harmoni", "NULL");
+		$properties = new HarmoniProperties($nullType);
+		$agentMgr->createGroup("Institute Users", $groupType, "This group should contain all users of 'the institute' who should be given access together.", $properties, $idManager->getId("edu.middlebury.institute"));
 	}
 	
 

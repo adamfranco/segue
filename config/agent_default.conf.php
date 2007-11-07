@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: agent_default.conf.php,v 1.3 2007/09/04 18:00:42 adamfranco Exp $
+ * @version $Id: agent_default.conf.php,v 1.4 2007/11/07 19:00:52 adamfranco Exp $
  */
  
 // :: Set up the AgentManager ::
@@ -20,6 +20,8 @@
 	$agentHierarchyId = "edu.middlebury.authorization.hierarchy";
 	$configuration->addProperty('hierarchy_id', $agentHierarchyId);
 	$configuration->addProperty('defaultAgentFlavor', $agentFlavor);
+	$configuration->addProperty('database_index', $dbID);
+	$configuration->addProperty('database_name', $dbName);
 	Services::startManagerAsService("AgentManager", $context, $configuration);
 
 // :: Set up PropertyManager ::

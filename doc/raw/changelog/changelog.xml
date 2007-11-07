@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.60 2007/11/05 21:11:32 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.61 2007/11/07 19:00:54 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -17,6 +17,11 @@
 		<new author='adam' date='2007-11-05' ref='1799950' reftype='fr'>
 			Permissions: New 'Role' system to provide an abstraction over the 
 			particular combinations of authorizations.
+		</new>
+		<new author='adam' date='2007-11-07' ref='1824880' reftype='fr'>
+			Permissions: New 'Institute Users' group. This group can have an number
+			of sub-groups or individuals added to it. It represents all users that
+			should be treated together as 'members of the institution'.
 		</new>
 		<new author='adam' date='2007-11-05' ref='1799950' reftype='fr'>
 			Permissions: New Site-Wide-Permissions user interface.

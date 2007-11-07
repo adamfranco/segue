@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.4 2007/11/05 21:46:43 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.5 2007/11/07 19:00:54 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.4 2007/11/05 21:46:43 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.5 2007/11/07 19:00:54 adamfranco Exp $
  */
 class editSiteAction
 	extends SegueClassicWizard
@@ -175,8 +175,10 @@ class editSiteAction
 			$roleMgr->getAgentsExplicitRole($agentId, $siteId)->getIdString());
 		
 		// @todo This should be edu.middlebury.agents.institute
-		$agentId = $idMgr->getId('edu.middlebury.agents.users');
-		$property->addField("institute", _("Institute Users"), 
+		$agentId = $idMgr->getId('edu.middlebury.institute');
+		$agentMgr = Services::getService("Agent");
+		$agent = $agentMgr->getGroup($agentId);
+		$property->addField("institute", $agent->getDisplayName(), 
 			$roleMgr->getAgentsRole($agentId, $siteId)->getIdString(), 
 			">=");
 		
