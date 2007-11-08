@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.15 2007/09/25 15:18:59 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.16 2007/11/08 22:07:24 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,10 +27,11 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.15 2007/09/25 15:18:59 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.16 2007/11/08 22:07:24 adamfranco Exp $
  */
 class viewAction
-	extends displayAction {
+	extends displayAction 
+{
 		
 	/**
 	 * Execute the Action

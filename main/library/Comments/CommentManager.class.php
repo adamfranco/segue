@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.15 2007/10/10 22:58:45 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.16 2007/11/08 22:07:23 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.15 2007/10/10 22:58:45 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.16 2007/11/08 22:07:23 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -73,6 +73,60 @@ class CommentManager {
 	}
 	
 	/**
+	 * Check Authorizations
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 11/8/07
+	 */
+	public function canComment () {
+		// Check Authorizations
+		$authZ = Services::getService('AuthZ');
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
+		$assetId = $idManager->getId(RequestContext::value('node'));
+		$harmoni->request->endNamespace();
+		
+		if (self::getCurrentAgent()->isEqual($idManager->getId('edu.middlebury.agents.anonymous')))
+			return false;
+		
+		if ($authZ->isUserAuthorized(
+			$idManager->getId('edu.middlebury.authorization.comment'),
+			$assetId))
+		{
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Check Authorizations
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 11/8/07
+	 */
+	public function canViewComments () {
+		// Check Authorizations
+		$authZ = Services::getService('AuthZ');
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
+		$assetId = $idManager->getId(RequestContext::value('node'));
+		$harmoni->request->endNamespace();
+		if ($authZ->isUserAuthorized(
+			$idManager->getId('edu.middlebury.authorization.view_comments'),
+			$assetId))
+		{
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Create a new root comment attached to an asset
 	 * 
 	 * @param object Asset $asset The asset this thread is attached to.
@@ -86,14 +140,19 @@ class CommentManager {
 			$asset = $assetOrId;
 			$id = $asset->getId();
 		} else {
-			$repositoryManager = Services::getService("Repository");
 			$idManager = Services::getService("Id");
+			$repositoryManager = Services::getService("Repository");
 			$repository = $repositoryManager->getRepository(
 				$idManager->getId("edu.middlebury.segue.sites_repository"));
 			$asset = $repository->getAsset($assetOrId);
 			$id = $assetOrId;
 		}
 		
+		// Check Authorizations
+		if (!$this->canComment())
+			throw new PermissionDeniedException("You are not authorized to comment.");
+		
+		// Create the comment.
 		$commentContainer = $this->_getCommentContainer($asset);
 		
 		$repository = $asset->getRepository();
@@ -118,6 +177,10 @@ class CommentManager {
 	 */
 	function createReply ( $parentId, $type) {
 		$parent = $this->getComment($parentId);
+		
+		// Check Authorizations
+		if (!$this->canComment())
+			throw new PermissionDeniedException("You are not authorized to comment.");
 		
 		$repository = $parent->_asset->getRepository();
 		$replyAsset = $repository->createAsset(_("(untitled)"), "", $type);
@@ -202,6 +265,12 @@ class CommentManager {
 	 */
 	function deleteComment ( $id ) {
 		$comment = $this->getComment($id);
+		
+		// Check Authorizations
+		if (!$this->canComment() || !$comment->isAuthor())
+			throw new PermissionDeniedException("You are not authorized to delete this comment.");
+		
+		
 		$asset = $comment->_asset;
 		$repository = $asset->getRepository();
 		$repository->deleteAsset($id);
@@ -397,97 +466,113 @@ class CommentManager {
 		$harmoni->request->passthrough('node');
 		$harmoni->request->startNamespace('comments');
 		
+		
 		if (RequestContext::value('order'))
 			$this->setDisplayOrder(RequestContext::value('order'));
 		
 		if (RequestContext::value('displayMode'))
 			$this->setDisplayMode(RequestContext::value('displayMode'));
 		
-		if (RequestContext::value('create_new_comment')) {
-			$comment = $this->createRootComment($asset, Type::fromString(RequestContext::value('plugin_type')));
-			$comment->updateSubject(RequestContext::value('title'));
-			$comment->enableEditForm();
-		}
-		
-		if (RequestContext::value('reply_parent') && RequestContext::value('plugin_type')) {
-			$idManager = Services::getService('Id');
-			$comment = $this->createReply(
-				$idManager->getId(RequestContext::value('reply_parent')),
-				Type::fromString(RequestContext::value('plugin_type')));
-			$comment->updateSubject(RequestContext::value('title'));
-			$comment->enableEditForm();
-		}
-		
-		if (RequestContext::value('delete_comment')) {
-			$idManager = Services::getService('Id');
-			
-			try {
-				$this->deleteComment($idManager->getId(
-					RequestContext::value('delete_comment')));
-			} catch (Exception $e) {
-				// In case we have a delete_comment id in the url that no longer exists,
-				// just catch any exceptions. See the following bug:
-				// http://sourceforge.net/tracker/index.php?func=detail&aid=1798996&group_id=82171&atid=565234
+		try {
+			if (RequestContext::value('create_new_comment')) {
+				$comment = $this->createRootComment($asset, Type::fromString(RequestContext::value('plugin_type')));
+				$comment->updateSubject(RequestContext::value('title'));
+				$comment->enableEditForm();
 			}
+			
+			if (RequestContext::value('reply_parent') && RequestContext::value('plugin_type')) {
+				$idManager = Services::getService('Id');
+				$comment = $this->createReply(
+					$idManager->getId(RequestContext::value('reply_parent')),
+					Type::fromString(RequestContext::value('plugin_type')));
+				$comment->updateSubject(RequestContext::value('title'));
+				$comment->enableEditForm();
+			}
+			
+			if (RequestContext::value('delete_comment')) {
+				$idManager = Services::getService('Id');
+				
+				try {
+					$this->deleteComment($idManager->getId(
+						RequestContext::value('delete_comment')));
+				} catch (Exception $e) {
+					// In case we have a delete_comment id in the url that no longer exists,
+					// just catch any exceptions. See the following bug:
+					// http://sourceforge.net/tracker/index.php?func=detail&aid=1798996&group_id=82171&atid=565234
+				}
+			}
+		} catch (PermissionDeniedException $e) {
+			$messages = $e->getMessage();
 		}
 		
 		$this->addHead();
 		
 		ob_start();
 		
-		// New comment
-		print "\n<div style='float: left;'>";
-		$url = $harmoni->request->mkURL();
-		$url->setValue('create_new_comment', 'true');
-		print "\n\t<button ";
-		print "onclick=\"CommentPluginChooser.run(this, '".$url->write()."#".RequestContext::name('current')."', ''); return false;\">";
-		print _("New Comment")."</button>";
-		print "\n</div>";
-		
-		// print the ordering form
-		print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('top')."' method='post'  style='float: right; text-align: right;'>";
-
-		
-		print "\n\t\t<select name='".RequestContext::name('displayMode')."'/>";
-		print "\n\t\t\t<option value='threaded'".(($this->getDisplayMode() == 'threaded')?" selected='selected'":"").">";
-		print _("Threaded")."</option>";
-		print "\n\t\t\t<option value='flat'".(($this->getDisplayMode() == 'flat')?" selected='selected'":"").">";
-		print _("Flat")."</option>";
-		print "\n\t\t</select>";
-		
-		print "\n\t\t<select name='".RequestContext::name('order')."'/>";
-		print "\n\t\t\t<option value='".ASC."'".(($this->getDisplayOrder() == ASC)?" selected='selected'":"").">";
-		print _("Oldest First")."</option>";
-		print "\n\t\t\t<option value='".DESC."'".(($this->getDisplayOrder() == DESC)?" selected='selected'":"").">";
-		print _("Newest First")."</option>";
-		print "\n\t\t</select>";
-		
-		print "\n\t<input type='submit' value='"._("Change")."'/>";
-		
-		print "\n</form>";
-		
-		print "\n<div style='clear: both;'> &nbsp; </div>";
-		
-		
-		
-		// Print out the Comments
-		print "\n<div id='".RequestContext::name('comments')."'>";
-		if ($this->getDisplayMode() == 'flat') {
-			$comments = $this->getAllComments($asset, $this->getDisplayOrder());
-		} else {
-			$comments = $this->getRootComments($asset, $this->getDisplayOrder());
+		if (isset($messages)) {
+			print "\n<div class='error'>".$messages."</div>";
 		}
 		
-		while ($comments->hasNext()) {
-			$comment = $comments->next();
-			// If this is a work in progress that has not had content added yet, 
-			// do not display it.
-			if ($comment->hasContent() || $comment->isAuthor()) {
-				print $comment->getMarkup(($this->getDisplayMode() == 'threaded')?true:false);
+		
+		if ($this->canComment()) {	
+			// New comment
+			print "\n<div style='float: left;'>";
+			$url = $harmoni->request->mkURL();
+			$url->setValue('create_new_comment', 'true');
+			print "\n\t<button ";
+			print "onclick=\"CommentPluginChooser.run(this, '".$url->write()."#".RequestContext::name('current')."', ''); return false;\">";
+			print _("New Comment")."</button>";
+			print "\n</div>";
+		}
+		
+		if ($this->canViewComments()) {
+			// print the ordering form
+			print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('top')."' method='post'  style='float: right; text-align: right;'>";
+	
+			
+			print "\n\t\t<select name='".RequestContext::name('displayMode')."'/>";
+			print "\n\t\t\t<option value='threaded'".(($this->getDisplayMode() == 'threaded')?" selected='selected'":"").">";
+			print _("Threaded")."</option>";
+			print "\n\t\t\t<option value='flat'".(($this->getDisplayMode() == 'flat')?" selected='selected'":"").">";
+			print _("Flat")."</option>";
+			print "\n\t\t</select>";
+			
+			print "\n\t\t<select name='".RequestContext::name('order')."'/>";
+			print "\n\t\t\t<option value='".ASC."'".(($this->getDisplayOrder() == ASC)?" selected='selected'":"").">";
+			print _("Oldest First")."</option>";
+			print "\n\t\t\t<option value='".DESC."'".(($this->getDisplayOrder() == DESC)?" selected='selected'":"").">";
+			print _("Newest First")."</option>";
+			print "\n\t\t</select>";
+			
+			print "\n\t<input type='submit' value='"._("Change")."'/>";
+			
+			print "\n</form>";
+			
+			print "\n<div style='clear: both;'> &nbsp; </div>";
+			
+			
+			
+			// Print out the Comments
+			print "\n<div id='".RequestContext::name('comments')."'>";
+			if ($this->getDisplayMode() == 'flat') {
+				$comments = $this->getAllComments($asset, $this->getDisplayOrder());
+			} else {
+				$comments = $this->getRootComments($asset, $this->getDisplayOrder());
 			}
+			
+			while ($comments->hasNext()) {
+				$comment = $comments->next();
+				// If this is a work in progress that has not had content added yet, 
+				// do not display it.
+				if ($comment->hasContent() || $comment->isAuthor()) {
+					print $comment->getMarkup(($this->getDisplayMode() == 'threaded')?true:false);
+				}
+			}
+			
+			print "\n</div>";
+		} else {
+			print "\n<div>"._("You are not authorized to view comments.")."</div>";
 		}
-		
-		print "\n</div>";
 		
 		$harmoni->request->forget('node');
 		$harmoni->request->endNamespace();
@@ -651,6 +736,32 @@ END;
 		print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/CommentPluginChooser.js'></script>";
 		
 		$outputHandler->setHead(ob_get_clean());
+	}
+	
+	/**
+	 * Answer the current agent id
+	 * 
+	 * @return object Id
+	 * @access public
+	 * @static
+	 * @since 7/9/07
+	 */
+	public static function getCurrentAgent () {
+		$authN = Services::getService("AuthN");
+		$agentM = Services::getService("Agent");
+		$idM = Services::getService("Id");
+		$authTypes =$authN->getAuthenticationTypes();
+		
+		while ($authTypes->hasNext()) {
+			$authType =$authTypes->next();
+			$id =$authN->getUserId($authType);
+			if (!$id->isEqual($idM->getId('edu.middlebury.agents.anonymous'))) {
+				return $id;
+			}
+		}
+		
+		// If we didn't find an agent, return the anonymous id.
+		return $idM->getId('edu.middlebury.agents.anonymous');
 	}
 }
 

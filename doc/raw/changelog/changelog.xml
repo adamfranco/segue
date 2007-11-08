@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.65 2007/11/08 19:35:43 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.66 2007/11/08 22:07:21 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,15 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2007-11-08' ref='1827777' reftype='bug'>
+			Comments: Comments can now be edited by users who are not otherwise
+			editors of the site and only have 'comment' authorization.
+		</fix>
+		<fix author='adam' date='2007-11-08' ref='1827779' reftype='bug'>
+			Comments: Authorizations are now checked before showing 'comment' and
+			'reply' buttons. Authorization checks have also been added inside
+			the comment manager to ensure that authorizations are respected.
+		</fix>
 		<change author='adam' date='2007-11-08' ref='1798943' reftype='fr'>
 			UI2: 'Controls' are now named 'Options'.
 		</change>

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.9 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.10 2007/11/08 22:07:23 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.9 2007/09/04 17:38:42 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.10 2007/11/08 22:07:23 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -102,6 +102,11 @@ class CommentNode {
 	 * @since 7/11/07
 	 */
 	function updateSubject ( $subject ) {
+		// Check Authorizations
+		$authZ = Services::getService('AuthZ');
+		if (!$this->canModify())
+			throw new PermissionDeniedException("You are not authorized to change this comment.");
+		
 		if ($subject)
 			$this->_asset->updateDisplayName($subject);
 		else
@@ -120,6 +125,8 @@ class CommentNode {
 		if ($this->canView()) {
 			$pluginManager = Services::getService('PluginManager');
 			$plugin = $pluginManager->getPlugin($this->_asset);
+			
+			$plugin->setUpdateAction('comments', 'update_plugin_ajax');
 			
 			// We've just checked our view permission, so use true
 			$plugin->setCanViewFunction(create_function('$plugin', 'return true;'));
@@ -179,6 +186,31 @@ class CommentNode {
 				$this->_canModify = FALSE;
 		}
 		return $this->_canModify;
+	}
+	
+	/**
+	 * Check Authorizations
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 11/8/07
+	 */
+	public function canReply () {
+		// Check Authorizations
+		$authZ = Services::getService('AuthZ');
+		$idManager = Services::getService("Id");
+		
+		if (CommentManager::getCurrentAgent()->isEqual($idManager->getId('edu.middlebury.agents.anonymous')))
+			return false;
+		
+		if ($authZ->isUserAuthorized(
+			$idManager->getId('edu.middlebury.authorization.comment'),
+			$this->getId()))
+		{
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**
@@ -349,7 +381,7 @@ class CommentNode {
 			print "\">"._("delete")."</a>";
 			$controls[] = ob_get_clean();
 		}
-		if ($this->hasContent()) {
+		if ($this->hasContent() && $this->canReply()) {
 			ob_start();
 			$replyUrl = $harmoni->request->mkURL();
 			$replyUrl->setValue('reply_parent', $this->getIdString());

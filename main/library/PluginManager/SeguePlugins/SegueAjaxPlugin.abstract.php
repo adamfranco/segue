@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAjaxPlugin.abstract.php,v 1.3 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.4 2007/11/08 22:07:24 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAjaxPlugin.abstract.php,v 1.3 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.4 2007/11/08 22:07:24 adamfranco Exp $
  */
 abstract class SegueAjaxPlugin 
 	extends SeguePluginsTemplate
@@ -264,6 +264,21 @@ END;
  	 * @since 10/25/07
  	 */
  	private $_isExtended;
+ 	
+ 	/**
+ 	 * @var string $updateModule;  
+ 	 * @access private
+ 	 * @since 11/8/07
+ 	 */
+ 	private $updateModule = 'plugin_manager';
+ 	
+ 	/**
+ 	 * @var string $updateAction;  
+ 	 * @access private
+ 	 * @since 11/8/07
+ 	 */
+ 	private $updateAction = 'update_ajax';
+ 	
 	
 	/**
 	 * Answer the markup for this plugin
@@ -316,7 +331,7 @@ END;
 	 */
 	private function _ajaxUrl ( $parameters = array() ) {
 		$harmoni = Harmoni::instance();
-		$url = $harmoni->request->mkURL('plugin_manager', 'update_ajax');
+		$url = $harmoni->request->mkURL($this->updateModule, $this->updateAction);
 	
 		$harmoni->request->startNamespace('plugin_manager');
 		
@@ -350,6 +365,25 @@ END;
 				.self::getPluginSystemJavascript());
 			$GLOBALS['ajaxLibWritten'] = true;	
 		}
+	}
+	
+	/**
+	 * Set the update module and action. This method should not be used by plugins.
+	 * it is to be used only by plugin users to direct plugins to alternate updating
+	 * actions.
+	 * 
+	 * @param string $module
+	 * @param string $action
+	 * @return void
+	 * @access public
+	 * @since 11/8/07
+	 */
+	public function setUpdateAction ($module, $action) {
+		ArgumentValidator::validate($module, NonZeroLengthStringValidatorRule::getRule());
+		ArgumentValidator::validate($action, NonZeroLengthStringValidatorRule::getRule());
+		
+		$this->updateModule = $module;
+		$this->updateAction = $action;
 	}
 }
 
