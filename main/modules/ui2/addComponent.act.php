@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.6 2007/11/08 17:40:45 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.7 2007/11/08 19:05:32 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.6 2007/11/08 17:40:45 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.7 2007/11/08 19:05:32 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -68,7 +68,7 @@ class addComponentAction
 		
 		$componentType = Type::fromString(RequestContext::value('componentType'));
 		if ($componentType->getDomain() == 'segue-multipart')
-			$component = $this->createMultipartComponent($director, $componentType, $organizer);
+			$component = self::createMultipartComponent($director, $componentType, $organizer);
 		else
 			$component = $director->createSiteComponent($componentType, $organizer);
 		
@@ -97,9 +97,10 @@ class addComponentAction
 	 * @param object OrganizerSiteComponent $organizer
 	 * @return SiteComponent
 	 * @access public
+	 * @static
 	 * @since 1/15/07
 	 */
-	function createMultipartComponent ( $director, $componentType, $organizer ) {
+	static function createMultipartComponent ( $director, $componentType, $organizer ) {
 		
 		switch ($componentType->getKeyword()) {
 			case 'SubMenu_multipart':

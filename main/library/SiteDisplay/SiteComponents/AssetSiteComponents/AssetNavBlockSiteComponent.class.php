@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.14 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.15 2007/11/08 19:05:32 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.14 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.15 2007/11/08 19:05:32 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -182,7 +182,13 @@ class AssetNavBlockSiteComponent
 			else 
 				$oldCellId = null;
 			
-			$oldParent->detatchSubcomponent($menuOrganizer);
+			// If the siteComponent reports a parent, but really has not been
+			// added as an xml child node of the parent, continue
+			try {
+				$oldParent->detatchSubcomponent($menuOrganizer);
+			} catch (DOMIT_DOMException $e) {
+				$oldCellId = null;
+			}
 		} else {
 			$oldCellId = null;
 		}
@@ -213,7 +219,7 @@ class AssetNavBlockSiteComponent
 	 * @access public
 	 * @since 9/22/06
 	 */
-	function detatchSubcomponent ( $subcomponent ) {
+	function detatchSubcomponent ( SiteComponent $subcomponent ) {
 		$this->_element->removeChild($subcomponent->getElement());
 		$this->_saveXml();
 	}

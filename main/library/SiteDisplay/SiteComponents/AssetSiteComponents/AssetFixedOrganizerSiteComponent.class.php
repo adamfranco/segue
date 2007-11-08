@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.8 2007/10/25 17:44:11 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.9 2007/11/08 19:05:32 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteCom
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.8 2007/10/25 17:44:11 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.9 2007/11/08 19:05:32 adamfranco Exp $
  */
 class AssetFixedOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -98,14 +98,20 @@ class AssetFixedOrganizerSiteComponent
 		$this->normalizeCells();
 		$currentIndex = $this->getCellForSubcomponent($siteComponent);
 		if ($currentIndex === FALSE) {
-			// A cell will have no old parent if it is newly created.
+			// A cell should not have no old parent if it is newly created.
 			if ($oldParent = $siteComponent->getParentComponent()) {
 				if (method_exists($oldParent, 'getCellForSubcomponent'))
 					$oldCellId = $oldParent->getId()."_cell:".$oldParent->getCellForSubcomponent($siteComponent);
 				else 
 					$oldCellId = null;
 				
-				$oldParent->detatchSubcomponent($siteComponent);
+				// If the siteComponent reports a parent, but really has not been
+				// added as an xml child node of the parent, continue
+				try {
+					$oldParent->detatchSubcomponent($siteComponent);
+				} catch (DOMIT_DOMException $e) {
+					$oldCellId = null;
+				}
 			} else {
 				$oldCellId = null;
 			}
