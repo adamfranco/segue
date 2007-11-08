@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.10 2007/11/08 17:40:44 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,28 +21,11 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.act.php,v 1.10 2007/11/08 17:40:44 adamfranco Exp $
  */
 abstract class EditModeSiteAction 
 	extends MainWindowAction
 {
-	/**
-	 * Check Authorizations
-	 * 
-	 * @return boolean
-	 * @access public
-	 * @since 4/26/05
-	 */
-	function isAuthorizedToExecute () {
-		// Check that the user can create an asset here.
-		$authZ = Services::getService("AuthZ");
-		$idManager = Services::getService("Id");
-		
-		return true;
-// 		return $authZ->isUserAuthorized(
-// 			$idManager->getId("edu.middlebury.authorization.modify"),
-// 			$idManager->getId(RequestContext::value('parent_id')));
-	}
 	
 	/**
 	 * Return the "unauthorized" string to pring

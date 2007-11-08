@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.62 2007/11/08 16:15:39 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.63 2007/11/08 17:40:42 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2007-11-08' ref='1798922' reftype='bug'>
+			UI2/Permissions: UI2 editing actions now properly check authorizations
+			before acting.
+		</fix>
 		<new author='adam' date='2007-11-05' ref='1799950' reftype='fr'>
 			Permissions: New 'Role' system to provide an abstraction over the 
 			particular combinations of authorizations.
@@ -51,6 +55,7 @@
 			Plugins: Reworked the SeguePlugins class hierarchy in order to separate
 			out responsibility areas and enforce method-access and method-overriding restrictions.
 		</change>
+		
 	</version>
 	<version number="2.0.0-beta-2" date="2007-09-25">
 		<fix author='adam' date='2007-09-25'>

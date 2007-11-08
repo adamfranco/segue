@@ -5,10 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.5 2007/09/25 14:07:32 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.6 2007/11/08 17:40:45 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.class.php");
 
 
 /**
@@ -19,11 +20,35 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.5 2007/09/25 14:07:32 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.6 2007/11/08 17:40:45 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
 {
+	/**
+	 * Check Authorizations
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 4/26/05
+	 */
+	function isAuthorizedToExecute () {
+		// Check that the user can create an asset here.
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		
+		$director = $this->getSiteDirector();
+		
+		$authZNode = $director->getSiteComponentById(RequestContext::value('organizerId'));
+		
+		while (!$authZNode->acceptVisitor(new IsAuthorizableVisitor)) 
+			$authZNode = $authZNode->getParentComponent();
+		
+		return $authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.add_children"),
+			$idManager->getId($authZNode->getId()));
+	}
+	
 	/**
 	 * Process changes to the site components. This is the method that the various
 	 * actions that modify the site should override.
