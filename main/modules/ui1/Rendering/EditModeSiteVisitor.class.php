@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.19 2007/09/25 15:48:31 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.20 2007/11/08 19:35:44 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.19 2007/09/25 15:48:31 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.20 2007/11/08 19:35:44 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -393,7 +393,7 @@ END;
 		print "\n\t\t\t\t<span class='controls_link'"
 			."style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
 			.">";
-		print "\n\t\t\t"._("Show Controls");
+		print "\n\t\t\t"._("Options");
 		print "\n\t\t\t</span>";
 		print "\n\t\t</td>";
 		print "\n\t</tr>";
@@ -455,8 +455,8 @@ END;
 	 * @since 4/7/06
 	 */
 	function printJavascript () {
-		$showControls = _("Show Controls");
-		$hideControls = _("Hide Controls");
+		$showControls = _("Options");
+		$hideControls = _("Hide Options");
 		print <<<END
 
 <script type='text/javascript'>

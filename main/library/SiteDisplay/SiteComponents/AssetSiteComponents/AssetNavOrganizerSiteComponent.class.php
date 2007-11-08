@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.5 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.6 2007/11/08 19:35:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavOrganizerSiteCompo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.5 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetNavOrganizerSiteComponent.class.php,v 1.6 2007/11/08 19:35:43 adamfranco Exp $
  */
 class AssetNavOrganizerSiteComponent
 	extends AssetFixedOrganizerSiteComponent 
@@ -36,7 +36,7 @@ class AssetNavOrganizerSiteComponent
 	 */
 	function getDisplayName () {
 		$parent = $this->getParentComponent();
-		return $parent->getDisplayName()._(" <em>Organizer</em>");
+		return $parent->getDisplayName()._(" <em>Layout Container</em>");
 	}
 	
 	/**

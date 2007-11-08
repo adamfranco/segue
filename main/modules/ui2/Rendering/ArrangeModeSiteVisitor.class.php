@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.10 2007/09/24 20:49:10 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.11 2007/11/08 19:35:44 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.10 2007/09/24 20:49:10 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.11 2007/11/08 19:35:44 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -713,7 +713,7 @@ class ArrangeModeSiteVisitor
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0) {
+	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0) {
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		ob_start();
@@ -741,7 +741,7 @@ class ArrangeModeSiteVisitor
 		print "\n\t\t\t\t<span class='controls_link'"
 			."style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
 			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'>";
-		print "\n\t\t\t"._("Show Controls");
+		print "\n\t\t\t"._("Options");
 		print "\n\t\t\t</span>";
 		print "\n\t\t</td>";
 		print "\n\t</tr>";
@@ -750,6 +750,10 @@ class ArrangeModeSiteVisitor
 		print "\n\t\t\t<div class='controls' style='display: none; border-top: 1px solid $dividerColor;'>";
 		print $controlsHTML;
 		print "\n\t\t\t\t</div>";
+		
+// 		if (!$float) {
+// 			print "\n<div style='display: block;' class='controls_spacer'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>";
+// 		}
 		
 		print "\n</div>";
 		
