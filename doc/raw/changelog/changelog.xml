@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.61 2007/11/07 19:00:54 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.62 2007/11/08 16:15:39 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -24,7 +24,9 @@
 			should be treated together as 'members of the institution'.
 		</new>
 		<new author='adam' date='2007-11-05' ref='1799950' reftype='fr'>
-			Permissions: New Site-Wide-Permissions user interface.
+			Permissions: New Role-setting interface that allows setting the role
+			of 'the world' and 'institute users' throughout the site hierarchy.
+			This UI is part of the classic-mode editing UI.
 		</new>
 		<fix author='adam' date='2007-10-22' ref='1810360' reftype='concerto_bug'>
 			MediaLibrary panel now works in IE. Needed to explicitly add tbody 
