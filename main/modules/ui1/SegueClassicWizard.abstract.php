@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.11 2007/09/20 19:09:30 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.12 2007/11/08 15:50:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.class.php");
 
 /**
  * This is an abstract action class with common functionality for all Segue
@@ -22,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.11 2007/09/20 19:09:30 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.12 2007/11/08 15:50:37 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -144,6 +145,11 @@ class SegueClassicWizard
 		$wizard = SimpleStepWizard::withDefaultLayout();
 		
 		$wizard->addStep("namedesc", $this->getTitleStep());
+		try {
+			$wizard->addStep("permissions", $this->getPermissionsStep());
+		} catch (PermissionDeniedException $e) {
+		
+		}
 		$wizard->addStep("display", $this->getDisplayOptionsStep());
 // 		$wizard->addStep("status", $this->getStatusStep());
 		
@@ -170,8 +176,15 @@ class SegueClassicWizard
 			
 			if (!$this->saveTitleStep($properties['namedesc']))
 				return FALSE;
+			
+			if (isset($properties['permissions']))
+				if (!$this->savePermissionsStep($properties['permissions']))
+					return FALSE;
+			
 			if (!$this->saveDisplayOptionsStep($properties['display']))
 				return FALSE;
+			
+			
 			if (!$this->saveStatusStep($properties['status']))
 				return FALSE;
 			
@@ -491,7 +504,189 @@ class SegueClassicWizard
 	function saveWidth ( $component, $values ) {
 		$component->updateWidth($values['width']);
 		return true;
-	}	
+	}
+	
+	/**
+	 * Answer a step for changing permissions.
+	 * 
+	 * @return object WizardStep
+	 * @access public
+	 * @since 11/1/07
+	 */
+	public function getPermissionsStep () {
+		$step =  new WizardStep();
+		$step->setDisplayName(_("Permissions"));
+		$property = $step->addComponent("perms_table", new RowRadioMatrix);
+		
+		$roleMgr = SegueRoleManager::instance();
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		
+		$component = $this->getSiteComponent();
+		$componentId = $idMgr->getId($component->getId());
+		
+		
+		// Add the options
+		foreach($roleMgr->getRoles() as $role)
+			$property->addOption($role->getIdString(), $role->getDisplayName(), $role->getDescription());
+		
+		// Make the whole property read-only if we can view but not modify authorizations
+		if (!$authZ->isUserAuthorized(
+				$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
+				$componentId))
+		{
+			$property->setEnabled(false);
+		}
+		
+		// Get a list of the parent components.
+		$parents = array();
+		$parent = $component->getParentComponent();
+		while ($parent) {
+			if ($parent->acceptVisitor(new IsAuthorizableVisitor))
+				$parents[] = $parent;
+			$parent = $parent->getParentComponent();
+		}
+		
+		$tabs = "";
+		for ($i = count($parents) - 1; $i >= 0; $i--) {
+			$parent = $parents[$i];
+			$parentId = $idMgr->getId($parent->getId());
+			
+			// Everyone
+			$agentId = $idMgr->getId('edu.middlebury.agents.everyone');
+			$everyoneRole = $roleMgr->getAgentsRole($agentId, $parentId)->getIdString();
+			$property->addField("everyone_".$parent->getId(), $tabs._("The World"), $everyoneRole);
+			
+			$property->addSpacerBefore("<br/>".$tabs.$parent->getDisplayName());
+			
+			// @todo This should be edu.middlebury.agents.institute
+			$agentId = $idMgr->getId('edu.middlebury.institute');
+			$agentMgr = Services::getService("Agent");
+			$agent = $agentMgr->getGroup($agentId);
+			$instituteRole = $roleMgr->getAgentsRole($agentId, $parentId)->getIdString();
+			$property->addField("institute_".$parent->getId(), $tabs.$agent->getDisplayName(), $instituteRole);
+			
+			// Disable changing of parent roles
+			foreach($roleMgr->getRoles() as $role) {
+				$property->makeDisabled('everyone_'.$parent->getId(), $role->getIdString());
+				$property->makeDisabled('institute_'.$parent->getId(), $role->getIdString());
+			}
+			
+			$tabs .= " &nbsp; &nbsp;";
+// 			$property->addSpacer();
+		}
+		
+		// Everyone
+		$agentId = $idMgr->getId('edu.middlebury.agents.everyone');	
+		$property->addField("everyone", $tabs._("The World"), 
+			$roleMgr->getAgentsRole($agentId, $componentId)->getIdString());
+		
+		$property->addSpacerBefore("<br/>".$tabs.$component->getDisplayName());
+		
+		// Disable all options up to the max parent role.
+		foreach ($property->getOptions() as $option) {
+			if ($option->value == $everyoneRole)
+				break;
+			else
+				$property->makeDisabled('everyone', $option->value);
+		}
+		
+		//Institute
+		$agentId = $idMgr->getId('edu.middlebury.institute');
+		$agentMgr = Services::getService("Agent");
+		$agent = $agentMgr->getGroup($agentId);
+		$property->addField("institute", $tabs.$agent->getDisplayName(), 
+			$roleMgr->getAgentsRole($agentId, $componentId)->getIdString(), 
+			">=");
+		
+		// Disable all options up to the max parent role.
+		foreach ($property->getOptions() as $option) {
+			if ($option->value == $instituteRole)
+				break;
+			else
+				$property->makeDisabled('institute', $option->value);
+		}
+		
+		// Make the everyone and institute groups unable to be given adminstrator privelidges
+		$property->makeDisabled('everyone', 'admin');
+		$property->makeDisabled('institute', 'admin');
+		
+
+// 		$property->addSpacer();
+// 		$property->addField("private", _("All Faculty"), 'no_access');
+		
+		
+		ob_start();
+		print "\n<h2>"._("Permissions")."</h2>";
+		print "\n<p>";
+		print _("Here you can set permissions for this component and its children. Permissions are additive -- this means that you can add additional permissions (but not remove them) for any children.");
+		print "\n</p>\n";
+		print "[[perms_table]]";
+		
+		$step->setContent(ob_get_clean());
+		
+		return $step;
+	}
+	
+	/**
+	 * Save the permissions
+	 * 
+	 * @param array $values
+	 * @return boolean
+	 * @access public
+	 * @since 11/5/07
+	 */
+	public function savePermissionsStep (array $values) {
+		$roles = $values['perms_table'];
+		
+		$roleMgr = SegueRoleManager::instance();
+		$idMgr = Services::getService("Id");
+		
+		$component = $this->getSiteComponent();
+		$componentId = $idMgr->getId($component->getId());
+		
+		$everyoneId = $idMgr->getId('edu.middlebury.agents.everyone');
+		$instituteId = $idMgr->getId('edu.middlebury.institute');
+		
+		$everyoneRole = $roleMgr->getRole($roles['everyone']);
+		// Ensure that Everyone is not set to admin
+		if ($everyoneRole->getIdString() == 'admin')
+			$everyoneRole = $roleMgr->getRole('editor');
+		
+		$instituteRole = $roleMgr->getRole($roles['institute']);
+		// Ensure that Institute is not set to admin
+		if ($instituteRole->getIdString() == 'admin')
+			$instituteRole = $roleMgr->getRole('editor');
+		
+		// Find the parent node.
+		$parent = $component->getParentComponent();
+		while ($parent && !$parent->acceptVisitor(new IsAuthorizableVisitor)) {
+			$parent = $parent->getParentComponent();
+		}
+		$parentEveryoneRole = $roleMgr->getAgentsRole($everyoneId, $idMgr->getId($parent->getId()));
+		$parentInstituteRole = $roleMgr->getAgentsRole($instituteId, $idMgr->getId($parent->getId()));
+		
+		// Apply the Everyone Role.
+		try {
+			if ($everyoneRole->isEqualTo($parentEveryoneRole)) {
+				$roleMgr->clearRoleAZs($everyoneId, $componentId);
+			} else {
+				$everyoneRole->apply($everyoneId, $componentId);
+			}
+			
+			// If the roles are equal, clear out the explicit institute AZs
+			// as institute users will get implicit AZs from Everyone
+			if ($instituteRole->isEqualTo($everyoneRole) || $instituteRole->isEqualTo($parentInstituteRole)) {
+				$roleMgr->clearRoleAZs($instituteId, $componentId);
+			} else {
+				$instituteRole->apply($instituteId, $componentId);
+			}
+		} catch (PermissionDeniedException $e) {
+		
+		}
+		
+		return true;
+	}
 }
 
 ?>

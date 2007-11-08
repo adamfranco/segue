@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.5 2007/11/07 19:00:54 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.6 2007/11/08 15:50:37 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.5 2007/11/07 19:00:54 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.6 2007/11/08 15:50:37 adamfranco Exp $
  */
 class editSiteAction
 	extends SegueClassicWizard
@@ -88,8 +88,10 @@ class editSiteAction
 			if (isset($properties['permissions']))
 				if (!$this->savePermissionsStep($properties['permissions']))
 					return FALSE;
+			
 			if (!$this->saveDisplayOptionsStep($properties['display']))
 				return FALSE;
+			
 			if (!$this->saveStatusStep($properties['status']))
 				return FALSE;
 			
@@ -146,7 +148,7 @@ class editSiteAction
 	 */
 	public function getPermissionsStep () {
 		$step =  new WizardStep();
-		$step->setDisplayName(_("Site-Wide Permissions"));
+		$step->setDisplayName(_("Permissions"));
 		$property = $step->addComponent("perms_table", new RowRadioMatrix);
 		
 		$roleMgr = SegueRoleManager::instance();
@@ -193,7 +195,10 @@ class editSiteAction
 		
 		
 		ob_start();
-		
+		print "\n<h2>"._("Permissions")."</h2>";
+		print "\n<p>";
+		print _("Here you can set permissions for the entire site. Permissions are additive -- this means that you can add additional permissions (but not remove them) for any part of the site.");
+		print "\n</p>\n";
 		print "[[perms_table]]";
 		
 		$step->setContent(ob_get_clean());
@@ -218,8 +223,7 @@ class editSiteAction
 		$siteId = $idMgr->getId($this->getSiteComponent()->getId());
 		
 		$everyoneId = $idMgr->getId('edu.middlebury.agents.everyone');
-		// @todo This should be edu.middlebury.agents.institute
-		$instituteId = $idMgr->getId('edu.middlebury.agents.users');
+		$instituteId = $idMgr->getId('edu.middlebury.institute');
 		
 		$everyoneRole = $roleMgr->getRole($roles['everyone']);
 		// Ensure that Everyone is not set to admin
