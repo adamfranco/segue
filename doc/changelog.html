@@ -24,12 +24,82 @@
 <body>
 <h1>Segue Change Log</h1>
 <h2>Version 2.0.0-beta-3</h2>
-<h3>The Future</h3>
-<p></p>
+<h3>2007-11-09</h3>
+<p>This release fixes a large number of bugs and adds role-based authorization-setting user interfaces. As well, the Plugin System had its interface hierarchy reworked.
+<br>
+<br>The major Harmoni improvement is the ability to attach externally-defined groups (such as from LDAP) underneith locally defined groups.
+<br>
+<br>Segue 2.0.0-beta-3 runs on Harmoni 0.13.3 and Polyphony 0.10.3.
+<br>
+<br>Changes to the Agent tables require running a database updater script: segue/main/harmoni/core/DBHandler/db_updater.php</p>
 <ul>
 		
 		<li>
-<b>Bug Fix:</b> Fixing a number of E_STRICT notices and improving the class and interface hierarchies. (<em>2007-10-10 - Adam Franco</em>)</li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1824417&amp;group_id=&amp;atid=">
+        			#1824417</a> Permissions: When users are assigned an 'Author' role, they are automatically given the 'Editor' role of anything that they create.
+<br>
+<br>This allows people to go back and make changes to or delete content that they have added.
+<br>
+<br>Similarly, If a user moves a piece of content from a place where they have an implicit 'Editor' role to a place where they only have an implicit 'Author' role, they are given an explicit 'Editor' role on the newly moved content. (<em>2007-11-09 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820233&amp;group_id=&amp;atid=">
+        			#1820233</a> Logging: Content deleting, creation, and modification are now logged. (<em>2007-11-09 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828607&amp;group_id=&amp;atid=">
+        			#1828607</a> Comments: Changes to comments are now logged. (<em>2007-11-09 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1829074&amp;group_id=&amp;atid=">
+        			#1829074</a> UI1: Classic-Mode now doesn't show controls for unimplemented 'move' and 'versions' options. (<em>2007-11-09 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1829021&amp;group_id=&amp;atid=">
+        			#1829021</a> UI1: Classic-Mode controls now are not shown if the current user does not have authorization to use them. (<em>2007-11-09 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1827777&amp;group_id=&amp;atid=">
+        			#1827777</a> Comments: Comments can now be edited by users who are not otherwise editors of the site and only have 'comment' authorization. (<em>2007-11-08 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1827779&amp;group_id=&amp;atid=">
+        			#1827779</a> Comments: Authorizations are now checked before showing 'comment' and 'reply' buttons. Authorization checks have also been added inside the comment manager to ensure that authorizations are respected. (<em>2007-11-08 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798943&amp;group_id=&amp;atid=">
+        			#1798943</a> UI2: 'Controls' are now named 'Options'. (<em>2007-11-08 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798943&amp;group_id=&amp;atid=">
+        			#1798943</a> UI2: 'Content Organizers' are now named 'Content Containers' (<em>2007-11-08 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798943&amp;group_id=&amp;atid=">
+        			#1798943</a> UI2: 'Fixed Organizers' are now named 'Layout Containers' (<em>2007-11-08 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828414&amp;group_id=&amp;atid=">
+        			#1828414</a> SiteDisplay: Fixed exception being thrown when adding menus. (<em>2007-11-08 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798922&amp;group_id=&amp;atid=">
+        			#1798922</a> UI2/Permissions: UI2 editing actions now properly check authorizations before acting. (<em>2007-11-08 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799950&amp;group_id=&amp;atid=">
+        			#1799950</a> Permissions: New 'Role' system to provide an abstraction over the particular combinations of authorizations. (<em>2007-11-05 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1824880&amp;group_id=&amp;atid=">
+        			#1824880</a> Permissions: New 'Institute Users' group. This group can have an number of sub-groups or individuals added to it. It represents all users that should be treated together as 'members of the institution'. (<em>2007-11-07 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799950&amp;group_id=&amp;atid=">
+        			#1799950</a> Permissions: New Role-setting interface that allows setting the role of 'the world' and 'institute users' throughout the site hierarchy. This UI is part of the classic-mode editing UI. (<em>2007-11-05 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1810360&amp;group_id=&amp;atid=">
+        			#1810360</a> MediaLibrary panel now works in IE. Needed to explicitly add tbody elements to tables. (<em>2007-10-22 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819563&amp;group_id=&amp;atid=">
+        			#1819563</a> Fixing a number of E_STRICT notices and improving the class and interface hierarchies. (<em>2007-10-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1802310&amp;group_id=&amp;atid=">
+        			#1802310</a> MediaLibrary: Can now delete files. (<em>2007-10-25 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819999&amp;group_id=&amp;atid=">
+        			#1819999</a> MediaLibrary: Thumbnails are now refreshed when uploading new files. (<em>2007-10-25 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> MediaLibrary: When uploading a replacement file, if the submitted title is the same as the original filename, the title will be updated to the new filename. (<em>2007-10-25 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Plugins: Reworked the SeguePlugins class hierarchy in order to separate out responsibility areas and enforce method-access and method-overriding restrictions. (<em>2007-10-25 - Adam Franco</em>)</li>
+		
 	</ul>
 <br><h2>Version 2.0.0-beta-2</h2>
 <h3>2007-09-25</h3>

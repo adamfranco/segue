@@ -5,14 +5,24 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.71 2007/11/09 22:57:40 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.72 2007/11/09 23:06:43 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0.0-beta-3" date="The Future">
+	<version number="2.0.0-beta-3" date="2007-11-09">
 		<releaseNotes>
+			This release fixes a large number of bugs and adds role-based 
+			authorization-setting user interfaces. As well, the Plugin System
+			had its interface hierarchy reworked.
 			
+			The major Harmoni improvement is the ability to attach externally-defined
+			groups (such as from LDAP) underneith locally defined groups.
+			
+			Segue 2.0.0-beta-3 runs on Harmoni 0.13.3 and Polyphony 0.10.3.
+			
+			Changes to the Agent tables require running a database updater script:
+			segue/main/harmoni/core/DBHandler/db_updater.php
 		</releaseNotes>
 		<new author='adam' date='2007-11-09' ref='1824417' reftype='bug'>
 			Permissions: When users are assigned an 'Author' role, they are 

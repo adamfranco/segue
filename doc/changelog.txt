@@ -4,15 +4,130 @@ Name: Segue Change Log
 
 
 
-v. 2.0.0-beta-3 (The Future)
+v. 2.0.0-beta-3 (2007-11-09)
 ----------------------------------------------------
+This release fixes a large number of bugs and adds role-based authorization-setting
+user interfaces. As well, the Plugin System had its interface hierarchy reworked.
 
+The major Harmoni improvement is the ability to attach externally-defined groups
+(such as from LDAP) underneith locally defined groups.
+
+Segue 2.0.0-beta-3 runs on Harmoni 0.13.3 and Polyphony 0.10.3.
+
+Changes to the Agent tables require running a database updater script:
+segue/main/harmoni/core/DBHandler/db_updater.php 
 		
 		
-	* Bug Fix: 
+	* New feature: #1824417 
+		Permissions: When users are assigned an 'Author' role, they are
+		automatically given the 'Editor' role of anything that they create.
+		
+		This allows people to go back and make changes to or delete content that
+		they have added.
+		
+		Similarly, If a user moves a piece of content from a place where they
+		have an implicit 'Editor' role to a place where they only have an implicit
+		'Author' role, they are given an explicit 'Editor' role on the newly moved
+		content. 
+		(2007-11-09 - Adam Franco)
+		
+	* Change: #1820233 
+		Logging: Content deleting, creation, and modification are now logged.
+		(2007-11-09 - Adam Franco)
+		
+	* Change: #1828607 
+		Comments: Changes to comments are now logged.
+		(2007-11-09 - Adam Franco)
+		
+	* Bug Fix: #1829074 
+		UI1: Classic-Mode now doesn't show controls for unimplemented 'move' and
+		'versions' options.
+		(2007-11-09 - Adam Franco)
+		
+	* Bug Fix: #1829021 
+		UI1: Classic-Mode controls now are not shown if the current user does not
+		have authorization to use them.
+		(2007-11-09 - Adam Franco)
+		
+	* Bug Fix: #1827777 
+		Comments: Comments can now be edited by users who are not otherwise editors
+		of the site and only have 'comment' authorization.
+		(2007-11-08 - Adam Franco)
+		
+	* Bug Fix: #1827779 
+		Comments: Authorizations are now checked before showing 'comment' and
+		'reply' buttons. Authorization checks have also been added inside the
+		comment manager to ensure that authorizations are respected.
+		(2007-11-08 - Adam Franco)
+		
+	* Change: #1798943 
+		UI2: 'Controls' are now named 'Options'.
+		(2007-11-08 - Adam Franco)
+		
+	* Change: #1798943 
+		UI2: 'Content Organizers' are now named 'Content Containers'
+		(2007-11-08 - Adam Franco)
+		
+	* Change: #1798943 
+		UI2: 'Fixed Organizers' are now named 'Layout Containers'
+		(2007-11-08 - Adam Franco)
+		
+	* Bug Fix: #1828414 
+		SiteDisplay: Fixed exception being thrown when adding menus.
+		(2007-11-08 - Adam Franco)
+		
+	* Bug Fix: #1798922 
+		UI2/Permissions: UI2 editing actions now properly check authorizations
+		before acting.
+		(2007-11-08 - Adam Franco)
+		
+	* New feature: #1799950 
+		Permissions: New 'Role' system to provide an abstraction over the particular
+		combinations of authorizations.
+		(2007-11-05 - Adam Franco)
+		
+	* New feature: #1824880 
+		Permissions: New 'Institute Users' group. This group can have an number of
+		sub-groups or individuals added to it. It represents all users that should
+		be treated together as 'members of the institution'.
+		(2007-11-07 - Adam Franco)
+		
+	* New feature: #1799950 
+		Permissions: New Role-setting interface that allows setting the role of 'the
+		world' and 'institute users' throughout the site hierarchy. This UI is part
+		of the classic-mode editing UI.
+		(2007-11-05 - Adam Franco)
+		
+	* Bug Fix: #1810360 
+		MediaLibrary panel now works in IE. Needed to explicitly add tbody elements
+		to tables.
+		(2007-10-22 - Adam Franco)
+		
+	* Bug Fix: #1819563 
 		Fixing a number of E_STRICT notices and improving the class and interface
 		hierarchies. 
 		(2007-10-10 - Adam Franco)
+		
+	* Bug Fix: #1802310 
+		MediaLibrary: Can now delete files.
+		(2007-10-25 - Adam Franco)
+		
+	* Bug Fix: #1819999 
+		MediaLibrary: Thumbnails are now refreshed when uploading new files.
+		(2007-10-25 - Adam Franco)
+		
+	* Change: 
+		MediaLibrary: When uploading a replacement file, if the submitted title is
+		the same as the original filename, the title will be updated to the new
+		filename. 
+		(2007-10-25 - Adam Franco)
+		
+	* Change: 
+		Plugins: Reworked the SeguePlugins class hierarchy in order to separate out
+		responsibility areas and enforce method-access and method-overriding
+		restrictions. 
+		(2007-10-25 - Adam Franco)
+		
 	
 v. 2.0.0-beta-2 (2007-09-25)
 ----------------------------------------------------

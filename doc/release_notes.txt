@@ -3,9 +3,18 @@ Name: Segue Release Notes
 (See the Segue change log for more details)
 
 
-v. 2.0.0-beta-3 (The Future)
+v. 2.0.0-beta-3 (2007-11-09)
 ----------------------------------------------------
+This release fixes a large number of bugs and adds role-based authorization-setting
+user interfaces. As well, the Plugin System had its interface hierarchy reworked.
 
+The major Harmoni improvement is the ability to attach externally-defined groups
+(such as from LDAP) underneith locally defined groups.
+
+Segue 2.0.0-beta-3 runs on Harmoni 0.13.3 and Polyphony 0.10.3.
+
+Changes to the Agent tables require running a database updater script:
+segue/main/harmoni/core/DBHandler/db_updater.php 
 
 
 v. 2.0.0-beta-2 (2007-09-25)
