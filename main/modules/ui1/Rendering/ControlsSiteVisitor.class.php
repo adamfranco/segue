@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2007/11/09 16:23:31 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2007/11/09 16:43:41 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2007/11/09 16:23:31 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2007/11/09 16:43:41 adamfranco Exp $
  */
 class ControlsSiteVisitor
 	extends GeneralControlsSiteVisitor
@@ -198,6 +198,10 @@ class ControlsSiteVisitor
 	 * @since 5/7/07
 	 */
 	function getMove ( $siteComponent ) {
+		// Moving is not yet implemented, when it is, remove this line to return the
+		// control.
+		return false;
+		
 		ob_start();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -234,6 +238,10 @@ class ControlsSiteVisitor
 	 * @since 5/7/07
 	 */
 	function getVersions ( $siteComponent ) {
+		// Versioning is not yet implemented, when it is, remove this line to return the
+		// control.
+		return false;
+		
 		ob_start();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
