@@ -5,11 +5,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.6 2007/11/08 17:40:45 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.7 2007/11/09 16:35:18 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.class.php");
 
 
 /**
@@ -20,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.6 2007/11/08 17:40:45 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.7 2007/11/09 16:35:18 adamfranco Exp $
  */
 class moveComponentAction 
 	extends EditModeSiteAction
@@ -41,25 +40,20 @@ class moveComponentAction
 		$director = $this->getSiteDirector();
 		
 		$component = $director->getSiteComponentById(RequestContext::value('component'));
-		$sourceAuthZNode = $component->getParentComponent();
-		
-		while (!$sourceAuthZNode->acceptVisitor(new IsAuthorizableVisitor)) 
-			$sourceAuthZNode = $sourceAuthZNode->getParentComponent();
+		$sourceQualifierId = $component->getParentComponent()->getQualifierId();
 		
 		$targetId = RequestContext::value('destination');
 		preg_match("/^(.+)_cell:(.+)$/", $targetId, $matches);
 		$targetOrgId = $matches[1];
-		$destAuthZNode = $director->getSiteComponentById($targetOrgId);
-		
-		while (!$destAuthZNode->acceptVisitor(new IsAuthorizableVisitor)) 
-			$destAuthZNode = $destAuthZNode->getParentComponent();
+		$destination = $director->getSiteComponentById($targetOrgId);
+		$destQualifierId = $destination->getQualifierId();
 		
 		return ($authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.remove_children"),
-				$idManager->getId($sourceAuthZNode->getId()))
+				$sourceQualifierId)
 			&& $authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.add_children"),
-				$idManager->getId($destAuthZNode->getId())));
+				$destQualifierId));
 	}
 	
 	/**

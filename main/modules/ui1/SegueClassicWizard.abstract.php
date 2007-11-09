@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.12 2007/11/08 15:50:37 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.13 2007/11/09 16:35:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.12 2007/11/08 15:50:37 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.13 2007/11/09 16:35:18 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -660,11 +660,9 @@ class SegueClassicWizard
 		
 		// Find the parent node.
 		$parent = $component->getParentComponent();
-		while ($parent && !$parent->acceptVisitor(new IsAuthorizableVisitor)) {
-			$parent = $parent->getParentComponent();
-		}
-		$parentEveryoneRole = $roleMgr->getAgentsRole($everyoneId, $idMgr->getId($parent->getId()));
-		$parentInstituteRole = $roleMgr->getAgentsRole($instituteId, $idMgr->getId($parent->getId()));
+		$parentQualifierId = $parent->getQualifierId();
+		$parentEveryoneRole = $roleMgr->getAgentsRole($everyoneId, $parentQualifierId);
+		$parentInstituteRole = $roleMgr->getAgentsRole($instituteId, $parentQualifierId);
 		
 		// Apply the Everyone Role.
 		try {

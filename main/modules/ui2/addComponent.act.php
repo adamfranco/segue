@@ -5,11 +5,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.7 2007/11/08 19:05:32 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.8 2007/11/09 16:35:18 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.class.php");
 
 
 /**
@@ -20,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.7 2007/11/08 19:05:32 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.8 2007/11/09 16:35:18 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -39,14 +38,11 @@ class addComponentAction
 		
 		$director = $this->getSiteDirector();
 		
-		$authZNode = $director->getSiteComponentById(RequestContext::value('organizerId'));
-		
-		while (!$authZNode->acceptVisitor(new IsAuthorizableVisitor)) 
-			$authZNode = $authZNode->getParentComponent();
+		$organizer = $director->getSiteComponentById(RequestContext::value('organizerId'));
 		
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"),
-			$idManager->getId($authZNode->getId()));
+			$organizer->getQualifierId());
 	}
 	
 	/**

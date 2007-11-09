@@ -5,13 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: reorder.act.php,v 1.2 2007/11/08 17:40:44 adamfranco Exp $
+ * @version $Id: reorder.act.php,v 1.3 2007/11/09 16:35:18 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ModifySettingsSiteVisitor.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.class.php");
-
 
 /**
  * This action will reorder site components that are in a FlowOrganizer. These will
@@ -22,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: reorder.act.php,v 1.2 2007/11/08 17:40:44 adamfranco Exp $
+ * @version $Id: reorder.act.php,v 1.3 2007/11/09 16:35:18 adamfranco Exp $
  */
 class reorderAction 
 	extends EditModeSiteAction
@@ -47,12 +45,10 @@ class reorderAction
 		$harmoni->request->endNamespace();
 		
 		$parent = $block->getParentComponent();
-		while (!$parent->acceptVisitor(new IsAuthorizableVisitor)) 
-			$parent = $parent->getParentComponent();
 		
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"),
-			$idManager->getId($parent->getId()));
+			$parent->getQualifierId());
 	}
 	
 	/**
