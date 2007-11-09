@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.16 2007/11/08 22:07:23 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.17 2007/11/09 18:47:07 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.16 2007/11/08 22:07:23 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.17 2007/11/09 18:47:07 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -160,6 +160,8 @@ class CommentManager {
 		$commentContainer->addAsset($commentAsset->getId());
 		$comment = $this->getComment($commentAsset);
 		
+		self::logMessage('Comment Added', $asset, array($comment->getId()));
+		
 		// Clear our order caches
 		unset($this->_rootComments[$id->getIdString()]);
 		unset($this->_allComments[$id->getIdString()]);
@@ -186,6 +188,8 @@ class CommentManager {
 		$replyAsset = $repository->createAsset(_("(untitled)"), "", $type);
 		$parent->_asset->addAsset($replyAsset->getId());
 		$reply = $this->getComment($replyAsset);
+		
+		self::logMessage('Comment Added', self::getCommentParentAsset($reply), array($reply->getId(), $parent->getId()));
 		
 		// Clear our order caches
 		unset($this->_allComments);
@@ -217,6 +221,26 @@ class CommentManager {
 		$asset->addAsset($commentContainerAsset->getId());
 		
 		return $commentContainerAsset;
+	}
+	
+	/**
+	 * Answer the Content asset that a comment is attached to
+	 * 
+	 * @param object Id $commentId
+	 * @return object Asset
+	 * @access public
+	 * @static
+	 * @since 11/9/07
+	 */
+	public static function getCommentParentAsset (CommentNode $comment) {
+		$manager = CommentManager::instance();
+		$commentContainerType = new Type('segue', 'edu.middlebury', 'comment_container', 'A container for Segue Comments');
+		$parent = $comment->_asset->getParents()->next();
+		
+		while (!$commentContainerType->isEqual($parent->getAssetType()))
+			$parent = $parent->getParents()->next();
+		
+		return $parent->getParents()->next();
 	}
 	
 	/**
@@ -270,11 +294,12 @@ class CommentManager {
 		if (!$this->canComment() || !$comment->isAuthor())
 			throw new PermissionDeniedException("You are not authorized to delete this comment.");
 		
+		self::logMessage("Comment Deleted: '".$comment->getSubject()."'", self::getCommentParentAsset($comment), array($id));
 		
 		$asset = $comment->_asset;
 		$repository = $asset->getRepository();
 		$repository->deleteAsset($id);
-		
+				
 		unset($this->_comments[$id->getIdString()]);
 		unset($this->_rootComments);
 		unset($this->_allComments);
@@ -762,6 +787,46 @@ END;
 		
 		// If we didn't find an agent, return the anonymous id.
 		return $idM->getId('edu.middlebury.agents.anonymous');
+	}
+	
+	/**
+	 * Log an event
+	 * 
+	 * @param string $message
+	 * @param array $commentNodes An array of effected comment node Ids.
+	 * @return void
+	 * @access public
+	 * @since 11/9/07
+	 */
+	public static function logMessage ($message, $contentAsset, array $commentNodes) {
+		$logName = 'Segue';
+		$type = 'Event_Notice';
+		$category = 'Comments';
+
+		$loggingManager = Services::getService("Logging");
+		$log =$loggingManager->getLogForWriting($logName);
+		$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+						"A format in which the acting Agent[s] and the target nodes affected are specified.");
+		$priorityType = new Type("logging", "edu.middlebury", $type,
+							"Events involving critical system errors.");
+		
+		$item = new AgentNodeEntryItem($category, $message);
+
+		// Add the comment Ids
+		foreach ($commentNodes as $nodeId) {
+			$item->addNodeId($nodeId);	
+		}
+		
+		// Add the content asset
+		$item->addNodeId($contentAsset->getId());
+		
+		// Add the site as a whole
+		$idManager = Services::getService("Id");
+		$director = AssetSiteDirector::forAsset($contentAsset);
+		$site = $director->getRootSiteComponent($contentAsset->getId()->getIdString());
+		$item->addNodeId($idManager->getId($site->getId()));
+		
+		$log->appendLogWithTypes($item,	$formatType, $priorityType);
 	}
 }
 

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.68 2007/11/09 16:43:41 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.69 2007/11/09 18:47:06 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2007-11-09' ref='1828607' reftype='bug'>
+			Comments: Changes to comments are now logged.
+		</change>
 		<fix author='adam' date='2007-11-09' ref='1829074' reftype='bug'>
 			UI1: Classic-Mode now doesn't show controls for unimplemented 'move' 
 			and 'versions' options.

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.10 2007/11/08 22:07:23 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.11 2007/11/09 18:47:07 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.10 2007/11/08 22:07:23 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.11 2007/11/09 18:47:07 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -111,6 +111,8 @@ class CommentNode {
 			$this->_asset->updateDisplayName($subject);
 		else
 			$this->_asset->updateDisplayName(_("(untitled)"));
+		
+		CommentManager::logMessage('Comment Subject Updated', CommentManager::getCommentParentAsset($this), array($this->getId()));
 	}
 	
 	/**
