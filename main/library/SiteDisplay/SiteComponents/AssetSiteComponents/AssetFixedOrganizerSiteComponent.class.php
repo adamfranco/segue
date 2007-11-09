@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.10 2007/11/08 19:35:43 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.11 2007/11/09 21:53:37 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteCom
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.10 2007/11/08 19:35:43 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.11 2007/11/09 21:53:37 adamfranco Exp $
  */
 class AssetFixedOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -37,6 +37,17 @@ class AssetFixedOrganizerSiteComponent
 	 */
 	function getDisplayName () {
 		return _("<em>Layout Container</em>");
+	}
+	
+	/**
+	 * Answer the component class
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 11/09/07
+	 */
+	function getComponentClass () {
+		return "FixedOrganizer";
 	}
 	
 	/**

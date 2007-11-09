@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.7 2007/11/09 16:35:18 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.8 2007/11/09 21:53:37 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.7 2007/11/09 16:35:18 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.8 2007/11/09 21:53:37 adamfranco Exp $
  */
 class moveComponentAction 
 	extends EditModeSiteAction
@@ -113,6 +113,30 @@ class moveComponentAction
 				
 				$menuOrganizer->updateTargetId($oldCellId);
 			}
+		}
+		
+		/*********************************************************
+		 * Log the event
+		 *********************************************************/
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			
+			$item = new AgentNodeEntryItem("Component Moved", $component->getComponentClass()." moved.");
+			
+			$item->addNodeId($component->getQualifierId());
+			
+			
+			$site = $component->getDirector()->getRootSiteComponent($component->getId());
+			if (!$component->getQualifierId()->isEqual($site->getQualifierId()))
+				$item->addNodeId($site->getQualifierId());
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
 		}
 		
 // 		exit;

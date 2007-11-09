@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.11 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.12 2007/11/09 21:53:37 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.11 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.12 2007/11/09 21:53:37 adamfranco Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -37,7 +37,7 @@ abstract class AssetSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function AssetSiteComponent ( $director, $asset, $element) {
+	function __construct ( $director, $asset, $element) {
 		ArgumentValidator::validate($director, ExtendsValidatorRule::getRule('AssetSiteDirector'));
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule('Asset'));
 		ArgumentValidator::validate($element, OptionalRule::getRule(
@@ -46,6 +46,17 @@ abstract class AssetSiteComponent
 		$this->_director = $director;
 		$this->_asset = $asset;
 		$this->_element = $element;
+	}
+	
+	/**
+	 * Destructor
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/9/07
+	 */
+	public function __destruct () {
+		
 	}
 	
 	/**

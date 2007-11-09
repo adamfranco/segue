@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.8 2007/11/08 19:35:43 adamfranco Exp $
+ * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.9 2007/11/09 21:53:37 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/MenuOrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/MenuOrganizerSiteComp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.8 2007/11/08 19:35:43 adamfranco Exp $
+ * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.9 2007/11/09 21:53:37 adamfranco Exp $
  */
 class AssetMenuOrganizerSiteComponent 
 	extends AssetFlowOrganizerSiteComponent
@@ -36,6 +36,17 @@ class AssetMenuOrganizerSiteComponent
 	 */
 	function getDisplayName () {
 		return _("<em>Menu</em>");
+	}
+	
+	/**
+	 * Answer the component class
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 11/09/07
+	 */
+	function getComponentClass () {
+		return "MenuOrganizer";
 	}
 	
 	/**

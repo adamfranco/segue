@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.17 2007/10/25 16:06:25 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.18 2007/11/09 21:53:37 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.17 2007/10/25 16:06:25 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.18 2007/11/09 21:53:37 adamfranco Exp $
  */
 class AssetSiteDirector
 	implements SiteDirector 
@@ -501,7 +501,32 @@ class AssetSiteDirector
 			$this->_createdSiteComponents[$newId]->populateWithDefaults();
 		}
 		
-		// @todo Log SiteComponent creation here
+		/*********************************************************
+		 * Log the event
+		 *********************************************************/
+		$siteComponent = $this->_createdSiteComponents[$newId];
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			$item = new AgentNodeEntryItem("Create Component", $siteComponent->getComponentClass()." created.");
+			
+			$item->addNodeId($siteComponent->getQualifierId());
+			try {
+				$site = $this->getRootSiteComponent($siteComponent->getId());
+				if (!$siteComponent->getQualifierId()->isEqual($site->getQualifierId()))
+					$item->addNodeId($site->getQualifierId());
+			} catch (Exception $e) {
+				// If creating nested components, sometimes traversal won't be possible.
+			}
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
+		
 		
 		return $this->_createdSiteComponents[$newId];
 	}
@@ -515,7 +540,27 @@ class AssetSiteDirector
 	 * @since 4/6/06
 	 */
 	function deleteSiteComponent ( $siteComponent ) {
-		// @todo log SiteComponent deletion here
+		/*********************************************************
+		 * Log the event
+		 *********************************************************/
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			$item = new AgentNodeEntryItem("Delete Component", $siteComponent->getComponentClass()." deleted: ". $siteComponent->getDisplayName());
+			
+			$item->addNodeId($siteComponent->getQualifierId());
+			$site = $this->getRootSiteComponent($siteComponent->getId());
+			if (!$siteComponent->getQualifierId()->isEqual($site->getQualifierId()))
+				$item->addNodeId($site->getQualifierId());
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
+		
 		
 		$id = $siteComponent->getId();
 		$siteComponent->deleteAndCleanUpData();
@@ -533,7 +578,7 @@ class AssetSiteDirector
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.17 2007/10/25 16:06:25 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.18 2007/11/09 21:53:37 adamfranco Exp $
  */
 class NonNavException
 	extends Exception

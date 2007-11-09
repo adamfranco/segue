@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.8 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.9 2007/11/09 21:53:37 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteComponent.abstract.php");
@@ -20,13 +20,24 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteCompo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.8 2007/09/04 15:05:33 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.9 2007/11/09 21:53:37 adamfranco Exp $
  */
 class AssetSiteNavBlockSiteComponent
 	extends AssetNavBlockSiteComponent
 	implements SiteNavBlockSiteComponent
 {	
 
+	/**
+	 * Answer the component class
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 11/09/07
+	 */
+	function getComponentClass () {
+		return 'SiteNavBlock';
+	}
+	
 	/**
 	 * Answers nothing because this is a top level nav
 	 * 

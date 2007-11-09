@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.13 2007/11/09 16:35:18 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.14 2007/11/09 21:53:37 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.13 2007/11/09 16:35:18 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.14 2007/11/09 21:53:37 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -187,6 +187,29 @@ class SegueClassicWizard
 			
 			if (!$this->saveStatusStep($properties['status']))
 				return FALSE;
+			
+			/*********************************************************
+			 * Log the event
+			 *********************************************************/
+			if (Services::serviceRunning("Logging")) {
+				$loggingManager = Services::getService("Logging");
+				$log = $loggingManager->getLogForWriting("Segue");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+								"Normal events.");
+				
+				$siteComponent = $this->getSiteComponent();
+				
+				$item = new AgentNodeEntryItem("Component Modified", $siteComponent->getComponentClass()." modified.");
+				
+				$item->addNodeId($siteComponent->getQualifierId());
+				$site = $siteComponent->getDirector()->getRootSiteComponent($siteComponent->getId());
+				if (!$siteComponent->getQualifierId()->isEqual($site->getQualifierId()))
+					$item->addNodeId($site->getQualifierId());
+				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			}
 			
 			return TRUE;
 		} else {

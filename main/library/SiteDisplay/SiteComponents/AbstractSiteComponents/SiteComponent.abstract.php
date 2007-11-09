@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteComponent.abstract.php,v 1.3 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: SiteComponent.abstract.php,v 1.4 2007/11/09 21:53:37 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteComponent.abstract.php,v 1.3 2007/08/31 16:34:57 achapin Exp $
+ * @version $Id: SiteComponent.abstract.php,v 1.4 2007/11/09 21:53:37 adamfranco Exp $
  */
 interface SiteComponent {
 	
@@ -41,6 +41,15 @@ interface SiteComponent {
 	 * @since 3/31/06
 	 */
 	public function getId () ;
+	
+	/**
+	 * Answer the component class
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 11/09/07
+	 */
+	function getComponentClass ();
 	
 	/**
 	 * Answer true if this component is active
