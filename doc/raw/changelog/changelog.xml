@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.66 2007/11/08 22:07:21 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.67 2007/11/09 16:23:31 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2007-11-09' ref='1829021' reftype='bug'>
+			UI1: Classic-Mode controls now are not shown if the current
+			user does not have authorization to use them.
+		</fix>
 		<fix author='adam' date='2007-11-08' ref='1827777' reftype='bug'>
 			Comments: Comments can now be edited by users who are not otherwise
 			editors of the site and only have 'comment' authorization.

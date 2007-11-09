@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GeneralControlsSiteVisitor.abstract.php,v 1.1 2007/09/21 19:59:28 adamfranco Exp $
+ * @version $Id: GeneralControlsSiteVisitor.abstract.php,v 1.2 2007/11/09 16:23:31 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GeneralControlsSiteVisitor.abstract.php,v 1.1 2007/09/21 19:59:28 adamfranco Exp $
+ * @version $Id: GeneralControlsSiteVisitor.abstract.php,v 1.2 2007/11/09 16:23:31 adamfranco Exp $
  */
 abstract class GeneralControlsSiteVisitor {
 	
@@ -117,9 +117,11 @@ END;
 	 * @access public
 	 * @since 5/7/07
 	 */
-	function printReorder ( $siteComponent ) {
+	function getReorder ( $siteComponent ) {
+		ob_start();
 		$this->printReorderLink($siteComponent);
 		$this->printReorderForm($siteComponent);
+		return ob_get_clean();
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.13 2007/09/25 15:48:31 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2007/11/09 16:23:31 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.13 2007/09/25 15:48:31 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2007/11/09 16:23:31 adamfranco Exp $
  */
 class ControlsSiteVisitor
 	extends GeneralControlsSiteVisitor
@@ -111,8 +111,8 @@ class ControlsSiteVisitor
 	 * @since 8/21/06
 	 */
 	
-	function printDelimiter ( $siteComponent ) {
-		print " | ";
+	function getDelimiter ( $siteComponent ) {
+		return " | ";
 	}
 
 	
@@ -124,7 +124,8 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printDelete ( $siteComponent ) {
+	function getDelete ( $siteComponent ) {
+		ob_start();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		$harmoni = Harmoni::instance();
@@ -153,6 +154,7 @@ class ControlsSiteVisitor
 			print _("delete");
 			print "</a>";
 		}
+		return ob_get_clean();
 	}
 	
 	/**
@@ -163,7 +165,8 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 5/7/07
 	 */
-	function printEdit ( $siteComponent, $action ) {
+	function getEdit ( $siteComponent, $action ) {
+		ob_start();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		$harmoni = Harmoni::instance();
@@ -183,6 +186,7 @@ class ControlsSiteVisitor
 			print _("edit");
 			print "</a>";
 		}
+		return ob_get_clean();
 	}
 	
 	/**
@@ -193,21 +197,31 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 5/7/07
 	 */
-	function printMove ( $siteComponent ) {
+	function getMove ( $siteComponent ) {
+		ob_start();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		$harmoni = Harmoni::instance();
 		
-		$url = 	$harmoni->request->quickURL('ui1', 'editContentWizard', array(
-						'node' => $siteComponent->getId(),
-						'returnNode' => RequestContext::value('node'),
-						'returnAction' => $this->action
-						));
-		$url = "#";
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.remove_children"), 
+			$siteComponent->getParentComponent()->getQualifierId()))
+		{
 			
-		print "\n\t\t\t\t\t<a href='".$url."'>";
-		print _("move");
-		print "</a>";
+			$url = 	$harmoni->request->quickURL('ui1', 'editContentWizard', array(
+							'node' => $siteComponent->getId(),
+							'returnNode' => RequestContext::value('node'),
+							'returnAction' => $this->action
+							));
+			$url = "#";
+				
+			
+			print "\n\t\t\t\t\t<a href='".$url."'>";
+			print _("move");
+			print "</a>";
+		}
+		
+		return ob_get_clean();
 	}
 	
 	
@@ -219,20 +233,27 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 5/7/07
 	 */
-	function printVersions ( $siteComponent ) {
+	function getVersions ( $siteComponent ) {
+		ob_start();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		$harmoni = Harmoni::instance();
 		
-		$url = 	$harmoni->request->quickURL('ui1', 'versions', array(
-						'node' => $siteComponent->getId(),
-						'returnNode' => RequestContext::value('node'),
-						'returnAction' => $this->action
-						));
-			
-		print "\n\t\t\t\t\t<a href='".$url."'>";
-		print _("versions");
-		print "</a>";
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$url = 	$harmoni->request->quickURL('ui1', 'versions', array(
+							'node' => $siteComponent->getId(),
+							'returnNode' => RequestContext::value('node'),
+							'returnAction' => $this->action
+							));
+				
+			print "\n\t\t\t\t\t<a href='".$url."'>";
+			print _("versions");
+			print "</a>";
+		}
+		return ob_get_clean();
 	}
 	
 	/**
@@ -243,7 +264,8 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 9/22/06
 	 */
-	function printAddSubMenu ( $siteComponent ) {
+	function getAddSubMenu ( $siteComponent ) {
+		ob_start();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		
@@ -280,6 +302,7 @@ class ControlsSiteVisitor
 		}
 		
 		print "\n\t\t\t\t</div>";
+		return ob_get_clean();
 	}
 	
 
@@ -295,15 +318,19 @@ class ControlsSiteVisitor
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
-		$this->printReorder($siteComponent);
-		$this->printDelimiter($siteComponent);
-		$this->printMove($siteComponent);
-		$this->printDelimiter($siteComponent);
-		$this->printEdit($siteComponent, 'editContent');
-		$this->printDelimiter($siteComponent);
-		$this->printDelete($siteComponent);
-		$this->printDelimiter($siteComponent);
-		$this->printVersions($siteComponent);
+		$controls = array();
+		if ($control = $this->getReorder($siteComponent))
+			$controls[] = $control;
+		if ($control = $this->getMove($siteComponent))
+			$controls[] = $control;
+		if ($control = $this->getEdit($siteComponent, 'editContent'))
+			$controls[] = $control;
+		if ($control = $this->getDelete($siteComponent))
+			$controls[] = $control;
+		if ($control = $this->getVersions($siteComponent))
+			$controls[] = $control;
+			
+		print implode($this->getDelimiter($siteComponent), $controls);
 		
 		return $this->controlsEnd($siteComponent);
 	}
@@ -331,15 +358,21 @@ class ControlsSiteVisitor
 	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
-		$this->printReorder($siteComponent);
-		$this->printDelimiter($siteComponent);
-		$this->printMove($siteComponent);
-		$this->printDelimiter($siteComponent);
-		$this->printEdit($siteComponent, 'editNav');
-		$this->printDelimiter($siteComponent);
-		$this->printDelete($siteComponent);
-// 		$this->printVersions($siteComponent);
-// 		$this->printAddSubMenu($siteComponent);
+		$controls = array();
+		if ($control = $this->getReorder($siteComponent))
+			$controls[] = $control;
+		if ($control = $this->getMove($siteComponent))
+			$controls[] = $control;
+		if ($control = $this->getEdit($siteComponent, 'editNav'))
+			$controls[] = $control;
+		if ($control = $this->getDelete($siteComponent))
+			$controls[] = $control;
+// 		if ($control = $this->getVersions($siteComponent))
+// 			$controls[] = $control;
+// 		if ($control = $this->getAddSubMenu($siteComponent))
+// 			$controls[] = $control;
+		
+		print implode($this->getDelimiter($siteComponent), $controls);
 		
 		return $this->controlsEnd($siteComponent);
 	}
