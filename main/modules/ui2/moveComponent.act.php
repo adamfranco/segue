@@ -5,11 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.8 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
-
+require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
 
 /**
  * 
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: moveComponent.act.php,v 1.8 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: moveComponent.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
  */
 class moveComponentAction 
 	extends EditModeSiteAction
@@ -48,12 +48,28 @@ class moveComponentAction
 		$destination = $director->getSiteComponentById($targetOrgId);
 		$destQualifierId = $destination->getQualifierId();
 		
-		return ($authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.remove_children"),
-				$sourceQualifierId)
+		return (
+			(	$authZ->isUserAuthorized(
+					$idManager->getId("edu.middlebury.authorization.remove_children"),
+					$sourceQualifierId)
+				|| $authZ->isUserAuthorized(
+					$idManager->getId("edu.middlebury.authorization.delete"),
+					$component->getQualifierId())
+			)
 			&& $authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.add_children"),
 				$destQualifierId));
+	}
+	
+	/**
+	 * Return the "unauthorized" string to pring
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/26/05
+	 */
+	function getUnauthorizedMessage () {
+		return _("You are not authorized to move this <em>Node</em> here.");
 	}
 	
 	/**
@@ -73,6 +89,10 @@ class moveComponentAction
 		$targetCell = $matches[2];
 		
 		$component = $director->getSiteComponentById(RequestContext::value('component'));
+		
+		// Store the existing Role of the user. 
+		$roleMgr = SegueRoleManager::instance();
+		$oldRole = $roleMgr->getUsersRole($component->getQualifierId(), true);
 		
 		// If we are moving a navOrganizer, update the target of the menu
 		if (preg_match('/^.*NavOrganizerSiteComponent$/i', get_class($component))) {
@@ -114,6 +134,11 @@ class moveComponentAction
 				$menuOrganizer->updateTargetId($oldCellId);
 			}
 		}
+		
+		// Update the new role if needed
+		$newRole = $roleMgr->getUsersRole($component->getQualifierId(), true);
+		if ($newRole->isLessThan($oldRole))
+			$oldRole->applyToUser($component->getQualifierId(), true);
 		
 		/*********************************************************
 		 * Log the event

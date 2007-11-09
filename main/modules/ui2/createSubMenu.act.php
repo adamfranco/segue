@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.5 2007/11/08 17:40:45 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.6 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: createSubMenu.act.php,v 1.5 2007/11/08 17:40:45 adamfranco Exp $
+ * @version $Id: createSubMenu.act.php,v 1.6 2007/11/09 22:57:41 adamfranco Exp $
  */
 class createSubMenuAction
 	extends EditModeSiteAction
@@ -42,7 +42,7 @@ class createSubMenuAction
 				
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"),
-			$idManager->getId($parent->getId()));
+			$parent->getQualifierId());
 	}
 	
 	/**

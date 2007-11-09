@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.11 2007/11/08 19:35:44 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.12 2007/11/09 22:57:41 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.11 2007/11/08 19:35:44 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.12 2007/11/09 22:57:41 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -134,7 +134,7 @@ class ArrangeModeSiteVisitor
 	 * @access public
 	 * @since 5/24/07
 	 */
-	function addBlockControls ($block, $guiContainer) {
+	function addBlockControls (BlockSiteComponent $block, Container $guiContainer) {
 		$primaryColor = '#090';
 		$secondaryColor = '#9F9';
 		$halfLineWidth = 1;

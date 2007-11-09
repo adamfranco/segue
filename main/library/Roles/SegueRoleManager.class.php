@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.2 2007/11/05 21:46:43 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.3 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NoAccess_SegueRole.class.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Custom_SegueRole.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.2 2007/11/05 21:46:43 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.3 2007/11/09 22:57:41 adamfranco Exp $
  */
 class SegueRoleManager
 	
@@ -150,23 +150,40 @@ class SegueRoleManager
 	}
 	
 	/**
+	 * Answer the role for the current User
+	 * 
+	 * @param object Id $qualifierId
+	 * @param optional boolean $overrideAzCheck If true, not not check AZs. Used by admin functions to force-set a role.
+	 * @return object Role
+	 * @access public
+	 * @since 11/9/07
+	 */
+	public function getUsersRole (Id $qualifierId, $overrideAzCheck = false) {
+		$authN = Services::getService("AuthN");
+		return $this->getAgentsRole($authN->getFirstUserId(), $qualifierId, $overrideAzCheck);
+	}
+	
+	/**
 	 * Answer the role at the given qualifier, regardless of whether it was set
 	 * implicitly or explicitly.
 	 * 
 	 * @param object Id $agentId
 	 * @param object Id $qualifierId
+	 * @param optional boolean $overrideAzCheck If true, not not check AZs. Used by admin functions to force-set a role.
 	 * @return object Role
 	 * @access public
 	 * @since 11/5/07
 	 */
-	public function getAgentsRole (Id $agentId, Id $qualifierId) {
+	public function getAgentsRole (Id $agentId, Id $qualifierId, $overrideAzCheck = false) {
 		$authZ = Services::getService("AuthZ");
 		$idMgr = Services::getService("Id");
 		
-		if (!$authZ->isUserAuthorized(
-				$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
-				$qualifierId))
-			throw new PermissionDeniedException("Cannot view authorizations here.");
+		if (!$overrideAzCheck) {
+			if (!$authZ->isUserAuthorized(
+					$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
+					$qualifierId))
+				throw new PermissionDeniedException("Cannot view authorizations here.");
+		}
 	
 		// Load the functions explicitly set for this agent at this qualifier
 		$authorizations = $authZ->getAllAZs($agentId, null, $qualifierId, true);

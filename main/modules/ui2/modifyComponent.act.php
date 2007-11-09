@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modifyComponent.act.php,v 1.5 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: modifyComponent.act.php,v 1.6 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/ModifySettingsSiteVisito
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modifyComponent.act.php,v 1.5 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: modifyComponent.act.php,v 1.6 2007/11/09 22:57:41 adamfranco Exp $
  */
 class modifyComponentAction 
 	extends EditModeSiteAction
@@ -42,7 +42,7 @@ class modifyComponentAction
 				
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"),
-			$idManager->getId($component->getId()));
+			$component->getQualifierId());
 	}
 	
 	/**

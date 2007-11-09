@@ -5,10 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.8 2007/11/09 16:35:18 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
+require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
 
 
 /**
@@ -19,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.8 2007/11/09 16:35:18 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -83,6 +84,13 @@ class addComponentAction
 			
 			$component->updateTargetId($menuTarget);
 		}
+		
+		// Check the Role of the user. If it is less than 'Editor', make them an editor
+		$roleMgr = SegueRoleManager::instance();
+		$role = $roleMgr->getUsersRole($component->getQualifierId(), true);
+		$editor = $roleMgr->getRole('editor');
+		if ($role->isLessThan($editor))
+			$editor->applyToUser($component->getQualifierId(), true);
 	}
 	
 	/**

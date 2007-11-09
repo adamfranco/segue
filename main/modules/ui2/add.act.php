@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.8 2007/09/24 20:56:10 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.8 2007/09/24 20:56:10 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -184,27 +184,24 @@ class addAction
 		
 		
 		/*********************************************************
-		 * Set Default "All-Access" permissions for slot owners
+		 * // Check the Role of the creator and make sure it is 'admin'
 		 *********************************************************/
-		$authZ = Services::getService("AuthZ");
-		$idMgr = Services::getService("Id");
-		$functions = array();
-		$functions[] = $idMgr->getId("edu.middlebury.authorization.view_authorizations");
-		$functions[] = $idMgr->getId("edu.middlebury.authorization.modify_authorizations");
-		
-		$functions[] = $idMgr->getId("edu.middlebury.authorization.add_children");
-		$functions[] = $idMgr->getId("edu.middlebury.authorization.modify");
-		$functions[] = $idMgr->getId("edu.middlebury.authorization.delete");
-		$functions[] = $idMgr->getId("edu.middlebury.authorization.remove_children");
-		
-		$functions[] = $idMgr->getId("edu.middlebury.authorization.view");
-		$functions[] = $idMgr->getId("edu.middlebury.authorization.comment");
-		
+		$roleMgr = SegueRoleManager::instance();
+		$role = $roleMgr->getUsersRole($site->getQualifierId(), true);
+		$admin = $roleMgr->getRole('admin');
+		if ($role->isLessThan($admin))
+			$admin->applyToUser($site->getQualifierId(), true);
+			
+		/*********************************************************
+		 * Set Default "All-Access" permissions for slot owners
+		 *********************************************************/		
 		foreach ($slot->getOwners() as $ownerId) {
-			foreach($functions as $functionId) {
-				$authZ->createAuthorization($ownerId, $functionId, $siteId);
-			}
+			$role = $roleMgr->getAgentsRole($ownerId, $site->getQualifierId(), true);
+			if ($role->isLessThan($admin))
+				$admin->apply($ownerId, $site->getQualifierId(), true);
 		}
+		
+		
 		
 		
 		/*********************************************************

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.18 2007/11/08 19:35:44 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.19 2007/11/09 22:57:41 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.18 2007/11/08 19:35:44 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.19 2007/11/09 22:57:41 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -94,7 +94,9 @@ END;
 	 * @since 1/15/07
 	 */
 	public function visitBlock ( BlockSiteComponent $block ) {
-		$guiContainer = $this->addBlockControls($block, parent::visitBlock($block));			
+		$guiContainer = parent::visitBlock($block);
+		if ($guiContainer)
+			$guiContainer = $this->addBlockControls($block, $guiContainer);			
 		
 		return $guiContainer;
 	}
@@ -108,7 +110,7 @@ END;
 	 * @access public
 	 * @since 5/24/07
 	 */
-	function addBlockControls ($block, $guiContainer) {
+	function addBlockControls (BlockSiteComponent $block, Container $guiContainer) {
 		// Add controls bar and border
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");

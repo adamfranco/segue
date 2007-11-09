@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.70 2007/11/09 21:53:36 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.71 2007/11/09 22:57:40 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,16 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2007-11-09' ref='1824417' reftype='bug'>
+			Permissions: When users are assigned an 'Author' role, they are 
+			automatically given the 'Editor' role of anything that they create.
+			
+			This allows people to go back and make changes to or delete content
+			that they have added.
+			
+			Similarly, If a user moves a piece of content from a place where they have an implicit 'Editor' role to a place where they only have an implicit 'Author' role, 
+			they are given an explicit 'Editor' role on the newly moved content.
+		</new>
 		<change author='adam' date='2007-11-09' ref='1820233' reftype='bug'>
 			Logging: Content deleting, creation, and modification are now logged.
 		</change>

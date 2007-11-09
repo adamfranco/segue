@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.6 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.7 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
 require_once(POLYPHONY."/main/library/Wizard/SingleStepWizard.class.php");
+require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
 
 /**
  * A 1-step wizard to choose what kind of content to create
@@ -21,7 +22,7 @@ require_once(POLYPHONY."/main/library/Wizard/SingleStepWizard.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.6 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.7 2007/11/09 22:57:41 adamfranco Exp $
  */
 class addContentAction
 	extends SegueClassicWizard
@@ -165,6 +166,14 @@ class addContentAction
 		$componentType = Type::fromString($values['type']);
 		
 		$component = $director->createSiteComponent($componentType, $organizer);
+		
+		// Check the Role of the user. If it is less than 'Editor', make them an editor
+		$roleMgr = SegueRoleManager::instance();
+		$role = $roleMgr->getUsersRole($component->getQualifierId(), true);
+		$editor = $roleMgr->getRole('editor');
+		if ($role->isLessThan($editor))
+			$editor->applyToUser($component->getQualifierId(), true);
+		
 		
 		$this->_newId = $component->getId();
 		return true;

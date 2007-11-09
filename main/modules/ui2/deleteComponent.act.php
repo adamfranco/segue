@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.10 2007/11/08 17:40:45 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.11 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.10 2007/11/08 17:40:45 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.11 2007/11/09 22:57:41 adamfranco Exp $
  */
 class deleteComponentAction 
 	extends EditModeSiteAction
@@ -41,7 +41,7 @@ class deleteComponentAction
 				
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.delete"),
-			$idManager->getId($component->getId()));
+			$component->getQualifierId());
 	}
 	
 	/**

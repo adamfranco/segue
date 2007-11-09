@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.6 2007/09/25 14:07:32 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.7 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.6 2007/09/25 14:07:32 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.7 2007/11/09 22:57:41 adamfranco Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -167,6 +167,13 @@ class addMenuContentAction
 			$component = addComponentAction::createMultipartComponent($director, $componentType, $organizer);
 		else
 			return false;
+		
+		// Check the Role of the user. If it is less than 'Editor', make them an editor
+		$roleMgr = SegueRoleManager::instance();
+		$role = $roleMgr->getUsersRole($component->getQualifierId(), true);
+		$editor = $roleMgr->getRole('editor');
+		if ($role->isLessThan($editor))
+			$editor->applyToUser($component->getQualifierId(), true);
 		
 		$this->_newId = $component->getId();
 		$this->_newIsNav = true;

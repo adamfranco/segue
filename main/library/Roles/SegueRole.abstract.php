@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRole.abstract.php,v 1.2 2007/11/05 21:46:43 adamfranco Exp $
+ * @version $Id: SegueRole.abstract.php,v 1.3 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRole.abstract.php,v 1.2 2007/11/05 21:46:43 adamfranco Exp $
+ * @version $Id: SegueRole.abstract.php,v 1.3 2007/11/09 22:57:41 adamfranco Exp $
  */
 abstract class SegueRole {
 	
@@ -102,6 +102,20 @@ abstract class SegueRole {
 	}
 	
 	/**
+	 * Apply the role for the current user.
+	 * 
+	 * @param object Id $qualifierId
+	 * @param optional boolean $overrideAzCheck If true, not not check AZs. Used by admin functions to force-set a role.
+	 * @return void
+	 * @access public
+	 * @since 11/9/07
+	 */
+	public function applyToUser (Id $qualifierId, $overrideAzCheck = false) {
+		$authN = Services::getService("AuthN");
+		return $this->apply($authN->getFirstUserId(), $qualifierId, $overrideAzCheck);
+	}
+	
+	/**
 	 * Set authorizations to apply this role for an Agent at a Qualifier.
 	 *
 	 * Explicit Authorizations for the Agent at the Qualifier will be removed
@@ -111,18 +125,21 @@ abstract class SegueRole {
 	 * 
 	 * @param object Id $agentId
 	 * @param object Id $qualifierId
+	 * @param optional boolean $overrideAzCheck If true, not not check AZs. Used by admin functions to force-set a role.
 	 * @return void
 	 * @access public
 	 * @since 11/5/07
 	 */
-	public function apply (Id $agentId, Id $qualifierId) {
+	public function apply (Id $agentId, Id $qualifierId, $overrideAzCheck = false) {
 		$authZ = Services::getService("AuthZ");
 		$idMgr = Services::getService("Id");
 		
-		if (!$authZ->isUserAuthorized(
-				$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
-				$qualifierId))
-			throw new PermissionDeniedException("Cannot modify authorizations here.");
+		if (!$overrideAzCheck) {
+			if (!$authZ->isUserAuthorized(
+					$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
+					$qualifierId))
+				throw new PermissionDeniedException("Cannot modify authorizations here.");
+		}
 		
 		$authorizations = $authZ->getExplicitAZs($agentId, null, $qualifierId, true);
 		
