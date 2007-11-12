@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: setup.inc.php,v 1.8 2007/09/04 17:38:41 adamfranco Exp $
+ * @version $Id: setup.inc.php,v 1.9 2007/11/12 19:18:17 adamfranco Exp $
  */
 
 /*********************************************************
@@ -77,9 +77,9 @@ $configs = array(
 					'mime',
 					'imageprocessor',
 					'hierarchy',
+					'authorization',
 					'installer',
 					'agent',
-					'authorization',
 					'datamanager',
 					'repository',
 					'plugins',

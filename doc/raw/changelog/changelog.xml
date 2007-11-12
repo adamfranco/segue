@@ -5,11 +5,24 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.72 2007/11/09 23:06:43 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.73 2007/11/12 19:18:16 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0.0-beta-4" date="The Future">
+		<releaseNotes>
+			<##>
+		</releaseNotes>
+		<fix author='adam' date='2007-11-12' ref='1819565' reftype='bug'>
+			Installer: Moved install script to segue/main/install/ since it isn't
+			really end-user modifiable.
+		</fix>
+		<fix author='adam' date='2007-11-12'>
+			Installer: Now makes authorization service available before install-process
+			runs so that installation happens smoothly.
+		</fix>
+	</version>
 	<version number="2.0.0-beta-3" date="2007-11-09">
 		<releaseNotes>
 			This release fixes a large number of bugs and adds role-based 
@@ -17,7 +30,7 @@
 			had its interface hierarchy reworked.
 			
 			The major Harmoni improvement is the ability to attach externally-defined
-			groups (such as from LDAP) underneith locally defined groups.
+			groups (such as from LDAP) underneath locally defined groups.
 			
 			Segue 2.0.0-beta-3 runs on Harmoni 0.13.3 and Polyphony 0.10.3.
 			
@@ -123,7 +136,7 @@
 			MediaLibrary: Now logs exceptions.
 		</change>
 		<fix author='adam' date='2007-09-25' ref='1798905' reftype='bug'>
-			TextBlock Plugin: Now the Media Library always recieves the correct assetId
+			TextBlock Plugin: Now the Media Library always receives the correct assetId
 			And uploads to the correct Asset.
 		</fix>
 		<new author='adam' date='2007-09-25'>
@@ -137,7 +150,7 @@
 		</change>
 		<change author='adam' date='2007-09-25' ref='1802062' reftype='fr'>
 			UI1/UI2: 'Append New...' has been renamed to 'Add Content' or 'Add Menu Item'
-			as apropriate.
+			as appropriate.
 		</change>
 		<change author='adam' date='2007-09-25' ref='1799053' reftype='bug'>
 			UI1/UI2: "2-column page" is now renamed back to "Page with Sidebar". 
@@ -201,7 +214,7 @@
 			As of this version, Segue no longer supports PHP4. Please use PHP5 or later.
 		</important>
 		<change author='adam' date='2007-09-04'>
-			Removing ampersands for compatability with other PHP5 code.
+			Removing ampersands for compatibility with other PHP5 code.
 			The BBEdit-grep string used for the find and replace was:
 					(function )&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$)
 			replaced with
@@ -237,7 +250,7 @@
 			Plugins: Fixed some javascript quoting errors.
 		</fix>
 		<fix author='adam' date='2007-09-19'>
-			Media Library: Panel now recenters as items are added.
+			Media Library: Panel now re-centers as items are added.
 		</fix>
 		<fix author='adam' date='2007-09-14'>
 			Added a warning before deleting sites via the portal.
@@ -246,7 +259,7 @@
 			Fixed SQL statements to work with PostgreSQL.
 		</fix>
 		<fix author='adam' date='2007-09-13'>
-			SiteDisplay: Fixed some assumptions of cells containting Element nodes.
+			SiteDisplay: Fixed some assumptions of cells containing Element nodes.
 		</fix>
 		<fix author='adam' date='2007-09-07'>
 			Nav Items can now be deleted without causing errors.
@@ -258,7 +271,7 @@
 			Content can now be appended in arrange mode.
 		</fix>
 		<fix author='adam' date='2007-09-05'>
-			Reordering now works consistantly due to a change in the 
+			Reordering now works consistently due to a change in the 
 			AssetFlowOrganizerSiteComponent->putSubcomponentInCell() algorithm.
 		</fix>
 		<fix author='adam' date='2007-09-05'>
@@ -288,7 +301,7 @@
 		</new>
 		<new author='adam'>
 			Plugins: Now can supply custom authorization functions to the plugin
-			to enable usage outside of the preconcieved authorization system.
+			to enable usage outside of the preconceived authorization system.
 		</new>
 		<new author='adam'>
 			Plugins now return a description and icon for display to the user.

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dev_install.inc.php,v 1.23 2007/09/13 16:09:41 adamfranco Exp $
+ * @version $Id: install.inc.php,v 1.1 2007/11/12 19:18:17 adamfranco Exp $
  */
 
 /*********************************************************

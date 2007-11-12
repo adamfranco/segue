@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: installer_default.conf.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
+ * @version $Id: installer_default.conf.php,v 1.3 2007/11/12 19:18:15 adamfranco Exp $
  */
 
-require (MYDIR."/install/dev_install.inc.php");
+require (MYDIR."/main/install/install.inc.php");
