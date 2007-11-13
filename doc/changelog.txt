@@ -4,13 +4,44 @@ Name: Segue Change Log
 
 
 
+v. 2.0.0-beta-4 (2007-11-13)
+----------------------------------------------------
+This release fixes an installer bug that was preventing fresh installs from
+completing. It also fixes some ArrangeMode bugs that were allowing Menus and
+MenuItems to be dragged to invalid places.
+
+This release uses Harmoni 0.13.4 and Polyphony 0.10.3.
+		
+		
+	* Bug Fix: 
+		UI2: Menu Items are now filtered from being droped on their own cells,
+		preventing inadvertent nudges from triggering 'do you want to move' prompts.
+		(2007-11-13 - Adam Franco)
+		
+	* Bug Fix: #1830622 
+		UI2: Menus now are not draggable to content organizers.
+		
+		The issue was an comparrison between a string id and an integer id was
+		improperly evaluating to true.
+		(2007-11-13 - Adam Franco)
+		
+	* Bug Fix: #1819565 
+		Installer: Moved install script to segue/main/install/ since it isn't really
+		end-user modifiable.
+		(2007-11-12 - Adam Franco)
+		
+	* Bug Fix: 
+		Installer: Now makes authorization service available before install-process
+		runs so that installation happens smoothly.
+		(2007-11-12 - Adam Franco)
+	
 v. 2.0.0-beta-3 (2007-11-09)
 ----------------------------------------------------
 This release fixes a large number of bugs and adds role-based authorization-setting
 user interfaces. As well, the Plugin System had its interface hierarchy reworked.
 
 The major Harmoni improvement is the ability to attach externally-defined groups
-(such as from LDAP) underneith locally defined groups.
+(such as from LDAP) underneath locally defined groups.
 
 Segue 2.0.0-beta-3 runs on Harmoni 0.13.3 and Polyphony 0.10.3.
 
@@ -146,7 +177,7 @@ v. 2.0.0-beta-2 (2007-09-25)
 		(2007-09-25 - Adam Franco)
 		
 	* Bug Fix: #1798905 
-		TextBlock Plugin: Now the Media Library always recieves the correct assetId
+		TextBlock Plugin: Now the Media Library always receives the correct assetId
 		And uploads to the correct Asset.
 		(2007-09-25 - Adam Franco)
 		
@@ -164,7 +195,7 @@ v. 2.0.0-beta-2 (2007-09-25)
 		
 	* Change: #1802062 
 		UI1/UI2: 'Append New...' has been renamed to 'Add Content' or 'Add Menu
-		Item' as apropriate.
+		Item' as appropriate.
 		(2007-09-25 - Adam Franco)
 		
 	* Change: #1799053 
@@ -251,7 +282,7 @@ v. 2.0.0-beta-1 (2007-09-20)
 		(2007-09-04 - Adam Franco)
 		
 	* Change: 
-		Removing ampersands for compatability with other PHP5 code. The BBEdit-grep
+		Removing ampersands for compatibility with other PHP5 code. The BBEdit-grep
 		string used for the find and replace was: (function
 		)&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$) replaced with \1\2\3\4\5
 		(2007-09-04 - Adam Franco)
@@ -295,7 +326,7 @@ v. 2.0.0-beta-1 (2007-09-20)
 		(2007-09-19 - Adam Franco)
 		
 	* Bug Fix: 
-		Media Library: Panel now recenters as items are added.
+		Media Library: Panel now re-centers as items are added.
 		(2007-09-19 - Adam Franco)
 		
 	* Bug Fix: 
@@ -307,7 +338,7 @@ v. 2.0.0-beta-1 (2007-09-20)
 		(2007-09-13 - Adam Franco)
 		
 	* Bug Fix: 
-		SiteDisplay: Fixed some assumptions of cells containting Element nodes.
+		SiteDisplay: Fixed some assumptions of cells containing Element nodes.
 		(2007-09-13 - Adam Franco)
 		
 	* Bug Fix: 
@@ -323,7 +354,7 @@ v. 2.0.0-beta-1 (2007-09-20)
 		(2007-09-06 - Adam Franco)
 		
 	* Bug Fix: 
-		Reordering now works consistantly due to a change in the
+		Reordering now works consistently due to a change in the
 		AssetFlowOrganizerSiteComponent-&gt;putSubcomponentInCell() algorithm.
 		(2007-09-05 - Adam Franco)
 		
@@ -362,7 +393,7 @@ v. 2.0.0-beta-1 (2007-09-20)
 		
 	* New feature: 
 		Plugins: Now can supply custom authorization functions to the plugin to
-		enable usage outside of the preconcieved authorization system.
+		enable usage outside of the preconceived authorization system.
 		(Adam Franco)
 		
 	* New feature: 

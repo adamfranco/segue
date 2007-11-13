@@ -3,13 +3,22 @@ Name: Segue Release Notes
 (See the Segue change log for more details)
 
 
+v. 2.0.0-beta-4 (2007-11-13)
+----------------------------------------------------
+This release fixes an installer bug that was preventing fresh installs from
+completing. It also fixes some ArrangeMode bugs that were allowing Menus and
+MenuItems to be dragged to invalid places.
+
+This release uses Harmoni 0.13.4 and Polyphony 0.10.3.
+
+
 v. 2.0.0-beta-3 (2007-11-09)
 ----------------------------------------------------
 This release fixes a large number of bugs and adds role-based authorization-setting
 user interfaces. As well, the Plugin System had its interface hierarchy reworked.
 
 The major Harmoni improvement is the ability to attach externally-defined groups
-(such as from LDAP) underneith locally defined groups.
+(such as from LDAP) underneath locally defined groups.
 
 Segue 2.0.0-beta-3 runs on Harmoni 0.13.3 and Polyphony 0.10.3.
 

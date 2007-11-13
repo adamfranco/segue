@@ -23,11 +23,31 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0.0-beta-3</h2>
+<h2>Version 2.0.0-beta-4</h2>
+<h3>2007-11-13</h3>
+<p>This release fixes an installer bug that was preventing fresh installs from completing. It also fixes some ArrangeMode bugs that were allowing Menus and MenuItems to be dragged to invalid places.
+<br>
+<br>This release uses Harmoni 0.13.4 and Polyphony 0.10.3.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> UI2: Menu Items are now filtered from being droped on their own cells, preventing inadvertent nudges from triggering 'do you want to move' prompts. (<em>2007-11-13 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1830622&amp;group_id=&amp;atid=">
+        			#1830622</a> UI2: Menus now are not draggable to content organizers.
+<br>
+<br>The issue was an comparrison between a string id and an integer id was improperly evaluating to true. (<em>2007-11-13 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819565&amp;group_id=&amp;atid=">
+        			#1819565</a> Installer: Moved install script to segue/main/install/ since it isn't really end-user modifiable. (<em>2007-11-12 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Installer: Now makes authorization service available before install-process runs so that installation happens smoothly. (<em>2007-11-12 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0.0-beta-3</h2>
 <h3>2007-11-09</h3>
 <p>This release fixes a large number of bugs and adds role-based authorization-setting user interfaces. As well, the Plugin System had its interface hierarchy reworked.
 <br>
-<br>The major Harmoni improvement is the ability to attach externally-defined groups (such as from LDAP) underneith locally defined groups.
+<br>The major Harmoni improvement is the ability to attach externally-defined groups (such as from LDAP) underneath locally defined groups.
 <br>
 <br>Segue 2.0.0-beta-3 runs on Harmoni 0.13.3 and Polyphony 0.10.3.
 <br>
@@ -113,7 +133,7 @@
 <b>Change:</b> MediaLibrary: Now logs exceptions. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798905&amp;group_id=&amp;atid=">
-        			#1798905</a> TextBlock Plugin: Now the Media Library always recieves the correct assetId And uploads to the correct Asset. (<em>2007-09-25 - Adam Franco</em>)</li>
+        			#1798905</a> TextBlock Plugin: Now the Media Library always receives the correct assetId And uploads to the correct Asset. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b> Changlog links and display now work. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
@@ -122,7 +142,7 @@
 <b>Change:</b> UI1: 'Edit Site Settings' button is now on the right side of the page. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1802062&amp;group_id=&amp;atid=">
-        			#1802062</a> UI1/UI2: 'Append New...' has been renamed to 'Add Content' or 'Add Menu Item' as apropriate. (<em>2007-09-25 - Adam Franco</em>)</li>
+        			#1802062</a> UI1/UI2: 'Append New...' has been renamed to 'Add Content' or 'Add Menu Item' as appropriate. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799053&amp;group_id=&amp;atid=">
         			#1799053</a> UI1/UI2: "2-column page" is now renamed back to "Page with Sidebar". As well, the "sidebar" organizers now have their default widths set to 200px so that they look more like a sidebar. (<em>2007-09-25 - Adam Franco</em>)</li>
@@ -175,7 +195,7 @@
 		<li>
 <span style="color: red">*** IMPORTANT ***</span><b>Change:</b> As of this version, Segue no longer supports PHP4. Please use PHP5 or later. (<em>2007-09-04 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b> Removing ampersands for compatability with other PHP5 code. The BBEdit-grep string used for the find and replace was: (function )&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$) replaced with \1\2\3\4\5 (<em>2007-09-04 - Adam Franco</em>)</li>
+<b>Change:</b> Removing ampersands for compatibility with other PHP5 code. The BBEdit-grep string used for the find and replace was: (function )&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$) replaced with \1\2\3\4\5 (<em>2007-09-04 - Adam Franco</em>)</li>
 		<li>
 <span style="color: red">*** IMPORTANT ***</span><b>Change:</b> In order to support PostgreSQL without refactoring of the Database Handler, column names have been all made lowercase. To update a currently populated harmoni database to the new names, run the following updater script: harmoni/core/DBHandler/db_updater.php (<em>2007-09-11 - Adam Franco</em>)</li>
 		
@@ -195,13 +215,13 @@
 		<li>
 <b>Bug Fix:</b> Plugins: Fixed some javascript quoting errors. (<em>2007-09-19 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b> Media Library: Panel now recenters as items are added. (<em>2007-09-19 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Media Library: Panel now re-centers as items are added. (<em>2007-09-19 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Added a warning before deleting sites via the portal. (<em>2007-09-14 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Fixed SQL statements to work with PostgreSQL. (<em>2007-09-13 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b> SiteDisplay: Fixed some assumptions of cells containting Element nodes. (<em>2007-09-13 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> SiteDisplay: Fixed some assumptions of cells containing Element nodes. (<em>2007-09-13 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Nav Items can now be deleted without causing errors. (<em>2007-09-07 - Adam Franco</em>)</li>
 		<li>
@@ -209,7 +229,7 @@
 		<li>
 <b>Bug Fix:</b> Content can now be appended in arrange mode. (<em>2007-09-06 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b> Reordering now works consistantly due to a change in the AssetFlowOrganizerSiteComponent-&gt;putSubcomponentInCell() algorithm. (<em>2007-09-05 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Reordering now works consistently due to a change in the AssetFlowOrganizerSiteComponent-&gt;putSubcomponentInCell() algorithm. (<em>2007-09-05 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Now prints "untitled" if menu/page title isn't specified. (<em>2007-09-05 - Adam Franco</em>)</li>
 		<li>
@@ -227,7 +247,7 @@
 		<li>
 <b>New feature:</b> Comments: New comment/discussion library. (<em>Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b> Plugins: Now can supply custom authorization functions to the plugin to enable usage outside of the preconcieved authorization system. (<em>Adam Franco</em>)</li>
+<b>New feature:</b> Plugins: Now can supply custom authorization functions to the plugin to enable usage outside of the preconceived authorization system. (<em>Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b> Plugins now return a description and icon for display to the user. (<em>Adam Franco</em>)</li>
 		<li>
