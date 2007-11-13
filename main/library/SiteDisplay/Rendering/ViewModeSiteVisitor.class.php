@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.47 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.48 2007/11/13 20:45:56 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.47 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.48 2007/11/13 20:45:56 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -332,8 +332,14 @@ class ViewModeSiteVisitor
 				
 		// Check completeness and render any nodes still waiting for targets
 		foreach (array_keys($this->_missingTargets) as $targetId) {
-			if (!is_object($this->_emptyCellContainers[$targetId]))
-				throwError(new Error("Expecting object, found '".$this->_emptyCellContainers[$targetId]."'.", __CLASS__));
+			if (!isset($this->_emptyCellContainers[$targetId])) {
+				throwError(new Error("Target id '$targetId' was not found or is not empty.", __CLASS__));
+			}
+			if (!is_object($this->_emptyCellContainers[$targetId])) {
+				ob_start();
+				var_dump($this->_emptyCellContainers[$targetId]);
+				throwError(new Error("Expecting object, found '".ob_get_clean()."'.", __CLASS__));
+			}
 			
 			if ($this->_missingTargetWidths[$targetId])
 				$width = $this->_missingTargetWidths[$targetId];

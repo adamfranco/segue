@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.77 2007/11/13 20:34:08 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.78 2007/11/13 20:45:56 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2007-11-13' ref='1831176' reftype='fr'>
+			SiteRendering: Improved the debugging output to help solve an issue.
+		</change>
 		<fix author='adam' date='2007-11-13' ref='1831322' reftype='bug'>
 			UI2: Arrange-mode no longer asks for confirmation before moving items.
 		</fix>
