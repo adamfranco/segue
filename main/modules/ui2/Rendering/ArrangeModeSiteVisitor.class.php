@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.12 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.13 2007/11/13 20:34:09 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.12 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.13 2007/11/13 20:34:09 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -688,15 +688,15 @@ class ArrangeModeSiteVisitor
 			onDrop: function (draggableElement, droppableElement) {
 				Draggables.deactivate();
 				
-				if (confirm ('$dropConfirm'))
-				{					
+// 				if (confirm ('$dropConfirm'))
+// 				{					
 					Draggables.drags.each(function(draggable) {draggable.options.revert = false;});
 					
 					droppableElement.style.border ='4px inset #F00';
 					
 					var moveUrl = '".$url."';
 					window.location = moveUrl;
-				}
+// 				}
 			}
 		});
 
