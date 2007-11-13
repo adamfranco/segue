@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.9 2007/10/25 17:44:12 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.10 2007/11/13 15:18:19 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponen
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.9 2007/10/25 17:44:12 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.10 2007/11/13 15:18:19 adamfranco Exp $
  */
 abstract class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -427,7 +427,8 @@ abstract class AssetOrganizerSiteComponent
 			foreach (array_keys($possibleDestinations) as $destId) {
 				
 				// See if this organizer or the current element is listed as a possible destination.
-				if ($destId == $this->getId() || ($currentIdInCell && $destId == $currentIdInCell)) {
+				if (strval($destId) == strval($this->getId()) || ($currentIdInCell && strval($destId) == strval($currentIdInCell))) {
+
 					$results[$id] = $visibleComponents[$id];
 					break;
 				}
