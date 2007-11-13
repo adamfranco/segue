@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.10 2007/11/13 15:18:19 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.11 2007/11/13 15:33:22 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponen
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.10 2007/11/13 15:18:19 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.11 2007/11/13 15:33:22 adamfranco Exp $
  */
 abstract class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -369,6 +369,7 @@ abstract class AssetOrganizerSiteComponent
 		// empty case for Fixed organizers.
 		$addableComponents = $this->getVisibleComponentsForPossibleAddition($cellIndex);
 		$movableSubcomponents = $this->getSubcomponentsNotInCell($cellIndex);
+		
 		$results = array();
 		foreach (array_keys($addableComponents) as $id)
 			$results[$id] = $addableComponents[$id];
@@ -422,13 +423,18 @@ abstract class AssetOrganizerSiteComponent
 			$currentIdInCell = null;
 		
 		$visibleComponents = $this->_director->getVisibleComponents();
-		foreach (array_keys($visibleComponents) as $id) {
+		foreach ($visibleComponents as $id => $visibleComponent) {
 			$possibleDestinations = $visibleComponents[$id]->getVisibleDestinationsForPossibleAddition();
 			foreach (array_keys($possibleDestinations) as $destId) {
 				
 				// See if this organizer or the current element is listed as a possible destination.
-				if (strval($destId) == strval($this->getId()) || ($currentIdInCell && strval($destId) == strval($currentIdInCell))) {
-
+				$canBeAdded = (strval($destId) == strval($this->getId()));
+				$isAdded = (strval($this->getId()) == strval($visibleComponent->getParentComponent()->getId()));
+				
+				$cellOccupied = (($currentIdInCell)?true:false);
+				$isCellAParentForNesting = (strval($destId) == strval($currentIdInCell));
+				
+				if (($canBeAdded && !$isAdded) || ($cellOccupied && $isCellAParentForNesting)) {
 					$results[$id] = $visibleComponents[$id];
 					break;
 				}
