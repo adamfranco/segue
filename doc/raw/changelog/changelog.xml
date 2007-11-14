@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.78 2007/11/13 20:45:56 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.79 2007/11/14 17:09:13 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,11 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2007-11-14' ref='1831176' reftype='bug'>
+			UI1: Fixed an issue where Header/Footer sensing was inappropriately 
+			thinking that a cell was a footer when it contained a nav-target rather
+			than a nav item. This was leading to an uncaught exception in Classic Mode.
+		</fix>
 		<change author='adam' date='2007-11-13' ref='1831176' reftype='fr'>
 			SiteRendering: Improved the debugging output to help solve an issue.
 		</change>
