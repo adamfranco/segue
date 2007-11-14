@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.13 2007/11/13 20:34:09 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.14 2007/11/14 17:05:14 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.13 2007/11/13 20:34:09 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.14 2007/11/14 17:05:14 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -80,6 +80,15 @@ class ArrangeModeSiteVisitor
 		
 		// Check completeness and render any nodes still waiting for targets
 		foreach (array_keys($this->_missingTargets) as $targetId) {			
+			if (!isset($this->_emptyCellContainers[$targetId])) {
+				throwError(new Error("Target id '$targetId' was not found or is not empty.", __CLASS__));
+			}
+			if (!is_object($this->_emptyCellContainers[$targetId])) {
+				ob_start();
+				var_dump($this->_emptyCellContainers[$targetId]);
+				throwError(new Error("Expecting object, found '".ob_get_clean()."'.", __CLASS__));
+			}
+			
 			if (isset($this->_missingTargetWidths[$targetId]) && $this->_missingTargetWidths[$targetId])
 				$width = $this->_missingTargetWidths[$targetId];
 			else
