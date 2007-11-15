@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.79 2007/11/14 17:09:13 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.80 2007/11/15 19:22:37 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2007-11-15' ref='1828372' reftype='fr'>
+			Permissions: New Hierarchical role-setting UI that can set roles for any
+			user or group across the entire site.
+		</new>
 		<fix author='adam' date='2007-11-14' ref='1831176' reftype='bug'>
 			UI1: Fixed an issue where Header/Footer sensing was inappropriately 
 			thinking that a cell was a footer when it contained a nav-target rather
