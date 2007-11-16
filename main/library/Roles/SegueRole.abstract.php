@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRole.abstract.php,v 1.3 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: SegueRole.abstract.php,v 1.4 2007/11/16 21:41:46 adamfranco Exp $
  */ 
 
 /**
@@ -18,9 +18,11 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRole.abstract.php,v 1.3 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: SegueRole.abstract.php,v 1.4 2007/11/16 21:41:46 adamfranco Exp $
  */
-abstract class SegueRole {
+abstract class SegueRole 
+	extends Magnitude
+{
 	
 	/**
 	 * Constructor
@@ -230,7 +232,10 @@ abstract class SegueRole {
 	 * @access public
 	 * @since 11/5/07
 	 */
-	public function isLessThan (SegueRole $role) {
+	public function isLessThan ( $role) {
+		if (!($role instanceof SegueRole))
+			throw new Exception("Parameter must be a role.");
+		
 		if ($this->isEqualTo($role))
 			return false;
 		
@@ -240,30 +245,6 @@ abstract class SegueRole {
 			if ($this->getIdString() == $currentRole->getIdString())
 				return true;
 			else if ($role->getIdString() == $currentRole->getIdString())
-				return false;
-		}
-		
-		throw new Exception("Unknown Role '".$role->getIdString()."'.");
-	}
-	
-	/**
-	 * Answer true if this role is a super-set of the role passed
-	 * 
-	 * @param object SegueRole $role
-	 * @return boolean
-	 * @access public
-	 * @since 11/5/07
-	 */
-	public function isGreaterThan (SegueRole $role) {
-		if ($this->isEqualTo($role))
-			return false;
-		
-		$mgr = SegueRoleManager::instance();
-		foreach($mgr->getRoles() as $currentRole) {
-			// If we first hit the other rule, before hitting us, then we are greater.
-			if ($role->getIdString() == $currentRole->getIdString())
-				return true;
-			else if ($this->getIdString() == $currentRole->getIdString())
 				return false;
 		}
 		

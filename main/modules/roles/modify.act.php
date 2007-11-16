@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modify.act.php,v 1.2 2007/11/16 20:25:02 adamfranco Exp $
+ * @version $Id: modify.act.php,v 1.3 2007/11/16 21:41:46 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.class.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/Visitors/PopulateRolesVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modify.act.php,v 1.2 2007/11/16 20:25:02 adamfranco Exp $
+ * @version $Id: modify.act.php,v 1.3 2007/11/16 21:41:46 adamfranco Exp $
  */
 class modifyAction
 	extends RoleAction
@@ -154,13 +154,67 @@ class modifyAction
 		// save the data.
 		if ($wizard->validate()) {
 			$properties = $wizard->getAllValues();
+			$roleFields = $properties['permissions']['perms_table'];
 			
-			// todo .....
+			$roleMgr = SegueRoleManager::instance();
+			foreach ($roleFields as $componentId => $roleId) {
+				$this->saveRole(
+					$this->getSiteComponentForIdString($componentId), 
+					$roleMgr->getRole($roleId));
+			}
 			
-			return TRUE;
+			return false;
 		} else {
 			return FALSE;
 		}
+	}
+	
+	/**
+	 * Save a role for a hierarchy node
+	 * 
+	 * @param object SiteComponent $component
+	 * @param object SegueRole $role
+	 * @return <##>
+	 * @access public
+	 * @since 11/16/07
+	 */
+	public function saveRole (SiteComponent $component, SegueRole $role) {
+		$roleMgr = SegueRoleManager::instance();
+		$idMgr = Services::getService("Id");
+		
+		$agentId = $this->getAgentId();
+		$componentId = $idMgr->getId($component->getId());
+		
+		
+		// Ensure that Everyone or Institute are not set to admin
+		$everyoneId = $idMgr->getId('edu.middlebury.agents.everyone');
+		$instituteId = $idMgr->getId('edu.middlebury.institute');
+		if ($agentId->isEqual($everyoneId) || $agentId->isEqual($instituteId)) {
+			if ($role->getIdString() == 'admin')
+				$role = $roleMgr->getRole('editor');
+		}
+		
+		printpre("Saving role '".$role->getIdString()."' for ".$agentId." at ".$component->getDisplayName());
+		
+		// Find the parent node.
+		$parent = $component->getParentComponent();
+		if ($parent) {
+			$parentQualifierId = $parent->getQualifierId();
+			$parentRole = $roleMgr->getAgentsRole($agentId, $parentQualifierId);
+		}
+		
+		// Apply the role or clear it if it is less than the implicitly given role.
+// 		try {
+			if (isset($parentRole) && $role->isLessThanOrEqualTo($parentRole)) {
+				$roleMgr->clearRoleAZs($agentId, $componentId);
+			} else {
+				$role->apply($agentId, $componentId);
+			}
+// 		} catch (PermissionDeniedException $e) {
+// 		
+// 		}
+		
+		return true;
 	}
 	
 	/**
@@ -204,12 +258,8 @@ class modifyAction
 		
 		if (RequestContext::value("agent"))
 			return $idManager->getId(RequestContext::value("agent"));
-// 		else
-// 			throw new Exception("No AgentId specified.");
-		
-		// debugging
 		else
-			return $idManager->getId('edu.middlebury.institute');
+			throw new Exception("No AgentId specified.");
 	}
 	
 	/**

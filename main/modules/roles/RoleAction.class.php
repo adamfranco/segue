@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RoleAction.class.php,v 1.1 2007/11/16 20:25:02 adamfranco Exp $
+ * @version $Id: RoleAction.class.php,v 1.2 2007/11/16 21:41:46 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RoleAction.class.php,v 1.1 2007/11/16 20:25:02 adamfranco Exp $
+ * @version $Id: RoleAction.class.php,v 1.2 2007/11/16 21:41:46 adamfranco Exp $
  */
 abstract class RoleAction
 	extends MainWindowAction
@@ -99,7 +99,7 @@ abstract class RoleAction
 	 */
 	protected function getSiteComponentForIdString ( $id ) {
 		$director = $this->getSiteDirector();
-		return $director->getSiteComponentById($id);
+		return $director->getSiteComponentById(strval($id));
 	}
 	
 	/**

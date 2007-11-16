@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.1 2007/11/15 19:22:38 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.2 2007/11/16 21:41:46 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.1 2007/11/15 19:22:38 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.2 2007/11/16 21:41:46 adamfranco Exp $
  */
 class PopulateRolesVisitor
 	implements SiteVisitor
@@ -89,6 +89,11 @@ class PopulateRolesVisitor
 			$role->getIdString(),
 			">=");
 		
+		// @todo Disable options that are precluded by implicit authorizations
+		// comming from group membership.
+		
+		// @todo Disable options where modify_authorization is not allowed.
+		
 	}
 	
 	/**
@@ -153,6 +158,11 @@ class PopulateRolesVisitor
 			$siteComponent->getDisplayName(), 
 			$role->getIdString(),
 			">=");
+		
+		// @todo Disable options that are precluded by implicit authorizations
+		// comming from group membership.
+		
+		// @todo Disable options where modify_authorization is not allowed.
 		
 		$siteComponent->getOrganizer()->acceptVisitor($this);
 	}
