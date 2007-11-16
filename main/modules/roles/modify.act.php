@@ -1,16 +1,16 @@
 <?php
 /**
  * @since 11/14/07
- * @package segue.modules.classic_ui
+ * @package segue.roles
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modify.act.php,v 1.1 2007/11/15 19:22:38 adamfranco Exp $
+ * @version $Id: modify.act.php,v 1.2 2007/11/16 20:25:02 adamfranco Exp $
  */ 
 
-require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.class.php");
+require_once(dirname(__FILE__)."/RoleAction.class.php");
 require_once(dirname(__FILE__)."/Visitors/PopulateRolesVisitor.class.php");
 
 
@@ -18,15 +18,15 @@ require_once(dirname(__FILE__)."/Visitors/PopulateRolesVisitor.class.php");
  * An action for editing permissions of a particular site
  * 
  * @since 11/14/07
- * @package segue.modules.classic_ui
+ * @package segue.roles
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modify.act.php,v 1.1 2007/11/15 19:22:38 adamfranco Exp $
+ * @version $Id: modify.act.php,v 1.2 2007/11/16 20:25:02 adamfranco Exp $
  */
 class modifyAction
-	extends MainWindowAction
+	extends RoleAction
 {
 		
 	/**
@@ -50,18 +50,16 @@ class modifyAction
 	function buildContent () {
 		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough("node");
+		$harmoni->request->passthrough("agent");
 		$harmoni->request->passthrough("returnNode");
+		$harmoni->request->passthrough("returnModule");
 		$harmoni->request->passthrough("returnAction");
 		
 		$centerPane = $this->getActionRows();
 		$qualifierId = $this->getSiteId();
-		$cacheName = get_class($this).'_'.$qualifierId->getIdString();
-		$harmoni = Harmoni::instance();
-		$harmoni->request->passthrough("node");
-		$harmoni->request->passthrough("returnNode");
-		$harmoni->request->passthrough("returnAction");
+		$this->cacheName = get_class($this).'_'.$qualifierId->getIdString();
 		
-		$this->runWizard ( $cacheName, $centerPane );
+		$this->runWizard ( $this->cacheName, $centerPane );
 	}
 	
 	/**
@@ -73,13 +71,45 @@ class modifyAction
 	 */
 	public function createWizard () {
 		// Instantiate the wizard, then add our steps.
-		$wizard = SingleStepWizard::withDefaultLayout();
+		$wizard = SingleStepWizard::withText(
+				"<div>\n" .
+				"<table width='100%' border='0' cellpadding='0' cellspacing='2'>\n" .
+				"<tr>\n" .
+				"<td align='left' width='50%'>\n" .
+				"[[save_and_choose]]\n" .
+				"<br/>[[cancel_and_choose]]\n" .
+				"</td>\n" .
+				"<td align='right' width='50%'>\n" .
+				"[[_save]]\n" .
+				"<br/>[[_cancel]]\n" .
+				"</td></tr></table>" .
+				"</div>\n" .
+				"<hr/>\n" .
+				"<div>\n" .
+				"[[_steps]]" .
+				"</div>\n");
+		
+		$wizard->addComponent("choose_user", new ButtonPressedListener("edu.middlebury.segue.choose_user"));
+		
+		$button = $wizard->addComponent("save_and_choose", WSaveButton::withLabel("<< "._("Save and Choose User")));
+		$button->addEvent("edu.middlebury.segue.choose_user");
+		
+		$button = $wizard->addComponent("cancel_and_choose", WCancelButton::withLabel("<< "._("Cancel and Choose User")));
+		$button->addEvent("edu.middlebury.segue.choose_user");
 		
 		$step = $wizard->addStep("permissions", new WizardStep);
-		$step->setDisplayName(_("Permissions"));
-		
-		
 		$property = $step->addComponent("perms_table", new RowHierarchicalRadioMatrix);
+		
+		
+		$agent = $this->getAgent();
+		
+		if ($agent->isGroup())
+			$type = _("group");
+		else
+			$type = _("user");
+		$title = str_replace("%1", $type,
+					str_replace ("%2", $agent->getDisplayName(),
+						_("Permissions for %1 '%2'")));		
 		
 		
 		$roleMgr = SegueRoleManager::instance();
@@ -87,14 +117,11 @@ class modifyAction
 		foreach($roleMgr->getRoles() as $role)
 			$property->addOption($role->getIdString(), $role->getDisplayName(), $role->getDescription());
 		
-		$idMgr = Services::getService("Id");
-		$agentId = $idMgr->getId('edu.middlebury.institute');
-		
-		$this->getSite()->acceptVisitor(new PopulateRolesVisitor($property, $agentId));
+		$this->getSite()->acceptVisitor(new PopulateRolesVisitor($property, $agent->getId()));
 		
 		
 		ob_start();
-		print "\n<h2>"._("Permissions")."</h2>";
+		print "\n<h2>".$title."</h2>";
 		print "\n<p>";
 		print _("Permissions are additive -- this means that you can add additional permissions (but not remove them) for child-nodes.");
 		print "\n</p>\n";
@@ -137,120 +164,65 @@ class modifyAction
 	}
 	
 	/**
-	 * Answer the site id.
+	 * Return the URL that this action should return to when completed.
 	 * 
-	 * @return object Id
-	 * @access protected
+	 * @return string
+	 * @access public
 	 * @since 11/14/07
 	 */
-	protected function getSiteId () {
-		$idManager = Services::getService("Id");
-		return $idManager->getId($this->getSite()->getId());
-	}
-	
-	/**
-	 * Answer the site id.
-	 * 
-	 * @return object Id
-	 * @access protected
-	 * @since 11/14/07
-	 */
-	protected function getSite () {
-		$siteComponent = $this->getSiteComponent();
-		return $siteComponent->getDirector()->getRootSiteComponent($siteComponent->getId());
-	}
-	
-	/**
-	 * Answer the qualifier Id to use when checking authorizations
-	 * 
-	 * @return object Id
-	 * @access protected
-	 * @since 5/8/07
-	 */
-	protected function getQualifierId () {
-		$component = $this->getSiteComponent();
-		return $component->getQualifierId();
-	}
-	
-	/**
-	 * Answer the site component that we are editing. If this is a creation wizard
-	 * then null will be returned.
-	 * 
-	 * @return mixed object SiteComponent or null
-	 * @access protected
-	 * @since 5/8/07
-	 */
-	protected function getSiteComponent () {
-		$idManager = Services::getService("Id");
-		return $this->getSiteComponentForId(
-			$idManager->getId(RequestContext::value("node")));
-	}
-	
-	/**
-	 * Answer the site component for a given Id
-	 * 
-	 * @param object Id $id
-	 * @return object SiteComponent
-	 * @access protected
-	 * @since 5/8/07
-	 */
-	protected function getSiteComponentForId ( $id ) {
-		$director = $this->getSiteDirector();
-		return $director->getSiteComponentById($id->getIdString());
-	}
-	
-	/**
-	 * Answer the site component for a given Id string
-	 * 
-	 * @param string $id
-	 * @return object SiteComponent
-	 * @access protected
-	 * @since 6/4/07
-	 */
-	protected function getSiteComponentForIdString ( $id ) {
-		$director = $this->getSiteDirector();
-		return $director->getSiteComponentById($id);
-	}
-	
-	/**
-	 * Set up our SiteDirector and make any needed data available
-	 * 
-	 * @return object SiteDirector
-	 * @access protected
-	 * @since 4/14/06
-	 */
-	protected function getSiteDirector () {
-			if (!isset($this->_director)) {
-			/*********************************************************
-			 * XML Version
-			 *********************************************************/
-	// 		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
-	// 		
-	// 		$this->document = new DOMIT_Document();
-	// 		$this->document->setNamespaceAwareness(true);
-	// 		$success = $this->document->loadXML($this->filename);
-	// 
-	// 		if ($success !== true) {
-	// 			throwError(new Error("DOMIT error: ".$this->document->getErrorCode().
-	// 				"<br/>\t meaning: ".$this->document->getErrorString()."<br/>", "SiteDisplay"));
-	// 		}
-	// 
-	// 		$director = new XmlSiteDirector($this->document);
-			
-			
-			/*********************************************************
-			 * Asset version
-			 *********************************************************/
-			$repositoryManager = Services::getService('Repository');
-			$idManager = Services::getService('Id');
-			
-			$this->_director = new AssetSiteDirector(
-				$repositoryManager->getRepository(
-					$idManager->getId('edu.middlebury.segue.sites_repository')));
-		}
+	function getReturnUrl () {
+		$wizard = $this->getWizard($this->cacheName);
 		
-		return $this->_director;
+		$harmoni = Harmoni::instance();
+		
+		$chooseUserListener = $wizard->getChild('choose_user');
+		if ($chooseUserListener->wasPressed())
+			return $harmoni->request->quickURL('roles', 'choose_agent');
+		else {
+			if (RequestContext::value('returnModule'))
+				$module = RequestContext::value('returnModule');
+			else
+				$module = 'ui1';
+			
+			if (RequestContext::value('returnAction'))
+				$action = RequestContext::value('returnAction');
+			else
+				$action = 'editview';
+			return $harmoni->request->quickURL($module, $action);
+		}
 	}
+	
+	/**
+	 * Answer the AgentId
+	 * 
+	 * @return object Id
+	 * @access public
+	 * @since 11/15/07
+	 */
+	public function getAgentId () {
+		$idManager = Services::getService("Id");
+		
+		if (RequestContext::value("agent"))
+			return $idManager->getId(RequestContext::value("agent"));
+// 		else
+// 			throw new Exception("No AgentId specified.");
+		
+		// debugging
+		else
+			return $idManager->getId('edu.middlebury.institute');
+	}
+	
+	/**
+	 * Answer the chosen Agent
+	 * 
+	 * @return object Agent
+	 * @access public
+	 * @since 11/15/07
+	 */
+	public function getAgent () {
+		$agentManager = Services::getService("Agent");
+		return $agentManager->getAgentOrGroup($this->getAgentId());
+	}	
 }
 
 ?>
