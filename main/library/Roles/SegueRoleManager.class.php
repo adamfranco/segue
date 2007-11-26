@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.3 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.4 2007/11/26 16:21:16 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NoAccess_SegueRole.class.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Custom_SegueRole.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.3 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.4 2007/11/26 16:21:16 adamfranco Exp $
  */
 class SegueRoleManager
 	
@@ -264,6 +264,58 @@ class SegueRoleManager
 			$authorization = $authorizations->next();
 			if (!$authorization->isExplicit())
 				$functions[] = $authorization->getFunction()->getId();
+		}
+		
+		// Match those authorizations against our roles.
+		foreach($this->getRoles() as $role) {
+			if ($role->matches($functions))
+				return $role;
+		}
+		
+		throw new Exception ("No matching Role was found. Custom should have matched, but didn't.");
+	}
+	
+	
+	/**
+	 * Answer the implicit role caused by group membership.
+	 *
+	 * This is needed by a role-setting UI that needs to prevent the setting of
+	 * roles less than those implicitly given elsewhere.
+	 * 
+	 * @param object Id $agentId
+	 * @param object Id $qualifierId
+	 * @return object Role
+	 * @access public
+	 * @since 11/26/07
+	 */
+	public function getGroupImplictRole (Id $agentId, Id $qualifierId) {
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		
+		if (!$authZ->isUserAuthorized(
+				$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
+				$qualifierId))
+			throw new PermissionDeniedException("Cannot view authorizations here.");
+	
+		// Load the functions explicitly set for this agent at this qualifier
+		$authZ = Services::getService("AuthZ");
+		$authorizations = $authZ->getAllAZs($agentId, null, $qualifierId, true);
+		$functions = array();
+		while ($authorizations->hasNext()) {
+			$authorization = $authorizations->next();
+			if (!$authorization->isExplicit()) {
+				// Go through the explicit AZs that gave rize to the implicit AZ 
+				// and record their function if the Agent Id is not the agent we're looking
+				// for and therefor a group the agent is a member of.
+				$explicitAZs = $authZ->getExplicitUserAZsForImplicitAZ($authorization);
+				while ($explicitAZs->hasNext()) {
+					$explicitAZ = $explicitAZs->next();
+					if (!$agentId->isEqual($explicitAZ->getAgentId())) {
+						$functions[] = $authorization->getFunction()->getId();
+						break;	
+					}
+				}
+			}
 		}
 		
 		// Match those authorizations against our roles.
