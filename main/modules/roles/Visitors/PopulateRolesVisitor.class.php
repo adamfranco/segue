@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.5 2007/11/26 20:59:40 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.6 2007/11/26 21:03:23 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.5 2007/11/26 20:59:40 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.6 2007/11/26 21:03:23 adamfranco Exp $
  */
 class PopulateRolesVisitor
 	implements SiteVisitor
@@ -176,6 +176,12 @@ class PopulateRolesVisitor
 					$siteComponent->getDisplayName(), 
 					$role->getIdString(),
 					">=");
+		
+		// Make the values hidden if the current user has no authorization 
+		// to view the authorizations of the node.
+		if (!$authZ->isUserAuthorized($idMgr->getId("edu.middlebury.authorization.view_authorizations"), $qualifierId)) {
+			$this->property->makeValuesHidden($qualifierId->getIdString());
+		}
 		
 		// Disable options that are precluded by implicit authorizations
 		// coming from group membership.
