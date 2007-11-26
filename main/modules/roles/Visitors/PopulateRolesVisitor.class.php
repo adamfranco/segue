@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.4 2007/11/26 16:44:51 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.5 2007/11/26 20:59:40 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.4 2007/11/26 16:44:51 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.5 2007/11/26 20:59:40 adamfranco Exp $
  */
 class PopulateRolesVisitor
 	implements SiteVisitor
@@ -72,11 +72,23 @@ class PopulateRolesVisitor
 	private function addQualifierForSiteComponent (SiteComponent $siteComponent) {
 		$qualifierId = $siteComponent->getQualifierId();
 		
+		$authZ = Services::getService('AuthZ');
+		$idMgr = Services::getService('Id');
+		
 		// Skip if we've added it already
 		if (in_array($qualifierId->getIdString(), $this->qualifierIdsAdded))
 			return;
 		$this->qualifierIdsAdded[] = $qualifierId->getIdString();
 		
+		// Skip any printing of the node if the current user has no authorization 
+		// to view the node or any descendents.
+		if (!$authZ->isUserAuthorizedBelow($idMgr->getId("edu.middlebury.authorization.view"), $qualifierId)
+			&& !$authZ->isUserAuthorizedBelow($idMgr->getId("edu.middlebury.authorization.view_authorizations"), $qualifierId)) 
+		{
+			return;
+		}
+		
+		// Create the property with the current role
 		$parentQualifierId = $siteComponent->getParentComponent()->getQualifierId();
 		
 		$roleMgr = SegueRoleManager::instance();
@@ -89,6 +101,12 @@ class PopulateRolesVisitor
 			$role->getIdString(),
 			">=");
 		
+		// Make the values hidden if the current user has no authorization 
+		// to view the authorizations of the node.
+		if (!$authZ->isUserAuthorized($idMgr->getId("edu.middlebury.authorization.view_authorizations"), $qualifierId)) {
+			$this->property->makeValuesHidden($qualifierId->getIdString());
+		}
+		
 		// Disable options that are precluded by implicit authorizations
 		// coming from group membership.
 		$groupRole = $roleMgr->getGroupImplictRole($this->agentId, $qualifierId);
@@ -99,8 +117,6 @@ class PopulateRolesVisitor
 		}
 		
 		// Disable options where modify_authorization is not allowed.
-		$authZ = Services::getService('AuthZ');
-		$idMgr = Services::getService('Id');
 		if (!$authZ->isUserAuthorized(
 			$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
 			$qualifierId)) 
@@ -136,10 +152,21 @@ class PopulateRolesVisitor
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
 		$qualifierId = $siteComponent->getQualifierId();
 		
+		$authZ = Services::getService('AuthZ');
+		$idMgr = Services::getService('Id');
+		
 		// Skip if we've added it already
 		if (in_array($qualifierId->getIdString(), $this->qualifierIdsAdded))
 			return;
 		$this->qualifierIdsAdded[] = $qualifierId->getIdString();
+		
+		// Skip any printing of the node if the current user has no authorization 
+		// to view the node or any descendents.
+		if (!$authZ->isUserAuthorizedBelow($idMgr->getId("edu.middlebury.authorization.view"), $qualifierId)
+			&& !$authZ->isUserAuthorizedBelow($idMgr->getId("edu.middlebury.authorization.view_authorizations"), $qualifierId)) 
+		{
+			return;
+		}
 		
 		$roleMgr = SegueRoleManager::instance();
 		$role = $roleMgr->getAgentsRole($this->agentId, $qualifierId);
@@ -160,8 +187,6 @@ class PopulateRolesVisitor
 		}
 		
 		// Disable options where modify_authorization is not allowed.
-		$authZ = Services::getService('AuthZ');
-		$idMgr = Services::getService('Id');
 		if (!$authZ->isUserAuthorized(
 			$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
 			$qualifierId)) 
