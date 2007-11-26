@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.3 2007/11/26 16:21:17 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.4 2007/11/26 16:44:51 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.3 2007/11/26 16:21:17 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.4 2007/11/26 16:44:51 adamfranco Exp $
  */
 class PopulateRolesVisitor
 	implements SiteVisitor
@@ -98,8 +98,92 @@ class PopulateRolesVisitor
 			}
 		}
 		
-		// @todo Disable options where modify_authorization is not allowed.
+		// Disable options where modify_authorization is not allowed.
+		$authZ = Services::getService('AuthZ');
+		$idMgr = Services::getService('Id');
+		if (!$authZ->isUserAuthorized(
+			$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
+			$qualifierId)) 
+		{
+			foreach($roleMgr->getRoles() as $role)
+				$this->property->makeDisabled($qualifierId->getIdString(), $role->getIdString());
+		}
 		
+		// Disable the Administrator role for everyone and institute.
+		$nonAdminAgents = array();
+		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.agents.everyone');
+		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.agents.anonymous');
+		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.agents.users');
+		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.institute');
+		foreach ($nonAdminAgents as $agentId) {
+			if ($agentId->isEqual($this->agentId)) {
+				$this->property->makeDisabled($qualifierId->getIdString(), 'admin');
+				break;
+			}
+		}
+		
+		
+	}
+	
+	/**
+	 * Visit a Site Navigation Block
+	 * 
+	 * @param object SiteNavBlockSiteComponent $siteComponent
+	 * @return mixed
+	 * @access public
+	 * @since 8/31/07
+	 */
+	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
+		$qualifierId = $siteComponent->getQualifierId();
+		
+		// Skip if we've added it already
+		if (in_array($qualifierId->getIdString(), $this->qualifierIdsAdded))
+			return;
+		$this->qualifierIdsAdded[] = $qualifierId->getIdString();
+		
+		$roleMgr = SegueRoleManager::instance();
+		$role = $roleMgr->getAgentsRole($this->agentId, $qualifierId);
+		
+		$this->property->addField(
+					$qualifierId->getIdString(), 
+					$siteComponent->getDisplayName(), 
+					$role->getIdString(),
+					">=");
+		
+		// Disable options that are precluded by implicit authorizations
+		// coming from group membership.
+		$groupRole = $roleMgr->getGroupImplictRole($this->agentId, $qualifierId);
+		foreach ($roleMgr->getRoles() as $role) {
+			if ($role->isLessThan($groupRole)) {
+				$this->property->makeDisabled($qualifierId->getIdString(), $role->getIdString());
+			}
+		}
+		
+		// Disable options where modify_authorization is not allowed.
+		$authZ = Services::getService('AuthZ');
+		$idMgr = Services::getService('Id');
+		if (!$authZ->isUserAuthorized(
+			$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
+			$qualifierId)) 
+		{
+			foreach($roleMgr->getRoles() as $role)
+				$this->property->makeDisabled($qualifierId->getIdString(), $role->getIdString());
+		}
+		
+		// Disable the Administrator role for everyone and institute.
+		$nonAdminAgents = array();
+		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.agents.everyone');
+		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.agents.anonymous');
+		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.agents.users');
+		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.institute');
+		foreach ($nonAdminAgents as $agentId) {
+			if ($agentId->isEqual($this->agentId)) {
+				$this->property->makeDisabled($qualifierId->getIdString(), 'admin');
+				break;
+			}
+		}
+		
+		$siteComponent->getOrganizer()->acceptVisitor($this);
 	}
 	
 	/**
@@ -136,45 +220,6 @@ class PopulateRolesVisitor
 	 */
 	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
 		$this->visitBlock($siteComponent);
-		
-		$siteComponent->getOrganizer()->acceptVisitor($this);
-	}
-	
-	/**
-	 * Visit a Site Navigation Block
-	 * 
-	 * @param object SiteNavBlockSiteComponent $siteComponent
-	 * @return mixed
-	 * @access public
-	 * @since 8/31/07
-	 */
-	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
-		$qualifierId = $siteComponent->getQualifierId();
-		
-		// Skip if we've added it already
-		if (in_array($qualifierId->getIdString(), $this->qualifierIdsAdded))
-			return;
-		$this->qualifierIdsAdded[] = $qualifierId->getIdString();
-		
-		$roleMgr = SegueRoleManager::instance();
-		$role = $roleMgr->getAgentsRole($this->agentId, $qualifierId);
-		
-		$this->property->addField(
-			$qualifierId->getIdString(), 
-			$siteComponent->getDisplayName(), 
-			$role->getIdString(),
-			">=");
-		
-		// Disable options that are precluded by implicit authorizations
-		// coming from group membership.
-		$groupRole = $roleMgr->getGroupImplictRole($this->agentId, $qualifierId);
-		foreach ($roleMgr->getRoles() as $role) {
-			if ($role->isLessThan($groupRole)) {
-				$this->property->makeDisabled($qualifierId->getIdString(), $role->getIdString());
-			}
-		}
-		
-		// @todo Disable options where modify_authorization is not allowed.
 		
 		$siteComponent->getOrganizer()->acceptVisitor($this);
 	}
