@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: libraries.inc.php,v 1.12 2007/11/05 21:09:03 adamfranco Exp $
+ * @version $Id: libraries.inc.php,v 1.13 2007/11/27 22:06:46 adamfranco Exp $
  */
 
 if (file_exists(MYDIR.'/config/libraries.conf.php'))
@@ -47,6 +47,8 @@ require_once(MYDIR."/main/library/CourseManagement/SegueCourseManager.class.php"
 require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
+require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
+
 
 /******************************************************************************
  * Include any theme classes we want to use. They need to be included prior

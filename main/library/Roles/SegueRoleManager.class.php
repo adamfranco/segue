@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.4 2007/11/26 16:21:16 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.5 2007/11/27 22:06:46 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NoAccess_SegueRole.class.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Custom_SegueRole.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.4 2007/11/26 16:21:16 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.5 2007/11/27 22:06:46 adamfranco Exp $
  */
 class SegueRoleManager
 	
@@ -207,18 +207,22 @@ class SegueRoleManager
 	 * 
 	 * @param object Id $agentId
 	 * @param object Id $qualifierId
+	 * @param optional boolean $overrideAzCheck If true, not not check AZs. Used by admin functions to force-set a role.
+
 	 * @return object Role
 	 * @access public
 	 * @since 11/5/07
 	 */
-	public function getAgentsExplicitRole (Id $agentId, Id $qualifierId) {
+	public function getAgentsExplicitRole (Id $agentId, Id $qualifierId, $overrideAzCheck = false) {
 		$authZ = Services::getService("AuthZ");
 		$idMgr = Services::getService("Id");
 		
-		if (!$authZ->isUserAuthorized(
-				$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
-				$qualifierId))
-			throw new PermissionDeniedException("Cannot view authorizations here.");
+		if (!$overrideAzCheck) {
+			if (!$authZ->isUserAuthorized(
+					$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
+					$qualifierId))
+				throw new PermissionDeniedException("Cannot view authorizations here.");
+		}
 	
 		// Load the functions explicitly set for this agent at this qualifier
 		$authZ = Services::getService("AuthZ");
@@ -243,18 +247,21 @@ class SegueRoleManager
 	 * 
 	 * @param object Id $agentId
 	 * @param object Id $qualifierId
+	 * @param optional boolean $overrideAzCheck If true, not not check AZs. Used by admin functions to force-set a role.
 	 * @return object Role
 	 * @access public
 	 * @since 11/5/07
 	 */
-	public function getAgentsImplicitRole (Id $agentId, Id $qualifierId) {
+	public function getAgentsImplicitRole (Id $agentId, Id $qualifierId, $overrideAzCheck = false) {
 		$authZ = Services::getService("AuthZ");
 		$idMgr = Services::getService("Id");
 		
-		if (!$authZ->isUserAuthorized(
-				$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
-				$qualifierId))
-			throw new PermissionDeniedException("Cannot view authorizations here.");
+		if (!$overrideAzCheck) {
+			if (!$authZ->isUserAuthorized(
+					$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
+					$qualifierId))
+				throw new PermissionDeniedException("Cannot view authorizations here.");
+		}
 	
 		// Load the functions explicitly set for this agent at this qualifier
 		$authZ = Services::getService("AuthZ");
@@ -284,18 +291,21 @@ class SegueRoleManager
 	 * 
 	 * @param object Id $agentId
 	 * @param object Id $qualifierId
+	 * @param optional boolean $overrideAzCheck If true, not not check AZs. Used by admin functions to force-set a role.
 	 * @return object Role
 	 * @access public
 	 * @since 11/26/07
 	 */
-	public function getGroupImplictRole (Id $agentId, Id $qualifierId) {
+	public function getGroupImplictRole (Id $agentId, Id $qualifierId, $overrideAzCheck = false) {
 		$authZ = Services::getService("AuthZ");
 		$idMgr = Services::getService("Id");
 		
-		if (!$authZ->isUserAuthorized(
-				$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
-				$qualifierId))
-			throw new PermissionDeniedException("Cannot view authorizations here.");
+		if (!$overrideAzCheck) {
+			if (!$authZ->isUserAuthorized(
+					$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
+					$qualifierId))
+				throw new PermissionDeniedException("Cannot view authorizations here.");
+		}
 	
 		// Load the functions explicitly set for this agent at this qualifier
 		$authZ = Services::getService("AuthZ");

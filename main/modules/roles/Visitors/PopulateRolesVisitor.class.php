@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.6 2007/11/26 21:03:23 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.7 2007/11/27 22:06:46 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.6 2007/11/26 21:03:23 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.7 2007/11/27 22:06:46 adamfranco Exp $
  */
 class PopulateRolesVisitor
 	implements SiteVisitor
@@ -92,7 +92,13 @@ class PopulateRolesVisitor
 		$parentQualifierId = $siteComponent->getParentComponent()->getQualifierId();
 		
 		$roleMgr = SegueRoleManager::instance();
-		$role = $roleMgr->getAgentsRole($this->agentId, $qualifierId);
+		$valuesHidden = false;
+		try {
+			$role = $roleMgr->getAgentsRole($this->agentId, $qualifierId);
+		} catch (PermissionDeniedException $e) {
+			$role = $roleMgr->getAgentsRole($this->agentId, $qualifierId, true);
+			$valuesHidden = true;
+		}
 		
 		$this->property->addChildField(
 			$parentQualifierId->getIdString(), 
@@ -103,13 +109,13 @@ class PopulateRolesVisitor
 		
 		// Make the values hidden if the current user has no authorization 
 		// to view the authorizations of the node.
-		if (!$authZ->isUserAuthorized($idMgr->getId("edu.middlebury.authorization.view_authorizations"), $qualifierId)) {
+		if ($valuesHidden) {
 			$this->property->makeValuesHidden($qualifierId->getIdString());
 		}
 		
 		// Disable options that are precluded by implicit authorizations
 		// coming from group membership.
-		$groupRole = $roleMgr->getGroupImplictRole($this->agentId, $qualifierId);
+		$groupRole = $roleMgr->getGroupImplictRole($this->agentId, $qualifierId, true);
 		foreach ($roleMgr->getRoles() as $role) {
 			if ($role->isLessThan($groupRole)) {
 				$this->property->makeDisabled($qualifierId->getIdString(), $role->getIdString());
@@ -169,7 +175,13 @@ class PopulateRolesVisitor
 		}
 		
 		$roleMgr = SegueRoleManager::instance();
-		$role = $roleMgr->getAgentsRole($this->agentId, $qualifierId);
+		$valuesHidden = false;
+		try {
+			$role = $roleMgr->getAgentsRole($this->agentId, $qualifierId);
+		} catch (PermissionDeniedException $e) {
+			$role = $roleMgr->getAgentsRole($this->agentId, $qualifierId, true);
+			$valuesHidden = true;
+		}
 		
 		$this->property->addField(
 					$qualifierId->getIdString(), 
@@ -179,13 +191,13 @@ class PopulateRolesVisitor
 		
 		// Make the values hidden if the current user has no authorization 
 		// to view the authorizations of the node.
-		if (!$authZ->isUserAuthorized($idMgr->getId("edu.middlebury.authorization.view_authorizations"), $qualifierId)) {
+		if ($valuesHidden) {
 			$this->property->makeValuesHidden($qualifierId->getIdString());
 		}
 		
 		// Disable options that are precluded by implicit authorizations
 		// coming from group membership.
-		$groupRole = $roleMgr->getGroupImplictRole($this->agentId, $qualifierId);
+		$groupRole = $roleMgr->getGroupImplictRole($this->agentId, $qualifierId, true);
 		foreach ($roleMgr->getRoles() as $role) {
 			if ($role->isLessThan($groupRole)) {
 				$this->property->makeDisabled($qualifierId->getIdString(), $role->getIdString());

@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.13 2007/11/15 19:22:38 adamfranco Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.14 2007/11/27 22:06:46 adamfranco Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -1954,6 +1954,18 @@ class SimpleThemeWhite extends Theme {
 	
 	table.radio_matrix td {
 		text-align: center;
+	}
+	
+	table.search_results {
+		border: 0px;
+		width: 100%;
+		margin-top: 10px;
+	}
+	table.search_results tr.search_result_item td.color0 {
+		background-color: #ddd;
+	}
+	table.search_results tr.search_result_item td.action_button {
+		text-align: right;
 	}
 		
 ";

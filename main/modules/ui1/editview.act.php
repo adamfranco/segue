@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.12 2007/11/16 20:25:03 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.13 2007/11/27 22:06:46 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.12 2007/11/16 20:25:03 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.13 2007/11/27 22:06:46 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -67,6 +67,9 @@ class editviewAction
 		$siteId = $this->rootSiteComponent->getQualifierId();
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteId)
+			|| $authZ->isUserAuthorizedBelow(
+			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
 			$siteId))
 		{
 		
@@ -76,18 +79,28 @@ class editviewAction
 			ob_start();
 			$harmoni = Harmoni::instance();
 			print "\n<div style='text-align: right;'>";
-			print "\n<a href='".$harmoni->request->quickURL("ui1", "editSite", 
-				array("node" => $siteId->getIdString(),
-				"returnNode" => RequestContext::value("node"),
-				"returnAction" => $harmoni->request->getRequestedAction()))."'>";
-			print "\n\t<input type='button' value='"._("Edit Site Options")."'/>";
-			print "\n</a>";
-			print "\n<a href='".$harmoni->request->quickURL("roles", "choose_agent", 
-				array("node" => RequestContext::value("node"),
-				"returnModule" => $harmoni->request->getRequestedModule(),
-				"returnAction" => $harmoni->request->getRequestedAction()))."'>";
-			print "\n\t<input type='button' value='"._("Permissions")."'/>";
-			print "\n</a>";
+			if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.modify"), 
+				$siteId))
+			{
+				print "\n<a href='".$harmoni->request->quickURL("ui1", "editSite", 
+					array("node" => $siteId->getIdString(),
+					"returnNode" => RequestContext::value("node"),
+					"returnAction" => $harmoni->request->getRequestedAction()))."'>";
+				print "\n\t<input type='button' value='"._("Edit Site Options")."'/>";
+				print "\n</a>";
+			}
+			if ($authZ->isUserAuthorizedBelow(
+				$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
+				$siteId))
+			{
+				print "\n<a href='".$harmoni->request->quickURL("roles", "choose_agent", 
+					array("node" => RequestContext::value("node"),
+					"returnModule" => $harmoni->request->getRequestedModule(),
+					"returnAction" => $harmoni->request->getRequestedAction()))."'>";
+				print "\n\t<input type='button' value='"._("Permissions")."'/>";
+				print "\n</a>";
+			}
 			print "\n</div>";
 			
 			$mainScreen->add(new UnstyledBlock(ob_get_clean()), $rootSiteComponent->getWidth(), null, CENTER, BOTTOM);

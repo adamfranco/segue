@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.1 2007/11/16 20:25:02 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.2 2007/11/27 22:06:46 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RoleAction.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RoleAction.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.1 2007/11/16 20:25:02 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.2 2007/11/27 22:06:46 adamfranco Exp $
  */
 class choose_agentAction
 	extends RoleAction
@@ -84,7 +84,6 @@ class choose_agentAction
 				"</div>\n");
 		
 		$step = $wizard->addStep("agents", new WizardStep);
-		$property = $step->addComponent("search", new WTextField);
 		
 		ob_start();
 		print "\n<h2>"._("Permissions")."</h2>";
@@ -113,11 +112,14 @@ class choose_agentAction
 				'node' => RequestContext::value('node'),
 				'agent' => $agent->getId()->getIdString()
 			));
-			print "'><button>"._("Modify Roles >>")."</button></a>";
+			print "'><input type='button' value=\""._("Modify Roles >>")."\"/></a>";
 			print "\n\t\t</td>";
 			print "\n\t</tr>";
 		}
 		print "\n</table>";
+		
+		$property = $step->addComponent("search", new WSearchField);
+		$property->setSearchSource(new AgentSearchSource);
 		
 		print "\n<div style='margin-top: 20px; border-top: 1px solid; padding: 5px;'>";
 		print _("Search: ")." [[search]]";
