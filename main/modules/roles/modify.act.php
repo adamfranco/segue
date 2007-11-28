@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modify.act.php,v 1.3 2007/11/16 21:41:46 adamfranco Exp $
+ * @version $Id: modify.act.php,v 1.4 2007/11/28 15:35:14 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.class.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/Visitors/PopulateRolesVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modify.act.php,v 1.3 2007/11/16 21:41:46 adamfranco Exp $
+ * @version $Id: modify.act.php,v 1.4 2007/11/28 15:35:14 adamfranco Exp $
  */
 class modifyAction
 	extends RoleAction
@@ -163,7 +163,7 @@ class modifyAction
 					$roleMgr->getRole($roleId));
 			}
 			
-			return false;
+			return true;
 		} else {
 			return FALSE;
 		}
@@ -194,7 +194,7 @@ class modifyAction
 				$role = $roleMgr->getRole('editor');
 		}
 		
-		printpre("Saving role '".$role->getIdString()."' for ".$agentId." at ".$component->getDisplayName());
+// 		printpre("Saving role '".$role->getIdString()."' for ".$agentId." at ".$component->getDisplayName());
 		
 		// Find the parent node.
 		$parent = $component->getParentComponent();
@@ -207,6 +207,7 @@ class modifyAction
 // 		try {
 			if (isset($parentRole) && $role->isLessThanOrEqualTo($parentRole)) {
 				$roleMgr->clearRoleAZs($agentId, $componentId);
+// 				printpre("Clearing duplicate role '".$role->getIdString()."' for ".$agentId." at ".$component->getDisplayName());
 			} else {
 				$role->apply($agentId, $componentId);
 			}
