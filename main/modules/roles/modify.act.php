@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modify.act.php,v 1.4 2007/11/28 15:35:14 adamfranco Exp $
+ * @version $Id: modify.act.php,v 1.5 2007/11/28 17:27:39 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.class.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/Visitors/PopulateRolesVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modify.act.php,v 1.4 2007/11/28 15:35:14 adamfranco Exp $
+ * @version $Id: modify.act.php,v 1.5 2007/11/28 17:27:39 adamfranco Exp $
  */
 class modifyAction
 	extends RoleAction
@@ -117,7 +117,7 @@ class modifyAction
 		foreach($roleMgr->getRoles() as $role)
 			$property->addOption($role->getIdString(), $role->getDisplayName(), $role->getDescription());
 		
-		$this->getSite()->acceptVisitor(new PopulateRolesVisitor($property, $agent->getId()));
+		$this->getSite()->acceptVisitor(new PopulateRolesVisitor($property, $agent));
 		
 		
 		ob_start();

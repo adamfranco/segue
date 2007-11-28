@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRole.abstract.php,v 1.4 2007/11/16 21:41:46 adamfranco Exp $
+ * @version $Id: SegueRole.abstract.php,v 1.5 2007/11/28 17:27:39 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRole.abstract.php,v 1.4 2007/11/16 21:41:46 adamfranco Exp $
+ * @version $Id: SegueRole.abstract.php,v 1.5 2007/11/28 17:27:39 adamfranco Exp $
  */
 abstract class SegueRole 
 	extends Magnitude
@@ -32,7 +32,7 @@ abstract class SegueRole
 	 * @since 11/5/07
 	 */
 	public function __construct () {
-		// do nothing, override in descendent classes if needed.
+		$this->functions = array();
 	}
 	
 	/**
@@ -251,6 +251,40 @@ abstract class SegueRole
 		throw new Exception("Unknown Role '".$role->getIdString()."'.");
 	}
 	
+	/**
+	 * Ask the role to store a list of agent Ids which caused the role to exist.
+	 * This should be used only by the SegueRoleManager. It is intended to be a
+	 * temparary store which may or may not be populated when roles are returned.
+	 * 
+	 * @param array $agentIds
+	 * @return void
+	 * @access public
+	 * @since 11/28/07
+	 */
+	public function setAgentsCausing (array $agentIds) {
+		ArgumentValidator::validate($agentIds, ArrayValidatorRuleWithRule::getRule(
+			ExtendsValidatorRule::getRule("Id")));
+		
+		$this->agentsCausing = $agentIds;
+	}
+	
+	/**
+	 * Answer a list of agent Ids which caused this role to exist. This list
+	 * may or may not be available and is to be used for informational purposes
+	 * rather than as a definitive list. If this list has not been populated,
+	 * an Exception will be thrown.
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 11/28/07
+	 */
+	public function getAgentsCausing () {
+		if (!isset($this->agentsCausing) || !is_array($this->agentsCausing))
+			throw new Exception("A list of Agents-Causing this role has not been set.");
+		
+		return $this->agentsCausing;
+	}
+	
 	/*********************************************************
 	 * Protected
 	 *********************************************************/
@@ -277,7 +311,14 @@ abstract class SegueRole
 	 * @access private
 	 * @since 11/5/07
 	 */
-	private $functions = array();
+	private $functions;
+	
+	/**
+	 * @var array $agentsCausing;  
+	 * @access private
+	 * @since 11/28/07
+	 */
+	private $agentsCausing;
 	
 	/**
 	 * Add an authorization

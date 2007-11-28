@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.5 2007/11/27 22:06:46 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.6 2007/11/28 17:27:39 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NoAccess_SegueRole.class.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Custom_SegueRole.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.5 2007/11/27 22:06:46 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.6 2007/11/28 17:27:39 adamfranco Exp $
  */
 class SegueRoleManager
 	
@@ -311,6 +311,7 @@ class SegueRoleManager
 		$authZ = Services::getService("AuthZ");
 		$authorizations = $authZ->getAllAZs($agentId, null, $qualifierId, true);
 		$functions = array();
+		$groupIds = array();
 		while ($authorizations->hasNext()) {
 			$authorization = $authorizations->next();
 			if (!$authorization->isExplicit()) {
@@ -322,6 +323,7 @@ class SegueRoleManager
 					$explicitAZ = $explicitAZs->next();
 					if (!$agentId->isEqual($explicitAZ->getAgentId())) {
 						$functions[] = $authorization->getFunction()->getId();
+						$groupIds[] = $explicitAZ->getAgentId();
 						break;	
 					}
 				}
@@ -330,8 +332,10 @@ class SegueRoleManager
 		
 		// Match those authorizations against our roles.
 		foreach($this->getRoles() as $role) {
-			if ($role->matches($functions))
+			if ($role->matches($functions)) {
+				$role->setAgentsCausing($groupIds);
 				return $role;
+			}
 		}
 		
 		throw new Exception ("No matching Role was found. Custom should have matched, but didn't.");
