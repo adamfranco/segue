@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.13 2007/11/27 22:06:46 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.14 2007/11/29 20:49:55 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.13 2007/11/27 22:06:46 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.14 2007/11/29 20:49:55 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -61,7 +61,7 @@ class editviewAction
 	function execute () {
 		$mainScreen = parent::execute();
 		
-		// Add controls bar and border
+		// Add permissions button
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		$siteId = $this->rootSiteComponent->getQualifierId();

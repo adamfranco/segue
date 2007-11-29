@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.6 2007/09/06 20:15:15 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.7 2007/11/29 20:49:55 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.6 2007/09/06 20:15:15 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.7 2007/11/29 20:49:55 adamfranco Exp $
  */
 class arrangeviewAction
 	extends viewAction {
@@ -39,6 +39,42 @@ class arrangeviewAction
 	function getSiteVisitor () {
 		$visitor = new ArrangeModeSiteVisitor();
 		return $visitor;
+	}
+	
+	/**
+	 * Execute the action
+	 * 
+	 * @return object
+	 * @access public
+	 * @since 1/18/07
+	 */
+	function execute () {
+		$allwrapper = parent::execute();
+		$mainScreen = $this->mainScreen;
+		
+		// Add controls bar and border
+		
+		// Add permissions button
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorizedBelow(
+			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
+			$this->rootSiteComponent->getQualifierId()))
+		{
+			ob_start();
+			$harmoni = Harmoni::instance();
+			print "\n<div style='text-align: right;'>";
+			print "\n<a href='".$harmoni->request->quickURL("roles", "choose_agent", 
+					array("node" => RequestContext::value("node"),
+					"returnModule" => $harmoni->request->getRequestedModule(),
+					"returnAction" => $harmoni->request->getRequestedAction()))."'>";
+			print "\n\t<input type='button' value='"._("Permissions")."'/>";
+			print "\n</a>";
+			print "\n</div>";
+			$allwrapper->add(new UnstyledBlock(ob_get_clean()), $this->rootSiteComponent->getWidth(), null, CENTER, BOTTOM);
+		}
+		
+		return $allwrapper;
 	}
 	
 	/**

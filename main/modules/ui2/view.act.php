@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.15 2007/09/25 15:19:00 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.16 2007/11/29 20:49:55 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.15 2007/09/25 15:19:00 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.16 2007/11/29 20:49:55 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -113,13 +113,8 @@ class viewAction
 		
 		$allWrapper = new Container($yLayout, BLANK, 1);
 		
-		$mainScreen = new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
-		
-		$allWrapper->add($mainScreen,
-			$rootSiteComponent->getWidth(), null, CENTER, TOP);
-		
 		// :: login, links and commands
-		$this->headRow = $mainScreen->add(
+		$this->headRow = $allWrapper->add(
 			new Container($xLayout, BLOCK, 1), 
 			"100%", null, CENTER, TOP);
 			
@@ -137,6 +132,14 @@ class viewAction
 				
 		$rightHeadColumn->add($this->getCommandsComponent(), 
 				null, null, RIGHT, TOP);
+		
+		
+		$mainScreen = new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
+		
+		$allWrapper->add($mainScreen,
+			$rootSiteComponent->getWidth(), null, CENTER, TOP);
+		
+		
 		
 		
 		// :: Top Row ::
@@ -168,7 +171,7 @@ class viewAction
 		
 		
 		// :: Footer ::
-		$footer = $mainScreen->add(
+		$footer = $allWrapper->add(
 			new Container (new XLayout, FOOTER, 1),
 			"100%", null, RIGHT, BOTTOM);
 		
@@ -180,7 +183,7 @@ class viewAction
 		$footer->add(new UnstyledBlock(displayAction::getVersionText()), "50%", null, RIGHT, BOTTOM);
 
 		
-		
+		$this->mainScreen = $mainScreen;
 		return $allWrapper;
 	}
 	
