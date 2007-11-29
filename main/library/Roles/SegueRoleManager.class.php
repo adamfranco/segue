@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.6 2007/11/28 17:27:39 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.7 2007/11/29 20:21:52 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NoAccess_SegueRole.class.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Custom_SegueRole.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.6 2007/11/28 17:27:39 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.7 2007/11/29 20:21:52 adamfranco Exp $
  */
 class SegueRoleManager
 	
@@ -339,6 +339,76 @@ class SegueRoleManager
 		}
 		
 		throw new Exception ("No matching Role was found. Custom should have matched, but didn't.");
+	}
+	
+	/**
+	 * Answer the agents that have roles that are greater than or equal to the role passed.
+	 * 
+	 * @param object SegueRole $role
+	 * @param object Id $rootQualifierId
+	 * @param optional boolean $overrideAzCheck If true, not not check AZs. Used by admin functions to force-set a role.
+	 * @return array An array of Id objects
+	 * @access public
+	 * @since 11/29/07
+	 */
+	public function getAgentsWithRoleAtLeast (SegueRole $role, Id $rootQualifierId, $overrideAzCheck = false) {
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		
+		if (!$overrideAzCheck) {
+			if (!$authZ->isUserAuthorized(
+					$idMgr->getId("edu.middlebury.authorization.view_authorizations"),
+					$rootQualifierId))
+				throw new PermissionDeniedException("Cannot view authorizations here.");
+		}
+		
+		// Get a list of all of the qualifiers in the site.
+		$qualifiers = new MultiIteratorIterator;
+		$qualifiers->addIterator(new HarmoniIterator(array($authZ->getQualifier($rootQualifierId))));
+		$qualifiers->addIterator($authZ->getQualifierDescendants($rootQualifierId));
+		
+		// Go through each qualifier and see who can do all of the functions in the role
+		$agentIdStrings = array();
+		while ($qualifiers->hasNext()) {
+			$qualifier = $qualifiers->next();
+			$qualifierId = $qualifier->getId();
+			
+			// Build up an array of what agents can do each function
+			$agentsForFunctions = array();
+			foreach ($role->getFunctions() as $functionId) {
+				$agentsForFunctions[$functionId->getIdString()] = array();
+				$agentIds = $authZ->getWhoCanDo($functionId, $qualifierId);
+				while ($agentIds->hasNext()) {
+					$agentIdString = $agentIds->next()->getIdString();
+					if (!in_array($agentIdString, $agentIdStrings))
+						$agentsForFunctions[$functionId->getIdString()][] = $agentIdString;
+				}
+			}
+			
+			// Loop through the agents that can do the first function, if they can
+			// do all the others, then they match the role and can be added to the master list.
+			foreach (current($agentsForFunctions) as $agentIdString) {
+				$hasAllFunctions = true;
+				foreach ($role->getFunctions() as $functionId) {
+					if (!in_array($agentIdString, $agentsForFunctions[$functionId->getIdString()])) {
+						$hasAllFunctions = false;
+						break;
+					}
+				}
+				
+				if ($hasAllFunctions)
+					$agentIdStrings[] = $agentIdString;
+			}
+		}
+		
+		$agentIdStrings = array_unique($agentIdStrings);
+		
+		$agentIds = array();
+		foreach ($agentIdStrings as $idString) {
+			$agentIds[] = $idMgr->getId($idString);
+		}
+		
+		return $agentIds;
 	}
 }
 

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.2 2007/11/27 22:06:46 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.3 2007/11/29 20:21:53 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RoleAction.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RoleAction.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.2 2007/11/27 22:06:46 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.3 2007/11/29 20:21:53 adamfranco Exp $
  */
 class choose_agentAction
 	extends RoleAction
@@ -95,18 +95,29 @@ class choose_agentAction
 		$agentMgr = Services::getService("Agent");
 		$idMgr = Services::getService("Id");
 		$harmoni = Harmoni::instance();
+		$roleMgr = SegueRoleManager::instance();
+		
+		$everyoneId = $idMgr->getId("edu.middlebury.agents.everyone");
+		$instituteId = $idMgr->getId("edu.middlebury.institute");
 		
 		$agents = array();
-		$agents[] = $agentMgr->getGroup($idMgr->getId("edu.middlebury.agents.everyone"));
-		$agents[] = $agentMgr->getGroup($idMgr->getId("edu.middlebury.institute"));
+		$agents[] = $agentMgr->getGroup($everyoneId);
+		$agents[] = $agentMgr->getGroup($instituteId);
 		
-		print "\n<table width='100%'>";
+		$agentIdsWithRoles = $roleMgr->getAgentsWithRoleAtLeast($roleMgr->getRole('reader'), $this->getSiteId(), true);
+		foreach ($agentIdsWithRoles as $id) {
+			if (!$id->isEqual($everyoneId) && !$id->isEqual($instituteId))
+				$agents[] = $agentMgr->getAgentOrGroup($id);
+		}
+		
+		print "\n<table width='100%' class='search_results' cellspacing='0'>";
+		$i = 0;
 		foreach ($agents as $agent) {
-			print "\n\t<tr>";
-			print "\n\t\t<td>";
+			print "\n\t<tr class='search_result_item'>";
+			print "\n\t\t<td class='color$i'>";
 			print "\n\t\t\t".$agent->getDisplayName();
 			print "\n\t\t</td>";
-			print "\n\t\t<td style='text-align: right;'>";
+			print "\n\t\t<td class='color$i' style='text-align: right;'>";
 			print "\n\t\t\t<a href='";
 			print $harmoni->request->quickURL('roles', 'modify', array(
 				'node' => RequestContext::value('node'),
@@ -115,6 +126,7 @@ class choose_agentAction
 			print "'><input type='button' value=\""._("Modify Roles >>")."\"/></a>";
 			print "\n\t\t</td>";
 			print "\n\t</tr>";
+			$i = intval(!$i);
 		}
 		print "\n</table>";
 		

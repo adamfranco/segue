@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modify.act.php,v 1.5 2007/11/28 17:27:39 adamfranco Exp $
+ * @version $Id: modify.act.php,v 1.6 2007/11/29 20:21:53 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.class.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/Visitors/PopulateRolesVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modify.act.php,v 1.5 2007/11/28 17:27:39 adamfranco Exp $
+ * @version $Id: modify.act.php,v 1.6 2007/11/29 20:21:53 adamfranco Exp $
  */
 class modifyAction
 	extends RoleAction
@@ -200,20 +200,20 @@ class modifyAction
 		$parent = $component->getParentComponent();
 		if ($parent) {
 			$parentQualifierId = $parent->getQualifierId();
-			$parentRole = $roleMgr->getAgentsRole($agentId, $parentQualifierId);
+			$parentRole = $roleMgr->getAgentsRole($agentId, $parentQualifierId, true);
 		}
 		
 		// Apply the role or clear it if it is less than the implicitly given role.
-// 		try {
+		try {
 			if (isset($parentRole) && $role->isLessThanOrEqualTo($parentRole)) {
 				$roleMgr->clearRoleAZs($agentId, $componentId);
 // 				printpre("Clearing duplicate role '".$role->getIdString()."' for ".$agentId." at ".$component->getDisplayName());
 			} else {
 				$role->apply($agentId, $componentId);
 			}
-// 		} catch (PermissionDeniedException $e) {
-// 		
-// 		}
+		} catch (PermissionDeniedException $e) {
+		
+		}
 		
 		return true;
 	}
