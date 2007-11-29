@@ -3,6 +3,13 @@ Name: Segue Release Notes
 (See the Segue change log for more details)
 
 
+v. 2.0.0-beta-5 (2007-11-29)
+----------------------------------------------------
+This release includes a new hierarchical authorization-setting user interface that
+allows for the designation of roles to any user or group anywhere in the site
+hierarchy. 
+
+
 v. 2.0.0-beta-4 (2007-11-13)
 ----------------------------------------------------
 This release fixes an installer bug that was preventing fresh installs from
