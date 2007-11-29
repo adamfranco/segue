@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.14 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.15 2007/11/29 21:01:42 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.14 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.15 2007/11/29 21:01:42 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -145,11 +145,11 @@ class SegueClassicWizard
 		$wizard = SimpleStepWizard::withDefaultLayout();
 		
 		$wizard->addStep("namedesc", $this->getTitleStep());
-		try {
-			$wizard->addStep("permissions", $this->getPermissionsStep());
-		} catch (PermissionDeniedException $e) {
-		
-		}
+// 		try {
+// 			$wizard->addStep("permissions", $this->getPermissionsStep());
+// 		} catch (PermissionDeniedException $e) {
+// 		
+// 		}
 		$wizard->addStep("display", $this->getDisplayOptionsStep());
 // 		$wizard->addStep("status", $this->getStatusStep());
 		
