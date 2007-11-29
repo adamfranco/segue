@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.3 2007/11/29 20:21:53 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.4 2007/11/29 20:25:33 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RoleAction.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RoleAction.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.3 2007/11/29 20:21:53 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.4 2007/11/29 20:25:33 adamfranco Exp $
  */
 class choose_agentAction
 	extends RoleAction
@@ -34,7 +34,12 @@ class choose_agentAction
 	 * @since 11/14/07
 	 */
 	public function isAuthorizedToExecute () {
-		return true;
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		return $authZ->isUserAuthorizedBelow(
+				$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
+				$this->getSiteId());
+			
 	}
 	
 	/**
