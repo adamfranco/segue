@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.81 2007/11/29 21:09:04 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.82 2007/11/29 21:09:39 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -15,6 +15,8 @@
 			This release includes a new hierarchical authorization-setting user
 			interface that allows for the designation of roles to any user or group
 			anywhere in the site hierarchy.
+			
+			This release uses Harmoni 0.13.4 and Polyphony 0.10.4.
 		</releaseNotes>
 		<new author='adam' date='2007-11-15' ref='1828372' reftype='fr'>
 			Permissions: New Hierarchical role-setting UI that can set roles for any

@@ -6,8 +6,9 @@ Name: Segue Release Notes
 v. 2.0.0-beta-5 (2007-11-29)
 ----------------------------------------------------
 This release includes a new hierarchical authorization-setting user interface that
-allows for the designation of roles to any user or group anywhere in the site
-hierarchy. 
+allows for the designation of roles to any user or group anywhere in the site hierarchy.
+
+This release uses Harmoni 0.13.4 and Polyphony 0.10.4.
 
 
 v. 2.0.0-beta-4 (2007-11-13)
