@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.7 2007/11/29 21:01:42 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.8 2007/11/30 20:23:20 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.7 2007/11/29 21:01:42 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.8 2007/11/30 20:23:20 adamfranco Exp $
  */
 class editSiteAction
 	extends SegueClassicWizard
@@ -137,6 +137,34 @@ class editSiteAction
 		$step->setContent(ob_get_clean());
 		
 		return $step;
+	}
+	
+	/**
+	 * Add the display titles options to the property
+	 * 
+	 * @param object WSelectList $property
+	 * @return void
+	 * @access public
+	 * @since 11/30/07
+	 */
+	public function addTitlesOptions (WSelectList $property) {
+		$property->addOption('true', _("show"));
+		$property->addOption('false', _("hide"));
+		$property->setValue('true');
+	}
+	
+	/**
+	 * Add the comments options to the property
+	 * 
+	 * @param object WSelectList $property
+	 * @return void
+	 * @access public
+	 * @since 11/30/07
+	 */
+	public function addCommentsOptions (WSelectList $property) {
+		$property->addOption('true', _("enable"));
+		$property->addOption('false', _("disable"));
+		$property->setValue('false');
 	}
 	
 	/**

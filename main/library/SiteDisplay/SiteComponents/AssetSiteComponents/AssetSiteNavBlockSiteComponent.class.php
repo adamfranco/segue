@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.9 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.10 2007/11/30 20:23:19 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteCompo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.9 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.10 2007/11/30 20:23:19 adamfranco Exp $
  */
 class AssetSiteNavBlockSiteComponent
 	extends AssetNavBlockSiteComponent
@@ -73,6 +73,38 @@ class AssetSiteNavBlockSiteComponent
 	function getVisibleDestinationsForPossibleAddition () {
 		$results = array();
 		return $results;
+	}
+	
+	/**
+	 * Answer the setting of 'showDisplayNames' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @return mixed true, false, or 'default'
+	 * @access public
+	 * @since 11/30/07
+	 */
+	function showDisplayNames () {
+		$showDisplayNames = parent::showDisplayNames();
+		if ($showDisplayNames == 'default')
+			return true;
+		else
+			return $showDisplayNames;
+	}
+	
+	/**
+	 * Answer the setting of 'commentsEnabled' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used.
+	 * 
+	 * @return mixed true, false, or 'default'
+	 * @access public
+	 * @since 11/30/07
+	 */
+	function commentsEnabled () {
+		$commentsEnabled = parent::commentsEnabled();
+		if ($commentsEnabled == 'default')
+			return false;
+		else
+			return $commentsEnabled;
 	}
 	
 	/*********************************************************

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.15 2007/11/29 21:01:42 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.16 2007/11/30 20:23:20 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.15 2007/11/29 21:01:42 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.16 2007/11/30 20:23:20 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -358,10 +358,7 @@ class SegueClassicWizard
 		ob_start();
 		
 		$property = $step->addComponent("show_titles", new WSelectList());
-		$property->addOption('default', _("use default"));
-		$property->addOption('true', _("override-show"));
-		$property->addOption('false', _("override-hide"));
-		$property->setValue('default');
+		$this->addTitlesOptions($property);
 		
 		if ($component) {
 			$val = $component->showDisplayNames();
@@ -387,10 +384,7 @@ class SegueClassicWizard
 		print "\n</p>";
 		
 		$property = $step->addComponent("enable_comments", new WSelectList());
-		$property->addOption('default', _("use default"));
-		$property->addOption('true', _("override-enable"));
-		$property->addOption('false', _("override-disable"));
-		$property->setValue('default');
+		$this->addCommentsOptions($property);
 		
 		if ($component) {
 			$val = $component->commentsEnabled();
@@ -415,6 +409,37 @@ class SegueClassicWizard
 		
 		return $step;
 	}
+	
+	/**
+	 * Add the display titles options to the property
+	 * 
+	 * @param object WSelectList $property
+	 * @return void
+	 * @access public
+	 * @since 11/30/07
+	 */
+	public function addTitlesOptions (WSelectList $property) {
+		$property->addOption('default', _("use default"));
+		$property->addOption('true', _("override-show"));
+		$property->addOption('false', _("override-hide"));
+		$property->setValue('default');
+	}
+	
+	/**
+	 * Add the comments options to the property
+	 * 
+	 * @param object WSelectList $property
+	 * @return void
+	 * @access public
+	 * @since 11/30/07
+	 */
+	public function addCommentsOptions (WSelectList $property) {
+		$property->addOption('default', _("use default"));
+		$property->addOption('true', _("override-enable"));
+		$property->addOption('false', _("override-disable"));
+		$property->setValue('default');
+	}
+	
 	
 	/**
 	 * save the display options step

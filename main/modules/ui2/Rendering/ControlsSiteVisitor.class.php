@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.11 2007/09/21 19:59:28 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.12 2007/11/30 20:23:20 adamfranco Exp $
  */ 
  
  require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.11 2007/09/21 19:59:28 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.12 2007/11/30 20:23:20 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	extends GeneralControlsSiteVisitor
@@ -219,7 +219,7 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 1/16/07
 	 */
-	function printShowDisplayNames ( $siteComponent ) {
+	function printShowDisplayNames ( $siteComponent, $isSite = false ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
 		print "<strong>"._('Display Block Titles: ')."</strong>";
 		
@@ -238,19 +238,29 @@ class ControlsSiteVisitor
 		print (($canEdit)?"":" disabled='disabled'");
 		print " name='".RequestContext::name('showDisplayNames')."'>";
 		
-		print "\n\t\t\t\t\t\t<option value='default'";
-		print (($siteComponent->showDisplayNames() === 'default')?" selected='selected'":"");
-		print ">"._(" use default");
-		print "</option>";
+		if (!$isSite) {
+			print "\n\t\t\t\t\t\t<option value='default'";
+			print (($siteComponent->showDisplayNames() === 'default')?" selected='selected'":"");
+			print ">"._(" use default");
+			print "</option>";
+		}
 		
 		print "\n\t\t\t\t\t\t<option value='true'";
 		print (($siteComponent->showDisplayNames() === true)?" selected='selected'":"");
-		print ">"._("override-yes");
+		print ">";
+		if ($isSite)
+			print _("yes");
+		else
+			print _("override-yes");
 		print "</option>";
 		
 		print "\n\t\t\t\t\t\t<option value='false'";
 		print (($siteComponent->showDisplayNames() === false)?" selected='selected'":"");
-		print ">"._("override-no");
+		print ">";
+		if ($isSite)
+			print _("no");
+		else
+			print _("override-no");
 		print "</option>";
 		
 		print "\n\t\t\t\t\t</select> ";
@@ -266,7 +276,7 @@ class ControlsSiteVisitor
 	 * @access public
 	 * @since 7/16/07
 	 */
-	function printCommentSettings ( $siteComponent ) {
+	function printCommentSettings ( $siteComponent, $isSite = false ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
 		print "<strong>"._('Enable Comments: ')."</strong>";
 		
@@ -280,24 +290,35 @@ class ControlsSiteVisitor
 		} else {
 			$canEdit = false;
 		}
-				
+		
+		
 		print "\n\t\t\t\t\t<select ";
 		print (($canEdit)?"":" disabled='disabled'");
 		print " name='".RequestContext::name('commentsEnabled')."'>";
-		
-		print "\n\t\t\t\t\t\t<option value='default'";
-		print (($siteComponent->commentsEnabled() === 'default')?" selected='selected'":"");
-		print ">"._(" use default");
-		print "</option>";
+				
+		if (!$isSite) {
+			print "\n\t\t\t\t\t\t<option value='default'";
+			print (($siteComponent->commentsEnabled() === 'default')?" selected='selected'":"");
+			print ">"._(" use default");
+			print "</option>";
+		}
 		
 		print "\n\t\t\t\t\t\t<option value='true'";
 		print (($siteComponent->commentsEnabled() === true)?" selected='selected'":"");
-		print ">"._("override-yes");
+		print ">";
+		if ($isSite)
+			print _("yes");
+		else
+			print _("override-yes");
 		print "</option>";
 		
 		print "\n\t\t\t\t\t\t<option value='false'";
 		print (($siteComponent->commentsEnabled() === false)?" selected='selected'":"");
-		print ">"._("override-no");
+		print ">";
+		if ($isSite)
+			print _("no");
+		else
+			print _("override-no");
 		print "</option>";
 		
 		print "\n\t\t\t\t\t</select> ";
@@ -585,10 +606,10 @@ END;
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
 		
-		$this->printShowDisplayNames($siteComponent);
+		$this->printShowDisplayNames($siteComponent, true);
 		$this->printDisplayName($siteComponent);		
 		$this->printDescription($siteComponent);
-		$this->printCommentSettings($siteComponent);
+		$this->printCommentSettings($siteComponent, true);
 		$this->printWidth($siteComponent);
 		return $this->controlsEnd($siteComponent);
 	}

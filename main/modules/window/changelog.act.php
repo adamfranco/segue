@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: changelog.act.php,v 1.1 2007/09/25 14:49:16 adamfranco Exp $
+ * @version $Id: changelog.act.php,v 1.2 2007/11/30 20:23:20 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -20,12 +20,23 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: changelog.act.php,v 1.1 2007/09/25 14:49:16 adamfranco Exp $
+ * @version $Id: changelog.act.php,v 1.2 2007/11/30 20:23:20 adamfranco Exp $
  */
 class changelogAction
 	extends Action
 {
-		
+	
+	/**
+	 * Authorization
+	 *
+	 * @return boolean
+	 * @access public
+	 * @since 11/30/07
+	 */
+	public function isAuthorizedToExecute () {
+		return true;
+	}
+			
 	/**
 	 * Execute this action.
 	 * 
