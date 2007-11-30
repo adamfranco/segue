@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.84 2007/11/30 20:48:31 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.85 2007/11/30 21:07:06 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,7 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
-		
+		<fix author='adam' date='2007-11-30'>
+			Permissions: Titles are now are consistantly tabbed using padding.
+		</fix>
 		<fix author='adam' date='2007-11-30' ref='1841252' reftype='bug'>
 			Permissions: AZs set for all of Segue are now not changable in the
 			permissions UI.

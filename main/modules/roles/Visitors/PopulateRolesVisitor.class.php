@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.9 2007/11/30 20:48:31 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.10 2007/11/30 21:07:06 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.9 2007/11/30 20:48:31 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.10 2007/11/30 21:07:06 adamfranco Exp $
  */
 class PopulateRolesVisitor
 	implements SiteVisitor
@@ -106,7 +106,7 @@ class PopulateRolesVisitor
 		if ($isRoot) {
 			$this->property->addField(
 				$qualifierId->getIdString(), 
-				$siteComponent->getDisplayName(), 
+				strip_tags($siteComponent->getDisplayName()), 
 				$role->getIdString(),
 				">=");
 		} else {
@@ -114,7 +114,7 @@ class PopulateRolesVisitor
 			$this->property->addChildField(
 				$parentQualifierId->getIdString(), 
 				$qualifierId->getIdString(), 
-				$siteComponent->getDisplayName(), 
+				strip_tags($siteComponent->getDisplayName()), 
 				$role->getIdString(),
 				">=");
 		}
