@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.83 2007/11/30 20:23:19 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.84 2007/11/30 20:48:31 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,15 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		
+		<fix author='adam' date='2007-11-30' ref='1841252' reftype='bug'>
+			Permissions: AZs set for all of Segue are now not changable in the
+			permissions UI.
+		</fix>
+		<fix author='adam' date='2007-11-30' ref='1831274' reftype='bug'>
+			'Show Titles' and 'Enable Comments' settings are now only 'yes' or 'no'
+			at the root (site) level, so the default setting is clear.
+		</fix>
 		<fix author='adam' date='2007-11-30'>
 			Fixed an error in the changelog that was preventing it from displaying.
 		</fix>

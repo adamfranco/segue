@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.8 2007/11/28 17:27:39 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.9 2007/11/30 20:48:31 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.8 2007/11/28 17:27:39 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.9 2007/11/30 20:48:31 adamfranco Exp $
  */
 class PopulateRolesVisitor
 	implements SiteVisitor
@@ -61,6 +61,9 @@ class PopulateRolesVisitor
 		
 		$this->agent = $agent;
 		$this->agentId = $agent->getId();
+		
+		$this->siteImplicitRole = new NoAccess_SegueRole;
+		$this->siteImplicitRoleMessage = '';
 	}
 	
 	/**
@@ -151,6 +154,14 @@ class PopulateRolesVisitor
 			}
 		}
 		
+		// Disable options that are precluded by implicit authorizations
+		// coming from above the site in the AuthZ hierarchy.
+		foreach ($roleMgr->getRoles() as $role) {
+			if ($role->isLessThan($this->siteImplicitRole)) {
+				$this->property->makeDisabled($qualifierId->getIdString(), $role->getIdString(), $this->siteImplicitRoleMessage);
+			}
+		}
+		
 		// Disable options where modify_authorization is not allowed.
 		if (!$authZ->isUserAuthorized(
 			$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
@@ -191,6 +202,18 @@ class PopulateRolesVisitor
 	 * @since 8/31/07
 	 */
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
+		// If there is an implicit role coming from above the site in the authorization
+		// hierarchy, make lesser roles disabled.
+		$roleMgr = SegueRoleManager::instance();
+		$implicitRole = $roleMgr->getAgentsImplicitRole($this->agentId, $siteComponent->getQualifierId(), true);
+		if ($implicitRole->isGreaterThan($roleMgr->getRole('no_access'))) {
+			$this->siteImplicitRole = $implicitRole;
+			$message = _("You cannot remove the '%1' role for '%2' because it was set for all of Segue.");
+			$message = str_replace("%1", $implicitRole->getDisplayName(), $message);
+			$message = str_replace("%2", $this->agent->getDisplayName(), $message);
+			$this->siteImplicitRoleMessage = $message;
+		}
+		
 		$this->addQualifierForSiteComponent($siteComponent, true);
 		
 		$siteComponent->getOrganizer()->acceptVisitor($this);
