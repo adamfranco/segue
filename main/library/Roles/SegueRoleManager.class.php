@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.7 2007/11/29 20:21:52 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.8 2007/12/03 22:00:14 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NoAccess_SegueRole.class.php");
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Custom_SegueRole.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRoleManager.class.php,v 1.7 2007/11/29 20:21:52 adamfranco Exp $
+ * @version $Id: SegueRoleManager.class.php,v 1.8 2007/12/03 22:00:14 adamfranco Exp $
  */
 class SegueRoleManager
 	
@@ -75,10 +75,10 @@ class SegueRoleManager
 	 * Constructor
 	 * 
 	 * @return void
-	 * @access public
+	 * @access private
 	 * @since 11/5/07
 	 */
-	public function __construct () {
+	private function __construct () {
 		$this->roles[] = new NoAccess_SegueRole;
 		$this->roles[] = new Reader_SegueRole;
 		$this->roles[] = new Commenter_SegueRole;

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.32 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.33 2007/12/03 22:00:15 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.32 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.33 2007/12/03 22:00:15 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -113,9 +113,9 @@ class EduMiddleburyTextBlockPlugin
  			if ($this->hasContent()) {
 				$abstractLength = intval($this->getRawDescription());
 				if ($abstractLength) {
-					print "\n".$this->trimHTML($this->getContent(), $abstractLength);
+					print "\n".$this->trimHTML($this->parseWikiText($this->getContent()), $abstractLength);
 				} else {
-					print "\n".$this->getContent();
+					print "\n".$this->parseWikiText($this->getContent());
 				}
 			} else {
 				print "\n<div class='plugin_empty'>";

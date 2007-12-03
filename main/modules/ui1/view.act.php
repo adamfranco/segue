@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.16 2007/11/08 22:07:24 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.17 2007/12/03 22:00:15 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.16 2007/11/08 22:07:24 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.17 2007/12/03 22:00:15 adamfranco Exp $
  */
 class viewAction
 	extends displayAction 
@@ -260,7 +260,10 @@ class viewAction
 		if (RequestContext::value("site")) {
 			$slotManager = SlotManager::instance();
 			$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
-			$nodeId = $slot->getSiteId()->getIdString();
+			if ($slot->siteExists())
+				$nodeId = $slot->getSiteId()->getIdString();
+			else
+				throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
 		} else if (RequestContext::value("node")) {
 			$nodeId = RequestContext::value("node");
 		}

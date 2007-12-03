@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.85 2007/11/30 21:07:06 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.86 2007/12/03 22:00:12 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2007-12-03' ref='1799957' reftype='fr'>
+			Wiki-Linking: New Wiki-Linking support to use double-square-brackets
+			links ala MediaWiki for link between parts of a site or between sites.
+		</new>
 		<fix author='adam' date='2007-11-30'>
 			Permissions: Titles are now are consistantly tabbed using padding.
 		</fix>

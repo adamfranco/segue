@@ -6,12 +6,13 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.2 2007/10/25 21:06:24 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.3 2007/12/03 22:00:13 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
+require_once(MYDIR."/main/library/Wiki/WikiResolver.class.php");
 
 require_once(dirname(__FILE__)."/SeguePluginsDriverAPI.interface.php");
 require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
@@ -25,7 +26,7 @@ require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.2 2007/10/25 21:06:24 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.3 2007/12/03 22:00:13 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -301,6 +302,31 @@ abstract class SeguePluginsDriver
 		$htmlStringObj = HtmlString::withValue($htmlString);
  		$htmlStringObj->stripTagsAndTrim($maxWords, $addElipses);
  		return $htmlStringObj->asString();
+	}
+	
+	/**
+	 * Parse and replace any wiki-text with HTML markup.
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 12/3/07
+	 */
+	final public function parseWikiText ($text) {
+		$wikiResolver = WikiResolver::instance();
+		
+		$wikiResolver->setViewAction($this->_baseUrl->getModule(), $this->_baseUrl->getAction());
+		
+		// Get the site Id (Note: this creates a circular dependancy between
+		// the plugins package and the SiteDisplay Package.
+		$idManager = Services::getService("Id");
+		$nodeId = $this->_asset->getId();
+		$director = new AssetSiteDirector($this->_asset->getRepository());	
+		$siteComponent = $director->getSiteComponentById($nodeId->getIdString());
+		
+		$text = $wikiResolver->parseText($text, $siteComponent);
+		
+		return $text;
 	}
 
 	/**

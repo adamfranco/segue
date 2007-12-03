@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAPI.interface.php,v 1.1 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SeguePluginsAPI.interface.php,v 1.2 2007/12/03 22:00:13 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAPI.interface.php,v 1.1 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SeguePluginsAPI.interface.php,v 1.2 2007/12/03 22:00:13 adamfranco Exp $
  */
 interface SeguePluginsAPI {
 		
@@ -437,7 +437,17 @@ interface SeguePluginsAPI {
 	 * @since 1/26/06
 	 */
 	public function stripTagsAndTrim ($htmlString, $maxWords, $addElipses = true);
-
+	
+	/**
+	 * Parse and replace any wiki-text with HTML markup.
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 12/3/07
+	 */
+	public function parseWikiText ($text);
+	
 	/**
 	 * Answer TRUE if the current user is authorized to modify this plugin instance.
 	 * 
