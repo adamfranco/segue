@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.33 2007/12/03 22:00:15 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.34 2007/12/04 18:51:19 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.33 2007/12/03 22:00:15 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.34 2007/12/04 18:51:19 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -219,6 +219,8 @@ class EduMiddleburyTextBlockPlugin
  		// replace with editor code
  		$this->printEditor();
 	//	print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
+	
+		print $this->getWikiHelp();
 
 		print "\n\t<br/>";
 		if (is_null($this->workingAbstractLength))
@@ -387,6 +389,7 @@ class EduMiddleburyTextBlockPlugin
  		$wrapper = new WComponentCollection;
  		$harmoni = Harmoni::instance();
  		ob_start();
+ 		 		
  		
  		$property = $wrapper->addComponent('content', HtmlTextArea::withRowsAndColumns(20, 80));
  		$property->setValue($this->getContent());
@@ -403,6 +406,8 @@ class EduMiddleburyTextBlockPlugin
  		$property->setValue($this->getRawDescription());
  		
  		print "[[content]]";
+ 		
+ 		print $this->getWikiHelp();
  		
  		// Image button
  		print "<br/>";
@@ -478,6 +483,25 @@ class EduMiddleburyTextBlockPlugin
 	 		return true;
 	 	else
 	 		return false;
+ 	}
+ 	
+ 	/**
+ 	 * Answer a block of HTML with help about WikiLinking
+ 	 *
+ 	 * @return string
+ 	 * @access private
+ 	 * @since 12/4/07
+ 	 */
+ 	private function getWikiHelp () {
+ 		ob_start();
+ 		print "\n<div class='help_text'>";
+ 		$message = _('<strong>Wiki linking (%1) :</strong> To link to a page on your site whose title is "Introduction" use &#91;&#91;Introduction&#93;&#93;. If no content with the title "Introduction" exists a link to create such content will be made. To see all titles used in this site, see: %2');
+ 		$message = str_replace('%1', Help::link('wiki linking'), $message);
+//  		$message = str_replace('%2', SiteMap::link($this->getId()), $message);
+		$message = str_replace('%2', 'Site Map', $message);
+ 		print $message;
+ 		print "\n</div>";
+ 		return ob_get_clean();
  	}
 }
 
