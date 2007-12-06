@@ -6,11 +6,13 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.4 2007/10/10 22:58:46 adamfranco Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.5 2007/12/06 19:05:30 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueCourseSection.class.php");
 require_once(dirname(__FILE__)."/SegueCourseGroup.class.php");
+require_once(HARMONI."oki2/agent/AgentSearches/ClassTokenSearch.class.php");
+
 
 /**
  * This Course Manager is a very simplified system used by Segue 2 to fetch the 
@@ -26,7 +28,7 @@ require_once(dirname(__FILE__)."/SegueCourseGroup.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.4 2007/10/10 22:58:46 adamfranco Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.5 2007/12/06 19:05:30 adamfranco Exp $
  */
 class SegueCourseManager {
 
