@@ -16,12 +16,14 @@
 -- Table structure for table `segue_slot`
 -- 
 
-CREATE TABLE segue_slot (
-  shortname varchar(50) collate utf8_bin NOT NULL,
-  site_id varchar(50) collate utf8_bin NOT NULL,
+CREATE TABLE `segue_slot` (
+  `shortname` varchar(50) collate utf8_bin NOT NULL,
+  `site_id` varchar(50) collate utf8_bin NOT NULL,
   `type` enum('personal','course','custom') collate utf8_bin NOT NULL default 'personal',
-  PRIMARY KEY  (shortname),
-  KEY site_id (site_id)
+  `location_category` enum('main','community') collate utf8_bin NOT NULL,
+  PRIMARY KEY  (`shortname`),
+  KEY `site_id` (`site_id`),
+  KEY `location_category` (`location_category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------

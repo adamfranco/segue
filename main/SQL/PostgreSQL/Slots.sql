@@ -20,10 +20,12 @@ CREATE TABLE segue_slot (
   shortname varchar(50)NOT NULL,
   site_id varchar(50) default NULL,
   "type" varchar(10) NOT NULL default 'personal',
+  location_category NOT NULL,
   PRIMARY KEY  (shortname)
 );
 
 CREATE INDEX segue_slot_site_id_index ON segue_slot (site_id);
+CREATE INDEX segue_slot_location_category_index ON segue_slot (location_category);
 -- --------------------------------------------------------
 
 -- 

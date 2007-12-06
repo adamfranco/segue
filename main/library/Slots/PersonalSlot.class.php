@@ -6,14 +6,15 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.5 2007/10/25 17:44:12 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.6 2007/12/06 19:00:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.abstract.php");
 
 /**
  * A single personal slot appears by default for all users that are members of 
- * the groups designated.
+ * the groups designated. Additional personal slots can be created, but are no different
+ * from custom slots.
  * 
  * @since 8/14/07
  * @package segue.slots
@@ -21,7 +22,7 @@ require_once(dirname(__FILE__)."/Slot.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.5 2007/10/25 17:44:12 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.6 2007/12/06 19:00:43 adamfranco Exp $
  */
 class PersonalSlot
 	extends Slot
@@ -35,7 +36,10 @@ class PersonalSlot
 	public static $validGroups = array();
 	
 	/**
-	 * Answer the type of slot for this instance
+	 * Answer the type of slot for this instance. The type of slot corresponds to
+	 * how it is populated/originated. Some slots are originated programatically,
+	 * others are added manually. The type should not be used for classifying where
+	 * as site should be displayed. Use the location category for that.
 	 * 
 	 * @return string
 	 * @access public
@@ -43,6 +47,17 @@ class PersonalSlot
 	 */
 	public function getType () {
 		return "personal";
+	}
+	
+	/**
+	 * Answer the default category for the slot.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 12/6/07
+	 */
+	public function getDefaultLocationCategory () {
+		return 'community';
 	}
 	
 	/**

@@ -6,13 +6,13 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CustomSlot.class.php,v 1.1 2007/08/22 20:08:51 adamfranco Exp $
+ * @version $Id: CustomSlot.class.php,v 1.2 2007/12/06 19:00:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.abstract.php");
 
 /**
- * <##>
+ * Custom slots are those that are defined manually rather than programatically.
  * 
  * @since 8/14/07
  * @package segue.slots
@@ -20,14 +20,17 @@ require_once(dirname(__FILE__)."/Slot.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CustomSlot.class.php,v 1.1 2007/08/22 20:08:51 adamfranco Exp $
+ * @version $Id: CustomSlot.class.php,v 1.2 2007/12/06 19:00:43 adamfranco Exp $
  */
 class CustomSlot
 	extends Slot
 {
 
 	/**
-	 * Answer the type of slot for this instance
+	 * Answer the type of slot for this instance. The type of slot corresponds to
+	 * how it is populated/originated. Some slots are originated programatically,
+	 * others are added manually. The type should not be used for classifying where
+	 * as site should be displayed. Use the location category for that.
 	 * 
 	 * @return string
 	 * @access public
@@ -35,6 +38,17 @@ class CustomSlot
 	 */
 	public function getType () {
 		return "custom";
+	}
+	
+	/**
+	 * Answer the default category for the slot.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 12/6/07
+	 */
+	public function getDefaultLocationCategory () {
+		return 'main';
 	}
 		
 	/**

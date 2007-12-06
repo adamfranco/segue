@@ -6,12 +6,13 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.5 2007/10/10 22:58:47 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.6 2007/12/06 19:00:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
 require_once(dirname(__FILE__)."/PersonalSlot.class.php");
 require_once(dirname(__FILE__)."/CourseSlot.class.php");
+require_once(dirname(__FILE__)."/AllSlotsIterator.class.php");
 
 
 /**
@@ -26,7 +27,7 @@ require_once(dirname(__FILE__)."/CourseSlot.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.5 2007/10/10 22:58:47 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.6 2007/12/06 19:00:43 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -127,13 +128,24 @@ class SlotManager {
 	 * @access public
 	 * @since 8/16/07
 	 */
-	public function getAllSlots () {
+	public function getSlots () {
 		$slots = array();
 		foreach ($this->slotTypes as $type => $classname) {
 			$slots = array_merge($slots, $this->getSlotsByType($type));
 		}
 		
 		return $slots;
+	}
+	
+	/**
+	 * Answer an iterator of all internally defined slots owned by any agent.
+	 * 
+	 * @return object Iterator
+	 * @access public
+	 * @since 12/4/07
+	 */
+	public function getAllSlots () {
+		return new AllSlotsIterator;
 	}
 	
 	/**
@@ -146,7 +158,7 @@ class SlotManager {
 	 */
 	public function getSlotByShortname ($shortname) {
 		if (!isset($this->slots[$shortname])) {
-			$this->getAllSlots();
+			$this->getSlots();
 			
 			if (!isset($this->slots[$shortname])) {
 				$this->loadSlotsFromDB(array($shortname));
@@ -184,6 +196,7 @@ class SlotManager {
 		$query->addColumn('segue_slot.shortname', 'shortname');
 		$query->addColumn('segue_slot.site_id', 'site_id');
 		$query->addColumn('segue_slot.type', 'type');
+		$query->addColumn('segue_slot.location_category', 'location_category');
 		$query->addColumn('all_owners.owner_id', 'owner_id');
 		$query->addColumn('all_owners.removed', 'removed');
 		
@@ -213,7 +226,7 @@ class SlotManager {
 	 * Load a number of slots from the database
 	 * 
 	 * @param array $slotShortnames
-	 * @return object Slot
+	 * @return array of slot objects
 	 * @access public
 	 * @since 8/16/07
 	 */
@@ -225,6 +238,7 @@ class SlotManager {
 				$toLoad[] = $shortname;
 		}
 		
+		$slotsToReturn = array();
 		if (count($toLoad)) {
 		
 			// Look up the slot in the database;
@@ -235,6 +249,7 @@ class SlotManager {
 			$query->addColumn('segue_slot.shortname', 'shortname');
 			$query->addColumn('segue_slot.site_id', 'site_id');
 			$query->addColumn('segue_slot.type', 'type');
+			$query->addColumn('segue_slot.location_category', 'location_category');
 			$query->addColumn('all_owners.owner_id', 'owner_id');
 			$query->addColumn('all_owners.removed', 'removed');
 			
@@ -250,8 +265,41 @@ class SlotManager {
 			foreach ($slots as $slot) {
 				$slot->mergeWithExternal();
 				$this->slots[$slot->getShortname()] = $slot;
+				$slotsToReturn[] = $slot;
 			}
 		}
+		
+		return $slotsToReturn;
+	}
+	
+	/**
+	 * Delete a slot
+	 * 
+	 * @param string $shortname
+	 * @return void
+	 * @access public
+	 * @since 12/5/07
+	 */
+	public function deleteSlot ($shortname) {
+		$slot = $this->getSlot($shortname);
+		if ($slot->siteExists())
+			throw new PermissionDeniedException("Cannot delete a slot for an existing site.");
+		
+		$query = new DeleteQuery;
+		$query->setTable('segue_slot');
+		$query->addWhereEqual('shortname', $shortname);
+		
+		$dbc = Services::getService('DBHandler');
+		$result = $dbc->query($query, IMPORTER_CONNECTION);
+		
+		$query = new DeleteQuery;
+		$query->setTable('segue_slot_owner');
+		$query->addWhereEqual('shortname', $shortname);
+		
+		$dbc = Services::getService('DBHandler');
+		$result = $dbc->query($query, IMPORTER_CONNECTION);
+		
+		unset($this->slots[$shortname]);
 	}
 	
 	/**
@@ -270,6 +318,7 @@ class SlotManager {
 		$query->addColumn('segue_slot.shortname', 'shortname');
 		$query->addColumn('segue_slot.site_id', 'site_id');
 		$query->addColumn('segue_slot.type', 'type');
+		$query->addColumn('segue_slot.location_category', 'location_category');
 		$query->addColumn('all_owners.owner_id', 'owner_id');
 		$query->addColumn('all_owners.removed', 'removed');
 		
@@ -314,6 +363,10 @@ class SlotManager {
 				// Add site ids from DB if it exists
 				if ($result->field('site_id') !== '')
 					$slot->populateSiteId($result->field('site_id'));
+					
+				// Add location category from DB if it exists
+				if ($result->field('location_category') !== '')
+					$slot->populateLocationCategory($result->field('location_category'));
 				
 				
 				while($result->hasMoreRows() && $slot->getShortname() == $result->field('shortname')) {

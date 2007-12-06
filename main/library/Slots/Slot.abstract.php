@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.4 2007/08/23 19:45:46 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.5 2007/12/06 19:00:43 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.4 2007/08/23 19:45:46 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.5 2007/12/06 19:00:43 adamfranco Exp $
  */
 abstract class Slot {
 	
@@ -44,6 +44,8 @@ abstract class Slot {
 	 * @since 8/14/07
 	 */
 	const personal = "personal";
+	
+	
 	
 /*********************************************************
  * Static Methods
@@ -99,6 +101,20 @@ abstract class Slot {
 	 */
 	private $removedOwners = array();
 	
+	/**
+	 * @var array $allowedCategories;  
+	 * @access private
+	 * @since 12/6/07
+	 */
+	private $allowedCategories;
+	
+	/**
+	 * @var string $locationCategory; The category for where the slot should be displayed 
+	 * @access private
+	 * @since 12/6/07
+	 */
+	private $locationCategory;
+	
 /*********************************************************
  * Instance Methods
  *********************************************************/
@@ -116,10 +132,15 @@ abstract class Slot {
 		$this->owners = array();
 		$this->removedOwners = array();
 		$this->isInDB = $fromDB;
+		
+		$this->allowedCategories = array('main', 'community');
 	}
 	
 	/**
-	 * Answer the type of slot for this instance
+	 * Answer the type of slot for this instance. The type of slot corresponds to
+	 * how it is populated/originated. Some slots are originated programatically,
+	 * others are added manually. The type should not be used for classifying where
+	 * as site should be displayed. Use the location category for that.
 	 * 
 	 * @return string
 	 * @access public
@@ -490,6 +511,71 @@ abstract class Slot {
 	}
 	
 	/**
+	 * Answer the display location for the slot. This can be one of the allowed categories.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 12/6/07
+	 */
+	public function getLocationCategory () {
+		if (isset($this->locationCategory))
+			return $this->locationCategory;
+		else
+			return $this->getDefaultLocationCategory();
+	}
+	
+	/**
+	 * Set the display location for the slot. This can be one of the allowed categories.
+	 * 
+	 * @param string $locationCategory
+	 * @return void
+	 * @access public
+	 * @since 12/6/07
+	 */
+	public function setLocationCategory ($locationCategory) {
+		if (!in_array($locationCategory, $this->allowedCategories))
+			throw new Exception("Invalid category, '$locationCategory'.");
+		
+		$this->locationCategory = $locationCategory;
+		
+		$this->recordInDB();
+			
+		$query = new UpdateQuery;
+		$query->setTable('segue_slot');
+		$query->addWhereEqual('shortname', $this->getShortname());
+		$query->addValue('location_category', $this->locationCategory);
+		
+		$dbc = Services::getService('DBHandler');
+		$dbc->query($query, IMPORTER_CONNECTION);
+	}
+	
+	/**
+	 * Add the location category to this object, does not update the database. 
+	 * This method is internal to this package and should not be used
+	 * by clients.
+	 * 
+	 * @param string $locationCategory
+	 * @return void
+	 * @access public
+	 * @since 12/6/07
+	 */
+	public function populateLocationCategory ( $locationCategory ) {
+		if (!in_array($locationCategory, $this->allowedCategories))
+			throw new Exception("Invalid category, '$locationCategory'.");
+		
+		$this->locationCategory = $locationCategory;
+	}
+	
+	/**
+	 * Answer the default category for the slot.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 12/6/07
+	 */
+	abstract public function getDefaultLocationCategory ();
+	
+	/**
 	 * Record an entry for the slot in the local database
 	 * 
 	 * @return void
@@ -505,6 +591,7 @@ abstract class Slot {
 			if ($this->getSiteId())
 				$query->addValue('site_id', $this->getSiteId()->getIdString());
 			$query->addValue('type', $this->getType());
+			$query->addValue('location_category', $this->getLocationCategory());
 			
 			$dbc = Services::getService('DBHandler');
 			$dbc->query($query, IMPORTER_CONNECTION);
