@@ -1,0 +1,175 @@
+<?php
+/**
+ * @since 12/4/07
+ * @package segue.slots
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: browse.act.php,v 1.1 2007/12/06 19:06:24 adamfranco Exp $
+ */ 
+
+require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(POLYPHONY."/main/library/ResultPrinter/TableIteratorResultPrinter.class.php");
+
+/**
+ * An action for browsing slots.
+ * 
+ * @since 12/4/07
+ * @package segue.slots
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: browse.act.php,v 1.1 2007/12/06 19:06:24 adamfranco Exp $
+ */
+class browseAction
+	extends MainWindowAction
+{
+		
+	/**
+	 * Check Authorizations
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 12/04/07
+	 */
+	function isAuthorizedToExecute () {
+		// Check for authorization
+ 		$authZManager = Services::getService("AuthZ");
+ 		$idManager = Services::getService("IdManager");
+ 		return $authZManager->isUserAuthorized(
+ 					$idManager->getId("edu.middlebury.authorization.add_children"),
+ 					$idManager->getId("edu.middlebury.authorization.root"));
+	}
+	
+	/**
+	 * Return the heading text for this action, or an empty string.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 12/04/07
+	 */
+	function getHeadingText () {
+		return _("Browse Slots");
+	}
+	
+	/**
+	 * Build the content of this action
+	 * 
+	 * @return object
+	 * @access public
+	 * @since 12/4/07
+	 */
+	public function buildContent () {
+		$actionRows = $this->getActionRows();
+		
+		$actionRows->add($this->getSearchForm());
+		$actionRows->add($this->getSlotList());
+		
+		return $actionRows;
+	}
+	
+	/**
+	 * Answer a component containing a search form
+	 *
+	 * @return object Component
+	 * @access private
+	 * @since 12/4/07
+	 */
+	private function getSearchForm () {
+		ob_start();
+		
+		
+		return new Block(ob_get_clean(), STANDARD_BLOCK);
+	}
+	
+	/**
+	 * Answer a component containing either all slots or the search results.
+	 *
+	 * @return object Component
+	 * @access private
+	 * @since 12/4/07
+	 */
+	private function getSlotList () {
+		$slotMgr = SlotManager::instance();
+		if ($this->getSearchTerm())
+			$slots = $this->getSlotsBySearch($this->getSearchTerm());
+		else
+			$slots = $slotMgr->getAllSlots();
+		
+		$headRow = "
+	<tr>
+		<th>Slot Name</th>
+		<th>Type</th>
+		<th>Category</th>
+		<th>Site Exists</th>
+		<th>Owners</th>
+		<th>Actions</th>
+	</tr>";
+		$printer = new TableIteratorResultPrinter($slots, $headRow, 50, array($this, 'getSlotComponent'));
+		return new Block($printer->getTable(), STANDARD_BLOCK);
+	}
+	
+	/**
+	 * Answer the search term.
+	 * 
+	 * @return string
+	 * @access private
+	 * @since 12/4/07
+	 */
+	private function getSearchTerm () {
+		return null;
+	}
+	
+	/**
+	 * Print out a slot
+	 * 
+	 * @param object $slot
+	 * @return object Component
+	 * @access public
+	 * @since 12/4/07
+	 */
+	public function getSlotComponent (Slot $slot) {
+		$harmoni = Harmoni::instance();
+		ob_start();
+		print "\n\t<tr>";
+		print "\n\t\t<td>";
+		if ($slot->siteExists()) {
+			print "\n\t\t\t<a href='";
+			print $harmoni->request->quickURL('ui1', 'view', array('site' => $slot->getShortname()));
+			print "' target='_blank'>".$slot->getShortname()."</a>";
+		} else {
+			print $slot->getShortname();
+		}
+		print "</td>";
+		print "\n\t\t<td>".$slot->getType()."</td>";
+		print "\n\t\t<td>".$slot->getLocationCategory()."</td>";
+		print "\n\t\t<td style='text-align: center'>".(($slot->siteExists())?"yes":'')."</td>";
+		print "\n\t\t<td>";
+		$owners = $slot->getOwners();
+		$ownerStrings = array();
+		$agentMgr = Services::getService('Agent');
+		foreach ($owners as $ownerId)
+			$ownerStrings[] = $agentMgr->getAgent($ownerId)->getDisplayName();
+			
+		print implode(", ", $ownerStrings);
+		print "</td>";
+		print "\n\t\t<td>";
+		print "\n\t\t\t<a href='";
+		print $harmoni->request->quickURL('slot', 'edit', array('slot' => $slot->getShortname()));
+		print "'>"._("edit")."</a>";
+		if (!$slot->siteExists()) {
+			print "\n\t\t\t| <a href='";
+			print $harmoni->request->quickURL('slot', 'delete', array('slot' => $slot->getShortname()));
+			print "' onclick=\"";
+			print "return confirm('"._('Are you sure you want to delete this slot?')."');";
+			print "\">"._("delete")."</a>";
+		}
+		print "\n\t\t</td>";
+		print "\n\t</tr>";
+		return ob_get_clean();
+	}
+}
+
+?>

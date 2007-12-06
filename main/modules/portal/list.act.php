@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.13 2007/09/14 20:41:23 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.14 2007/12/06 19:05:45 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.13 2007/09/14 20:41:23 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.14 2007/12/06 19:05:45 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -207,7 +207,7 @@ class listAction
 		 * Other Slots owned by the user
 		 *********************************************************/
 		$actionRows->add(new Heading(_("Other Sites"), 2));
-		foreach ($slotMgr->getAllSlots() as $slot) {
+		foreach ($slotMgr->getSlots() as $slot) {
 			if (!in_array($slot->getShortName(), self::$slotsPrinted)) {
 				self::$slotsPrinted[] = $slot->getShortname();
 				$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);

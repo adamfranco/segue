@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.3 2007/09/04 15:07:42 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.4 2007/12/06 19:02:59 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.3 2007/09/04 15:07:42 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.4 2007/12/06 19:02:59 adamfranco Exp $
  */
 class mainAction 
 	extends MainWindowAction
@@ -128,6 +128,16 @@ class mainAction
 				"export")."'>";
 			print _("Export");
 			print "</a></li>";
+			
+			if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.modify"),
+				$idManager->getId("edu.middlebury.authorization.root"))) {
+				print "\n\t<li><a href='".$harmoni->request->quickURL("updates", 
+					"list")."'>";
+				print _("Segue Updates");
+				print "</a></li>";
+			}
+			
 			print "\n</ul>";
 			
 			$introText = new Block(ob_get_contents(), 2);
