@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.34 2007/12/04 18:51:19 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.35 2007/12/06 21:57:14 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.34 2007/12/04 18:51:19 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.35 2007/12/06 21:57:14 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -115,7 +115,7 @@ class EduMiddleburyTextBlockPlugin
 				if ($abstractLength) {
 					print "\n".$this->trimHTML($this->parseWikiText($this->getContent()), $abstractLength);
 				} else {
-					print "\n".$this->parseWikiText($this->getContent());
+					print "\n".$this->cleanHTML($this->parseWikiText($this->getContent()));
 				}
 			} else {
 				print "\n<div class='plugin_empty'>";
@@ -160,7 +160,7 @@ class EduMiddleburyTextBlockPlugin
 				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
  			}
  			if ($this->hasContent()) {
-		 		print "\n".$this->getContent();
+		 		print "\n".$this->cleanHTML($this->parseWikiText($this->getContent()));
 	 		} else {
 				print "\n<div class='plugin_empty'>";
 				print _("No text has been added yet. ");
@@ -218,7 +218,6 @@ class EduMiddleburyTextBlockPlugin
 
  		// replace with editor code
  		$this->printEditor();
-	//	print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' cols='50'>".$this->getContent()."</textarea>";
 	
 		print $this->getWikiHelp();
 
@@ -267,7 +266,7 @@ class EduMiddleburyTextBlockPlugin
  	function printTextField () {
  		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' style='width: 100%;'>";
  		if (is_null($this->workingContent))
-	 		print $this->getContent();
+	 		print $this->cleanHTML($this->getContent());
 	 	else
 	 		print $this->workingContent;
  		print "</textarea>";
@@ -346,7 +345,7 @@ class EduMiddleburyTextBlockPlugin
 
 		
 		if (is_null($this->workingContent))
-	 		$oFCKeditor->Value = $this->getContent();
+	 		$oFCKeditor->Value = $this->cleanHTML($this->getContent());
 	 	else
 	 		$oFCKeditor->Value = $this->workingContent;
 	 	
@@ -392,7 +391,7 @@ class EduMiddleburyTextBlockPlugin
  		 		
  		
  		$property = $wrapper->addComponent('content', HtmlTextArea::withRowsAndColumns(20, 80));
- 		$property->setValue($this->getContent());
+ 		$property->setValue($this->cleanHTML($this->getContent()));
  		$property->chooseEditor('fck');
  		
  		$fckTextArea = $property->getEditor('fck');

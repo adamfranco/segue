@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.4 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.5 2007/12/06 21:57:14 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.4 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: EduMiddleburyAssignmentPlugin.class.php,v 1.5 2007/12/06 21:57:14 adamfranco Exp $
  */
 class EduMiddleburyAssignmentPlugin
 	extends SegueAjaxPlugin
@@ -48,9 +48,7 @@ class EduMiddleburyAssignmentPlugin
  	 */
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) {
-			$title = HtmlString::withValue($this->getFieldValue('title'));
- 			$title->clean();
- 			$this->setTitle($title->asString());
+ 			$this->setTitle($this->cleanHTML($this->getFieldValue('title')));
 
   			$this->updateDataArray();
   			$this->updateDataRecords();
@@ -101,7 +99,7 @@ class EduMiddleburyAssignmentPlugin
 				$assignment = $this->data['SegueAssignment'][0];
 			
 	 			print "\n\t<input type='text' name='"
-		 			.$this->getFieldName('title')."' value='".$this->getTitle()
+		 			.$this->getFieldName('title')."' value='".$this->cleanHTML($this->getTitle())
  					."' size='50'/>";
 
 				// are there reading assignments if so put a header
@@ -123,14 +121,14 @@ class EduMiddleburyAssignmentPlugin
 
 				// write each question with the editable textarea answer
 				foreach ($assignment['SegueAssignmentQuestion'] as $j => $quest) {
-					print "\n".$quest."<br/>";
+					print "\n".$this->cleanHTML($quest)."<br/>";
 					print "\n "._("Answer:")." </br>";
 					print "\n<textarea name='".$this->getFieldName('quest-'.$j)
 						."' rows='5' cols='50'";
 					if (isset(
 				$this->data['SegueResponse'][0]['SegueResponseAnswer'][$j])) {
 						print ">"
-					.$this->data['SegueResponse'][0]['SegueResponseAnswer'][$j]
+					.$this->cleanHTML($this->data['SegueResponse'][0]['SegueResponseAnswer'][$j])
 					."</textarea><br/>";
 					} else 
 						print '></textarea><br/>';
@@ -168,10 +166,10 @@ class EduMiddleburyAssignmentPlugin
 					
 				// write each question and the current answer
 				foreach ($assignment['SegueAssignmentQuestion'] as $j => $quest) {
-					print "\n".$quest."<br/>";
+					print "\n".$this->cleanHTML($quest)."<br/>";
 					if (isset($this->data['SegueResponse'][0]['SegueResponseAnswer'][$j])) {
 						print "\n "._("Answer:")." </br>";
-						print "\n".$this->data['SegueResponse'][0]['SegueResponseAnswer'][$j]."<br/>";
+						print "\n".$this->cleanHTML($this->data['SegueResponse'][0]['SegueResponseAnswer'][$j])."<br/>";
 					}
 				}
  			}

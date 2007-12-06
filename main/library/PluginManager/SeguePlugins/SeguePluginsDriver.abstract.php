@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.3 2007/12/03 22:00:13 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.4 2007/12/06 21:57:14 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.3 2007/12/03 22:00:13 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.4 2007/12/06 21:57:14 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -266,13 +266,13 @@ abstract class SeguePluginsDriver
 	 */
 	final public function cleanHTML ($htmlString) {
 		$htmlStringObj = HtmlString::withValue($htmlString);
- 		$htmlStringObj->clean();
+ 		$htmlStringObj->cleanXSS();
  		return $htmlStringObj->asString();
 	}
 	
 	/**
 	 * Answer a valid XHTML string trimmed to the specified word length. Cleans
-	 * the syntax as well.
+	 * the syntax and removes XSS markup as well.
 	 * 
 	 * @param string $htmlString
 	 * @param integer $maxWords
@@ -283,6 +283,7 @@ abstract class SeguePluginsDriver
 	 */
 	final public function trimHTML ($htmlString, $maxWords, $addElipses = true) {
 		$htmlStringObj = HtmlString::withValue($htmlString);
+		$htmlStringObj->cleanXSS();
  		$htmlStringObj->trim($maxWords, $addElipses);
  		return $htmlStringObj->asString();
 	}

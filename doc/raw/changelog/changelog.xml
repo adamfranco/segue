@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.88 2007/12/06 19:08:09 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.89 2007/12/06 21:57:13 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2007-12-06' ref='1845757' reftype='bug'>
+			Plugins: Plugins now strip HTML markup that might give openings
+			for cross-site-scripting (XSS) attacks.
+		</fix>
 		<important author='adam' date='2007-12-06'>
 			Existing installations need to have the Segue Update run under 
 			Admin Tools --&gt; Segue Updates.

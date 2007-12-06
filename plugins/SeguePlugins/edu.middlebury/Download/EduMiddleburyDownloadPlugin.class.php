@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.14 2007/12/04 18:51:18 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.15 2007/12/06 21:57:14 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.14 2007/12/04 18:51:18 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.15 2007/12/06 21:57:14 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SegueAjaxPlugin
@@ -87,7 +87,7 @@ class EduMiddleburyDownloadPlugin
  			print "\n\t<input name='".$this->getFieldName('file_id')."' type='hidden' value=\"".$this->getContent()."\"/>";
  			 			
  			// Description
- 			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->getRawDescription()."</textarea>";
+ 			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->cleanHTML($this->getRawDescription())."</textarea>";
  			
  			print $this->getWikiHelp();
  			
@@ -144,7 +144,7 @@ class EduMiddleburyDownloadPlugin
 //  			}
  			
  			if ($this->getDescription()) {
-				print "\n<p>".$this->parseWikiText($this->getDescription())."</p>";
+				print "\n<p>".$this->cleanHTML($this->parseWikiText($this->getDescription()))."</p>";
 				print "\n<hr/>";
 			}
  			
@@ -185,7 +185,9 @@ class EduMiddleburyDownloadPlugin
 			print "\n\t<a href='".$file->getUrl()."'>";
 			print "\n\t\t<img src='";
 			print $file->getThumbnailUrl();
-			print "' align='left' border='0' alt=\""._("Download '").$file->getTitle()."'\"/>";
+			print "' align='left' border='0' alt=\""._("Download '");
+			print str_replace('"', "'", strip_tags($file->getTitle()));
+			print "'\"/>";
 			print "\n\t</a>";
 			
 			
@@ -262,7 +264,7 @@ class EduMiddleburyDownloadPlugin
 			print ' ';
 		}
 		
-		return ob_get_clean();
+		return $this->cleanHTML(ob_get_clean());
 	}
 	
 	/**
