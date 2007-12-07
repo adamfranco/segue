@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.12 2007/09/04 15:05:32 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.13 2007/12/07 18:02:18 adamfranco Exp $
  */ 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.abstract.php");
 
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.ab
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.12 2007/09/04 15:05:32 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.13 2007/12/07 18:02:18 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -99,7 +99,7 @@ class AssetBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function getDisplayName () {
-		return $this->_asset->getDisplayName();
+		return HtmlString::getSafeHtml($this->_asset->getDisplayName());
 	}
 	
 	/**
@@ -111,7 +111,7 @@ class AssetBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateDisplayName ( $displayName ) {
-		$this->_asset->updateDisplayName($displayName);
+		$this->_asset->updateDisplayName(HtmlString::getSafeHtml($displayName));
 	}
 	
 	/**
@@ -122,7 +122,7 @@ class AssetBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function getDescription () {
-		return $this->_asset->getDescription();
+		return HtmlString::getSafeHtml($this->_asset->getDescription());
 	}
 	
 	/**
@@ -134,7 +134,7 @@ class AssetBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateDescription ( $description ) {
-		$this->_asset->updateDescription($description);
+		$this->_asset->updateDescription(HtmlString::getSafeHtml($description));
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.4 2007/12/06 21:57:14 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.5 2007/12/07 18:02:17 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.4 2007/12/06 21:57:14 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.5 2007/12/07 18:02:17 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -111,7 +111,7 @@ abstract class SeguePluginsDriver
 	 * @since 1/13/06
 	 */
 	final public function getTitle () {
-		return $this->_asset->getDisplayName();
+		return HtmlString::getSafeHtml($this->_asset->getDisplayName());
 	}
 	
 	/**
@@ -265,9 +265,7 @@ abstract class SeguePluginsDriver
 	 * @since 1/26/06
 	 */
 	final public function cleanHTML ($htmlString) {
-		$htmlStringObj = HtmlString::withValue($htmlString);
- 		$htmlStringObj->cleanXSS();
- 		return $htmlStringObj->asString();
+		return HtmlString::getSafeHtml($htmlString);
 	}
 	
 	/**

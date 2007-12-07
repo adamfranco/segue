@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.11 2007/11/09 18:47:07 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.12 2007/12/07 18:02:17 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.11 2007/11/09 18:47:07 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.12 2007/12/07 18:02:17 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -90,7 +90,7 @@ class CommentNode {
 	 * @since 7/3/07
 	 */
 	function getSubject () {
-		return $this->_asset->getDisplayName();
+		return HtmlString::getSafeHtml($this->_asset->getDisplayName());
 	}
 	
 	/**
@@ -108,7 +108,7 @@ class CommentNode {
 			throw new PermissionDeniedException("You are not authorized to change this comment.");
 		
 		if ($subject)
-			$this->_asset->updateDisplayName($subject);
+			$this->_asset->updateDisplayName(HtmlString::getSafeHtml($subject));
 		else
 			$this->_asset->updateDisplayName(_("(untitled)"));
 		

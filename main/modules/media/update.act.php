@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update.act.php,v 1.6 2007/10/25 17:18:06 adamfranco Exp $
+ * @version $Id: update.act.php,v 1.7 2007/12/07 18:02:18 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update.act.php,v 1.6 2007/10/25 17:18:06 adamfranco Exp $
+ * @version $Id: update.act.php,v 1.7 2007/12/07 18:02:18 adamfranco Exp $
  */
 class updateAction
 	extends MediaAction
@@ -99,14 +99,14 @@ class updateAction
 		else if (RequestContext::value('displayName') 
 			&& RequestContext::value('displayName') != $fileAsset->getDisplayName())
 		{
-			$fileAsset->updateDisplayName(RequestContext::value('displayName'));
+			$fileAsset->updateDisplayName(HtmlString::getSafeHtml(RequestContext::value('displayName')));
 		}
 		
 		// Update the description if needed.
 		if (!RequestContext::value('description')) {
 			$fileAsset->updateDescription('');
 		} else if (RequestContext::value('description') != $fileAsset->getDescription()) {
-			$fileAsset->updateDescription(RequestContext::value('description'));
+			$fileAsset->updateDescription(HtmlString::getSafeHtml(RequestContext::value('description')));
 		}
 		
 		// Update the other metadata.

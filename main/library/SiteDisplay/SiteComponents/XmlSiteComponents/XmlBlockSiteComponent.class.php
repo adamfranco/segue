@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.11 2007/10/25 17:44:12 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.12 2007/12/07 18:02:18 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: XmlBlockSiteComponent.class.php,v 1.11 2007/10/25 17:44:12 adamfranco Exp $
+ * @version $Id: XmlBlockSiteComponent.class.php,v 1.12 2007/12/07 18:02:18 adamfranco Exp $
  */
 class XmlBlockSiteComponent
 	extends XmlSiteComponent
@@ -49,8 +49,9 @@ class XmlBlockSiteComponent
 	function getDisplayName () {
 		$child = $this->_element->firstChild;
 		while ($child) {
-			if ($child->nodeName == 'displayName')
-				return $child->getText();
+			if ($child->nodeName == 'displayName') {
+				return HtmlString::getSafeHtml($child->getText());
+			}
 			$child = $child->nextSibling;
 		}
 		

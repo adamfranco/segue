@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAsset.class.php,v 1.3 2007/10/25 20:27:40 adamfranco Exp $
+ * @version $Id: MediaAsset.class.php,v 1.4 2007/12/07 18:02:18 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaFile.class.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/MediaFile.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAsset.class.php,v 1.3 2007/10/25 20:27:40 adamfranco Exp $
+ * @version $Id: MediaAsset.class.php,v 1.4 2007/12/07 18:02:18 adamfranco Exp $
  */
 class MediaAsset {
 		
@@ -104,7 +104,7 @@ class MediaAsset {
 	 * @since 4/27/07
 	 */
 	function getDisplayName () {
-		return $this->_asset->getDisplayName();
+		return HtmlString::getSafeHtml($this->_asset->getDisplayName());
 	}
 	
 	/**
@@ -115,7 +115,7 @@ class MediaAsset {
 	 * @since 4/27/07
 	 */
 	function getDescription () {
-		return $this->_asset->getDescription();
+		return HtmlString::getSafeHtml($this->_asset->getDescription());
 	}
 	
 	/**
@@ -416,7 +416,7 @@ class MediaAsset {
 					while ($parts->hasNext()) {
 						$part = $parts->next();
 						$value = $part->getValue();
-						$this->_dcValues[$partIdString][] = $value->asString();
+						$this->_dcValues[$partIdString][] = HtmlString::getSafeHtml($value->asString());
 					}
 				}
 				

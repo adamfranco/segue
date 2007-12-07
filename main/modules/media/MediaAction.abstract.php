@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.11 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.12 2007/12/07 18:02:18 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.11 2007/10/25 14:06:50 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.12 2007/12/07 18:02:18 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -137,11 +137,11 @@ class MediaAction
 			print "\n\t<asset id=\"".$assetId->getIdString()."\" repositoryId=\"".$repositoryId->getIdString()."\">";
 			
 			print "\n\t\t<displayName><![CDATA[";
-			print $asset->getDisplayName();		
+			print HtmlString::getSafeHtml($asset->getDisplayName());		
 			print "]]></displayName>";
 			
 			print "\n\t\t<description><![CDATA[";
-			print $asset->getDescription();
+			print HtmlString::getSafeHtml($asset->getDescription());
 			print "]]></description>";
 			
 			print "\n\t\t<modificationDate><![CDATA[";
@@ -176,7 +176,7 @@ class MediaAction
 				
 				$parts = $fileRecord->getPartsByPartStructure($idManager->getId("FILE_NAME"));
 				$part = $parts->next();
-				print "\n\t\t\t<name><![CDATA[".$part->getValue()."]]></name>";
+				print "\n\t\t\t<name><![CDATA[".HtmlString::getSafeHtml($part->getValue())."]]></name>";
 				
 				$parts = $fileRecord->getPartsByPartStructure($idManager->getId("FILE_SIZE"));
 				$part = $parts->next();
@@ -209,35 +209,35 @@ class MediaAction
 				if ($parts->hasNext()) {
 					$part = $parts->next();
 					$valueObj = $part->getValue();
-					print "\n\t\t\t<title><![CDATA[".$valueObj->asString()."]]></title>";
+					print "\n\t\t\t<title><![CDATA[".HtmlString::getSafeHtml($valueObj->asString())."]]></title>";
 				}
 				
 				$parts = $record->getPartsByPartStructure($idManager->getId("dc.description"));
 				if ($parts->hasNext()) {
 					$part = $parts->next();
 					$valueObj = $part->getValue();
-					print "\n\t\t\t<description><![CDATA[".$valueObj->asString()."]]></description>";
+					print "\n\t\t\t<description><![CDATA[".HtmlString::getSafeHtml($valueObj->asString())."]]></description>";
 				}
 				
 				$parts = $record->getPartsByPartStructure($idManager->getId("dc.creator"));
 				if ($parts->hasNext()) {
 					$part = $parts->next();
 					$valueObj = $part->getValue();
-					print "\n\t\t\t<creator><![CDATA[".$valueObj->asString()."]]></creator>";
+					print "\n\t\t\t<creator><![CDATA[".HtmlString::getSafeHtml($valueObj->asString())."]]></creator>";
 				}
 				
 				$parts = $record->getPartsByPartStructure($idManager->getId("dc.source"));
 				if ($parts->hasNext()) {
 					$part = $parts->next();
 					$valueObj = $part->getValue();
-					print "\n\t\t\t<source><![CDATA[".$valueObj->asString()."]]></source>";
+					print "\n\t\t\t<source><![CDATA[".HtmlString::getSafeHtml($valueObj->asString())."]]></source>";
 				}
 				
 				$parts = $record->getPartsByPartStructure($idManager->getId("dc.publisher"));
 				if ($parts->hasNext()) {
 					$part = $parts->next();
 					$valueObj = $part->getValue();
-					print "\n\t\t\t<publisher><![CDATA[".$valueObj->asString()."]]></publisher>";
+					print "\n\t\t\t<publisher><![CDATA[".HtmlString::getSafeHtml($valueObj->asString())."]]></publisher>";
 				}
 				
 				$parts = $record->getPartsByPartStructure($idManager->getId("dc.date"));
@@ -305,7 +305,7 @@ class MediaAction
 	function updateFileRecord ( $asset, $record, $fieldName = 'media_file') {
 		$idManager = Services::getService("Id");
 		
-		$name = $_FILES[$fieldName]['name'];
+		$name = strip_tags($_FILES[$fieldName]['name']);
 		$tmpName = $_FILES[$fieldName]['tmp_name'];			
 		$mimeType = $_FILES[$fieldName]['type'];
 		// If we weren't passed a mime type or were passed the generic
@@ -381,23 +381,23 @@ class MediaAction
 	function updateDublinCoreRecord ( $asset, $record ) {
 		$idManager = Services::getService("Id");
 		
-		$value = String::fromString($asset->getDisplayName());
+		$value = String::fromString(HtmlString::getSafeHtml($asset->getDisplayName()));
 		$id = $idManager->getId("dc.title");
 		$this->updateSingleValuedPart($record, $id, $value);
 		
-		$value = String::fromString($asset->getDescription());
+		$value = String::fromString(HtmlString::getSafeHtml($asset->getDescription()));
 		$id = $idManager->getId("dc.description");
 		$this->updateSingleValuedPart($record, $id, $value);
 		
-		$value = String::fromString(RequestContext::value('creator'));
+		$value = String::fromString(HtmlString::getSafeHtml(RequestContext::value('creator')));
 		$id = $idManager->getId("dc.creator");
 		$this->updateSingleValuedPart($record, $id, $value);
 		
-		$value = String::fromString(RequestContext::value('source'));
+		$value = String::fromString(HtmlString::getSafeHtml(RequestContext::value('source')));
 		$id = $idManager->getId("dc.source");
 		$this->updateSingleValuedPart($record, $id, $value);
 		
-		$value = String::fromString(RequestContext::value('publisher'));
+		$value = String::fromString(HtmlString::getSafeHtml(RequestContext::value('publisher')));
 		$id = $idManager->getId("dc.publisher");
 		$this->updateSingleValuedPart($record, $id, $value);
 		
