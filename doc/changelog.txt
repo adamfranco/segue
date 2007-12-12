@@ -4,6 +4,80 @@ Name: Segue Change Log
 
 
 
+v. 2.0.0-beta-6 (2007-12-12)
+----------------------------------------------------
+This release fixes a number of bugs as well as provides new admin-tools for the
+management of slots (site-placeholders). Additionally, security measures have been
+put in place to prevent cross-site-scripting (XSS) attacks.
+
+For upgrades from earlier releases, please run the update located under Admin Tools
+--&gt; Segue Updates.
+		
+		
+	**** IMPORTANT *** Change: 
+		Existing installations need to have the Segue Update run under Admin Tools
+		--&gt; Segue Updates.
+		(2007-12-06 - Adam Franco)
+		
+	* Bug Fix: #1845759 
+		Security: All titles, descriptions, and other user-supplied text is now
+		cleaned to prevent cross-site-scripting (XSS) attacks.
+		(2007-12-07 - Adam Franco)
+		
+	* Bug Fix: #1845757 
+		Security: Plugins now strip HTML markup that might give openings for
+		cross-site-scripting (XSS) attacks.
+		(2007-12-06 - Adam Franco)
+		
+	**** IMPORTANT *** Change: 
+		Existing installations need to have the Segue Update run under Admin Tools
+		--&gt; Segue Updates.
+		(2007-12-06 - Adam Franco)
+		
+	* New feature: #1844322 
+		Slots: New slot-editing and deleting admin interfaces.
+		(2007-12-06 - Adam Franco)
+		
+	* New feature: #1844322 
+		Slots: New slot-browsing admin interface.
+		(2007-12-06 - Adam Franco)
+		
+	* Change: #1844322 
+		Slots: Can now build a list of all slots.
+		(2007-12-06 - Adam Franco)
+		
+	* Change: #1820937 
+		Slots: Now can specify a category for which virtual instance to display a
+		site in main/community.
+		(2007-12-06 - Adam Franco)
+		
+	* New feature: 
+		New data updater system.
+		(2007-12-06 - Adam Franco)
+		
+	* New feature: #1799957 
+		Wiki-Linking: New Wiki-Linking support to use double-square-brackets links
+		ala MediaWiki for link between parts of a site or between sites.
+		(2007-12-03 - Adam Franco)
+		
+	* Bug Fix: 
+		Permissions: Titles are now are consistantly tabbed using padding.
+		(2007-11-30 - Adam Franco)
+		
+	* Bug Fix: #1841252 
+		Permissions: AZs set for all of Segue are now not changable in the
+		permissions UI.
+		(2007-11-30 - Adam Franco)
+		
+	* Bug Fix: #1831274 
+		'Show Titles' and 'Enable Comments' settings are now only 'yes' or 'no' at
+		the root (site) level, so the default setting is clear.
+		(2007-11-30 - Adam Franco)
+		
+	* Bug Fix: 
+		Fixed an error in the changelog that was preventing it from displaying.
+		(2007-11-30 - Adam Franco)
+	
 v. 2.0.0-beta-5 (2007-11-29)
 ----------------------------------------------------
 This release includes a new hierarchical authorization-setting user interface that

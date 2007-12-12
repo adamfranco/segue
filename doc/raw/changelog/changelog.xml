@@ -5,15 +5,25 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.91 2007/12/12 17:16:31 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.92 2007/12/12 18:20:02 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0.0-beta-6" date="The Future">
+	<version number="2.0.0-beta-6" date="2007-12-12">
 		<releaseNotes>
+			This release fixes a number of bugs as well as provides new admin-tools
+			for the management of slots (site-placeholders). Additionally, security
+			measures have been put in place to  prevent cross-site-scripting (XSS)
+			attacks.
 			
+			For upgrades from earlier releases, please run the update located under 
+			Admin Tools --&gt; Segue Updates.
 		</releaseNotes>
+		<important author='adam' date='2007-12-06'>
+			Existing installations need to have the Segue Update run under 
+			Admin Tools --&gt; Segue Updates.
+		</important>
 		<fix author='adam' date='2007-12-07' ref='1845759' reftype='bug'>
 			Security: All titles, descriptions, and other user-supplied text is
 			now cleaned to prevent cross-site-scripting (XSS) attacks.
