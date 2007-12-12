@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.5 2007/12/06 19:00:43 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.6 2007/12/12 17:16:31 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.5 2007/12/06 19:00:43 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.6 2007/12/12 17:16:31 adamfranco Exp $
  */
 abstract class Slot {
 	
@@ -60,6 +60,18 @@ abstract class Slot {
 	 * @since 8/14/07
 	 */
 	abstract public static function getExternalSlotDefinitionsForUser ();
+	
+	/**
+	 * Answer an array of allowed location categories.
+	 *
+	 * @return array of strings
+	 * @access public
+	 * @since 12/7/07
+	 * @static
+	 */
+	public static function getLocationCategories () {
+		return array('main', 'community');
+	}
 	
 
 /*********************************************************
@@ -102,13 +114,6 @@ abstract class Slot {
 	private $removedOwners = array();
 	
 	/**
-	 * @var array $allowedCategories;  
-	 * @access private
-	 * @since 12/6/07
-	 */
-	private $allowedCategories;
-	
-	/**
 	 * @var string $locationCategory; The category for where the slot should be displayed 
 	 * @access private
 	 * @since 12/6/07
@@ -132,8 +137,6 @@ abstract class Slot {
 		$this->owners = array();
 		$this->removedOwners = array();
 		$this->isInDB = $fromDB;
-		
-		$this->allowedCategories = array('main', 'community');
 	}
 	
 	/**
@@ -298,7 +301,7 @@ abstract class Slot {
 	}
 	
 	/**
-	 * Answer the owners of this slot
+	 * Answer the Id objects of the owners of this slot
 	 * 
 	 * @return array
 	 * @access public
@@ -327,7 +330,7 @@ abstract class Slot {
 	 * @access public
 	 * @since 8/14/07
 	 */
-	public function addOwner ( $ownerId ) {
+	public function addOwner ( Id $ownerId ) {
 		if (!$this->isOwner($ownerId)) {
 			$this->recordInDB();
 			if ($this->isOwner($ownerId) || $this->isRemovedOwner($ownerId)) {
@@ -533,7 +536,7 @@ abstract class Slot {
 	 * @since 12/6/07
 	 */
 	public function setLocationCategory ($locationCategory) {
-		if (!in_array($locationCategory, $this->allowedCategories))
+		if (!in_array($locationCategory, self::getLocationCategories()))
 			throw new Exception("Invalid category, '$locationCategory'.");
 		
 		$this->locationCategory = $locationCategory;
@@ -560,7 +563,7 @@ abstract class Slot {
 	 * @since 12/6/07
 	 */
 	public function populateLocationCategory ( $locationCategory ) {
-		if (!in_array($locationCategory, $this->allowedCategories))
+		if (!in_array($locationCategory, self::getLocationCategories()))
 			throw new Exception("Invalid category, '$locationCategory'.");
 		
 		$this->locationCategory = $locationCategory;

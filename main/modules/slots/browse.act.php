@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.1 2007/12/06 19:06:24 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.2 2007/12/12 17:16:31 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/TableIteratorResultPrinter.c
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.1 2007/12/06 19:06:24 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.2 2007/12/12 17:16:31 adamfranco Exp $
  */
 class browseAction
 	extends MainWindowAction
@@ -64,7 +64,8 @@ class browseAction
 	public function buildContent () {
 		$actionRows = $this->getActionRows();
 		
-		$actionRows->add($this->getSearchForm());
+		$actionRows->add($this->getCreateForm());
+// 		$actionRows->add($this->getSearchForm());
 		$actionRows->add($this->getSlotList());
 		
 		return $actionRows;
@@ -81,6 +82,29 @@ class browseAction
 		ob_start();
 		
 		
+		return new Block(ob_get_clean(), STANDARD_BLOCK);
+	}
+	
+	/**
+	 * Answer the "create slot form"
+	 * 
+	 * @return object Component
+	 * @access public
+	 * @since 12/7/07
+	 */
+	public function getCreateForm () {
+		ob_start();
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace("slots");
+		print "\n\t<form action='".$harmoni->request->quickURL('slots', 'edit')."' method='post'>";
+		print "\n\t\t<div><strong>"._("Create/Edit a slot").": </strong></div>";
+		print "\n\t\t<div>";
+		print "\n\t\t\t"._("Slot Name").": ";
+		print "<input type='text' name='".RequestContext::name('name')."'/>";
+		print "\n\t\t\t<input type='submit' value='"._("Submit")."'/>";
+		print "\n\t\t</div>";
+		print "\n\t</form>";
+		$harmoni->request->endNamespace();
 		return new Block(ob_get_clean(), STANDARD_BLOCK);
 	}
 	
@@ -155,18 +179,22 @@ class browseAction
 			
 		print implode(", ", $ownerStrings);
 		print "</td>";
+		
+		$harmoni->request->startNamespace("slots");
 		print "\n\t\t<td>";
 		print "\n\t\t\t<a href='";
-		print $harmoni->request->quickURL('slot', 'edit', array('slot' => $slot->getShortname()));
+		print $harmoni->request->quickURL('slots', 'edit', array('name' => $slot->getShortname()));
 		print "'>"._("edit")."</a>";
 		if (!$slot->siteExists()) {
 			print "\n\t\t\t| <a href='";
-			print $harmoni->request->quickURL('slot', 'delete', array('slot' => $slot->getShortname()));
+			print $harmoni->request->quickURL('slots', 'delete', array('name' => $slot->getShortname()));
 			print "' onclick=\"";
 			print "return confirm('"._('Are you sure you want to delete this slot?')."');";
 			print "\">"._("delete")."</a>";
 		}
 		print "\n\t\t</td>";
+		$harmoni->request->endNamespace();
+
 		print "\n\t</tr>";
 		return ob_get_clean();
 	}

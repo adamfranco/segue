@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.90 2007/12/07 18:02:17 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.91 2007/12/12 17:16:31 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -26,6 +26,9 @@
 			Existing installations need to have the Segue Update run under 
 			Admin Tools --&gt; Segue Updates.
 		</important>
+		<new author='adam' date='2007-12-06' ref='1844322' reftype='fr'>
+			Slots: New slot-editing and deleting admin interfaces.
+		</new>
 		<new author='adam' date='2007-12-06' ref='1844322' reftype='fr'>
 			Slots: New slot-browsing admin interface.
 		</new>

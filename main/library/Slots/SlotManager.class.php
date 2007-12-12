@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.6 2007/12/06 19:00:43 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.7 2007/12/12 17:16:31 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/AllSlotsIterator.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.6 2007/12/06 19:00:43 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.7 2007/12/12 17:16:31 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -281,7 +281,7 @@ class SlotManager {
 	 * @since 12/5/07
 	 */
 	public function deleteSlot ($shortname) {
-		$slot = $this->getSlot($shortname);
+		$slot = $this->getSlotByShortname($shortname);
 		if ($slot->siteExists())
 			throw new PermissionDeniedException("Cannot delete a slot for an existing site.");
 		

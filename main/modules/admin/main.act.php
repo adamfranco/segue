@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.4 2007/12/06 19:02:59 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.5 2007/12/12 17:16:31 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.4 2007/12/06 19:02:59 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.5 2007/12/12 17:16:31 adamfranco Exp $
  */
 class mainAction 
 	extends MainWindowAction
@@ -102,7 +102,7 @@ class mainAction
 			$idManager->getId("edu.middlebury.authorization.view"),
 			$idManager->getId("edu.middlebury.authorization.root"))) {
 		
-			$actionRows->add(new Heading(_("Development"), 2));
+			$actionRows->add(new Heading(_("System"), 2));
 			
 			ob_start();
 			print "\n<ul>";
@@ -116,18 +116,18 @@ class mainAction
 				print _("Reset Segue");
 				print "</a></li>";
 			}
-			if ($authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.add_children"),
-				$idManager->getId("edu.middlebury.authorization.root"))) {
-				print "\n\t<li><a href='".$harmoni->request->quickURL("admin", 
-					"import")."'>";
-				print _("Import");
-				print "</a></li>";
-			}
-			print "\n\t<li><a href='".$harmoni->request->quickURL("admin", 
-				"export")."'>";
-			print _("Export");
-			print "</a></li>";
+// 			if ($authZ->isUserAuthorized(
+// 				$idManager->getId("edu.middlebury.authorization.add_children"),
+// 				$idManager->getId("edu.middlebury.authorization.root"))) {
+// 				print "\n\t<li><a href='".$harmoni->request->quickURL("admin", 
+// 					"import")."'>";
+// 				print _("Import");
+// 				print "</a></li>";
+// 			}
+// 			print "\n\t<li><a href='".$harmoni->request->quickURL("admin", 
+// 				"export")."'>";
+// 			print _("Export");
+// 			print "</a></li>";
 			
 			if ($authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.modify"),
@@ -145,10 +145,20 @@ class mainAction
 			ob_end_clean();
 		}
 		
-		$actionRows->add(new Heading(_("Logs"), 2));
+		$actionRows->add(new Heading(_("Content"), 2));
 		
 		ob_start();
 		print "\n<ul>";
+		
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.add_children"),
+			$idManager->getId("edu.middlebury.authorization.root"))) {
+			print "\n\t<li><a href='".$harmoni->request->quickURL("slots", 
+				"browse")."'>";
+			print _("Browse Slots");
+			print "</a></li>";
+		}
+		
 		print "\n\t<li><a href='".$harmoni->request->quickURL("logs","browse")."'>";
 		print _("Browse Logs");
 		print "</a></li>";
