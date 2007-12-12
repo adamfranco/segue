@@ -12,6 +12,8 @@ put in place to prevent cross-site-scripting (XSS) attacks.
 
 For upgrades from earlier releases, please run the update located under Admin Tools
 --&gt; Segue Updates.
+
+This relase of Segue uses Harmoni 0.13.5 and Polyphony 0.10.5.
 		
 		
 	**** IMPORTANT *** Change: 

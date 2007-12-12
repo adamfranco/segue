@@ -23,7 +23,52 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0.0-beta-5</h2>
+<h2>Version 2.0.0-beta-6</h2>
+<h3>2007-12-12</h3>
+<p>This release fixes a number of bugs as well as provides new admin-tools for the management of slots (site-placeholders). Additionally, security measures have been put in place to prevent cross-site-scripting (XSS) attacks.
+<br>
+<br>For upgrades from earlier releases, please run the update located under Admin Tools --&gt; Segue Updates.</p>
+<ul>
+		
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Existing installations need to have the Segue Update run under Admin Tools --&gt; Segue Updates. (<em>2007-12-06 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1845759&amp;group_id=&amp;atid=">
+        			#1845759</a> Security: All titles, descriptions, and other user-supplied text is now cleaned to prevent cross-site-scripting (XSS) attacks. (<em>2007-12-07 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1845757&amp;group_id=&amp;atid=">
+        			#1845757</a> Security: Plugins now strip HTML markup that might give openings for cross-site-scripting (XSS) attacks. (<em>2007-12-06 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Existing installations need to have the Segue Update run under Admin Tools --&gt; Segue Updates. (<em>2007-12-06 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844322&amp;group_id=&amp;atid=">
+        			#1844322</a> Slots: New slot-editing and deleting admin interfaces. (<em>2007-12-06 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844322&amp;group_id=&amp;atid=">
+        			#1844322</a> Slots: New slot-browsing admin interface. (<em>2007-12-06 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844322&amp;group_id=&amp;atid=">
+        			#1844322</a> Slots: Can now build a list of all slots. (<em>2007-12-06 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820937&amp;group_id=&amp;atid=">
+        			#1820937</a> Slots: Now can specify a category for which virtual instance to display a site in main/community. (<em>2007-12-06 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> New data updater system. (<em>2007-12-06 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799957&amp;group_id=&amp;atid=">
+        			#1799957</a> Wiki-Linking: New Wiki-Linking support to use double-square-brackets links ala MediaWiki for link between parts of a site or between sites. (<em>2007-12-03 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Permissions: Titles are now are consistantly tabbed using padding. (<em>2007-11-30 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1841252&amp;group_id=&amp;atid=">
+        			#1841252</a> Permissions: AZs set for all of Segue are now not changable in the permissions UI. (<em>2007-11-30 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1831274&amp;group_id=&amp;atid=">
+        			#1831274</a> 'Show Titles' and 'Enable Comments' settings are now only 'yes' or 'no' at the root (site) level, so the default setting is clear. (<em>2007-11-30 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Fixed an error in the changelog that was preventing it from displaying. (<em>2007-11-30 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0.0-beta-5</h2>
 <h3>2007-11-29</h3>
 <p>This release includes a new hierarchical authorization-setting user interface that allows for the designation of roles to any user or group anywhere in the site hierarchy.
 <br>
