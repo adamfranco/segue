@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.20 2007/12/14 19:57:38 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.21 2007/12/14 20:15:30 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.20 2007/12/14 19:57:38 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.21 2007/12/14 20:15:30 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -334,12 +334,14 @@ END;
 			$organizer->getQualifierId()))
 		{
 			$allowed = array();
+			$allowed[] = _("Pages and Navigation");
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart');
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
 
 	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
+			$allowed[] = _("Menu Content");
 			$pluginManager = Services::getService("PluginManager");
 			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
@@ -401,14 +403,20 @@ END;
 		
 		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
 		
+		$inCat = false;
 		foreach ($allowed as $type) {
-			print "\n\t\t\t<option value='".$type->asString()."'>";
-			if (isset($this->_classNames[$type->getKeyword()]))
-				print $this->_classNames[$type->getKeyword()];
-			else
-				print $type->getKeyword();
-			print "</option>";
+			if (is_string($type)) {
+				if ($inCat) {
+					print "\n\t\t\t</optgroup>";
+				}
+				$inCat = true;
+				print "\n\t\t\t<optgroup label='$type'>";
+			} else {
+				$this->printTypeOption($type);
+			}
 		}
+		if ($inCat)
+			print "\n\t\t\t</optgroup>";
 		
 		print "\n\t\t</select>";
 		print "\n\t\t<div style='white-space: nowrap;'>"._("Title: ");
@@ -439,6 +447,23 @@ END;
 		print "\n\t</div>";
 		print "</form>";
 		return ob_get_clean();
+	}
+	
+	/**
+	 * print an option tag
+	 * 
+	 * @param object Type $type
+	 * @return void
+	 * @access private
+	 * @since 12/14/07
+	 */
+	private function printTypeOption (Type $type) {
+		print "\n\t\t\t<option value='".$type->asString()."'>";
+		if (isset($this->_classNames[$type->getKeyword()]))
+			print $this->_classNames[$type->getKeyword()];
+		else
+			print $type->getKeyword();
+		print "</option>";
 	}
 	
 	/**

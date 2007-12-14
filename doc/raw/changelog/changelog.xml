@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.96 2007/12/14 19:57:38 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.97 2007/12/14 20:15:30 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2007-12-14' ref='1851019' reftype='bug'>
+			UI2: Options in 'Add Menu Item' list are now categorized.
+		</fix>
 		<fix author='adam' date='2007-12-14' ref='1850944' reftype='bug'>
 			UI1/UI2: 'Page with Sidebar' option is now not as promonently listed.
 		</fix>
