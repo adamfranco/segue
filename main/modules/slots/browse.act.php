@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.2 2007/12/12 17:16:31 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.3 2007/12/14 19:41:04 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/TableIteratorResultPrinter.c
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.2 2007/12/12 17:16:31 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.3 2007/12/14 19:41:04 adamfranco Exp $
  */
 class browseAction
 	extends MainWindowAction
@@ -51,7 +51,7 @@ class browseAction
 	 * @since 12/04/07
 	 */
 	function getHeadingText () {
-		return _("Browse Slots");
+		return _("Browse Placeholders");
 	}
 	
 	/**
@@ -97,9 +97,9 @@ class browseAction
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("slots");
 		print "\n\t<form action='".$harmoni->request->quickURL('slots', 'edit')."' method='post'>";
-		print "\n\t\t<div><strong>"._("Create/Edit a slot").": </strong></div>";
+		print "\n\t\t<div><strong>"._("Create/Edit a Placholder").": </strong></div>";
 		print "\n\t\t<div>";
-		print "\n\t\t\t"._("Slot Name").": ";
+		print "\n\t\t\t"._("Placeholder Name").": ";
 		print "<input type='text' name='".RequestContext::name('name')."'/>";
 		print "\n\t\t\t<input type='submit' value='"._("Submit")."'/>";
 		print "\n\t\t</div>";
@@ -124,12 +124,12 @@ class browseAction
 		
 		$headRow = "
 	<tr>
-		<th>Slot Name</th>
-		<th>Type</th>
-		<th>Category</th>
-		<th>Site Exists</th>
-		<th>Owners</th>
-		<th>Actions</th>
+		<th>"._("Placeholder Name")."</th>
+		<th>"._("Type")."</th>
+		<th>"._("Category")."</th>
+		<th>"._("Site Exists")."</th>
+		<th>"._("Owners")."</th>
+		<th>"._("Actions")."</th>
 	</tr>";
 		$printer = new TableIteratorResultPrinter($slots, $headRow, 50, array($this, 'getSlotComponent'));
 		return new Block($printer->getTable(), STANDARD_BLOCK);
@@ -189,7 +189,7 @@ class browseAction
 			print "\n\t\t\t| <a href='";
 			print $harmoni->request->quickURL('slots', 'delete', array('name' => $slot->getShortname()));
 			print "' onclick=\"";
-			print "return confirm('"._('Are you sure you want to delete this slot?')."');";
+			print "return confirm('"._('Are you sure you want to delete this placeholder?')."');";
 			print "\">"._("delete")."</a>";
 		}
 		print "\n\t\t</td>";

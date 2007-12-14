@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit.act.php,v 1.1 2007/12/12 17:16:31 adamfranco Exp $
+ * @version $Id: edit.act.php,v 1.2 2007/12/14 19:41:04 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit.act.php,v 1.1 2007/12/12 17:16:31 adamfranco Exp $
+ * @version $Id: edit.act.php,v 1.2 2007/12/14 19:41:04 adamfranco Exp $
  */
 class editAction
 	extends MainWindowAction
@@ -59,7 +59,7 @@ class editAction
 		
 		if (!preg_match('/^[a-z0-9_\-]+$/i', $name)) {
 			ob_start();
-			print _("Slot names can only contain letters, numbers, underscores, and dashes.");
+			print _("Placeholder names can only contain letters, numbers, underscores, and dashes.");
 			$this->getActionRows()->add(new Block(ob_get_clean(), STANDARD_BLOCK));
 			return;
 		}
@@ -107,12 +107,12 @@ class editAction
 		
 		ob_start();
 		
-		print "\n<h4>"._("Edit Slot")."</h4>";
-		print "\n<p><strong>"._("Slot Name").":</strong> [[name]]<p>";
+		print "\n<h4>"._("Edit Placeholder")."</h4>";
+		print "\n<p><strong>"._("Placeholder Name").":</strong> [[name]]<p>";
 		print "\n<p><strong>"._("Location Category").":</strong> [[category]]<p>";
 		
 		print "\n<p><strong>"._("Owners").":</strong> ";
-		print _("Slot owners are people who can create a site for the slot and/or will be given full access to the site at the time of its creation. After the site has been created, changes to slot ownership will not change any roles or privileges.");
+		print _("Placeholder owners are people who can create a site for the placeholder and/or will be given full access to the site at the time of its creation. After the site has been created, changes to placeholder ownership will not change any roles or privileges.");
 		print "[[owners]]<p>";
 		
 		$step->setContent(ob_get_clean());

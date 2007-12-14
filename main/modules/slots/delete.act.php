@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.2 2007/12/14 19:29:04 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.3 2007/12/14 19:41:04 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.2 2007/12/14 19:29:04 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.3 2007/12/14 19:41:04 adamfranco Exp $
  */
 class deleteAction
 	extends MainWindowAction
@@ -82,7 +82,7 @@ class deleteAction
 		$slot = $slotMgr->getSlotByShortname($name);
 		
 		if ($slot->siteExists())
-			throw new PermissionDeniedException("You cannot delete a slot that has an existing site.");
+			throw new PermissionDeniedException("You cannot delete a placeholder that has an existing site.");
 		
 		$slotMgr->deleteSlot($name);
 		
