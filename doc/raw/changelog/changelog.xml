@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.98 2007/12/14 20:35:49 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.99 2007/12/14 21:46:11 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2007-12-14' ref='1819569' reftype='bug'>
+			Portal: Now shows a generic portal to non-logged-in users with a not
+			that they should log in to see their own portal.
+		</fix>
 		<fix author='adam' date='2007-12-14'>
 			Portal: Empty site categories are now hidden.
 		</fix>

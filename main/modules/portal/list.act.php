@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.18 2007/12/14 21:37:05 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.19 2007/12/14 21:46:11 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.18 2007/12/14 21:37:05 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.19 2007/12/14 21:46:11 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -59,7 +59,17 @@ class listAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return $this->getUIModeForm()._("Your Portal")."\n\t<div style='clear: both; height: 0px;'>&nbsp;</div>";
+		ob_start();
+		print $this->getUIModeForm();
+		$authN = Services::getService("AuthN");
+		if ($authN->isUserAuthenticatedWithAnyType()) {
+			print _("Your Portal");
+		} else {
+			print _("Portal (log in to see your own portal)");
+		}
+		print "\n\t<div style='clear: both; height: 0px;'>&nbsp;</div>";
+		
+		return ob_get_clean();
 	}
 	
 	/**
