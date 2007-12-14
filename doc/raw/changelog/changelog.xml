@@ -5,11 +5,19 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.93 2007/12/12 18:21:52 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.94 2007/12/14 19:29:02 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-7" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2007-12-14' ref='1850947' reftype='bug'>
+			Slots: 'delete placeholder' link in portal now works.
+		</fix>
+	</version>
 	<version number="2.0.0-beta-6" date="2007-12-12">
 		<releaseNotes>
 			This release fixes a number of bugs as well as provides new admin-tools
@@ -22,10 +30,6 @@
 			
 			This relase of Segue uses Harmoni 0.13.5 and Polyphony 0.10.5.
 		</releaseNotes>
-		<important author='adam' date='2007-12-06'>
-			Existing installations need to have the Segue Update run under 
-			Admin Tools --&gt; Segue Updates.
-		</important>
 		<fix author='adam' date='2007-12-07' ref='1845759' reftype='bug'>
 			Security: All titles, descriptions, and other user-supplied text is
 			now cleaned to prevent cross-site-scripting (XSS) attacks.

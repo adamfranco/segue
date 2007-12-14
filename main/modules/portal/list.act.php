@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.15 2007/12/07 18:02:18 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.16 2007/12/14 19:29:04 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.15 2007/12/07 18:02:18 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.16 2007/12/14 19:29:04 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -249,10 +249,20 @@ class listAction
 				print " <a href='".$harmoni->request->quickURL($this->getUiModule(), 'add', array('slot' => $slot->getShortname()))."' class='create_site_link'>"._("Create Site")."</a>";
 				
 				$authN = Services::getService("AuthN");
-				if ($slot->getType() == 'personal' &&
+				if ($slot->getType() == Slot::personal &&
 					$slot->getShortName() != PersonalSlot::getPersonalShortname($authN->getFirstUserId())) 
 				{
-					print " | "._("delete placeholder");
+					$harmoni = Harmoni::instance();
+					$harmoni->request->startNamespace("slots");
+					print " | <a href='";
+					print $harmoni->request->quickURL('slots', 'delete', 
+						array('name' => $slot->getShortName(), 
+							'returnModule' => $harmoni->request->getRequestedModule(),
+							'returnAction' => $harmoni->request->getRequestedAction()));
+					print "'";
+					print " onclick=\"return confirm('"._("Are you sure that you want to delete this placeholder?")."');\" ";
+					print ">"._("delete placeholder")."</a>";
+					$harmoni->request->endNamespace();
 				}
 			} else {
 				print " <span class='site_not_created_message'>"._("No Site Created")."</span>";

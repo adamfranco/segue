@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.1 2007/12/12 17:16:31 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.2 2007/12/14 19:29:04 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.1 2007/12/12 17:16:31 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.2 2007/12/14 19:29:04 adamfranco Exp $
  */
 class deleteAction
 	extends MainWindowAction
@@ -38,9 +38,30 @@ class deleteAction
 		// Check for authorization
  		$authZManager = Services::getService("AuthZ");
  		$idManager = Services::getService("IdManager");
- 		return $authZManager->isUserAuthorized(
+ 		if ($authZManager->isUserAuthorized(
  					$idManager->getId("edu.middlebury.authorization.add_children"),
- 					$idManager->getId("edu.middlebury.authorization.root"));
+ 					$idManager->getId("edu.middlebury.authorization.root"))) {
+ 			return true;
+ 		}
+ 		
+ 		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace("slots");
+		$name = strtolower(RequestContext::value("name"));
+		$harmoni->request->passthrough("name");
+		$harmoni->request->endNamespace();
+		
+		$slotMgr = SlotManager::instance();
+		$slot = $slotMgr->getSlotByShortname($name);
+		$authN = Services::getService("AuthN");
+		if ($slot->isUserOwner()
+			&& $slot->getType() == Slot::personal 
+			&& $slot->getShortName() != PersonalSlot::getPersonalShortname($authN->getFirstUserId()))
+		{
+			return true;
+		}
+ 		
+ 		
+ 		return false;
 	}
 	
 	/**
@@ -78,7 +99,15 @@ class deleteAction
 	public function getReturnUrl () {
 		$harmoni = Harmoni::instance();
 		$harmoni->request->forget("name");
-		return $harmoni->request->quickURL('slots', 'browse');
+		$harmoni->request->startNamespace("slots");
+		$module = RequestContext::value("returnModule");
+		$action = RequestContext::value("returnAction");
+		$harmoni->request->endNamespace();
+		
+		if ($module && $action)
+			return $harmoni->request->quickURL($module, $action);
+		else
+			return $harmoni->request->quickURL('slots', 'browse');
 	}
 	
 }
