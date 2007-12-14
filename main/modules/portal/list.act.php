@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.17 2007/12/14 20:35:49 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.18 2007/12/14 21:37:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.17 2007/12/14 20:35:49 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.18 2007/12/14 21:37:05 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -59,7 +59,7 @@ class listAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Your Portal").$this->getUIModeForm();
+		return $this->getUIModeForm()._("Your Portal")."\n\t<div style='clear: both; height: 0px;'>&nbsp;</div>";
 	}
 	
 	/**
@@ -91,8 +91,6 @@ class listAction
 		}
 		print "\n\t\t</select>";
 		print "\n\t</form>";
-		
-		print "\n\t<div style='clear: both; height: 0px;'>&nbsp;</div>";
 		return ob_get_clean();
 	}
 	
