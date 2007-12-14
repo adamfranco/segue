@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.14 2007/11/14 17:05:14 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.15 2007/12/14 19:57:38 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.14 2007/11/14 17:05:14 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.15 2007/12/14 19:57:38 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -589,14 +589,14 @@ class ArrangeModeSiteVisitor
 		{
 			$allowed = array();
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart');
-			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
+			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
 			$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
 			$pluginManager = Services::getService("PluginManager");
 			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
-			$childComponent = $guiContainer->add(new MenuItem($this->getAddFormHTML($organizer->getId(), $i, $allowed), 2), null, '100%', null, TOP);
+			$childComponent = $guiContainer->add(new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), $i, $allowed, true), 2), null, '100%', null, TOP);
 			$this->wrapAsDroppable($childComponent, 
 					$organizer->getId()."_cell:".$i,
 					array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));

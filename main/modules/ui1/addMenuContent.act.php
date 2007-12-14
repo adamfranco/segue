@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.7 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.8 2007/12/14 19:57:38 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.7 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.8 2007/12/14 19:57:38 adamfranco Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -197,12 +197,6 @@ class addMenuContentAction
 				"icon" => "Page.png"
 			);
 		$types[] = array(
-				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart'),
-				"name" => _("Page with Sidebar"),
-				"description" => _("Chose this if you want a page with a main column and a sidebar column."),
-				"icon" => "PageWithSideBar.png"
-			);
-		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart'),
 				"name" => _("Sub Menu"),
 				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of sub-pages."),
@@ -213,6 +207,12 @@ class addMenuContentAction
 				"name" => _("Sub Menu with Sidebar"),
 				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of sub-pages AND include a right sidebar for content common to all these sub-pages!"),
 				"icon" => "SubMenuWithSideBar.png"
+			);
+		$types[] = array(
+				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart'),
+				"name" => _("Page with Sidebar"),
+				"description" => _("Chose this if you want a page with a main column and a sidebar column."),
+				"icon" => "PageWithSideBar.png"
 			);
 		return $types;
 	}
