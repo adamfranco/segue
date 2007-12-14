@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.97 2007/12/14 20:15:30 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.98 2007/12/14 20:35:49 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,13 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2007-12-14'>
+			Portal: Empty site categories are now hidden.
+		</fix>
+		<fix author='adam' date='2007-12-14' ref='1849650' reftype='bug'>
+			Portal: 'Create New Site' button for admins has been removed since it
+			was an unneeded hold-over from early testing.
+		</fix>
 		<fix author='adam' date='2007-12-14' ref='1851019' reftype='bug'>
 			UI2: Options in 'Add Menu Item' list are now categorized.
 		</fix>

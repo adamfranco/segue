@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.16 2007/12/14 19:29:04 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.17 2007/12/14 20:35:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.16 2007/12/14 19:29:04 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.17 2007/12/14 20:35:49 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -59,7 +59,41 @@ class listAction
 	 * @since 4/26/05
 	 */
 	function getHeadingText () {
-		return _("Your Portal");
+		return _("Your Portal").$this->getUIModeForm();
+	}
+	
+	/**
+	 * Answer the UI mode form
+	 * 
+	 * @return string
+	 * @access private
+	 * @since 12/14/07
+	 */
+	private function getUIModeForm () {
+		$harmoni = Harmoni::instance();
+
+		if (RequestContext::value('user_interface')) {
+			$this->setUiModule(RequestContext::value('user_interface'));
+		}
+		
+		ob_start();
+		
+		// UI selection
+		print "\n\t<form action='".$harmoni->request->quickURL()."' method='post' style='float: right;'>";
+		$options = array ('ui1' => _("Classic Mode"), 'ui2' => _("New Mode"));
+		print "\n\t\t<select style='font-size: 10px' name='".RequestContext::name('user_interface')."'";
+		print " onchange='this.form.submit();'";
+		print ">";
+		foreach ($options as $key => $val) {
+			print "\n\t\t\t<option value='$key'";
+			print (($this->getUiModule() == $key)?" selected='selected'":"");
+			print ">$val</option>";
+		}
+		print "\n\t\t</select>";
+		print "\n\t</form>";
+		
+		print "\n\t<div style='clear: both; height: 0px;'>&nbsp;</div>";
+		return ob_get_clean();
 	}
 	
 	/**
@@ -92,45 +126,7 @@ class listAction
 		$harmoni->request->endNamespace();
 		
 		$actionRows = $this->getActionRows();
-		
-		
-		if (RequestContext::value('user_interface')) {
-			$this->setUiModule(RequestContext::value('user_interface'));
-		}
-		
-		ob_start();
-		
-		// UI selection
-		print "\n\t<form action='".$harmoni->request->quickURL()."' method='post' style='float: right;'>";
-		$options = array ('ui1' => _("Classic Mode"), 'ui2' => _("New Mode"));
-		print "\n\t\t<select style='font-size: 10px' name='".RequestContext::name('user_interface')."'";
-		print " onchange='this.form.submit();'";
-		print ">";
-		foreach ($options as $key => $val) {
-			print "\n\t\t\t<option value='$key'";
-			print (($this->getUiModule() == $key)?" selected='selected'":"");
-			print ">$val</option>";
-		}
-		print "\n\t\t</select>";
-		print "\n\t</form>";
-		
-		// Create Site Button
-		if ($authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.add_children"),
-				$idManager->getId("edu.middlebury.segue.sites_repository")))
-		{
-			
-			print "\n\t<div><a href='";
-			print $harmoni->request->quickURL($this->getUiModule(), "add");
-			print "' style='border: 1px solid; padding: 2px; text-align: center; text-decoration: none; margin: 2px;'>";
-			print _("Create New Site");
-			print "</a></div>";
-			
-		}
-		
-		print "\n\t<div style='clear: both;'></div>";
-		$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), null, null, RIGHT, CENTER);
-		
+				
 		
 		
 		$repository = $repositoryManager->getRepository(
@@ -148,31 +144,40 @@ class listAction
 		/*********************************************************
 		 * Future Classes
 		 *********************************************************/
-		$actionRows->add(new Heading(_("Future Classes"), 2));
-		foreach ($courseMgr->getUsersFutureCourses(SORT_DESC) as $course) {
-			$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
-			self::$slotsPrinted[] = $slot->getShortname();
-			$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
+		$courses = $courseMgr->getUsersFutureCourses(SORT_DESC);
+		if (count($courses)) {
+			$actionRows->add(new Heading(_("Future Classes"), 2));
+			foreach ($courses as $course) {
+				$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
+				self::$slotsPrinted[] = $slot->getShortname();
+				$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
+			}
 		}
 		
 		/*********************************************************
 		 * Current Classes
 		 *********************************************************/
-		$actionRows->add(new Heading(_("Current Classes"), 2));
-		foreach ($courseMgr->getUsersCurrentCourses(SORT_DESC) as $course) {
-			$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
-			self::$slotsPrinted[] = $slot->getShortname();
-			$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
+		$courses = $courseMgr->getUsersCurrentCourses(SORT_DESC);
+		if (count($courses)) {
+			$actionRows->add(new Heading(_("Current Classes"), 2));
+			foreach ($courses as $course) {
+				$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
+				self::$slotsPrinted[] = $slot->getShortname();
+				$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
+			}
 		}
 		
 		/*********************************************************
 		 * Past Classes
 		 *********************************************************/
-		$actionRows->add(new Heading(_("Past Classes"), 2));
-		foreach ($courseMgr->getUsersPastCourses(SORT_DESC) as $course) {
-			$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
-			self::$slotsPrinted[] = $slot->getShortname();
-			$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
+		$courses = $courseMgr->getUsersPastCourses(SORT_DESC);
+		if (count($courses)) {
+			$actionRows->add(new Heading(_("Past Classes"), 2));
+			foreach ($courses as $course) {
+				$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
+				self::$slotsPrinted[] = $slot->getShortname();
+				$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
+			}
 		}
 		
 		/*********************************************************
@@ -193,24 +198,40 @@ class listAction
 			$harmoni->request->endNamespace();
 		}
 		
-		print _("Personal Sites");
-		
-		$actionRows->add(new Heading(ob_get_clean(), 2));
+		$slotComponents = array();
 		foreach ($slotMgr->getSlotsByType(Slot::personal) as $slot) {
 			if (!in_array($slot->getShortName(), self::$slotsPrinted)) {
 				self::$slotsPrinted[] = $slot->getShortname();
-				$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
+				$slotComponents[] = $this->printSlot($slot);
 			}
+		}
+		
+		if (PersonalSlot::hasPersonal() || count($slotComponents)) {
+			print _("Personal Sites");
+			$actionRows->add(new Heading(ob_get_clean(), 2));
+			foreach ($slotComponents as $component) {
+				$actionRows->add($component, null, null, LEFT, CENTER);
+			}
+		} else {
+			ob_end_clean();
 		}
 		
 		/*********************************************************
 		 * Other Slots owned by the user
 		 *********************************************************/
-		$actionRows->add(new Heading(_("Other Sites"), 2));
+		$slotComponents = array();
+		
 		foreach ($slotMgr->getSlots() as $slot) {
 			if (!in_array($slot->getShortName(), self::$slotsPrinted)) {
 				self::$slotsPrinted[] = $slot->getShortname();
-				$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
+				$slotComponents[] = $this->printSlot($slot);
+			}
+		}
+		
+		if (count($slotComponents)) {
+			$actionRows->add(new Heading(_("Other Sites"), 2));
+			foreach ($slotComponents as $component) {
+				$actionRows->add($component, null, null, LEFT, CENTER);
 			}
 		}
 		
