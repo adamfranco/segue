@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.8 2007/09/21 16:16:40 adamfranco Exp $
+ * @version $Id: index.php,v 1.9 2007/12/17 17:53:34 adamfranco Exp $
  */
 
 /*********************************************************
@@ -47,15 +47,20 @@ if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
 	require_once(HARMONI."/utilities/Timer.class.php");
 	$execTimer = new Timer;
 	$execTimer->start();
+	ob_start();
 }
 
 $harmoni->execute();
 
 if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
 	$execTimer->end();
+	$output = ob_get_clean();
+	
+	ob_start();
 	print "\n<table>\n<tr><th align='right'>Execution Time:</th>\n<td align='right'><pre>";
 	printf("%1.6f", $execTimer->printTime());
 	print "</pre></td></tr>\n</table>";
+	
 	
 	$dbhandler = Services::getService("DBHandler");
 	printpre("NumQueries: ".$dbhandler->getTotalNumberOfQueries());
@@ -63,6 +68,9 @@ if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
 // 	printpreArrayExcept($_SESSION, array('__temporarySets'));
 	// debug::output(session_id());
 	// Debug::printAll();
+	
+	print "\n\t</body>\n</html>";
+	print preg_replace('/<\/body>\s*<\/html>/i', ob_get_clean(), $output);
 }
 
 ?>

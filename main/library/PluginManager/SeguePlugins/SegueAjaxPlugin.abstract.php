@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAjaxPlugin.abstract.php,v 1.4 2007/11/08 22:07:24 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.5 2007/12/17 17:53:35 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAjaxPlugin.abstract.php,v 1.4 2007/11/08 22:07:24 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.5 2007/12/17 17:53:35 adamfranco Exp $
  */
 abstract class SegueAjaxPlugin 
 	extends SeguePluginsTemplate
@@ -48,7 +48,7 @@ abstract class SegueAjaxPlugin
 	 * @since 1/13/06
 	 */
 	final public function href ( $parameters = array() ) {		
-		return "href='Javascript:".$this->locationSend($parameters)."'";
+		return "href='#' onclick='".$this->locationSend($parameters)."'";
 	}
 	
 	/**
@@ -192,9 +192,9 @@ abstract class SegueAjaxPlugin
 						var pluginElement = document.get_element_by_id('plugin:' + pluginId);
 						
 						if (req.readyState > 0 && req.readyState < 4) {
-							pluginElement.innerHTML = '<div>Loading...</div>';
+							pluginElement.innerHTML = '<div>Loading...<\/div>';
 						} else {
-							pluginElement.innerHTML = '<div>Loaded</div>';
+							pluginElement.innerHTML = '<div>Loaded<\/div>';
 									
 							// only if req shows "loaded"
 							if (req.readyState == 4) {

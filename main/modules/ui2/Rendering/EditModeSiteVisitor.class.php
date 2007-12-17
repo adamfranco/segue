@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.21 2007/12/14 20:15:30 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.22 2007/12/17 17:53:35 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.21 2007/12/14 20:15:30 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.22 2007/12/17 17:53:35 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -430,8 +430,10 @@ END;
 		print "var regex = /[^\\s\\n\\t]+/; ";
 		print "for (var i = 0; i < this.form.elements.length; i++) { ";
 		print 		"var elem = this.form.elements[i]; ";
-		print 		"if (elem.name == \"".RequestContext::name('displayName')."\" && elem.value.match(regex)) {";
-		print 			"hasTitle = true;";
+		print 		"if (elem.name == \"".RequestContext::name('displayName')."\") { ";
+		print 			"if (elem.value.match(regex)) { ";
+		print 				"hasTitle = true;";
+		print 			"}";
 		print 		"}";
 		print "}";
 		print "if (!hasTitle) { ";
