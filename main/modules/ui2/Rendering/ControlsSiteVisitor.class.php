@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.12 2007/11/30 20:23:20 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.13 2007/12/17 22:25:33 adamfranco Exp $
  */ 
  
  require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.12 2007/11/30 20:23:20 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.13 2007/12/17 22:25:33 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	extends GeneralControlsSiteVisitor
@@ -159,12 +159,11 @@ class ControlsSiteVisitor
 			
 			$harmoni = Harmoni::instance();
 			$message = _("Are you sure that you wish to create a submenu?");
-			$url = str_replace('&amp;', '&', 
-					$harmoni->request->quickURL('ui2', 'createSubMenu', array(
+			$url = $harmoni->request->quickURL('ui2', 'createSubMenu', array(
 						'parent' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->action,
-						'direction' => urlencode($parentMenuOrganizer->getDirection()))));
+						'direction' => urlencode($parentMenuOrganizer->getDirection())));
 			
 			print "\n\t\t\t\t\t<button onclick='";
 			if ($authZ->isUserAuthorized(
@@ -172,7 +171,7 @@ class ControlsSiteVisitor
 				$siteComponent->getQualifierId()))
 			{
 				print 	"if (confirm(\"".$message."\")) ";
-				print 		"window.location = \"".$url."\"; return false;";
+				print 		"window.location = \"".$url."\".urlDecodeAmpersands(); return false;";
 			} else {
 				print "alert(\""._('You are not authorized to create a submenu.')."\"); return false;";
 			}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.22 2007/12/17 17:53:35 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.23 2007/12/17 22:25:33 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.22 2007/12/17 17:53:35 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.23 2007/12/17 22:25:33 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -492,9 +492,10 @@ END;
 // 			."border-right: $lineWidth solid $borderColor; "
 			.(($leftIndentLevel)?"margin-left: 10px; ":"");
 		
-		print "visibility: hidden; ";
+		if (!$this->controlsAlwaysVisible())
+			print "visibility: hidden; ";
 		print "position: absolute; ";
-		print "z-index: 9999; ";
+		print "z-index: 10; ";
 		print "left: 0px; ";
 		
 		
@@ -503,11 +504,12 @@ END;
 			." onmouseout='hideControlsLink(this)'";
 		print ">";
 		print "\n<table border='0' cellpadding='0' cellspacing='0'"
-			." style='width: 100%; padding: 0px; margin: 0px; cursor: pointer;"
+			." style='width: 100%; padding: 0px; margin: 0px; "
 			."background-color: $backgroundColor; "
 			.$opacityStyles
 			."'"
-			." onclick='toggleControls(this.parentNode.parentNode);'"
+// 			." onclick='toggleControls(this.parentNode.parentNode);'"
+
 			.">";
 		print "\n\t<tr>";
 		print "\n\t\t<td>";
@@ -516,6 +518,7 @@ END;
 		print "\n\t\t<td style='text-align: right;'>";
 		print "\n\t\t\t\t<span class='controls_link'"
 			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
+			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'"
 			.">";
 		print "\n\t\t\t"._("Options");
 		print "\n\t\t\t</span>";
@@ -540,6 +543,17 @@ END;
 	}
 	
 	/**
+	 * Answer true if borders and controls should be always visible
+	 *
+	 * @return boolean
+	 * @access public
+	 * @since 12/17/07
+	 */
+	public function controlsAlwaysVisible () {
+		return false;
+	}
+	
+	/**
 	 * Answer a wrapping div that triggers showing and hiding the border and 
 	 * controls-bar for the item
 	 * 
@@ -551,9 +565,13 @@ END;
 	function getBarPreHTML ($borderColor) {
 		ob_start();
 		print "\n<div class='site_component_wrapper'";
-		print " onmouseover='this.borderColor = \"$borderColor\"; showControls(this)'";
-		print " onmouseout='if (isValidMouseOut(this, event)) {hideControls(this);} '";
-		print " style='position: relative; border: 2px solid transparent;'";
+		if (!$this->controlsAlwaysVisible()) {
+			print " onmouseover='this.borderColor = \"$borderColor\"; showControls(this)'";
+			print " onmouseout='if (isValidMouseOut(this, event)) {hideControls(this);} '";
+			print " style='position: relative; border: 2px solid transparent;'";
+		} else {
+			print " style='position: relative; border: 2px solid $borderColor;'";
+		}
 		print ">";
 		return ob_get_clean();
 	}
@@ -646,10 +664,10 @@ END;
 	
 	function toggleControls(mainElement) {
 		var controls = getDescendentByClassName(mainElement, 'controls');
-		
 		// if controls aren't show, show them
 		if (controls.style.display != 'block') {
 			controls.style.display = 'block';
+			mainElement.style.zIndex = '11';
 			
 			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 			controlsLink.style.visibility = 'visible';
@@ -659,6 +677,7 @@ END;
 		else {
 			var controls = getDescendentByClassName(mainElement, 'controls');
 			controls.style.display = 'none';
+			mainElement.style.zIndex = '10';
 			
 			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 			controlsLink.innerHTML = '$showControls';

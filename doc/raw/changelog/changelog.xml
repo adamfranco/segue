@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.101 2007/12/17 17:53:35 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.102 2007/12/17 22:25:33 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,12 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2007-12-17'>
+			UI2: Upgraded Scriptaculous library to latest version.
+		</change>
+		<fix author='adam' date='2007-12-17' ref='1798921' reftype='bug'>
+			UI2: Arrange mode now renders more closely to edit mode.
+		</fix>
 		<fix author='adam' date='2007-12-17'>
 			UI2: Some fixes to the Javascript syntax to aid XHTML validation.
 		</fix>
