@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.4 2007/09/04 15:07:45 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.5 2007/12/17 16:17:26 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.4 2007/09/04 15:07:45 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.5 2007/12/17 16:17:26 adamfranco Exp $
  */
 class mainAction 
 	extends MainWindowAction
@@ -57,6 +57,10 @@ class mainAction
 	function buildContent () {
 		$actionRows = $this->getActionRows();
 		$harmoni = Harmoni::instance();
+		
+		if (RequestContext::value('login_failed')) {
+			$actionRows->add(new Heading("<span style='color: red;'>"._("Error: Login Failed. Either your username or password was invalid.")."</span>", 2));
+		}
 
 		$actionRows->add(new Heading(_("Authentication"), 2));
 		

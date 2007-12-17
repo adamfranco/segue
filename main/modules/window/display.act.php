@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.20 2007/10/24 20:44:41 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.21 2007/12/17 16:17:26 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.20 2007/10/24 20:44:41 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.21 2007/12/17 16:17:26 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -253,7 +253,7 @@ class displayAction
 			// set bookmarks for success and failure
 			$harmoni->history->markReturnURL("polyphony/display_login");
 			$harmoni->history->markReturnURL("polyphony/login_fail",
-				$harmoni->request->quickURL("user", "main"));
+				$harmoni->request->quickURL("user", "main", array('login_failed' => 'true')));
 
 			$harmoni->request->startNamespace("harmoni-authentication");
 			$usernameField = $harmoni->request->getName("username");
