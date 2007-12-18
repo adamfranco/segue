@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.48 2007/11/13 20:45:56 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.49 2007/12/18 16:55:26 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.48 2007/11/13 20:45:56 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.49 2007/12/18 16:55:26 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -341,7 +341,7 @@ class ViewModeSiteVisitor
 				throwError(new Error("Expecting object, found '".ob_get_clean()."'.", __CLASS__));
 			}
 			
-			if ($this->_missingTargetWidths[$targetId])
+			if (isset($this->_missingTargetWidths[$targetId]) && $this->_missingTargetWidths[$targetId])
 				$width = $this->_missingTargetWidths[$targetId];
 			else
 				$width = null;
@@ -359,9 +359,6 @@ class ViewModeSiteVisitor
 		}
 		
 		// returning the entire site in GUI component object tree.
-// 		printpre($this);
-// 		print "<hr/>";
-// 		printpre($siteNavBlock->_director->_activeNodes);
 		return $childGuiComponent;
 	}
 
@@ -488,18 +485,22 @@ class ViewModeSiteVisitor
 					// do nothing
 				} else if (is_array($childGuiComponents)) {
 					$hasChildComponents = true;
+					// wrap the menu item if needed
+					$this->addFlowChildWrapper($organizer, $i, $childGuiComponents[0]);
+					
+					// Add each of the the menuItems/submenus
 					foreach (array_keys($childGuiComponents) as $key)
 						$guiContainer->add($childGuiComponents[$key]);
 				} else {
 					$hasChildComponents = true;
-					$guiContainer->add($childGuiComponents);
+					$guiContainer->add($this->addFlowChildWrapper($organizer, $i, $childGuiComponents));
 				}
 			}
 		}
 		
 		// Add a placeholder if no content exists so that the screen doesn't stretch
 		if (!$hasChildComponents) {	
-			$noticeComponent = new UnstyledBlock(' &nbsp; ', 1);
+			$noticeComponent = $this->getMenuTargetPlaceholder($organizer);
 			if (isset($this->_emptyCellContainers[$organizer->getTargetId()])) {
 				$this->_emptyCellContainers[$organizer->getTargetId()]->insertAtPlaceholder(
 					$this->_emptyCellPlaceholders[$organizer->getTargetId()],
@@ -514,6 +515,31 @@ class ViewModeSiteVisitor
 		}
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Answer a placeholder for a menu target
+	 * 
+	 * @param object MenuOrganizerSiteComponent $organizer
+	 * @return Component
+	 * @access protected
+	 * @since 12/18/07
+	 */
+	protected function getMenuTargetPlaceholder (MenuOrganizerSiteComponent $organizer) {
+		return new UnstyledBlock(' &nbsp; ', 1);
+	}
+	
+	/**
+	 * Add any needed markup to a gui component that is the child of a flow organizer
+	 * 
+	 * @param object FlowOrganizerSiteComponent $organizer
+	 * @param integer $cellIndex
+	 * @param object Component $guiComponent
+	 * @access protected
+	 * @since 12/18/07
+	 */
+	protected function addFlowChildWrapper (FlowOrganizerSiteComponent $organizer, $cellIndex, Component $guiComponent) {
+		return $guiComponent;
 	}
 	
 	/**

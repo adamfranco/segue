@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.23 2007/12/17 22:25:33 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.24 2007/12/18 16:55:26 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.23 2007/12/17 22:25:33 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.24 2007/12/18 16:55:26 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -271,7 +271,7 @@ END;
 				$childGuiComponent = $child->acceptVisitor($this);
 				// Filter out false entries returned due to lack of authorization
 				if ($childGuiComponent)
-					$childGuiComponents[] = $childGuiComponent;
+					$childGuiComponents[] = $this->addFlowChildWrapper($organizer, $i, $childGuiComponent);
 			}
 		}
 		
@@ -283,7 +283,8 @@ END;
 			$organizer->getQualifierId()))
 		{
 			$pluginManager = Services::getService("PluginManager");
-			$childGuiComponents[] = new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins()));
+			$childGuiComponents[] = $this->addFlowChildWrapper($organizer, $i, 
+				new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins())));
 		}
 		
 		$resultPrinter = new ArrayResultPrinter($childGuiComponents,
@@ -345,7 +346,8 @@ END;
 			$pluginManager = Services::getService("PluginManager");
 			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
-			$childComponent = $guiContainer->add(new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed, true), 2), null, '100%', null, TOP);
+			$childComponent = $guiContainer->add($this->addFlowChildWrapper($organizer, $organizer->getTotalNumberOfCells(), 
+				new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed, true), 2)), null, '100%', null, TOP);
 		}
 				
 		// Add controls bar and border
@@ -546,10 +548,10 @@ END;
 	 * Answer true if borders and controls should be always visible
 	 *
 	 * @return boolean
-	 * @access public
+	 * @access protected
 	 * @since 12/17/07
 	 */
-	public function controlsAlwaysVisible () {
+	protected function controlsAlwaysVisible () {
 		return false;
 	}
 	

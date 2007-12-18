@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.17 2007/12/17 22:25:33 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.18 2007/12/18 16:55:26 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.17 2007/12/17 22:25:33 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.18 2007/12/18 16:55:26 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -53,6 +53,9 @@ class ArrangeModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteNavBlock ) {
+		$childGuiComponent = parent::visitSiteNavBlock($siteNavBlock);
+		
+		
 		// enter links in our head to load needed javascript libraries
 		$harmoni = Harmoni::instance();
 		$outputHandler = $harmoni->getOutputHandler();
@@ -66,46 +69,14 @@ class ArrangeModeSiteVisitor
 			.drop_hover {
 				border: 4px inset #F00;
 			}
+			.controls_bar {
+				cursor: move;
+			}
 		</style>
 ");
 		
 		// Print out Javascript functions needed by our methods
 		$this->printJavascript();
-		
-		
-		// Traverse our child organizer, and place it in the _missingTargets array
-		// if our target is not available.
-		$childOrganizer = $siteNavBlock->getOrganizer();
-		$childGuiComponent = $childOrganizer->acceptVisitor($this);
-		
-		// Check completeness and render any nodes still waiting for targets
-		foreach (array_keys($this->_missingTargets) as $targetId) {			
-			if (!isset($this->_emptyCellContainers[$targetId])) {
-				throwError(new Error("Target id '$targetId' was not found or is not empty.", __CLASS__));
-			}
-			if (!is_object($this->_emptyCellContainers[$targetId])) {
-				ob_start();
-				var_dump($this->_emptyCellContainers[$targetId]);
-				throwError(new Error("Expecting object, found '".ob_get_clean()."'.", __CLASS__));
-			}
-			
-			if (isset($this->_missingTargetWidths[$targetId]) && $this->_missingTargetWidths[$targetId])
-				$width = $this->_missingTargetWidths[$targetId];
-			else
-				$width = null;
-			
-			$this->_emptyCellContainers[$targetId]->insertAtPlaceholder(
-				$this->_emptyCellPlaceholders[$targetId],
-				$this->_missingTargets[$targetId], 
-				$width, '100%', null, TOP);
-				
-			unset($this->_emptyCellContainers[$targetId]);
-			unset($this->_emptyCellPlaceholders[$targetId]);
-			unset($this->_missingTargets[$targetId]);
-			unset($this->_missingTargetWidths[$targetId]);
-		}
-		
-		
 		
 		// Any further empty cells in fixed organizers should get controls to
 		// add to them.
@@ -127,10 +98,6 @@ class ArrangeModeSiteVisitor
 			unset($this->_emptyCellContainers[$id], $this->_emptyCellPlaceholders[$id], $matches, $organizerId, $cellIndex);
 		}
 		
-		// returning the entire site in GUI component object tree.
-// 		printpre($this);
-// 		print "<hr/>";
-// 		printpre($siteNavBlock->_director->_activeNodes);
 		return $childGuiComponent;
 	}
 	
@@ -303,22 +270,7 @@ class ArrangeModeSiteVisitor
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
-		{
-// 			$controlsHTML = $this->getControlsHTML(
-// 				$organizer->getDisplayName(), 
-// 				$organizer->acceptVisitor($this->_controlsVisitor),
-// 				'#F00', '#F99', '#F66');
-// 			$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
-// 			
-// 			$styleCollection = new StyleCollection(
-// 										'.org_red_outline', 
-// 										'org_red_outline', 
-// 										'Red Outline', 
-// 										'A red outline around organizers');
-// 			$styleCollection->addSP(new BorderSP('1px', 'solid', '#F00'));
-// 			$styleCollection->addSP(new HeightSP('100%'));
-// 			$guiContainer->addStyle($styleCollection);
-			
+		{			
 			$controlsHTML = $this->getBarPreHTML('#F00')
 				.$this->getControlsHTML(
 					$organizer->getDisplayName(), 
@@ -349,6 +301,23 @@ class ArrangeModeSiteVisitor
 	}
 	
 	/**
+	 * Add any needed markup to a gui component that is the child of a flow organizer
+	 * 
+	 * @param object FlowOrganizerSiteComponent $organizer
+	 * @param integer $cellIndex
+	 * @param object Component $guiComponent
+	 * @return object Component
+	 * @access protected
+	 * @since 12/18/07
+	 */
+	protected function addFlowChildWrapper (FlowOrganizerSiteComponent $organizer, $cellIndex, Component $guiComponent) {
+		$this->wrapAsDroppable($guiComponent, 
+					$organizer->getId()."_cell:".$cellIndex,
+					array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($cellIndex)));
+		return $guiComponent;
+	}
+	
+	/**
 	 * Visit a flow organizer and return the resultant GUI component [a container].
 	 * 
 	 * @param object FlowOrganizerSiteComponent
@@ -357,74 +326,16 @@ class ArrangeModeSiteVisitor
 	 * @since 4/3/06
 	 */
 	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $organizer ) {
-		$numCells = $organizer->getTotalNumberOfCells();
-		
-		if ($organizer->getNumRows() == 0)
-			$cellsPerPage = $numCells + 1;
-		// If we are limiting to a number of rows, we are paginating.
-		else
-			$cellsPerPage = $organizer->getNumColumns() * $organizer->getNumRows();
-		
-		$childGuiComponents = array();
-		for ($i = 0; $i < $numCells; $i++) {
-			$child = $organizer->getSubcomponentForCell($i);
-			$childGuiComponent = $child->acceptVisitor($this);
-			if ($childGuiComponent) {
-				$this->wrapAsDroppable($childGuiComponent, 
-					$organizer->getId()."_cell:".$i,
-					array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
-				$childGuiComponents[] = $childGuiComponent;
-			}
-		}
+		$guiContainer = parent::visitFlowOrganizer($organizer);
 		
 		// Controls and organizer dragging.
 		// Add controls bar and border
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.add_children"), 
-			$organizer->getQualifierId()))
-		{
-			$pluginManager = Services::getService("PluginManager");
-			$addBlock = new UnstyledBlock($this->getAddFormHTML($organizer->getId(), $i, $pluginManager->getEnabledPlugins()));
-			$this->wrapAsDroppable($addBlock, 
-					$organizer->getId()."_cell:".$i,
-					array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
-			$childGuiComponents[] = $addBlock;
-		}
-		
-		
-		$resultPrinter = new ArrayResultPrinter($childGuiComponents,
-									$organizer->getNumColumns(), $cellsPerPage);
-		$resultPrinter->setRenderDirection($organizer->getDirection());
-		
-// 		if ($authZ->isUserAuthorized(
-// 			$idManager->getId("edu.middlebury.authorization.modify"), 
-// 			$organizer->getQualifierId()))
-// 		{
-// 			$resultPrinter->setTdStyles("border: 1px solid #00F; padding: 6px;");
-// 			$resultPrinter->addLinksStyleProperty(new BorderSP("1px", "solid", "#00F"));
-// 		}
-		$resultPrinter->setNamespace('pages_'.$organizer->getId());
-		
-		$guiContainer = $resultPrinter->getLayout();
-		
-		
-		// Controls and organizer dragging.
-		// Add controls bar and border
-		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#00F')
-				.$this->getControlsHTML(
-					"<em>".$this->_classNames['FlowOrganizer']."</em>", 
-					$organizer->acceptVisitor($this->_controlsVisitor), 
-					'#00F', '#99F', '#66F');
-			$guiContainer->setPreHTML($controlsHTML."\n<div style='z-index: 0;'>".$guiContainer->getPreHTML($null = null));
-			
-			$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>".$this->getBarPostHTML());
-			
 			if (count($organizer->getVisibleDestinationsForPossibleAddition()))
 				$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FlowOrganizer');
 		}
@@ -436,121 +347,22 @@ class ArrangeModeSiteVisitor
 	 * Visit a menu organizer and return the menu GUI component that corresponds
 	 * to it.
 	 * 
-	 * @param object MenuOrganizerSiteComponent
+	 * @param object MenuOrganizerSiteComponent $organizer
 	 * @return object Component
 	 * @access publicZ
 	 * @since 4/3/06
 	 */
-	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {	
+	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $organizer ) {
+		$guiContainer = parent::visitMenuOrganizer($organizer);
+// 		return $guiContainer;
+		
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
-		
-		// Choose layout direction based on number of rows
-		if ($this->_menuNestingLevel) {
-			$layout = new YLayout();
-		} else if ($organizer->getDirection() == "Left-Right/Top-Bottom") {
-			$layout = new XLayout();
-		} else if ($organizer->getDirection() == "Right-Left/Top-Bottom") {
-			$layout = new XLayout();
-			$layout->setRenderDirection("Right-Left/Top-Bottom");
-		} else {
-			$layout = new YLayout();
-		}
-		
-		if ($this->_menuNestingLevel)
-			$guiContainer = new SubMenu ( $layout, $this->_menuNestingLevel);
-		else
-			$guiContainer = new Menu ( $layout, 1);
-		$currentNestingLevel = $this->_menuNestingLevel;
-		
-		$numCells = $organizer->getTotalNumberOfCells();		
-		if ($numCells) {
-			for ($i = 0; $i < $numCells; $i++) {
-				$child = $organizer->getSubcomponentForCell($i);
-				$childGuiComponents = $child->acceptVisitor($this, true);
-				
-				// If we have multiple Child gui components, then we are dealing
-				// with a menu item followed by a sub menu
-				if ($childGuiComponents === false || (is_array($childGuiComponents) && !count($childGuiComponents))) {
-					// do nothing
-				} else if (is_array($childGuiComponents)) {
-					// wrap the menu item as droppable
-					$this->wrapAsDroppable($childGuiComponents[0], 
-						$organizer->getId()."_cell:".$i,
-						array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
-					
-					// Add each of the the menuItems/submenus
-					foreach (array_keys($childGuiComponents) as $key) {
-						$guiContainer->add($childGuiComponents[$key]);
-					}
-				} else {
-					$guiContainer->add($childGuiComponents);
-					$this->wrapAsDroppable($childGuiComponents, 
-						$organizer->getId()."_cell:".$i,
-						array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
-				}
-			}
-			
-			$i++;
-		} else if ($authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.add_children"), 
-			$organizer->getQualifierId()))
-		{
-			// Add a placeholder to our target if we don't have any children
-			$placeholder = new UnstyledBlock("<div style='height: 50px;'>&nbsp;</div>");
-			
-			$controlsHTML = $this->getControlsHTML(
-				$organizer->getDisplayName()." <em>"._("Target Placeholder")."</em>",
-				'', 
-				'#F00', '#F99', '#F66');
-			$placeholder->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
-			$styleCollection = new StyleCollection(
-										'.placeholder_red_outline', 
-										'placeholder_red_outline', 
-										'Red Outline', 
-										'A red outline around a menu placeholder');
-			$styleCollection->addSP(new BorderSP('2px', 'solid', '#F00'));
-			$placeholder->addStyle($styleCollection);
-			
-			$this->_missingTargets[$organizer->getTargetId()] = $placeholder;
-			
-			$i=0;
-		}
-		
-		if ($authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.add_children"), 
-			$organizer->getQualifierId()))
-		{
-			$allowed = array();
-			$allowed[] = _("Pages and Navigation");
-			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart');
-			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
-			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
-			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
-			$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
-			$allowed[] = _("Menu Content");
-			$pluginManager = Services::getService("PluginManager");
-			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
-			
-			$childComponent = $guiContainer->add(new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), $i, $allowed, true), 2), null, '100%', null, TOP);
-			$this->wrapAsDroppable($childComponent, 
-					$organizer->getId()."_cell:".$i,
-					array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($i)));
-		}
 		
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
-		{
-			$controlsHTML = $this->getBarPreHTML('#00F')
-				.$this->getControlsHTML(
-					"<em>".$this->_classNames['MenuOrganizer']."</em>", 
-					$organizer->acceptVisitor($this->_controlsVisitor), 
-					'#00F', '#99F', '#66F');
-			$guiContainer->setPreHTML($controlsHTML."\n<div style='z-index: 0;'>".$guiContainer->getPreHTML($null = null));
-			
-			$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>".$this->getBarPostHTML());
-			
+		{	
 			if (count($organizer->getVisibleDestinationsForPossibleAddition()))
 				$this->wrapAsDraggable($guiContainer, $organizer->getId(), 'FlowOrganizer');
 		}
@@ -559,15 +371,47 @@ class ArrangeModeSiteVisitor
 	}
 	
 	/**
+	 * Answer a placeholder for a menu target
+	 * 
+	 * @param object MenuOrganizerSiteComponent $organizer
+	 * @return Component
+	 * @access protected
+	 * @since 12/18/07
+	 */
+	protected function getMenuTargetPlaceholder (MenuOrganizerSiteComponent $organizer) {
+		// Add a placeholder to our target if we don't have any children
+		$placeholder = new UnstyledBlock("<div style='height: 50px;'>&nbsp;</div>");
+		
+		$title = str_replace('%1', $organizer->getParentComponent()->getDisplayName(),
+				_("<em>Sub-Menu of</em> %1 <em>Target Placeholder</em>"));
+				
+		$controlsHTML = $this->getControlsHTML(
+			$title,
+			'', 
+			'#F00', '#F99', '#F66');
+		$placeholder->setPreHTML($controlsHTML);
+		$styleCollection = new StyleCollection(
+									'.placeholder_red_outline', 
+									'placeholder_red_outline', 
+									'Red Outline', 
+									'A red outline around a menu placeholder');
+		$styleCollection->addSP(new BorderSP('2px', 'solid', '#F00'));
+		$placeholder->addStyle($styleCollection);
+		return $placeholder;
+	}
+	
+	/**
 	 * Answer true if borders and controls should be always visible
 	 *
 	 * @return boolean
-	 * @access public
+	 * @access protected
 	 * @since 12/17/07
 	 */
-	public function controlsAlwaysVisible () {
+	protected function controlsAlwaysVisible () {
 		return true;
 	}
+	
+	
 	
 	/**
 	 * Wrap the given component as a draggable element
