@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.19 2007/12/18 17:08:35 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.20 2007/12/18 19:39:15 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.19 2007/12/18 17:08:35 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.20 2007/12/18 19:39:15 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -64,6 +64,24 @@ class ArrangeModeSiteVisitor
 			."
 		<script src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js' type='text/javascript'></script>
 		<script src='".MYPATH."/javascript/scriptaculous-js/src/scriptaculous.js' type='text/javascript'></script>
+		
+		<script type='text/javascript'>
+		// <![CDATA[
+		
+			Droppables.isAffected = function(point, element, drop) {
+				return (
+				  (drop.element!=element) &&
+				  ((!drop._containers) ||
+					this.isContained(element, drop)) &&
+				  ((!drop.accept) ||
+					(drop.accept.include(element.id)) ||
+				  (Element.classNames(element).detect( 
+					function(v) { return drop.accept.include(v) } ) )) &&
+				  Position.within(drop.element, point[0], point[1]) );
+			  };
+		
+		// ]]>
+		</script>
 
 		<style type='text/css'>
 			.drop_hover {

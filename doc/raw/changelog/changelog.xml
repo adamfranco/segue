@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.104 2007/12/18 17:08:35 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.105 2007/12/18 19:39:14 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -15,7 +15,10 @@
 			
 		</releaseNotes>
 		<change author='adam' date='2007-12-17'>
-			UI2: Upgraded Scriptaculous library to latest version.
+			UI2: Upgraded Scriptaculous library to latest version and moved the
+			overriden Draggables.isAffected() method to the ArrangeModeVisitor
+			where it is used, allowing a plain vanilla Scriptaculous library to
+			be included in the source.
 		</change>
 		<change author='adam' date='2007-12-18'>
 			UI2: Arrange mode now shows the move-cursor for only draggable items.

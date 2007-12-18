@@ -4,14 +4,17 @@
 
 
   /*********************************************************
-   * Line 70 in scriptaculous-js/src/dragdrop.js has been 
-   * updated to accept based on element id rather than classname
+   * Line 70 -- isAffected() -- in scriptaculous-js/src/dragdrop.js 
+   * has been overridden in the ArrangeModeVisitor to accept draggables
+   * based on element id as well as classname.
    *
    * To install, download scriptaculous from
    *	http://script.aculo.us/downloads
    * and unzip it into 
    * 	javascript/scriptaculous-js/
-   * and replace the following method in the droppables class:
+   *
+   * There is no longer a need to update the dragdrop.js file, but
+   * the new version is provided here for reverence.
    *********************************************************/
    
   isAffected: function(point, element, drop) {
@@ -20,6 +23,8 @@
       ((!drop._containers) ||
         this.isContained(element, drop)) &&
       ((!drop.accept) ||
-        (drop.accept.include(element.id))) &&
+        (drop.accept.include(element.id)) ||
+      (Element.classNames(element).detect( 
+        function(v) { return drop.accept.include(v) } ) )) &&
       Position.within(drop.element, point[0], point[1]) );
   },
