@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.15 2007/11/08 19:05:32 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.16 2007/12/18 20:09:54 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.15 2007/11/08 19:05:32 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.16 2007/12/18 20:09:54 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -242,15 +242,24 @@ class AssetNavBlockSiteComponent
 		}
 		
 		$possibleDestinations = $this->_director->getVisibleComponents();
-		$parent = $this->getParentComponent();
-		foreach (array_keys($possibleDestinations) as $id) {
-// 			if ($id == $parent->getId())
-// 				continue;
-			
+		foreach ($possibleDestinations as $id => $possibleDestination) {
+			// Can only send to menus.
 			if (preg_match('/^.*MenuOrganizerSiteComponent$/i', 
-				get_class($possibleDestinations[$id]))) 
+				get_class($possibleDestination))) 
 			{
-				$results[$id] = $possibleDestinations[$id];
+				// Filter out decendent menus as this would cause a cycle
+				$parent = $possibleDestination->getParentComponent();
+				$isDescendent = false;
+				while ($parent) {
+					if ($parent->getId() == $this->getId()) {
+						$isDescendent = true;
+						break;
+					}
+					$parent = $parent->getParentComponent();
+				}
+				
+				if (!$isDescendent)
+					$results[$id] = $possibleDestination;
 			}
 		}
 		
