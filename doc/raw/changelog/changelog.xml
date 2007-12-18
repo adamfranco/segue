@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.103 2007/12/18 16:55:26 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.104 2007/12/18 17:08:35 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -16,6 +16,12 @@
 		</releaseNotes>
 		<change author='adam' date='2007-12-17'>
 			UI2: Upgraded Scriptaculous library to latest version.
+		</change>
+		<change author='adam' date='2007-12-18'>
+			UI2: Arrange mode now shows the move-cursor for only draggable items.
+		</change>
+		<change author='adam' date='2007-12-18'>
+			UI2: Arrange mode now only allows dragging by the controls bar.
 		</change>
 		<fix author='adam' date='2007-12-17' ref='1798921' reftype='bug'>
 			UI2: Arrange mode now renders more closely to edit mode.

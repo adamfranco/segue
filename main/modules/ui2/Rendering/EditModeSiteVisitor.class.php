@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.24 2007/12/18 16:55:26 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2007/12/18 17:08:35 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.24 2007/12/18 16:55:26 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2007/12/18 17:08:35 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -514,7 +514,7 @@ END;
 
 			.">";
 		print "\n\t<tr>";
-		print "\n\t\t<td>";
+		print "\n\t\t<td class='controls_bar_title'>";
 		print "\n\t\t".$title;
 		print "\n\t\t</td>";
 		print "\n\t\t<td style='text-align: right;'>";

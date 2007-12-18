@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.18 2007/12/18 16:55:26 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.19 2007/12/18 17:08:35 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.18 2007/12/18 16:55:26 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.19 2007/12/18 17:08:35 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -68,9 +68,6 @@ class ArrangeModeSiteVisitor
 		<style type='text/css'>
 			.drop_hover {
 				border: 4px inset #F00;
-			}
-			.controls_bar {
-				cursor: move;
 			}
 		</style>
 ");
@@ -433,8 +430,12 @@ class ArrangeModeSiteVisitor
 <script type='text/javascript'>
 /* <![CDATA[ */
 	
-	new Draggable('comp_$id',{revert:true, ghosting:false, handle:'controls_bar'});
-
+	new Draggable('comp_$id',{revert:true, ghosting:false, handle:'controls_bar_title'});
+	
+	var element = document.get_element_by_id('comp_$id');
+	var handle = element.down('.controls_bar_title');
+	handle.style.cursor = 'move';
+	
 /* ]]> */
 </script>
 ");
