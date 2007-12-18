@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.5 2007/12/17 16:17:26 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.6 2007/12/18 20:22:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.5 2007/12/17 16:17:26 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.6 2007/12/18 20:22:15 adamfranco Exp $
  */
 class mainAction 
 	extends MainWindowAction
@@ -127,7 +127,8 @@ class mainAction
 			"\n\t<li><a href='".
 			$harmoni->request->quickURL("user", "change_password")."'>".
 			_("Change 'Harmoni DB' Password").
-			"</li>";
+			"</a></li>".
+			"\n</ul>";
 			
 		$introText = new Block(ob_get_contents(),2);
 		$actionRows->add($introText, "100%", null, CENTER, CENTER);

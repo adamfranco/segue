@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.6 2007/12/14 19:41:04 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.7 2007/12/18 20:22:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.6 2007/12/14 19:41:04 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.7 2007/12/18 20:22:15 adamfranco Exp $
  */
 class mainAction 
 	extends MainWindowAction
@@ -131,10 +131,16 @@ class mainAction
 			
 			if ($authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.modify"),
-				$idManager->getId("edu.middlebury.authorization.root"))) {
+				$idManager->getId("edu.middlebury.authorization.root"))) 
+			{
 				print "\n\t<li><a href='".$harmoni->request->quickURL("updates", 
 					"list")."'>";
 				print _("Segue Updates");
+				print "</a></li>";
+				
+				print "\n\t<li><a href='".$harmoni->request->quickURL("plugin_manager", 
+					"manage")."'>";
+				print _("Manage Plugins");
 				print "</a></li>";
 			}
 			
