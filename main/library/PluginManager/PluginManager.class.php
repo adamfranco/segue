@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.27 2007/10/25 21:06:23 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.28 2007/12/19 21:55:25 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.27 2007/10/25 21:06:23 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.28 2007/12/19 21:55:25 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -194,11 +194,16 @@ class PluginManager {
 			throw new Exception("Invalid plugin keyword, '".$keyword."'.");
 		
 		
+		$pluginClassFile = $this->getPluginDir($type)
+			.$this->getPluginClass($type).".class.php";
+		
 		if ($this->isPluginDomain($domain)) {
+			if (!file_exists($pluginClassFile))
+				throw new Exception("Missing Plugin class file '$pluginClassFile'.");
+				
 			require_once(MYDIR."/main/library/PluginManager/"
 				.$domain."/include.php");
-			require_once($this->getPluginDir($type)
-				.$this->getPluginClass($type).".class.php");
+			require_once($pluginClassFile);
 			
 
 		} else {
@@ -284,6 +289,7 @@ class PluginManager {
 							if (is_dir($keyPath) && !in_array($keyDir, $ignore)
 									&& ereg("^[a-zA-Z0-9_]+$", $keyDir)) {
 								$keyword = $keyDir;
+																
 								$type = new Type($domain, $authority, $keyword);
 								$indexString = $type->printableString();
 								// unique types are placed in the array
@@ -539,6 +545,22 @@ class PluginManager {
 			return $plugin->getDescription();
 		else
 			return "";
+	}
+	
+	/**
+	 * Answer true if the plugin type is enabled
+	 * 
+	 * @param object Type $type
+	 * @return boolean
+	 * @access public
+	 * @since 12/18/07
+	 */
+	public function isEnabled (Type $type) {
+		foreach ($this->_enabledPlugins as $pluginType) {
+			if ($pluginType->isEqual($type))
+				return true;
+		}
+		return false;
 	}
 
 	/**

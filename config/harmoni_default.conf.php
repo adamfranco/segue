@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: harmoni_default.conf.php,v 1.17 2007/10/25 17:44:10 adamfranco Exp $
+ * @version $Id: harmoni_default.conf.php,v 1.18 2007/12/19 21:55:25 adamfranco Exp $
  */
 
 // :: set up the $harmoni object :: 
@@ -35,7 +35,7 @@
 	$postProcessIgnoreList = array(
 									"language.*",
 									"repository.*",
-									"plugin_manager.*",
+									"plugin_manager.viewplugin",
 									"ui1.*",
 									"ui2.*",
 									"help.*"

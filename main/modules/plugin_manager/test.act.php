@@ -1,11 +1,11 @@
 <?php
 /**
- * @package segue.modules.home
+ * @package segue.plugin_manager
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.16 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.17 2007/12/19 21:55:26 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -13,12 +13,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
 /**
  * 
  * 
- * @package segue.modules.home
+ * @package segue.plugin_manager
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: test.act.php,v 1.16 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: test.act.php,v 1.17 2007/12/19 21:55:26 adamfranco Exp $
  */
 class testAction 
 	extends MainWindowAction

@@ -1,11 +1,11 @@
 <?php
 /**
- * @package segue.modules.home
+ * @package segue.plugin_manager
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list_plugins.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: list_plugins.act.php,v 1.3 2007/12/19 21:55:26 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -13,12 +13,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
 /**
  * 
  * 
- * @package segue.modules.home
+ * @package segue.plugin_manager
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list_plugins.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: list_plugins.act.php,v 1.3 2007/12/19 21:55:26 adamfranco Exp $
  */
 class list_pluginsAction 
 	extends XmlAction

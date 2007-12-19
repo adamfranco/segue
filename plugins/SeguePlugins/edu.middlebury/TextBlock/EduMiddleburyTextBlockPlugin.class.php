@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.35 2007/12/06 21:57:14 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.36 2007/12/19 21:55:26 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.35 2007/12/06 21:57:14 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.36 2007/12/19 21:55:26 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -37,6 +37,57 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	static function getPluginDescription () {
  		return _("The Text Block is a unit of HTML-formatted text that may contain inline images, links, and formatting.");
+ 	}
+ 	
+ 	/**
+ 	 * Answer a display name for the plugin (not the instance) to provide to 
+ 	 * users when choosing between what plugin to create.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginDisplayName () {
+ 		return _("Text Block");
+ 	}
+ 	
+ 	/**
+ 	 * Answer an array of the creators of the plugin (not the instance) to provide to 
+ 	 * users when choosing between what plugin to create.
+ 	 * 
+ 	 * @return array of strings
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginCreators () {
+ 		return array("Adam Franco");
+ 	}
+ 	
+ 	/**
+ 	 * Answer the version of the plugin.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginVersion () {
+ 		return '1.0';
+ 	}
+ 	
+ 	/**
+ 	 * Answer the latest version of the plugin available. Null if no version information
+ 	 * is available.
+ 	 * 
+ 	 * @return mixed a string or null
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginVersionAvailable () {
+ 		return null;
  	}
 		
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.15 2007/12/06 21:57:14 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.16 2007/12/19 21:55:26 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.15 2007/12/06 21:57:14 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.16 2007/12/19 21:55:26 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SegueAjaxPlugin
@@ -35,6 +35,57 @@ class EduMiddleburyDownloadPlugin
  	 */
  	static function getPluginDescription () {
  		return _("The Download plugin allows you to chose a file-for-download and have a link to it displayed in a bar with a citation and a custom description. Use this plugin with audio files for creating podcasts.");
+ 	}
+ 	
+ 	/**
+ 	 * Answer a display name for the plugin (not the instance) to provide to 
+ 	 * users when choosing between what plugin to create.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginDisplayName () {
+ 		return _("File For Download");
+ 	}
+ 	
+ 	/**
+ 	 * Answer an array of the creators of the plugin (not the instance) to provide to 
+ 	 * users when choosing between what plugin to create.
+ 	 * 
+ 	 * @return array of strings
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginCreators () {
+ 		return array("Adam Franco");
+ 	}
+ 	
+ 	/**
+ 	 * Answer the version of the plugin.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginVersion () {
+ 		return '1.0';
+ 	}
+ 	
+ 	/**
+ 	 * Answer the latest version of the plugin available. Null if no version information
+ 	 * is available.
+ 	 * 
+ 	 * @return mixed a string or null
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginVersionAvailable () {
+ 		return null;
  	}
 		
 	/**

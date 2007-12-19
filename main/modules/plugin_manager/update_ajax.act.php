@@ -1,11 +1,11 @@
 <?php
 /**
- * @package segue.modules.home
+ * @package segue.plugin_manager
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.11 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.12 2007/12/19 21:55:26 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -13,12 +13,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 /**
  * 
  * 
- * @package segue.modules.home
+ * @package segue.plugin_manager
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.11 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.12 2007/12/19 21:55:26 adamfranco Exp $
  */
 class update_ajaxAction 
 	extends Action

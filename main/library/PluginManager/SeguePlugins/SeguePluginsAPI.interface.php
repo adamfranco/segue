@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAPI.interface.php,v 1.2 2007/12/03 22:00:13 adamfranco Exp $
+ * @version $Id: SeguePluginsAPI.interface.php,v 1.3 2007/12/19 21:55:26 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAPI.interface.php,v 1.2 2007/12/03 22:00:13 adamfranco Exp $
+ * @version $Id: SeguePluginsAPI.interface.php,v 1.3 2007/12/19 21:55:26 adamfranco Exp $
  */
 interface SeguePluginsAPI {
 		
@@ -52,7 +52,7 @@ interface SeguePluginsAPI {
  *********************************************************/
  	
  	/**
- 	 * Answer a description of the the plugin (not the instance) to provide to 
+ 	 * Answer a description of the plugin (not the instance) to provide to 
  	 * users when choosing between what plugin to create.
  	 * 
  	 * @return string
@@ -61,6 +61,49 @@ interface SeguePluginsAPI {
  	 * @static
  	 */
  	public static function getPluginDescription ();
+ 	
+ 	/**
+ 	 * Answer a display name for the plugin (not the instance) to provide to 
+ 	 * users when choosing between what plugin to create.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginDisplayName ();
+ 	
+ 	/**
+ 	 * Answer an array of the creators of the plugin (not the instance) to provide to 
+ 	 * users when choosing between what plugin to create.
+ 	 * 
+ 	 * @return array of strings
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginCreators ();
+ 	
+ 	/**
+ 	 * Answer the version of the plugin.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginVersion ();
+ 	
+ 	/**
+ 	 * Answer the latest version of the plugin available. Null if no version information
+ 	 * is available.
+ 	 * 
+ 	 * @return mixed a string or null
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginVersionAvailable ();
  	
  	/**
  	 * Initialize this Plugin. 

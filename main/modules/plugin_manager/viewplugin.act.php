@@ -1,11 +1,11 @@
 <?php
 /**
- * @package segue.modules.plugin_manager
+ * @package segue.plugin_manager
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewplugin.act.php,v 1.4 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: viewplugin.act.php,v 1.5 2007/12/19 21:55:26 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -13,12 +13,12 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 /**
  * 
  * 
- * @package segue.modules.plugin_manager
+ * @package segue.plugin_manager
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: viewplugin.act.php,v 1.4 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: viewplugin.act.php,v 1.5 2007/12/19 21:55:26 adamfranco Exp $
  */
 class viewpluginAction 
 	extends Action

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsTemplate.abstract.php,v 1.1 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SeguePluginsTemplate.abstract.php,v 1.2 2007/12/19 21:55:26 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsDriver.abstract.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/SeguePluginsDriver.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsTemplate.abstract.php,v 1.1 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SeguePluginsTemplate.abstract.php,v 1.2 2007/12/19 21:55:26 adamfranco Exp $
  */
 abstract class SeguePluginsTemplate
 	extends SeguePluginsDriver
@@ -59,6 +59,57 @@ abstract class SeguePluginsTemplate
  	 */
  	public static function getPluginDescription () {
  		return _("Override this method in your plugin.");
+ 	}
+ 	
+ 	/**
+ 	 * Answer a display name for the plugin (not the instance) to provide to 
+ 	 * users when choosing between what plugin to create.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginDisplayName () {
+ 		return _("Override this method in your plugin.");
+ 	}
+ 	
+ 	/**
+ 	 * Answer an array of the creators of the plugin (not the instance) to provide to 
+ 	 * users when choosing between what plugin to create.
+ 	 * 
+ 	 * @return array of strings
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginCreators () {
+ 		return array(_("Override this method in your plugin."));
+ 	}
+ 	
+ 	/**
+ 	 * Answer the version of the plugin.
+ 	 * 
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginVersion () {
+ 		return '0.0';
+ 	}
+ 	
+ 	/**
+ 	 * Answer the latest version of the plugin available. Null if no version information
+ 	 * is available.
+ 	 * 
+ 	 * @return mixed a string or null
+ 	 * @access public
+ 	 * @since 12/19/07
+ 	 * @static
+ 	 */
+ 	public static function getPluginVersionAvailable () {
+ 		return null;
  	}
  	
  	/**

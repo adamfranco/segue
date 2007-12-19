@@ -1,24 +1,24 @@
 <?php
 /**
  * @since 6/4/07
- * @package segue.modules.plugin_manager
+ * @package segue.plugin_manager
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: icon.act.php,v 1.3 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: icon.act.php,v 1.4 2007/12/19 21:55:26 adamfranco Exp $
  */ 
 
 /**
  * Answer the data for a plugin icon PNG image.
  * 
  * @since 6/4/07
- * @package segue.modules.plugin_manager
+ * @package segue.plugin_manager
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: icon.act.php,v 1.3 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: icon.act.php,v 1.4 2007/12/19 21:55:26 adamfranco Exp $
  */
 class iconAction
 	extends Action
