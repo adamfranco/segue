@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.110 2007/12/20 16:35:55 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.111 2007/12/20 16:50:44 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -76,6 +76,9 @@
 		<fix author='adam' date='2007-12-18' ref='1853122' reftype='bug'>
 			SiteDisplay: Now cannot drag nav items into their child menus, 
 			creating cycles in the hierarchy.
+		</fix>
+		<fix author='adam' date='2007-12-20' ref='1854969' reftype='bug'>
+			WikiText: Link titles are now case-insensitive.
 		</fix>
 	</version>
 	<version number="2.0.0-beta-6" date="2007-12-12">

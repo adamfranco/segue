@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TitleSearcher.class.php,v 1.1 2007/12/03 22:00:14 adamfranco Exp $
+ * @version $Id: TitleSearcher.class.php,v 1.2 2007/12/20 16:50:44 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TitleSearcher.class.php,v 1.1 2007/12/03 22:00:14 adamfranco Exp $
+ * @version $Id: TitleSearcher.class.php,v 1.2 2007/12/20 16:50:44 adamfranco Exp $
  */
 class TitleSearcher
 	implements SiteVisitor
@@ -105,7 +105,7 @@ class TitleSearcher
 			return null;
 		$this->visited[] = $siteComponent->getId();
 		
-		if ($this->title == trim($siteComponent->getDisplayName()))
+		if (strtolower($this->title) == strtolower(trim($siteComponent->getDisplayName())))
 			return $siteComponent->getId();
 		
 		return null;
@@ -235,7 +235,7 @@ class TitleSearcher
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TitleSearcher.class.php,v 1.1 2007/12/03 22:00:14 adamfranco Exp $
+ * @version $Id: TitleSearcher.class.php,v 1.2 2007/12/20 16:50:44 adamfranco Exp $
  */
 class UnknownTitleException
 	extends Exception
