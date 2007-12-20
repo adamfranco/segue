@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2007/12/18 17:08:35 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.26 2007/12/20 20:37:31 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2007/12/18 17:08:35 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.26 2007/12/20 20:37:31 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -348,6 +348,9 @@ END;
 			
 			$childComponent = $guiContainer->add($this->addFlowChildWrapper($organizer, $organizer->getTotalNumberOfCells(), 
 				new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed, true), 2)), null, '100%', null, TOP);
+				
+			// Add a spacer at the end of the menu
+			$guiContainer->add(new UnstyledMenuItem("<div> &nbsp; </div>"));
 		}
 				
 		// Add controls bar and border
@@ -366,6 +369,7 @@ END;
 			
 			$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>".$this->getBarPostHTML());
 		}
+		
 		
 		return $guiContainer;
 	}

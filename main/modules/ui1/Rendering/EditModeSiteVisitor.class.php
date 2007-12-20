@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.20 2007/11/08 19:35:44 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.21 2007/12/20 20:37:31 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.20 2007/11/08 19:35:44 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.21 2007/12/20 20:37:31 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -302,9 +302,13 @@ END;
 	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
 			
 			$childComponent = $guiContainer->add(new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, 'addMenuContent', true), 2), null, '100%', CENTER, TOP);
+			
+			// Add a spacer at the end of the menu
+			$guiContainer->add(new UnstyledMenuItem("<div> &nbsp; </div>"));
 		}
 				
 		$guiContainer->setPreHTML($organizer->acceptVisitor($this->_controlsVisitor));
+		
 		
 		return $guiContainer;
 	}
