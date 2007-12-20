@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.20 2007/12/18 19:39:15 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.21 2007/12/20 21:44:44 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.20 2007/12/18 19:39:15 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.21 2007/12/20 21:44:44 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -395,7 +395,11 @@ class ArrangeModeSiteVisitor
 	 */
 	protected function getMenuTargetPlaceholder (MenuOrganizerSiteComponent $organizer) {
 		// Add a placeholder to our target if we don't have any children
-		$placeholder = new UnstyledBlock("<div style='height: 50px;'>&nbsp;</div>");
+		ob_start();
+		print "<div style='height: 50px;'>";
+		print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+		print "\n</div>";
+		$placeholder = new UnstyledBlock(ob_get_clean());
 		
 		$title = str_replace('%1', $organizer->getParentComponent()->getDisplayName(),
 				_("<em>Sub-Menu of</em> %1 <em>Target Placeholder</em>"));

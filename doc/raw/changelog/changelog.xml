@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.113 2007/12/20 20:18:45 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.114 2007/12/20 21:44:42 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -53,6 +53,11 @@
 		<fix author='adam' date='2007-12-14' ref='1850944' reftype='bug'>
 			UI1/UI2: 'Page with Sidebar' option is now not as promonently listed.
 		</fix>
+		<change author='adam' date='2007-12-20' ref='1854964' reftype='bug'>
+			UI1/UI2: When edding a page and viewing and empty menu, instructions
+			are printed to the screen describing how to add a Content Page on which
+			content can be added.
+		</change>
 		<change author='adam' date='2007-12-17'>
 			UI2: Upgraded Scriptaculous library to latest version and moved the
 			overriden Draggables.isAffected() method to the ArrangeModeVisitor
@@ -74,7 +79,7 @@
 			UI2: Some fixes to the Javascript syntax to aid XHTML validation.
 		</fix>
 		<fix author='adam' date='2007-12-20' ref='1854960' reftype='bug'>
-			UI2: Added a notice for MSIE < v7 users that New Mode won't work for them.
+			UI2: Added a notice for MSIE &lt; v7 users that New Mode won't work for them.
 		</fix>
 		<fix author='adam' date='2007-12-18' ref='1853122' reftype='bug'>
 			SiteDisplay: Now cannot drag nav items into their child menus, 

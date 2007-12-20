@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.26 2007/12/20 20:37:31 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.27 2007/12/20 21:44:44 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.26 2007/12/20 20:37:31 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.27 2007/12/20 21:44:44 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -372,6 +372,25 @@ END;
 		
 		
 		return $guiContainer;
+	}
+	
+	/**
+	 * Answer a placeholder for a menu target
+	 * 
+	 * @param object MenuOrganizerSiteComponent $organizer
+	 * @return Component
+	 * @access protected
+	 * @since 12/18/07
+	 */
+	protected function getMenuTargetPlaceholder (MenuOrganizerSiteComponent $organizer) {
+		// Add a placeholder to our target if we don't have any children
+		ob_start();
+		print "<div style='height: 50px; border: 1px solid #F00; margin: 0px 5px 5px 5px; padding: 5px;'>";
+		print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+		print "\n</div>";
+		$placeholder = new UnstyledBlock(ob_get_clean());
+		
+		return $placeholder;
 	}
 	
 	/**
