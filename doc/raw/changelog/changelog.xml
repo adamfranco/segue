@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.108 2007/12/19 21:55:25 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.109 2007/12/20 16:12:24 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -16,6 +16,9 @@
 		</releaseNotes>
 		<new author='adam' date='2007-12-19'>
 			Plugins: New descriptive methods in plugins.
+		</new>
+		<new author='adam' date='2007-12-20'>
+			Plugins: Can now determine if a plugin type is installed and/or enabled.
 		</new>
 		<fix author='adam' date='2007-12-17' ref='1844330' reftype='bug'>
 			Failed login now displays a message and logout now redirects properly.

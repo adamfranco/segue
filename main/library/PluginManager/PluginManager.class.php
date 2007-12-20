@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.28 2007/12/19 21:55:25 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.29 2007/12/20 16:12:15 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.28 2007/12/19 21:55:25 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.29 2007/12/20 16:12:15 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -557,6 +557,22 @@ class PluginManager {
 	 */
 	public function isEnabled (Type $type) {
 		foreach ($this->_enabledPlugins as $pluginType) {
+			if ($pluginType->isEqual($type))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Answer true if the plugin type is installed
+	 * 
+	 * @param object Type $type
+	 * @return boolean
+	 * @access public
+	 * @since 12/18/07
+	 */
+	public function isInstalled (Type $type) {
+		foreach ($this->getInstalledPlugins() as $pluginType) {
 			if ($pluginType->isEqual($type))
 				return true;
 		}

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: manage.act.php,v 1.1 2007/12/19 21:55:56 adamfranco Exp $
+ * @version $Id: manage.act.php,v 1.2 2007/12/20 16:12:25 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: manage.act.php,v 1.1 2007/12/19 21:55:56 adamfranco Exp $
+ * @version $Id: manage.act.php,v 1.2 2007/12/20 16:12:25 adamfranco Exp $
  */
 class manageAction
 	extends MainWindowAction
@@ -66,6 +66,8 @@ class manageAction
 		
 		$pluginMgr = Services::getService("PluginManager");
 		
+		print "\n<div style='color: #F00; font-weight: bold; margin: 10px; padding: 5px; border: 1px dotted;'>This UI is currently read-only. See <a href='https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799748&amp;group_id=82171&amp;atid=565234'>the bug tracker</a> for status</div>";
+		
 		print "\n<table class='plugin_manager_list' border='1'>";
 		print "\n\t<thead>";
 		print "\n\t\t<tr>";
@@ -89,10 +91,14 @@ class manageAction
 				$pluginMgr->_loadPluginFiles($pluginType);
 				
 				print "\n\t\t\t<td>";
-				print "\n\t\t\t\t<input type='checkbox' name='".RequestContext::name('enabled')."' value='".$pluginType->asString()."' ";
-				if ($pluginMgr->isEnabled($pluginType))
-					print " checked='checked'";
-				print "/>";
+				if ($pluginMgr->isInstalled($pluginType)) {
+					print "\n\t\t\t\t<input type='checkbox' name='".RequestContext::name('enabled')."' value='".$pluginType->asString()."' ";
+					if ($pluginMgr->isEnabled($pluginType))
+						print " checked='checked'";
+					print "/>";
+				} else {
+					print "\n\t\t\t<button>"._("Install")."</button>";
+				}
 				print "</td>";
 				
 				print "\n\t\t\t<td class='type'>".$pluginType->getDomain()." ::".$pluginType->getAuthority()." ::".$pluginType->getKeyword()."</td>";
