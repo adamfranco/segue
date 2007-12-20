@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editContent.act.php,v 1.6 2007/11/05 21:10:57 adamfranco Exp $
+ * @version $Id: editContent.act.php,v 1.7 2007/12/20 19:06:54 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/PluginManager/SeguePlugins/SegueAjaxPlugin.abs
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editContent.act.php,v 1.6 2007/11/05 21:10:57 adamfranco Exp $
+ * @version $Id: editContent.act.php,v 1.7 2007/12/20 19:06:54 adamfranco Exp $
  */
 class editContentAction
 	extends SegueClassicWizard
@@ -65,7 +65,7 @@ class editContentAction
 		print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/MediaLibrary.js'></script>";
 		print "\n\t\t<link rel='stylesheet' type='text/css' href='".MYPATH."/javascript/MediaLibrary.css'/>";
 		
-		$outputHandler->setHead(ob_get_clean());
+		$outputHandler->setHead($outputHandler->getHead().ob_get_clean());
 		
 		parent::buildContent();
 	}
