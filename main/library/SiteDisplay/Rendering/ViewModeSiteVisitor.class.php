@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.49 2007/12/18 16:55:26 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.50 2007/12/20 17:02:58 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.49 2007/12/18 16:55:26 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.50 2007/12/20 17:02:58 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -134,7 +134,9 @@ class ViewModeSiteVisitor
 		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
 		$harmoni->request->passthrough('node');
+		print "\n<div class='plugin_content'>";
 		print $plugin->executeAndGetMarkup($this->showPluginControls());
+		print "\n</div>";
 		$harmoni->request->forget('node');
 		
 		if ($block->showComments()) {
