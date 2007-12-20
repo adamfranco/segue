@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.5 2007/12/06 19:05:30 adamfranco Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.6 2007/12/20 16:35:55 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueCourseSection.class.php");
@@ -28,7 +28,7 @@ require_once(HARMONI."oki2/agent/AgentSearches/ClassTokenSearch.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.5 2007/12/06 19:05:30 adamfranco Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.6 2007/12/20 16:35:55 adamfranco Exp $
  */
 class SegueCourseManager {
 
@@ -272,8 +272,17 @@ class SegueCourseManager {
 		$semesterOrder = array();
 		$ids = array();
 		foreach ($courses as $course) {
-			$years[] = $course->getYear();
-			$semesterOrder[] = $course->getSemesterOrder();
+			try {
+				$years[] = $course->getYear();
+				$semesterOrder[] = $course->getSemesterOrder();
+			} 
+			// If there is an issue with getting the year or semester due to
+			// an invalid course code, just use null.
+			catch (Exception $e) {
+				HarmoniErrorHandler::logException($e, "Segue");
+				$years[] = null;
+				$semesterOrder[] = null;
+			}
 			$ids[] = $course->getId()->getIdString();
 		}
 		

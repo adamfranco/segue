@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseSection.class.php,v 1.1 2007/08/22 20:08:50 adamfranco Exp $
+ * @version $Id: SegueCourseSection.class.php,v 1.2 2007/12/20 16:35:55 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseSection.class.php,v 1.1 2007/08/22 20:08:50 adamfranco Exp $
+ * @version $Id: SegueCourseSection.class.php,v 1.2 2007/12/20 16:35:55 adamfranco Exp $
  */
 class SegueCourseSection {
 
@@ -263,6 +263,48 @@ class SegueCourseSection {
 	}
 	
 	/**
+	 * Answer the department for the course.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 12/20/07
+	 */
+	public function getDepartment () {
+		$info = $this->getInfo();
+		if (!isset($info['department']))
+			throw new Exception("No department available for this course section.");
+		return $info['department'];
+	}
+	
+	/**
+	 * Answer the number for the course.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 12/20/07
+	 */
+	public function getNumber () {
+		$info = $this->getInfo();
+		if (!isset($info['number']))
+			throw new Exception("No number available for this course section.");
+		return $info['number'];
+	}
+	
+	/**
+	 * Answer the section for the course.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 12/20/07
+	 */
+	public function getSection () {
+		$info = $this->getInfo();
+		if (!isset($info['section']))
+			throw new Exception("No section available for this course section.");
+		return $info['section'];
+	}
+	
+	/**
 	 * Answer the year for the course.
 	 * 
 	 * @return integer
@@ -271,6 +313,8 @@ class SegueCourseSection {
 	 */
 	public function getYear () {
 		$info = $this->getInfo();
+		if (!isset($info['year']))
+			throw new Exception("No year available for this course section.");
 		return $info['year'];
 	}
 	
@@ -283,6 +327,8 @@ class SegueCourseSection {
 	 */
 	public function getSemester () {
 		$info = $this->getInfo();
+		if (!isset($info['semester']))
+			throw new Exception("No semester available for this course section.");
 		return $info['semester'];
 	}
 	
@@ -295,6 +341,8 @@ class SegueCourseSection {
 	 */
 	public function getSemesterOrder () {
 		$info = $this->getInfo();
+		if (!isset($info['semester_order']))
+			throw new Exception("No semester order available for this course section.");
 		return $info['semester_order'];
 	}
 	
@@ -307,6 +355,9 @@ class SegueCourseSection {
 	 */
 	public function getStartDate () {
 		$info = $this->getInfo();
+		
+		if (!isset($info['semester_order']))
+			throw new Exception("No start date available for this course section.");
 		
 		switch($info['semester_order']) {
 			case 1:
@@ -330,6 +381,9 @@ class SegueCourseSection {
 	public function getEndDate () {
 		$info = $this->getInfo();
 		
+		if (!isset($info['semester_order']))
+			throw new Exception("No end date available for this course section.");
+		
 		switch($info['semester_order']) {
 			case 1:
 				return DateAndTime::fromString($info['year']."-02-10T00:00:00");
@@ -350,10 +404,14 @@ class SegueCourseSection {
 	 * @since 8/21/07
 	 */
 	public function isFuture () {
-		if ($this->getStartDate()->isGreaterThan(DateAndTime::now()))
+		try {
+			if ($this->getStartDate()->isGreaterThan(DateAndTime::now()))
+				return true;
+			else
+				return false;
+		} catch (Exception $e) {
 			return true;
-		else
-			return false;
+		}
 	}
 	
 	/**
@@ -364,10 +422,14 @@ class SegueCourseSection {
 	 * @since 8/21/07
 	 */
 	public function isCurrent () {
-		if ($this->getStartDate()->isLessThan(DateAndTime::now()) && $this->getEndDate()->isGreaterThan(DateAndTime::now())) {
-			return true;
-		} else
+		try {
+			if ($this->getStartDate()->isLessThan(DateAndTime::now()) && $this->getEndDate()->isGreaterThan(DateAndTime::now())) {
+				return true;
+			} else
+				return false;
+		} catch (Exception $e) {
 			return false;
+		}
 	}
 	
 	/**
@@ -378,10 +440,14 @@ class SegueCourseSection {
 	 * @since 8/21/07
 	 */
 	public function isPast () {
-		if ($this->getEndDate()->isLessThan(DateAndTime::now()))
-			return true;
-		else
+		try {
+			if ($this->getEndDate()->isLessThan(DateAndTime::now()))
+				return true;
+			else
+				return false;
+		} catch (Exception $e) {
 			return false;
+		}
 	}
 	
 	/**
@@ -393,17 +459,28 @@ class SegueCourseSection {
 	 */
 	private function getInfo () {
 		if (!is_array($this->courseInfo)) {
-			$regex = '/([a-z]+)([0-9]+)([a-z]+)-([a-z]+)([0-9]+)/i';
-			if (!preg_match($regex, $this->getId()->getIdString(), $matches))
+			$regex = '/^([a-z]+)([0-9]+)([a-z]+)-([a-z]+)([0-9]+)$/i';
+			$semesterOnlyRegex = '/^.*-([a-z]+)([0-9]+)$/i';
+			if (preg_match($regex, $this->getId()->getIdString(), $matches)) {
+				$this->courseInfo = array(
+					"department"	=> $matches[1],
+					"number" 		=> $matches[2],
+					"section"		=> $matches[3],
+					);
+				$semester = $matches[4];
+				$year = $matches[5];
+			} else if (preg_match($semesterOnlyRegex, $this->getId()->getIdString(), $matches)) 
+			{
+				$this->courseInfo = array();
+				$semester = $matches[1];
+				$year = $matches[2];
+			} else {
 				throw new Exception("Mal-formed or unknown-formed course code, '".$this->getId()->getIdString()."'.");
+			}
 			
-			$this->courseInfo = array(
-				"department"	=> $matches[1],
-				"number" 		=> $matches[2],
-				"section"		=> $matches[3],
-				);
 			
-			switch ($matches[4]) {
+			
+			switch ($semester) {
 				case 'w':
 					$this->courseInfo['semester'] = _("Winter");
 					$this->courseInfo['semester_order'] = "1";
@@ -424,7 +501,7 @@ class SegueCourseSection {
 					throw new Exception("No semester found in course code, '".$this->getId()->getIdString()."'.");
 			}
 			
-			$this->courseInfo['year'] = intval($matches[5]);
+			$this->courseInfo['year'] = intval($year);
 			if ($this->courseInfo['year'] < 1000)
 				$this->courseInfo['year'] = $this->courseInfo['year'] + 2000;
 				
