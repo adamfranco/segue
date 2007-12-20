@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.50 2007/12/20 17:02:58 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.51 2007/12/20 20:18:46 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.50 2007/12/20 17:02:58 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.51 2007/12/20 20:18:46 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -389,7 +389,7 @@ class ViewModeSiteVisitor
 					$guiContainer->add(new UnstyledBlock("<div style='height: 0px;'> &nbsp; </div>"), null, "0px", null, TOP );
 			} else {
 				$this->_emptyCellContainers[$organizer->getId().'_cell:'.$i] = $guiContainer;
-				$this->_emptyCellPlaceholders[$organizer->getId().'_cell:'.$i] = $guiContainer->addPlaceholder();
+				$this->_emptyCellPlaceholders[$organizer->getId().'_cell:'.$i] = $guiContainer->addPlaceholder(new UnstyledBlock("<div style='height: 0px;'> &nbsp; </div>"));
 			}
 		}
 		

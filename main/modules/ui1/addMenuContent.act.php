@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.8 2007/12/14 19:57:38 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.9 2007/12/20 20:18:46 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.8 2007/12/14 19:57:38 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.9 2007/12/20 20:18:46 adamfranco Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -192,7 +192,7 @@ class addMenuContentAction
 		$types = array();
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart'),
-				"name" => _("Single Column Page"),
+				"name" => _("Content Page"),
 				"description" => _("Chose this for a single column page in which you can append any number of content blocks."),
 				"icon" => "Page.png"
 			);
@@ -210,7 +210,7 @@ class addMenuContentAction
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart'),
-				"name" => _("Page with Sidebar"),
+				"name" => _("Content Page with Sidebar"),
 				"description" => _("Chose this if you want a page with a main column and a sidebar column."),
 				"icon" => "PageWithSideBar.png"
 			);

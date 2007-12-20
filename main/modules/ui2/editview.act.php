@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.8 2007/11/29 20:49:55 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.9 2007/12/20 20:18:46 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -15,6 +15,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.clas
 require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/Rendering/DetailEditModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/view.act.php");
+require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
 
 /**
  * Test view using new components
@@ -25,7 +26,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.8 2007/11/29 20:49:55 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.9 2007/12/20 20:18:46 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -59,6 +60,7 @@ class editviewAction
 	 * @since 1/18/07
 	 */
 	function execute () {
+		UI2::addBrowserWarning();
 		$allwrapper = parent::execute();
 		$mainScreen = $this->mainScreen;
 		

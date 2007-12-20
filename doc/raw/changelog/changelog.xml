@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.112 2007/12/20 17:02:58 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.113 2007/12/20 20:18:45 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -73,9 +73,17 @@
 		<fix author='adam' date='2007-12-17'>
 			UI2: Some fixes to the Javascript syntax to aid XHTML validation.
 		</fix>
+		<fix author='adam' date='2007-12-20' ref='1854960' reftype='bug'>
+			UI2: Added a notice for MSIE < v7 users that New Mode won't work for them.
+		</fix>
 		<fix author='adam' date='2007-12-18' ref='1853122' reftype='bug'>
 			SiteDisplay: Now cannot drag nav items into their child menus, 
 			creating cycles in the hierarchy.
+		</fix>
+		<fix author='adam' date='2007-12-20' ref='1854956' reftype='bug'>
+			SiteDisplay: Empty NavOrganizers now have a non-null placeholder, so
+			if they don't get filled they won't cause other elements on the page
+			to stretch.
 		</fix>
 		<fix author='adam' date='2007-12-20' ref='1854958' reftype='bug'>
 			SiteDisplay: Links in text blocks are now underlined and colored.
