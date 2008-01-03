@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.9 2007/12/20 20:18:46 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.10 2008/01/03 19:56:24 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.9 2007/12/20 20:18:46 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.10 2008/01/03 19:56:24 adamfranco Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -124,7 +124,7 @@ class addMenuContentAction
 			ob_start();
 			print " <strong>".$navArray['name']."</strong>";
 			print "\n<div>";
-			$icon = MYPATH."/icons/".$navArray['icon'];
+			$icon = MYPATH."/images/".$navArray['icon'];
 			print "\n\t<img src='".$icon."' width='300px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
 			print "\n\t<div>".$navArray['description']."</div>";
 			print "\n</div>";

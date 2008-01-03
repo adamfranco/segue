@@ -5,11 +5,21 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.115 2007/12/20 21:48:24 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.116 2008/01/03 19:56:24 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-8" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<change author='adam' date='2008-01-03' ref='1863384' reftype='bug'>
+			Moved the 'icons/' subdirectory to 'images/' to prevent collision
+			with the Apache system-icons directory when installing Segue in the
+			webserver root.
+		</change>
+	</version>
 	<version number="2.0-beta-7" date="2007-12-20">
 		<releaseNotes>
 			This release fixes a large number of bugs as well as improves the validity

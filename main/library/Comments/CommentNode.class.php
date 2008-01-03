@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.12 2007/12/07 18:02:17 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.13 2008/01/03 19:56:24 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.12 2007/12/07 18:02:17 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.13 2008/01/03 19:56:24 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -445,7 +445,7 @@ class CommentNode {
 				// If this is a work in progress that has not had content added yet, 
 				// do not display it.
 				if ($reply->hasContent() || $reply->isAuthor()) {
-					print "\n\t\t\t\t<img src='".MYPATH."/icons/reply_indent.png' class='reply_icon'/>";
+					print "\n\t\t\t\t<img src='".MYPATH."/images/reply_indent.png' class='reply_icon'/>";
 					print "\n\t\t\t<div class='comment_reply'>";
 					print $reply->getMarkup(true);
 					
