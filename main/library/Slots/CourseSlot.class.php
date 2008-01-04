@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CourseSlot.class.php,v 1.2 2007/12/06 19:00:43 adamfranco Exp $
+ * @version $Id: CourseSlot.class.php,v 1.3 2008/01/04 18:43:20 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.abstract.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/Slot.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CourseSlot.class.php,v 1.2 2007/12/06 19:00:43 adamfranco Exp $
+ * @version $Id: CourseSlot.class.php,v 1.3 2008/01/04 18:43:20 adamfranco Exp $
  */
 class CourseSlot
 	extends Slot
@@ -46,14 +46,26 @@ class CourseSlot
 		$courses = $courseMgr->getUsersInstructorCourses();
 		foreach ($courses as $course) {
 			$slot = new CourseSlot($course->getId()->getIdString());
-			foreach ($course->getInstructors() as $instructor) {
-				$slot->populateOwnerId($instructor);
-			}
+ 			
+// 			// This is the old method, loading all instructors right away.
+// 			// This method is simpler and should be used if the underlying
+// 			// course information system is more efficient than the
+// 			// one in place at the time of this writing.
+// 			foreach ($course->getInstructors() as $instructor) {
+// 				$slot->populateOwnerId($instructor);
+// 			}
+			
+			// Attach the course object so that we can lazily fetch the owner list
+			// as needed rather than looking to see if every person in the class is an
+			// instructor now.
+			$slot->attachCourse($course);
+			
 			$slots[] = $slot;
 		}
 		
 		return $slots;
 	}
+	
 
 /*********************************************************
  * Instance Methods
@@ -102,6 +114,100 @@ class CourseSlot
 				$this->populateOwnerId($instructor);
 			}
 		}
+	}
+	
+/*********************************************************
+ * The following instance variables and over-ridden methods
+ * allow the CourseSlot to take a more efficient approach to
+ * determining if the current user is the owner of a course.
+ *
+ * The original method involved determining the 'instructor' or
+ * 'student' status of all members of the course, when in many
+ * cases, only the status of the current user is of interest.
+ *********************************************************/
+	
+	/**
+	 * @var SegueCourseSection $course;  
+	 * @access private
+	 * @since 1/3/08
+	 */
+	private $course;
+	
+	/**
+	 * @var boolean $ownersPopulated;  
+	 * @access private
+	 * @since 1/3/08
+	 */
+	private $ownersPopulated = false;
+	
+	/**
+	 * Attach a course to this slot.
+	 * 
+	 * @param object SegueCourseSection $courseSection
+	 * @return void
+	 * @access private
+	 * @since 1/3/08
+	 */
+	private function attachCourse (SegueCourseSection $courseSection) {
+		$this->course = $courseSection;
+	}
+	
+	/**
+	 * Answer true if the current user is an owner.
+	 * This method has been overridden to provide a quicker method of determination
+	 * when the slot is created with a course object.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/22/07
+	 */
+	public function isUserOwner () {
+		if (isset($this->course) && !is_null($this->course)) {
+			// False if the user has been manually removed as an owner.
+			if ($this->isUserRemovedOwner())
+				return false;
+			
+			// If they weren't manually removed and are listed as an instructor,
+			// then they are an owner.
+			if ($this->course->isUserInstructor())
+				return true;
+			
+			// Go through the internally defined owners and check them.
+			// This is the same process the parent uses, we just want to avoid
+			// loading checking all of the course members, since we already know
+			// the result of that process for the current user (just above).
+			$authN = Services::getService("AuthN");
+			$userId = $authN->getFirstUserId();
+			foreach (parent::getOwners() as $id) {
+				if ($id->isEqual($userId))
+					return true;
+			}		
+			return false;	
+		}
+		
+		return parent::isUserOwner();
+	}
+	
+	/**
+	 * Answer the Id objects of the owners of this slot.
+	 * This method has been over-ridden to allow lazy loading of slot owners from
+	 * a course object rather than forcing that to be done at instance creation time.
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 7/30/07
+	 */
+	public function getOwners () {
+		// Lazily load the slot owners.
+		if (!$this->ownersPopulated && isset($this->course)) {
+			
+			foreach ($this->course->getInstructors() as $instructor) {
+				$this->populateOwnerId($instructor);
+			}
+			
+			$this->ownersPopulated = true;
+		}
+		return parent::getOwners();
 	}
 }
 

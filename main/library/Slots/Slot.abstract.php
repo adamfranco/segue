@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.6 2007/12/12 17:16:31 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.7 2008/01/04 18:43:21 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.6 2007/12/12 17:16:31 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.7 2008/01/04 18:43:21 adamfranco Exp $
  */
 abstract class Slot {
 	
@@ -176,7 +176,7 @@ abstract class Slot {
 		
 		$this->siteId = $intSlot->getSiteId();
 		
-		foreach ($this->owners as $key => $ownerId) {
+		foreach ($this->getOwners() as $key => $ownerId) {
 			// If this owner was intentionally removed, don't list them.
 			if ($intSlot->isRemovedOwner($ownerId)) {
 				unset($this->owners[$key]);
@@ -239,7 +239,7 @@ abstract class Slot {
 	 * @since 8/14/07
 	 */
 	public function isOwner ($ownerId) {
-		foreach ($this->owners as $id) {
+		foreach ($this->getOwners() as $id) {
 			if ($id->isEqual($ownerId))
 				return true;
 		}
@@ -257,6 +257,18 @@ abstract class Slot {
 	public function isUserOwner () {
 		$authN = Services::getService("AuthN");
 		return $this->isOwner($authN->getFirstUserId());
+	}
+	
+	/**
+	 * Answer true if the current user is a removed owner.
+	 *
+	 * @return boolean
+	 * @access protected
+	 * @since 1/4/08
+	 */
+	protected function isUserRemovedOwner () {
+		$authN = Services::getService("AuthN");
+		return $this->isRemovedOwner($authN->getFirstUserId());
 	}
 	
 
@@ -379,7 +391,7 @@ abstract class Slot {
 			$dbc->query($query, IMPORTER_CONNECTION);
 			
 			if ($this->isOwner($ownerId)) {
-				foreach ($this->owners as $key => $id) {
+				foreach ($this->getOwners() as $key => $id) {
 					if ($id->isEqual($ownerId))
 						unset($this->owners[$key]);
 				}
@@ -587,33 +599,46 @@ abstract class Slot {
 	 */
 	private function recordInDB () {
 		if (!$this->isInDB) {
-			// Add a row to the slot table
-			$query = new InsertQuery;
-			$query->setTable('segue_slot');
-			$query->addValue('shortname', $this->getShortname());
-			if ($this->getSiteId())
-				$query->addValue('site_id', $this->getSiteId()->getIdString());
-			$query->addValue('type', $this->getType());
-			$query->addValue('location_category', $this->getLocationCategory());
-			
 			$dbc = Services::getService('DBHandler');
-			$dbc->query($query, IMPORTER_CONNECTION);
+			
+			try {
+				// Add a row to the slot table
+				$query = new InsertQuery;
+				$query->setTable('segue_slot');
+				$query->addValue('shortname', $this->getShortname());
+				if ($this->getSiteId())
+					$query->addValue('site_id', $this->getSiteId()->getIdString());
+				$query->addValue('type', $this->getType());
+				$query->addValue('location_category', $this->getLocationCategory());
+							
+				$dbc->query($query, IMPORTER_CONNECTION);
+			} catch (DuplucateKeyDatabaseException $e) {
+				// Update row to the slot table
+				$query = new UpdateQuery;
+				$query->setTable('segue_slot');
+				$query->addWhereEqual('shortname', $this->getShortname());
+				if ($this->getSiteId())
+					$query->addValue('site_id', $this->getSiteId()->getIdString());
+				$query->addValue('type', $this->getType());
+				$query->addValue('location_category', $this->getLocationCategory());
+				
+				$dbc->query($query, IMPORTER_CONNECTION);
+			}
 			
 			// Add existing owners to the slot_owner table
 			// Adam 2007-08-16: Not sure if we actually need to do this...
-			if (count($this->owners)) {
+			if (count($this->getOwners())) {
 				$query = new InsertQuery;
 				$query->setTable('segue_slot_owner');
-				$first = true;
-				foreach($this->owners as $ownerId) {
-					if (!$first)
-						$query->createRow();
+				foreach($this->getOwners() as $ownerId) {
 					$query->addValue('shortname', $this->getShortname());
 					$query->addValue('owner_id', $ownerId->getIdString());
-					$first = false;
+					try {
+						$dbc->query($query, IMPORTER_CONNECTION);
+					} catch (DuplucateKeyDatabaseException $e) {
+						// If already there, just skip.
+					}
 				}
-				
-				$dbc->query($query, IMPORTER_CONNECTION);
 			}
 			
 			$this->isInDB = true;

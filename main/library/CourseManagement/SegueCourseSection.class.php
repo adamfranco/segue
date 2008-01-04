@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseSection.class.php,v 1.2 2007/12/20 16:35:55 adamfranco Exp $
+ * @version $Id: SegueCourseSection.class.php,v 1.3 2008/01/04 18:43:20 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseSection.class.php,v 1.2 2007/12/20 16:35:55 adamfranco Exp $
+ * @version $Id: SegueCourseSection.class.php,v 1.3 2008/01/04 18:43:20 adamfranco Exp $
  */
 class SegueCourseSection {
 
@@ -136,6 +136,14 @@ class SegueCourseSection {
 		// will be the same accross all courses in which the user is a member,
 		// we are caching "instructor" status in a class variable.
 		if (!isset(self::$isInstructor[$agentId->getIdString()])) {
+// 			if ($agentId->getIdString() != '7362') {
+// 				$agentManager = Services::getService("Agent");
+// 				$agent = $agentManager->getAgentOrGroup($agentId);
+// 				printpre("Checking if instructor. ".$agentId->getIdString()." (".$agent->getDisplayName().") not in:");
+// 				printpre(self::$isInstructor);
+// 				
+// 				throw new Exception("testing");
+// 			}
 			// Match the groups the user is in against our configuration of
 			// groups whose members should have personal sites.
 			$agentManager = Services::getService("Agent");
@@ -158,8 +166,8 @@ class SegueCourseSection {
 		}
 		
 		// Also verify that the user is a member in our group.		
-		return ($this->group->contains($agentId, true)
-			&& self::$isInstructor[$agentId->getIdString()]);
+		return (self::$isInstructor[$agentId->getIdString()] && 
+				$this->group->contains($agentId, true));
 	}
 	
 	/**

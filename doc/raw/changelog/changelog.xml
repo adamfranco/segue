@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.116 2008/01/03 19:56:24 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.117 2008/01/04 18:43:19 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,18 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-01-04' ref='1851038' reftype='bug'>
+			Portal/Slots: Have cut the load time by ~2/3. From 30 seconds to 11 seconds.
+			
+			The big overhead that is now skipped was checking the ownership status of all members of a class rather than just the current user.
+		</fix>
+		<fix author='adam' date='2008-01-04'>
+			Slots: Now internally and externally defined slots are merged properly
+			so that all intended owners are given authorizations.
+		</fix>
+		<fix author='adam' date='2008-01-04'>
+			Slots: Added a unique-key to the slot-owner table to prevent duplicate entries.
+		</fix>
 		<change author='adam' date='2008-01-03' ref='1863384' reftype='bug'>
 			Moved the 'icons/' subdirectory to 'images/' to prevent collision
 			with the Apache system-icons directory when installing Segue in the

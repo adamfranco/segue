@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.7 2007/12/12 17:16:31 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.8 2008/01/04 18:43:21 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/AllSlotsIterator.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.7 2007/12/12 17:16:31 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.8 2008/01/04 18:43:21 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -112,7 +112,14 @@ class SlotManager {
 		$slotClass = $this->slotTypes[$slotType];
 		
 		eval('$extSlots = '.$slotClass.'::getExternalSlotDefinitionsForUser();');
+		$extNames = array();
+		foreach($extSlots as $slot) {
+			$extNames[] = $slot->getShortname();
+		}
+		
 		$intSlots = $this->getInternalSlotDefinitionsForUserByType($slotType);
+		$intDefsOfExtSlots = $this->getInternalSlotDefinitionsForShortnames($extNames);
+		$intSlots = array_merge($intSlots, $intDefsOfExtSlots);
 		
 		$slots = $this->mergeSlots($extSlots, $intSlots);
 		foreach ($slots as $slot)
@@ -168,6 +175,8 @@ class SlotManager {
 				$slotClass = $this->slotTypes[Slot::custom];
 				$this->slots[$shortname] = new $slotClass($shortname);
 			}
+			
+			$this->slots[$shortname]->mergeWithExternal();
 		}
 		
 		return $this->slots[$shortname];
@@ -339,6 +348,38 @@ class SlotManager {
 		return $this->getSlotsFromQueryResult($result);
 	}
 	
+	/**
+	 * Answer the internal slot definitions for the shortnames passed
+	 * 
+	 * @param array $shortnames An array of strings
+	 * @return array
+	 * @access private
+	 * @since 1/4/08
+	 */
+	private function getInternalSlotDefinitionsForShortnames (array $shortnames) {
+		if (!count($shortnames))
+			return array();
+		
+		$query = new SelectQuery;
+		$query->addTable('segue_slot');
+		$query->addTable('segue_slot_owner AS all_owners', LEFT_JOIN, 'segue_slot.shortname = all_owners.shortname');
+		
+		$query->addColumn('segue_slot.shortname', 'shortname');
+		$query->addColumn('segue_slot.site_id', 'site_id');
+		$query->addColumn('segue_slot.type', 'type');
+		$query->addColumn('segue_slot.location_category', 'location_category');
+		$query->addColumn('all_owners.owner_id', 'owner_id');
+		$query->addColumn('all_owners.removed', 'removed');
+		
+		$query->addWhereIn('segue_slot.shortname', $shortnames);
+		
+// 		printpre($query->asString());
+		$dbc = Services::getService('DBHandler');
+		$result = $dbc->query($query, IMPORTER_CONNECTION);
+		
+		return $this->getSlotsFromQueryResult($result);
+	}
+	
 	
 	
 	/**
@@ -400,14 +441,20 @@ class SlotManager {
 	private function mergeSlots (array $extSlots, array $intSlots) {
 		$slots = array();
 		foreach ($extSlots as $extSlot) {
+// 			printpre("Adding External ".$extSlot->getShortname());
 			if (isset($intSlots[$extSlot->getShortname()])) {
+// 				printpre("\tMerging with internal");
 				$extSlot->mergeWithInternal($intSlots[$extSlot->getShortname()]);
 				unset($intSlots[$extSlot->getShortname()]);
+			} else {
+				// check for an internal definition and merge with that.
+				
 			}
 			$slots[$extSlot->getShortname()] = $extSlot;
 		}
 		
 		foreach ($intSlots as $intSlot) {
+// 			printpre("Adding Internal ".$intSlot->getShortname());
 			if (!isset($slots[$intSlot->getShortname()]))
 				$slots[$intSlot->getShortname()] = $intSlot;
 		}
