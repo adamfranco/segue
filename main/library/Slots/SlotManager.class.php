@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.8 2008/01/04 18:43:21 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.9 2008/01/04 19:47:55 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/AllSlotsIterator.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.8 2008/01/04 18:43:21 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.9 2008/01/04 19:47:55 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -462,6 +462,49 @@ class SlotManager {
 		ksort($slots);
 		
 		return $slots;
+	}
+	
+	/**
+	 * Convert a slot to another type. The object passed on will no longer be valid.
+	 * 
+	 * @param object Slot $slot
+	 * @param string $type
+	 * @return object Slot
+	 * @access public
+	 * @since 1/4/08
+	 */
+	public function convertSlotToType (Slot $slot, $type) {
+		if (!isset($this->slotTypes[$type]))
+			throw new Exception ("Unknown SlotType, '$type'. Should be one of (".implode(", ", array_keys($this->slotTypes)).").");
+		
+		$shortname = $slot->getShortname();
+		$dbc = Services::getService("DatabaseManager");
+		try {
+			// Add a row to the slot table
+			$query = new InsertQuery;
+			$query->setTable('segue_slot');
+			$query->addValue('shortname', $shortname);
+			if ($slot->getSiteId())
+				$query->addValue('site_id', $slot->getSiteId()->getIdString());
+			$query->addValue('type', $type);
+			$query->addValue('location_category', $slot->getLocationCategory());
+						
+			$dbc->query($query, IMPORTER_CONNECTION);
+		} catch (DuplucateKeyDatabaseException $e) {
+			// Update row to the slot table
+			$query = new UpdateQuery;
+			$query->setTable('segue_slot');
+			$query->addWhereEqual('shortname', $shortname);
+			$query->addValue('type', $type);
+			
+			$dbc->query($query, IMPORTER_CONNECTION);
+		}
+		
+		// Clear our cache
+		unset($this->slots[$shortname]);
+		
+		$slot = $this->getSlotByShortname($shortname);
+		return $slot;
 	}
 }
 

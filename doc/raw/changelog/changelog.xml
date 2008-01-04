@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.117 2008/01/04 18:43:19 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.118 2008/01/04 19:47:54 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,12 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2008-01-04'>
+			Slots: Added documentation to Admin UI.
+		</change>
+		<change author='adam' date='2008-01-04' ref='1864130' reftype='bug'>
+			Slots: Can now change the type of a slot when editing or adding.
+		</change>
 		<fix author='adam' date='2008-01-04' ref='1851038' reftype='bug'>
 			Portal/Slots: Have cut the load time by ~2/3. From 30 seconds to 11 seconds.
 			

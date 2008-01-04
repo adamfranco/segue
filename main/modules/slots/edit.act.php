@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit.act.php,v 1.2 2007/12/14 19:41:04 adamfranco Exp $
+ * @version $Id: edit.act.php,v 1.3 2008/01/04 19:47:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit.act.php,v 1.2 2007/12/14 19:41:04 adamfranco Exp $
+ * @version $Id: edit.act.php,v 1.3 2008/01/04 19:47:55 adamfranco Exp $
  */
 class editAction
 	extends MainWindowAction
@@ -87,6 +87,11 @@ class editAction
 		$slot = $slotMgr->getSlotByShortname($name);
 		$wizard->slot = $slot;
 		
+		$property = $step->addComponent('type', new WSelectList);
+		$property->setValue($slot->getType());
+		foreach (array(Slot::custom, Slot::course, Slot::personal) as $type)
+			$property->addOption($type, ucfirst($type));
+		
 		$property = $step->addComponent('name', new WTextField);
 		$property->setValue($slot->getShortname());
 		$property->setEnabled(false, true);
@@ -108,12 +113,24 @@ class editAction
 		ob_start();
 		
 		print "\n<h4>"._("Edit Placeholder")."</h4>";
-		print "\n<p><strong>"._("Placeholder Name").":</strong> [[name]]<p>";
-		print "\n<p><strong>"._("Location Category").":</strong> [[category]]<p>";
+		print "\n<p><strong>"._("Owner Definition Type").":</strong> [[type]]</p>";
+		print "<div style='margin-left: 10px;'>";
+		print _("The 'Owner Definition Type' indicates to the system where to search for placeholder owners. 'Course' will force a lookup in the course information system. 'Personal' will match against a user's email address. 'Custom' will not do an external lookup. <br/><br/>Note: If there is a name collision between a 'Custom' placeholder and a 'Course' placeholder. Valid 'Course' owners will still have access to the placeholder.");
+		print "</div>";
+		print "\n<p><strong>"._("Placeholder Name").":</strong> [[name]]</p>";
+		print "<div style='margin-left: 10px;'>";
+		print _("The placeholder name will be an identifier for the site. It must be globally unique. Choose wisely to avoid collisions between system-generated personal names and course names.");
+		print "</div>";
+		print "\n<p><strong>"._("Location Category").":</strong> [[category]]</p>";
+		print "<div style='margin-left: 10px;'>";
+		print _("The 'Location Category' is the Segue location in which this site will be made available. In the default installation this is disregarded, however some installations will be divided into 'main' and 'community', or other combinations. This flag is what is used in that determination.");
+		print "</div>";
 		
-		print "\n<p><strong>"._("Owners").":</strong> ";
+		print "\n<p><strong>"._("Owners").":</strong> </p>";
+		print "<div style='margin-left: 10px;'>";
 		print _("Placeholder owners are people who can create a site for the placeholder and/or will be given full access to the site at the time of its creation. After the site has been created, changes to placeholder ownership will not change any roles or privileges.");
-		print "[[owners]]<p>";
+		print "</div>";
+		print "[[owners]]";
 		
 		$step->setContent(ob_get_clean());
 		
@@ -137,6 +154,11 @@ class editAction
 		$values = $wizard->getAllValues();
 		
 		try {
+			if ($slot->getType() != $values['slot']['type']) {
+				$slotMgr = SlotManager::instance();
+				$slot = $slotMgr->convertSlotToType($slot, $values['slot']['type']);
+			}
+			
 			$slot->setLocationCategory($values['slot']['category']);
 			
 			$idMgr = Services::getService("Id");
