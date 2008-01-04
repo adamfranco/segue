@@ -36,6 +36,7 @@ CREATE TABLE segue_slot_owner (
   shortname varchar(50) collate utf8_bin NOT NULL,
   owner_id varchar(75) collate utf8_bin NOT NULL,
   removed int(1) default 0,
+  UNIQUE KEY `unique_owner` (`shortname`,`owner_id`),
   KEY shortname (shortname),
   KEY owner_id (owner_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

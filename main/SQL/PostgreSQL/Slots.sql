@@ -41,5 +41,8 @@ CREATE TABLE segue_slot_owner (
 ALTER TABLE ONLY segue_slot_owner
 	ADD CONSTRAINT segue_slot_owner_shortname_fkey FOREIGN KEY (shortname) REFERENCES "segue_slot"(shortname) ON UPDATE CASCADE ON DELETE CASCADE;
 
+ALTER TABLE ONLY segue_slot_owner
+	ADD CONSTRAINT segue_slot_owner_unique_key UNIQUE (shortname, owner_id);
+
 CREATE INDEX segue_slot_owner_shortname_index ON segue_slot_owner (shortname);
 CREATE INDEX segue_slot_owner_owner_id_index ON segue_slot_owner (owner_id);
