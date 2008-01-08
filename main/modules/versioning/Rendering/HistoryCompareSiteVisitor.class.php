@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 1/7/08
- * @package segue.modules.classic_ui
+ * @package segue.modules.versioning
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.1 2008/01/08 21:50:53 adamfranco Exp $
+ * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.2 2008/01/08 21:59:57 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/HistorySiteVisitor.class.php");
@@ -15,12 +15,12 @@ require_once(dirname(__FILE__)."/HistorySiteVisitor.class.php");
  * Rendering visitor for displaying the differences between two versions.
  * 
  * @since 1/7/08
- * @package segue.modules.classic_ui
+ * @package segue.modules.versioning
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.1 2008/01/08 21:50:53 adamfranco Exp $
+ * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.2 2008/01/08 21:59:57 adamfranco Exp $
  */
 class HistoryCompareSiteVisitor
 	extends HistorySiteVisitor
@@ -39,6 +39,7 @@ class HistoryCompareSiteVisitor
 			return parent::getPluginContent($block);
 		
 		$harmoni = Harmoni::instance();
+		$harmoni->history->markReturnUrl('revert_'.$block->getId());
 		$pluginManager = Services::getService('PluginManager');
 		$plugin = $pluginManager->getPlugin($block->getAsset());
 		

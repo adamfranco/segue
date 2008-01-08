@@ -1,12 +1,12 @@
 <?php
 /**
  * @since 1/7/08
- * @package segue.modules.classic_ui
+ * @package segue.modules.versioning
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.1 2008/01/08 21:50:53 adamfranco Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.2 2008/01/08 21:59:57 adamfranco Exp $
  */ 
 
 
@@ -14,12 +14,12 @@
  * Rendering visitor for the history browser.
  * 
  * @since 1/7/08
- * @package segue.modules.classic_ui
+ * @package segue.modules.versioning
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.1 2008/01/08 21:50:53 adamfranco Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.2 2008/01/08 21:59:57 adamfranco Exp $
  */
 class HistorySiteVisitor
 	extends DetailViewModeSiteVisitor
@@ -122,28 +122,16 @@ class HistorySiteVisitor
 		$i = $numVersions;
 		
 		if (RequestContext::value('early_rev')) {
-			$j = $numVersions;
-			foreach($versions as $version) {
-				if ($version->getVersionId() == RequestContext::value('early_rev')) {
-					$early = $j;
-					$break;
-				}
-				$j--;
-			}
+			$earlyVersion = $plugin->getVersion(RequestContext::value('early_rev'));
+			$early = $earlyVersion->getNumber();
 		}
 		
 		if (!isset($early))
 			$early = $numVersions - 1;
 			
 		if (RequestContext::value('late_rev')) {
-			$j = $numVersions;
-			foreach($versions as $version) {
-				if ($version->getVersionId() == RequestContext::value('late_rev')) {
-					$late = $j;
-					break;
-				}
-				$j--;
-			}
+			$lateVersion = $plugin->getVersion(RequestContext::value('late_rev'));
+			$late = $lateVersion->getNumber();
 		}
 		
 		if (!isset($late))
