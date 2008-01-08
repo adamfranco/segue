@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.36 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.37 2008/01/08 16:22:56 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.36 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.37 2008/01/08 16:22:56 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -129,6 +129,7 @@ class EduMiddleburyTextBlockPlugin
  			$this->setContent($this->cleanHTML($this->getFieldValue('content')));
  			$this->setRawDescription(intval($this->getFieldValue('abstractLength')));
  			$this->logEvent('Modify Content', 'TextBlock content updated');
+ 			$this->markVersion();
  		} else if ($this->getFieldValue('editor')) {
 			$this->textEditor = $this->getFieldValue('editor');
 			$_SESSION[$this->getId()."_textEditor"] = $this->textEditor;
@@ -514,6 +515,7 @@ class EduMiddleburyTextBlockPlugin
  		$this->setContent($values['content']);
  		$this->setRawDescription(intval($values['abstractLength']));
  		$this->logEvent('Modify Content', 'TextBlock content updated');
+ 		$this->markVersion();
  	}
  	
  	/**
@@ -552,6 +554,163 @@ class EduMiddleburyTextBlockPlugin
  		print $message;
  		print "\n</div>";
  		return ob_get_clean();
+ 	}
+ 	
+ 	/*********************************************************
+ 	 * The following methods are used to support versioning of
+ 	 * the plugin instance
+ 	 *********************************************************/
+ 	/**
+ 	 * Answer true if this plugin supports versioning. 
+ 	 * Override to return true if you implement the exportVersion(), 
+ 	 * and applyVersion() methods.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function supportsVersioning () {
+ 		return true;
+ 	}
+ 	
+ 	/**
+ 	 * Answer a DOMDocument representation of the current plugin state.
+ 	 *
+ 	 * @return DOMDocument
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function exportVersion () {
+ 		$doc = new DOMDocument;
+ 		$version = $doc->appendChild($doc->createElement('version'));
+ 		
+ 		$content = $version->appendChild($doc->createElement('content'));
+ 		$content->appendChild($doc->createCDATASection($this->getContent()));
+ 		
+ 		$version->appendChild($doc->createElement('abstractLength', $this->getRawDescription()));
+ 		
+ 		return $doc;
+ 	}
+ 	
+ 	/**
+ 	 * Update the plugin state to match the representation passed in the DOMDocument.
+ 	 * The DOM Element passed will have been exported using the exportVersion() method.
+ 	 * 
+ 	 * @param object DOMDocument $version
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function applyVersion (DOMDocument $version) {
+ 		$this->setContent($this->getContentFromVersion($version));
+ 		$this->setRawDescription($this->getAbstractLengthFromVersion($version));
+ 	}
+ 	
+ 	/**
+ 	 * Answer a string of XHTML markup that displays the plugin state representation
+ 	 * in the DOMDocument passed. This markup will be used in displaying a version history.
+ 	 * The DOM Element passed will have been exported using the exportVersion() method.
+ 	 * 
+ 	 * @param object DOMDocument $version
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function getVersionMarkup (DOMDocument $version) {
+ 		ob_start();
+ 		$content = $this->getContentFromVersion($version);
+ 		$abstractLength = $this->getAbstractLengthFromVersion($version);
+ 		if ($abstractLength) {
+ 			print "\n<div>";
+ 			print $this->trimHTML($this->parseWikiText($content), $abstractLength);
+ 			print "\n</div>";
+ 			print "\n<hr/>";
+ 		}
+ 		
+ 		print "\n<div>";
+		print $this->cleanHTML($this->parseWikiText($content));
+		print "\n</div>";
+		
+		return ob_get_clean();
+ 	}
+ 	
+ 	/**
+ 	 * Answer a difference between two versions. Should return an XHTML-formatted
+ 	 * list or table of differences.
+ 	 * 
+ 	 * @param object DOMDocument $oldVersion
+ 	 * @param object DOMDocument $newVersion
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 1/7/08
+ 	 */
+ 	public function getVersionDiff (DOMDocument $oldVersion, DOMDocument $newVersion) {
+ 		$oldContent = $this->getContentFromVersion($oldVersion);
+//  		$abstractLength = $this->getAbstractLengthFromVersion($oldVersion);
+//  		if ($abstractLength) {
+//  			$oldAbstract = $this->trimHTML($this->parseWikiText($content), $abstractLength);
+//  		} else {
+//  			$oldAbstract = '';
+//  		}
+ 		
+ 		$newContent = $this->getContentFromVersion($newVersion);
+//  		$abstractLength = $this->getAbstractLengthFromVersion($newVersion);
+//  		if ($abstractLength) {
+//  			$newAbstract = $this->trimHTML($this->parseWikiText($content), $abstractLength);
+//  		} else {
+//  			$newAbstract = '';
+//  		}
+ 		
+ 		return $this->getDiff(explode("\n", $oldContent), explode("\n", $newContent));
+ 	}
+ 	
+ 	/**
+ 	 * Answer the content string
+ 	 * 
+ 	 * @param object DOMDocument $version
+ 	 * @return string
+ 	 * @access private
+ 	 * @since 1/4/08
+ 	 */
+ 	private function getContentFromVersion (DOMDocument $version) {
+ 		// Content
+ 		$contentElements = $version->getElementsByTagName('content');
+ 		if (!$contentElements->length)
+ 			throw new InvalidVersionException("Missing 'content' element.");
+ 		if ($contentElements->length > 1)
+ 			throw new InvalidVersionException("Too many 'content' elements, should be 1.");
+ 		
+ 		$contentElement = $contentElements->item(0);
+ 		$content = $contentElement->firstChild;
+ 		if ($content->nodeType == XML_CDATA_SECTION_NODE) {
+ 			return $content->nodeValue;
+		} else {
+			throw new InvalidVersionException("The 'content' element should contain one CDATA section.");
+		}
+ 	}
+ 	
+ 	/**
+ 	 * Answer the abstract length from the DOMDocument
+ 	 * 
+ 	 * @param object DOMDocument $version
+ 	 * @return int
+ 	 * @access private
+ 	 * @since 1/4/08
+ 	 */
+ 	private function getAbstractLengthFromVersion (DOMDocument $version) {
+ 		// Abstract Length
+ 		$abstractElements = $version->getElementsByTagName('abstractLength');
+ 		if (!$abstractElements->length)
+ 			throw new InvalidVersionException("Missing 'abstractLength' element.");
+ 		if ($abstractElements->length > 1)
+ 			throw new InvalidVersionException("Too many 'abstractLength' elements, should be 1.");
+ 		$abstractElement = $abstractElements->item(0);
+ 		$abstract = $abstractElement->firstChild;
+ 		if ($abstract->nodeType == XML_TEXT_NODE) {
+ 			return intval($abstract->nodeValue);
+		} else {
+			throw new InvalidVersionException("The 'abstractLenght' element should contain a string.");
+		}
  	}
 }
 

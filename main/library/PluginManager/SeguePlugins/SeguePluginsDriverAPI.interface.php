@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.2 2007/10/25 21:06:24 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.3 2008/01/08 16:22:55 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.2 2007/10/25 21:06:24 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.3 2008/01/08 16:22:55 adamfranco Exp $
  */
 interface SeguePluginsDriverAPI {
 		
@@ -117,6 +117,38 @@ interface SeguePluginsDriverAPI {
 	 * @since 7/5/07
 	 */
 	public function setCanViewFunction ($function);
+	
+/*********************************************************
+ * Versioning
+ *********************************************************/
+	/**
+	 * Answer an array of the versions for this plugin instance.
+	 *
+	 * @return array of SeguePluginVersion objects
+	 * @access public
+	 * @since 1/7/08
+	 */
+	public function getVersions ();
+	
+	/**
+	 * Answer a particular version.
+	 * 
+	 * @param string $versionId
+	 * @return object SeguePluginVersion
+	 * @access public
+	 * @since 1/7/08
+	 */
+	public function getVersion ($versionId);
+	
+	/**
+	 * Execute the plugin and return the markup for a version.
+	 * 
+	 * @param object DOMDocument $versionXml
+	 * @return string
+	 * @access public
+	 * @since 1/7/08
+	 */
+	public function executeAndGetVersionMarkup ( DOMDocument $versionXml );
 }
 
 ?>

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.51 2007/12/20 20:18:46 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.52 2008/01/08 16:22:55 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.51 2007/12/20 20:18:46 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.52 2008/01/08 16:22:55 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -159,6 +159,14 @@ class ViewModeSiteVisitor
 			print "\n</div>";
 		}
 		
+		if ($plugin->supportsVersioning()) {	
+			print "\n<div style='text-align: right;'>";
+			print "\n\t<a href='".$this->getHistoryUrl($block->getId())."'>";
+			print _("history");
+			print "</a>";
+			print "\n</div>";
+		}
+		
 		print "\n<div style='clear: both'></div>";
 		return ob_get_clean();
 	}
@@ -200,6 +208,23 @@ class ViewModeSiteVisitor
 				$harmoni->request->getRequestedModule(),
 				$harmoni->request->getRequestedAction(),
 				array("node" => $id));
+	}
+	
+	/**
+	 * Answer the history url of a block
+	 * 
+	 * @param string $id
+	 * @return string
+	 * @access public
+	 * @since 5/18/07
+	 */
+	function getHistoryUrl ($id) {
+		$harmoni = Harmoni::instance();
+		$harmoni->history->markReturnURL('view_history_'.$id);
+		return $harmoni->request->quickURL('ui1', 'view_history',
+				array("node" => $id, 
+					'returnModule' => $harmoni->request->getRequestedModule(),
+					'returnAction' => $harmoni->request->getRequestedAction()));
 	}
 	
 	/**

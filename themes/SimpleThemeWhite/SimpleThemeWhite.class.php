@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.17 2007/12/20 17:02:58 adamfranco Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.18 2008/01/08 16:22:56 adamfranco Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -1914,6 +1914,66 @@ class SimpleThemeWhite extends Theme {
 	}
 	.plugin_manager_list td {
 		vertical-align: top;
+	}
+	
+/*********************************************************
+ * Plugin History
+ *********************************************************/
+ 	table.history_list {
+ 		width: 100%;
+ 		clear: both;
+ 	}
+	table.history_list thead th {
+		color: #777;
+		background-color: #E9E9E9;
+		text-align: center;
+		font-weight: normal;
+		padding: 5px;
+	}
+	
+	table.history_list tbody td {
+		border-bottom: 1px dotted;
+		padding: 3px;
+	}
+	
+	table.history_list tbody td.comment {
+		font-size: smaller;
+	}
+	
+	.diff_title {
+		color: #777;
+		background-color: #E9E9E9;
+		padding: 5px;
+		margin-bottom: 0px;
+	}
+	
+	table.diff_table td {
+	
+	}
+	
+	table.diff_table td.diff-addedline {
+		background-color: #CFC;
+	}
+	
+	table.diff_table td.diff-deletedline {
+		background-color: #FCC;
+	}
+	
+	table.diff_table td.diff-context {
+	}
+	
+	table.version_compare thead th {
+		white-space: nowrap;
+		color: #777;
+		background-color: #E9E9E9;
+		padding: 5px;
+		vertical-align: top;
+	}
+	
+	table.version_compare tbody td {
+		vertical-align: top;
+		border: 1px dotted #aaa;
+		padding: 3px;
 	}
 	
 /*********************************************************

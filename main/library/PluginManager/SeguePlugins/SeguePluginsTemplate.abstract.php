@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsTemplate.abstract.php,v 1.2 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: SeguePluginsTemplate.abstract.php,v 1.3 2008/01/08 16:22:55 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsDriver.abstract.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/SeguePluginsDriver.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsTemplate.abstract.php,v 1.2 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: SeguePluginsTemplate.abstract.php,v 1.3 2008/01/08 16:22:55 adamfranco Exp $
  */
 abstract class SeguePluginsTemplate
 	extends SeguePluginsDriver
@@ -255,7 +255,75 @@ abstract class SeguePluginsTemplate
  	public function updateFromWizard ( $values ) {
  		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
  	}
+ 	
+ 	/*********************************************************
+ 	 * The following methods are used to support versioning of
+ 	 * the plugin instance
+ 	 *********************************************************/
+ 	/**
+ 	 * Answer true if this plugin supports versioning. 
+ 	 * Override to return true if you implement the exportVersion(), 
+ 	 * and applyVersion() methods.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function supportsVersioning () {
+ 		return false;
+ 	}
+ 	
+ 	/**
+ 	 * Answer a DOMDocument representation of the current plugin state.
+ 	 *
+ 	 * @return DOMDocument
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function exportVersion () {
+ 		throw new UnimplementedException();
+ 	}
+ 	
+ 	/**
+ 	 * Update the plugin state to match the representation passed in the DOMDocument.
+ 	 * The DOM Element passed will have been exported using the exportVersion() method.
+ 	 * 
+ 	 * @param object DOMDocument $version
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function applyVersion (DOMDocument $version) {
+ 		throw new UnimplementedException();
+ 	}
 	
+	/**
+ 	 * Answer a string of XHTML markup that displays the plugin state representation
+ 	 * in the DOMDocument passed. This markup will be used in displaying a version history.
+ 	 * The DOM Element passed will have been exported using the exportVersion() method.
+ 	 * 
+ 	 * @param object DOMDocument $version
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function getVersionMarkup (DOMDocument $version) {
+ 		throw new UnimplementedException();
+ 	}
+ 	
+ 	/**
+ 	 * Answer a difference between two versions. Should return an XHTML-formatted
+ 	 * list or table of differences.
+ 	 * 
+ 	 * @param object DOMDocument $oldVersion
+ 	 * @param object DOMDocument $newVersion
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 1/7/08
+ 	 */
+ 	public function getVersionDiff (DOMDocument $oldVersion, DOMDocument $newVersion) {
+ 		throw new UnimplementedException();
+ 	}
 }
 
 ?>

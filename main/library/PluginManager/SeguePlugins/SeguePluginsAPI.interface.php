@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAPI.interface.php,v 1.3 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: SeguePluginsAPI.interface.php,v 1.4 2008/01/08 16:22:55 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAPI.interface.php,v 1.3 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: SeguePluginsAPI.interface.php,v 1.4 2008/01/08 16:22:55 adamfranco Exp $
  */
 interface SeguePluginsAPI {
 		
@@ -228,6 +228,65 @@ interface SeguePluginsAPI {
  	 * @since 5/8/07
  	 */
  	public function updateFromWizard ( $values );
+ 	
+ 	/*********************************************************
+ 	 * The following methods are used to support versioning of
+ 	 * the plugin instance
+ 	 *********************************************************/
+ 	/**
+ 	 * Answer true if this plugin supports versioning. 
+ 	 * Override to return true if you implement the exportVersion(), 
+ 	 * and applyVersion() methods.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function supportsVersioning ();
+ 	
+ 	/**
+ 	 * Answer a DOMDocument representation of the current plugin state.
+ 	 *
+ 	 * @return DOMDocument
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function exportVersion ();
+ 	
+ 	/**
+ 	 * Update the plugin state to match the representation passed in the DOMDocument.
+ 	 * The DOM Element passed will have been exported using the exportVersion() method.
+ 	 * 
+ 	 * @param object DOMDocument $version
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function applyVersion (DOMDocument $version);
+ 	
+ 	/**
+ 	 * Answer a string of XHTML markup that displays the plugin state representation
+ 	 * in the DOMDocument passed. This markup will be used in displaying a version history.
+ 	 * The DOM Element passed will have been exported using the exportVersion() method.
+ 	 * 
+ 	 * @param object DOMDocument $version
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function getVersionMarkup (DOMDocument $version);
+ 	
+ 	/**
+ 	 * Answer a difference between two versions. Should return an XHTML-formatted
+ 	 * list or table of differences.
+ 	 * 
+ 	 * @param object DOMDocument $oldVersion
+ 	 * @param object DOMDocument $newVersion
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 1/7/08
+ 	 */
+ 	public function getVersionDiff (DOMDocument $oldVersion, DOMDocument $newVersion);
  	
 /*********************************************************
  * Instance Methods - API
@@ -711,6 +770,35 @@ interface SeguePluginsAPI {
 	 * @since 3/6/06
 	 */
 	public function logEvent ($category, $description, $type = 'Event_Notice');
+	
+/*********************************************************
+ * Versioning
+ *********************************************************/
+ 
+ 	/**
+ 	 * Trigger the storage of a new version of the plugin instance. An optional
+ 	 * comment can be passed.
+ 	 * 
+ 	 * @param string $comment
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	public function markVersion ($comment = '');
+
+	/**
+ 	 * Answer an XHTML 'diff' that compares two arrays of strings. 
+ 	 * Normal usage would be to explode blocks of text on "\n" to allow a line-by-line
+ 	 * comparison.
+ 	 * 
+ 	 * @param array $oldStrings
+ 	 * @param array $newStrings
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 1/7/08
+ 	 */
+ 	public function getDiff ($oldStrings, $newStrings); 
+
 }
 
 ?>

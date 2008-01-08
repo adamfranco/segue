@@ -6,16 +6,20 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.5 2007/12/07 18:02:17 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.6 2008/01/08 16:22:55 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
 require_once(MYDIR."/main/library/Wiki/WikiResolver.class.php");
+require_once(MYDIR."/main/library/DiffEngine.php");
 
 require_once(dirname(__FILE__)."/SeguePluginsDriverAPI.interface.php");
 require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
+require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
+
+
 
 /**
  * Abstract class that all Plugins must extend
@@ -26,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.5 2007/12/07 18:02:17 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.6 2008/01/08 16:22:55 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -691,6 +695,64 @@ abstract class SeguePluginsDriver
 			$log->appendLogWithTypes($item,	$formatType, $priorityType);
 		}
 	}
+	
+/*********************************************************
+ * Versioning
+ *********************************************************/
+ 
+ 	/**
+ 	 * Trigger the storage of a new version of the plugin instance. An optional
+ 	 * comment can be passed.
+ 	 * 
+ 	 * @param string $comment
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/4/08
+ 	 */
+ 	final public function markVersion ($comment = '') {
+ 		$query = new InsertQuery;
+ 		$query->setTable('segue_plugin_version');
+ 		$query->addValue('node_id', $this->getId());
+ 		$query->addValue('comment', $comment);
+ 		
+ 		$authN = Services::getService("AuthN");
+		$userId = $authN->getFirstUserId();
+ 		$query->addValue('agent_id', $userId->getIdString());
+ 		
+ 		$query->addValue('version_xml', $this->exportVersion()->saveXML());
+ 		
+ 		$dbc = Services::getService('DBHandler');
+ 		$dbc->query($query, IMPORTER_CONNECTION);
+ 		
+ 	}
+ 	
+ 	/**
+ 	 * Answer an XHTML 'diff' that compares two arrays of strings. 
+ 	 * Normal usage would be to explode blocks of text on "\n" to allow a line-by-line
+ 	 * comparison.
+ 	 * 
+ 	 * @param array $oldStrings
+ 	 * @param array $newStrings
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 1/7/08
+ 	 */
+ 	public function getDiff ($oldStrings, $newStrings) {
+ 		$rule = ArrayValidatorRuleWithRule::getRule(StringValidatorRule::getRule());
+ 		ArgumentValidator::validate($oldStrings, $rule);
+ 		ArgumentValidator::validate($newStrings, $rule);
+	 		
+ 		ob_start();
+		print "\n<table cellspacing='0' class='diff_table'>";
+		
+		print "\n<tbody>";
+ 		$formatter = new SegueTableDiffFormatter;
+ 		$diff = new Diff ($oldStrings, $newStrings);
+ 		print $formatter->format($diff);
+ 		print "\n</tbody>";
+ 		print "\n</table>";
+ 		return ob_get_clean();
+ 	}
 
 /*********************************************************
  *********************************************************
@@ -1419,5 +1481,89 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 			}
 		}
 	}
+	
+/*********************************************************
+ * Versioning
+ *********************************************************/
+	/**
+	 * Answer an array of the versions for this plugin instance.
+	 *
+	 * @return array of SeguePluginVersion objects
+	 * @access public
+	 * @since 1/7/08
+	 */
+	public function getVersions () {
+		if (!isset($this->versions)) {
+			$this->versions = array();
+			$query = new SelectQuery;
+			$query->addTable('segue_plugin_version');
+			$query->addColumn('version_id');
+			$query->addColumn('tstamp');
+			$query->addColumn('comment');
+			$query->addColumn('agent_id');
+			$query->addWhereEqual('node_id', $this->getId());
+			$query->addOrderBy('tstamp', SORT_DESC);
+						
+			$dbc = Services::getService('DBHandler');
+			$result = $dbc->query($query, IMPORTER_CONNECTION);
+			
+			$idMgr = Services::getService("Id");
+			$number = $result->getNumberOfRows();
+			while ($result->hasNext()) {
+				$row = $result->next();
+				$this->versions[] = new SeguePluginVersion($this, $row['version_id'], DateAndTime::fromString($row['tstamp']), $idMgr->getId($row['agent_id']), $number, $row['comment']);
+				
+				$number--;
+			}
+		}
+		
+		return $this->versions;
+	}
+	
+	/**
+	 * Answer a particular version.
+	 * 
+	 * @param string $versionId
+	 * @return object SeguePluginVersion
+	 * @access public
+	 * @since 1/7/08
+	 */
+	public function getVersion ($versionId) {
+		ArgumentValidator::validate($versionId, NonZeroLengthStringValidatorRule::getRule());
+		
+		if (!isset($this->versions))
+			$this->getVersions();
+		
+		foreach ($this->versions as $version) {
+			if ($version->getVersionId() == $versionId)
+				return $version;
+		}
+		
+		throw new UnknownIdException("No version with id, '$versionId', was found for this plugin instance.");
+	}
+	
+	/**
+	 * Execute the plugin and return the markup for a version.
+	 * 
+	 * @param object DOMDocument $versionXml
+	 * @return string
+	 * @access public
+	 * @since 1/7/08
+	 */
+	public function executeAndGetVersionMarkup ( DOMDocument $versionXml ) {
+		$this->setShowControls(false);
+		
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(
+			get_class($this).':'.$this->getId());
+		$this->_baseUrl = $harmoni->request->mkURL();
+		
+		$markup = $this->getVersionMarkup($versionXml);		
+		
+		$harmoni->request->endNamespace();
+		
+		return $markup;
+	}
+	
 }
 ?>
