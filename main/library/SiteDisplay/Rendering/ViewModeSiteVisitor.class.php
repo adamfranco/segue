@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.52 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.53 2008/01/08 21:50:53 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.52 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.53 2008/01/08 21:50:53 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -221,7 +221,7 @@ class ViewModeSiteVisitor
 	function getHistoryUrl ($id) {
 		$harmoni = Harmoni::instance();
 		$harmoni->history->markReturnURL('view_history_'.$id);
-		return $harmoni->request->quickURL('ui1', 'view_history',
+		return $harmoni->request->quickURL('versioning', 'view_history',
 				array("node" => $id, 
 					'returnModule' => $harmoni->request->getRequestedModule(),
 					'returnAction' => $harmoni->request->getRequestedAction()));

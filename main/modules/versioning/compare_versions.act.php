@@ -6,11 +6,11 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_history.act.php,v 1.1 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: compare_versions.act.php,v 1.1 2008/01/08 21:50:53 adamfranco Exp $
  */ 
 
-require_once(dirname(__FILE__)."/view.act.php");
-require_once(dirname(__FILE__)."/Rendering/HistorySiteVisitor.class.php");
+require_once(dirname(__FILE__)."/../ui1/view.act.php");
+require_once(dirname(__FILE__)."/Rendering/HistoryCompareSiteVisitor.class.php");
 
 
 /**
@@ -22,9 +22,9 @@ require_once(dirname(__FILE__)."/Rendering/HistorySiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_history.act.php,v 1.1 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: compare_versions.act.php,v 1.1 2008/01/08 21:50:53 adamfranco Exp $
  */
-class view_historyAction
+class compare_versionsAction
 	extends viewAction
 {
 		
@@ -42,7 +42,7 @@ class view_historyAction
 				RequestContext::value("node"));
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
-				$this->visitor = new HistorySiteVisitor($requestedNode);
+				$this->visitor = new HistoryCompareSiteVisitor($requestedNode);
 			else
 				$this->visitor = new ViewModeSiteVisitor();
 		}

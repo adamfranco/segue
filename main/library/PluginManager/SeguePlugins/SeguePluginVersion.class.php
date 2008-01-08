@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginVersion.class.php,v 1.1 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: SeguePluginVersion.class.php,v 1.2 2008/01/08 21:50:53 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginVersion.class.php,v 1.1 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: SeguePluginVersion.class.php,v 1.2 2008/01/08 21:50:53 adamfranco Exp $
  */
 class SeguePluginVersion {
 	
@@ -224,6 +224,29 @@ class SeguePluginVersion {
  	 */
  	public function apply () {
  		$this->pluginInstance->executeAndGetVersionMarkup($this->getVersionXml());
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if this version is the current version.
+ 	 *
+ 	 * @return boolean
+ 	 * @access public
+ 	 * @since 1/8/08
+ 	 */
+ 	public function isCurrent () {
+ 		$query = new SelectQuery;
+		$query->addTable('segue_plugin_version');
+		$query->addColumn('version_id');
+		$query->addWhereEqual('node_id', $this->pluginInstance->getId());
+		$query->addOrderBy('tstamp', SORT_DESC);
+		$query->limitNumberOfRows(1);
+		
+		$dbc = Services::getService('DBHandler');
+		$result = $dbc->query($query, IMPORTER_CONNECTION);
+		if ($result->field('version_id') == $this->getVersionId())
+			return true;
+		else
+			return false;
  	}
 }
 

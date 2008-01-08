@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.1 2008/01/08 16:22:56 adamfranco Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.1 2008/01/08 21:50:53 adamfranco Exp $
  */ 
 
 
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.1 2008/01/08 16:22:56 adamfranco Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.1 2008/01/08 21:50:53 adamfranco Exp $
  */
 class HistorySiteVisitor
 	extends DetailViewModeSiteVisitor
