@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.16 2007/11/30 20:23:20 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.17 2008/01/09 22:19:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.16 2007/11/30 20:23:20 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.17 2008/01/09 22:19:41 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -383,6 +383,38 @@ class SegueClassicWizard
 		}
 		print "\n</p>";
 		
+		// Show history
+		$property = $step->addComponent("show_history", new WSelectList());
+		$this->addTitlesOptions($property);
+		
+		if ($component) {
+			$val = $component->showHistorySetting();
+			if ($val === true)
+				$property->setValue('true');
+			else if ($val === false)
+				$property->setValue('false');
+			
+			$parent = $component->getParentComponent();
+		} else {
+			$parent = null;
+		}
+		
+
+		print "\n<p><strong>"._("Display 'History' link:")."</strong> ";
+		print "\n[[show_history]]";
+		
+		if ($parent) {
+			print "\n<br/>".str_replace('%1', 
+				(($parent->showHistory())?_('show'):_('hide')),
+				_("Current default setting: %1"));
+		}
+		print "\n<br/><span style='font-size: smaller;'>";
+		print _("This setting will cause the 'history' link to be shown or hidden when any user views this part of the site. The 'history' link will always be shown when users edit this part of the site.");
+		print "</span>";
+		print "\n</p>";
+		
+		
+		// Enable Comments
 		$property = $step->addComponent("enable_comments", new WSelectList());
 		$this->addCommentsOptions($property);
 		
@@ -403,7 +435,7 @@ class SegueClassicWizard
 		}
 		print "\n</p>";
 		
-		$this->printWidth($component, $step);
+// 		$this->printWidth($component, $step);
 		
 		$step->setContent(ob_get_clean());
 		
@@ -452,6 +484,7 @@ class SegueClassicWizard
 	function saveDisplayOptionsStep ($values) {
 		$component = $this->getSiteComponent();
 		$component->updateShowDisplayNames($values['show_titles']);
+		$component->updateShowHistorySetting($values['show_history']);
 		$component->updateCommentsEnabled($values['enable_comments']);
 		$this->saveWidth($component, $values);
 		return true;
@@ -519,6 +552,50 @@ class SegueClassicWizard
 	}
 	
 	/**
+	 * Print sort order controls for flow organizers.
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 4/17/06
+	 */
+	function printSortMethod ( $siteComponent, $step ) {
+		$property = $step->addComponent("sort_method", new WSelectList());
+		$methods = array(
+			'default' => _('Default'),
+			'custom' => _('Custom'), 
+			'title_asc' => _('Alphabetic by Title - Ascending'), 
+			'title_desc' => _('Alphabetic by Title - Descending'),
+			'create_date_asc' => _("Chronologically by Create Date - Ascending"),
+			'create_date_desc' => _("Chronologically by Create Date - Descending"),
+			'mod_date_asc' => _("Chronologically by Modification Date - Ascending"),
+			'mod_date_desc' => _("Chronologically by Modification Date - Descending"));
+		foreach ($methods as $method => $display)
+			$property->addOption($method, $display);
+		
+		if ($siteComponent) {
+			$property->setValue($siteComponent->sortMethodSetting());			
+			$parent = $siteComponent->getParentComponent();
+		} else {
+			$parent = null;
+		}
+		
+
+		print "\n<p><strong>"._("Content Sort Method:")."</strong> ";
+		print "\n[[sort_method]]";
+		
+		if ($parent) {
+			print "\n<br/>".str_replace('%1', 
+				$parent->sortMethod(),
+				_("Current default setting: %1"));
+		}
+		print "\n<br/><span style='font-size: smaller;'>";
+		print _("This setting will change how 'content containers' sort their content. The 'custom' setting allows manual arrangement.");
+		print "</span>";
+		print "\n</p>";		
+	}
+	
+	/**
 	 * Print width controls
 	 * 
 	 * @param SiteComponent $siteComponent
@@ -551,6 +628,20 @@ class SegueClassicWizard
 	 */
 	function saveWidth ( $component, $values ) {
 		$component->updateWidth($values['width']);
+		return true;
+	}
+	
+	/**
+	 * Save the sort method results
+	 * 
+	 * @param object SiteComponent $component
+	 * @param array $values
+	 * @return boolean
+	 * @access public
+	 * @since 5/15/07
+	 */
+	function saveSortMethod ( $component, $values ) {
+		$component->updateSortMethodSetting($values['sort_method']);
 		return true;
 	}
 	

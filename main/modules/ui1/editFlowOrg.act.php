@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editFlowOrg.act.php,v 1.3 2007/09/13 01:41:37 achapin Exp $
+ * @version $Id: editFlowOrg.act.php,v 1.4 2008/01/09 22:19:41 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editFlowOrg.act.php,v 1.3 2007/09/13 01:41:37 achapin Exp $
+ * @version $Id: editFlowOrg.act.php,v 1.4 2008/01/09 22:19:41 adamfranco Exp $
  */
 class editFlowOrgAction
 	extends SegueClassicWizard
@@ -93,6 +93,7 @@ class editFlowOrgAction
 		$step = parent::getDisplayOptionsStep();
 		
 		ob_start();
+		$this->printSortMethod($component, $step);
 		$this->printRowsColumns($component, $step);
 		$this->printDirection($component, $step);
 		$this->printWidth($component, $step);
@@ -114,6 +115,7 @@ class editFlowOrgAction
 			return false;
 		}
 		$component = $this->getSiteComponent();
+		$this->saveSortMethod($component, $values);
 		$this->saveRowsColumns($component, $values);
 		$this->saveDirection($component, $values);
 		$this->saveWidth($component, $values);

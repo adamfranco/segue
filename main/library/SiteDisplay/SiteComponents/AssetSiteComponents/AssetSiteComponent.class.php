@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.12 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.13 2008/01/09 22:19:41 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.12 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.13 2008/01/09 22:19:41 adamfranco Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -250,7 +250,136 @@ abstract class AssetSiteComponent
 		} else {
 			return $this->showDisplayNames();
 		}
-	}	
+	}
+	
+	/**
+	 * Answer the setting of 'showHistory' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @return mixed true, false, or 'default'
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function showHistorySetting () {
+		$element = $this->getElement();
+		
+		if (!$element->hasAttribute('showHistory'))
+			return 'default';
+		
+		if ($element->getAttribute('showHistory') == 'true')
+			return true;
+		else if ($element->getAttribute('showHistory') == 'false')
+			return false;
+		else
+			return 'default';
+	}
+	
+	/**
+	 * change the setting of 'showHistory' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @param mixed  $showHistory true, false, or 'default'
+	 * @return void
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function updateShowHistorySetting ( $showHistory ) {
+		$element = $this->getElement();
+		
+		if ($showHistory === true || $showHistory === 'true')
+			$element->setAttribute('showHistory', 'true');
+		else if ($showHistory === false || $showHistory === 'false')
+			$element->setAttribute('showHistory', 'false');
+		else
+			$element->setAttribute('showHistory', 'default');
+		
+		$this->_saveXml();
+	}
+	
+	/**
+	 * Answer true if the history should be shown for this component,
+	 * taking into account its setting and those in the hierarchy above it.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function showHistory () {
+		if ($this->showHistorySetting() === 'default') {
+			$parent = $this->getParentComponent();
+			
+			if ($parent)
+				return $parent->showHistory();
+			// Base case if none is specified anywhere in the hierarchy
+			else
+				return false;
+		} else {
+			return $this->showHistorySetting();
+		}
+	}
+	
+	/**
+	 * Answer the setting of 'sortMethod' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used.
+	 *
+	 * Sort methods are 'custom', 'title_asc', 'title_desc',
+	 * 'create_date_asc', 'create_date_desc', 'mod_date_asc', 'mod_date_desc'
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function sortMethodSetting () {
+		$element = $this->getElement();
+		
+		if (!$element->hasAttribute('sortMethod'))
+			return 'default';
+		
+		return $element->getAttribute('sortMethod');
+	}
+	
+	/**
+	 * change the setting of 'sortMethod' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @param string  $sortMethod 'default', 'custom', 'title_asc', 'title_desc',
+	 *		'create_date_asc', 'create_date_desc', 'mod_date_asc', 'mod_date_desc'
+	 * @return void
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function updateSortMethodSetting ( $sortMethod ) {
+		$methods = array('default', 'custom', 'title_asc', 'title_desc', 'create_date_asc', 'create_date_desc', 'mod_date_asc', 'mod_date_desc');
+		if (!in_array($sortMethod, $methods))
+			throw new Exception("Invalid sort method, '$sortMethod', not one of '".implode("', ", $methods)."'.");
+		$element = $this->getElement();
+		
+		$element->setAttribute('sortMethod', $sortMethod);
+		
+		$this->_saveXml();
+	}
+	
+	/**
+	 * Answer the sort method for flow organizers within for this component,
+	 * taking into account its setting and those in the hierarchy above it.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function sortMethod () {
+		if ($this->sortMethodSetting() === 'default') {
+			$parent = $this->getParentComponent();
+			
+			if ($parent)
+				return $parent->sortMethod();
+			// Base case if none is specified anywhere in the hierarchy
+			else
+				return 'custom';
+		} else {
+			return $this->sortMethodSetting();
+		}
+	}
 	
 	/**
 	 * change the setting of 'commentsEnabled' for this component. 'default'
