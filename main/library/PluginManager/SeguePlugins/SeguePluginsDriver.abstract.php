@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.6 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.7 2008/01/09 20:07:17 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.6 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.7 2008/01/09 20:07:17 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -742,16 +742,9 @@ abstract class SeguePluginsDriver
  		ArgumentValidator::validate($oldStrings, $rule);
  		ArgumentValidator::validate($newStrings, $rule);
 	 		
- 		ob_start();
-		print "\n<table cellspacing='0' class='diff_table'>";
-		
-		print "\n<tbody>";
  		$formatter = new SegueTableDiffFormatter;
  		$diff = new Diff ($oldStrings, $newStrings);
- 		print $formatter->format($diff);
- 		print "\n</tbody>";
- 		print "\n</table>";
- 		return ob_get_clean();
+ 		return $formatter->format($diff);
  	}
 
 /*********************************************************

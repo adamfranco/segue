@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.38 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.39 2008/01/09 20:07:17 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.38 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.39 2008/01/09 20:07:17 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -129,7 +129,12 @@ class EduMiddleburyTextBlockPlugin
  			$this->setContent($this->cleanHTML($this->getFieldValue('content')));
  			$this->setRawDescription(intval($this->getFieldValue('abstractLength')));
  			$this->logEvent('Modify Content', 'TextBlock content updated');
- 			$this->markVersion();
+ 			
+ 			if ($this->getFieldValue('comment') && $this->getFieldValue('comment') != $this->getCommentText())
+ 				$this->markVersion($this->getFieldValue('comment'));
+ 			else
+	 			$this->markVersion();
+	 		
  		} else if ($this->getFieldValue('editor')) {
 			$this->textEditor = $this->getFieldValue('editor');
 			$_SESSION[$this->getId()."_textEditor"] = $this->textEditor;
@@ -283,6 +288,15 @@ class EduMiddleburyTextBlockPlugin
 			_("Abstract to %1 words. (Enter '0' for no abstract)"));
 		
 		print "\n\t<br/>";
+		print "\n\t<br/>";
+		print "\n\t<input type='text' name='".$this->getFieldName('comment')."' size='80' value='".$this->getCommentText()."' ";
+		print "style='color: #999;' ";
+		print "onfocus=\"if (this.value == this.nextSibling.innerHTML) { this.value = ''; this.style.color = '#000'; }\" ";
+		print "onblur=\"if (this.value == '') { this.value = this.nextSibling.innerHTML; this.style.color = '#999'; }\" ";
+		print "/>";
+		print "<div style='display: none;'>".$this->getCommentText()."</div>";
+		
+		print "\n\t<br/>";
 		
 		print "\n\t<input type='hidden' value='' name='".$this->getFieldName('submit_pressed')."'/>";
 		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."' onclick='this.form.elements[\"".$this->getFieldName('submit_pressed')."\"].value = \"true\"; '/>";
@@ -291,6 +305,18 @@ class EduMiddleburyTextBlockPlugin
 				
 		print "\n</form>";
  	}
+ 	
+ 	/**
+ 	 * Answer the Comment help text
+ 	 * 
+ 	 * @return string
+ 	 * @access private
+ 	 * @since 1/9/08
+ 	 */
+ 	private function getCommentText () {
+ 		return _("Add a comment about your changes here.");
+ 	}
+ 	
  	/**
  	 * Get the editor specified by this->textEditor
  	 * 
@@ -440,7 +466,10 @@ class EduMiddleburyTextBlockPlugin
  		$wrapper = new WComponentCollection;
  		$harmoni = Harmoni::instance();
  		ob_start();
- 		 		
+ 		 
+ 		$property = $wrapper->addComponent('comment', new WTextField);
+ 		$property->setSize(80);
+ 		$property->setStartingDisplayText(_("Add a comment about your changes here."));
  		
  		$property = $wrapper->addComponent('content', HtmlTextArea::withRowsAndColumns(20, 80));
  		$property->setValue($this->cleanHTML($this->getContent()));
@@ -498,6 +527,10 @@ class EduMiddleburyTextBlockPlugin
 		
 		print "\n\t<br/>";
 		print _("Abstract to [[abstractLength]] words. (Enter '0' for no abstract)");
+		
+		print "\n\t<br/>";
+		print "\n\t<br/>";
+		print "[[comment]]";
  		
  		$wrapper->setContent(ob_get_clean());
  		return $wrapper;
@@ -515,7 +548,7 @@ class EduMiddleburyTextBlockPlugin
  		$this->setContent($values['content']);
  		$this->setRawDescription(intval($values['abstractLength']));
  		$this->logEvent('Modify Content', 'TextBlock content updated');
- 		$this->markVersion();
+ 		$this->markVersion($values['comment']);
  	}
  	
  	/**

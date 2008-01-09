@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.19 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.20 2008/01/09 20:07:17 adamfranco Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -1947,8 +1947,14 @@ class SimpleThemeWhite extends Theme {
 		margin-bottom: 0px;
 	}
 	
-	table.diff_table td {
+	table.diff_table td.symbol {
+		width: 3%;
+		text-align: right;
+		padding-right: 3px;
+	}
 	
+	table.diff_table td.source {
+		width: 47%;
 	}
 	
 	table.diff_table td.diff-addedline {
@@ -1962,12 +1968,17 @@ class SimpleThemeWhite extends Theme {
 	table.diff_table td.diff-context {
 	}
 	
+	table.diff_table .diffchange {
+		font-weight: bold;
+	}
+	
 	table.version_compare thead th {
 		white-space: nowrap;
 		color: #777;
 		background-color: #E9E9E9;
 		padding: 5px;
 		vertical-align: top;
+		width: 50%;
 	}
 	
 	table.version_compare div.version_comment {

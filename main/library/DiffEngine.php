@@ -1,5 +1,5 @@
 <?php
-// $Id: DiffEngine.php,v 1.1 2008/01/08 16:22:55 adamfranco Exp $
+// $Id: DiffEngine.php,v 1.2 2008/01/09 20:07:17 adamfranco Exp $
 
 /**
 // A PHP diff engine for phpwiki. (Taken from phpwiki-1.3.3)
@@ -1082,23 +1082,25 @@ class TableDiffFormatter extends DiffFormatter
 
 	function _added( $lines ) {
 		foreach ($lines as $line) {
-			echo '<tr>' . $this->emptyLine() .
-				$this->addedLine( check_plain ( $line ) ) . "</tr>\n";
+			echo "\n\t<tr>" .
+				$this->emptyLine() .
+				$this->addedLine( check_plain ( $line ) ) . "\n\t</tr>";
 		}
 	}
 
 	function _deleted($lines) {
 		foreach ($lines as $line) {
-			echo '<tr>' . $this->deletedLine( check_plain ( $line ) ) .
-			  $this->emptyLine() . "</tr>\n";
+			echo "\n\t<tr>" .
+				 $this->deletedLine( check_plain ( $line ) ) .
+			  $this->emptyLine() . "\n\t</tr>";
 		}
 	}
 
 	function _context( $lines ) {
 		foreach ($lines as $line) {
-			echo '<tr>' .
+			echo "\n\t<tr>" .
 				$this->contextLine( check_plain ( $line ) ) .
-				$this->contextLine( check_plain ( $line ) ) . "</tr>\n";
+				$this->contextLine( check_plain ( $line ) ) . "\n\t</tr>";
 		}
 	}
 
@@ -1113,12 +1115,12 @@ class TableDiffFormatter extends DiffFormatter
 
 		while ( $line = array_shift( $del ) ) {
 			$aline = array_shift( $add );
-			echo '<tr>' . $this->deletedLine( $line ) .
-				$this->addedLine( $aline ) . "</tr>\n";
+			echo "\n\t<tr>" . $this->deletedLine( $line ) .
+				$this->addedLine( $aline ) . "\n\t</tr>";
 		}
 		foreach ($add as $line) {	# If any leftovers
-			echo '<tr>' . $this->emptyLine() .
-				$this->addedLine( $line ) . "</tr>\n";
+			echo "\n\t<tr>" . $this->emptyLine() .
+				$this->addedLine( $line ) . "\n\t</tr>";
 		}
 	}
 }
@@ -1135,7 +1137,7 @@ class TableDiffFormatter extends DiffFormatter
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DiffEngine.php,v 1.1 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: DiffEngine.php,v 1.2 2008/01/09 20:07:17 adamfranco Exp $
  */
 class SegueTableDiffFormatter
 	extends TableDiffFormatter
@@ -1143,23 +1145,42 @@ class SegueTableDiffFormatter
 	var $maxLength = 60;
 	var $separator = " ";
 	
+	function _block_header( $xbeg, $xlen, $ybeg, $ylen ) {
+		return "\n\t<tr>\n\t\t<th colspan='2'>Line ".$xbeg."</th>" .
+		  "\n\t\t<th colspan='2'>Line ".$ybeg."</th>\n\t</tr>\n";
+	}
+	
+	function _start_block($header) {
+		print "\n<table cellspacing='0' class='diff_table'>";
+		if ($this->show_header) {
+			echo "\n<thead>";
+	  		echo $header;
+	  		echo "\n</thead>";
+	  	}
+	  	echo "\n<tbody>";
+	}
+
+	function _end_block() {
+		echo "\n</tbody>";
+		print "\n</table>";
+	}
 	
 	# HTML-escape parameter before calling this
 	function addedLine( $line ) {
 		$line = $this->breakLongWords($line);
-		return "<td>+</td><td class='diff-addedline'>{$line}</td>";
+		return "\n\t\t<td class='symbol'>+</td>\n\t\t<td class='source diff-addedline'>{$line}</td>";
 	}
 
 	# HTML-escape parameter before calling this
 	function deletedLine( $line ) {
 		$line = $this->breakLongWords($line);
-		return "<td>-</td><td class='diff-deletedline'>{$line}</td>";
+		return "\n\t\t<td class='symbol'>-</td>\n\t\t<td class='source diff-deletedline'>{$line}</td>";
 	}
 
 	# HTML-escape parameter before calling this
 	function contextLine( $line ) {
 		$line = $this->breakLongWords($line);
-		return "<td> </td><td class='diff-context'>{$line}</td>";
+		return "\n\t\t<td class='symbol'> </td>\n\t\t<td class='source diff-context'>{$line}</td>";
 	}
 	
 	/**
