@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.2 2008/01/08 21:59:57 adamfranco Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.3 2008/01/09 17:28:18 adamfranco Exp $
  */ 
 
 
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.2 2008/01/08 21:59:57 adamfranco Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.3 2008/01/09 17:28:18 adamfranco Exp $
  */
 class HistorySiteVisitor
 	extends DetailViewModeSiteVisitor
@@ -184,12 +184,12 @@ class HistorySiteVisitor
 			
 			// Author
 			print "\n\t\t\t<td>";
-			print $version->getAgent()->getDisplayName();
+			print htmlspecialchars($version->getAgent()->getDisplayName());
 			print "\n\t\t\t</td>";
 			
 			// Comment
 			print "\n\t\t\t<td>";
-			print $version->getComment();
+			print htmlspecialchars($version->getComment());
 			print "\n\t\t\t</td>";
 			
 			

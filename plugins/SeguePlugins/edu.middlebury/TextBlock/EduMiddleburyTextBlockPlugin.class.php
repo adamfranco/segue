@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.37 2008/01/08 16:22:56 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.38 2008/01/09 17:28:18 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.37 2008/01/08 16:22:56 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.38 2008/01/09 17:28:18 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -595,6 +595,9 @@ class EduMiddleburyTextBlockPlugin
  	/**
  	 * Update the plugin state to match the representation passed in the DOMDocument.
  	 * The DOM Element passed will have been exported using the exportVersion() method.
+ 	 *
+ 	 * Do not mark a new version in the implementation of this method. If necessary this
+ 	 * will be done by the driver.
  	 * 
  	 * @param object DOMDocument $version
  	 * @return void

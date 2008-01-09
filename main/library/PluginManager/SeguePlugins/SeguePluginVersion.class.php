@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginVersion.class.php,v 1.2 2008/01/08 21:50:53 adamfranco Exp $
+ * @version $Id: SeguePluginVersion.class.php,v 1.3 2008/01/09 17:28:18 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginVersion.class.php,v 1.2 2008/01/08 21:50:53 adamfranco Exp $
+ * @version $Id: SeguePluginVersion.class.php,v 1.3 2008/01/09 17:28:18 adamfranco Exp $
  */
 class SeguePluginVersion {
 	
@@ -216,14 +216,17 @@ class SeguePluginVersion {
  	}
  	
  	/**
- 	 * Update the plugin state to match the representation passed in this version
+ 	 * Update the plugin state to match the representation passed in this version. This
+ 	 * method will also mark a new version with the comment provided.
  	 * 
+ 	 * @param optional string $comment
  	 * @return void
  	 * @access public
  	 * @since 1/4/08
  	 */
- 	public function apply () {
- 		$this->pluginInstance->executeAndGetVersionMarkup($this->getVersionXml());
+ 	public function apply ($comment = "") {
+ 		$this->pluginInstance->applyVersion($this->getVersionXml());
+ 		$this->pluginInstance->markVersion($comment);
  	}
  	
  	/**

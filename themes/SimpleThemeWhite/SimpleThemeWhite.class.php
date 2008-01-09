@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.18 2008/01/08 16:22:56 adamfranco Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.19 2008/01/09 17:28:18 adamfranco Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -1968,6 +1968,11 @@ class SimpleThemeWhite extends Theme {
 		background-color: #E9E9E9;
 		padding: 5px;
 		vertical-align: top;
+	}
+	
+	table.version_compare div.version_comment {
+		font-weight: normal;
+		padding-top: 10px;
 	}
 	
 	table.version_compare tbody td {

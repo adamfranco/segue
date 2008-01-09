@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAPI.interface.php,v 1.4 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: SeguePluginsAPI.interface.php,v 1.5 2008/01/09 17:28:18 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAPI.interface.php,v 1.4 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: SeguePluginsAPI.interface.php,v 1.5 2008/01/09 17:28:18 adamfranco Exp $
  */
 interface SeguePluginsAPI {
 		
@@ -256,6 +256,9 @@ interface SeguePluginsAPI {
  	/**
  	 * Update the plugin state to match the representation passed in the DOMDocument.
  	 * The DOM Element passed will have been exported using the exportVersion() method.
+ 	 *
+ 	 * Do not mark a new version in the implementation of this method. If necessary this
+ 	 * will be done by the driver.
  	 * 
  	 * @param object DOMDocument $version
  	 * @return void
