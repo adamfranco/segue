@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.17 2008/01/09 22:19:41 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.18 2008/01/10 21:03:29 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.17 2008/01/09 22:19:41 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.18 2008/01/10 21:03:29 adamfranco Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -562,14 +562,14 @@ class SegueClassicWizard
 	function printSortMethod ( $siteComponent, $step ) {
 		$property = $step->addComponent("sort_method", new WSelectList());
 		$methods = array(
-			'default' => _('Default'),
-			'custom' => _('Custom'), 
-			'title_asc' => _('Alphabetic by Title - Ascending'), 
-			'title_desc' => _('Alphabetic by Title - Descending'),
-			'create_date_asc' => _("Chronologically by Create Date - Ascending"),
-			'create_date_desc' => _("Chronologically by Create Date - Descending"),
-			'mod_date_asc' => _("Chronologically by Modification Date - Ascending"),
-			'mod_date_desc' => _("Chronologically by Modification Date - Descending"));
+			'default' => _('use default'),
+			'custom' => _('Override - Custom'), 
+			'title_asc' => _('Override - Alphabetic by Title - Ascending'), 
+			'title_desc' => _('Override - Alphabetic by Title - Descending'),
+			'create_date_asc' => _("Override - Chronologically by Create Date - Ascending"),
+			'create_date_desc' => _("Override - Chronologically by Create Date - Descending"),
+			'mod_date_asc' => _("Override - Chronologically by Modification Date - Ascending"),
+			'mod_date_desc' => _("Override - Chronologically by Modification Date - Descending"));
 		foreach ($methods as $method => $display)
 			$property->addOption($method, $display);
 		

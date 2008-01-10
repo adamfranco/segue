@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.3 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.4 2008/01/10 21:03:29 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/ControlsSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.3 2007/08/31 17:35:07 achapin Exp $
+ * @version $Id: EditModeControlsSiteVisitor.class.php,v 1.4 2008/01/10 21:03:29 adamfranco Exp $
  */
 class EditModeControlsSiteVisitor
 	extends ControlsSiteVisitor
@@ -40,7 +40,9 @@ class EditModeControlsSiteVisitor
 		$this->printShowDisplayNames($siteComponent);
 		$this->printDisplayName($siteComponent);		
 		$this->printDescription($siteComponent);
+		$this->printShowHistory($siteComponent);
 		$this->printCommentSettings($siteComponent);
+		$this->printSortMethod($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);

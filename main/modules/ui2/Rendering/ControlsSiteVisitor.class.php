@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2008/01/10 20:24:19 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2008/01/10 21:03:29 adamfranco Exp $
  */ 
  
  require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2008/01/10 20:24:19 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2008/01/10 21:03:29 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	extends GeneralControlsSiteVisitor
@@ -264,6 +264,13 @@ class ControlsSiteVisitor
 		
 		print "\n\t\t\t\t\t</select> ";
 		
+		$parent = $siteComponent->getParentComponent();
+		if ($parent) {
+			print "("._("current default").": ";
+			print (($parent->showDisplayName() === true)?_("show"):_("hide"));
+			print ")";
+		}
+		
 		print "\n\t\t\t\t</div>";
 	}
 	
@@ -273,7 +280,7 @@ class ControlsSiteVisitor
 	 * @param SiteComponent $siteComponent
 	 * @return void
 	 * @access public
-	 * @since 1/16/07
+	 * @since 1/10/08
 	 */
 	function printShowHistory ( $siteComponent, $isSite = false ) {
 		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
@@ -320,6 +327,79 @@ class ControlsSiteVisitor
 		print "</option>";
 		
 		print "\n\t\t\t\t\t</select> ";
+		
+		$parent = $siteComponent->getParentComponent();
+		if ($parent) {
+			print "("._("current default").": ";
+			print (($parent->showHistory() === true)?_("show"):_("hide"));
+			print ")";
+		}
+		
+		print "\n\t\t\t\t</div>";
+	}
+	
+	/**
+	 * Print the sort method controls for flow organizers
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @param optional boolean $isSite default false
+	 * @return void
+	 * @access public
+	 * @since 1/10/08
+	 */
+	public function printSortMethod ( SiteComponent $siteComponent, $isSite = false ) {
+		print "\n\t\t\t\t<div><span style='white-space: nowrap;'>";
+		print "<strong>"._('Content Sort Method: ')."</strong>";
+		
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$canEdit = true;
+		} else {
+			$canEdit = false;
+		}
+		
+		print "\n\t\t\t\t\t<select ";
+		print (($canEdit)?"":" disabled='disabled'");
+		print " name='".RequestContext::name('sortMethod')."'>";
+		
+		if (!$isSite) {
+			print "\n\t\t\t\t\t\t<option value='default'";
+			print (($siteComponent->sortMethodSetting() === 'default')?" selected='selected'":"");
+			print ">"._("use default");
+			print "</option>";
+		}
+		
+		$methods = array(
+			'custom' => _('Custom'), 
+			'title_asc' => _('Alphabetic by Title - Ascending'), 
+			'title_desc' => _('Alphabetic by Title - Descending'),
+			'create_date_asc' => _("Chronologically by Create Date - Ascending"),
+			'create_date_desc' => _("Chronologically by Create Date - Descending"),
+			'mod_date_asc' => _("Chronologically by Modification Date - Ascending"),
+			'mod_date_desc' => _("Chronologically by Modification Date - Descending"));
+		foreach ($methods as $method => $display) {
+			print "\n\t\t\t\t\t\t<option value='".$method."'";
+			print (($siteComponent->sortMethodSetting() == $method)?" selected='selected'":"");
+			print ">";
+			if ($isSite)
+				print $display;
+			else
+				print _("Override")." - ".$display;
+			print "</option>";
+		}
+		
+		print "\n\t\t\t\t\t</select></span> ";
+		
+		$parent = $siteComponent->getParentComponent();
+		if ($parent) {
+			print "<span style='white-space: nowrap;'>("._("current default").": ";
+			print $methods[$parent->sortMethod()];
+			print ")</span>";
+		}
 		
 		print "\n\t\t\t\t</div>";
 	}
@@ -378,6 +458,13 @@ class ControlsSiteVisitor
 		print "</option>";
 		
 		print "\n\t\t\t\t\t</select> ";
+		
+		$parent = $siteComponent->getParentComponent();
+		if ($parent) {
+			print "("._("current default").": ";
+			print (($parent->showComments() === true)?_("yes"):_("no"));
+			print ")";
+		}
 		
 		print "\n\t\t\t\t</div>";
 	}
@@ -653,8 +740,9 @@ END;
 		$this->printShowDisplayNames($siteComponent);
 		$this->printDisplayName($siteComponent);		
 		$this->printDescription($siteComponent);
-		$this->printCommentSettings($siteComponent);
 		$this->printShowHistory($siteComponent);
+		$this->printCommentSettings($siteComponent);
+		$this->printSortMethod($siteComponent);
 		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
 		
@@ -667,8 +755,9 @@ END;
 		$this->printShowDisplayNames($siteComponent, true);
 		$this->printDisplayName($siteComponent);		
 		$this->printDescription($siteComponent);
-		$this->printCommentSettings($siteComponent, true);
 		$this->printShowHistory($siteComponent, true);
+		$this->printCommentSettings($siteComponent, true);
+		$this->printSortMethod($siteComponent, true);
 		$this->printWidth($siteComponent);
 		return $this->controlsEnd($siteComponent);
 	}
@@ -722,6 +811,7 @@ END;
 		$this->printShowDisplayNames($siteComponent);
 		$this->printShowHistory($siteComponent);
 		$this->printCommentSettings($siteComponent);
+		$this->printSortMethod($siteComponent);
 		$this->printFlowRowsColumns($siteComponent);
 		$this->printDirection($siteComponent);
 		$this->printWidth($siteComponent);
@@ -744,6 +834,7 @@ END;
 		$this->printShowDisplayNames($siteComponent);
 		$this->printShowHistory($siteComponent);
 		$this->printCommentSettings($siteComponent);
+		$this->printSortMethod($siteComponent);
 		$this->printDirection($siteComponent);
 		$this->printWidth($siteComponent);
 		$this->printDelete($siteComponent);

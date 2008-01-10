@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.1 2008/01/10 20:24:19 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.2 2008/01/10 21:03:29 adamfranco Exp $
  */ 
  
  require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.1 2008/01/10 20:24:19 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.2 2008/01/10 21:03:29 adamfranco Exp $
  */
 class ModifySettingsSiteVisitor 
 	implements SiteVisitor
@@ -110,11 +110,27 @@ class ModifySettingsSiteVisitor
 	 * @access public
 	 * @since 1/10/08
 	 */
-	function applyShowHistory ( $siteComponent ) {
+	public function applyShowHistory ( SiteComponent $siteComponent ) {
 		if(RequestContext::value('showHistory') 
 			&& RequestContext::value('showHistory') !== $siteComponent->showHistorySetting())
 		{
 			$siteComponent->updateShowHistorySetting(RequestContext::value('showHistory'));
+		}
+	}
+	
+	/**
+	 * Apply the content sorting method.
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 1/10/08
+	 */
+	public function applySortMethod ( SiteComponent $siteComponent ) {
+		if(RequestContext::value('sortMethod') 
+			&& RequestContext::value('sortMethod') !== $siteComponent->sortMethodSetting())
+		{
+			$siteComponent->updateSortMethodSetting(RequestContext::value('sortMethod'));
 		}
 	}
 	
@@ -257,6 +273,7 @@ class ModifySettingsSiteVisitor
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyShowHistory($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applySortMethod($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -278,6 +295,7 @@ class ModifySettingsSiteVisitor
 		$this->applyCommentsEnabled($siteComponent);
 		$this->applyShowHistory($siteComponent);
 		$this->applyWidth($siteComponent);
+		$this->applySortMethod($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -339,6 +357,7 @@ class ModifySettingsSiteVisitor
 		$this->applyCommentsEnabled($siteComponent);
 		$this->applyShowHistory($siteComponent);
 		$this->applyWidth($siteComponent);
+		$this->applySortMethod($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
@@ -359,6 +378,7 @@ class ModifySettingsSiteVisitor
 		$this->applyCommentsEnabled($siteComponent);
 		$this->applyShowHistory($siteComponent);
 		$this->applyWidth($siteComponent);
+		$this->applySortMethod($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
