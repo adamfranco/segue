@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.11 2007/09/20 19:06:57 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.1 2008/01/10 20:24:19 adamfranco Exp $
  */ 
  
- require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
+ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 
 /**
  * This class works in conjunction with the ControlsSiteVisitor to apply changes
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.11 2007/09/20 19:06:57 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.1 2008/01/10 20:24:19 adamfranco Exp $
  */
 class ModifySettingsSiteVisitor 
 	implements SiteVisitor
@@ -99,6 +99,22 @@ class ModifySettingsSiteVisitor
 			&& RequestContext::value('showDisplayNames') !== $siteComponent->showDisplayNames())
 		{
 			$siteComponent->updateShowDisplayNames(RequestContext::value('showDisplayNames'));
+		}
+	}
+	
+	/**
+	 * Apply the description changes
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 1/10/08
+	 */
+	function applyShowHistory ( $siteComponent ) {
+		if(RequestContext::value('showHistory') 
+			&& RequestContext::value('showHistory') !== $siteComponent->showHistorySetting())
+		{
+			$siteComponent->updateShowHistorySetting(RequestContext::value('showHistory'));
 		}
 	}
 	
@@ -197,6 +213,7 @@ class ModifySettingsSiteVisitor
 		$this->applyDisplayName($siteComponent);
 		$this->applyDescription($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
+		$this->applyShowHistory($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
 		$this->applyWidth($siteComponent);
 		
@@ -238,6 +255,7 @@ class ModifySettingsSiteVisitor
 		$this->applyDisplayName($siteComponent);
 		$this->applyDescription($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
+		$this->applyShowHistory($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
@@ -258,6 +276,7 @@ class ModifySettingsSiteVisitor
 		$this->applyDescription($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyShowHistory($siteComponent);
 		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
@@ -318,6 +337,7 @@ class ModifySettingsSiteVisitor
 		$this->applyDirection($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyShowHistory($siteComponent);
 		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
@@ -337,6 +357,7 @@ class ModifySettingsSiteVisitor
 		$this->applyDirection($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyShowHistory($siteComponent);
 		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);

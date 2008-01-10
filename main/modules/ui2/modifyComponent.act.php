@@ -5,11 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modifyComponent.act.php,v 1.6 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: modifyComponent.act.php,v 1.7 2008/01/10 20:24:19 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/ModifySettingsSiteVisitor.class.php");
+require_once(MYDIR."/main/modules/ui2/Rendering/ModifySettingsSiteVisitor.class.php");
 
 
 /**
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/ModifySettingsSiteVisito
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modifyComponent.act.php,v 1.6 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: modifyComponent.act.php,v 1.7 2008/01/10 20:24:19 adamfranco Exp $
  */
 class modifyComponentAction 
 	extends EditModeSiteAction

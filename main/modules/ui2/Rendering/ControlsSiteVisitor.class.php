@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.13 2007/12/17 22:25:33 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2008/01/10 20:24:19 adamfranco Exp $
  */ 
  
  require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.13 2007/12/17 22:25:33 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.14 2008/01/10 20:24:19 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	extends GeneralControlsSiteVisitor
@@ -248,18 +248,75 @@ class ControlsSiteVisitor
 		print (($siteComponent->showDisplayNames() === true)?" selected='selected'":"");
 		print ">";
 		if ($isSite)
-			print _("yes");
+			print _("show");
 		else
-			print _("override-yes");
+			print _("override-show");
 		print "</option>";
 		
 		print "\n\t\t\t\t\t\t<option value='false'";
 		print (($siteComponent->showDisplayNames() === false)?" selected='selected'":"");
 		print ">";
 		if ($isSite)
-			print _("no");
+			print _("hide");
 		else
-			print _("override-no");
+			print _("override-hide");
+		print "</option>";
+		
+		print "\n\t\t\t\t\t</select> ";
+		
+		print "\n\t\t\t\t</div>";
+	}
+	
+	/**
+	 * Print the history link in view-mode
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 1/16/07
+	 */
+	function printShowHistory ( $siteComponent, $isSite = false ) {
+		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		print "<strong>"._('Display History Link: ')."</strong>";
+		
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$canEdit = true;
+		} else {
+			$canEdit = false;
+		}
+		
+		print "\n\t\t\t\t\t<select ";
+		print (($canEdit)?"":" disabled='disabled'");
+		print " name='".RequestContext::name('showHistory')."'>";
+		
+		if (!$isSite) {
+			print "\n\t\t\t\t\t\t<option value='default'";
+			print (($siteComponent->showHistorySetting() === 'default')?" selected='selected'":"");
+			print ">"._(" use default");
+			print "</option>";
+		}
+		
+		print "\n\t\t\t\t\t\t<option value='true'";
+		print (($siteComponent->showHistorySetting() === true)?" selected='selected'":"");
+		print ">";
+		if ($isSite)
+			print _("show");
+		else
+			print _("override-show");
+		print "</option>";
+		
+		print "\n\t\t\t\t\t\t<option value='false'";
+		print (($siteComponent->showHistorySetting() === false)?" selected='selected'":"");
+		print ">";
+		if ($isSite)
+			print _("hide");
+		else
+			print _("override-hide");
 		print "</option>";
 		
 		print "\n\t\t\t\t\t</select> ";
@@ -563,6 +620,7 @@ END;
 // 		$this->printDescription($siteComponent);
 // 		$this->printWidth($siteComponent);
 		$this->printCommentSettings($siteComponent);
+		$this->printShowHistory($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
@@ -596,6 +654,7 @@ END;
 		$this->printDisplayName($siteComponent);		
 		$this->printDescription($siteComponent);
 		$this->printCommentSettings($siteComponent);
+		$this->printShowHistory($siteComponent);
 		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
 		
@@ -609,6 +668,7 @@ END;
 		$this->printDisplayName($siteComponent);		
 		$this->printDescription($siteComponent);
 		$this->printCommentSettings($siteComponent, true);
+		$this->printShowHistory($siteComponent, true);
 		$this->printWidth($siteComponent);
 		return $this->controlsEnd($siteComponent);
 	}
@@ -660,6 +720,7 @@ END;
 		$this->controlsStart($siteComponent);
 		
 		$this->printShowDisplayNames($siteComponent);
+		$this->printShowHistory($siteComponent);
 		$this->printCommentSettings($siteComponent);
 		$this->printFlowRowsColumns($siteComponent);
 		$this->printDirection($siteComponent);
@@ -681,6 +742,7 @@ END;
 		$this->controlsStart($siteComponent);
 		
 		$this->printShowDisplayNames($siteComponent);
+		$this->printShowHistory($siteComponent);
 		$this->printCommentSettings($siteComponent);
 		$this->printDirection($siteComponent);
 		$this->printWidth($siteComponent);
