@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.12 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.13 2008/01/11 20:03:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.12 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.13 2008/01/11 20:03:02 adamfranco Exp $
  */
 class DetailViewModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -91,6 +91,15 @@ class DetailViewModeSiteVisitor
 		print $plugin->executeAndGetExtendedMarkup(false);
 		$harmoni->request->forget('node');
 		
+		if ($plugin->supportsVersioning() && $block->showHistory()) {	
+			print "\n<div style='text-align: right;'>";
+			print "\n\t<a href='".$this->getHistoryUrl($block->getId())."'>";
+			print _("history");
+			print "</a>";
+			print "\n</div>";
+		}
+		print "\n<div style='clear: both'></div>";
+
 		return ob_get_clean();
 	}
 	

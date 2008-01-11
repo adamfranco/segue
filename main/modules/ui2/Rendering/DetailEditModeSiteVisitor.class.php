@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.8 2007/09/24 20:49:10 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.9 2008/01/11 20:03:04 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.8 2007/09/24 20:49:10 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.9 2008/01/11 20:03:04 adamfranco Exp $
  */
 class DetailEditModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -114,10 +114,19 @@ class DetailEditModeSiteVisitor
 	 * @since 5/18/07
 	 */
 	function getBlockTitle ( $block ) {
-		if ($block->getId() == $this->_node->getId())
-			return $block->getDisplayName()." &raquo; "._("Detail");
-		else
-			return parent::getBlockTitle($block);
+		ob_start();		
+		if ($block->getId() == $this->_node->getId()) {
+			print "\n<div class='ui2_reorder'>";
+			print "\n\t<a href='".$this->getHistoryUrl($block->getId())."'>";
+			print _("history");
+			print "</a>";
+			print "\n</div>";
+			
+			print $block->getDisplayName()." &raquo; "._("Detail");
+		} else
+			print parent::getBlockTitle($block);
+		
+		return ob_get_clean();
 	}
 	
 	/**

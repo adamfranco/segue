@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.53 2008/01/08 21:50:53 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.54 2008/01/11 20:03:02 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -23,6 +23,7 @@ require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
 require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
 
 require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
+require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
 
 /**
  * The ViewModeVisitor traverses the site hierarchy, rendering each component.
@@ -33,12 +34,60 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.53 2008/01/08 21:50:53 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.54 2008/01/11 20:03:02 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
 {
-		
+	
+	/**
+	 * The headerId can take three states:
+	 * 	null - not searched
+	 *  a string - the id of the header
+	 *  false - no header element found
+	 * 
+	 * @var mixed $headerId; 
+	 * @access private
+	 * @since 9/24/07
+	 */
+	private $headerId = null;
+	
+	/**
+	 * The footerId can take three states:
+	 * 	null - not searched
+	 *  a string - the id of the header
+	 *  false - no footer element found
+	 * 
+	 * @var mixed $headerId; 
+	 * @access private
+	 * @since 9/24/07
+	 */
+	private $footerId = null;
+	
+	/**
+	 * The headerCellId can take three states:
+	 * 	null - not searched
+	 *  a string - the id of the header
+	 *  false - no header element found
+	 * 
+	 * @var mixed $headerId; 
+	 * @access private
+	 * @since 9/24/07
+	 */
+	private $headerCellId = null;
+	
+	/**
+	 * The footerCellId can take three states:
+	 * 	null - not searched
+	 *  a string - the id of the header
+	 *  false - no footer element found
+	 * 
+	 * @var mixed $headerId; 
+	 * @access private
+	 * @since 9/24/07
+	 */
+	private $footerCellId = null;
+	
 	/**
 	 * Constructor
 	 * 
@@ -159,13 +208,7 @@ class ViewModeSiteVisitor
 			print "\n</div>";
 		}
 		
-		if ($plugin->supportsVersioning()) {	
-			print "\n<div style='text-align: right;'>";
-			print "\n\t<a href='".$this->getHistoryUrl($block->getId())."'>";
-			print _("history");
-			print "</a>";
-			print "\n</div>";
-		}
+		print $this->getHistoryLink($block, $plugin);
 		
 		print "\n<div style='clear: both'></div>";
 		return ob_get_clean();
@@ -208,6 +251,27 @@ class ViewModeSiteVisitor
 				$harmoni->request->getRequestedModule(),
 				$harmoni->request->getRequestedAction(),
 				array("node" => $id));
+	}
+	
+	/**
+	 * Answer a history link for a block
+	 * 
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return void
+	 * @access public
+	 * @since 1/10/08
+	 */
+	public function getHistoryLink (BlockSiteComponent $block, SeguePluginsAPI $plugin) {
+		ob_start();
+		if ($plugin->supportsVersioning() && $block->showHistory() && !$this->isInHeaderOrFooter($block)) {	
+			print "\n<div style='text-align: right;'>";
+			print "\n\t<a href='".$this->getHistoryUrl($block->getId())."'>";
+			print _("history");
+			print "</a>";
+			print "\n</div>";
+		}
+		return ob_get_clean();
 	}
 	
 	/**
@@ -586,6 +650,177 @@ class ViewModeSiteVisitor
 			$harmoni->request->getRequestedModule(), 
 			$harmoni->request->getRequestedAction(),
 			array("node" => $id));
+	}
+	
+	/**
+	 * Answer true if the SiteComponent passed is the header or footer
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return boolean
+	 * @access public
+	 * @since 9/24/07
+	 */
+	public function isHeaderOrFooter (SiteComponent $siteComponent) {
+		try {
+			if ($this->getHeaderId($siteComponent) == $siteComponent->getId())
+				return true;
+		} catch (Exception $e) {}
+
+		try {		
+			if ($this->getFooterId($siteComponent) == $siteComponent->getId())
+				return true;
+		} catch (Exception $e) {}
+			
+		return false;
+	}
+	
+	/**
+	 * Answer true if this block is in the header or footer
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @return boolean
+	 * @access public
+	 * @since 1/10/08
+	 */
+	public function isInHeaderOrFooter (SiteComponent $siteComponent) {
+		if ($this->isHeaderOrFooter($siteComponent))
+			return true;
+		
+		$parent = $siteComponent->getParentComponent();
+		if ($parent)
+			return $this->isInHeaderOrFooter($parent);
+		
+		return false;
+	}
+	
+	/**
+	 * Answer the header id or throw an exception if not found.
+	 * 
+	 * @param object Site
+	 * @return string
+	 * @access public
+	 * @since 9/24/07
+	 */
+	public function getHeaderId (SiteComponent $siteComponent) {
+		if (is_null($this->headerId))
+			$this->searchHeaderFooter($siteComponent);
+			
+		if ($this->headerId === false)
+			throw new Exception("No header found in this site.");
+		
+		return $this->headerId;
+	}
+	
+	/**
+	 * Answer the header id or throw an exception if not found.
+	 * 
+	 * @param object Site
+	 * @return string
+	 * @access public
+	 * @since 9/24/07
+	 */
+	public function getFooterId (SiteComponent $siteComponent) {
+		if (is_null($this->footerId))
+			$this->searchHeaderFooter($siteComponent);
+			
+		if ($this->footerId === false)
+			throw new Exception("No footer found in this site.");
+		
+		return $this->footerId;
+	}
+	
+	/**
+	 * Answer the cell id that the header is in or throw an exception if not found.
+	 * 
+	 * @param object Site
+	 * @return boolean
+	 * @access public
+	 * @since 9/24/07
+	 */
+	public function getHeaderCellId (SiteComponent $siteComponent) {
+		if (is_null($this->headerCellId))
+			$this->searchHeaderFooter($siteComponent);
+		
+		if ($this->headerCellId === false)
+			throw new Exception("No header cell found in this site.");
+		
+		return $this->headerCellId;
+	}
+	
+	/**
+	 * Answer true if there is an empty footer cell.
+	 * 
+	 * @param object Site
+	 * @return boolean
+	 * @access public
+	 * @since 9/24/07
+	 */
+	public function getFooterCellId (SiteComponent $siteComponent) {
+		if (is_null($this->footerCellId))
+			$this->searchHeaderFooter($siteComponent);
+		
+		if ($this->footerCellId === false)
+			throw new Exception("No footer cell found in this site.");
+		
+		return $this->footerCellId;
+	}
+	
+	/**
+	 * Search for a header and footer.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 9/24/07
+	 */
+	public function searchHeaderFooter (SiteComponent $siteComponent) {
+		$siteNavBlock = $this->getSiteNavBlock($siteComponent);
+		
+		$visitor = new HeaderFooterSiteVisitor($siteNavBlock);
+		
+		if (is_null($visitor->getHeaderId()))
+			$this->headerId = false;
+		else
+			$this->headerId = $visitor->getHeaderId();
+		
+		if (is_null($visitor->getFooterId()))
+			$this->footerId = false;
+		else
+			$this->footerId = $visitor->getFooterId();
+		
+		
+		if (is_null($visitor->getHeaderCellId()))
+			$this->headerCellId = false;
+		else
+			$this->headerCellId = $visitor->getHeaderCellId();
+		
+		if (is_null($visitor->getFooterCellId()))
+			$this->footerCellId = false;
+		else
+			$this->footerCellId = $visitor->getFooterCellId();	
+		
+		
+		if (is_null($this->headerId))
+			throw new Exception ("Header search failed.");
+		
+		if (is_null($this->footerId))
+			throw new Exception ("Footer search failed.");
+	}
+	
+	/**
+	 * Answer the root of the site
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return SiteNavBlockSiteComponent
+	 * @access public
+	 * @since 9/24/07
+	 */
+	public function getSiteNavBlock (SiteComponent $siteComponent) {
+		$parent = $siteComponent->getParentComponent();
+		
+		if (is_null($parent))
+			return $siteComponent;
+		else
+			return $this->getSiteNavBlock($parent);
 	}
 }
 

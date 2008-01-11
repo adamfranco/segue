@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HeaderFooterSiteVisitor.class.php,v 1.2 2007/11/14 17:09:13 adamfranco Exp $
+ * @version $Id: HeaderFooterSiteVisitor.class.php,v 1.1 2008/01/11 20:03:02 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HeaderFooterSiteVisitor.class.php,v 1.2 2007/11/14 17:09:13 adamfranco Exp $
+ * @version $Id: HeaderFooterSiteVisitor.class.php,v 1.1 2008/01/11 20:03:02 adamfranco Exp $
  */
 class HeaderFooterSiteVisitor
 	implements SiteVisitor

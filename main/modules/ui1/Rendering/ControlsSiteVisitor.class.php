@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2007/11/09 16:43:41 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.16 2008/01/11 20:03:04 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2007/11/09 16:43:41 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.16 2008/01/11 20:03:04 adamfranco Exp $
  */
 class ControlsSiteVisitor
 	extends GeneralControlsSiteVisitor
@@ -190,6 +190,38 @@ class ControlsSiteVisitor
 	}
 	
 	/**
+	 * Answer the history control
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @return string
+	 * @access public
+	 * @since 1/10/08
+	 */
+	public function getHistory (SiteComponent $siteComponent) {
+		ob_start();
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
+		
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$harmoni = Harmoni::instance();
+			$harmoni->history->markReturnURL('view_history_'.$siteComponent->getId());
+			$url =  $harmoni->request->quickURL('versioning', 'view_history',
+					array("node" => $siteComponent->getId(), 
+						'returnModule' => $harmoni->request->getRequestedModule(),
+						'returnAction' => $harmoni->request->getRequestedAction()));
+			
+			print "\n\t\t\t\t\t<a href='".$url."'>";
+			print _("history");
+			print "</a>";
+		}
+		return ob_get_clean();
+	}
+	
+	/**
 	 * Print the edit controls
 	 * 
 	 * @param object SiteComponent $siteComponent
@@ -225,42 +257,6 @@ class ControlsSiteVisitor
 			print "</a>";
 		}
 		
-		return ob_get_clean();
-	}
-	
-	
-	/**
-	 * Print the versions link
-	 * 
-	 * @param object SiteComponent $siteComponent
-	 * @return void
-	 * @access public
-	 * @since 5/7/07
-	 */
-	function getVersions ( $siteComponent ) {
-		// Versioning is not yet implemented, when it is, remove this line to return the
-		// control.
-		return false;
-		
-		ob_start();
-		$authZ = Services::getService("AuthZ");
-		$idManager = Services::getService("Id");
-		$harmoni = Harmoni::instance();
-		
-		if ($authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$siteComponent->getQualifierId()))
-		{
-			$url = 	$harmoni->request->quickURL('ui1', 'versions', array(
-							'node' => $siteComponent->getId(),
-							'returnNode' => RequestContext::value('node'),
-							'returnAction' => $this->action
-							));
-				
-			print "\n\t\t\t\t\t<a href='".$url."'>";
-			print _("versions");
-			print "</a>";
-		}
 		return ob_get_clean();
 	}
 	
@@ -335,7 +331,7 @@ class ControlsSiteVisitor
 			$controls[] = $control;
 		if ($control = $this->getDelete($siteComponent))
 			$controls[] = $control;
-		if ($control = $this->getVersions($siteComponent))
+		if ($control = $this->getHistory($siteComponent))
 			$controls[] = $control;
 			
 		print implode($this->getDelimiter($siteComponent), $controls);
@@ -375,7 +371,7 @@ class ControlsSiteVisitor
 			$controls[] = $control;
 		if ($control = $this->getDelete($siteComponent))
 			$controls[] = $control;
-// 		if ($control = $this->getVersions($siteComponent))
+// 		if ($control = $this->getHistory($siteComponent))
 // 			$controls[] = $control;
 // 		if ($control = $this->getAddSubMenu($siteComponent))
 // 			$controls[] = $control;

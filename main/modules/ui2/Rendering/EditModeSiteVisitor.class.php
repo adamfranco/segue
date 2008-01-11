@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.27 2007/12/20 21:44:44 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2008/01/11 20:03:04 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.27 2007/12/20 21:44:44 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2008/01/11 20:03:04 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -144,6 +144,19 @@ END;
 		print "\n<div class='ui2_reorder'>";
 		$this->_controlsVisitor->printReorderLink($block);
 		$this->_controlsVisitor->printReorderForm($block);
+		
+		// Add controls bar and border
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$block->getQualifierId()))
+		{
+			print "\n\t| <a href='".$this->getHistoryUrl($block->getId())."'>";
+			print _("history");
+			print "</a>";
+		}
+
 		print "\n</div>";
 		
 		print parent::getBlockTitle($block);
