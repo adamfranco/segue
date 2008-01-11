@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.7 2008/01/09 20:07:17 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.8 2008/01/11 20:28:33 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.7 2008/01/09 20:07:17 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.8 2008/01/11 20:28:33 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -713,7 +713,7 @@ abstract class SeguePluginsDriver
  		$query = new InsertQuery;
  		$query->setTable('segue_plugin_version');
  		$query->addValue('node_id', $this->getId());
- 		$query->addValue('comment', $comment);
+ 		$query->addValue('comment', strval($comment));
  		
  		$authN = Services::getService("AuthN");
 		$userId = $authN->getFirstUserId();
