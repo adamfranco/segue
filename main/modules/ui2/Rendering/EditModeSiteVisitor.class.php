@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2008/01/11 20:03:04 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.29 2008/01/11 21:24:40 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2008/01/11 20:03:04 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.29 2008/01/11 21:24:40 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -142,8 +142,11 @@ END;
 	function getBlockTitle ( $block ) {
 		ob_start();		
 		print "\n<div class='ui2_reorder'>";
-		$this->_controlsVisitor->printReorderLink($block);
-		$this->_controlsVisitor->printReorderForm($block);
+		// Look at the order cascading down from the flow organizer.
+		if ($block->sortMethod() == 'custom') {
+			$this->_controlsVisitor->printReorderLink($block);
+			$this->_controlsVisitor->printReorderForm($block);
+		}
 		
 		// Add controls bar and border
 		$authZ = Services::getService("AuthZ");
@@ -152,7 +155,10 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$block->getQualifierId()))
 		{
-			print "\n\t| <a href='".$this->getHistoryUrl($block->getId())."'>";
+			print "\n\t";
+			if ($block->sortMethod() == 'custom')
+				print " | ";
+			print "<a href='".$this->getHistoryUrl($block->getId())."'>";
 			print _("history");
 			print "</a>";
 		}
@@ -278,14 +284,15 @@ END;
 			$cellsPerPage = $organizer->getNumColumns() * $organizer->getNumRows();
 		
 		$childGuiComponents = array();
-		for ($i = 0; $i < $numCells; $i++) {
-			$child = $organizer->getSubcomponentForCell($i);
+		$i = 0;
+		foreach ($organizer->getSortedSubcomponents() as $child) {
 			if ($child) {
 				$childGuiComponent = $child->acceptVisitor($this);
 				// Filter out false entries returned due to lack of authorization
 				if ($childGuiComponent)
 					$childGuiComponents[] = $this->addFlowChildWrapper($organizer, $i, $childGuiComponent);
 			}
+			$i++;
 		}
 		
 		// Add the "Append" form to the organizer

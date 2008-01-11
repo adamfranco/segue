@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.16 2008/01/11 20:03:04 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.17 2008/01/11 21:24:40 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.16 2008/01/11 20:03:04 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.17 2008/01/11 21:24:40 adamfranco Exp $
  */
 class ControlsSiteVisitor
 	extends GeneralControlsSiteVisitor
@@ -323,7 +323,7 @@ class ControlsSiteVisitor
 		$this->controlsStart($siteComponent);
 		
 		$controls = array();
-		if ($control = $this->getReorder($siteComponent))
+		if ($siteComponent->sortMethod() == 'custom' && $control = $this->getReorder($siteComponent))
 			$controls[] = $control;
 		if ($control = $this->getMove($siteComponent))
 			$controls[] = $control;

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
+ * @version $Id: BlockSiteComponent.abstract.php,v 1.3 2008/01/11 21:24:40 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/SiteComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSiteComponent.abstract.php,v 1.2 2007/08/31 16:03:45 achapin Exp $
+ * @version $Id: BlockSiteComponent.abstract.php,v 1.3 2008/01/11 21:24:40 adamfranco Exp $
  */
 interface BlockSiteComponent
 	extends SiteComponent
@@ -55,6 +55,24 @@ interface BlockSiteComponent
 	 * @since 3/31/06
 	 */
 	public function updateDescription ( $description ) ;
+	
+	/**
+	 * Answer the date at which this Component was created.
+	 * 
+	 * @return object DateAndTime
+	 * @access public
+	 * @since 1/11/08
+	 */
+	public function getCreationDate ();
+	
+	/**
+	 * Answer the date at which this Component was last modified.
+	 * 
+	 * @return object DateAndTime
+	 * @access public
+	 * @since 1/11/08
+	 */
+	public function getModificationDate ();
 	
 	/**
 	 * Answer the HTML markup that represents the title of the block. This may

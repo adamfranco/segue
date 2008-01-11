@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.16 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.17 2008/01/11 21:24:40 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.16 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.17 2008/01/11 21:24:40 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -283,6 +283,64 @@ class AssetFlowOrganizerSiteComponent
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Answer a sorted array of sub-components. The order will be based on the
+	 * organizer's sortMethod setting.
+	 *
+	 * @return array of Components
+	 * @access public
+	 * @since 1/11/08
+	 */
+	public function getSortedSubcomponents () {
+		$subcomponents = array();
+		$sortKeys = array();
+		$numCells = $this->getTotalNumberOfCells();
+		for ($i = 0; $i < $numCells; $i++) {
+			$subcomponents[] = $this->getSubcomponentForCell($i);
+		}
+		
+		switch ($this->sortMethod()) {
+			case 'custom':
+				return $subcomponents;
+			case 'title_asc':
+				foreach ($subcomponents as $component)
+					$sortKeys[] = strtolower($component->getDisplayName());
+				$direction = SORT_ASC;
+				break;
+			case 'title_desc':
+				foreach ($subcomponents as $component)
+					$sortKeys[] = strtolower($component->getDisplayName());
+				$direction = SORT_DESC;
+				break;
+			case 'create_date_asc':
+				foreach ($subcomponents as $component)
+					$sortKeys[] = $component->getCreationDate()->asString();
+				$direction = SORT_ASC;
+				break;
+			case 'create_date_desc':
+				foreach ($subcomponents as $component)
+					$sortKeys[] = $component->getCreationDate()->asString();
+				$direction = SORT_DESC;
+				break;
+			case 'mod_date_asc':
+				foreach ($subcomponents as $component)
+					$sortKeys[] = $component->getModificationDate()->asString();
+				$direction = SORT_ASC;
+				break;
+			case 'mod_date_desc':
+				foreach ($subcomponents as $component)
+					$sortKeys[] = $component->getModificationDate()->asString();
+				$direction = SORT_DESC;
+				break;
+			default:
+				$methods = array('default', 'custom', 'title_asc', 'title_desc', 'create_date_asc', 'create_date_desc', 'mod_date_asc', 'mod_date_desc');
+				throw new Exception("Invalid sort method, '$sortMethod', not one of '".implode("', ", $methods)."'.");
+		}
+		
+		array_multisort($sortKeys, $direction, SORT_STRING, $subcomponents); 
+		return $subcomponents;
 	}
 	
 /*********************************************************

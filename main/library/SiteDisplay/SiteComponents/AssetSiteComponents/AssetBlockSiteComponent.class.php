@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.13 2007/12/07 18:02:18 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.14 2008/01/11 21:24:40 adamfranco Exp $
  */ 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.abstract.php");
 
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.ab
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.13 2007/12/07 18:02:18 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.14 2008/01/11 21:24:40 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -135,6 +135,28 @@ class AssetBlockSiteComponent
 	 */
 	function updateDescription ( $description ) {
 		$this->_asset->updateDescription(HtmlString::getSafeHtml($description));
+	}
+	
+	/**
+	 * Answer the date at which this Component was created.
+	 * 
+	 * @return object DateAndTime
+	 * @access public
+	 * @since 1/11/08
+	 */
+	public function getCreationDate () {
+		return $this->_asset->getCreationDate();
+	}
+	
+	/**
+	 * Answer the date at which this Component was last modified.
+	 * 
+	 * @return object DateAndTime
+	 * @access public
+	 * @since 1/11/08
+	 */
+	public function getModificationDate () {
+		return $this->_asset->getModificationDate();
 	}
 	
 	/**

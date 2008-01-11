@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.23 2008/01/11 20:03:04 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.24 2008/01/11 21:24:40 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.23 2008/01/11 20:03:04 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.24 2008/01/11 21:24:40 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -212,8 +212,7 @@ END;
 			$cellsPerPage = $organizer->getNumColumns() * $organizer->getNumRows();
 		
 		$childGuiComponents = array();
-		for ($i = 0; $i < $numCells; $i++) {
-			$child = $organizer->getSubcomponentForCell($i);
+		foreach ($organizer->getSortedSubcomponents() as $child) {
 			if ($child) {
 				$childGuiComponent = $child->acceptVisitor($this);
 				// Filter out false entries returned due to lack of authorization
