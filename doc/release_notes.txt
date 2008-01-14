@@ -3,6 +3,11 @@ Name: Segue Release Notes
 (See the Segue change log for more details)
 
 
+v. 2.0-beta-8 (2008-01-14)
+----------------------------------------------------
+
+
+
 v. 2.0-beta-7 (2007-12-20)
 ----------------------------------------------------
 This release fixes a large number of bugs as well as improves the validity of the
