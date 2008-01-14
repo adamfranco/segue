@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.40 2008/01/14 20:57:34 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.41 2008/01/14 21:23:37 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.40 2008/01/14 20:57:34 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.41 2008/01/14 21:23:37 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -516,7 +516,7 @@ class EduMiddleburyTextBlockPlugin
 		print "\n\t<input type='button' value='"._('Add Image')."' onclick=\"";
 		print "this.onUse = function (mediaFile) { ";
 		print 		"var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + mediaFile.getTitles()[0].escapeHTML() + '\'/>' ; ";
-		print 		"edInsertContent(this.form.elements['[[fieldname:content]]'], newString); ";
+		print 		"edInsertContent(this.form.elements['[[fieldname:]]'], newString); ";
 		print "}; "; 
 		print "MediaLibrary.run('".$this->getId()."', this); ";
 		print "\"/>";
@@ -542,7 +542,7 @@ class EduMiddleburyTextBlockPlugin
 		print 		"mediaFile.writeCitation(citation); ";
 		
 		print 		"var newString = '<div>' + downloadBar.innerHTML + '<div style=\'clear: both;\'></div></div>'; ";
-		print 		"edInsertContent(this.form.elements['[[fieldname:content]]'], newString); ";
+		print 		"edInsertContent(this.form.elements['[[fieldname:]]'], newString); ";
 		print "}; "; 
 		print "MediaLibrary.run('".$this->getId()."', this); ";
 		print "\"/>";
