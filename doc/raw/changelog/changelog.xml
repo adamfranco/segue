@@ -5,12 +5,12 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.120 2008/01/11 21:27:00 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.121 2008/01/14 20:12:49 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-8" date="The Future">
+	<version number="2.0-beta-8" date="2008-01-14">
 		<releaseNotes>
 			
 		</releaseNotes>
@@ -40,6 +40,14 @@
 		<fix author='adam' date='2008-01-04'>
 			Slots: Added a unique-key to the slot-owner table to prevent duplicate entries.
 		</fix>
+		<fix author='adam' date='2008-01-14'>
+			Portal/Slots: Now edit and delete links are not shown for course sites
+			if the user doesn't have authorization to take action on the site.
+		</fix>
+		<change author='adam' date='2008-01-14'>
+			Site Creation: Can now select which slot owners are given Admin access to
+			a new site at time of create.
+		</change>
 		<change author='adam' date='2008-01-03' ref='1863384' reftype='bug'>
 			Moved the 'icons/' subdirectory to 'images/' to prevent collision
 			with the Apache system-icons directory when installing Segue in the

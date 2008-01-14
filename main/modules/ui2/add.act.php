@@ -5,10 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.10 2008/01/14 20:12:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+
 
 /**
  * 
@@ -18,7 +19,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.10 2008/01/14 20:12:49 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -104,7 +105,7 @@ class addAction
 			$idManager->getId("edu.middlebury.segue.sites_repository"));
 		
 		// Instantiate the wizard, then add our steps.
-		$wizard = SimpleStepWizard::withDefaultLayout();
+		$wizard = RequiredStepWizard::withDefaultLayout();
 		
 		// :: Name and Description ::
 		$step = $wizard->addStep("namedescstep", new WizardStep());
@@ -112,12 +113,11 @@ class addAction
 		
 		// Create the properties.
 		$displayNameProp = $step->addComponent("display_name", new WTextField());
-		$displayNameProp->setErrorText("<nobr>"._("A value for this field is required.")."</nobr>");
+		$displayNameProp->setErrorText("<span style='white-space: nowrap'>"._("A value for this field is required.")."</span>");
 		$displayNameProp->setErrorRule(new WECNonZeroRegex("[\\w]+"));
-	// 	$displayNameProp->setDefaultValue(_("Default Asset Name"));
-//		$displayNameProp->setErrorString(" <span style='color: #f00'>* "._("The name must not start with a space.")."</span>");
+		$displayNameProp->setSize(80);
 		
-		$descriptionProp = $step->addComponent("description", WTextArea::withRowsAndColumns(5,30));
+		$descriptionProp = $step->addComponent("description", WTextArea::withRowsAndColumns(5,80));
 	// 	$descriptionProp->setDefaultValue(_("Default Asset description."));
 		
 		// Create the step text
@@ -131,6 +131,46 @@ class addAction
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
+		
+		/*********************************************************
+		 * Owner step if multiple owners
+		 *********************************************************/
+		$slot = $this->getSlot();
+		$owners = $slot->getOwners();
+		$step = new WizardStep();
+		$step->setDisplayName(_("Choose Admins"));	
+		
+		$property = $step->addComponent("admins", new WMultiSelectList);
+		
+		$agentMgr = Services::getService("Agent");
+		$authN = Services::getService("AuthN");
+		$userId = $authN->getFirstUserId();
+		$i = 0;
+		foreach ($owners as $ownerId) {
+			if ($userId->isEqual($ownerId))
+				continue;
+			$i++;
+			$owner = $agentMgr->getAgent($ownerId);
+			$property->addOption($ownerId->getIdString(), htmlspecialchars($owner->getDisplayName()));
+			$property->setValue($ownerId->getIdString());
+		}
+		$property->setSize($i);
+		
+		// Create the step text
+		ob_start();
+		print "\n<h2>"._("Choose Site Admins")."</h2>";
+		print "\n<p>"._("The following users are listed as owners of this placeholder. Keep them selected if you would like them be administrators of this site or de-select them if they should not be administrators of this site. Any choice made now can be changed later through the 'Permissions' screen for the site.<br/><br/>Hold down the CTRL key (Windows) or the COMMAND key (Mac) to select multiple users.");
+		print "\n<br />[[admins]]</p>";
+		print "\n<div style='width: 400px'> &nbsp; </div>";
+		$step->setContent(ob_get_contents());
+		ob_end_clean();
+		
+		if ($i) {
+			$step = $wizard->addStep("owners", $step);
+			$wizard->makeStepRequired('owners');
+		}
+		
+
 		
 		return $wizard;
 	}
@@ -153,7 +193,6 @@ class addAction
 		$idManager = Services::getService("Id");
 		$properties = $wizard->getAllValues();
 		
-		
 		/*********************************************************
 		 * Create the site Asset
 		 *********************************************************/			
@@ -169,16 +208,7 @@ class addAction
 		/*********************************************************
 		 * Save the siteId into the slot
 		 *********************************************************/
-		$slotMgr = SlotManager::instance();
-		
-		if (RequestContext::value('slot')) {
-			$slot = $slotMgr->getSlotByShortname(RequestContext::value('slot'));
-		} else {
-			$authN = Services::getService("AuthN");
-			$shortname = PersonalSlot::getPersonalShortname($authN->getFirstUserId());
-			$slot = new PersonalSlot($shortname."_".$siteId);
-			$slot->addOwner($authN->getFirstUserId());
-		}
+		$slot = $this->getSlot();
 		
 		$slot->setSiteId($siteId);
 		
@@ -194,11 +224,16 @@ class addAction
 			
 		/*********************************************************
 		 * Set Default "All-Access" permissions for slot owners
-		 *********************************************************/		
+		 *********************************************************/
 		foreach ($slot->getOwners() as $ownerId) {
-			$role = $roleMgr->getAgentsRole($ownerId, $site->getQualifierId(), true);
-			if ($role->isLessThan($admin))
-				$admin->apply($ownerId, $site->getQualifierId(), true);
+			// If we have an 'owners' step, only make the owners chosen admins.
+			if (isset($properties['owners']) 
+				&& in_array($ownerId->getIdString(), $properties['owners']['admins'])) 
+			{
+				$role = $roleMgr->getAgentsRole($ownerId, $site->getQualifierId(), true);
+				if ($role->isLessThan($admin))
+					$admin->apply($ownerId, $site->getQualifierId(), true);
+			}
 		}
 		
 		
@@ -360,6 +395,26 @@ class addAction
 		return $director;
 	}
 	
+	/**
+	 * Answer the slot object
+	 *
+	 * @return object Slot
+	 * @access public
+	 * @since 1/14/08
+	 */
+	public function getSlot () {
+		$slotMgr = SlotManager::instance();
+		
+		if (RequestContext::value('slot')) {
+			$slot = $slotMgr->getSlotByShortname(RequestContext::value('slot'));
+		} else {
+			$authN = Services::getService("AuthN");
+			$shortname = PersonalSlot::getPersonalShortname($authN->getFirstUserId());
+			$slot = new PersonalSlot($shortname."-".$siteId);
+			$slot->addOwner($authN->getFirstUserId());
+		}
+		return $slot;
+	}
 }
 
 ?>
