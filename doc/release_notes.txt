@@ -5,7 +5,16 @@ Name: Segue Release Notes
 
 v. 2.0-beta-8 (2008-01-14)
 ----------------------------------------------------
+This release clarifies the role of slots/site-placehoders and brings some
+performance improvements to the portal page, especially for users with large numbers
+of course sites.
 
+This version also adds versioning support for content blocks and programatic
+sorting of content to enable blogging.
+
+Upgrade Notes: The icons/ directory has been renamed to images/ to prevent
+conflicts with the Apache system icons directory. Be sure to run the Segue Updaters
+under Admin tools to update the table structure to support versioning.
 
 
 v. 2.0-beta-7 (2007-12-20)
