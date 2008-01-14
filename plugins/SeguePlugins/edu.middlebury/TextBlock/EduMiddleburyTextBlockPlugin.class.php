@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.39 2008/01/09 20:07:17 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.40 2008/01/14 20:57:34 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.39 2008/01/09 20:07:17 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.40 2008/01/14 20:57:34 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -481,14 +481,36 @@ class EduMiddleburyTextBlockPlugin
  			$harmoni->request->quickURL('fckeditor', 'filebrowser', array('node' => $this->getId())));
  		$harmoni->request->endNamespace();
  		
- 		$property = $wrapper->addComponent('abstractLength', new WTextField);
- 		$property->setSize(3);
- 		$property->setValue($this->getRawDescription());
+ 		$property->addPostHtml('none', $this->getImageAndFileButtons());
  		
  		print "[[content]]";
  		
  		print $this->getWikiHelp();
+		
+		$property = $wrapper->addComponent('abstractLength', new WTextField);
+ 		$property->setSize(3);
+ 		$property->setValue($this->getRawDescription());
+		
+		print "\n\t<br/>";
+		print _("Abstract to [[abstractLength]] words. (Enter '0' for no abstract)");
+		
+		print "\n\t<br/>";
+		print "\n\t<br/>";
+		print "[[comment]]";
  		
+ 		$wrapper->setContent(ob_get_clean());
+ 		return $wrapper;
+ 	}
+ 	
+ 	/**
+ 	 * Answer the image and file buttons used by the plain-text editor.
+ 	 * 
+ 	 * @return string
+ 	 * @access private
+ 	 * @since 1/14/08
+ 	 */
+ 	private function getImageAndFileButtons () {
+ 		ob_start();
  		// Image button
  		print "<br/>";
 		print "\n\t<input type='button' value='"._('Add Image')."' onclick=\"";
@@ -524,18 +546,8 @@ class EduMiddleburyTextBlockPlugin
 		print "}; "; 
 		print "MediaLibrary.run('".$this->getId()."', this); ";
 		print "\"/>";
-		
-		print "\n\t<br/>";
-		print _("Abstract to [[abstractLength]] words. (Enter '0' for no abstract)");
-		
-		print "\n\t<br/>";
-		print "\n\t<br/>";
-		print "[[comment]]";
- 		
- 		$wrapper->setContent(ob_get_clean());
- 		return $wrapper;
+		return ob_get_clean();
  	}
- 	
  	/**
  	 * Update the component from an array of values
  	 * 
