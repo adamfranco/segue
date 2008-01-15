@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.20 2008/01/09 20:07:17 adamfranco Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.21 2008/01/15 16:19:46 adamfranco Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -314,7 +314,7 @@ class SimpleThemeWhite extends Theme {
 		// =====================================================================
 		// SubMenu 1 style
 		$styleCollection = new StyleCollection("*.subMenu1", "subMenu1", "SubMenu 1", "A 1st level sub-menu.");
-		$styleCollection->addSP(new MarginLeftSP("10px"));
+		$styleCollection->addSP(new MarginLeftSP("15px"));
 		$this->addStyleForComponentType($styleCollection, SUB_MENU, 1);
 		
 		// =====================================================================
@@ -1544,7 +1544,7 @@ class SimpleThemeWhite extends Theme {
 			}
 
 			*.subMenu1 {
-				margin-left: 10px;
+				margin-left: 17px;
 			}
 			
 

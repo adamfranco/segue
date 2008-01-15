@@ -5,11 +5,20 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.124 2008/01/14 21:45:28 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.125 2008/01/15 16:19:45 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-8" date="The Future">
+		<releaseNotes>
+			<##>
+		</releaseNotes>
+		<fix author='adam' date='2008-01-15' ref='1872198' reftype='bug'>
+			Themes: Sub-menus are now indented more to improve clarity. Indent is
+			now 17px.
+		</fix>
+	</version>
 	<version number="2.0-beta-8" date="2008-01-14">
 		<releaseNotes>
 			This release clarifies the role of slots/site-placehoders and brings
