@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.1 2007/11/27 22:06:46 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.2 2008/01/15 18:23:08 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.1 2007/11/27 22:06:46 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.2 2008/01/15 18:23:08 adamfranco Exp $
  */
 class AgentSearchSource
 	implements WSearchSource
@@ -121,7 +121,7 @@ class AgentSearchSource
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.1 2007/11/27 22:06:46 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.2 2008/01/15 18:23:08 adamfranco Exp $
  */
 class AgentSearchResult
 	implements WSearchResult
@@ -138,6 +138,21 @@ class AgentSearchResult
 	public function __construct (Agent $agent) {
 		$this->id = $agent->getId();
 		$this->name = $agent->getDisplayName();
+		try {
+			$propertiesIterator = $agent->getProperties();
+			while ($propertiesIterator->hasNext()) {
+				$properties = $propertiesIterator->next();
+				try {
+					if ($properties->getProperty('email')) {
+						$this->email = $properties->getProperty('email');
+						break;
+					}
+				} catch (Exception $e) {
+				}
+			}
+		} catch (Exception $e) {
+		}
+		
 	}
 
 	/**
@@ -186,6 +201,13 @@ class AgentSearchResult
 	public function getMarkup () {
 		ob_start();
 		print $this->getName();
+		print " &nbsp; ";
+		print "<a href='#' onclick=\"alert('";
+		print _("Name").":\\n\\t".addslashes($this->getName());
+		print "\\n"._("Id").":\\n\\t".addslashes($this->getIdString());
+		if (isset($this->email))
+			print "\\n"._("Email").":\\n\\t".addslashes($this->email);
+		print "'); return false;\">"._("more info...")."</a>";
 		return ob_get_clean();
 	}
 	

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.128 2008/01/15 17:56:50 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.129 2008/01/15 18:23:08 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -24,6 +24,13 @@
 		</fix>
 		<fix author='adam' date='2008-01-15' ref='1872261' reftype='bug'>
 			Permissions: Now nested menus are traversed-to when populating the Roles Matrix.
+		</fix>
+		<fix author='adam' date='2008-01-15' ref='1872249' reftype='bug'>
+			Permissions: Groups are now not duplicated in search results.
+		</fix>
+		<fix author='adam' date='2008-01-15' ref='1872249' reftype='bug'>
+			Permissions: Now can display more info about users and groups in case
+			the names are not unique.
 		</fix>
 	</version>
 	<version number="2.0-beta-8" date="2008-01-14">
