@@ -3,6 +3,12 @@ Name: Segue Release Notes
 (See the Segue change log for more details)
 
 
+v. 2.0-beta-9 (2008-01-15)
+----------------------------------------------------
+This release fixes a number of bugs in the Roles user interface. See the change-log
+for details.
+
+
 v. 2.0-beta-8 (2008-01-14)
 ----------------------------------------------------
 This release clarifies the role of slots/site-placehoders and brings some

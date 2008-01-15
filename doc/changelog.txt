@@ -4,6 +4,36 @@ Name: Segue Change Log
 
 
 
+v. 2.0-beta-9 (2008-01-15)
+----------------------------------------------------
+This release fixes a number of bugs in the Roles user interface. See the change-log
+for details.
+		
+		
+	* Change: #1872198 
+		Themes: Sub-menus are now indented more to improve clarity. Indent is now
+		17px. 
+		(2008-01-15 - Adam Franco)
+		
+	* Bug Fix: #1872247 
+		Permissions: Now components without titles do not crash the Manage Roles
+		user interface.
+		(2008-01-15 - Adam Franco)
+		
+	* Bug Fix: #1872261 
+		Permissions: Now nested menus are traversed-to when populating the Roles
+		Matrix. 
+		(2008-01-15 - Adam Franco)
+		
+	* Bug Fix: #1872249 
+		Permissions: Groups are now not duplicated in search results.
+		(2008-01-15 - Adam Franco)
+		
+	* Bug Fix: #1872249 
+		Permissions: Now can display more info about users and groups in case the
+		names are not unique.
+		(2008-01-15 - Adam Franco)
+	
 v. 2.0-beta-8 (2008-01-14)
 ----------------------------------------------------
 This release clarifies the role of slots/site-placehoders and brings some
