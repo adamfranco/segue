@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.126 2008/01/15 16:19:54 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.127 2008/01/15 17:32:34 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -17,6 +17,10 @@
 		<fix author='adam' date='2008-01-15' ref='1872198' reftype='bug'>
 			Themes: Sub-menus are now indented more to improve clarity. Indent is
 			now 17px.
+		</fix>
+		<fix author='adam' date='2008-01-15' ref='1872247' reftype='bug'>
+			Permissions: Now components without titles do not crash the Manage Roles
+			user interface.
 		</fix>
 	</version>
 	<version number="2.0-beta-8" date="2008-01-14">

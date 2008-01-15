@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.10 2007/11/30 21:07:06 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.11 2008/01/15 17:32:34 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.10 2007/11/30 21:07:06 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.11 2008/01/15 17:32:34 adamfranco Exp $
  */
 class PopulateRolesVisitor
 	implements SiteVisitor
@@ -103,10 +103,13 @@ class PopulateRolesVisitor
 		}
 		
 		// Create the property with the current role
+		$title = strip_tags($siteComponent->getDisplayName());
+		if (!strlen($title))
+			$title = _("Untitled");
 		if ($isRoot) {
 			$this->property->addField(
 				$qualifierId->getIdString(), 
-				strip_tags($siteComponent->getDisplayName()), 
+				$title, 
 				$role->getIdString(),
 				">=");
 		} else {
@@ -114,7 +117,7 @@ class PopulateRolesVisitor
 			$this->property->addChildField(
 				$parentQualifierId->getIdString(), 
 				$qualifierId->getIdString(), 
-				strip_tags($siteComponent->getDisplayName()), 
+				$title, 
 				$role->getIdString(),
 				">=");
 		}
