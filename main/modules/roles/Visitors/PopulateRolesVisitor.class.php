@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.11 2008/01/15 17:32:34 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.12 2008/01/15 17:56:50 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.11 2008/01/15 17:32:34 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.12 2008/01/15 17:56:50 adamfranco Exp $
  */
 class PopulateRolesVisitor
 	implements SiteVisitor
@@ -258,6 +258,11 @@ class PopulateRolesVisitor
 		$this->visitBlock($siteComponent);
 		
 		$siteComponent->getOrganizer()->acceptVisitor($this);
+		
+		// Also visit nested menus.
+		$nestedMenuOrganizer = $siteComponent->getNestedMenuOrganizer();
+		if (!is_null($nestedMenuOrganizer))
+			$nestedMenuOrganizer->acceptVisitor($this);
 	}
 	
 	/**
