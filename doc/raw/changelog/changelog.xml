@@ -5,11 +5,21 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.130 2008/01/15 18:25:40 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.131 2008/01/17 17:50:45 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-10" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-01-17' ref=' 1873960' reftype='bug'>
+			A URL that requires javascript processing now isn't placed in a form
+			action, preventing web-crawlers form accidentally going to an invalid 
+			URL.
+		</fix>
+	</version>
 	<version number="2.0-beta-9" date="2008-01-15">
 		<releaseNotes>
 			This release fixes a number of bugs in the Roles user interface.

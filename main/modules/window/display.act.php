@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.21 2007/12/17 16:17:26 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.22 2008/01/17 17:51:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.21 2007/12/17 16:17:26 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.22 2008/01/17 17:51:43 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -291,8 +291,9 @@ class displayAction
 		$harmoni->request->passthrough('node');
 		$harmoni->request->passthrough('site');
 		ob_start();
-		print "\n\t<form action='".$harmoni->request->quickURL('XXXMODULEXXX','XXXACTIONXXX')."' method='post' ";
+		print "\n\t<form action='#' method='post' ";
 		print "style='display: inline;'>";
+		$newUrl = $harmoni->request->quickURL('XXXMODULEXXX','XXXACTIONXXX');
 		$harmoni->request->forget('node');
 		$harmoni->request->forget('site');
 		
@@ -303,7 +304,7 @@ class displayAction
 		print "onchange=\"";
 		print "var module = this.value; ";
 		print "var action = '".$targetAction."'; ";
-		print "var url = this.form.action; ";
+		print "var url = '$newUrl'; ";
 // 		print "alert(url); ";
 		print "url = url.replace(/XXXMODULEXXX/, module); ";
 		print "url = url.replace(/XXXACTIONXXX/, action); ";
