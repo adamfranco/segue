@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.132 2008/01/18 21:39:07 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.133 2008/01/18 21:41:06 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -25,6 +25,13 @@
 		<change author='adam' date='2008-01-18'>
 			SiteDisplay: Can now get the content type of a block. This matches the
 			plugin type.
+		</change>
+		<new author='adam' date='2008-01-18' ref='1820781' reftype='fr'>
+			Export: New site-export tool that provides a downloadable XML representation
+			of the site and its media.
+		</new>
+		<change author='adam' date='2008-01-18'>
+			Can now get the Segue version string during execution.
 		</change>
 	</version>
 	<version number="2.0-beta-9" date="2008-01-15">
