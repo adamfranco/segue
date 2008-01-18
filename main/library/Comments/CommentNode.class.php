@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.13 2008/01/03 19:56:24 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.14 2008/01/18 21:37:03 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.13 2008/01/03 19:56:24 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.14 2008/01/18 21:37:03 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -458,6 +458,17 @@ class CommentNode {
 		
 		print "\n\t</div>";
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the Asset for this comment.
+	 * 
+	 * @return Asset
+	 * @access public
+	 * @since 1/17/08
+	 */
+	public function getAsset () {
+		return $this->_asset;
 	}
 }
 
