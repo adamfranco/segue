@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSiteComponent.abstract.php,v 1.3 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: BlockSiteComponent.abstract.php,v 1.4 2008/01/18 21:39:07 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/SiteComponent.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSiteComponent.abstract.php,v 1.3 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: BlockSiteComponent.abstract.php,v 1.4 2008/01/18 21:39:07 adamfranco Exp $
  */
 interface BlockSiteComponent
 	extends SiteComponent
@@ -73,6 +73,15 @@ interface BlockSiteComponent
 	 * @since 1/11/08
 	 */
 	public function getModificationDate ();
+	
+	/**
+	 * Answer an OKI type that represents the content.
+	 * 
+	 * @return Type
+	 * @access public
+	 * @since 1/17/08
+	 */
+	public function getContentType ();
 	
 	/**
 	 * Answer the HTML markup that represents the title of the block. This may

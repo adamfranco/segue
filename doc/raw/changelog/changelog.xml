@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.131 2008/01/17 17:50:45 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.132 2008/01/18 21:39:07 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -19,6 +19,13 @@
 			action, preventing web-crawlers form accidentally going to an invalid 
 			URL.
 		</fix>
+		<change author='adam' date='2008-01-18'>
+			Comments: Can now return the asset for a CommentNode to enable export.
+		</change>
+		<change author='adam' date='2008-01-18'>
+			SiteDisplay: Can now get the content type of a block. This matches the
+			plugin type.
+		</change>
 	</version>
 	<version number="2.0-beta-9" date="2008-01-15">
 		<releaseNotes>

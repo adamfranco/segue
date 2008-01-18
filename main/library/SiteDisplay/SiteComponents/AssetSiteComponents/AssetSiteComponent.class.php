@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.13 2008/01/09 22:19:41 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.14 2008/01/18 21:39:08 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.13 2008/01/09 22:19:41 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.14 2008/01/18 21:39:08 adamfranco Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -478,22 +478,6 @@ abstract class AssetSiteComponent
 			$element->removeAttribute('width');
 		
 		$this->_saveXml();
-	}
-	
-/*********************************************************
- * Drag & Drop destinations
- *********************************************************/
-	
-	/**
-	 * Answer an array (keyed by Id) of the possible destinations [organizers] that
-	 * this component could be placed in.
-	 * 
-	 * @return ref array
-	 * @access public
-	 * @since 4/11/06
-	 */
-	function getVisibleDestinationsForPossibleAddition () {
-		throwError(new Error("Method <b>".__FUNCTION__."()</b> declared in interface<b> ".__CLASS__."</b> has not been overloaded in a child class.", "SiteDisplay"));
 	}
 	
 /*********************************************************

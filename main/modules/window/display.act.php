@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.22 2008/01/17 17:51:43 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.23 2008/01/18 21:39:08 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.22 2008/01/17 17:51:43 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.23 2008/01/18 21:39:08 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -179,7 +179,25 @@ class displayAction
 	 * @since 9/25/07
 	 */
 	public static function getVersionText () {
-		// Version
+		$harmoni = Harmoni::instance();
+		ob_start();
+		print "<a href='".$harmoni->request->quickURL('window', 'changelog')."' target='_blank'>Segue v.".self::getSegueVersion()."</a> &nbsp; &nbsp; &nbsp; ";
+		print "&copy;".self::getSegueCopyrightYear()." Middlebury College  &nbsp; &nbsp; &nbsp; <a href='http://segue.sourceforge.net'>";
+		print _("about");
+		print "</a>";
+		
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the segue version string
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/18/08
+	 * @static
+	 */
+	public static function getSegueVersion () {
 		if (!isset($_SESSION['SegueVersion'])) {
 			$document = new DOMDocument();
 			// attempt to load (parse) the xml file
@@ -197,14 +215,20 @@ class displayAction
 			}
 		}
 		
-		$harmoni = Harmoni::instance();
-		ob_start();
-		print "<a href='".$harmoni->request->quickURL('window', 'changelog')."' target='_blank'>Segue v.".$_SESSION['SegueVersion']."</a> &nbsp; &nbsp; &nbsp; ";
-		print "&copy;".$_SESSION['SegueCopyrightYear']." Middlebury College  &nbsp; &nbsp; &nbsp; <a href='http://segue.sourceforge.net'>";
-		print _("about");
-		print "</a>";
-		
-		return ob_get_clean();
+		return $_SESSION['SegueVersion'];
+	}
+	
+	/**
+	 * Answer the segue version string
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/18/08
+	 * @static
+	 */
+	public static function getSegueCopyrightYear () {
+		self::getSegueVersion();
+		return $_SESSION['SegueCopyrightYear'];
 	}
 	
 	/**

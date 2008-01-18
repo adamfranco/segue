@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.14 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.15 2008/01/18 21:39:08 adamfranco Exp $
  */ 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.abstract.php");
 
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.ab
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.14 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.15 2008/01/18 21:39:08 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -149,6 +149,17 @@ class AssetBlockSiteComponent
 	}
 	
 	/**
+	 * Answer the Id of the agent that created this component
+	 * 
+	 * @return object Id
+	 * @access public
+	 * @since 1/18/08
+	 */
+	public function getCreator () {
+		return $this->_asset->getCreator();
+	}
+	
+	/**
 	 * Answer the date at which this Component was last modified.
 	 * 
 	 * @return object DateAndTime
@@ -182,6 +193,17 @@ class AssetBlockSiteComponent
 	 */
 	function updateTitleMarkup ( $titleMarkup ) {
 		throwError(new Error('unimplemented'));
+	}
+	
+	/**
+	 * Answer an OKI type that represents the content.
+	 * 
+	 * @return Type
+	 * @access public
+	 * @since 1/17/08
+	 */
+	public function getContentType () {
+		return $this->_asset->getAssetType();
 	}
 
 	
