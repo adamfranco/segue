@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.12 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.13 2008/01/23 22:06:53 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteCom
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.12 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.13 2008/01/23 22:06:53 adamfranco Exp $
  */
 class AssetFixedOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -210,7 +210,7 @@ class AssetFixedOrganizerSiteComponent
 		$numCells = $this->getNumColumns() * $this->getNumRows();
 		
 		// Add new cells up to our number
-		for ($i = count($this->_element->childNodes); $i <= $numCells; $i++) {
+		for ($i = $this->_element->childNodes->length; $i < $numCells; $i++) {
 			$this->_element->appendChild(
 				$this->_element->ownerDocument->createElement('cell'));
 		}
@@ -218,7 +218,7 @@ class AssetFixedOrganizerSiteComponent
 		if (!$initialCreation) {
 			// Remove tags after the max shown if needed.
 			$lastUsed = $this->getLastIndexFilled();
-			for ($i = count($this->_element->childNodes) - 1; $i >= $numCells; $i--) {
+			for ($i = $this->_element->childNodes->length - 1; $i >= $numCells; $i--) {
 				if ($i > $lastUsed)
 					$this->_element->removeChild($this->_element->childNodes->item($i));
 			}
@@ -255,7 +255,7 @@ class AssetFixedOrganizerSiteComponent
 			}
 		}
 				
-		for ($i = count($this->_element->childNodes) - 1; $i >= 0; $i--) {
+		for ($i = $this->_element->childNodes->length - 1; $i >= 0; $i--) {
 			if (in_array($i, $myFilledTargetCells))
 				return $i;
 				
