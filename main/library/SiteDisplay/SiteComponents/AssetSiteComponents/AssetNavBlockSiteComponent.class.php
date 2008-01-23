@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.16 2007/12/18 20:09:54 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.17 2008/01/23 15:06:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.16 2007/12/18 20:09:54 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.17 2008/01/23 15:06:02 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -57,9 +57,9 @@ class AssetNavBlockSiteComponent
 	}
 	
 	/**
-	 * Answer the DOMIT_Element associated with this SiteComponent
+	 * Answer the DOMElement associated with this SiteComponent
 	 * 
-	 * @return object DOMIT_Element
+	 * @return object DOMElement
 	 * @access public
 	 * @since 4/5/06
 	 */
@@ -186,7 +186,7 @@ class AssetNavBlockSiteComponent
 			// added as an xml child node of the parent, continue
 			try {
 				$oldParent->detatchSubcomponent($menuOrganizer);
-			} catch (DOMIT_DOMException $e) {
+			} catch (DOMException $e) {
 				$oldCellId = null;
 			}
 		} else {
@@ -330,12 +330,12 @@ class AssetNavBlockSiteComponent
 		printpre(htmlentities($oldContent->asString()));
 		print("<h3>New XML</h3>");
 		$element = $this->getElement();
-		printpre($element->ownerDocument->toNormalizedString(true));
+		printpre(htmlentities($element->ownerDocument->saveXML()));
 // 		exit;
 		
 		$this->_asset->updateContent(
 			Blob::fromString(
-				$element->ownerDocument->toNormalizedString()));
+				$element->ownerDocument->saveXML()));
 	}
 }
 

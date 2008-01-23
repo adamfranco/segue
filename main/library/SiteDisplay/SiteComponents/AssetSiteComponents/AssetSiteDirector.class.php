@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.18 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.19 2008/01/23 15:06:02 adamfranco Exp $
  */
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
@@ -33,7 +33,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.18 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.19 2008/01/23 15:06:02 adamfranco Exp $
  */
 class AssetSiteDirector
 	implements SiteDirector 
@@ -225,7 +225,7 @@ class AssetSiteDirector
 			&& preg_match('/^.*Block$/i', $currentElement->nodeName))
 		{
 			if (!$currentElement->getAttribute('id'))
-				throwError(new Error("No id attribute in: ".$currentElement->toNormalizedString(true)."\nWithin document: ".$currentElement->ownerDocument->toNormalizedString(true)));
+				throwError(new Error("No id attribute in: ".$currentElement->saveXML()."\nWithin document: ".$currentElement->ownerDocument->saveXML()));
 			
 			$idManager = Services::getService('Id');
 			$asset = $this->_repository->getAsset($idManager->getId(
@@ -255,16 +255,14 @@ class AssetSiteDirector
 	}
 	
 	/**
-	 * Answer a DOMIT_Document from a text string
+	 * Answer a DOMDocument from a text string
 	 * 
 	 * @param object Asset $asset
-	 * @return object DOMIT_Document
+	 * @return object DOMDocument
 	 * @access public
 	 * @since 9/25/06
 	 */
-	function getXmlDocumentFromAsset ( $asset ) {
-		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule('Asset'));
-		
+	function getXmlDocumentFromAsset ( Asset $asset ) {		
 		$id = $asset->getId();
 		$assetIdString = $id->getIdString();
 		if (!$this->NavBlockType->isEqual($asset->getAssetType())
@@ -274,19 +272,19 @@ class AssetSiteDirector
 		}
 		
 		if (!isset($this->_xmlDocuments[$assetIdString])) {
-			$this->_xmlDocuments[$assetIdString] = new DOMIT_Document();
-			$this->_xmlDocuments[$assetIdString]->setNamespaceAwareness(true);
+			$this->_xmlDocuments[$assetIdString] = new DOMDocument();
+// 			$this->_xmlDocuments[$assetIdString]->setNamespaceAwareness(true); // From DOMIT implementation
 			$assetContent = $asset->getContent();
 			
 			// if we have asset content, parse it
 			if (strlen($assetContent->asString()))
-				$success = $this->_xmlDocuments[$assetIdString]->parseXML($assetContent->asString());
+				$success = $this->_xmlDocuments[$assetIdString]->loadXML($assetContent->asString());
 			// otherwise, just use the empty document.
 			else
 				$success = true;
 	
 			if ($success !== true) {
-				throwError(new Error("DOMIT error: ".$this->_xmlDocuments[$assetIdString]->getErrorCode().
+				throwError(new Error("DOM error: ".$this->_xmlDocuments[$assetIdString]->getErrorCode().
 					"<br/>\t meaning: ".$this->_xmlDocuments[$assetIdString]->getErrorString()."<br/>", "SiteDisplay"));
 			}
 		}
@@ -320,7 +318,7 @@ class AssetSiteDirector
 			$asset = $this->_repository->getAsset(
 						$idManager->getId($matches[1]));
 			$xmlDoc = $this->getXmlDocumentFromAsset($asset);
-			$element = $xmlDoc->getElementByID($matches[2], false);
+			$element = AssetSiteComponent::getElementById($xmlDoc, $matches[2]);
 			return $this->getSiteComponentFromXml($asset, $element);
 		} else {
 			return $this->getSiteComponentFromAsset(
@@ -332,14 +330,12 @@ class AssetSiteDirector
 	/**
 	 * Create and/or return the component for an asset and register it for later fetching
 	 * 
-	 * @param object DOMIT_Node $element
+	 * @param object Asset $asset
 	 * @return object SiteComponent
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function getSiteComponentFromAsset ( $asset ) {
-		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule('Asset'));
-		
+	function getSiteComponentFromAsset ( Asset $asset ) {		
 		$id = $asset->getId();
 		$idString = $id->getIdString();
 		if (!isset($this->_createdSiteComponents[$idString])) {
@@ -370,15 +366,12 @@ class AssetSiteDirector
 	/**
 	 * Create and/or return the component for an element and register it for later fetching
 	 * 
-	 * @param object DOMIT_Node $element
+	 * @param object DOMElement $element
 	 * @return object SiteComponent
 	 * @access public
 	 * @since 4/5/06
 	 */
-	function getSiteComponentFromXml ( $asset, $element ) {
-		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule('Asset'));
-		ArgumentValidator::validate($element, ExtendsValidatorRule::getRule('DOMIT_Node'));
-		
+	function getSiteComponentFromXml (Asset $asset, DOMElement $element ) {		
 		$id = $element->getAttribute('id');
 		if (!isset($this->_createdSiteComponents[$id])) {
 			$class = "Asset".ucfirst($element->nodeName)."SiteComponent";
@@ -425,15 +418,13 @@ class AssetSiteDirector
 	/**
 	 * Answer the id of the parent object
 	 * 
-	 * @param object DOMIT_Node
-	 * @return object DOMIT_Node
+	 * @param object DOMElement
+	 * @return object DOMElement
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function _getParentWithId ( $element ) {
-		ArgumentValidator::validate($element, ExtendsValidatorRule::getRule("DOMIT_Element"));
-		
-		$extendsRule = ExtendsValidatorRule::getRule("DOMIT_Element");
+	function _getParentWithId ( DOMElement $element ) {		
+		$extendsRule = ExtendsValidatorRule::getRule("DOMElement");
 		
 		if ($extendsRule->check($element->parentNode)) {
 			if ($element->parentNode->hasAttribute('id'))
@@ -578,7 +569,7 @@ class AssetSiteDirector
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.18 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.19 2008/01/23 15:06:02 adamfranco Exp $
  */
 class NonNavException
 	extends Exception

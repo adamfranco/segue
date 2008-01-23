@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.17 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.18 2008/01/23 15:06:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.17 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.18 2008/01/23 15:06:02 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -167,12 +167,11 @@ class AssetFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function moveBefore ( $cellOneIndex, $cellTwoIndex ) {
-		// child DOMIT_Elements in an array
 		$children = $this->_element->childNodes;
 
-		$temp1 = $children[$cellOneIndex];
-		if (isset($children[$cellTwoIndex]))
-			$temp2 = $children[$cellTwoIndex];
+		$temp1 = $children->item($cellOneIndex);
+		if (is_object($children->item($cellTwoIndex)))
+			$temp2 = $children->item($cellTwoIndex);
 		else
 			$temp2 = null;
 
@@ -192,7 +191,7 @@ class AssetFlowOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function moveToEnd ( $cellIndex ) {
-		$temp = $this->_element->childNodes[$cellIndex];
+		$temp = $this->_element->childNodes->item($cellIndex);
 		$this->_element->removeChild($temp);
 		$this->_element->appendChild($temp);
 		

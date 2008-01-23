@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.11 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.12 2008/01/23 15:06:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FixedOrganizerSiteCom
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.11 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetFixedOrganizerSiteComponent.class.php,v 1.12 2008/01/23 15:06:02 adamfranco Exp $
  */
 class AssetFixedOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -120,7 +120,7 @@ class AssetFixedOrganizerSiteComponent
 				// added as an xml child node of the parent, continue
 				try {
 					$oldParent->detatchSubcomponent($siteComponent);
-				} catch (DOMIT_DOMException $e) {
+				} catch (DOMException $e) {
 					$oldCellId = null;
 				}
 			} else {
@@ -149,11 +149,11 @@ class AssetFixedOrganizerSiteComponent
 	function swapCells ( $cellOneIndex, $cellTwoIndex ) {
 		$this->normalizeCells();
 		
-        // child DOMIT_Elements in an array
+        // child DOMElements in an array
         $children = $this->_element->childNodes;
         // cells
-        $cell_one = $children[$cellOneIndex];
-        $cell_two = $children[$cellTwoIndex];
+        $cell_one = $children->item($cellOneIndex);
+        $cell_two = $children->item($cellTwoIndex);
         $temp = $this->_element->ownerDocument->createElement('temp');
         
         $this->_element->replaceChild($temp, $cell_one);
@@ -220,7 +220,7 @@ class AssetFixedOrganizerSiteComponent
 			$lastUsed = $this->getLastIndexFilled();
 			for ($i = count($this->_element->childNodes) - 1; $i >= $numCells; $i--) {
 				if ($i > $lastUsed)
-					$this->_element->removeChild($this->_element->childNodes[$i]);
+					$this->_element->removeChild($this->_element->childNodes->item($i));
 			}
 		}
 		
@@ -259,7 +259,7 @@ class AssetFixedOrganizerSiteComponent
 			if (in_array($i, $myFilledTargetCells))
 				return $i;
 				
-			if ($this->_element->childNodes[$i]->firstChild)
+			if ($this->_element->childNodes->item($i)->firstChild)
 				return $i;
 		}
 		return false;

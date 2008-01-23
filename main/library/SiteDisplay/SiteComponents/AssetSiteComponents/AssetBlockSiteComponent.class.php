@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.15 2008/01/18 21:39:08 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.16 2008/01/23 15:06:02 adamfranco Exp $
  */ 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.abstract.php");
 
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.ab
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.15 2008/01/18 21:39:08 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.16 2008/01/23 15:06:02 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -53,9 +53,9 @@ class AssetBlockSiteComponent
 	}
 	
 	/**
-	 * Answer the DOMIT_Element associated with this SiteComponent
+	 * Answer the DOMElement associated with this SiteComponent
 	 * 
-	 * @return object DOMIT_Element
+	 * @return object DOMElement
 	 * @access public
 	 * @since 4/5/06
 	 */
@@ -63,7 +63,7 @@ class AssetBlockSiteComponent
 		if (!isset($this->_element)) {
 			$parentComponent = $this->getParentComponent();
 			$parentElement = $parentComponent->getElement();
-			$this->_element = $parentElement->ownerDocument->getElementByID($this->getId(), false);
+			$this->_element = self::getElementById($parentElement->ownerDocument, $this->getId());
 		}
 		return $this->_element;
 	}
@@ -260,7 +260,11 @@ class AssetBlockSiteComponent
 			$parentAssetType = $parentAsset->getAssetType();
 			if ($parentAssetType->getDomain() == 'segue') {
 				$parentXMLDoc = $this->_director->getXmlDocumentFromAsset($parentAsset);
-				$myElement = $parentXMLDoc->getElementByID($this->getId(), false);
+				$myElement = self::getElementById($parentXMLDoc, $this->getId());
+				if (is_null($myElement)) {
+					printpre($parentXMLDoc->toString(true));
+					throw new Exception("Could not find an element for Block id '".$this->getId()."'");
+				}
 				$parentElement = $this->_director->_getParentWithId($myElement);
 				if ($parentElement)
 					return $this->_director->getSiteComponentFromXml($parentAsset, $parentElement);
@@ -325,12 +329,12 @@ class AssetBlockSiteComponent
 		printpre(htmlentities($oldContent->asString()));
 		print("<h3>New XML</h3>");
 		$element = $this->getElement();
-		printpre($element->ownerDocument->toNormalizedString(true));
+		printpre(htmlentities($element->ownerDocument->saveXML()));
 // 		exit;
 		
 		$parentAsset->updateContent(
 			Blob::fromString(
-				$element->ownerDocument->toNormalizedString()));
+				$element->ownerDocument->saveXML()));
 	}
 
 }

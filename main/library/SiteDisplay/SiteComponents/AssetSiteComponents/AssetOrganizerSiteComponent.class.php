@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.11 2007/11/13 15:33:22 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.12 2008/01/23 15:06:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponen
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.11 2007/11/13 15:33:22 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.12 2008/01/23 15:06:02 adamfranco Exp $
  */
 abstract class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -122,7 +122,7 @@ abstract class AssetOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function getTotalNumberOfCells () {
-		return $this->_element->childCount;
+		return $this->_element->getElementsByTagName('cell')->length;
 	}
 	
 	/**
@@ -255,12 +255,12 @@ abstract class AssetOrganizerSiteComponent
 	 * hierarchy. If the Organizer XML is moved to another level of the hierarchy, 
 	 * those child Assets will need to come along
 	 * 
-	 * @param object DOMIT_element $element
+	 * @param object DOMElement $element
 	 * @return array An array of string Ids
 	 * @access public
 	 * @since 10/6/06
 	 */
-	function _getAssetIdsBelowElement ( $element ) {
+	function _getAssetIdsBelowElement ( DOMElement $element ) {
 		$assetIds = array();
 		
 		// If this element is a Block or NavBlock it is represented by an asset
@@ -312,7 +312,7 @@ abstract class AssetOrganizerSiteComponent
 					$componentNode = null;
 					if ($child->firstChild)
 						$componentNode = $child->firstChild;
-					while ($componentNode && $componentNode->nextSibling && $componentNode->nodeType != DOMIT_ELEMENT_NODE)
+					while ($componentNode && $componentNode->nextSibling && $componentNode->nodeType != XML_ELEMENT_NODE)
 						$componentNode = $componentNode->nextSibling;
 						
 					if ($componentNode) {

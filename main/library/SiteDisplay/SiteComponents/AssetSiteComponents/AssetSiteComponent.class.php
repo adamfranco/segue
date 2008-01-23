@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.14 2008/01/18 21:39:08 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.15 2008/01/23 15:06:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.14 2008/01/18 21:39:08 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.15 2008/01/23 15:06:02 adamfranco Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -32,16 +32,14 @@ abstract class AssetSiteComponent
 	 * Constructor
 	 * 
 	 * @param object XmlSiteDirector $director
-	 * @param object Domit_Node $element
+	 * @param object DOMElement $element
 	 * @return object XmlSiteNavBlockSiteComponent
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function __construct ( $director, $asset, $element) {
-		ArgumentValidator::validate($director, ExtendsValidatorRule::getRule('AssetSiteDirector'));
-		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule('Asset'));
+	function __construct ( AssetSiteDirector $director, Asset $asset, $element) {
 		ArgumentValidator::validate($element, OptionalRule::getRule(
-			ExtendsValidatorRule::getRule('DOMIT_Node')));
+			ExtendsValidatorRule::getRule('DOMElement')));
 		
 		$this->_director = $director;
 		$this->_asset = $asset;
@@ -146,9 +144,9 @@ abstract class AssetSiteComponent
 	}
 	
 	/**
-	 * Answer the DOMIT_Element associated with this SiteComponent
+	 * Answer the DOMElement associated with this SiteComponent
 	 * 
-	 * @return object DOMIT_Element
+	 * @return object DOMElement
 	 * @access public
 	 * @since 4/5/06
 	 */
@@ -480,6 +478,29 @@ abstract class AssetSiteComponent
 		$this->_saveXml();
 	}
 	
+	/**
+	 * This is a helper method to get an element from a document by id without
+	 * going through the trouble of setting an id attribute in the document
+	 * 
+	 * @param object DOMDocument $doc
+	 * @param string $id
+	 * @return DOMElement
+	 * @access public
+	 * @static
+	 * @since 1/22/08
+	 */
+	public static function getElementById (DOMDocument $doc, $id) {
+		$xpath = new DOMXPath($doc);
+		$elements = $xpath->query("//*[@id ='$id']");
+		if ($elements->length > 1)
+			throw new Exception("".$elements->length." elements found with id = '$id'. There must be no more than 1.");
+		
+		if ($elements->length == 1)
+			return $elements->item(0);
+		
+		throw new UnknownIdException("Could not find an element with id, '$id' in the document.");
+	}
+	
 /*********************************************************
  * Private methods
  *********************************************************/
@@ -498,12 +519,12 @@ abstract class AssetSiteComponent
 		printpre(htmlentities($oldContent->asString()));
 		print("<h3>New XML</h3>");
 		$element = $this->getElement();
-		printpre($element->ownerDocument->toNormalizedString(true));
+		printpre(htmlentities($element->ownerDocument->saveXML()));
 // 		exit;
 		
 		$this->_asset->updateContent(
 			Blob::fromString(
-				$element->ownerDocument->toNormalizedString()));
+				$element->ownerDocument->saveXML()));
 		
 		$this->clearDomCache();
 	}
