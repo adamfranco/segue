@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.41 2008/01/14 21:23:37 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.42 2008/01/23 15:26:29 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.41 2008/01/14 21:23:37 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.42 2008/01/23 15:26:29 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -754,10 +754,12 @@ class EduMiddleburyTextBlockPlugin
  			throw new InvalidVersionException("Too many 'abstractLength' elements, should be 1.");
  		$abstractElement = $abstractElements->item(0);
  		$abstract = $abstractElement->firstChild;
+ 		if (!$abstract)
+ 			return 0;
  		if ($abstract->nodeType == XML_TEXT_NODE) {
  			return intval($abstract->nodeValue);
 		} else {
-			throw new InvalidVersionException("The 'abstractLenght' element should contain a string.");
+			throw new InvalidVersionException("The 'abstractLength' element should contain a string.");
 		}
  	}
 }

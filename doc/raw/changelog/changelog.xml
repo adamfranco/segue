@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.133 2008/01/18 21:41:06 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.134 2008/01/23 15:26:29 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2008-01-23' ref='1815898' reftype='harmoni_fr'>
+			Site Display: Asset-based site components now use the PHP5 DOM libraries
+			instead of the DOMIT libraries that had been needed under PHP4.
+		</change>
 		<fix author='adam' date='2008-01-17' ref=' 1873960' reftype='bug'>
 			A URL that requires javascript processing now isn't placed in a form
 			action, preventing web-crawlers form accidentally going to an invalid 
@@ -23,7 +27,7 @@
 			Comments: Can now return the asset for a CommentNode to enable export.
 		</change>
 		<change author='adam' date='2008-01-18'>
-			SiteDisplay: Can now get the content type of a block. This matches the
+			Site Display: Can now get the content type of a block. This matches the
 			plugin type.
 		</change>
 		<new author='adam' date='2008-01-18' ref='1820781' reftype='fr'>
