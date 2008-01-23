@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.29 2007/12/20 16:12:15 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.30 2008/01/23 15:25:22 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.29 2007/12/20 16:12:15 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.30 2008/01/23 15:25:22 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -591,7 +591,6 @@ class PluginManager {
 	// @todo deal with new plugin readiness structure, and database tables
 		$authZ = Services::getService("AuthZ");
 //		if ($authZ->isUserAuthorized("edu.middlebury.authorization.add_children", ??))	{
-			require_once(DOMIT); // for XML DOM
 			$dr = Services::getService("Repository");
 			$dm = Services::getService("DataTypeManager");
 			$db = Services::getService("DBHandler");
@@ -624,7 +623,7 @@ class PluginManager {
 
 			// if there is no file then the plugin has no data structures
 			if (is_file($xmlFile)) {
-				$document = new DOMIT_Document();
+				$document = new DOMDocument();
 				$document->loadXML($xmlFile);
 				$recordStructures = $document->documentElement->childNodes;
 

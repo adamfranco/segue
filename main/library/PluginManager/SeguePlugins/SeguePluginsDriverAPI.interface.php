@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.3 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.4 2008/01/23 15:25:22 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.3 2008/01/08 16:22:55 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.4 2008/01/23 15:25:22 adamfranco Exp $
  */
 interface SeguePluginsDriverAPI {
 		
@@ -149,6 +149,23 @@ interface SeguePluginsDriverAPI {
 	 * @since 1/7/08
 	 */
 	public function executeAndGetVersionMarkup ( DOMDocument $versionXml );
+}
+
+/**
+ * An exception for Plugins to report invalid version formats.
+ * 
+ * @since 1/22/08
+ * @package segue.plugin_manager
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.4 2008/01/23 15:25:22 adamfranco Exp $
+ */
+class InvalidVersionException
+	extends Exception
+{
+	
 }
 
 ?>
