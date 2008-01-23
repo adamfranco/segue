@@ -6,8 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.19 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.20 2008/01/23 22:07:15 adamfranco Exp $
  */
+
+require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteDirector.abstract.php");
 require_once(dirname(__FILE__)."/AssetSiteComponent.class.php");
@@ -33,7 +35,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.19 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.20 2008/01/23 22:07:15 adamfranco Exp $
  */
 class AssetSiteDirector
 	implements SiteDirector 
@@ -272,7 +274,7 @@ class AssetSiteDirector
 		}
 		
 		if (!isset($this->_xmlDocuments[$assetIdString])) {
-			$this->_xmlDocuments[$assetIdString] = new DOMDocument();
+			$this->_xmlDocuments[$assetIdString] = new Harmoni_DOMDocument();
 // 			$this->_xmlDocuments[$assetIdString]->setNamespaceAwareness(true); // From DOMIT implementation
 			$assetContent = $asset->getContent();
 			
@@ -318,7 +320,7 @@ class AssetSiteDirector
 			$asset = $this->_repository->getAsset(
 						$idManager->getId($matches[1]));
 			$xmlDoc = $this->getXmlDocumentFromAsset($asset);
-			$element = AssetSiteComponent::getElementById($xmlDoc, $matches[2]);
+			$element = $xmlDoc->getElementByIdAttribute($matches[2]);
 			return $this->getSiteComponentFromXml($asset, $element);
 		} else {
 			return $this->getSiteComponentFromAsset(
@@ -569,7 +571,7 @@ class AssetSiteDirector
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.19 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.20 2008/01/23 22:07:15 adamfranco Exp $
  */
 class NonNavException
 	extends Exception

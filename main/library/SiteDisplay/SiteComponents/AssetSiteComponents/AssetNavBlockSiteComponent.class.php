@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.17 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.18 2008/01/23 22:07:15 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.17 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.18 2008/01/23 22:07:15 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -330,12 +330,12 @@ class AssetNavBlockSiteComponent
 		printpre(htmlentities($oldContent->asString()));
 		print("<h3>New XML</h3>");
 		$element = $this->getElement();
-		printpre(htmlentities($element->ownerDocument->saveXML()));
+		printpre(htmlentities($element->ownerDocument->saveXMLWithWhitespace()));
 // 		exit;
 		
 		$this->_asset->updateContent(
 			Blob::fromString(
-				$element->ownerDocument->saveXML()));
+				$element->ownerDocument->saveXMLWithWhitespace()));
 	}
 }
 

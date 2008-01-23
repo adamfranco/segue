@@ -6,9 +6,9 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.1 2008/01/23 15:27:15 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.2 2008/01/23 22:07:15 adamfranco Exp $
  */ 
-
+require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
 /**
  * This importer will traverse an XML document that defines a site and will create
  * the corresponding site components in the Segue instance.
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.1 2008/01/23 15:27:15 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.2 2008/01/23 22:07:15 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -154,17 +154,7 @@ class DomImportSiteVisitor
 		$this->applyDisplayName($siteComponent, $element);
 		$this->applyDescription($siteComponent, $element);
 		$this->applyCommonProperties($siteComponent, $element);
-		
-		$pluginManager = Services::getService('PluginManager');
-		$plugin = $pluginManager->getPlugin($siteComponent->getAsset());
-		if ($plugin->supportsVersioning()) {
-			$versionElement = $this->getSingleElement('./currentVersion/node()', $element);
-			$doc = new DOMDocument;
-			$doc->loadXML($versionElement->ownerDocument->saveXML($versionElement));
-			$plugin->applyVersion($doc);
-		} else {
-			$plugin->setContent($this->getStringValue($this->getSingleElement('./currentContent/content', $element)));
-		}
+		$this->applyPluginContent($siteComponent, $element);
 	}
 	
 	/**
@@ -391,6 +381,118 @@ class DomImportSiteVisitor
 			$targetElement = $this->getElementForId($matches[1]);
 			$menu->updateTargetId($targetElement->getAttribute('new_id')."_cell:".$matches[2]);
 		}
+	}
+	
+	/**
+	 * Apply the plugin content and history where applicable
+	 * 
+	 * @param BlockSiteComponent $siteComponent
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/23/08
+	 */
+	protected function applyPluginContent (BlockSiteComponent $siteComponent, DOMElement $element) {
+		$pluginManager = Services::getService('PluginManager');
+		$plugin = $pluginManager->getPlugin($siteComponent->getAsset());
+		if ($plugin->supportsVersioning()) {
+			$this->applyPluginHistory($plugin, $element);
+			$this->applyCurrentPluginVersion($plugin, $element);			
+		} else {
+			$this->applyUnversionedPluginContent($plugin, $element);
+		}
+	}
+	
+	/**
+	 * Directly set the plugin's content if it does not support versioning.
+	 * 
+	 * @param object SeguePluginsAPI $plugin
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/23/08
+	 */
+	protected function applyUnversionedPluginContent (SeguePluginsAPI $plugin, DOMElement $element) {
+		$plugin->setContent(
+				$this->getStringValue(
+					$this->getSingleElement('./currentContent/content', $element)));
+	}
+	
+	/**
+	 * Apply the current version element data to the plugin as the current version.
+	 * 
+	 * @param object SeguePluginsAPI $plugin
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/23/08
+	 */
+	protected function applyCurrentPluginVersion (SeguePluginsAPI $plugin, DOMElement $element) {
+		$versionElement = $this->getSingleElement('./currentVersion/node()', $element);
+		$doc = new Harmoni_DOMDocument;
+		$doc->appendChild($doc->importNode($versionElement, true));
+		$plugin->applyVersion($doc);
+	}
+	
+	/**
+	 * Apply the historical versions to the plugin.
+	 * 
+	 * @param object SeguePluginsAPI $plugin
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/23/08
+	 */
+	protected function applyPluginHistory (SeguePluginsAPI $plugin, DOMElement $element) {
+		$entries = $this->xpath->query('./history/entry', $element);
+		foreach ($entries as $entry) {
+			$this->addPluginHistoryEntry($plugin, $entry);
+		}
+	}
+	
+	/**
+	 * Apply a single history entry to the plugin's history
+	 * 
+	 * @param SeguePluginsAPI $plugin
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/23/08
+	 */
+	protected function addPluginHistoryEntry (SeguePluginsAPI $plugin, DOMElement $element) {
+		foreach ($element->childNodes as $child) {
+			if ($child->nodeType == XML_ELEMENT_NODE && $child->nodeName != 'comment') {
+				$doc = new Harmoni_DOMDocument;
+				$doc->appendChild($doc->importNode($child, true));
+				break;
+			}
+		}
+		if (!isset($doc))
+			throw new Exception("No version found.");
+		
+		$comment = $this->getStringValue($this->getSingleElement('./comment', $element));
+		$timestamp = DateAndTime::fromString($element->getAttribute('time_stamp'));
+		$agentId = $this->getAgentId($element->getAttribute("agent_id"));
+		
+		$plugin->importVersion($doc, $agentId, $timestamp, $comment);
+	}
+	
+	/**
+	 * Answer an Agent Id in the receiving system that corresponds to an id in the
+	 * source system.
+	 * 
+	 * @param string $idString
+	 * @return object Id
+	 * @access protected
+	 * @since 1/23/08
+	 */
+	protected function getAgentId ($idString) {
+		ArgumentValidator::validate($idString, StringValidatorRule::getRule());
+		
+		// @todo - Implement this to check for agent existance and/or create the agent if necessary.
+		// For now we will just assume the agent exists to test the rest of the history importing.
+		$idMgr = Services::getService('Id');
+		return $idMgr->getId($idString);
 	}
 	
 /*********************************************************

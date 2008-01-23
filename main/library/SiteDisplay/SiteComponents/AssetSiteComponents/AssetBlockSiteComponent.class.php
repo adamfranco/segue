@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.16 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.17 2008/01/23 22:07:15 adamfranco Exp $
  */ 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.abstract.php");
 
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.ab
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.16 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.17 2008/01/23 22:07:15 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -63,7 +63,7 @@ class AssetBlockSiteComponent
 		if (!isset($this->_element)) {
 			$parentComponent = $this->getParentComponent();
 			$parentElement = $parentComponent->getElement();
-			$this->_element = self::getElementById($parentElement->ownerDocument, $this->getId());
+			$this->_element = $parentElement->ownerDocument->getElementByIdAttribute($this->getId());
 		}
 		return $this->_element;
 	}
@@ -260,7 +260,7 @@ class AssetBlockSiteComponent
 			$parentAssetType = $parentAsset->getAssetType();
 			if ($parentAssetType->getDomain() == 'segue') {
 				$parentXMLDoc = $this->_director->getXmlDocumentFromAsset($parentAsset);
-				$myElement = self::getElementById($parentXMLDoc, $this->getId());
+				$myElement = $parentXMLDoc->getElementByIdAttribute($this->getId());
 				if (is_null($myElement)) {
 					printpre($parentXMLDoc->toString(true));
 					throw new Exception("Could not find an element for Block id '".$this->getId()."'");
@@ -329,12 +329,12 @@ class AssetBlockSiteComponent
 		printpre(htmlentities($oldContent->asString()));
 		print("<h3>New XML</h3>");
 		$element = $this->getElement();
-		printpre(htmlentities($element->ownerDocument->saveXML()));
+		printpre(htmlentities($element->ownerDocument->saveXMLWithWhitespace()));
 // 		exit;
 		
 		$parentAsset->updateContent(
 			Blob::fromString(
-				$element->ownerDocument->saveXML()));
+				$element->ownerDocument->saveXMLWithWhitespace()));
 	}
 
 }

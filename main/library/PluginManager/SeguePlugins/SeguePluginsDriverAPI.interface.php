@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.4 2008/01/23 15:25:22 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.5 2008/01/23 22:07:15 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.4 2008/01/23 15:25:22 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.5 2008/01/23 22:07:15 adamfranco Exp $
  */
 interface SeguePluginsDriverAPI {
 		
@@ -149,6 +149,19 @@ interface SeguePluginsDriverAPI {
 	 * @since 1/7/08
 	 */
 	public function executeAndGetVersionMarkup ( DOMDocument $versionXml );
+	
+	/**
+	 * Import a historical version, for instance from a backup system.
+	 * 
+	 * @param object DOMDocument $versionXml The version markup.
+	 * @param object Id $agentId The agent id that created the version.
+	 * @param object DateAndTime $timestamp The time the version was created.
+	 * @param string $comment A comment associated with the version.
+	 * @return void
+	 * @access public
+	 * @since 1/23/08
+	 */
+	public function importVersion (DOMDocument $versionXml, Id $agentId, DateAndTime $timestamp, $comment);
 }
 
 /**
@@ -160,7 +173,7 @@ interface SeguePluginsDriverAPI {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.4 2008/01/23 15:25:22 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.5 2008/01/23 22:07:15 adamfranco Exp $
  */
 class InvalidVersionException
 	extends Exception

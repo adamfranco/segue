@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.8 2008/01/11 20:28:33 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.9 2008/01/23 22:07:15 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.8 2008/01/11 20:28:33 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.9 2008/01/23 22:07:15 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -1556,6 +1556,32 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 		$harmoni->request->endNamespace();
 		
 		return $markup;
+	}
+	
+	/**
+	 * Import a historical version, for instance from a backup system.
+	 * 
+	 * @param object DOMDocument $versionXml The version markup.
+	 * @param object Id $agentId The agent id that created the version.
+	 * @param object DateAndTime $timestamp The time the version was created.
+	 * @param string $comment A comment associated with the version.
+	 * @return void
+	 * @access public
+	 * @since 1/23/08
+	 */
+	public function importVersion (DOMDocument $versionXml, Id $agentId, DateAndTime $timestamp, $comment) {
+		$query = new InsertQuery;
+		$query->setTable('segue_plugin_version');
+		$query->addValue('node_id', $this->getId());
+		$query->addValue('tstamp', $timestamp->asString());
+		$query->addValue('agent_id', $agentId->getIdString());
+		$query->addValue('comment', $comment);
+		$query->addValue('version_xml', $versionXml->saveXML());
+					
+		$dbc = Services::getService('DBHandler');
+		$dbc->query($query, IMPORTER_CONNECTION);
+		
+		unset($this->versions);
 	}
 	
 }
