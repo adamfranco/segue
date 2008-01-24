@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.12 2008/01/24 14:43:13 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.13 2008/01/24 14:53:16 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.12 2008/01/24 14:43:13 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.13 2008/01/24 14:53:16 adamfranco Exp $
  */
 class uploadAction
 	extends MediaAction
@@ -84,7 +84,8 @@ class uploadAction
 	 * @since 1/26/07
 	 */
 	function createFileAsset () {
-		$asset = MediaAsset::createForContentAsset($this->getContentAsset());
+		$contentAsset = $this->getContentAsset();
+		$asset = MediaAsset::createForContentAsset($contentAsset);
 		
 		if (!($displayName = RequestContext::value('displayName')))
 			$displayName = $_FILES['media_file']['name'];
