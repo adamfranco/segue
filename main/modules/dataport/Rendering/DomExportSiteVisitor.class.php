@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.1 2008/01/18 21:39:08 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.2 2008/01/24 14:46:27 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
 require_once(MYDIR."/main/modules/window/display.act.php");
+require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
 
 /**
  * This vistor will return an XML version of a site.
@@ -21,7 +22,7 @@ require_once(MYDIR."/main/modules/window/display.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.1 2008/01/18 21:39:08 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.2 2008/01/24 14:46:27 adamfranco Exp $
  */
 class DomExportSiteVisitor
 	implements SiteVisitor
@@ -55,7 +56,7 @@ class DomExportSiteVisitor
 			throw new Exception("'$filePath' is not writable for export.");
 		
 		$this->filePath = $filePath;
-		$this->doc = new DOMDocument;
+		$this->doc = new Harmoni_DOMDocument;
 		$this->doc->appendChild($this->doc->createElement('Segue2'));
 		$this->doc->documentElement->setAttribute('export_date', DateAndTime::now()->asString());
 		$this->doc->documentElement->setAttribute('segue_version', displayAction::getSegueVersion());

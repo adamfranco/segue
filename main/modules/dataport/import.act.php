@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.1 2008/01/23 15:27:15 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.2 2008/01/24 14:46:27 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -14,6 +14,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 require_once(dirname(__FILE__)."/Rendering/DomImportSiteVisitor.class.php");
+require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
 
 /**
  * This action will import a site into the slot-name given.
@@ -24,7 +25,7 @@ require_once(dirname(__FILE__)."/Rendering/DomImportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.1 2008/01/23 15:27:15 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.2 2008/01/24 14:46:27 adamfranco Exp $
  */
 class importAction
 	extends Action
@@ -82,7 +83,7 @@ class importAction
 			$repositoryManager->getRepository(
 				$idManager->getId('edu.middlebury.segue.sites_repository')));
 		
-		$doc = new DOMDocument;
+		$doc = new Harmoni_DOMDocument;
 		$doc->load(MYDIR."/main/modules/dataport/test/afranco-test/site.xml");
 		$mediaDir = MYDIR."/main/modules/dataport/test";
 		
