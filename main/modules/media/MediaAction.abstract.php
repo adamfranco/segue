@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.12 2007/12/07 18:02:18 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.13 2008/01/24 14:43:13 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
+require_once(dirname(__FILE__)."/MediaAsset.class.php");
 
 
 /**
@@ -21,7 +22,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.12 2007/12/07 18:02:18 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.13 2008/01/24 14:43:13 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -34,9 +35,8 @@ class MediaAction
 	 * @access public
 	 * @since 1/29/07
 	 */
-	function MediaAction () {
-		$this->mediaFileType = new Type ('segue', 'edu.middlebury', 'media_file',
-			'A file that is uploaded to Segue.');
+	function __construct () {
+		$this->mediaFileType = MediaAsset::getMediaFileType();
 		if (method_exists($this, 'XmlAction'))
 			$this->XmlAction();	
 	}

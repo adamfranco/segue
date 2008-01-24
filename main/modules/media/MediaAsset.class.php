@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAsset.class.php,v 1.4 2007/12/07 18:02:18 adamfranco Exp $
+ * @version $Id: MediaAsset.class.php,v 1.5 2008/01/24 14:43:13 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaFile.class.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/MediaFile.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAsset.class.php,v 1.4 2007/12/07 18:02:18 adamfranco Exp $
+ * @version $Id: MediaAsset.class.php,v 1.5 2008/01/24 14:43:13 adamfranco Exp $
  */
 class MediaAsset {
 		
@@ -90,6 +90,42 @@ class MediaAsset {
 			$idManager->getId($assetId));
 		
 		return $mediaAsset;
+	}
+	
+	/**
+	 * Create a new MediaAsset attached to a content asset
+	 * 
+	 * @param object Asset $contentAsset
+	 * @return object MediaAsset
+	 * @access public
+	 * @since 1/24/08
+	 * @static
+	 */
+	public static function createForContentAsset (Asset $contentAsset) {
+		$repository = $contentAsset->getRepository();
+		
+		// Create the asset
+		$asset = $repository->createAsset(
+					"Untitled",
+					'',
+					self::getMediaFileType());
+		
+		$contentAsset->addAsset($asset->getId());
+		
+		return $asset;
+	}
+	
+	/**
+	 * Answer the asset type for media assets.
+	 *
+	 * @return object Type
+	 * @access public
+	 * @since 1/24/08
+	 * @static
+	 */
+	public static function getMediaFileType () {
+		return new Type ('segue', 'edu.middlebury', 'media_file',
+			'A file that is uploaded to Segue.');
 	}
 	
 	/*********************************************************

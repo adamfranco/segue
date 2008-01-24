@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.11 2007/10/25 16:06:25 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.12 2008/01/24 14:43:13 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.11 2007/10/25 16:06:25 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.12 2008/01/24 14:43:13 adamfranco Exp $
  */
 class uploadAction
 	extends MediaAction
@@ -84,8 +84,7 @@ class uploadAction
 	 * @since 1/26/07
 	 */
 	function createFileAsset () {
-		$contentAsset = $this->getContentAsset();
-		$repository = $contentAsset->getRepository();
+		$asset = MediaAsset::createForContentAsset($this->getContentAsset());
 		
 		if (!($displayName = RequestContext::value('displayName')))
 			$displayName = $_FILES['media_file']['name'];
@@ -94,12 +93,8 @@ class uploadAction
 			$description = '';
 		
 		// Create the asset
-		$asset = $repository->createAsset(
-					$displayName,
-					$description,
-					$this->mediaFileType);
-		
-		$contentAsset->addAsset($asset->getId());
+		$asset->updateDisplayName($displayName);
+		$asset->updateDescription($description);
 		
 		try {
 			$this->addFileRecord($asset);
