@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAsset.class.php,v 1.5 2008/01/24 14:43:13 adamfranco Exp $
+ * @version $Id: MediaAsset.class.php,v 1.6 2008/01/24 17:07:15 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaFile.class.php");
@@ -17,6 +17,7 @@ require_once(dirname(__FILE__)."/MediaFile.class.php");
  * accessed through direct accessor methods rather than the OSID Asset/Record methods.
  * A MediaAsset may of zero or more MediaFiles.
  *
+ * A MediaAsset object is read-only. Access the its asset directly for write actions.
  * 
  * @since 4/27/07
  * @package segue.media
@@ -24,7 +25,7 @@ require_once(dirname(__FILE__)."/MediaFile.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAsset.class.php,v 1.5 2008/01/24 14:43:13 adamfranco Exp $
+ * @version $Id: MediaAsset.class.php,v 1.6 2008/01/24 17:07:15 adamfranco Exp $
  */
 class MediaAsset {
 		
@@ -93,10 +94,12 @@ class MediaAsset {
 	}
 	
 	/**
-	 * Create a new MediaAsset attached to a content asset
+	 * Create a new Asset attached to a content asset. To access this asset as
+	 * a mediaAsset, use 
+	 * 		MediaAsset::withAsset(MediaAsset::createForContentAsset($contentAsset));
 	 * 
 	 * @param object Asset $contentAsset
-	 * @return object MediaAsset
+	 * @return object Asset
 	 * @access public
 	 * @since 1/24/08
 	 * @static
@@ -381,7 +384,7 @@ class MediaAsset {
 	 * @access protected
 	 * @since 4/27/07
 	 */
-	function MediaAsset ( $asset ) {
+	function __construct ( $asset ) {
 		ArgumentValidator::validate($asset, ExtendsValidatorRule::getRule("Asset"));
 		
 		$this->_asset = $asset;

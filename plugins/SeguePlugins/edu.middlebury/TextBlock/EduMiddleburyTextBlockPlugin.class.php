@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.43 2008/01/24 14:45:34 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.44 2008/01/24 17:07:15 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.43 2008/01/24 14:45:34 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.44 2008/01/24 17:07:15 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -730,7 +730,7 @@ class EduMiddleburyTextBlockPlugin
  		
  		$contentElement = $contentElements->item(0);
  		$content = $contentElement->firstChild;
- 		if ($content->nodeType == XML_CDATA_SECTION_NODE) {
+ 		if ($content && $content->nodeType == XML_CDATA_SECTION_NODE) {
  			return $content->nodeValue;
 		} else {
 			throw new InvalidVersionException("The 'content' element should contain one CDATA section.");
