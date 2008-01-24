@@ -6,9 +6,14 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.2 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.3 2008/01/24 17:07:28 adamfranco Exp $
  */ 
+
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
+require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
+require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
+require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
+
 /**
  * This importer will traverse an XML document that defines a site and will create
  * the corresponding site components in the Segue instance.
@@ -19,7 +24,7 @@ require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.2 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.3 2008/01/24 17:07:28 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -80,6 +85,12 @@ class DomImportSiteVisitor
 		$siteElement = $elements->item(0);
 		
 		$site = $this->createComponent($siteElement, null);
+		
+		$roleMgr = SegueRoleManager::instance();
+		$idMgr = Services::getService("Id");
+		$adminRole = $roleMgr->getRole('admin');
+		$adminRole->applyToUser($idMgr->getId($site->getId()), true);
+		
 		$this->importComponent($siteElement, $site);
 		$this->updateMenuTargets();
 		return $site;
@@ -154,7 +165,9 @@ class DomImportSiteVisitor
 		$this->applyDisplayName($siteComponent, $element);
 		$this->applyDescription($siteComponent, $element);
 		$this->applyCommonProperties($siteComponent, $element);
-		$this->applyPluginContent($siteComponent, $element);
+		$this->applyPluginContent($siteComponent->getAsset(), $element);
+		$this->applyMedia($siteComponent->getAsset(), $element);
+		$this->applyComments($siteComponent, $element);
 	}
 	
 	/**
@@ -386,15 +399,15 @@ class DomImportSiteVisitor
 	/**
 	 * Apply the plugin content and history where applicable
 	 * 
-	 * @param BlockSiteComponent $siteComponent
+	 * @param Asset $asset
 	 * @param object DOMElement $element
 	 * @return void
 	 * @access protected
 	 * @since 1/23/08
 	 */
-	protected function applyPluginContent (BlockSiteComponent $siteComponent, DOMElement $element) {
+	protected function applyPluginContent (Asset $asset, DOMElement $element) {
 		$pluginManager = Services::getService('PluginManager');
-		$plugin = $pluginManager->getPlugin($siteComponent->getAsset());
+		$plugin = $pluginManager->getPlugin($asset);
 		if ($plugin->supportsVersioning()) {
 			$this->applyPluginHistory($plugin, $element);
 			$this->applyCurrentPluginVersion($plugin, $element);			
@@ -431,7 +444,11 @@ class DomImportSiteVisitor
 		$versionElement = $this->getSingleElement('./currentVersion/node()', $element);
 		$doc = new Harmoni_DOMDocument;
 		$doc->appendChild($doc->importNode($versionElement, true));
-		$plugin->applyVersion($doc);
+		try {
+			$plugin->applyVersion($doc);
+		} catch (InvalidVersionException $e) {
+			printpre($e->getMessage());
+		}
 	}
 	
 	/**
@@ -478,6 +495,222 @@ class DomImportSiteVisitor
 	}
 	
 	/**
+	 * Apply the files to a block
+	 * 
+	 * @param Asset $contentAsset
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/24/08
+	 */
+	protected function applyMedia (Asset $contentAsset, DOMElement $element) {
+		$mediaElements = $this->xpath->query("./attachedMedia/mediaAsset", $element);
+		foreach ($mediaElements as $mediaElement)
+			$this->addMedia($contentAsset, $mediaElement);
+	}
+	
+	/**
+	 * Add a Media File
+	 * 
+	 * @param Asset $contentAsset
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/24/08
+	 */
+	protected function addMedia (Asset $contentAsset, DOMElement $element) {
+		$asset = MediaAsset::createForContentAsset($contentAsset);
+		$element->setAttribute('new_id', $asset->getId()->getIdString());
+		$asset->updateDisplayName($this->getStringValue($this->getSingleChild('displayName', $element)));
+		$asset->updateDescription($this->getStringValue($this->getSingleChild('description', $element)));
+		
+		$fileElements = $this->xpath->query("./file", $element);
+		foreach ($fileElements as $fileElement)
+			$this->addFileRecord($asset, $fileElement);
+		
+		$dcElements = $this->xpath->query("./dublinCore", $element);
+		foreach ($dcElements as $dcElement)
+			$this->addDublinCoreRecord($asset, $dcElement);
+	}
+	
+	/**
+	 * Add a File Record to a media Asset.
+	 * 
+	 * @param object Asset $asset
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/24/08
+	 */
+	protected function addFileRecord (Asset $asset, DOMElement $element) {
+		$idManager = Services::getService("Id");
+		$record = $asset->createRecord($idManager->getId("FILE"));
+		$element->setAttribute('new_id', $record->getId()->getIdString());
+		
+		$name = $this->getStringValue($this->getSingleElement('./name', $element));
+		$filePath = $this->mediaPath."/".$this->getStringValue($this->getSingleElement('./path', $element));
+		if ($element->hasAttribute('mimetype'))
+			$mimeType = $element->getAttribute('mimetype');
+		
+		// If we weren't passed a mime type or were passed the generic
+		// application/octet-stream type, see if we can figure out the
+		// type.
+		if (!isset($mimeType) || !$mimeType || $mimeType == 'application/octet-stream') {
+			$mime = Services::getService("MIME");
+			$mimeType = $mime->getMimeTypeForFileName($name);
+		}
+		
+		$parts = $record->getPartsByPartStructure($idManager->getId("FILE_DATA"));
+		$part = $parts->next();
+		$part->updateValue(file_get_contents($filePath));
+		
+		$parts = $record->getPartsByPartStructure($idManager->getId("FILE_NAME"));
+		$part = $parts->next();
+		$part->updateValue($name);
+		
+		$parts = $record->getPartsByPartStructure($idManager->getId("MIME_TYPE"));
+		$part = $parts->next();
+		$part->updateValue($mimeType);
+		
+		/*********************************************************
+		 * Thumbnail Generation
+		 *********************************************************/
+		$imageProcessor = Services::getService("ImageProcessor");
+					
+		// If our image format is supported by the image processor,
+		// generate a thumbnail.
+		if ($imageProcessor->isFormatSupported($mimeType)) {
+			$sourceData = file_get_contents($filePath);		
+			$thumbnailData = $imageProcessor->generateThumbnailData($mimeType, $sourceData);
+		}
+		
+		$parts = $record->getPartsByPartStructure($idManager->getId("THUMBNAIL_DATA"));
+		$thumbDataPart = $parts->next();
+		$parts = $record->getPartsByPartStructure($idManager->getId("THUMBNAIL_MIME_TYPE"));
+		$thumbMimeTypePart = $parts->next();
+		
+		if (isset($thumbnailData) && $thumbnailData) {
+			$thumbDataPart->updateValue($thumbnailData);
+			$thumbMimeTypePart->updateValue($imageProcessor->getThumbnailFormat());
+		}
+		// just make our thumbnail results empty. Default icons will display
+		// instead.
+		else {
+			$thumbDataPart->updateValue("");
+			$thumbMimeTypePart->updateValue("NULL");
+		}
+	}
+	
+	/**
+	 * Add a Dublin Core Record to a media Asset.
+	 * 
+	 * @param object Asset $asset
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/24/08
+	 */
+	protected function addDublinCoreRecord (Asset $asset, DOMElement $element) {
+		$idManager = Services::getService("Id");
+		$record = $asset->createRecord($idManager->getId("dc"));
+		$element->setAttribute('new_id', $record->getId()->getIdString());
+				
+		$value = String::fromString(HtmlString::getSafeHtml($asset->getDisplayName()));
+		$id = $idManager->getId("dc.title");
+		$this->updateSingleValuedPart($record, $id, $value);
+		
+		$value = String::fromString(HtmlString::getSafeHtml($asset->getDescription()));
+		$id = $idManager->getId("dc.description");
+		$this->updateSingleValuedPart($record, $id, $value);
+		
+		$valueElement = $this->getSingleElement('./creator', $element);
+		if ($valueElement) {
+			$value = String::fromString(HtmlString::getSafeHtml(
+				$this->getStringValue($valueElement)));
+			$id = $idManager->getId("dc.creator");
+			$this->updateSingleValuedPart($record, $id, $value);
+		}
+		
+		$valueElement = $this->getSingleElement('./source', $element);
+		if ($valueElement) {
+			$value = String::fromString(HtmlString::getSafeHtml(
+				$this->getStringValue($valueElement)));
+			$id = $idManager->getId("dc.source");
+			$this->updateSingleValuedPart($record, $id, $value);
+		}
+		
+		$valueElement = $this->getSingleElement('./publisher', $element);
+		if ($valueElement) {
+			$value = String::fromString(HtmlString::getSafeHtml(
+				$this->getStringValue($valueElement)));
+			$id = $idManager->getId("dc.publisher");
+			$this->updateSingleValuedPart($record, $id, $value);
+		}
+		
+		$valueElement = $this->getSingleElement('./date', $element);
+		if ($valueElement) {
+			$value = DateAndTime::fromString($this->getStringValue($valueElement));
+			$id = $idManager->getId("dc.date");
+			$this->updateSingleValuedPart($record, $id, $value);
+		}
+	}
+	
+	/**
+	 * Apply the comments to a block
+	 * 
+	 * @param BlockSiteComponent $siteComponent
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/24/08
+	 */
+	protected function applyComments (BlockSiteComponent $siteComponent, DOMElement $element) {
+		$asset = $siteComponent->getAsset();
+		$commentMgr = CommentManager::instance();
+		$commentElements = $this->xpath->query('./comments/Comment', $element);
+		foreach ($commentElements as $commentElement) {
+			$comment = $commentMgr->createRootComment($asset, 
+				new Type(
+					$this->getSingleElement("./type/domain/text()", $commentElement)->nodeValue,
+					$this->getSingleElement("./type/authority/text()", $commentElement)->nodeValue,
+					$this->getSingleElement("./type/keyword/text()", $commentElement)->nodeValue));
+			$this->applyCommentData($comment, $commentElement);
+		}
+	}
+	
+	/**
+	 * Apply data to a comment
+	 * 
+	 * @param object CommentNode $comment
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/24/08
+	 */
+	protected function applyCommentData (CommentNode $comment, DOMElement $element) {
+		$element->setAttribute('new_id', $comment->getId()->getIdString());
+		
+		$comment->updateSubject(
+			$this->getStringValue(
+				$this->getSingleChild('subject', $element)));
+		
+		$this->applyPluginContent($comment->getAsset(), $element);
+		$this->applyMedia($comment->getAsset(), $element);
+		
+		// Replies
+		$commentMgr = CommentManager::instance();
+		$replyElements = $this->xpath->query('./replies/Comment', $element);
+		foreach ($replyElements as $replyElement) {
+			$reply = $commentMgr->createReply($comment->getId(), 
+				new Type(
+					$this->getSingleElement("./type/domain/text()", $replyElement)->nodeValue,
+					$this->getSingleElement("./type/authority/text()", $replyElement)->nodeValue,
+					$this->getSingleElement("./type/keyword/text()", $replyElement)->nodeValue));
+			$this->applyCommentData($reply, $replyElement);
+		}
+	}
+	
+	/**
 	 * Answer an Agent Id in the receiving system that corresponds to an id in the
 	 * source system.
 	 * 
@@ -498,7 +731,38 @@ class DomImportSiteVisitor
 /*********************************************************
  * Utility Methods
  *********************************************************/
-
+	
+	/**
+	 * Update a single-valued part
+	 * 
+	 * @param object RecordInterface $record
+	 * @param object Id $partStructureId
+	 * @param object $value
+	 * @return void
+	 * @access public
+	 * @since 1/30/07
+	 */
+	function updateSingleValuedPart ( RecordInterface $record, Id $partStructureId, $value ) {
+		if (is_object($value) && $value->asString()) {
+			$parts = $record->getPartsByPartStructure($partStructureId);
+			if ($parts->hasNext()) {
+				$part = $parts->next();
+				$part->updateValue($value);
+			} else {
+				$record->createPart($partStructureId, $value);
+			}
+		}
+		
+		// Remove existing parts
+		else {
+			$parts = $record->getPartsByPartStructure($partStructureId);
+			while ($parts->hasNext()) {
+				$part = $parts->next();
+				$record->deletePart($part->getId());
+			}
+		}
+	}
+	
 	/**
 	 * Answer the element for a newly created site component id.
 	 * 

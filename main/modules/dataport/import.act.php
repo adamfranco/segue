@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.2 2008/01/24 14:46:27 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.3 2008/01/24 17:07:28 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -25,7 +25,7 @@ require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.2 2008/01/24 14:46:27 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.3 2008/01/24 17:07:28 adamfranco Exp $
  */
 class importAction
 	extends Action
@@ -85,7 +85,7 @@ class importAction
 		
 		$doc = new Harmoni_DOMDocument;
 		$doc->load(MYDIR."/main/modules/dataport/test/afranco-test/site.xml");
-		$mediaDir = MYDIR."/main/modules/dataport/test";
+		$mediaDir = MYDIR."/main/modules/dataport/test/afranco-test";
 		
 		$importer = new DomImportSiteVisitor($doc, $mediaDir, $director);
 		$importer->importAtSlot(RequestContext::value('site'));
