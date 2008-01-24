@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.17 2007/11/09 18:47:07 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.18 2008/01/24 17:06:11 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.17 2007/11/09 18:47:07 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.18 2008/01/24 17:06:11 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -75,18 +75,22 @@ class CommentManager {
 	/**
 	 * Check Authorizations
 	 * 
+	 * @param optional Id $assetId The Id of the asset the thread is attached to.
 	 * @return boolean
 	 * @access public
 	 * @since 11/8/07
 	 */
-	public function canComment () {
+	public function canComment (Id $assetId = null) {
 		// Check Authorizations
 		$authZ = Services::getService('AuthZ');
 		$idManager = Services::getService("Id");
-		$harmoni = Harmoni::instance();
-		$harmoni->request->startNamespace(null);
-		$assetId = $idManager->getId(RequestContext::value('node'));
-		$harmoni->request->endNamespace();
+		
+		if (is_null($assetId)) {
+			$harmoni = Harmoni::instance();
+			$harmoni->request->startNamespace(null);
+			$assetId = $idManager->getId(RequestContext::value('node'));
+			$harmoni->request->endNamespace();
+		}
 		
 		if (self::getCurrentAgent()->isEqual($idManager->getId('edu.middlebury.agents.anonymous')))
 			return false;
@@ -104,18 +108,23 @@ class CommentManager {
 	/**
 	 * Check Authorizations
 	 * 
+	 * @param optional Id $assetId The Id of the asset the thread is attached to.
 	 * @return boolean
 	 * @access public
 	 * @since 11/8/07
 	 */
-	public function canViewComments () {
+	public function canViewComments (Id $assetId = null) {
 		// Check Authorizations
 		$authZ = Services::getService('AuthZ');
 		$idManager = Services::getService("Id");
-		$harmoni = Harmoni::instance();
-		$harmoni->request->startNamespace(null);
-		$assetId = $idManager->getId(RequestContext::value('node'));
-		$harmoni->request->endNamespace();
+		
+		if (is_null($assetId)) {
+			$harmoni = Harmoni::instance();
+			$harmoni->request->startNamespace(null);
+			$assetId = $idManager->getId(RequestContext::value('node'));
+			$harmoni->request->endNamespace();
+		}
+		
 		if ($authZ->isUserAuthorized(
 			$idManager->getId('edu.middlebury.authorization.view_comments'),
 			$assetId))
@@ -149,7 +158,7 @@ class CommentManager {
 		}
 		
 		// Check Authorizations
-		if (!$this->canComment())
+		if (!$this->canComment($id))
 			throw new PermissionDeniedException("You are not authorized to comment.");
 		
 		// Create the comment.
@@ -181,7 +190,7 @@ class CommentManager {
 		$parent = $this->getComment($parentId);
 		
 		// Check Authorizations
-		if (!$this->canComment())
+		if (!$this->canComment($this->getCommentParentAsset($parent)->getId()))
 			throw new PermissionDeniedException("You are not authorized to comment.");
 		
 		$repository = $parent->_asset->getRepository();
@@ -291,7 +300,7 @@ class CommentManager {
 		$comment = $this->getComment($id);
 		
 		// Check Authorizations
-		if (!$this->canComment() || !$comment->isAuthor())
+		if (!$this->canComment($this->getCommentParentAsset($comment)->getId()) || !$comment->isAuthor())
 			throw new PermissionDeniedException("You are not authorized to delete this comment.");
 		
 		self::logMessage("Comment Deleted: '".$comment->getSubject()."'", self::getCommentParentAsset($comment), array($id));
@@ -539,7 +548,7 @@ class CommentManager {
 		}
 		
 		
-		if ($this->canComment()) {	
+		if ($this->canComment($asset->getId())) {	
 			// New comment
 			print "\n<div style='float: left;'>";
 			$url = $harmoni->request->mkURL();
@@ -550,7 +559,7 @@ class CommentManager {
 			print "\n</div>";
 		}
 		
-		if ($this->canViewComments()) {
+		if ($this->canViewComments($asset->getId())) {
 			// print the ordering form
 			print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('top')."' method='post'  style='float: right; text-align: right;'>";
 	
