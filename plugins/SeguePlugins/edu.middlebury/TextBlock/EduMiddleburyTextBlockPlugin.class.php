@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.42 2008/01/23 15:26:29 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.43 2008/01/24 14:45:34 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.42 2008/01/23 15:26:29 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.43 2008/01/24 14:45:34 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -402,8 +402,8 @@ class EduMiddleburyTextBlockPlugin
 		$oFCKeditor->Config['ImageBrowser'] = "true";
 		
 		$harmoni = Harmoni::instance();
-		$harmoni->request->startNamespace('fckeditor');
-		$oFCKeditor->Config['ImageBrowserURL'] = str_replace('&amp;', '&', $harmoni->request->quickURL('fckeditor', 'filebrowser', array('node' => $this->getId())));
+		$harmoni->request->startNamespace('media');
+		$oFCKeditor->Config['ImageBrowserURL'] = str_replace('&amp;', '&', $harmoni->request->quickURL('media', 'filebrowser', array('node' => $this->getId())));
 		$harmoni->request->endNamespace();
 		$oFCKeditor->Config['ImageBrowserWindowWidth'] = "700";
 		$oFCKeditor->Config['ImageBrowserWindowHeight'] = "600";
@@ -476,9 +476,9 @@ class EduMiddleburyTextBlockPlugin
  		$property->chooseEditor('fck');
  		
  		$fckTextArea = $property->getEditor('fck');
- 		$harmoni->request->startNamespace('fckeditor');
+ 		$harmoni->request->startNamespace('media');
  		$fckTextArea->enableFileBrowsingAtUrl(
- 			$harmoni->request->quickURL('fckeditor', 'filebrowser', array('node' => $this->getId())));
+ 			$harmoni->request->quickURL('media', 'filebrowser', array('node' => $this->getId())));
  		$harmoni->request->endNamespace();
  		
  		$property->addPostHtml('none', $this->getImageAndFileButtons());
