@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.2 2008/01/24 14:46:27 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.3 2008/01/25 20:50:53 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.2 2008/01/24 14:46:27 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.3 2008/01/25 20:50:53 adamfranco Exp $
  */
 class DomExportSiteVisitor
 	implements SiteVisitor
@@ -332,7 +332,8 @@ class DomExportSiteVisitor
 		$element->setAttribute('id', $comment->getId());
 		$element->appendChild($this->getType($comment->getAsset()->getAssetType()));
 		$element->appendChild($this->getCDATAElement('subject', $comment->getSubject()));
-
+		$this->addCommentCreateAndModify($comment, $element);
+		
 		$this->addPluginContent($comment, $element);
 
 		$repliesElem = $element->appendChild($this->doc->createElement('replies'));
@@ -340,6 +341,26 @@ class DomExportSiteVisitor
 		while($replies->hasNext())
 			$repliesElem->appendChild($this->getComment($replies->next()));
 		return $element;
+	}
+	
+	/**
+	 * Add the create and modify dates and agents
+	 * 
+	 * @param CommentNode $comment
+	 * @param DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/25/08
+	 */
+	protected function addCommentCreateAndModify (CommentNode $comment, DOMElement $element) {
+		$element->setAttribute('create_date', $comment->getCreationDate()->asString());
+		if (!is_null($comment->getAuthor())) {
+			$element->setAttribute('create_agent', $comment->getAuthor()->getId()->getIdString());
+			$this->recordAgent($comment->getAuthor()->getId());
+		}
+		$element->setAttribute('modify_date', $comment->getModificationDate()->asString());
+// 		if (!is_null($comment->getModifier()))
+// 			$element->setAttribute('modify_agent', $comment->getCreator()->getIdString());
 	}
 	
 	/**
@@ -647,6 +668,7 @@ class DomExportSiteVisitor
 		$element->appendChild($this->getDisplayName($siteComponent));
 		$element->appendChild($this->getDescription($siteComponent));
 		$this->addCommonOptions($siteComponent, $element);
+		$this->addCreateAndModify($siteComponent, $element);
 		$element->appendChild($siteComponent->getOrganizer()->acceptVisitor($this));
 		
 		return $element;
@@ -674,6 +696,7 @@ class DomExportSiteVisitor
 		$element->appendChild($this->getDisplayName($siteComponent));
 		$element->appendChild($this->getDescription($siteComponent));
 		$this->addCommonOptions($siteComponent, $element);
+		$this->addCreateAndModify($siteComponent, $element);
 		$element->appendChild($siteComponent->getOrganizer()->acceptVisitor($this));
 		
 		return $element;

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.4 2008/01/25 18:47:04 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.5 2008/01/25 20:50:53 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.4 2008/01/25 18:47:04 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.5 2008/01/25 20:50:53 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -171,6 +171,9 @@ class DomImportSiteVisitor
 		$this->applyPluginContent($siteComponent->getAsset(), $element);
 		$this->applyMedia($siteComponent->getAsset(), $element);
 		$this->applyComments($siteComponent, $element);
+		
+		$this->setAssetAuthorship($siteComponent->getAsset(), $element);
+		$this->setAssetDates($siteComponent->getAsset(), $element);
 	}
 	
 	/**
@@ -200,6 +203,9 @@ class DomImportSiteVisitor
 		$this->applyCommonProperties($siteComponent, $element);
 		
 		$this->importComponent($this->getSingleChild('NavOrganizer', $element), $siteComponent->getOrganizer());
+		
+		$this->setAssetAuthorship($siteComponent->getAsset(), $element);
+		$this->setAssetDates($siteComponent->getAsset(), $element);
 	}
 	
 	/**
@@ -502,7 +508,7 @@ class DomImportSiteVisitor
 	}
 	
 	/**
-	 * Apply a single history entry to the plugin's history
+	 * Apply a single history entry to the plugin's history. 
 	 * 
 	 * @param SeguePluginsAPI $plugin
 	 * @param object DOMElement $element
@@ -521,11 +527,53 @@ class DomImportSiteVisitor
 		if (!isset($doc))
 			throw new Exception("No version found.");
 		
-		$comment = $this->getStringValue($this->getSingleElement('./comment', $element));
-		$timestamp = DateAndTime::fromString($element->getAttribute('time_stamp'));
-		$agentId = $this->getAgentId($element->getAttribute("agent_id"));
+		$comment = $this->getPluginHistoryComment($element);
+		$timestamp = $this->getPluginHistoryTimestamp($element);
+		$agentId = $this->getPluginHistoryAgentId($element);
 		
 		$plugin->importVersion($doc, $agentId, $timestamp, $comment);
+	}
+	
+	/**
+	 * Answer a Plugin history comment for an element. Extensions of this
+	 * class may wish to override this method to modify the comment and/or store
+	 * the import date/user instead of that listed in the history.
+	 * 
+	 * @param object DOMElement $element
+	 * @return string
+	 * @access protected
+	 * @since 1/25/08
+	 */
+	protected function getPluginHistoryComment (DOMElement $element) {
+		return $this->getStringValue($this->getSingleElement('./comment', $element));
+	}
+	
+	/**
+	 * Answer a Plugin history comment for an element. Extensions of this
+	 * class may wish to override this method to modify the comment and/or store
+	 * the import date/user instead of that listed in the history.
+	 * 
+	 * @param object DOMElement $element
+	 * @return object DateAndTime
+	 * @access protected
+	 * @since 1/25/08
+	 */
+	protected function getPluginHistoryTimestamp (DOMElement $element) {
+		return DateAndTime::fromString($element->getAttribute('time_stamp'));
+	}
+	
+	/**
+	 * Answer a Plugin history comment for an element. Extensions of this
+	 * class may wish to override this method to modify the comment and/or store
+	 * the import date/user instead of that listed in the history.
+	 * 
+	 * @param object DOMElement $element
+	 * @return object Id
+	 * @access protected
+	 * @since 1/25/08
+	 */
+	protected function getPluginHistoryAgentId (DOMElement $element) {
+		return $this->getAgentId($element->getAttribute("agent_id"));
 	}
 	
 	/**
@@ -565,6 +613,9 @@ class DomImportSiteVisitor
 		$dcElements = $this->xpath->query("./dublinCore", $element);
 		foreach ($dcElements as $dcElement)
 			$this->addDublinCoreRecord($asset, $dcElement);
+		
+		$this->setAssetAuthorship($asset, $element);
+		$this->setAssetDates($asset, $element);
 	}
 	
 	/**
@@ -731,6 +782,9 @@ class DomImportSiteVisitor
 		$this->applyPluginContent($comment->getAsset(), $element);
 		$this->applyMedia($comment->getAsset(), $element);
 		
+		$this->setAssetAuthorship($comment->getAsset(), $element);
+		$this->setAssetDates($comment->getAsset(), $element);
+		
 		// Replies
 		$commentMgr = CommentManager::instance();
 		$replyElements = $this->xpath->query('./replies/Comment', $element);
@@ -754,12 +808,47 @@ class DomImportSiteVisitor
 	 * @since 1/23/08
 	 */
 	protected function getAgentId ($idString) {
-		ArgumentValidator::validate($idString, StringValidatorRule::getRule());
+		ArgumentValidator::validate($idString, NonZeroLengthStringValidatorRule::getRule());
 		
 		// @todo - Implement this to check for agent existance and/or create the agent if necessary.
 		// For now we will just assume the agent exists to test the rest of the history importing.
 		$idMgr = Services::getService('Id');
 		return $idMgr->getId($idString);
+	}
+	
+	/**
+	 * Set the Authorship of an asset based on the agent id listed in its corresponding
+	 * element. Extensions of this class may wish to override this method to do nothing,
+	 * there-by making the authorship that of the user doing the import.
+	 * 
+	 * @param object Asset $asset
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/25/08
+	 */
+	protected function setAssetAuthorship (Asset $asset, DOMElement $element) {
+		$createAgentId = $this->getAgentId($element->getAttribute('create_agent'));
+		$asset->forceSetCreator($createAgentId);
+	}
+	
+	/**
+	 * Set the creation and modification dates of an asset based on the dates listed 
+	 * in its corresponding element. Extensions of this class may wish to override 
+	 * this method to do nothing, there-by leaving the dates to be the time of the import.
+	 * 
+	 * @param object Asset $asset
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/25/08
+	 */
+	protected function setAssetDates (Asset $asset, DOMElement $element) {
+		$date = DateAndTime::fromString($element->getAttribute('create_date'));
+		$asset->forceSetCreationDate($date);
+		
+		$date = DateAndTime::fromString($element->getAttribute('modify_date'));
+		$asset->forceSetModificationDate($date);
 	}
 	
 /*********************************************************

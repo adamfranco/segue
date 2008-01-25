@@ -6,15 +6,17 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.3 2008/01/24 17:07:28 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.4 2008/01/25 20:50:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
-require_once(dirname(__FILE__)."/Rendering/DomImportSiteVisitor.class.php");
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
+
+require_once(dirname(__FILE__)."/Rendering/DomImportSiteVisitor.class.php");
+
 
 /**
  * This action will import a site into the slot-name given.
@@ -25,7 +27,7 @@ require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.3 2008/01/24 17:07:28 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.4 2008/01/25 20:50:53 adamfranco Exp $
  */
 class importAction
 	extends Action
