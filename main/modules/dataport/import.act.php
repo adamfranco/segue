@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.4 2008/01/25 20:50:53 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.5 2008/01/25 22:02:53 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/DomImportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.4 2008/01/25 20:50:53 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.5 2008/01/25 22:02:53 adamfranco Exp $
  */
 class importAction
 	extends Action
@@ -90,6 +90,7 @@ class importAction
 		$mediaDir = MYDIR."/main/modules/dataport/test/afranco-test";
 		
 		$importer = new DomImportSiteVisitor($doc, $mediaDir, $director);
+		$importer->enableRoleImport();
 		$importer->importAtSlot(RequestContext::value('site'));
 	}
 	

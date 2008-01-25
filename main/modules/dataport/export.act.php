@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.1 2008/01/18 21:39:08 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.2 2008/01/25 22:02:53 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/Rendering/DomExportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.1 2008/01/18 21:39:08 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.2 2008/01/25 22:02:53 adamfranco Exp $
  */
 class exportAction
 	extends Action
@@ -114,7 +114,7 @@ class exportAction
 			
 			// Clean up the archive
 			unlink($exportDir.".tar.gz");
-		} catch (Exception $e) {
+		} catch (PermissionDeniedException $e) {
 			$this->deleteRecursive($exportDir);
 			
 			if (file_exists($exportDir.".tar.gz"))

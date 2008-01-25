@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.5 2008/01/25 20:50:53 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.6 2008/01/25 22:02:53 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.5 2008/01/25 20:50:53 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.6 2008/01/25 22:02:53 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -52,6 +52,32 @@ class DomImportSiteVisitor
 		$this->director = $director;
 		$this->menusForUpdate = array();
 		$this->pluginsForUpdate = array();
+		$this->admins = array();
+		$this->importRoles = false;
+	}
+	
+	/**
+	 * Add an agent who should be a an administer of the new site. This method
+	 * should be called before importing a site for it to have an effect.
+	 * 
+	 * @param object Id $agentId
+	 * @return void
+	 * @access public
+	 * @since 1/25/08
+	 */
+	public function addSiteAdministrator (Id $agentId) {
+		$this->admins[] = $agentId;
+	}
+	
+	/**
+	 * Enable importing of permissions.
+	 *
+	 * @return void
+	 * @access public
+	 * @since 1/25/08
+	 */
+	public function enableRoleImport () {
+		$this->importRoles = true;
 	}
 	
 	/**
@@ -89,9 +115,11 @@ class DomImportSiteVisitor
 		$site = $this->createComponent($siteElement, null);
 		
 		$roleMgr = SegueRoleManager::instance();
-		$idMgr = Services::getService("Id");
 		$adminRole = $roleMgr->getRole('admin');
-		$adminRole->applyToUser($idMgr->getId($site->getId()), true);
+		$adminRole->applyToUser($site->getQualifierId(), true);
+		// Give the admin role to others specified
+		foreach ($this->admins as $agentId)
+			$adminRole->apply($agentId, $site->getQualifierId());
 		
 		$this->importComponent($siteElement, $site);
 		$this->updateMenuTargets();
@@ -174,6 +202,8 @@ class DomImportSiteVisitor
 		
 		$this->setAssetAuthorship($siteComponent->getAsset(), $element);
 		$this->setAssetDates($siteComponent->getAsset(), $element);
+		
+		$this->applyRoles($siteComponent, $element);
 	}
 	
 	/**
@@ -206,6 +236,8 @@ class DomImportSiteVisitor
 		
 		$this->setAssetAuthorship($siteComponent->getAsset(), $element);
 		$this->setAssetDates($siteComponent->getAsset(), $element);
+		
+		$this->applyRoles($siteComponent, $element);
 	}
 	
 	/**
@@ -849,6 +881,40 @@ class DomImportSiteVisitor
 		
 		$date = DateAndTime::fromString($element->getAttribute('modify_date'));
 		$asset->forceSetModificationDate($date);
+	}
+	
+	/**
+	 * Apply any roles defined at this level.
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/25/08
+	 */
+	protected function applyRoles (BlockSiteComponent $siteComponent, DOMElement $element) {
+		if ($this->importRoles) {
+			$roleElements = $this->xpath->query('./roles/entry', $element);
+			foreach ($roleElements as $roleElement)
+				$this->applyRole($siteComponent, $roleElement);
+		}
+	}
+	
+	/**
+	 * Apply a Role to a site component
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 1/25/08
+	 */
+	protected function applyRole (BlockSiteComponent $siteComponent, DOMElement $element) {
+		$roleMgr = SegueRoleManager::instance();
+		$role = $roleMgr->getRole($element->getAttribute('role'));
+		$role->apply(
+			$this->getAgentId($element->getAttribute('agent_id')),
+			$siteComponent->getQualifierId());
 	}
 	
 /*********************************************************

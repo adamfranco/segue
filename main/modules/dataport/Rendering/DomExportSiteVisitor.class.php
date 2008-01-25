@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.3 2008/01/25 20:50:53 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.4 2008/01/25 22:02:53 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.3 2008/01/25 20:50:53 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.4 2008/01/25 22:02:53 adamfranco Exp $
  */
 class DomExportSiteVisitor
 	implements SiteVisitor
@@ -578,6 +578,51 @@ class DomExportSiteVisitor
 	}
 	
 	/**
+	 * Answer the roles set at the level
+	 * 
+	 * @param BlockSiteComponent $siteComponent
+	 * @return DOMElement
+	 * @access protected
+	 * @since 1/25/08
+	 */
+	protected function getRoles (BlockSiteComponent $siteComponent) {		
+		$element = $this->doc->createElement('roles');
+		$roleMgr = SegueRoleManager::instance();
+		$noAccess = $roleMgr->getRole('no_access');
+		foreach ($this->getAgentsToCheck($siteComponent->getQualifierId()) as $agentId) {
+			$role = $roleMgr->getAgentsExplicitRole($agentId, $siteComponent->getQualifierId());
+			if ($role->isGreaterThan($noAccess)) {
+				$entry = $element->appendChild($this->doc->createElement('entry'));
+				$entry->setAttribute('role', $role->getIdString());
+				$entry->setAttribute('agent_id', $agentId->getIdString());
+				$this->recordAgent($agentId);
+			}
+		}
+		return $element;
+	}
+	
+	/**
+	 * Answer a list of agents to check
+	 *
+	 * @param object Id $qualifierId
+	 * @return array of Id objects
+	 * @access protected
+	 * @since 1/25/08
+	 */
+	protected function getAgentsToCheck (Id $qualifierId) {
+		try {
+			if (!isset($this->agentsToCheck)) {
+				$roleMgr = SegueRoleManager::instance();
+				$this->agentsToCheck = $roleMgr->getAgentsWithRoleAtLeast($roleMgr->getRole('reader'), $qualifierId);
+			}
+		} catch (PermissionDeniedException $e) {
+		
+		}
+		
+		return $this->agentsToCheck;
+	}
+	
+	/**
 	 * Answer true if the current user is authorized to export this node.
 	 * 
 	 * @param SiteComponent $siteComponent
@@ -626,6 +671,11 @@ class DomExportSiteVisitor
 		$this->addCommonOptions($siteComponent, $element);
 		$this->addCreateAndModify($siteComponent, $element);
 		
+		try {
+			$element->appendChild($this->getRoles($siteComponent));
+		} catch (PermissionDeniedException $e) {
+		}
+		
 		// Plugin Content
 		$this->addPluginContent($siteComponent, $element);
 		
@@ -669,6 +719,12 @@ class DomExportSiteVisitor
 		$element->appendChild($this->getDescription($siteComponent));
 		$this->addCommonOptions($siteComponent, $element);
 		$this->addCreateAndModify($siteComponent, $element);
+		
+		try {
+			$element->appendChild($this->getRoles($siteComponent));
+		} catch (PermissionDeniedException $e) {
+		}
+		
 		$element->appendChild($siteComponent->getOrganizer()->acceptVisitor($this));
 		
 		return $element;
@@ -697,6 +753,12 @@ class DomExportSiteVisitor
 		$element->appendChild($this->getDescription($siteComponent));
 		$this->addCommonOptions($siteComponent, $element);
 		$this->addCreateAndModify($siteComponent, $element);
+		
+		try {
+			$element->appendChild($this->getRoles($siteComponent));
+		} catch (PermissionDeniedException $e) {
+		}
+		
 		$element->appendChild($siteComponent->getOrganizer()->acceptVisitor($this));
 		
 		return $element;
