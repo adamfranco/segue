@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WikiResolver.class.php,v 1.1 2007/12/03 22:00:14 adamfranco Exp $
+ * @version $Id: WikiResolver.class.php,v 1.2 2008/01/25 18:31:28 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TitleSearcher.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TitleSearcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WikiResolver.class.php,v 1.1 2007/12/03 22:00:14 adamfranco Exp $
+ * @version $Id: WikiResolver.class.php,v 1.2 2008/01/25 18:31:28 adamfranco Exp $
  */
 class WikiResolver {
 
@@ -237,6 +237,11 @@ class WikiResolver {
 	 *		[[site:my_other_slot_name Some Title|alternate text to display]]
 	 *		[[node:12345 Some Title]]
 	 *		[[node:12345|alternate text to display]]
+	 *
+	 * Local URL form:
+	 *		[[localurl:module=modName&amp;action=actName&amp;param1=value1]]
+	 * Unlike other forms, the local URL form does not write link tags. It gets replaced
+	 * with only the URL string itself.
 	 * 
 	 * @param string $wikiText
 	 * @param object SiteComponent $startingSiteComponent
@@ -301,6 +306,20 @@ $		# Anchor for the end of the line
 
 /xi";
 		
+		$localUrlRegexp = "/
+
+^		# Anchor for the beginning of the line
+\[\[	# The opening link tags
+
+	\s*		# optional whitespace
+
+	(?: localurl:([^\]]+) )?	# A designator for linking to a local url
+
+\]\]	# The closing link tags
+$		# Anchor for the end of the line
+
+/xi";
+		
 		// Check for a link only to a site [[site:my_other_site]]
 		if (preg_match($siteOnlyRegexp, $wikiText, $matches)) {
 			$slotName = $matches[1];
@@ -352,6 +371,34 @@ $		# Anchor for the end of the line
 			}
 			
 			return $this->getNodeLink($nodeIdString, $display);
+		}
+		
+		// Check for a link to a local url:
+		// [[localurl:module=modName&amp;action=actName&amp;param1=value1]]
+		if (preg_match($localUrlRegexp, $wikiText, $matches)) {			
+			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1], $paramMatches);
+			$args = array();
+			for ($i = 0; $i < count($paramMatches[1]); $i++) {
+				$key = $paramMatches[3][$i];
+				$value = $paramMatches[4][$i];
+				
+				if ($key == 'module')
+					$module = $value;
+				else if ($key == 'action')
+					$action = $value;
+				else
+					$args[$key] = $value;
+			}
+			
+			if (!isset($module))
+				$module = 'ui1';
+			if (!isset($action))
+				$action = 'view';
+			
+			$harmoni = Harmoni::instance();
+			$newUrl = $harmoni->request->mkURLWithoutContext($module, $action, $args);
+			
+			return $newUrl->write();
 		}
 		
 		// Links of the form [[Assignments]]
