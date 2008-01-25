@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.9 2007/12/17 17:53:34 adamfranco Exp $
+ * @version $Id: index.php,v 1.10 2008/01/25 18:34:27 adamfranco Exp $
  */
 
 /*********************************************************
@@ -23,9 +23,14 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 else
 	$protocol = 'http';
 
+if ($_SERVER['SCRIPT_NAME'])
+	$scriptPath = $_SERVER['SCRIPT_NAME'];
+else
+	$scriptPath = $_SERVER['PHP_SELF'];
+	
 define("MYPATH", $protocol."://".$_SERVER['HTTP_HOST'].str_replace(
 												"\\", "/", 
-												dirname($_SERVER['PHP_SELF'])));
+												dirname($scriptPath)));
 define("MYURL", trim(MYPATH, '/')."/index.php");
 
 define("LOAD_GUI", true);
