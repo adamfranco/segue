@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.4 2007/10/25 20:27:40 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.5 2008/01/25 18:47:04 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAsset.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.4 2007/10/25 20:27:40 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.5 2008/01/25 18:47:04 adamfranco Exp $
  */
 class MediaFile {
 		
@@ -98,6 +98,40 @@ class MediaFile {
 			$idManager->getId($recordId));
 		
 		return $mediaFile;
+	}
+	
+	/**
+	 * Answer a new MediaFile Id with any ids found in the id map passed converted
+	 * to their new equivalents
+	 * 
+	 * @param array $idMap An associative array of old id-strings to new id-strings.
+	 * @param string $idString
+	 * @return string The resulting id string
+	 * @access public
+	 * @since 1/24/08
+	 * @static
+	 */
+	public static function getMappedIdString (array $idMap, $idString) {
+		ArgumentValidator::validate($idString, NonZeroLengthStringValidatorRule::getRule());
+		if (!preg_match('/^repositoryId=(.+)&assetId=(.+)&recordId=(.+)$/', $idString, $matches)) 
+			throw new Exception("Invalid Id format, '$idString'");
+			
+		if (isset($idMap[$matches[1]]))
+			$id = "repositoryId=".$idMap[$matches[1]];
+		else
+			$id = "repositoryId=".$matches[1];
+		
+		if (isset($idMap[$matches[2]]))
+			$id .= "&assetId=".$idMap[$matches[2]];
+		else
+			$id .= "&assetId=".$matches[2];
+		
+		if (isset($idMap[$matches[3]]))
+			$id .= "&recordId=".$idMap[$matches[3]];
+		else
+			$id .= "&recordId=".$matches[3];
+		
+		return $id;
 	}
 	
 	/*********************************************************

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.9 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.10 2008/01/25 18:47:03 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.9 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.10 2008/01/25 18:47:03 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -308,7 +308,8 @@ abstract class SeguePluginsDriver
 	}
 	
 	/**
-	 * Parse and replace any wiki-text with HTML markup.
+	 * Parse and replace any wiki-text with HTML markup. This method will also
+	 * untokenize an local-url tokens.
 	 * 
 	 * @param string $text
 	 * @return string
@@ -330,6 +331,130 @@ abstract class SeguePluginsDriver
 		$text = $wikiResolver->parseText($text, $siteComponent);
 		
 		return $text;
+	}
+	
+	/**
+	 * Given a block of HTML text, replace any local-system urls with tokenized
+	 * placeholders. These placeholders can the be translated back at display time
+	 * in order to match the current system base-url 
+	 * 
+	 * @param string $htmlString
+	 * @return string The HTML text with URLs translated into tokens.
+	 * @access public
+	 * @since 1/24/08
+	 */
+	public function tokenizeLocalUrls ($htmlString) {
+		$patterns = array();
+		$harmoni = Harmoni::instance();
+		$pattern = '/'.str_replace('/', '\/', MYURL).'[^\'"\s\]]*/i';
+		$urls = preg_match_all($pattern, $htmlString, $matches);
+		foreach ($matches[0] as $url) {
+			$paramString = $harmoni->request->getParameterListFromUrl($url);
+			if ($paramString !== false)
+				$htmlString = $this->str_replace_once($url, '[[localurl:'.$paramString.']]', $htmlString);
+		}
+		
+		return $htmlString;
+	}
+	
+	/**
+	 * Translate any local-system url-tokens back into valid URLs.
+	 * 
+	 * @param string $htmlString
+	 * @return string The HTML text with tokens translated into valid URLs.
+	 * @access public
+	 * @since 1/24/08
+	 */
+	public function untokenizeLocalUrls ($htmlString) {
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
+		while (preg_match('/\[\[localurl:([^\]]*)\]\]/', $htmlString, $matches)) {
+			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1], $paramMatches);
+			$args = array();
+			for ($i = 0; $i < count($paramMatches[1]); $i++) {
+				$key = $paramMatches[3][$i];
+				$value = $paramMatches[4][$i];
+				
+				if ($key == 'module')
+					$module = $value;
+				else if ($key == 'action')
+					$action = $value;
+				else
+					$args[$key] = $value;
+			}
+			
+			if (!isset($module))
+				$module = 'ui1';
+			if (!isset($action))
+				$action = 'view';
+			
+			$newUrl = $harmoni->request->mkURLWithoutContext($module, $action, $args);
+			$htmlString = $this->str_replace_once($matches[0], $newUrl->write(), $htmlString);
+		}
+		$harmoni->request->endNamespace();
+		return $htmlString;
+	}
+	
+	/**
+	 * Utility method to do a single string replacement.
+	 * 
+	 * @param string $search
+	 * @param string $replacement
+	 * @param string $subject
+	 * @return string
+	 * @access private
+	 * @since 1/24/08
+	 */
+	private function str_replace_once ($search, $replacement, $subject) {
+		$position = strpos($subject, $search);
+		return substr_replace($subject, $replacement, $position, strlen($search));
+	}
+	
+	/**
+	 * Given an associative array of old Id strings and new Id strings,
+ 	 * Update any of the old Ids in an HTML string to their new value.
+ 	 * This method will replace Ids in tokenized URLs and wiki-text.
+ 	 *
+	 * @param array $idMap An associative array of old id-strings to new id-strings.
+	 * @param string $htmlString
+	 * @return string The updated HTML string
+	 * @access public
+	 * @since 1/24/08
+	 */
+	final public function replaceIdsInHtml (array $idMap, $htmlString) {
+		$orig = $htmlString;
+		// non-wiki urls
+		$tokenizedHtml = $this->tokenizeLocalUrls($htmlString);
+		preg_match_all('/\[\[localurl:([^\]]*)\]\]/', $htmlString, $matches);
+		for ($j = 0; $j < count($matches[1]); $j++) {
+			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1][$j], $paramMatches);
+			$args = array();
+			for ($i = 0; $i < count($paramMatches[1]); $i++) {
+				$key = $paramMatches[3][$i];
+				$value = urldecode($paramMatches[4][$i]);
+				
+				if ($key != 'module' && $key != 'action' && isset($idMap[$value]))
+					$args[] = $key."=".urlencode($idMap[$value]);
+				else
+					$args[] = $key."=".urlencode($value);
+			}
+			
+			$htmlString = $this->str_replace_once($matches[0][$j], 
+				'[[localurl:'.implode('&amp;', $args).']]', $htmlString);
+		}
+		
+		// Wiki-links
+		preg_match_all('/\[\[node:([^\]]*)\]\]/', $htmlString, $matches);
+		for ($j = 0; $j < count($matches[1]); $j++) {
+			$nodeId = $matches[1][$j];
+			
+			if (isset($idMap[$nodeId]))			
+				$htmlString = $this->str_replace_once($matches[0][$j], 
+					'[[node:'.$idMap[$nodeId].']]', $htmlString);
+		}
+		
+		
+		return $htmlString;
 	}
 
 	/**

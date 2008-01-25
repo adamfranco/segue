@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginVersion.class.php,v 1.3 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: SeguePluginVersion.class.php,v 1.4 2008/01/25 18:47:03 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginVersion.class.php,v 1.3 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: SeguePluginVersion.class.php,v 1.4 2008/01/25 18:47:03 adamfranco Exp $
  */
 class SeguePluginVersion {
 	
@@ -250,6 +250,29 @@ class SeguePluginVersion {
 			return true;
 		else
 			return false;
+ 	}
+ 	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings.
+ 	 * Update any of the old Ids that this plugin instance recognizes to their
+ 	 * new value.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+ 	public function replaceIds (array $idMap) {
+ 		$doc = $this->getVersionXml();
+ 		$this->pluginInstance->replaceIdsInVersion($idMap, $doc);
+ 		
+ 		$query = new UpdateQuery;
+		$query->setTable('segue_plugin_version');
+		$query->addWhereEqual('version_id', $this->getVersionId());
+		$query->addValue('version_xml', $doc->saveXML());
+		
+		$dbc = Services::getService('DBHandler');
+		$dbc->query($query, IMPORTER_CONNECTION);
  	}
 }
 

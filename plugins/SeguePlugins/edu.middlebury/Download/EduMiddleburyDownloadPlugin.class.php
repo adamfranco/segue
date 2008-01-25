@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.16 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.17 2008/01/25 18:47:04 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.16 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.17 2008/01/25 18:47:04 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SegueAjaxPlugin
@@ -114,7 +114,7 @@ class EduMiddleburyDownloadPlugin
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) { 			
  			$this->setContent($this->getFieldValue('file_id'));
- 			$this->setRawDescription($this->getFieldValue('description'));
+ 			$this->setRawDescription($this->tokenizeLocalUrls($this->getFieldValue('description')));
  			$this->logEvent('Modify Content', 'File for download updated');
  		}
  	}
@@ -138,7 +138,7 @@ class EduMiddleburyDownloadPlugin
  			print "\n\t<input name='".$this->getFieldName('file_id')."' type='hidden' value=\"".$this->getContent()."\"/>";
  			 			
  			// Description
- 			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->cleanHTML($this->getRawDescription())."</textarea>";
+ 			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->cleanHTML($this->untokenizeLocalUrls($this->getRawDescription()))."</textarea>";
  			
  			print $this->getWikiHelp();
  			
@@ -195,7 +195,7 @@ class EduMiddleburyDownloadPlugin
 //  			}
  			
  			if ($this->getDescription()) {
-				print "\n<p>".$this->cleanHTML($this->parseWikiText($this->getDescription()))."</p>";
+				print "\n<p>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getDescription())))."</p>";
 				print "\n<hr/>";
 			}
  			
@@ -355,6 +355,45 @@ class EduMiddleburyDownloadPlugin
  		print $message;
  		print "\n</div>";
  		return ob_get_clean();
+ 	}
+ 	
+ 	/*********************************************************
+ 	 * The following methods are needed to support restoring
+ 	 * from backups and importing/exporting plugin data.
+ 	 *********************************************************/
+ 	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings.
+ 	 * Update any of the old Ids that this plugin instance recognizes to their
+ 	 * new value.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+ 	public function replaceIds (array $idMap) {
+ 		// Update the media-file mapping
+ 		$this->setContent(MediaFile::getMappedIdString($idMap, $this->getContent()));
+ 		unset($this->_mediaFile);
+ 		
+ 		// Update any ids in the description HTML.
+ 		$this->setRawDescription($this->replaceIdsInHtml($idMap, $this->getRawDescription()));
+ 	}
+ 	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings.
+ 	 * Update any of the old Ids in ther version XML to their new value.
+ 	 * This method is only needed if versioning is supported.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @param object DOMDocument $version
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+ 	public function replaceIdsInVersion (array $idMap, DOMDocument $version) {
+ 		throw new UnimplementedException();
  	}
 }
 

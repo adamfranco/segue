@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.134 2008/01/23 15:26:29 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.135 2008/01/25 18:47:03 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,40 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-01-18' ref='1820781' reftype='fr'>
+			Export: New site-export tool that provides a downloadable XML representation
+			of the site and its media.
+		</new>
+		<new author='adam' date='2008-01-25' ref='1820781' reftype='fr'>
+			Import: New site-import tool that can import from an XML representation
+			of the site and its media.
+		</new>
+		<new author='adam' date='2008-01-25' ref='1820781' reftype='fr'>
+			Plugins: New plugin methods to support mapping of Ids as sites are
+			imported.
+		</new>
+		<new author='adam' date='2008-01-25' ref='1820777' reftype='fr'>
+			Plugins: Now support 'tokenizing' of internal links. This translates
+			links from the form:
+			
+			http://segue.example.edu/index.php?module=ui1&amp;action=view&amp;node=12345
+			
+			to a wiki-style token that can be more easily found, replaced, or translated
+			when exporting/importing sites:
+			
+			[[localurl:module=ui1&amp;action=view&amp;node=12345]]
+		</new>
+		<new author='adam' date='2008-01-25' ref='1820777' reftype='fr'>
+			WikiText: Now supports [[localurl:xxxxx]] for of url-tokens.
+		</new>
+		<fix author='adam' date='2008-01-25'>
+			index.php: Now MYPATH constant is set to the SCRIPT_PATH instead of
+			PHP_SELF to work better when using path info-based URLs.
+		</fix>
+		<change author='adam' date='2008-01-18'>
+			Site Display: Can now get the content type of a block. This matches the
+			plugin type.
+		</change>
 		<change author='adam' date='2008-01-23' ref='1815898' reftype='harmoni_fr'>
 			Site Display: Asset-based site components now use the PHP5 DOM libraries
 			instead of the DOMIT libraries that had been needed under PHP4.
@@ -23,17 +57,12 @@
 			action, preventing web-crawlers form accidentally going to an invalid 
 			URL.
 		</fix>
-		<change author='adam' date='2008-01-18'>
+		<change author='adam' date='2008-01-24'>
+			Comments: The CommentManager now checks the authorization of the asset the thread
+			is attached to rather than looking at the request.
+		</change>		<change author='adam' date='2008-01-18'>
 			Comments: Can now return the asset for a CommentNode to enable export.
 		</change>
-		<change author='adam' date='2008-01-18'>
-			Site Display: Can now get the content type of a block. This matches the
-			plugin type.
-		</change>
-		<new author='adam' date='2008-01-18' ref='1820781' reftype='fr'>
-			Export: New site-export tool that provides a downloadable XML representation
-			of the site and its media.
-		</new>
 		<change author='adam' date='2008-01-18'>
 			Can now get the Segue version string during execution.
 		</change>

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAPI.interface.php,v 1.5 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: SeguePluginsAPI.interface.php,v 1.6 2008/01/25 18:47:03 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsAPI.interface.php,v 1.5 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: SeguePluginsAPI.interface.php,v 1.6 2008/01/25 18:47:03 adamfranco Exp $
  */
 interface SeguePluginsAPI {
 		
@@ -291,6 +291,37 @@ interface SeguePluginsAPI {
  	 */
  	public function getVersionDiff (DOMDocument $oldVersion, DOMDocument $newVersion);
  	
+ 	/*********************************************************
+ 	 * The following methods are needed to support restoring
+ 	 * from backups and importing/exporting plugin data.
+ 	 *********************************************************/
+ 	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings,
+ 	 * update any of the old Ids that this plugin instance recognizes to their
+ 	 * new value.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+ 	public function replaceIds (array $idMap);
+ 	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings,
+ 	 * update any of the old Ids in the version XML to their new value.
+ 	 * The version DOMDocument should have its content updated in place.
+ 	 * This method is only needed if versioning is supported.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @param object DOMDocument $version
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+ 	public function replaceIdsInVersion (array $idMap, DOMDocument $version);
+ 	
 /*********************************************************
  * Instance Methods - API
  *
@@ -544,7 +575,8 @@ interface SeguePluginsAPI {
 	public function stripTagsAndTrim ($htmlString, $maxWords, $addElipses = true);
 	
 	/**
-	 * Parse and replace any wiki-text with HTML markup.
+	 * Parse and replace any wiki-text with HTML markup. This method will also
+	 * untokenize an local-url tokens.
 	 * 
 	 * @param string $text
 	 * @return string
@@ -552,6 +584,41 @@ interface SeguePluginsAPI {
 	 * @since 12/3/07
 	 */
 	public function parseWikiText ($text);
+	
+	/**
+	 * Given a block of HTML text, replace any local-system urls with tokenized
+	 * placeholders. These placeholders can the be translated back at display time
+	 * in order to match the current system base-url 
+	 * 
+	 * @param string $htmlString
+	 * @return string The HTML text with URLs translated into tokens.
+	 * @access public
+	 * @since 1/24/08
+	 */
+	public function tokenizeLocalUrls ($htmlString);
+	
+	/**
+	 * Translate any local-system url-tokens back into valid URLs.
+	 * 
+	 * @param string $htmlString
+	 * @return string The HTML text with tokens translated into valid URLs.
+	 * @access public
+	 * @since 1/24/08
+	 */
+	public function untokenizeLocalUrls ($htmlString);
+	
+	/**
+	 * Given an associative array of old Id strings and new Id strings,
+ 	 * Update any of the old Ids in an HTML string to their new value.
+ 	 * This method will replace Ids in tokenized URLs and wiki-text.
+ 	 *
+	 * @param array $idMap An associative array of old id-strings to new id-strings.
+	 * @param string $htmlString
+	 * @return string The updated HTML string
+	 * @access public
+	 * @since 1/24/08
+	 */
+	public function replaceIdsInHtml (array $idMap, $htmlString);
 	
 	/**
 	 * Answer TRUE if the current user is authorized to modify this plugin instance.

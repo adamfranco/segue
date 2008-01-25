@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsTemplate.abstract.php,v 1.4 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: SeguePluginsTemplate.abstract.php,v 1.5 2008/01/25 18:47:03 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsDriver.abstract.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/SeguePluginsDriver.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsTemplate.abstract.php,v 1.4 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: SeguePluginsTemplate.abstract.php,v 1.5 2008/01/25 18:47:03 adamfranco Exp $
  */
 abstract class SeguePluginsTemplate
 	extends SeguePluginsDriver
@@ -325,6 +325,40 @@ abstract class SeguePluginsTemplate
  	 * @since 1/7/08
  	 */
  	public function getVersionDiff (DOMDocument $oldVersion, DOMDocument $newVersion) {
+ 		throw new UnimplementedException();
+ 	}
+ 	
+ 	/*********************************************************
+ 	 * The following methods are needed to support restoring
+ 	 * from backups and importing/exporting plugin data.
+ 	 *********************************************************/
+ 	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings.
+ 	 * Update any of the old Ids that this plugin instance recognizes to their
+ 	 * new value.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+ 	public function replaceIds (array $idMap) {
+ 		throw new UnimplementedException();
+ 	}
+ 	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings.
+ 	 * Update any of the old Ids in ther version XML to their new value.
+ 	 * This method is only needed if versioning is supported.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @param object DOMDocument $version
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+ 	public function replaceIdsInVersion (array $idMap, DOMDocument $version) {
  		throw new UnimplementedException();
  	}
 }

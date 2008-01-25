@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.44 2008/01/24 17:07:15 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.45 2008/01/25 18:47:04 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.44 2008/01/24 17:07:15 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.45 2008/01/25 18:47:04 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -126,7 +126,7 @@ class EduMiddleburyTextBlockPlugin
 	 		$this->editing = true;
 	 	
  		if ($this->getFieldValue('submit_pressed')) {	
- 			$this->setContent($this->cleanHTML($this->getFieldValue('content')));
+ 			$this->setContent($this->tokenizeLocalUrls($this->cleanHTML($this->getFieldValue('content'))));
  			$this->setRawDescription(intval($this->getFieldValue('abstractLength')));
  			$this->logEvent('Modify Content', 'TextBlock content updated');
  			
@@ -344,7 +344,7 @@ class EduMiddleburyTextBlockPlugin
  	function printTextField () {
  		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' style='width: 100%;'>";
  		if (is_null($this->workingContent))
-	 		print $this->cleanHTML($this->getContent());
+	 		print $this->cleanHTML($this->untokenizeLocalUrls($this->getContent()));
 	 	else
 	 		print $this->workingContent;
  		print "</textarea>";
@@ -423,7 +423,7 @@ class EduMiddleburyTextBlockPlugin
 
 		
 		if (is_null($this->workingContent))
-	 		$oFCKeditor->Value = $this->cleanHTML($this->getContent());
+	 		$oFCKeditor->Value = $this->cleanHTML($this->untokenizeLocalUrls($this->getContent()));
 	 	else
 	 		$oFCKeditor->Value = $this->workingContent;
 	 	
@@ -472,7 +472,7 @@ class EduMiddleburyTextBlockPlugin
  		$property->setStartingDisplayText(_("Add a comment about your changes here."));
  		
  		$property = $wrapper->addComponent('content', HtmlTextArea::withRowsAndColumns(20, 80));
- 		$property->setValue($this->cleanHTML($this->getContent()));
+ 		$property->setValue($this->cleanHTML($this->untokenizeLocalUrls($this->getContent())));
  		$property->chooseEditor('fck');
  		
  		$fckTextArea = $property->getEditor('fck');
@@ -557,7 +557,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 5/8/07
  	 */
  	function updateFromWizard ( $values ) {
- 		$this->setContent($values['content']);
+ 		$this->setContent($this->tokenizeLocalUrls($values['content']));
  		$this->setRawDescription(intval($values['abstractLength']));
  		$this->logEvent('Modify Content', 'TextBlock content updated');
  		$this->markVersion($values['comment']);
@@ -630,7 +630,7 @@ class EduMiddleburyTextBlockPlugin
  		$version = $doc->appendChild($doc->createElement('version'));
  		
  		$content = $version->appendChild($doc->createElement('content'));
- 		$content->appendChild($doc->createCDATASection($this->getContent()));
+ 		$content->appendChild($doc->createCDATASection($this->tokenizeLocalUrls($this->getContent())));
  		
  		$version->appendChild($doc->createElement('abstractLength', $this->getRawDescription()));
  		
@@ -650,7 +650,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 1/4/08
  	 */
  	public function applyVersion (DOMDocument $version) {
- 		$this->setContent($this->getContentFromVersion($version));
+ 		$this->setContent($this->tokenizeLocalUrls($this->getContentFromVersion($version)));
  		$this->setRawDescription($this->getAbstractLengthFromVersion($version));
  	}
  	
@@ -721,7 +721,19 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 1/4/08
  	 */
  	private function getContentFromVersion (DOMDocument $version) {
- 		// Content
+ 		return $this->getContentElementFromVersion($version)->nodeValue;
+  	}
+  	
+  	/**
+  	 * Answer the content element of a version
+  	 * 
+  	 * @param object DOMDocument $version
+  	 * @return DOMElement
+  	 * @access private
+  	 * @since 1/25/08
+  	 */
+  	private function getContentElementFromVersion (DOMDocument $version) {
+  		// Content
  		$contentElements = $version->getElementsByTagName('content');
  		if (!$contentElements->length)
  			throw new InvalidVersionException("Missing 'content' element.");
@@ -731,11 +743,12 @@ class EduMiddleburyTextBlockPlugin
  		$contentElement = $contentElements->item(0);
  		$content = $contentElement->firstChild;
  		if ($content && $content->nodeType == XML_CDATA_SECTION_NODE) {
- 			return $content->nodeValue;
+ 			return $content;
 		} else {
 			throw new InvalidVersionException("The 'content' element should contain one CDATA section.");
 		}
- 	}
+
+  	}
  	
  	/**
  	 * Answer the abstract length from the DOMDocument
@@ -761,6 +774,42 @@ class EduMiddleburyTextBlockPlugin
 		} else {
 			throw new InvalidVersionException("The 'abstractLength' element should contain a string.");
 		}
+ 	}
+ 	
+ 	/*********************************************************
+ 	 * The following methods are needed to support restoring
+ 	 * from backups and importing/exporting plugin data.
+ 	 *********************************************************/
+ 	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings.
+ 	 * Update any of the old Ids that this plugin instance recognizes to their
+ 	 * new value.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+ 	public function replaceIds (array $idMap) {
+ 		// Update the media-file mapping
+ 		$this->setContent($this->replaceIdsInHtml($idMap, $this->getContent()));
+ 	}
+ 	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings.
+ 	 * Update any of the old Ids in ther version XML to their new value.
+ 	 * This method is only needed if versioning is supported.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @param object DOMDocument $version
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+ 	public function replaceIdsInVersion (array $idMap, DOMDocument $version) {
+ 		$contentElement = $this->getContentElementFromVersion($version);
+ 		$contentElement->nodeValue = $this->replaceIdsInHtml($idMap, $contentElement->nodeValue);
  	}
 }
 

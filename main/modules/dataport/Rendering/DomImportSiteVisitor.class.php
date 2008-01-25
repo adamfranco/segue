@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.3 2008/01/24 17:07:28 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.4 2008/01/25 18:47:04 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.3 2008/01/24 17:07:28 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.4 2008/01/25 18:47:04 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -50,6 +50,8 @@ class DomImportSiteVisitor
 		$this->xpath = new DOMXPath($this->doc);
 		$this->mediaPath = $mediaPath;
 		$this->director = $director;
+		$this->menusForUpdate = array();
+		$this->pluginsForUpdate = array();
 	}
 	
 	/**
@@ -93,6 +95,7 @@ class DomImportSiteVisitor
 		
 		$this->importComponent($siteElement, $site);
 		$this->updateMenuTargets();
+		$this->updateStoredIds();
 		return $site;
 	}
 	
@@ -397,6 +400,33 @@ class DomImportSiteVisitor
 	}
 	
 	/**
+	 * Update all Ids that may be stored in the plugins of the site in links or
+	 * content to the new ids imported.
+	 * 
+	 * @return void
+	 * @access protected
+	 * @since 1/24/08
+	 */
+	protected function updateStoredIds () {
+		$idMap = $this->getIdMap();
+		while (count($this->pluginsForUpdate)) {
+			$plugin = array_pop($this->pluginsForUpdate);
+			try {
+				$plugin->replaceIds($idMap);
+			} catch (UnimplementedException $e) {
+			}
+			if ($plugin->supportsVersioning()) {
+				try {
+					foreach ($plugin->getVersions() as $version) {
+						$version->replaceIds($idMap);
+					}
+				} catch (UnimplementedException $e) {
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Apply the plugin content and history where applicable
 	 * 
 	 * @param Asset $asset
@@ -414,6 +444,7 @@ class DomImportSiteVisitor
 		} else {
 			$this->applyUnversionedPluginContent($plugin, $element);
 		}
+		$this->pluginsForUpdate[] = $plugin;
 	}
 	
 	/**
@@ -429,6 +460,9 @@ class DomImportSiteVisitor
 		$plugin->setContent(
 				$this->getStringValue(
 					$this->getSingleElement('./currentContent/content', $element)));
+		$plugin->setRawDescription(
+				$this->getStringValue(
+					$this->getSingleElement('./currentContent/rawDescription', $element)));
 	}
 	
 	/**
@@ -852,6 +886,23 @@ class DomImportSiteVisitor
 		}
 		
 		return $value;
+	}
+	
+	/**
+	 * Answer a map (associative array) in which the keys are old Ids and the values
+	 * are the new ids.
+	 * 
+	 * @return array
+	 * @access protected
+	 * @since 1/24/08
+	 */
+	protected function getIdMap () {
+		$idMap = array();
+		$elements = $this->xpath->query("//*[@id and @new_id]");
+		foreach ($elements as $element)
+			$idMap[$element->getAttribute('id')] = $element->getAttribute('new_id');
+		
+		return $idMap;
 	}
 }
 
