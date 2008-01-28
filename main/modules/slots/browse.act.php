@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.4 2008/01/28 19:54:29 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.5 2008/01/28 21:18:46 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/TableIteratorResultPrinter.c
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.4 2008/01/28 19:54:29 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.5 2008/01/28 21:18:46 adamfranco Exp $
  */
 class browseAction
 	extends MainWindowAction
@@ -197,6 +197,12 @@ class browseAction
 			print "' onclick=\"";
 			print "return confirm('"._('Are you sure you want to delete this placeholder?')."');";
 			print "\">"._("delete")."</a>";
+		} else {
+			$harmoni->request->startNamespace(null);
+			print "\n\t\t\t| <a href='";
+			print $harmoni->request->quickURL('dataport', 'export', array('node' => $slot->getSiteId()->getIdString()));
+			print "'>"._("export")."</a>";
+			$harmoni->request->endNamespace();
 		}
 		print "\n\t\t</td>";
 		$harmoni->request->endNamespace();
