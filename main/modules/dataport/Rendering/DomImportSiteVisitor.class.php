@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.6 2008/01/25 22:02:53 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.7 2008/01/28 21:19:12 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.6 2008/01/25 22:02:53 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.7 2008/01/28 21:19:12 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -54,6 +54,8 @@ class DomImportSiteVisitor
 		$this->pluginsForUpdate = array();
 		$this->admins = array();
 		$this->importRoles = false;
+		$this->makeUserAdmin = false;
+		$this->importComments = true;
 	}
 	
 	/**
@@ -67,6 +69,29 @@ class DomImportSiteVisitor
 	 */
 	public function addSiteAdministrator (Id $agentId) {
 		$this->admins[] = $agentId;
+	}
+	
+	/**
+	 * Make the current user a site administrator. This is needed if the current 
+	 * user isn't a system-wide admin and they didn't add themselves as an administrator.
+	 *
+	 * @return void
+	 * @access public
+	 * @since 1/28/08
+	 */
+	public function makeUserSiteAdministrator () {
+		$this->makeUserAdmin = true;
+	}
+	
+	/**
+	 * Disable importing of comments
+	 *
+	 * @return void
+	 * @access public
+	 * @since 1/28/08
+	 */
+	public function disableCommentImport () {
+		$this->importComments = false;
 	}
 	
 	/**
@@ -116,7 +141,10 @@ class DomImportSiteVisitor
 		
 		$roleMgr = SegueRoleManager::instance();
 		$adminRole = $roleMgr->getRole('admin');
-		$adminRole->applyToUser($site->getQualifierId(), true);
+		
+		if ($this->makeUserAdmin)
+			$adminRole->applyToUser($site->getQualifierId(), true);
+		
 		// Give the admin role to others specified
 		foreach ($this->admins as $agentId)
 			$adminRole->apply($agentId, $site->getQualifierId());
@@ -198,7 +226,8 @@ class DomImportSiteVisitor
 		$this->applyCommonProperties($siteComponent, $element);
 		$this->applyPluginContent($siteComponent->getAsset(), $element);
 		$this->applyMedia($siteComponent->getAsset(), $element);
-		$this->applyComments($siteComponent, $element);
+		if ($this->importComments)
+			$this->applyComments($siteComponent, $element);
 		
 		$this->setAssetAuthorship($siteComponent->getAsset(), $element);
 		$this->setAssetDates($siteComponent->getAsset(), $element);

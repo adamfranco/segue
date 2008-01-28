@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.11 2008/01/28 19:54:29 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.12 2008/01/28 21:19:13 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.11 2008/01/28 19:54:29 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.12 2008/01/28 21:19:13 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -151,20 +151,15 @@ class addAction
 		/*********************************************************
 		 * Owner step if multiple owners
 		 *********************************************************/
-		$slot = $this->getSlot();
-		$owners = $slot->getOwners();
 		$step = new WizardStep();
 		$step->setDisplayName(_("Choose Admins"));	
 		
 		$property = $step->addComponent("admins", new WMultiSelectList);
 		
 		$agentMgr = Services::getService("Agent");
-		$authN = Services::getService("AuthN");
-		$userId = $authN->getFirstUserId();
 		$i = 0;
+		$owners = $this->getOwners();
 		foreach ($owners as $ownerId) {
-			if ($userId->isEqual($ownerId))
-				continue;
 			$i++;
 			$owner = $agentMgr->getAgent($ownerId);
 			$property->addOption($ownerId->getIdString(), htmlspecialchars($owner->getDisplayName()));
@@ -185,6 +180,27 @@ class addAction
 			$step = $wizard->addStep("owners", $step);
 			$wizard->makeStepRequired('owners');
 		}
+	}
+	
+	/**
+	 * Answer a list of owners to add to the Site Admins step.
+	 *
+	 * @return array
+	 * @access protected
+	 * @since 1/28/08
+	 */
+	protected function getOwners () {
+		// Filter out the current user Id
+		$slot = $this->getSlot();
+		$authN = Services::getService("AuthN");
+		$userId = $authN->getFirstUserId();
+		$allOwners = $slot->getOwners();
+		$owners = array();
+		foreach ($allOwners as $ownerId) {
+			if (!$userId->isEqual($ownerId))
+				$owners[] = $ownerId;
+		}
+		return $owners;
 	}
 		
 	/**

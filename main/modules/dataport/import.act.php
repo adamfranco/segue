@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.6 2008/01/28 19:54:29 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.7 2008/01/28 21:19:12 adamfranco Exp $
  */ 
 require_once(MYDIR."/main/modules/ui1/add.act.php");
 
@@ -16,6 +16,8 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
 
 require_once(dirname(__FILE__)."/Rendering/DomImportSiteVisitor.class.php");
+require_once(dirname(__FILE__)."/Rendering/UntrustedAgentDomImportSiteVisitor.class.php");
+require_once(dirname(__FILE__)."/Rendering/UntrustedAgentAndTimeDomImportSiteVisitor.class.php");
 
 
 /**
@@ -27,7 +29,7 @@ require_once(dirname(__FILE__)."/Rendering/DomImportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.6 2008/01/28 19:54:29 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.7 2008/01/28 21:19:12 adamfranco Exp $
  */
 class importAction
 	extends addAction
@@ -141,6 +143,18 @@ class importAction
 		print "\n\t"._("Import roles/permissions?");
 		print "\n\t\n</p>";
 		
+		$property = $step->addComponent('trust', new WSelectList());
+		$property->addOption('all', _('Trust both'));
+		$property->addOption('time_only', _('Trust timestamps, but not agents'));
+		$property->addOption('none', _('Do not trust timestamps or agents'));
+		$property->setValue('all');
+		print "\n<p>";
+		print "\n\t"._("Trust Level:");
+		print "\n\t [[trust]]";
+		print "\n\t<br/>";
+		print _("This option sets whether or not to trust the agents and timestamps listed in the backup file. If this file may have been maliciously changed to alter the history recorded in it, use one of the lower trust settings to force the agent or timestamp to be those of the current agent/time at the moment of import.");
+		print "\n</p>";
+		
 		$step->setContent(ob_get_clean());
 		
 		// Site Admins.
@@ -181,6 +195,8 @@ class importAction
 			
 			// Check for a containing directory and strip it if needed.
 			$content = @$archive->listContent();
+			if (!is_array($content) || !count($content))
+				throw new Exception("Invalid Segue archive. '".$values['mode']['backup_file']['name']."' is not a valid GZIPed Tar archive.");
 			$containerName = null;
 			if ($content[0]['typeflag'] == 5) {
 				$containerName = $content[0]['filename'].'/';
@@ -206,12 +222,28 @@ class importAction
 			$doc->load($decompressDir."/site.xml");
 			$mediaDir = $decompressDir;
 			
-			$importer = new DomImportSiteVisitor($doc, $mediaDir, $director);
+			switch ($values['mode']['trust']) {
+				case 'all':
+					$class = 'DomImportSiteVisitor';
+					break;
+				case 'time_only':
+					$class = 'UntrustedAgentDomImportSiteVisitor';
+					break;
+				default:
+					$class = 'UntrustedAgentAndTimeDomImportSiteVisitor';
+			}
+			$importer = new $class($doc, $mediaDir, $director);
 			if ($values['mode']['roles'] == '1')
 				$importer->enableRoleImport();
 			
 			if ($values['mode']['comments'] == '0')
 				$importer->disableCommentImport();
+			
+			if (isset($values['owners'])) {
+				$idMgr = Services::getService('Id');
+				foreach($values['owners']['admins'] as $adminIdString)
+					$importer->addSiteAdministrator($idMgr->getId($adminIdString));
+			}
 			
 			$importer->importAtSlot($values['mode']['slotname']);
 			
@@ -263,11 +295,27 @@ class importAction
 	 */
 	function getReturnUrl () {
 		$harmoni = Harmoni::instance();
+		$harmoni->request->forget('site');
 		if ($this->_siteId) 
 			return $harmoni->request->quickURL('ui1', "view", array(
 				"node" => $this->_siteId));
 		else
 			return $harmoni->request->quickURL('slots', "browse");
+	}
+	
+	/**
+	 * Answer a list of owners to add to the Site Admins step.
+	 *
+	 * @return array
+	 * @access protected
+	 * @since 1/28/08
+	 */
+	protected function getOwners () {
+		// In this case we don't want to filter out the user Id
+		// because this is an admin-only action and the admin user
+		// running it may or may not be one of the desired owners.
+		$slot = $this->getSlot();
+		return $slot->getOwners();
 	}
 	
 	/**
