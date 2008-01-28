@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.2 2008/01/25 22:02:53 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.3 2008/01/28 19:54:29 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/Rendering/DomExportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.2 2008/01/25 22:02:53 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.3 2008/01/28 19:54:29 adamfranco Exp $
  */
 class exportAction
 	extends Action
@@ -90,10 +90,7 @@ class exportAction
 		$slotMgr = SlotManager::instance();
 		$slot = $slotMgr->getSlotBySiteId($site->getId());
 		
-		// @todo This should be set in a config.
-		$tmpDir = "/tmp";
-		
-		$exportDir = $tmpDir."/".$slot->getShortname()."-".str_replace(':', '_', DateAndTime::now()->asString());
+		$exportDir = DATAPORT_TMP_DIR."/".$slot->getShortname()."-".str_replace(':', '_', DateAndTime::now()->asString());
 		mkdir($exportDir);
 		
 		try {
@@ -102,7 +99,7 @@ class exportAction
 			$visitor->doc->save($exportDir."/site.xml");		
 		
 			$archive = new Archive_Tar($exportDir.".tar.gz");
-			$archive->createModify($exportDir, '', $tmpDir);
+			$archive->createModify($exportDir, '', DATAPORT_TMP_DIR);
 			
 			// Remove the directory
 			$this->deleteRecursive($exportDir);

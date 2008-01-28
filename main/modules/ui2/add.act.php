@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.10 2008/01/14 20:12:49 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.11 2008/01/28 19:54:29 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.10 2008/01/14 20:12:49 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.11 2008/01/28 19:54:29 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -132,6 +132,22 @@ class addAction
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
 		
+		// Site Admins.
+		$this->addSiteAdminStep($wizard);
+
+		
+		return $wizard;
+	}
+	
+	/**
+	 * Add any additional site admins to a multi-select.
+	 * 
+	 * @param object Wizard $wizard
+	 * @return void
+	 * @access protected
+	 * @since 1/28/08
+	 */
+	protected function addSiteAdminStep (Wizard $wizard) {
 		/*********************************************************
 		 * Owner step if multiple owners
 		 *********************************************************/
@@ -169,10 +185,6 @@ class addAction
 			$step = $wizard->addStep("owners", $step);
 			$wizard->makeStepRequired('owners');
 		}
-		
-
-		
-		return $wizard;
 	}
 		
 	/**
@@ -399,10 +411,10 @@ class addAction
 	 * Answer the slot object
 	 *
 	 * @return object Slot
-	 * @access public
+	 * @access protected
 	 * @since 1/14/08
 	 */
-	public function getSlot () {
+	protected function getSlot () {
 		$slotMgr = SlotManager::instance();
 		
 		if (RequestContext::value('slot')) {

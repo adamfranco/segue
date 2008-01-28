@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.3 2007/12/14 19:41:04 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.4 2008/01/28 19:54:29 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/TableIteratorResultPrinter.c
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.3 2007/12/14 19:41:04 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.4 2008/01/28 19:54:29 adamfranco Exp $
  */
 class browseAction
 	extends MainWindowAction
@@ -177,15 +177,21 @@ class browseAction
 		foreach ($owners as $ownerId)
 			$ownerStrings[] = $agentMgr->getAgent($ownerId)->getDisplayName();
 			
-		print implode(", ", $ownerStrings);
+		print implode("; ", $ownerStrings);
 		print "</td>";
 		
 		$harmoni->request->startNamespace("slots");
-		print "\n\t\t<td>";
+		print "\n\t\t<td style='white-space: nowrap;'>";
 		print "\n\t\t\t<a href='";
 		print $harmoni->request->quickURL('slots', 'edit', array('name' => $slot->getShortname()));
 		print "'>"._("edit")."</a>";
 		if (!$slot->siteExists()) {
+			$harmoni->request->startNamespace(null);
+			print "\n\t\t\t| <a href='";
+			print $harmoni->request->quickURL('dataport', 'import', array('site' => $slot->getShortname()));
+			print "'>"._("import")."</a>";
+			$harmoni->request->endNamespace();
+			
 			print "\n\t\t\t| <a href='";
 			print $harmoni->request->quickURL('slots', 'delete', array('name' => $slot->getShortname()));
 			print "' onclick=\"";
