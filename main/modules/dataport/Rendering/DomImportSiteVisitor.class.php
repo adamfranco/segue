@@ -6,13 +6,14 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.7 2008/01/28 21:19:12 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.8 2008/01/31 16:54:15 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
 require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
 require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
+require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
 
 /**
  * This importer will traverse an XML document that defines a site and will create
@@ -24,7 +25,7 @@ require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.7 2008/01/28 21:19:12 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.8 2008/01/31 16:54:15 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -56,6 +57,8 @@ class DomImportSiteVisitor
 		$this->importRoles = false;
 		$this->makeUserAdmin = false;
 		$this->importComments = true;
+		
+		$this->agentImporter = new DomAgentImporter($this->doc);
 	}
 	
 	/**
@@ -173,9 +176,9 @@ class DomImportSiteVisitor
 		if ($element->nodeName == 'Block')
 			$component = $this->director->createSiteComponent(
 						new Type(
-							$this->getSingleElement("./type/domain/text()", $element)->nodeValue,
-							$this->getSingleElement("./type/authority/text()", $element)->nodeValue,
-							$this->getSingleElement("./type/keyword/text()", $element)->nodeValue),
+							$this->getSingleNode("./type/domain/text()", $element)->nodeValue,
+							$this->getSingleNode("./type/authority/text()", $element)->nodeValue,
+							$this->getSingleNode("./type/keyword/text()", $element)->nodeValue),
 						$parentComponent);
 		else
 			$component = $this->director->createSiteComponent(
@@ -542,7 +545,7 @@ class DomImportSiteVisitor
 	 * @since 1/23/08
 	 */
 	protected function applyCurrentPluginVersion (SeguePluginsAPI $plugin, DOMElement $element) {
-		$versionElement = $this->getSingleElement('./currentVersion/node()', $element);
+		$versionElement = $this->getSingleElement('./currentVersion/child::node()', $element);
 		$doc = new Harmoni_DOMDocument;
 		$doc->appendChild($doc->importNode($versionElement, true));
 		try {
@@ -760,45 +763,57 @@ class DomImportSiteVisitor
 		$idManager = Services::getService("Id");
 		$record = $asset->createRecord($idManager->getId("dc"));
 		$element->setAttribute('new_id', $record->getId()->getIdString());
-				
-		$value = String::fromString(HtmlString::getSafeHtml($asset->getDisplayName()));
-		$id = $idManager->getId("dc.title");
-		$this->updateSingleValuedPart($record, $id, $value);
 		
-		$value = String::fromString(HtmlString::getSafeHtml($asset->getDescription()));
-		$id = $idManager->getId("dc.description");
-		$this->updateSingleValuedPart($record, $id, $value);
-		
-		$valueElement = $this->getSingleElement('./creator', $element);
-		if ($valueElement) {
-			$value = String::fromString(HtmlString::getSafeHtml(
-				$this->getStringValue($valueElement)));
-			$id = $idManager->getId("dc.creator");
+		try {
+			$value = String::fromString(HtmlString::getSafeHtml($asset->getDisplayName()));
+			$id = $idManager->getId("dc.title");
 			$this->updateSingleValuedPart($record, $id, $value);
-		}
+		} catch (MissingNodeException $e) {}
 		
-		$valueElement = $this->getSingleElement('./source', $element);
-		if ($valueElement) {
-			$value = String::fromString(HtmlString::getSafeHtml(
-				$this->getStringValue($valueElement)));
-			$id = $idManager->getId("dc.source");
+		try {
+			$value = String::fromString(HtmlString::getSafeHtml($asset->getDescription()));
+			$id = $idManager->getId("dc.description");
 			$this->updateSingleValuedPart($record, $id, $value);
-		}
+		} catch (MissingNodeException $e) {}
 		
-		$valueElement = $this->getSingleElement('./publisher', $element);
-		if ($valueElement) {
-			$value = String::fromString(HtmlString::getSafeHtml(
-				$this->getStringValue($valueElement)));
-			$id = $idManager->getId("dc.publisher");
-			$this->updateSingleValuedPart($record, $id, $value);
-		}
+		try {
+			$valueElement = $this->getSingleElement('./creator', $element);
+			if ($valueElement) {
+				$value = String::fromString(HtmlString::getSafeHtml(
+					$this->getStringValue($valueElement)));
+				$id = $idManager->getId("dc.creator");
+				$this->updateSingleValuedPart($record, $id, $value);
+			}
+		} catch (MissingNodeException $e) {}
 		
-		$valueElement = $this->getSingleElement('./date', $element);
-		if ($valueElement) {
-			$value = DateAndTime::fromString($this->getStringValue($valueElement));
-			$id = $idManager->getId("dc.date");
-			$this->updateSingleValuedPart($record, $id, $value);
-		}
+		try {
+			$valueElement = $this->getSingleElement('./source', $element);
+			if ($valueElement) {
+				$value = String::fromString(HtmlString::getSafeHtml(
+					$this->getStringValue($valueElement)));
+				$id = $idManager->getId("dc.source");
+				$this->updateSingleValuedPart($record, $id, $value);
+			}
+		} catch (MissingNodeException $e) {}
+		
+		try {		
+			$valueElement = $this->getSingleElement('./publisher', $element);
+			if ($valueElement) {
+				$value = String::fromString(HtmlString::getSafeHtml(
+					$this->getStringValue($valueElement)));
+				$id = $idManager->getId("dc.publisher");
+				$this->updateSingleValuedPart($record, $id, $value);
+			}
+		} catch (MissingNodeException $e) {}
+		
+		try {
+			$valueElement = $this->getSingleElement('./date', $element);
+			if ($valueElement) {
+				$value = DateAndTime::fromString($this->getStringValue($valueElement));
+				$id = $idManager->getId("dc.date");
+				$this->updateSingleValuedPart($record, $id, $value);
+			}
+		} catch (MissingNodeException $e) {}
 	}
 	
 	/**
@@ -817,9 +832,9 @@ class DomImportSiteVisitor
 		foreach ($commentElements as $commentElement) {
 			$comment = $commentMgr->createRootComment($asset, 
 				new Type(
-					$this->getSingleElement("./type/domain/text()", $commentElement)->nodeValue,
-					$this->getSingleElement("./type/authority/text()", $commentElement)->nodeValue,
-					$this->getSingleElement("./type/keyword/text()", $commentElement)->nodeValue));
+					$this->getSingleNode("./type/domain/text()", $commentElement)->nodeValue,
+					$this->getSingleNode("./type/authority/text()", $commentElement)->nodeValue,
+					$this->getSingleNode("./type/keyword/text()", $commentElement)->nodeValue));
 			$this->applyCommentData($comment, $commentElement);
 		}
 	}
@@ -852,9 +867,9 @@ class DomImportSiteVisitor
 		foreach ($replyElements as $replyElement) {
 			$reply = $commentMgr->createReply($comment->getId(), 
 				new Type(
-					$this->getSingleElement("./type/domain/text()", $replyElement)->nodeValue,
-					$this->getSingleElement("./type/authority/text()", $replyElement)->nodeValue,
-					$this->getSingleElement("./type/keyword/text()", $replyElement)->nodeValue));
+					$this->getSingleNode("./type/domain/text()", $replyElement)->nodeValue,
+					$this->getSingleNode("./type/authority/text()", $replyElement)->nodeValue,
+					$this->getSingleNode("./type/keyword/text()", $replyElement)->nodeValue));
 			$this->applyCommentData($reply, $replyElement);
 		}
 	}
@@ -870,12 +885,11 @@ class DomImportSiteVisitor
 	 */
 	protected function getAgentId ($idString) {
 		ArgumentValidator::validate($idString, NonZeroLengthStringValidatorRule::getRule());
-		
-		// @todo - Implement this to check for agent existance and/or create the agent if necessary.
-		// For now we will just assume the agent exists to test the rest of the history importing.
-		$idMgr = Services::getService('Id');
-		return $idMgr->getId($idString);
+				
+		return $this->agentImporter->getAgentId($idString);
 	}
+	
+	
 	
 	/**
 	 * Set the Authorship of an asset based on the agent id listed in its corresponding
@@ -1025,7 +1039,7 @@ class DomImportSiteVisitor
 	protected function getSingleChild ($nodeName, DOMElement $element) {
 		$elements = $this->xpath->evaluate("./".$nodeName, $element);
 		if (!$elements->length === 1)
-			throw new Exception("".$elements->length." elements found with nodeName '$nodeName'. Expecting one and only one.");
+			throw new MissingNodeException("".$elements->length." elements found with nodeName '$nodeName'. Expecting one and only one.");
 		
 		return $elements->item(0);
 	}
@@ -1040,11 +1054,37 @@ class DomImportSiteVisitor
 	 * @since 1/22/08
 	 */
 	protected function getSingleElement ($xpath, DOMElement $element) {
-		$elements = $this->xpath->evaluate($xpath, $element);
-		if (!$elements->length === 1)
-			throw new Exception("".$elements->length." elements found with nodeName '$nodeName'. Expecting one and only one.");
+		$nodes = $this->xpath->evaluate($xpath, $element);
+		for ($i = 0; $i < $nodes->length; $i++) {
+			$node = $nodes->item($i);
+			if ($node->nodeType == XML_ELEMENT_NODE) {
+				if (isset($resElement))
+					throw new Exception("2 elements (".get_class($resElement)." '".$resElement->nodeName."', ".get_class($node)." '".$node->nodeName."') found for xpath '$xpath'. Expecting one and only one.");
+				$resElement = $node;
+			}
+		}
 		
-		return $elements->item(0);
+		if (!isset($resElement))
+			throw new MissingNodeException("0 elements found for xpath '$xpath'. Expecting one and only one.");
+		
+		return $resElement;
+	}
+	
+	/**
+	 * Answer a single node of any type with the xpath specified.
+	 * 
+	 * @param string $xpath
+	 * @param DOMElement $element
+	 * @return DOMElement
+	 * @access protected
+	 * @since 1/30/08
+	 */
+	protected function getSingleNode ($xpath, DOMElement $element) {
+		$nodes = $this->xpath->evaluate($xpath, $element);
+		if ($nodes->length != 1)
+			throw new Exception("".$nodes->length." nodes found for XPATH '$xpath'. Expecting one and only one.");
+		
+		return $nodes->item(0);
 	}
 	
 	/**
@@ -1089,5 +1129,21 @@ class DomImportSiteVisitor
 		return $idMap;
 	}
 }
+
+
+/**
+ * An exception for missing nodes
+ * 
+ * @since 1/30/08
+ * @package segue.dataport
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.8 2008/01/31 16:54:15 adamfranco Exp $
+ */
+class MissingNodeException
+	extends Exception
+{}
 
 ?>
