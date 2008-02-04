@@ -1,0 +1,566 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified">
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- definition of data types         -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<!-- This type defines a string value in the ISO 8601 date format. -->
+<!-- The regular expression is a condensed form of the expression found in -->
+<!-- harmoni/core/Primitives/Chronology/StringParsers/ISO8601StringParser.class.php -->
+<xs:simpleType name="iso8601">
+	<xs:restriction base="xs:string">
+		<xs:pattern value="(([0-9]{4})[\-/:](((0[1-9])|(1[0-2]))[\-/:]?(((0[1-9])|((1|2)[0-9])|(3[0-1]))[\sT]?((([0-1][0-9])|(2[0-4]))(:?([0-5][0-9])?(:?([0-5][0-9](\.[0-9]+)?)?(Z|(([+\-])(([0-1][0-9])|(2[0-4])):?([0-5][0-9])?))?)?)?)?)?)?)?"/>
+	</xs:restriction>
+</xs:simpleType>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- definition of simple elements    -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<!-- Types -->
+<xs:element name="domain" type="xs:string"/>
+<xs:element name="authority" type="xs:string"/>
+<xs:element name="keyword" type="xs:string"/>
+
+<!-- Common -->
+<xs:element name="displayName" type="xs:string"/>
+<xs:element name="description" type="xs:string"/>
+
+<xs:element name="subject" type="xs:string"/>
+
+<!-- Files -->
+<xs:element name="name" type="xs:string"/>
+<xs:element name="path" type="xs:string"/>
+
+<xs:element name="title" type="xs:string"/>
+<xs:element name="creator" type="xs:string"/>
+<xs:element name="source" type="xs:string"/>
+<xs:element name="publisher" type="xs:string"/>
+<xs:element name="date" type="iso8601"/>
+
+<!-- History -->
+<xs:element name="comment" type="xs:string"/>
+
+<xs:element name="content" type="xs:string"/>
+<xs:element name="rawDescription" type="xs:string"/>
+
+<!-- Agents -->
+<xs:element name="key" type="xs:string"/>
+<xs:element name="value" type="xs:string"/>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- definition of attributes         -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<!-- Root -->
+<xs:attribute name="export_date" type="iso8601"/>
+<xs:attribute name="segue_version" type="xs:string"/>
+<xs:attribute name="segue_export_version" type="xs:string"/>
+
+<!-- Site -->
+<xs:attribute name="slot_name" type="xs:string"/>
+
+<!-- Common -->
+<xs:attribute name="id" type="xs:string"/>
+<xs:attribute name="target_id" type="xs:string"/>
+
+<xs:attribute name="showDisplayNames">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="default"/>
+			<xs:enumeration value="true"/>
+			<xs:enumeration value="false"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="showHistory">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="default"/>
+			<xs:enumeration value="true"/>
+			<xs:enumeration value="false"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="sortMethod">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="default"/>
+			<xs:enumeration value="custom"/>
+			<xs:enumeration value="title_asc"/>
+			<xs:enumeration value="title_desc"/>
+			<xs:enumeration value="create_date_asc"/>
+			<xs:enumeration value="create_date_desc"/>
+			<xs:enumeration value="mod_date_asc"/>
+			<xs:enumeration value="mod_date_desc"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="commentsEnabled">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="default"/>
+			<xs:enumeration value="true"/>
+			<xs:enumeration value="false"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+
+<!-- Organizers -->
+<xs:attribute name="overflowStyle">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<!-- <xs:enumeration value="default"/> -->
+			<xs:enumeration value="Paginate"/>
+			<xs:enumeration value="Archive"/>
+			<xs:enumeration value="Hide"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="width" type="xs:string"/>
+<xs:attribute name="rows" type="xs:integer"/>
+<xs:attribute name="cols" type="xs:integer"/>
+<xs:attribute name="direction">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Left-Right/Top-Bottom"/>
+			<xs:enumeration value="Top-Bottom/Left-Right"/>
+			<xs:enumeration value="Right-Left/Top-Bottom"/>
+			<xs:enumeration value="Top-Bottom/Right-Left"/>
+			<xs:enumeration value="Left-Right/Bottom-Top"/>
+			<xs:enumeration value="Bottom-Top/Left-Right"/>
+			<xs:enumeration value="Right-Left/Bottom-Top"/>
+			<xs:enumeration value="Bottom-Top/Right-Left"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+
+<!-- History -->
+<xs:attribute name="create_date" type="iso8601"/>
+<xs:attribute name="create_agent" type="xs:string"/>
+<xs:attribute name="modify_date" type="iso8601"/>
+
+<xs:attribute name="number" type="xs:integer"/>
+<xs:attribute name="time_stamp" type="iso8601"/>
+<xs:attribute name="isCurrent">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="true"/>
+			<xs:enumeration value="false"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+
+<!-- Roles -->
+<xs:attribute name="role">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="no_access"/>
+			<xs:enumeration value="reader"/>
+			<xs:enumeration value="commenter"/>
+			<xs:enumeration value="editor"/>
+			<xs:enumeration value="admin"/>
+			<xs:enumeration value="custom"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="agent_id" type="xs:string"/>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- definition of complex elements   -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<xs:element name="Segue2">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="SiteNavBlock"/>
+			<xs:element ref="agents"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="export_date"/>
+		<xs:attribute ref="segue_version"/>
+		<xs:attribute ref="segue_export_version"/>
+	</xs:complexType>
+</xs:element>
+
+<!-- Site Components -->
+<xs:element name="SiteNavBlock">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="displayName"/>
+			<xs:element ref="description"/>
+			<xs:element ref="roles"/>
+			<xs:element ref="NavOrganizer"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="slot_name"/>
+		<xs:attribute ref="id"/>
+		<xs:attribute ref="showDisplayNames"/>
+		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="sortMethod"/>
+		<xs:attribute ref="commentsEnabled"/>
+		<xs:attribute ref="width"/>
+		<xs:attribute ref="create_date"/>
+		<xs:attribute ref="create_agent"/>
+		<xs:attribute ref="modify_date"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="NavBlock">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="displayName"/>
+			<xs:element ref="description"/>
+			<xs:element ref="roles"/>
+			<xs:element ref="NavOrganizer"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+		<xs:attribute ref="showDisplayNames"/>
+		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="sortMethod"/>
+		<xs:attribute ref="commentsEnabled"/>
+		<xs:attribute ref="width"/>
+		<xs:attribute ref="create_date"/>
+		<xs:attribute ref="create_agent"/>
+		<xs:attribute ref="modify_date"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="NavOrganizer">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="cell" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element ref="FixedOrganizer"/>
+						<xs:element ref="FlowOrganizer"/>
+						<xs:element ref="MenuOrganizer"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+		<xs:attribute ref="showDisplayNames"/>
+		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="sortMethod"/>
+		<xs:attribute ref="commentsEnabled"/>
+		<xs:attribute ref="width"/>
+		<xs:attribute ref="create_date"/>
+		<xs:attribute ref="create_agent"/>
+		<xs:attribute ref="modify_date"/>
+		
+		<xs:attribute ref="rows"/>
+		<xs:attribute ref="cols"/>
+		<xs:attribute ref="direction"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="FixedOrganizer">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="cell" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element ref="FixedOrganizer"/>
+						<xs:element ref="FlowOrganizer"/>
+						<xs:element ref="MenuOrganizer"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+		<xs:attribute ref="showDisplayNames"/>
+		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="sortMethod"/>
+		<xs:attribute ref="commentsEnabled"/>
+		<xs:attribute ref="width"/>
+		<xs:attribute ref="create_date"/>
+		<xs:attribute ref="create_agent"/>
+		<xs:attribute ref="modify_date"/>
+		
+		<xs:attribute ref="rows"/>
+		<xs:attribute ref="cols"/>
+		<xs:attribute ref="direction"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="FlowOrganizer">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="cell" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence minOccurs="0">
+						<xs:element ref="Block"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+		<xs:attribute ref="showDisplayNames"/>
+		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="sortMethod"/>
+		<xs:attribute ref="commentsEnabled"/>
+		<xs:attribute ref="width"/>
+		<xs:attribute ref="create_date"/>
+		<xs:attribute ref="create_agent"/>
+		<xs:attribute ref="modify_date"/>
+		
+		<xs:attribute ref="rows"/>
+		<xs:attribute ref="cols"/>
+		<xs:attribute ref="direction"/>
+		<xs:attribute ref="overflowStyle"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="MenuOrganizer">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="cell" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element ref="NavBlock"/>
+						<xs:element ref="Block"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+		<xs:attribute ref="showDisplayNames"/>
+		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="sortMethod"/>
+		<xs:attribute ref="commentsEnabled"/>
+		<xs:attribute ref="width"/>
+		<xs:attribute ref="create_date"/>
+		<xs:attribute ref="create_agent"/>
+		<xs:attribute ref="modify_date"/>
+		
+		<xs:attribute ref="rows"/>
+		<xs:attribute ref="cols"/>
+		<xs:attribute ref="direction"/>
+		<xs:attribute ref="overflowStyle"/>
+		
+		<xs:attribute ref="target_id"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="Block">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="type"/>
+			<xs:element ref="displayName"/>
+			<xs:element ref="description"/>
+			<xs:element ref="roles"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="currentVersion"/>
+					<xs:element ref="history"/>
+				</xs:sequence>
+				<xs:element ref="currentContent"/>
+			</xs:choice>
+			<xs:element ref="comments"/>
+			<xs:element ref="attachedMedia"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+		<xs:attribute ref="showDisplayNames"/>
+		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="sortMethod"/>
+		<xs:attribute ref="commentsEnabled"/>
+		<xs:attribute ref="width"/>
+		<xs:attribute ref="create_date"/>
+		<xs:attribute ref="create_agent"/>
+		<xs:attribute ref="modify_date"/>
+	</xs:complexType>
+</xs:element>
+
+<!-- Block data and History -->
+<xs:element name="type">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="domain"/>
+			<xs:element ref="authority"/>
+			<xs:element ref="keyword"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="currentContent">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="content"/>
+			<xs:element ref="rawDescription"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="currentVersion">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:any processContents="skip" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="history">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="entry" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="entry">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="comment"/>
+			<xs:any processContents="skip"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="number"/>
+		<xs:attribute ref="time_stamp"/>
+		<xs:attribute ref="agent_id"/>
+		<xs:attribute ref="isCurrent"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="attachedMedia">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="mediaAsset" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="mediaAsset">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="displayName"/>
+			<xs:element ref="description"/>
+			<xs:element ref="file"/>
+			<xs:element ref="dublinCore" minOccurs="0"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+		<xs:attribute ref="create_date"/>
+		<xs:attribute ref="create_agent"/>
+		<xs:attribute ref="modify_date"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="file">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="name"/>
+			<xs:element ref="path"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="dublinCore">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="title" minOccurs="0"/>
+			<xs:element ref="description" minOccurs="0"/>
+			<xs:element ref="creator" minOccurs="0"/>
+			<xs:element ref="source" minOccurs="0"/>
+			<xs:element ref="publisher" minOccurs="0"/>
+			<xs:element ref="date" minOccurs="0"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+	</xs:complexType>
+</xs:element>
+
+<!-- Comments -->
+<xs:element name="comments">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="Comment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="Comment">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="type"/>
+			<xs:element ref="subject"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="currentVersion"/>
+					<xs:element ref="history"/>
+				</xs:sequence>
+				<xs:element ref="currentContent"/>
+			</xs:choice>
+			<xs:element ref="attachedMedia" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="replies"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+		<xs:attribute ref="create_date"/>
+		<xs:attribute ref="create_agent"/>
+		<xs:attribute ref="modify_date"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="replies">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="Comment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<!-- Roles -->
+<xs:element name="roles">
+	<xs:complexType>		
+		<xs:sequence>
+			<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute ref="role"/>
+					<xs:attribute ref="agent_id"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<!-- Agents -->
+<xs:element name="agents">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="agent" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="agent">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="displayName" minOccurs="0"/>
+			<xs:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="id"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="property">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="key"/>
+			<xs:element ref="value"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+</xs:schema>

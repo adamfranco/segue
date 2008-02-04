@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.8 2008/01/31 16:14:10 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.9 2008/02/04 20:37:16 adamfranco Exp $
  */ 
 require_once(MYDIR."/main/modules/ui1/add.act.php");
 
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Rendering/UntrustedAgentAndTimeDomImportSiteVis
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.8 2008/01/31 16:14:10 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.9 2008/02/04 20:37:16 adamfranco Exp $
  */
 class importAction
 	extends addAction
@@ -224,6 +224,9 @@ class importAction
 			
 			$doc = new Harmoni_DOMDocument;
 			$doc->load($decompressDir."/site.xml");
+			// Validate the document contents
+			$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+			
 			$mediaDir = $decompressDir;
 			
 			switch ($values['mode']['trust']) {

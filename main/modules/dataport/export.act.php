@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.4 2008/01/31 15:50:47 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.5 2008/02/04 20:37:16 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/Rendering/DomExportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.4 2008/01/31 15:50:47 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.5 2008/02/04 20:37:16 adamfranco Exp $
  */
 class exportAction
 	extends Action
@@ -94,8 +94,14 @@ class exportAction
 		mkdir($exportDir);
 		
 		try {
+			// Do the export
 			$visitor = new DomExportSiteVisitor($exportDir);
 			$component->acceptVisitor($visitor);
+			
+			// Validate the result
+			$visitor->doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+			
+			// Write out the XML
 			$visitor->doc->saveWithWhitespace($exportDir."/site.xml");		
 		
 			$archive = new Archive_Tar($exportDir.".tar.gz");
