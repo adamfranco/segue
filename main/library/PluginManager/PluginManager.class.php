@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.30 2008/01/23 15:25:22 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.31 2008/02/06 15:38:08 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.30 2008/01/23 15:25:22 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.31 2008/02/06 15:38:08 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -215,7 +215,7 @@ class PluginManager {
 			}
 			// Otherwise give a generic error.
 			throwError(new Error("This asset does not contain a 
-				plugin. Type, '".Type::typeToString($type)."' does not match any plugins in the registered plugins: ".printpre($this->getRegisteredPlugins(), true), "Plugin Manager"));
+				plugin. Type, '".$type->asString()."' does not match any plugins in the registered plugins: ".printpre($this->getRegisteredPlugins(), true), "Plugin Manager"));
 		}
 	}
 
@@ -291,7 +291,7 @@ class PluginManager {
 								$keyword = $keyDir;
 																
 								$type = new Type($domain, $authority, $keyword);
-								$indexString = $type->printableString();
+								$indexString = $type->asString();
 								// unique types are placed in the array
 								if (!isset(
 									$_SESSION['registeredPlugins'][$indexString]))
@@ -501,7 +501,7 @@ class PluginManager {
 	function getPluginMarkup ( $asset, $showControls = false, $extended = false ) {
 		ob_start();
 		$type = $asset->getAssetType();
-		if (in_array($type->printableString(), 
+		if (in_array($type->asString(), 
 				array_keys(/*$this->_enabledPlugins*/$this->getInstalledPlugins()))) {
 			
 			$plugin = $this->getPlugin($asset);
@@ -685,7 +685,7 @@ class PluginManager {
 					}
 				}
 			}
-			if (!in_array($type->printableString(), 
+			if (!in_array($type->asString(), 
 					array_keys($this->getInstalledPlugins())))
 				$this->addPluginToArray($type);
 	//	}
@@ -704,8 +704,8 @@ class PluginManager {
 		if (in_array($status, $this->_arrays)) {
 			eval('$plugins = $this->_'.$status.'Plugins;');
 			
-			if (!isset($plugins[$type->printableString()]))
-				$plugins[$type->printableString()] = $type;
+			if (!isset($plugins[$type->asString()]))
+				$plugins[$type->asString()] = $type;
 
 			eval('$this->_'.$status.'Plugins = $plugins;');
 			$this->_cachePluginArrays();
