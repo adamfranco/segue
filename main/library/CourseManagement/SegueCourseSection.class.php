@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseSection.class.php,v 1.3 2008/01/04 18:43:20 adamfranco Exp $
+ * @version $Id: SegueCourseSection.class.php,v 1.4 2008/02/07 20:03:24 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseSection.class.php,v 1.3 2008/01/04 18:43:20 adamfranco Exp $
+ * @version $Id: SegueCourseSection.class.php,v 1.4 2008/02/07 20:03:24 adamfranco Exp $
  */
 class SegueCourseSection {
 
@@ -131,6 +131,8 @@ class SegueCourseSection {
 	 * @since 8/20/07
 	 */
 	public function isInstructor ( Id $agentId ) {
+		$agentManager = Services::getService("Agent");
+		
 		// Since in this implementation "instructor" status is determined by 
 		// membership in one of several groups designated as "Faculty" and hence
 		// will be the same accross all courses in which the user is a member,
@@ -146,7 +148,6 @@ class SegueCourseSection {
 // 			}
 			// Match the groups the user is in against our configuration of
 			// groups whose members should have personal sites.
-			$agentManager = Services::getService("Agent");
 			$ancestorSearchType = new HarmoniType("Agent & Group Search",
 													"edu.middlebury.harmoni","AncestorGroups");
 			$containingGroups = $agentManager->getGroupsBySearch(
@@ -166,8 +167,9 @@ class SegueCourseSection {
 		}
 		
 		// Also verify that the user is a member in our group.		
+		$agent = $agentManager->getAgent($agentId);
 		return (self::$isInstructor[$agentId->getIdString()] && 
-				$this->group->contains($agentId, true));
+				$this->group->contains($agent, true));
 	}
 	
 	/**
@@ -195,7 +197,9 @@ class SegueCourseSection {
 	 * @since 8/20/07
 	 */
 	public function isStudent ( Id $agentId ) {
-		// Also verify that the user is a member in our group.		
+		// Also verify that the user is a member in our group.
+		$agentManager = Services::getService("Agent");
+		$agent = $agentManager->getAgent($agentId);
 		return ($this->group->contains($agentId, true)
 			&& !self::$isInstructor[$agentId->getIdString()]);
 	}
