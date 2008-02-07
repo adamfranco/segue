@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.4 2008/01/25 22:02:53 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.5 2008/02/07 20:02:06 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.4 2008/01/25 22:02:53 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.5 2008/02/07 20:02:06 adamfranco Exp $
  */
 class DomExportSiteVisitor
 	implements SiteVisitor
@@ -726,6 +726,11 @@ class DomExportSiteVisitor
 		}
 		
 		$element->appendChild($siteComponent->getOrganizer()->acceptVisitor($this));
+		
+		// Nested Menus
+		$nestedMenu = $siteComponent->getNestedMenuOrganizer();
+		if (!is_null($nestedMenu)) 
+			$element->appendChild($nestedMenu->acceptVisitor($this));
 		
 		return $element;
 	}

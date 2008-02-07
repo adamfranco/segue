@@ -215,6 +215,7 @@ elementFormDefault="qualified">
 			<xs:element ref="description"/>
 			<xs:element ref="roles"/>
 			<xs:element ref="NavOrganizer"/>
+			<xs:element ref="MenuOrganizer" minOccurs="0"/>
 		</xs:sequence>
 		
 		<xs:attribute ref="id"/>

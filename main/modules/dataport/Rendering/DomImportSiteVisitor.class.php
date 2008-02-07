@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.8 2008/01/31 16:54:15 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.9 2008/02/07 20:02:06 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.8 2008/01/31 16:54:15 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.9 2008/02/07 20:02:06 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -266,6 +266,15 @@ class DomImportSiteVisitor
 		
 		$this->importComponent($this->getSingleChild('NavOrganizer', $element), $siteComponent->getOrganizer());
 		
+		try {
+			$nestedMenuElement = $this->getSingleChild('MenuOrganizer', $element);
+			if (!is_null($nestedMenuElement)) {
+				$menu = $this->createComponent($nestedMenuElement, $siteComponent);
+				$siteComponent->makeNested($menu);
+				$this->importComponent($nestedMenuElement, $menu);
+			}
+		} catch (MissingNodeException $e) {
+		}
 		$this->setAssetAuthorship($siteComponent->getAsset(), $element);
 		$this->setAssetDates($siteComponent->getAsset(), $element);
 		
@@ -967,14 +976,14 @@ class DomImportSiteVisitor
 	/**
 	 * Update a single-valued part
 	 * 
-	 * @param object RecordInterface $record
+	 * @param object Record $record
 	 * @param object Id $partStructureId
 	 * @param object $value
 	 * @return void
 	 * @access public
 	 * @since 1/30/07
 	 */
-	function updateSingleValuedPart ( RecordInterface $record, Id $partStructureId, $value ) {
+	function updateSingleValuedPart ( Record $record, Id $partStructureId, $value ) {
 		if (is_object($value) && $value->asString()) {
 			$parts = $record->getPartsByPartStructure($partStructureId);
 			if ($parts->hasNext()) {
@@ -1140,7 +1149,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.8 2008/01/31 16:54:15 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.9 2008/02/07 20:02:06 adamfranco Exp $
  */
 class MissingNodeException
 	extends Exception
