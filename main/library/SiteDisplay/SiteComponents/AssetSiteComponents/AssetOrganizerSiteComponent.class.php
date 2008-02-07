@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.12 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.13 2008/02/07 20:05:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/OrganizerSiteComponen
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.12 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetOrganizerSiteComponent.class.php,v 1.13 2008/02/07 20:05:02 adamfranco Exp $
  */
 abstract class AssetOrganizerSiteComponent
 	extends AssetSiteComponent
@@ -318,16 +318,20 @@ abstract class AssetOrganizerSiteComponent
 					if ($componentNode) {
 // 						printpre($componentNode->nodeName);
 						
-						// If we are creating organizers, do so from our xml
-						if (preg_match('/^.*Organizer$/', $componentNode->nodeName)) {
-							$this->_childComponents[] = $this->_director->getSiteComponentFromXml(
-								$this->_asset, $componentNode);
-						} 
-						// Otherwise (for Blocks, navblocks, etc, get the asset 
-						// by Id from the director
-						else {
-							$this->_childComponents[] = $this->_director->getSiteComponentById(
-								$componentNode->getAttribute('id'));
+						try {
+							// If we are creating organizers, do so from our xml
+							if (preg_match('/^.*Organizer$/', $componentNode->nodeName)) {
+								$this->_childComponents[] = $this->_director->getSiteComponentFromXml(
+									$this->_asset, $componentNode);
+							} 
+							// Otherwise (for Blocks, navblocks, etc, get the asset 
+							// by Id from the director
+							else {
+								$this->_childComponents[] = $this->_director->getSiteComponentById(
+									$componentNode->getAttribute('id'));
+							}
+						} catch (UnknownIdException $e) {
+							$this->_childComponents[] = null;
 						}
 					} else {
 						$this->_childComponents[] = null;

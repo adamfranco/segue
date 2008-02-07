@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.20 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.21 2008/02/07 20:05:02 adamfranco Exp $
  */
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -35,7 +35,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.20 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.21 2008/02/07 20:05:02 adamfranco Exp $
  */
 class AssetSiteDirector
 	implements SiteDirector 
@@ -230,10 +230,13 @@ class AssetSiteDirector
 				throwError(new Error("No id attribute in: ".$currentElement->saveXML()."\nWithin document: ".$currentElement->ownerDocument->saveXML()));
 			
 			$idManager = Services::getService('Id');
-			$asset = $this->_repository->getAsset($idManager->getId(
+			try {
+				$asset = $this->_repository->getAsset($idManager->getId(
 							$currentElement->getAttribute('id')));
-			
-			return $this->activateDefaultsDownAsset($asset);
+				return $this->activateDefaultsDownAsset($asset);
+			} catch (UnknownIdException $e) {
+				return null;
+			}
 		}
 		
 		// If this element isn't a NavBlock, traverse its children in case any of them
@@ -571,7 +574,7 @@ class AssetSiteDirector
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.20 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.21 2008/02/07 20:05:02 adamfranco Exp $
  */
 class NonNavException
 	extends Exception
