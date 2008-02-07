@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: icon.act.php,v 1.4 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: icon.act.php,v 1.5 2008/02/07 20:05:52 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: icon.act.php,v 1.4 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: icon.act.php,v 1.5 2008/02/07 20:05:52 adamfranco Exp $
  */
 class iconAction
 	extends Action
@@ -47,7 +47,7 @@ class iconAction
 		$harmoni->request->startNamespace('plugin_manager');
 		$pluginManager = Services::getService("Plugs");
 		$icon = $pluginManager->getPluginDir(
-					Type::fromString(RequestContext::value('type')))
+					HarmoniType::fromString(RequestContext::value('type')))
 				."/icon.png";
 		
 		header("Content-Type: image/png");

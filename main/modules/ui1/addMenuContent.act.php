@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.10 2008/01/03 19:56:24 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.11 2008/02/07 20:05:52 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.10 2008/01/03 19:56:24 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.11 2008/02/07 20:05:52 adamfranco Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -161,7 +161,7 @@ class addMenuContentAction
 	function saveNavStep ($values) {
 		$director = $this->getSiteDirector();
 		$organizer = $this->getSiteComponentForIdString($values['organizerId']);
-		$componentType = Type::fromString($values['type']);
+		$componentType = HarmoniType::fromString($values['type']);
 		
 		if ($componentType->getDomain() == 'segue-multipart')
 			$component = addComponentAction::createMultipartComponent($director, $componentType, $organizer);

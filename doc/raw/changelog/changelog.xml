@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.135 2008/01/25 18:47:03 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.136 2008/02/07 20:05:52 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2008-02-06'>
+			A number of small fixes to allow working with Harmoni 1.0.0's move to 
+			pure OSID interfaces.
+		</change>
 		<new author='adam' date='2008-01-18' ref='1820781' reftype='fr'>
 			Export: New site-export tool that provides a downloadable XML representation
 			of the site and its media.

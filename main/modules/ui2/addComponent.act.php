@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.10 2008/02/07 20:05:53 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.10 2008/02/07 20:05:53 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -63,7 +63,7 @@ class addComponentAction
 		$organizer = $director->getSiteComponentById($targetOrgId);
 		$director->getRootSiteComponent($targetOrgId);
 		
-		$componentType = Type::fromString(RequestContext::value('componentType'));
+		$componentType = HarmoniType::fromString(RequestContext::value('componentType'));
 		if ($componentType->getDomain() == 'segue-multipart')
 			$component = self::createMultipartComponent($director, $componentType, $organizer);
 		else

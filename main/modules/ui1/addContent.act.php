@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.7 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.8 2008/02/07 20:05:52 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.7 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.8 2008/02/07 20:05:52 adamfranco Exp $
  */
 class addContentAction
 	extends SegueClassicWizard
@@ -163,7 +163,7 @@ class addContentAction
 	function saveContentStep ($values) {
 		$director = $this->getSiteDirector();
 		$organizer = $this->getSiteComponentForIdString($values['organizerId']);
-		$componentType = Type::fromString($values['type']);
+		$componentType = HarmoniType::fromString($values['type']);
 		
 		$component = $director->createSiteComponent($componentType, $organizer);
 		

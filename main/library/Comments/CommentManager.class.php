@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.18 2008/01/24 17:06:11 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.19 2008/02/07 20:05:52 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.18 2008/01/24 17:06:11 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.19 2008/02/07 20:05:52 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -509,7 +509,7 @@ class CommentManager {
 		
 		try {
 			if (RequestContext::value('create_new_comment')) {
-				$comment = $this->createRootComment($asset, Type::fromString(RequestContext::value('plugin_type')));
+				$comment = $this->createRootComment($asset, HarmoniType::fromString(RequestContext::value('plugin_type')));
 				$comment->updateSubject(RequestContext::value('title'));
 				$comment->enableEditForm();
 			}
@@ -518,7 +518,7 @@ class CommentManager {
 				$idManager = Services::getService('Id');
 				$comment = $this->createReply(
 					$idManager->getId(RequestContext::value('reply_parent')),
-					Type::fromString(RequestContext::value('plugin_type')));
+					HarmoniType::fromString(RequestContext::value('plugin_type')));
 				$comment->updateSubject(RequestContext::value('title'));
 				$comment->enableEditForm();
 			}
