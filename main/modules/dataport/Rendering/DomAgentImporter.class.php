@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomAgentImporter.class.php,v 1.1 2008/01/31 20:57:32 adamfranco Exp $
+ * @version $Id: DomAgentImporter.class.php,v 1.2 2008/02/14 20:14:17 adamfranco Exp $
  */ 
 
 require_once(HARMONI."oki2/shared/NonReferenceProperties.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."oki2/shared/NonReferenceProperties.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomAgentImporter.class.php,v 1.1 2008/01/31 20:57:32 adamfranco Exp $
+ * @version $Id: DomAgentImporter.class.php,v 1.2 2008/02/14 20:14:17 adamfranco Exp $
  */
 class DomAgentImporter {
 		
@@ -164,7 +164,7 @@ class DomAgentImporter {
 		$xmlValues = array();
 		foreach ($xmlPropertiesToCheck as $property) {
 // 			printpre(htmlentities($this->doc->saveXMLWithWhitespace($element)));
-			$valueElements = $this->xpath->evaluate('./property[key = \''.$property.'\']/value', $element);
+			$valueElements = $this->xpath->evaluate('./property[key = \''.$property.'\']/string', $element);
 			if ($valueElements->length) {
 				$xmlValues[] = $this->getStringValue($valueElements->item(0));
 			}

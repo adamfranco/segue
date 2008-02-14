@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.5 2008/02/07 20:02:06 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.6 2008/02/14 20:14:17 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.5 2008/02/07 20:02:06 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.6 2008/02/14 20:14:17 adamfranco Exp $
  */
 class DomExportSiteVisitor
 	implements SiteVisitor
@@ -107,7 +107,7 @@ class DomExportSiteVisitor
 					$propElement = $element->appendChild($this->doc->createElement('property'));
 					$key = $keys->next();
 					$propElement->appendChild($this->getCDATAElement('key', $key));
-					$propElement->appendChild($this->getCDATAElement('value', $properties->getProperty($key)));
+					$propElement->appendChild($this->getCDATAElement('string', $properties->getProperty($key)));
 				}
 			}
 		}

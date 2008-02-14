@@ -48,8 +48,53 @@ elementFormDefault="qualified">
 
 <!-- Agents -->
 <xs:element name="key" type="xs:string"/>
-<xs:element name="value" type="xs:string"/>
 
+<xs:element name="string" type="xs:string"/>
+<xs:element name="integer" type="xs:integer"/>
+<xs:element name="real" type="xs:string"/>
+<xs:element name="true"></xs:element>
+<xs:element name="false"></xs:element>
+<!-- Data is base64-encoded -->
+<xs:element name="data">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9+/=]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:element>
+<xs:element name="array">
+	<xs:complexType>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="string"/>
+			<xs:element ref="integer"/>
+			<xs:element ref="real"/>
+			<xs:element ref="date"/>
+			<xs:element ref="true"/>
+			<xs:element ref="false"/>
+			<xs:element ref="data"/>
+			<xs:element ref="array"/>
+			<xs:element ref="dict"/>
+		</xs:choice>
+	</xs:complexType>
+</xs:element>
+<xs:element name="dict">
+	<xs:complexType>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="key"/>
+			<xs:choice>
+				<xs:element ref="string"/>
+				<xs:element ref="integer"/>
+				<xs:element ref="real"/>
+				<xs:element ref="date"/>
+				<xs:element ref="true"/>
+				<xs:element ref="false"/>
+				<xs:element ref="data"/>
+				<xs:element ref="array"/>
+				<xs:element ref="dict"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <!-- definition of attributes         -->
@@ -64,7 +109,13 @@ elementFormDefault="qualified">
 <xs:attribute name="slot_name" type="xs:string"/>
 
 <!-- Common -->
-<xs:attribute name="id" type="xs:string"/>
+<xs:attribute name="id">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
 <xs:attribute name="target_id" type="xs:string"/>
 
 <xs:attribute name="showDisplayNames">
@@ -196,7 +247,7 @@ elementFormDefault="qualified">
 		</xs:sequence>
 		
 		<xs:attribute ref="slot_name"/>
-		<xs:attribute ref="id"/>
+		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
 		<xs:attribute ref="sortMethod"/>
@@ -218,7 +269,7 @@ elementFormDefault="qualified">
 			<xs:element ref="MenuOrganizer" minOccurs="0"/>
 		</xs:sequence>
 		
-		<xs:attribute ref="id"/>
+		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
 		<xs:attribute ref="sortMethod"/>
@@ -244,7 +295,7 @@ elementFormDefault="qualified">
 			</xs:element>
 		</xs:sequence>
 		
-		<xs:attribute ref="id"/>
+		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
 		<xs:attribute ref="sortMethod"/>
@@ -254,8 +305,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="create_agent"/>
 		<xs:attribute ref="modify_date"/>
 		
-		<xs:attribute ref="rows"/>
-		<xs:attribute ref="cols"/>
+		<xs:attribute ref="rows" use="required"/>
+		<xs:attribute ref="cols" use="required"/>
 		<xs:attribute ref="direction"/>
 	</xs:complexType>
 </xs:element>
@@ -274,7 +325,7 @@ elementFormDefault="qualified">
 			</xs:element>
 		</xs:sequence>
 		
-		<xs:attribute ref="id"/>
+		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
 		<xs:attribute ref="sortMethod"/>
@@ -284,8 +335,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="create_agent"/>
 		<xs:attribute ref="modify_date"/>
 		
-		<xs:attribute ref="rows"/>
-		<xs:attribute ref="cols"/>
+		<xs:attribute ref="rows" use="required"/>
+		<xs:attribute ref="cols" use="required"/>
 		<xs:attribute ref="direction"/>
 	</xs:complexType>
 </xs:element>
@@ -302,7 +353,7 @@ elementFormDefault="qualified">
 			</xs:element>
 		</xs:sequence>
 		
-		<xs:attribute ref="id"/>
+		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
 		<xs:attribute ref="sortMethod"/>
@@ -312,8 +363,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="create_agent"/>
 		<xs:attribute ref="modify_date"/>
 		
-		<xs:attribute ref="rows"/>
-		<xs:attribute ref="cols"/>
+		<xs:attribute ref="rows" use="required"/>
+		<xs:attribute ref="cols" use="required"/>
 		<xs:attribute ref="direction"/>
 		<xs:attribute ref="overflowStyle"/>
 	</xs:complexType>
@@ -332,7 +383,7 @@ elementFormDefault="qualified">
 			</xs:element>
 		</xs:sequence>
 		
-		<xs:attribute ref="id"/>
+		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
 		<xs:attribute ref="sortMethod"/>
@@ -342,12 +393,13 @@ elementFormDefault="qualified">
 		<xs:attribute ref="create_agent"/>
 		<xs:attribute ref="modify_date"/>
 		
-		<xs:attribute ref="rows"/>
-		<xs:attribute ref="cols"/>
+		<!-- Menus use only their directon for rows/columns determination -->
+		<xs:attribute ref="rows" use="prohibited"/>
+		<xs:attribute ref="cols" use="prohibited"/>
 		<xs:attribute ref="direction"/>
 		<xs:attribute ref="overflowStyle"/>
 		
-		<xs:attribute ref="target_id"/>
+		<xs:attribute ref="target_id" use="required"/>
 	</xs:complexType>
 </xs:element>
 
@@ -369,7 +421,7 @@ elementFormDefault="qualified">
 			<xs:element ref="attachedMedia"/>
 		</xs:sequence>
 		
-		<xs:attribute ref="id"/>
+		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
 		<xs:attribute ref="sortMethod"/>
@@ -448,7 +500,7 @@ elementFormDefault="qualified">
 			<xs:element ref="dublinCore" minOccurs="0"/>
 		</xs:sequence>
 		
-		<xs:attribute ref="id"/>
+		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="create_date"/>
 		<xs:attribute ref="create_agent"/>
 		<xs:attribute ref="modify_date"/>
@@ -506,7 +558,7 @@ elementFormDefault="qualified">
 			<xs:element ref="replies"/>
 		</xs:sequence>
 		
-		<xs:attribute ref="id"/>
+		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="create_date"/>
 		<xs:attribute ref="create_agent"/>
 		<xs:attribute ref="modify_date"/>
@@ -527,8 +579,8 @@ elementFormDefault="qualified">
 		<xs:sequence>
 			<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
-					<xs:attribute ref="role"/>
-					<xs:attribute ref="agent_id"/>
+					<xs:attribute ref="role" use="required"/>
+					<xs:attribute ref="agent_id" use="required"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
@@ -551,7 +603,7 @@ elementFormDefault="qualified">
 			<xs:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		
-		<xs:attribute ref="id"/>
+		<xs:attribute ref="id" use="required"/>
 	</xs:complexType>
 </xs:element>
 
@@ -559,7 +611,17 @@ elementFormDefault="qualified">
 	<xs:complexType>
 		<xs:sequence>
 			<xs:element ref="key"/>
-			<xs:element ref="value"/>
+			<xs:choice>
+				<xs:element ref="string"/>
+				<xs:element ref="integer"/>
+				<xs:element ref="real"/>
+				<xs:element ref="date"/>
+				<xs:element ref="true"/>
+				<xs:element ref="false"/>
+				<xs:element ref="data"/>
+				<xs:element ref="array"/>
+				<xs:element ref="dict"/>
+			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
 </xs:element>
