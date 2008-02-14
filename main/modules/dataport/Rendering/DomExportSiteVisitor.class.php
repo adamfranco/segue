@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.6 2008/02/14 20:14:17 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.7 2008/02/14 21:15:45 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.6 2008/02/14 20:14:17 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.7 2008/02/14 21:15:45 adamfranco Exp $
  */
 class DomExportSiteVisitor
 	implements SiteVisitor
@@ -852,7 +852,7 @@ class DomExportSiteVisitor
 		$this->record($element);
 		
 		$this->addCommonOptions($siteComponent, $element);
-		$this->addOrganizerOptions($siteComponent, $element);
+		$element->setAttribute('direction', $siteComponent->getDirection());
 		$this->addFlowOrganizerOptions($siteComponent, $element);
 		$element->setAttribute('target_id', $siteComponent->getTargetId());
 		$this->addOrganizerChildren($siteComponent, $element);
