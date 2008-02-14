@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.136 2008/02/07 20:05:52 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.137 2008/02/14 21:17:01 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -44,6 +44,10 @@
 		<new author='adam' date='2008-01-25' ref='1820777' reftype='fr'>
 			WikiText: Now supports [[localurl:xxxxx]] for of url-tokens.
 		</new>
+		<fix author='adam' date='2008-02-14'>
+			WikiText: Links to add missing pages now land on a page with a message 
+			rather than throwing an unknown action exception.
+		</fix>
 		<fix author='adam' date='2008-01-25'>
 			index.php: Now MYPATH constant is set to the SCRIPT_PATH instead of
 			PHP_SELF to work better when using path info-based URLs.
