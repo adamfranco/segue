@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.16 2007/11/29 20:49:55 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.17 2008/02/14 22:31:04 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.16 2007/11/29 20:49:55 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.17 2008/02/14 22:31:04 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -284,8 +284,11 @@ class viewAction
 		$idManager = Services::getService("Id");
 		
 		ob_start();
-		if ($authZ->isUserAuthorized(
+		if ($authZ->isUserAuthorizedBelow(
 				$idManager->getId("edu.middlebury.authorization.modify"),
+				$idManager->getId($this->rootSiteComponent->getId()))
+			|| $authZ->isUserAuthorizedBelow(
+				$idManager->getId("edu.middlebury.authorization.add_children"),
 				$idManager->getId($this->rootSiteComponent->getId())))
 		{
 			print "<div class='commands'>";

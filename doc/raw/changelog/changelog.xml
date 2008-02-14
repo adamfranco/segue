@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.137 2008/02/14 21:17:01 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.138 2008/02/14 22:31:04 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -51,6 +51,10 @@
 		<fix author='adam' date='2008-01-25'>
 			index.php: Now MYPATH constant is set to the SCRIPT_PATH instead of
 			PHP_SELF to work better when using path info-based URLs.
+		</fix>
+		<fix author='adam' date='2008-02-14' ref='1893980' reftype='bug'>
+			Editing UI: People with author/editor roles below the site root now
+			get links to edit-mode.
 		</fix>
 		<change author='adam' date='2008-01-18'>
 			Site Display: Can now get the content type of a block. This matches the

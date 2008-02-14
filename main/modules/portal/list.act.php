@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.20 2008/01/14 20:12:35 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.21 2008/02/14 22:31:04 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.20 2008/01/14 20:12:35 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.21 2008/02/14 22:31:04 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -408,11 +408,13 @@ function printSiteShort($asset, $action, $num) {
 // 	if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId))
 		$controls[] = "<a href='".$viewUrl."'>"._("view")."</a>";
 	
-	if ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId))
+	if ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
+		|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId))
 		$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
 	
 	if ($action->getUiModule() == 'ui2' 
-			&& $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId))
+			&& $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
+		|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId))
 	{
 		$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
 	}
