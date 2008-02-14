@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WikiResolver.class.php,v 1.2 2008/01/25 18:31:28 adamfranco Exp $
+ * @version $Id: WikiResolver.class.php,v 1.3 2008/02/14 21:16:37 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TitleSearcher.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TitleSearcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WikiResolver.class.php,v 1.2 2008/01/25 18:31:28 adamfranco Exp $
+ * @version $Id: WikiResolver.class.php,v 1.3 2008/02/14 21:16:37 adamfranco Exp $
  */
 class WikiResolver {
 
@@ -396,7 +396,9 @@ $		# Anchor for the end of the line
 				$action = 'view';
 			
 			$harmoni = Harmoni::instance();
+			$harmoni->request->startNamespace(null);
 			$newUrl = $harmoni->request->mkURLWithoutContext($module, $action, $args);
+			$harmoni->request->endNamespace();
 			
 			return $newUrl->write();
 		}
