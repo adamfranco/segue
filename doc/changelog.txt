@@ -4,6 +4,108 @@ Name: Segue Change Log
 
 
 
+v. 2.0-beta-10 (The Future)
+----------------------------------------------------
+
+		
+		
+	* Change: 
+		A number of small fixes to allow working with Harmoni 1.0.0's move to pure
+		OSID interfaces.
+		(2008-02-06 - Adam Franco)
+		
+	* New feature: #1820781 
+		Export: New site-export tool that provides a downloadable XML representation
+		of the site and its media.
+		(2008-01-18 - Adam Franco)
+		
+	* New feature: #1820781 
+		Import: New site-import tool that can import from an XML representation of
+		the site and its media.
+		(2008-01-25 - Adam Franco)
+		
+	* New feature: #1820781 
+		Plugins:New plugin methods to support mapping of Ids as sites are imported.
+		(2008-01-25 - Adam Franco)
+		
+	* New feature: #1820777 
+		Plugins: Now support 'tokenizing' of internal links. This translates links
+		from the form:
+		
+		http://segue.example.edu/index.php?module=ui1&amp;action=view&amp;node=12345
+		
+		to
+		a wiki-style token that can be more easily found, replaced, or translated
+		when exporting/importing sites:
+		
+		[[localurl:module=ui1&amp;action=view&amp;node=12345]] 
+		(2008-01-25 - Adam Franco)
+		
+	* New feature: #1820777 
+		WikiText: Now supports [[localurl:xxxxx]] for of url-tokens.
+		(2008-01-25 - Adam Franco)
+		
+	* Bug Fix: 
+		WikiText: Links to add missing pages now land on a page with a message
+		rather than throwing an unknown action exception.
+		(2008-02-14 - Adam Franco)
+		
+	* Bug Fix: 
+		index.php: Now MYPATH constant is set to the SCRIPT_PATH instead of PHP_SELF
+		to work better when using path info-based URLs.
+		(2008-01-25 - Adam Franco)
+		
+	* Bug Fix: #1893980 
+		Editing UI: People with author/editor roles below the site root now get
+		links to edit-mode.
+		(2008-02-14 - Adam Franco)
+		
+	* Change: 
+		Site Display: Can now get the content type of a block. This matches the
+		plugin type.
+		(2008-01-18 - Adam Franco)
+		
+	* Change: #1815898 
+		Site Display: Asset-based site components now use the PHP5 DOM libraries
+		instead of the DOMIT libraries that had been needed under PHP4.
+		(2008-01-23 - Adam Franco)
+		
+	* Bug Fix: # 1873960 
+		A URL that requires javascript processing now isn't placed in a form action,
+		preventing web-crawlers form accidentally going to an invalid URL.
+		(2008-01-17 - Adam Franco)
+		
+	* Bug Fix: #1876751 
+		History: Now catches if no versions are specified.
+		(2008-02-15 - Adam Franco)
+		
+	* Bug Fix: #1871570 
+		History: Links to other parts of the site Hierarchy now go back to the
+		appropriate module and action.
+		(2008-02-15 - Adam Franco)
+		
+	* Change: 
+		Comments: The CommentManager now checks the authorization of the asset the
+		thread is attached to rather than looking at the request.
+		(2008-01-24 - Adam Franco)		
+	* Change: 
+		Comments: Can now return the asset for a CommentNode to enable export.
+		(2008-01-18 - Adam Franco)
+		
+	* Bug Fix: 
+		Comments: Added a note to the UI that comments can be edited until there are
+		replies. 
+		(2008-02-15 - Adam Franco)
+		
+	* Change: 
+		Can now get the Segue version string during execution.
+		(2008-01-18 - Adam Franco)
+		
+	* Bug Fix: #1854967 
+		MediaLibrary: Failed thumbnail generation for multi-page PDF files no longer
+		causes an error in the MediaLibrary.
+		(2008-02-15 - Adam Franco)
+	
 v. 2.0-beta-9 (2008-01-15)
 ----------------------------------------------------
 This release fixes a number of bugs in the Roles user interface. See the change-log
