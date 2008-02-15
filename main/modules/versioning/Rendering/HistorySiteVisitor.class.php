@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.3 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.4 2008/02/15 20:08:58 adamfranco Exp $
  */ 
 
 
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.3 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.4 2008/02/15 20:08:58 adamfranco Exp $
  */
 class HistorySiteVisitor
 	extends DetailViewModeSiteVisitor
@@ -202,6 +202,32 @@ class HistorySiteVisitor
 		print "\n\t</tbody>";
 		print "\n</table>";
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the Url for this component id.
+	 *
+	 * Note: this is clunky that this object has to know about harmoni and 
+	 * what action to target. Maybe rewrite...
+	 * 
+	 * @param string $id
+	 * @return string
+	 * @access public
+	 * @since 4/4/06
+	 */
+	function getUrlForComponent ( $id ) {
+		$harmoni = Harmoni::instance();
+		$origUrl = $harmoni->history->getReturnURL('view_history_'.$this->_node->getId());
+		$module = $harmoni->request->getModuleFromUrl($origUrl);
+		if ($module == false)
+			$module = 'ui1';
+		$action = $harmoni->request->getActionFromUrl($origUrl);
+		if ($action == false)
+			$action = 'view';
+		return $harmoni->request->quickURL(
+			$module, 
+			$action,
+			array("node" => $id));
 	}
 	
 	/**

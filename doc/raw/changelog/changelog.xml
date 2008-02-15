@@ -5,14 +5,25 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.141 2008/02/15 18:09:29 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.142 2008/02/15 20:08:58 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-10" date="The Future">
+	<version number="2.0-beta-10" date="2008-02-15">
 		<releaseNotes>
+			This release includes fixes to a large number of bugs. In addition to
+			a few new changes and improvements.
 			
+			Notable user-facing changes: Media library should be much more stable.
+			Authors and editors now always get links to edit-mode. Now can reliably
+			use path_info-based urls as the primarily URL scheme. Admin-only export/import
+			tools to allow migration of sites.
+			
+			Notable back-end changes: Updated to Harmoni 1.0.0. Internal links are
+			now parsed and tokenized to improve mobility of the content.
+			
+			Segue 2.0 beta 10 uses Harmoni 1.0.0 and Polyphony 1.0.0.
 		</releaseNotes>
 		<change author='adam' date='2008-02-06'>
 			A number of small fixes to allow working with Harmoni 1.0.0's move to 
@@ -71,6 +82,10 @@
 		</fix>
 		<fix author='adam' date='2008-02-15' ref='1876751' reftype='bug'>
 			History: Now catches if no versions are specified.
+		</fix>
+		<fix author='adam' date='2008-02-15' ref='1871570' reftype='bug'>
+			History: Links to other parts of the site Hierarchy now go back to
+			the appropriate module and action.
 		</fix>
 		<change author='adam' date='2008-01-24'>
 			Comments: The CommentManager now checks the authorization of the asset the thread

@@ -3,9 +3,19 @@ Name: Segue Release Notes
 (See the Segue change log for more details)
 
 
-v. 2.0-beta-10 (The Future)
+v. 2.0-beta-10 (2008-02-15)
 ----------------------------------------------------
+This release includes fixes to a large number of bugs. In addition to a few new
+changes and improvements.
 
+Notable user-facing changes: Media library should be much more stable. Authors and
+editors now always get links to edit-mode. Now can reliably use path_info-based urls
+as the primarily URL scheme. Admin-only export/import tools to allow migration of sites.
+
+Notable back-end changes: Updated to Harmoni 1.0.0. Internal links are now parsed
+and tokenized to improve mobility of the content.
+
+Segue 2.0 beta 10 uses Harmoni 1.0.0 and Polyphony 1.0.0.
 
 
 v. 2.0-beta-9 (2008-01-15)

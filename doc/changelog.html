@@ -23,7 +23,67 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-9</h2>
+<h2>Version 2.0-beta-10</h2>
+<h3>The Future</h3>
+<p></p>
+<ul>
+		
+		<li>
+<b>Change:</b> A number of small fixes to allow working with Harmoni 1.0.0's move to pure OSID interfaces. (<em>2008-02-06 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820781&amp;group_id=&amp;atid=">
+        			#1820781</a> Export: New site-export tool that provides a downloadable XML representation of the site and its media. (<em>2008-01-18 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820781&amp;group_id=&amp;atid=">
+        			#1820781</a> Import: New site-import tool that can import from an XML representation of the site and its media. (<em>2008-01-25 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820781&amp;group_id=&amp;atid=">
+        			#1820781</a> Plugins: New plugin methods to support mapping of Ids as sites are imported. (<em>2008-01-25 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820777&amp;group_id=&amp;atid=">
+        			#1820777</a> Plugins: Now support 'tokenizing' of internal links. This translates links from the form:
+<br>
+<br>http://segue.example.edu/index.php?module=ui1&amp;action=view&amp;node=12345
+<br>
+<br>to a wiki-style token that can be more easily found, replaced, or translated when exporting/importing sites:
+<br>
+<br>[[localurl:module=ui1&amp;action=view&amp;node=12345]] (<em>2008-01-25 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820777&amp;group_id=&amp;atid=">
+        			#1820777</a> WikiText: Now supports [[localurl:xxxxx]] for of url-tokens. (<em>2008-01-25 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> WikiText: Links to add missing pages now land on a page with a message rather than throwing an unknown action exception. (<em>2008-02-14 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> index.php: Now MYPATH constant is set to the SCRIPT_PATH instead of PHP_SELF to work better when using path info-based URLs. (<em>2008-01-25 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1893980&amp;group_id=&amp;atid=">
+        			#1893980</a> Editing UI: People with author/editor roles below the site root now get links to edit-mode. (<em>2008-02-14 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Site Display: Can now get the content type of a block. This matches the plugin type. (<em>2008-01-18 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1815898&amp;group_id=&amp;atid=">
+        			#1815898</a> Site Display: Asset-based site components now use the PHP5 DOM libraries instead of the DOMIT libraries that had been needed under PHP4. (<em>2008-01-23 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=%201873960&amp;group_id=&amp;atid=">
+        			# 1873960</a> A URL that requires javascript processing now isn't placed in a form action, preventing web-crawlers form accidentally going to an invalid URL. (<em>2008-01-17 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1876751&amp;group_id=&amp;atid=">
+        			#1876751</a> History: Now catches if no versions are specified. (<em>2008-02-15 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871570&amp;group_id=&amp;atid=">
+        			#1871570</a> History: Links to other parts of the site Hierarchy now go back to the appropriate module and action. (<em>2008-02-15 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Comments: The CommentManager now checks the authorization of the asset the thread is attached to rather than looking at the request. (<em>2008-01-24 - Adam Franco</em>)</li>		<li>
+<b>Change:</b> Comments: Can now return the asset for a CommentNode to enable export. (<em>2008-01-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Comments: Added a note to the UI that comments can be edited until there are replies. (<em>2008-02-15 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Can now get the Segue version string during execution. (<em>2008-01-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854967&amp;group_id=&amp;atid=">
+        			#1854967</a> MediaLibrary: Failed thumbnail generation for multi-page PDF files no longer causes an error in the MediaLibrary. (<em>2008-02-15 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-9</h2>
 <h3>2008-01-15</h3>
 <p>This release fixes a number of bugs in the Roles user interface. See the change-log for details.</p>
 <ul>
