@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.19 2008/02/07 20:05:52 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.20 2008/02/15 17:40:29 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.19 2008/02/07 20:05:52 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.20 2008/02/15 17:40:29 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -556,6 +556,10 @@ class CommentManager {
 			print "\n\t<button ";
 			print "onclick=\"CommentPluginChooser.run(this, '".$url->write()."#".RequestContext::name('current')."', ''); return false;\">";
 			print _("New Comment")."</button>";
+			print "\n<div class='comment_help'>";
+			print _("Comments can be edited or deleted until they are replied-to.");
+			print " (".Help::link('Comments').")";
+			print "</div>";
 			print "\n</div>";
 		}
 		

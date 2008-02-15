@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.139 2008/02/15 16:46:28 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.140 2008/02/15 17:40:29 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -75,6 +75,10 @@
 		</change>		<change author='adam' date='2008-01-18'>
 			Comments: Can now return the asset for a CommentNode to enable export.
 		</change>
+		<fix author='adam' date='2008-02-15'>
+			Comments: Added a note to the UI that comments can be edited until
+			there are replies.
+		</fix>
 		<change author='adam' date='2008-01-18'>
 			Can now get the Segue version string during execution.
 		</change>
