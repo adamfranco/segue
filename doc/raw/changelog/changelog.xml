@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.138 2008/02/14 22:31:04 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.139 2008/02/15 16:46:28 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -78,6 +78,10 @@
 		<change author='adam' date='2008-01-18'>
 			Can now get the Segue version string during execution.
 		</change>
+		<fix author='adam' date='2008-02-15' ref='1854967' reftype='bug'>
+			MediaLibrary: Failed thumbnail generation for multi-page PDF files no longer
+			causes an error in the MediaLibrary.
+		</fix>
 	</version>
 	<version number="2.0-beta-9" date="2008-01-15">
 		<releaseNotes>

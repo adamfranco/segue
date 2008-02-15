@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.13 2008/01/24 14:53:16 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.14 2008/02/15 16:46:19 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.13 2008/01/24 14:53:16 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.14 2008/02/15 16:46:19 adamfranco Exp $
  */
 class uploadAction
 	extends MediaAction
@@ -60,7 +60,7 @@ class uploadAction
 			$this->error('No Form Submitted');
 		
 		if ($_FILES['media_file']['error'])
-			$this->error('An error has occured, no file uploaded.');
+			$this->error('No file uploaded.');
 			
 		if (!$_FILES['media_file']['size'])
 			$this->error('Uploaded file is empty');
@@ -68,7 +68,7 @@ class uploadAction
 		try {
 			$newFileAsset = $this->createFileAsset();
 		} catch (Exception $e) {
-			$this->error($e->getMessage());
+			$this->error($e->getMessage(), get_class($e));
 		}		
 		
 		$this->start();
@@ -101,14 +101,14 @@ class uploadAction
 			$this->addFileRecord($asset);
 		} catch (Exception $e) {
 			HarmoniErrorHandler::logException($e, 'Segue');
-			$this->nonFatalError($e->getMessage());
+			$this->nonFatalError($e->getMessage(), get_class($e));
 		}
 		
 		try {
 			$this->addDublinCoreRecord($asset);
 		} catch (Exception $e) {
 			HarmoniErrorHandler::logException($e, 'Segue');
-			$this->nonFatalError($e->getMessage());
+			$this->nonFatalError($e->getMessage(), get_class($e));
 		}
 		
 		// Log the success or failure

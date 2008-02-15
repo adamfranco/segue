@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.18 2008/02/15 16:46:19 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.18 2008/02/15 16:46:19 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -115,7 +115,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.18 2008/02/15 16:46:19 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -354,8 +354,16 @@ function FileLibrary ( owner, assetId, caller, container ) {
 			var errors = responseElement.getElementsByTagName('error');
 			if (errors.length) {
 				for (var i = 0; i < errors.length; i++) {
-					alert(errors[i].firstChild.data);
-// 					throw new Error( errors[i].firstChild.data );
+					if (errors[i].hasAttribute('type') && errors[i].getAttribute('type') == 'ImageProcessingFailedException') {
+						// do not notify on convert-failed errors
+					} else {
+						if (errors[i].hasAttribute('type'))
+							var type = errors[i].getAttribute('type') + ": ";
+						else
+							var type = ''
+						alert(type + errors[i].firstChild.data);
+// 						throw new Error( errors[i].firstChild.data );
+					}
 				}
 			}
 		} catch (error) {
@@ -411,7 +419,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.18 2008/02/15 16:46:19 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -510,7 +518,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.18 2008/02/15 16:46:19 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -557,7 +565,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.18 2008/02/15 16:46:19 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -1002,8 +1010,16 @@ function MediaAsset ( assetId, xmlElement, library ) {
 			var errors = responseElement.getElementsByTagName('error');
 			if (errors.length) {
 				for (var i = 0; i < errors.length; i++) {
-					alert(errors[i].firstChild.data);
-// 					throw new Error( errors[i].firstChild.data );
+					if (errors[i].hasAttribute('type') && errors[i].getAttribute('type') == 'ImageProcessingFailedException') {
+						// do not notify on convert-failed errors
+					} else {
+						if (errors[i].hasAttribute('type'))
+							var type = errors[i].getAttribute('type') + ": ";
+						else
+							var type = ''
+						alert(type + errors[i].firstChild.data);
+// 						throw new Error( errors[i].firstChild.data );
+					}
 				}
 			}
 		} catch (error) {
@@ -1056,7 +1072,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.17 2007/10/25 16:50:10 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.18 2008/02/15 16:46:19 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
@@ -1397,7 +1413,10 @@ AIM = {
 
         var n = 'f' + Math.floor(Math.random() * 99999);
         var d = document.createElement('DIV');
-        d.innerHTML = '<iframe style="display:none" src="about:blank" id="'+n+'" name="'+n+'" onload="AIM.loaded(\''+n+'\')"></iframe>';
+//         var style = 'display: block; height: 200px; width: 800px;'; // For debugging
+        var style = 'display: none;'; 	// Normal case
+        
+        d.innerHTML = '<iframe style="' + style + '" src="about:blank" id="'+n+'" name="'+n+'" onload="AIM.loaded(\''+n+'\')"></iframe>';
         document.body.appendChild(d);
 
         var i = document.getElementById(n);
