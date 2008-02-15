@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.3 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.4 2008/02/15 18:09:29 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/HistorySiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/HistorySiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.3 2008/01/09 17:28:18 adamfranco Exp $
+ * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.4 2008/02/15 18:09:29 adamfranco Exp $
  */
 class HistoryCompareSiteVisitor
 	extends HistorySiteVisitor
@@ -41,6 +41,9 @@ class HistoryCompareSiteVisitor
 		$harmoni = Harmoni::instance();
 		$pluginManager = Services::getService('PluginManager');
 		$plugin = $pluginManager->getPlugin($block->getAsset());
+		
+		if (!strlen(RequestContext::value('early_rev')) || !strlen(RequestContext::value('late_rev')))
+			return _("No version specified");
 		
 		$earlyVersion = $plugin->getVersion(RequestContext::value('early_rev'));
 		$lateVersion = $plugin->getVersion(RequestContext::value('late_rev'));

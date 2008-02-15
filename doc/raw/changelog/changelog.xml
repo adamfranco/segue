@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.140 2008/02/15 17:40:29 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.141 2008/02/15 18:09:29 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -68,6 +68,9 @@
 			A URL that requires javascript processing now isn't placed in a form
 			action, preventing web-crawlers form accidentally going to an invalid 
 			URL.
+		</fix>
+		<fix author='adam' date='2008-02-15' ref='1876751' reftype='bug'>
+			History: Now catches if no versions are specified.
 		</fix>
 		<change author='adam' date='2008-01-24'>
 			Comments: The CommentManager now checks the authorization of the asset the thread
