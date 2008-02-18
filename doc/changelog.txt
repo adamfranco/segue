@@ -4,6 +4,45 @@ Name: Segue Change Log
 
 
 
+v. 2.0-beta-11 (2008-02-18)
+----------------------------------------------------
+This release fixes a few bugs that were noticed in testing beta 10.
+		
+		
+	* Bug Fix: 
+		SiteDisplay: Fixed error in Block-In-Menu titles when no content is added.
+		(2008-02-18 - Adam Franco)
+		
+	* Bug Fix: #1894687 
+		SiteDisplay: Reordering and moving now works again. In Beta 10 whitespace
+		was added to the stored XML for legibility purposes. The whitespace is now
+		stripped out of the working document during site-modification.
+		(2008-02-18 - Adam Franco)
+		
+	* Bug Fix: 
+		UI2: Fixed error that was causing new content blocks to be added to the top
+		of the ContentOrganizer.
+		(2008-02-18 - Adam Franco)
+		
+	* Bug Fix: 
+		SiteDisplay: Removed some debugging lines.
+		(2008-02-18 - Adam Franco)
+		
+	* Bug Fix: #1894688 
+		Portal: Now doesn't re-encode html entites in Site titles.
+		(2008-02-18 - Adam Franco)
+		
+	* Bug Fix: #1894694 
+		Plugins: WikiText Links generated in ajax editing responce now go to the
+		appropriate module and action.
+		(2008-02-18 - Adam Franco)
+		
+	* Bug Fix: #1799748 
+		Plugins: PluginManager now respects the order of the plugin-type ids. Still
+		need the ability to change the plugin order from the admin UI, but at least
+		order can be manually set in the database now.
+		(2008-02-18 - Adam Franco)
+	
 v. 2.0-beta-10 (2008-02-15)
 ----------------------------------------------------
 This release includes fixes to a large number of bugs. In addition to a few new
