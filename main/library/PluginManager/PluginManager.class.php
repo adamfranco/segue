@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.32 2008/02/18 16:39:48 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.33 2008/02/18 17:31:42 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.32 2008/02/18 16:39:48 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.33 2008/02/18 17:31:42 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -63,6 +63,36 @@ class PluginManager {
 			$this->_disabledPlugins = array();
 		else
 			$this->_disabledPlugins = $_SESSION['disabled_plugins'];
+		
+		// @todo Remove this in Beta 12
+		$this->convertBeta10KeysTo11();
+	}
+	
+	/**
+	 * Keeps objects in the plugin manager arrays.
+	 *
+	 * This should be removed in beta 12. it is being kept around just to update
+	 * existing sessions during the version change-over period from beta 9-10 to beta 11.
+	 *
+	 * @todo Remove this in Beta 12
+	 * @return void
+	 * @access private
+	 * @since 3/9/06
+	 */
+	private function convertBeta10KeysTo11 () {
+		foreach ($this->_arrays as $arrayName) {
+			eval('$array = $this->_'.$arrayName.'Plugins;');
+			foreach ($array as $key => $keystringOrObj) {
+				if ($keystringOrObj && is_string($keystringOrObj)) {
+					$array[$keystringOrObj] = HarmoniType::fromString($keystringOrObj);					
+					unset($array[$key]);
+				}				
+			}
+			eval('$this->_'.$arrayName.'Plugins = $array;');
+		}
+		
+		$this->_addTypeDescriptions();
+		$this->_cachePluginArrays();
 	}
 	
 	/**
@@ -103,6 +133,8 @@ class PluginManager {
 	function assignOsidContext ( $context ) { 
 		$this->_osidContext = $context;
 	}
+	
+	
 	
 	/**
 	 * Add descriptions to the type array
