@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.55 2008/01/11 21:24:39 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.56 2008/02/18 15:39:47 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -34,7 +34,7 @@ require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.55 2008/01/11 21:24:39 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.56 2008/02/18 15:39:47 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -315,7 +315,8 @@ class ViewModeSiteVisitor
 		ob_start();
 		
 		if ($this->showBlockTitle($block)) {
-			print "<div style='font-weight: bold; font-size: large;' title=\"".$block->getDescription()."\">"
+			$desc = strip_tags($block->getDescription());
+			print "<div style='font-weight: bold; font-size: large;' title=\"".$desc."\">"
 					.$this->getBlockTitle($block)
 					."</div>";
 		}
