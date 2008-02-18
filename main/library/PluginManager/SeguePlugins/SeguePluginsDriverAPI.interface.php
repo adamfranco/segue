@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.5 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.6 2008/02/18 16:17:43 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.5 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.6 2008/02/18 16:17:43 adamfranco Exp $
  */
 interface SeguePluginsDriverAPI {
 		
@@ -118,6 +118,18 @@ interface SeguePluginsDriverAPI {
 	 */
 	public function setCanViewFunction ($function);
 	
+	/**
+	 * Set what module and action the plugin urls should use. This is needed when
+	 * generating markup to be used in another context.
+	 * 
+	 * @param string $module
+	 * @param string $action
+	 * @return void
+	 * @access public
+	 * @since 2/18/08
+	 */
+	public function setLocalModuleAndAction ($module, $action);
+	
 /*********************************************************
  * Versioning
  *********************************************************/
@@ -173,7 +185,7 @@ interface SeguePluginsDriverAPI {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.5 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: SeguePluginsDriverAPI.interface.php,v 1.6 2008/02/18 16:17:43 adamfranco Exp $
  */
 class InvalidVersionException
 	extends Exception

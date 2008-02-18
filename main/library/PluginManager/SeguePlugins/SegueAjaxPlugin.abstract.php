@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAjaxPlugin.abstract.php,v 1.5 2007/12/17 17:53:35 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.6 2008/02/18 16:17:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAjaxPlugin.abstract.php,v 1.5 2007/12/17 17:53:35 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.6 2008/02/18 16:17:43 adamfranco Exp $
  */
 abstract class SegueAjaxPlugin 
 	extends SeguePluginsTemplate
@@ -336,6 +336,16 @@ END;
 		$harmoni->request->startNamespace('plugin_manager');
 		
 		$url->setValue('plugin_id', $this->getId());
+		
+		// Local modules and actions for generating valid links
+		if (isset($this->localModule) && $this->localModule)
+			$url->setValue('module', $this->localModule);
+		else
+			$url->setValue('module', $harmoni->request->getRequestedModule());
+		if (isset($this->localAction) && $this->localAction)
+			$url->setValue('action', $this->localAction);
+		else
+			$url->setValue('action', $harmoni->request->getRequestedAction());
 		
 		if ($this->_isExtended)
 			$url->setValue('extended', 'true');

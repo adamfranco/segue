@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.10 2008/01/25 18:47:03 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.11 2008/02/18 16:17:43 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.10 2008/01/25 18:47:03 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.11 2008/02/18 16:17:43 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -1071,7 +1071,13 @@ abstract class SeguePluginsDriver
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace(
 			get_class($this).':'.$this->getId());
-		$this->_baseUrl = $harmoni->request->mkURL();
+		
+		if (isset($this->localModule) && $this->localModule && isset($this->localAction) && $this->localAction) 
+		{
+			$this->_baseUrl = $harmoni->request->mkURL($this->localModule, $this->localAction);
+		} else {
+			$this->_baseUrl = $harmoni->request->mkURL();
+		}
 		
 		$this->update($this->_getRequestData());
 		
@@ -1162,6 +1168,24 @@ abstract class SeguePluginsDriver
 	 */
 	final public function setCanViewFunction ($function) {
 		$this->_canViewFunction = $function;
+	}
+	
+	/**
+	 * Set what module and action the plugin urls should use. This is needed when
+	 * generating markup to be used in another context.
+	 * 
+	 * @param string $module
+	 * @param string $action
+	 * @return void
+	 * @access public
+	 * @since 2/18/08
+	 */
+	final public function setLocalModuleAndAction ($module, $action) {
+		ArgumentValidator::validate($module, NonzeroLengthStringValidatorRule::getRule());
+		ArgumentValidator::validate($action, NonzeroLengthStringValidatorRule::getRule());
+		
+		$this->localModule = $module;
+		$this->localAction = $action;
 	}
 	
 	/**

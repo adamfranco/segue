@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.12 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.13 2008/02/18 16:17:43 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.12 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.13 2008/02/18 16:17:43 adamfranco Exp $
  */
 class update_ajaxAction 
 	extends Action
@@ -51,7 +51,7 @@ class update_ajaxAction
 			$showExtended = true;
 		else
 			$showExtended = false;
-		$harmoni->request->endNamespace();
+		
 			
 		// Get the plugin asset object
 		$repositoryManager = Services::getService("Repository");
@@ -63,7 +63,12 @@ class update_ajaxAction
 
 		$pluginManager = Services::getService("Plugs");
 		$plugin = $pluginManager->getPlugin($asset);
+		
+		if (RequestContext::value('module') && RequestContext::value('action')) {
+			$plugin->setLocalModuleAndAction(RequestContext::value('module'), RequestContext::value('action'));
+		}
 
+		$harmoni->request->endNamespace();
 		
 		header("Content-type: text/xml");
 		print "<plugin>\n";
