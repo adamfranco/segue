@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.143 2008/02/18 15:50:49 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.144 2008/02/18 16:21:20 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -31,6 +31,10 @@
 		</fix>
 		<fix author='adam' date='2008-02-18' ref='1894688' reftype='bug'>
 			Portal: Now doesn't re-encode html entites in Site titles.
+		</fix>
+		<fix author='adam' date='2008-02-18' ref='1894694' reftype='bug'>
+			Plugins: WikiText Links generated in ajax editing responce now go to
+			the appropriate module and action.
 		</fix>
 	</version>
 	<version number="2.0-beta-10" date="2008-02-15">
