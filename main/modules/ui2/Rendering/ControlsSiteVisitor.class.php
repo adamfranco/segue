@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2008/01/10 21:03:29 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.16 2008/02/18 19:12:18 adamfranco Exp $
  */ 
  
  require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.15 2008/01/10 21:03:29 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.16 2008/02/18 19:12:18 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	extends GeneralControlsSiteVisitor
@@ -743,7 +743,7 @@ END;
 		$this->printShowHistory($siteComponent);
 		$this->printCommentSettings($siteComponent);
 		$this->printSortMethod($siteComponent);
-		$this->printAddSubMenu($siteComponent);
+// 		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);

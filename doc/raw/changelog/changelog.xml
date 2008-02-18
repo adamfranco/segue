@@ -5,11 +5,21 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.145 2008/02/18 16:39:48 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.146 2008/02/18 19:12:17 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-12" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-02-18' ref='1871478' reftype='bug'>
+			UI2: Removed the ability to manually create a submenus from the arrange-mode UI.
+			Submenus can now only be created as multi-component collections, the same
+			as in edit-mode and classic-mode.
+		</fix>
+	</version>
 	<version number="2.0-beta-11" date="2008-02-18">
 		<releaseNotes>
 			This release fixes a few bugs that were noticed in testing beta 10.
