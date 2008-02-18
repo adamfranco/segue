@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.16 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.17 2008/02/18 15:43:17 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.16 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.17 2008/02/18 15:43:17 adamfranco Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -490,13 +490,14 @@ abstract class AssetSiteComponent
 	 * @since 10/5/06
 	 */
 	function _saveXml () {
-		printpre("<hr/><h2>Saving AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
-		print("<h3>Previous XML</h3>");
-		$oldContent = $this->_asset->getContent();
-		printpre(htmlentities($oldContent->asString()));
-		print("<h3>New XML</h3>");
+// 		printpre("<hr/><h2>Saving AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
+// 		HarmoniErrorHandler::printDebugBacktrace();
+// 		print("<h3>Previous XML</h3>");
+// 		$oldContent = $this->_asset->getContent();
+// 		printpre(htmlentities($oldContent->asString()));
+// 		print("<h3>New XML</h3>");
 		$element = $this->getElement();
-		printpre(htmlentities($element->ownerDocument->saveXMLWithWhitespace()));
+// 		printpre(htmlentities($element->ownerDocument->saveXMLWithWhitespace()));
 // 		exit;
 		
 		$this->_asset->updateContent(
