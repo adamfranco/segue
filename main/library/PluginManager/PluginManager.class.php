@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.31 2008/02/06 15:38:08 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.32 2008/02/18 16:39:48 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.31 2008/02/06 15:38:08 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.32 2008/02/18 16:39:48 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -63,8 +63,6 @@ class PluginManager {
 			$this->_disabledPlugins = array();
 		else
 			$this->_disabledPlugins = $_SESSION['disabled_plugins'];
-
-		$this->_objectifyArrays();
 	}
 	
 	/**
@@ -104,28 +102,6 @@ class PluginManager {
 	 */
 	function assignOsidContext ( $context ) { 
 		$this->_osidContext = $context;
-	} 
-
-	/**
-	 * Keeps objects in the plugin manager arrays
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 3/9/06
-	 */
-	function _objectifyArrays () {
-		foreach ($this->_arrays as $arrayName) {
-			eval('$array = $this->_'.$arrayName.'Plugins;');
-			foreach ($array as $key => $keystring) {
-				if ($keystring) {
-					$array[$keystring] = HarmoniType::fromString($keystring);					
-				}
-				unset($array[$key]);
-			}
-			eval('$this->_'.$arrayName.'Plugins = $array;');
-		}
-		
-		$this->_addTypeDescriptions();
 	}
 	
 	/**
@@ -162,11 +138,7 @@ class PluginManager {
 	 */
 	function _cachePluginArrays () {
 		foreach ($this->_arrays as $arrayName) {
-			$cache_array = array();
-			eval('$array = $this->_'.$arrayName.'Plugins;');
-			foreach (array_keys($array) as $keystring)
-				$cache_array[] = $keystring;
-			eval('$_SESSION["'.$arrayName.'_plugins"] = $cache_array;');
+			eval('$_SESSION["'.$arrayName.'_plugins"] = $this->_'.$arrayName.'Plugins;');
 		}
 	}
 	
@@ -741,24 +713,22 @@ class PluginManager {
 		$query = new SelectQuery();
 		$query->addTable("plugin_type");
 		$query->addColumn("*");
-		
+		$query->addOrderBy('type_id');
+				
 		$results = $db->query($query, IMPORTER_CONNECTION);
 		$dis = array();
 		$en = array();
 		while ($results->hasNext()) {
 			$result = $results->next();
+			$pluginType = new Type($result['type_domain'],
+						 $result['type_authority'],
+						 $result['type_keyword']);
+			
 			if ($result['type_enabled'] == 1)
-				$en[] = $result['type_domain']."::".
-						 $result['type_authority']."::".
-						 $result['type_keyword'];
+				$this->_enabledPlugins[HarmoniType::typeToString($pluginType)] = $pluginType;
 			else
-				$dis[] =$result['type_domain']."::".
-						 $result['type_authority']."::".
-						 $result['type_keyword'];
+				$this->_disabledPlugins[HarmoniType::typeToString($pluginType)] = $pluginType;
 		}
-		$this->_disabledPlugins = $dis;
-		$this->_enabledPlugins = $en;
-		$this->_objectifyArrays();
 		$this->_cachePluginArrays();
 	}
 	

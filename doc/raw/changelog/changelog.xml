@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.144 2008/02/18 16:21:20 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.145 2008/02/18 16:39:48 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -35,6 +35,11 @@
 		<fix author='adam' date='2008-02-18' ref='1894694' reftype='bug'>
 			Plugins: WikiText Links generated in ajax editing responce now go to
 			the appropriate module and action.
+		</fix>
+		<fix author='adam' date='2008-02-18' ref='1799748' reftype='bug'>
+			Plugins: PluginManager now respects the order of the plugin-type ids.
+			Still need the ability to change the plugin order from the admin UI,
+			but at least order can be manually set in the database now.
 		</fix>
 	</version>
 	<version number="2.0-beta-10" date="2008-02-15">
