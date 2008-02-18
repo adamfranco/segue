@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.21 2008/02/14 22:31:04 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.22 2008/02/18 15:50:49 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.21 2008/02/14 22:31:04 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.22 2008/02/18 15:50:49 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -396,7 +396,7 @@ function printSiteShort($asset, $action, $num) {
 	print "\n\t</div>";
 	print "\n\t<div class='portal_list_site_title'>";
 	print "\n\t\t<a href='".$viewUrl."'>";
-	print "\n\t\t\t<strong>".htmlspecialchars(HtmlString::getSafeHtml($asset->getDisplayName()))."</strong>";
+	print "\n\t\t\t<strong>".HtmlString::getSafeHtml($asset->getDisplayName())."</strong>";
 	print "\n\t\t</a>";
 	print "\n\t</div>";
 	

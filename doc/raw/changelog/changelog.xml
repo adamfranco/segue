@@ -5,11 +5,34 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.142 2008/02/15 20:08:58 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.143 2008/02/18 15:50:49 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-11" date="2008-02-18">
+		<releaseNotes>
+			This release fixes a few bugs that were noticed in testing beta 10.
+		</releaseNotes>
+		<fix author='adam' date='2008-02-18' >
+			SiteDisplay: Fixed error in Block-In-Menu titles when no content is added.
+		</fix>
+		<fix author='adam' date='2008-02-18' ref='1894687' reftype='bug'>
+			SiteDisplay: Reordering and moving now works again. In Beta 10 whitespace
+			was added to the stored XML for legibility purposes. The whitespace is now
+			stripped out of the working document during site-modification.
+		</fix>
+		<fix author='adam' date='2008-02-18'>
+			UI2: Fixed error that was causing new content blocks to be added to
+			the top of the ContentOrganizer.
+		</fix>
+		<fix author='adam' date='2008-02-18'>
+			SiteDisplay: Removed some debugging lines.
+		</fix>
+		<fix author='adam' date='2008-02-18' ref='1894688' reftype='bug'>
+			Portal: Now doesn't re-encode html entites in Site titles.
+		</fix>
+	</version>
 	<version number="2.0-beta-10" date="2008-02-15">
 		<releaseNotes>
 			This release includes fixes to a large number of bugs. In addition to
