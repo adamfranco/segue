@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.21 2008/02/07 20:05:02 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.22 2008/02/18 15:37:34 adamfranco Exp $
  */
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -35,7 +35,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.21 2008/02/07 20:05:02 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.22 2008/02/18 15:37:34 adamfranco Exp $
  */
 class AssetSiteDirector
 	implements SiteDirector 
@@ -278,6 +278,7 @@ class AssetSiteDirector
 		
 		if (!isset($this->_xmlDocuments[$assetIdString])) {
 			$this->_xmlDocuments[$assetIdString] = new Harmoni_DOMDocument();
+			$this->_xmlDocuments[$assetIdString]->preserveWhiteSpace = false; // Remove whitespace when loading document
 // 			$this->_xmlDocuments[$assetIdString]->setNamespaceAwareness(true); // From DOMIT implementation
 			$assetContent = $asset->getContent();
 			
@@ -574,7 +575,7 @@ class AssetSiteDirector
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.21 2008/02/07 20:05:02 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.22 2008/02/18 15:37:34 adamfranco Exp $
  */
 class NonNavException
 	extends Exception
