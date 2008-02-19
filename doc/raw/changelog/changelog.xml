@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.147 2008/02/19 16:41:12 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.148 2008/02/19 16:57:34 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -26,6 +26,13 @@
 			MediaLibrary: Fixed a NULL_VALUE notice in the MediaLibrary that was
 			appearing in Safari.
 		</fix>
+		<change author='adam' date='2008-02-19'>
+			URLs: MYURL constant is now configurable via a config file.
+		</change>
+		<change author='adam' date='2008-02-19'>
+			URLs: POLYPHONY_PATH constant by default is now based on the MYPATH constant
+			rather than the MYURL constant to allow more flexibility in the URL structure.
+		</change>
 	</version>
 	<version number="2.0-beta-11" date="2008-02-18">
 		<releaseNotes>

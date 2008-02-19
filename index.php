@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.10 2008/01/25 18:34:27 adamfranco Exp $
+ * @version $Id: index.php,v 1.11 2008/02/19 16:57:34 adamfranco Exp $
  */
 
 /*********************************************************
@@ -31,7 +31,16 @@ else
 define("MYPATH", $protocol."://".$_SERVER['HTTP_HOST'].str_replace(
 												"\\", "/", 
 												dirname($scriptPath)));
-define("MYURL", trim(MYPATH, '/')."/index.php");
+
+// The following lines set the MYURL constant.
+if (file_exists(MYDIR.'/config/url.conf.php'))
+	include_once (MYDIR.'/config/url.conf.php');
+else
+	include_once (MYDIR.'/config/url_default.conf.php');
+
+if (!defined("MYURL"))
+	define("MYURL", trim(MYPATH, '/')."/index.php");
+
 
 define("LOAD_GUI", true);
 
