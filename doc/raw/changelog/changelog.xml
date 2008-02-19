@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.146 2008/02/18 19:12:17 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.147 2008/02/19 16:41:12 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,10 +14,17 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-02-18'>
+			DataPort: Added 'Author' role to the site schema.
+		</fix>
 		<fix author='adam' date='2008-02-18' ref='1871478' reftype='bug'>
 			UI2: Removed the ability to manually create a submenus from the arrange-mode UI.
 			Submenus can now only be created as multi-component collections, the same
 			as in edit-mode and classic-mode.
+		</fix>
+		<fix author='adam' date='2008-02-19' ref='1896348' reftype='bug'>
+			MediaLibrary: Fixed a NULL_VALUE notice in the MediaLibrary that was
+			appearing in Safari.
 		</fix>
 	</version>
 	<version number="2.0-beta-11" date="2008-02-18">
