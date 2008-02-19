@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.22 2008/02/18 15:50:49 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.23 2008/02/19 19:42:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.22 2008/02/18 15:50:49 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.23 2008/02/19 19:42:58 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -130,6 +130,20 @@ class listAction
 			
 			$slot = new PersonalSlot(strtolower($newSlotname));
 			$slot->addOwner($authN->getFirstUserId());
+			
+			// Log this change.
+			if (Services::serviceRunning("Logging")) {
+				$loggingManager = Services::getService("Logging");
+				$log = $loggingManager->getLogForWriting("Segue");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+								"Normal events.");
+				
+				$item = new AgentNodeEntryItem("Create Placeholder", "New placeholder created:  '".$slot->getShortname()."'.");
+				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			}
 		}
 		$harmoni->request->endNamespace();
 		

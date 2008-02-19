@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.3 2007/12/14 19:41:04 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.4 2008/02/19 19:42:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.3 2007/12/14 19:41:04 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.4 2008/02/19 19:42:58 adamfranco Exp $
  */
 class deleteAction
 	extends MainWindowAction
@@ -85,6 +85,20 @@ class deleteAction
 			throw new PermissionDeniedException("You cannot delete a placeholder that has an existing site.");
 		
 		$slotMgr->deleteSlot($name);
+		
+		// Log this change
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			$item = new AgentNodeEntryItem("Delete Placeholder", "Placeholder deleted:  '".$name."'.");
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
 		
 		$harmoni->request->sendTo($this->getReturnUrl());
 	}

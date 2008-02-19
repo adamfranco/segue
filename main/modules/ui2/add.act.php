@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.12 2008/01/28 21:19:13 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.13 2008/02/19 19:42:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.12 2008/01/28 21:19:13 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.13 2008/02/19 19:42:58 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -358,7 +358,7 @@ class addAction
 			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
 							"Normal events.");
 			
-			$item = new AgentNodeEntryItem("Create Site", "Site added");
+			$item = new AgentNodeEntryItem("Create Site", "Site added for placeholder, '".$slot->getShortname()."'.");
 			$item->addNodeId($siteId);
 			
 			$log->appendLogWithTypes($item,	$formatType, $priorityType);

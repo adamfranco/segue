@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit.act.php,v 1.3 2008/01/04 19:47:55 adamfranco Exp $
+ * @version $Id: edit.act.php,v 1.4 2008/02/19 19:42:58 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit.act.php,v 1.3 2008/01/04 19:47:55 adamfranco Exp $
+ * @version $Id: edit.act.php,v 1.4 2008/02/19 19:42:58 adamfranco Exp $
  */
 class editAction
 	extends MainWindowAction
@@ -152,14 +152,21 @@ class editAction
 		$slot = $wizard->slot;
 		
 		$values = $wizard->getAllValues();
+		$changes = array();
 		
 		try {
 			if ($slot->getType() != $values['slot']['type']) {
+				$changes[] = "Type changed from ".$slot->getType()." to ".$values['slot']['type'];
+				
 				$slotMgr = SlotManager::instance();
 				$slot = $slotMgr->convertSlotToType($slot, $values['slot']['type']);
 			}
 			
-			$slot->setLocationCategory($values['slot']['category']);
+			if ($slot->getLocationCategory() != $values['slot']['category']) {
+				$changes[] = "Location Category changed from ".$slot->getLocationCategory()." to ".$values['slot']['category'];
+			
+				$slot->setLocationCategory($values['slot']['category']);
+			}
 			
 			$idMgr = Services::getService("Id");
 			
@@ -169,21 +176,53 @@ class editAction
 			}
 			$newOwners = $values['slot']['owners'];
 			
+			$agentMgr = Services::getService("Agent");
 			// Remove any needed existing owners
 			foreach ($oldOwners as $idString) {
-				if (!in_array($idString, $newOwners))
+				if (!in_array($idString, $newOwners)) {
 					$slot->removeOwner($idMgr->getId($idString));
+					
+					try {
+						$agent = $agentMgr->getAgent($idMgr->getId($idString));
+						$agentName = $agent->getDisplayName();
+					} catch (Exception $e) {
+						$agentName = 'Unknown';
+					}
+					$changes[] = "Owner $agentName ($idString) removed";
+				}
 			}
 			
 			// Add an needed new owners
 			foreach ($newOwners as $idString) {
-				if (!in_array($idString, $oldOwners))
+				if (!in_array($idString, $oldOwners)) {
 					$slot->addOwner($idMgr->getId($idString));
+					
+					try {
+						$agent = $agentMgr->getAgent($idMgr->getId($idString));
+						$agentName = $agent->getDisplayName();
+					} catch (Exception $e) {
+						$agentName = 'Unknown';
+					}
+					$changes[] = "Owner $agentName ($idString) added";
+				}
 			}
 			
 		} catch (Exception $e) {
 			print $e->getMessage();
 			return false;
+		}
+		
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			$item = new AgentNodeEntryItem("Modify Placeholder", "Placeholder changed:  '".$slot->getShortname()."'. <br/><br/>Changes: <br/> ".implode(",<br/> ", $changes));
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
 		}
 		
 		return true;
