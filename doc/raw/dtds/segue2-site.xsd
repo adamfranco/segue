@@ -212,6 +212,7 @@ elementFormDefault="qualified">
 			<xs:enumeration value="no_access"/>
 			<xs:enumeration value="reader"/>
 			<xs:enumeration value="commenter"/>
+			<xs:enumeration value="author"/>
 			<xs:enumeration value="editor"/>
 			<xs:enumeration value="admin"/>
 			<xs:enumeration value="custom"/>
