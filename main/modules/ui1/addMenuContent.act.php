@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.11 2008/02/07 20:05:52 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.12 2008/02/19 17:49:57 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/addContent.act.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../ui2/addComponent.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addMenuContent.act.php,v 1.11 2008/02/07 20:05:52 adamfranco Exp $
+ * @version $Id: addMenuContent.act.php,v 1.12 2008/02/19 17:49:57 adamfranco Exp $
  */
 class addMenuContentAction
 	extends addContentAction
@@ -122,15 +122,15 @@ class addMenuContentAction
 		
 		foreach ($navTypes as $i => $navArray) {
 			ob_start();
-			print " <strong>".$navArray['name']."</strong>";
 			print "\n<div>";
 			$icon = MYPATH."/images/".$navArray['icon'];
 			print "\n\t<img src='".$icon."' width='300px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
+			print " <strong>".$navArray['name']."</strong>";
 			print "\n\t<div>".$navArray['description']."</div>";
 			print "\n</div>";
 			print "\n<div style='clear: both;'></div>";
 			$property->addOption($navArray['type']->asString(), 
-				_("Create >>"), 
+				str_replace('%1', $navArray['name'],_('Create %1 >> ')), 
 				ob_get_clean());
 				
 			if (!$i) {

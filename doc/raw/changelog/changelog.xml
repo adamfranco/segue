@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.149 2008/02/19 17:25:28 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.150 2008/02/19 17:49:56 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -13,6 +13,7 @@
 	<version number="2.0-beta-12" date="The Future">
 		<releaseNotes>
 			
+			Segue 2.0 beta 12 uses Harmoni 1.0.1 and Polyphony 1.0.1.
 		</releaseNotes>
 		<fix author='adam' date='2008-02-18'>
 			DataPort: Added 'Author' role to the site schema.
@@ -39,6 +40,9 @@
 		<fix author='adam' date='2008-02-19' ref='1871490' reftype='bug'>
 			UI1: Rich-Text editor (FCKEditor) now is using the custom toolbar config.
 		</fix>
+		<change author='adam' date='2008-02-19' ref='1854972' reftype='fr'>
+			UI1: Create Item links now include the option name to differentiate them.
+		</change>
 	</version>
 	<version number="2.0-beta-11" date="2008-02-18">
 		<releaseNotes>

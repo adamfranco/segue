@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.8 2008/02/07 20:05:52 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.9 2008/02/19 17:49:57 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addContent.act.php,v 1.8 2008/02/07 20:05:52 adamfranco Exp $
+ * @version $Id: addContent.act.php,v 1.9 2008/02/19 17:49:57 adamfranco Exp $
  */
 class addContentAction
 	extends SegueClassicWizard
@@ -123,17 +123,17 @@ class addContentAction
 		$set = false;
 		foreach ($plugins as $key => $pType) {
 			ob_start();
-			print " <strong>".$pType->getKeyword()."</strong>";
 			print "\n<div>";
 			$icon = $pluginManager->getPluginIconUrl($pType);
 			if ($icon) {
 				print "\n\t<img src='".$icon."' width='300px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
 			}
+			print " <strong>".$pType->getKeyword()."</strong>";
 			print "\n\t<div>".$pType->getDescription()."</div>";
 			print "\n</div>";
 			print "\n<div style='clear: both;'></div>";
 			$property->addOption($key, 
-				_('Create >> '), 
+				str_replace('%1', $pType->getKeyword(),_('Create %1 >> ')), 
 				ob_get_clean());
 			if (!$set) {
 				$property->setValue($key);
