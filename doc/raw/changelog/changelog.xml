@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.151 2008/02/19 19:42:57 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.152 2008/02/19 20:16:09 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -46,6 +46,9 @@
 		<change author='adam' date='2008-02-19'>
 			Logging: Added additional logging of user actions.
 		</change>
+		<new author='adam' date='2008-02-19'>
+			Added a favicon to the images/ directory.
+		</new>
 	</version>
 	<version number="2.0-beta-11" date="2008-02-18">
 		<releaseNotes>
