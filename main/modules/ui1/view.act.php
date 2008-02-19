@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.19 2008/02/14 22:31:04 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.20 2008/02/19 23:25:15 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.19 2008/02/14 22:31:04 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.20 2008/02/19 23:25:15 adamfranco Exp $
  */
 class viewAction
 	extends displayAction 
@@ -105,6 +105,7 @@ class viewAction
 		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/TabbedContent.js'></script>";
 		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/prototype.js'></script>";
 		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/js_quicktags.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/brwsniff.js'></script>";
 		print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/MediaLibrary.js'></script>";
 		print "\n\t\t<link rel='stylesheet' type='text/css' href='".MYPATH."/javascript/MediaLibrary.css'/>";
 		

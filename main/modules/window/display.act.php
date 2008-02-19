@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.23 2008/01/18 21:39:08 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.24 2008/02/19 23:25:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.23 2008/01/18 21:39:08 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.24 2008/02/19 23:25:15 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -287,7 +287,7 @@ class displayAction
 			print  "\n<div style='text-align: right; margin-right: 10px; margin-bottom: 3px;'>".
 				"\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
-				"' align='right' method='post'><small>".
+				"' style='text-align: right' method='post'><small>".
 				"\n\t"._("Username:")." <input class='small' type='text' size='8' 
 					name='$usernameField'/>".
 				"\n\t"._("Password:")." <input class='small' type='password' size ='8' 

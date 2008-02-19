@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.153 2008/02/19 23:25:14 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.154 2008/02/19 23:27:47 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -795,10 +795,6 @@
 	<reporters>
 		<reporter short="sarah_franco">
 			<name>Sarah Franco</name>
-			<institution>Middlebury College</institution>
-		</reporter>
-		<reporter short="gregg_humphrey">
-			<name>Gregg Humphrey</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginChooser.js,v 1.3 2007/07/13 19:59:02 adamfranco Exp $
+ * @version $Id: PluginChooser.js,v 1.4 2008/02/19 23:25:15 adamfranco Exp $
  */
 
 PluginChooser.prototype = new CenteredPanel();
@@ -22,7 +22,7 @@ PluginChooser.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginChooser.js,v 1.3 2007/07/13 19:59:02 adamfranco Exp $
+ * @version $Id: PluginChooser.js,v 1.4 2008/02/19 23:25:15 adamfranco Exp $
  */
 function PluginChooser (callingElement, destUrl ) {
 	if ( arguments.length > 0 ) {
@@ -104,10 +104,16 @@ function PluginChooser (callingElement, destUrl ) {
 		var container = this.form.appendChild(document.createElement('div'));
 		container.className = 'title_form';
 		container.appendChild(document.createTextNode(this.titleLabel));
-		this.title = container.appendChild(document.createElement('input'));
-		this.title.type = 'text';
-		this.title.name = Harmoni.fieldName('title', this.namespace);
-		this.title.value = this.defaultTitle;
+		
+		// Stupid IE6 does not support setting of the input type.
+		if (getBrowser()[2] == 'msie') {
+			this.title = container.appendChild(document.createElement('<input type="text" name="' + Harmoni.fieldName('title', this.namespace) + '" value="' + this.defaultTitle + '">'));
+		} else {
+			this.title = container.appendChild(document.createElement('input'));
+			this.title.type = 'text';
+			this.title.name = Harmoni.fieldName('title', this.namespace);
+			this.title.value = this.defaultTitle;
+		}
 		this.title.focus();
 	}
 	
@@ -139,6 +145,7 @@ function PluginChooser (callingElement, destUrl ) {
 		var req = Harmoni.createRequest();
 		var url = Harmoni.quickUrl('plugin_manager', 'list_plugins', 
 // 						{'qualifier_id': this.qualifierId, 'function_id': 'edu.middlebury.authorization.view'}, 
+						null,
 						'plugin_manager');
 // 		var newWindow = window.open(url);
 
@@ -196,12 +203,18 @@ function PluginChooser (callingElement, destUrl ) {
 			var def = list.appendChild(document.createElement('dt'));
 			var desc = list.appendChild(document.createElement('dl'));
 			
-			var radio = def.appendChild(document.createElement('input'));
-			radio.type = 'radio';
-			radio.name = Harmoni.fieldName('plugin_type', this.namespace);
-			radio.value = type.getAttribute('typeString');
+			// Stupid IE6 does not support setting of the input type.
+			if (getBrowser()[2] == 'msie') {
+				var radio = def.appendChild(document.createElement('<input type="radio" name="' + Harmoni.fieldName('plugin_type', this.namespace) +'" value="' + type.getAttribute('typeString') +'">'));
+			} else {
+				var radio = def.appendChild(document.createElement('input'));
+				radio.type = 'radio';
+				radio.name = Harmoni.fieldName('plugin_type', this.namespace);
+				radio.value = type.getAttribute('typeString');
+			}
+			
 			if (i == 0) 
-				radio.checked = 'checked';
+				radio.setAttribute('checked', 'checked');
 			
 			def.appendChild(document.createTextNode(
 				type.getElementsByTagName('keyword').item(0).firstChild.nodeValue));
@@ -217,8 +230,14 @@ function PluginChooser (callingElement, destUrl ) {
 		
 		var container = this.pluginContainer.appendChild(document.createElement('div'));
 		container.className = 'submit_buttons';
-		var submit = container.appendChild(document.createElement('input'));
-		submit.type = 'submit';
+		
+		// Stupid IE6 does not support setting of the input type.
+		if (getBrowser()[2] == 'msie') {
+			var submit = container.appendChild(document.createElement('<input type="submit">'));
+		} else {
+			var submit = container.appendChild(document.createElement('input'));
+			submit.type = 'submit';
+		}
 		
 		this.center();
 	}
