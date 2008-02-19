@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.45 2008/01/25 18:47:04 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.46 2008/02/19 17:25:28 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.45 2008/01/25 18:47:04 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.46 2008/02/19 17:25:28 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -474,6 +474,12 @@ class EduMiddleburyTextBlockPlugin
  		$property = $wrapper->addComponent('content', HtmlTextArea::withRowsAndColumns(20, 80));
  		$property->setValue($this->cleanHTML($this->untokenizeLocalUrls($this->getContent())));
  		$property->chooseEditor('fck');
+ 		
+ 		$fckArea = $property->getEditor('fck');
+ 		$fckArea->setOption('ToolbarSet', 'ContentBlock');
+ 		$fckArea->setConfigOption('CustomConfigurationsPath', MYPATH.'/javascript/fck_custom_config.js');
+ 		$fckArea->setConfigOption('ImageBrowserWindowWidth', '700');
+ 		$fckArea->setConfigOption('ImageBrowserWindowHeight', '600');
  		
  		$fckTextArea = $property->getEditor('fck');
  		$harmoni->request->startNamespace('media');

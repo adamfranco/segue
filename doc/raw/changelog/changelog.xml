@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.148 2008/02/19 16:57:34 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.149 2008/02/19 17:25:28 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -33,6 +33,12 @@
 			URLs: POLYPHONY_PATH constant by default is now based on the MYPATH constant
 			rather than the MYURL constant to allow more flexibility in the URL structure.
 		</change>
+		<fix author='adam' date='2008-02-19'>
+			XHTML Output: Fixed a syntax error on the welcome page.
+		</fix>
+		<fix author='adam' date='2008-02-19' ref='1871490' reftype='bug'>
+			UI1: Rich-Text editor (FCKEditor) now is using the custom toolbar config.
+		</fix>
 	</version>
 	<version number="2.0-beta-11" date="2008-02-18">
 		<releaseNotes>

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: welcome.act.php,v 1.6 2007/09/25 15:48:31 adamfranco Exp $
+ * @version $Id: welcome.act.php,v 1.7 2008/02/19 17:25:28 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: welcome.act.php,v 1.6 2007/09/25 15:48:31 adamfranco Exp $
+ * @version $Id: welcome.act.php,v 1.7 2008/02/19 17:25:28 adamfranco Exp $
  */
 class welcomeAction 
 	extends MainWindowAction
@@ -55,9 +55,9 @@ class welcomeAction
 	function buildContent () {
 		$actionRows = $this->getActionRows();
 		ob_start();
-		print "<p>";
+		print "\n<p>";
 		print _("<strong>Segue</strong> is a collaborative learning tool developed at Middlebury College.");
-		print "</p>\n<p>";
+		print "</p>";
 		
 		$actionRows->add(
 			new Block(ob_get_clean(), STANDARD_BLOCK), 
