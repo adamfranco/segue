@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.152 2008/02/19 20:16:09 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.153 2008/02/19 23:25:14 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -47,8 +47,15 @@
 			Logging: Added additional logging of user actions.
 		</change>
 		<new author='adam' date='2008-02-19'>
-			Added a favicon to the images/ directory.
+			Added a favicon.gif to the images/ directory.
 		</new>
+		<fix author='adam' date='2008-02-19'>
+			Installation: Fixed a Harmoni issue that was preventing successful clean
+			installation.
+		</fix>
+		<fix author='adam' date='2008-02-19' ref='1897333' reftype='bug' reporter='sarah_franco'>
+			Comments: IE users can now choose the comment type.
+		</fix>
 	</version>
 	<version number="2.0-beta-11" date="2008-02-18">
 		<releaseNotes>
@@ -785,6 +792,16 @@
 		<name short="alex">Alex Chapin</name>
 		<name short="chris">Christopher Shubert</name>
 	</authors>
+	<reporters>
+		<reporter short="sarah_franco">
+			<name>Sarah Franco</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="gregg_humphrey">
+			<name>Gregg Humphrey</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+	</reporters>
 	<reftypes>
 		<reftype name="segue_bug" group="82171" tracker='565234'/>
 		<reftype name="segue_fr" group="82171" tracker='565237'/>
