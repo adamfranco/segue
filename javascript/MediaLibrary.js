@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.19 2008/02/19 16:41:12 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.19 2008/02/19 16:41:12 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -115,7 +115,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.19 2008/02/19 16:41:12 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -419,7 +419,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.19 2008/02/19 16:41:12 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -518,7 +518,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.19 2008/02/19 16:41:12 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -565,7 +565,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.19 2008/02/19 16:41:12 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -589,8 +589,8 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		this.id = xmlElement.getAttribute('id');
 		this.repositoryId = xmlElement.getAttribute('repositoryId');
 		this.displayName = xmlElement.getElementsByTagName('displayName')[0].firstChild.data;
-		var desElement = xmlElement.getElementsByTagName('description')[0];
-		if (desElement && descElement.firstChild)
+		var descElement = xmlElement.getElementsByTagName('description')[0];
+		if (descElement && descElement.firstChild)
 			this.description = descElement.firstChild.data;
 		else
 			this.description = '';
@@ -1076,7 +1076,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.19 2008/02/19 16:41:12 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
