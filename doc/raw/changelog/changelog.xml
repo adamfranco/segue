@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.155 2008/02/21 18:53:31 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.156 2008/02/21 20:29:13 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -63,6 +63,10 @@
 			Plugins: Now AJAX-updating doesn't return the user to the top of the
 			page.
 		</fix>
+		<new author='adam' date='2008-02-21' ref='1897459' reftype='fr'>
+			Uncaught exceptions now result in HTTP error codes being sent and a 
+			nicer error page being display during production use.
+		</new>
 	</version>
 	<version number="2.0-beta-11" date="2008-02-18">
 		<releaseNotes>

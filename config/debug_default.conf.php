@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: debug_default.conf.php,v 1.3 2007/10/25 17:44:09 adamfranco Exp $
+ * @version $Id: debug_default.conf.php,v 1.4 2008/02/21 20:29:13 adamfranco Exp $
  */
 
 /*********************************************************
@@ -32,6 +32,13 @@ define ("ENABLE_DWARVES", false);
  * (Useful for debugging/testing).
  *********************************************************/
 define ("ENABLE_TIMERS", false);
+
+/*********************************************************
+ * Enable the display of raw Error backtraces to the screen.
+ * If this is false, a pretty error page will be displayed
+ * instead.
+ *********************************************************/
+define("DISPLAY_ERROR_BACKTRACE", false);
  
  
 

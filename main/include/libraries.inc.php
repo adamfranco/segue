@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: libraries.inc.php,v 1.13 2007/11/27 22:06:46 adamfranco Exp $
+ * @version $Id: libraries.inc.php,v 1.14 2008/02/21 20:29:13 adamfranco Exp $
  */
 
 if (file_exists(MYDIR.'/config/libraries.conf.php'))
@@ -40,6 +40,7 @@ require_once (POLYPHONY_DIR."/polyphony.inc.php");
 /******************************************************************************
  * Include our libraries
  ******************************************************************************/
+require_once(MYDIR."/main/library/SegueErrorPrinter.class.php");
 require_once(MYDIR."/main/library/SegueMenuGenerator.class.php");
 require_once(MYDIR."/main/library/Slots/SlotManager.class.php");
 require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");

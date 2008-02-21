@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.11 2008/02/19 16:57:34 adamfranco Exp $
+ * @version $Id: index.php,v 1.12 2008/02/21 20:29:13 adamfranco Exp $
  */
 
 /*********************************************************
@@ -64,7 +64,35 @@ if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
 	ob_start();
 }
 
-$harmoni->execute();
+try {
+	$harmoni->execute();
+
+// Handle certain types of uncaught exceptions specially. In particular,
+// Send back HTTP Headers indicating that an error has ocurred to help prevent
+// crawlers from continuing to pound invalid urls.
+} catch (UnknownActionException $e) {
+	header('HTTP/1.1 400 Bad Request');
+	SegueErrorPrinter::printException($e, 400);
+	HarmoniErrorHandler::logException($e);
+} catch (NullArgumentException $e) {
+	header('HTTP/1.1 400 Bad Request');
+	SegueErrorPrinter::printException($e, 400);
+	HarmoniErrorHandler::logException($e);
+} catch (PermissionDeniedException $e) {
+	header('HTTP/1.1 403 Forbidden');
+	SegueErrorPrinter::printException($e, 403);
+	HarmoniErrorHandler::logException($e);
+} catch (UnknownIdException $e) {
+	header('HTTP/1.1 404 Not Found');
+	SegueErrorPrinter::printException($e, 404);
+	HarmoniErrorHandler::logException($e);
+}
+// Default 
+catch (Exception $e) {
+	header('HTTP/1.1 500 Internal Server Error');
+	SegueErrorPrinter::printException($e, 500);
+	HarmoniErrorHandler::logException($e);
+}
 
 if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
 	$execTimer->end();
