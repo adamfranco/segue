@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -79,6 +79,22 @@ function MediaLibrary ( assetId, callingElement ) {
 	}
 	
 	/**
+	 * Force-reload the whole media library. needed for IE crap.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/20/08
+	 */
+	MediaLibrary.prototype.forceReload = function () {
+		this.mainElement.innerHTML = '';
+		this.mainElement.parentNode.removeChild(this.mainElement);
+		this.mainElement = null;
+		this.screen.innerHTML = '';
+		this.screen.parentNode.removeChild(this.screen);
+		this.init(this.assetId, this.caller);
+	}
+	
+	/**
 	 * Initialize and run the AuthZViewer
 	 * 
 	 * @param string assetId
@@ -115,7 +131,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -143,6 +159,16 @@ function FileLibrary ( owner, assetId, caller, container ) {
 		this.container = container;
 	}
 
+	/**
+	 * Force-reload the whole media library. needed for IE crap.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/20/08
+	 */
+	FileLibrary.prototype.forceReload = function () {
+		this.owner.forceReload();
+	}
 	
 	/**
 	 * Choose a media file and close
@@ -308,9 +334,15 @@ function FileLibrary ( owner, assetId, caller, container ) {
 			heading.appendChild(document.createTextNode(': '));
 		}
 		var datum = row.appendChild(document.createElement('td'));
-		var input = document.createElement('input');
+		
+		// IE does not allow setting of the input name after creation
+		if (getBrowser()[2] == 'msie') {
+			var input = document.createElement('<input name="'+name+'">');
+		} else {
+			var input = document.createElement('input');
+			input.name = name;
+		}
 		input.type = type;
-		input.name = name;
 		input.value = defaultValue;
 		
 		this.uploadFormDefaults[name] = defaultValue;
@@ -336,6 +368,12 @@ function FileLibrary ( owner, assetId, caller, container ) {
 	 * @since 1/26/07
 	 */
 	FileLibrary.prototype.startUploadCallback = function () {
+		// IE 6 will not load properly, so set a timeout and reload soon after.
+		if (getBrowser()[2] == 'msie' && getMajorVersion(getBrowser()[3]) < 7) {
+			var currentObj = this;
+			window.setTimeout(function() {currentObj.forceReload();}, 15000);
+			alert("IE6 does not refresh properly. \nMediaLibrary will reload in 15 seconds. \nIf you file does not appear after the media library reloads, refresh the page and open the media library again.");
+		}
 		return true;
 	}
 	
@@ -348,6 +386,10 @@ function FileLibrary ( owner, assetId, caller, container ) {
 	 * @since 1/26/07
 	 */
 	FileLibrary.prototype.completeUploadCallback = function (xmldoc) {
+// 		alert('xmldoc = ' + xmldoc);
+// 		alert('xmldoc.firstChild = ' + xmldoc.firstChild);
+// 		alert('xmldoc.documentElement = ' + xmldoc.documentElement);
+// 		alert('xmldoc.documentElement.firstChild = ' + xmldoc.documentElement.firstChild);
 		try {
 			var responseElement = xmldoc.firstChild;
 			
@@ -378,7 +420,7 @@ function FileLibrary ( owner, assetId, caller, container ) {
 			
 			return false;
 		}
-		
+				
 // 		var xmlSerializer = new XMLSerializer();
 // 		alert(xmlSerializer.serializeToString(responseElement));
 			
@@ -387,6 +429,11 @@ function FileLibrary ( owner, assetId, caller, container ) {
 			for (var i = 0; i < fileAssets.length; i++) {
 				this.addMediaAsset(new MediaAsset(this.assetId, fileAssets[i], this));
 			}
+		} else if (getBrowser()[2] == 'msie') {
+			// IE Renders the iframe document and barfs up the xml. Just reinitialize
+			// the entire media library as that is easier
+			this.forceReload();
+// 			alert('Error in file upload response: no files listed. ');
 		}
 		
 		for (var i = 0; i < this.uploadForm.elements.length; i++) {
@@ -419,7 +466,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -467,11 +514,24 @@ function AssetLibrary ( owner, assetId, caller, container ) {
 	 * @since 1/26/07
 	 */
 	AssetLibrary.prototype.createForm = function (container) {
+		
 		this.uploadForm = document.createElement('form');
 		this.uploadForm.action = Harmoni.quickUrl('media', 'upload', {'assetId': this.assetId});
 		this.uploadForm.method = 'post';
 		this.uploadForm.enctype = 'multipart/form-data';
-		mediaLibrary = this;
+		
+		// IE doesn't like the form as-is. It seems to need to have it written to
+		// a string and then re-loaded in order for everything to be submitted properly.
+		if (getBrowser()[2] == 'msie') {
+			var tempParent = document.createElement('div');
+			tempParent.appendChild(this.uploadForm);
+			var temp = tempParent.innerHTML;
+			tempParent.innerHTML = temp;
+			this.uploadForm = tempParent.getElementsByTagName('form')[0];
+		}
+		
+		// Set the submit actions
+		var mediaLibrary = this;
 		this.uploadForm.onsubmit = function () {
 			return AIM.submit(this, 
 				{'onStart' : function() {mediaLibrary.startUploadCallback()}, 
@@ -501,6 +561,7 @@ function AssetLibrary ( owner, assetId, caller, container ) {
 // 		submit.type = 'submit';
 		
 		container.appendChild(this.uploadForm);
+		
 		this.uploadForm.elements[0].focus();
 	}
 
@@ -518,7 +579,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -565,7 +626,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -630,6 +691,17 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		}
 		
 		this.uploadFormDefaults = new Array();
+	}
+	
+	/**
+	 * Force-reload the whole media library. needed for IE crap.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/20/08
+	 */
+	MediaAsset.prototype.forceReload = function () {
+		this.library.forceReload();
 	}
 	
 	/**
@@ -894,6 +966,17 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		this.uploadForm.action = Harmoni.quickUrl('media', 'update', {'assetId': this.assetId, 'mediaAssetId': this.id});
 		this.uploadForm.method = 'post';
 		this.uploadForm.enctype = 'multipart/form-data';
+		
+		// IE doesn't like the form as-is. It seems to need to have it written to
+		// a string and then re-loaded in order for everything to be submitted properly.
+		if (getBrowser()[2] == 'msie') {
+			var tempParent = document.createElement('div');
+			tempParent.appendChild(this.uploadForm);
+			var temp = tempParent.innerHTML;
+			tempParent.innerHTML = temp;
+			this.uploadForm = tempParent.getElementsByTagName('form')[0];
+		}
+		
 		mediaAsset = this;
 		this.uploadForm.onsubmit = function () {
 			return AIM.submit(this, 
@@ -911,9 +994,14 @@ function MediaAsset ( assetId, xmlElement, library ) {
 				heading.innerHTML = 'File: ';
 				
 				var datum = row.appendChild(document.createElement('td'));
-				var dummyField = datum.appendChild(document.createElement('input'));
+				// IE doesn't support setting of the name after create
+				if (getBrowser()[2] == 'msie') {
+					var dummyField = document.createElement('<input name="dummy">');
+				} else {
+					var dummyField = document.createElement('input');
+					dummyField.name = 'dummy';
+				}
 				dummyField.type = 'text';
-				dummyField.name = 'dummy';
 				dummyField.value = this.files[i].name;
 				dummyField.readonly = 'readonly';
 				dummyField.title = 'Click to Replace';
@@ -921,11 +1009,16 @@ function MediaAsset ( assetId, xmlElement, library ) {
 				dummyField.mediaAsset = this;
 				dummyField.fileId = this.files[i].recordId;
 				dummyField.onclick = function () {
-					var uploadField = document.createElement('input');
+					// IE doesn't support setting of the name after create
+					if (getBrowser()[2] == 'msie') {
+						var uploadField = document.createElement('<input name="file___' + this.fileId+'">');
+					} else {
+						var uploadField = document.createElement('input');
+						uploadField.name = 'file___' + this.fileId;
+					}
 					uploadField.dummyField = this;
 					uploadField.type = 'file';
 					uploadField.size = '10';
-					uploadField.name = 'file___' + this.fileId;
 					this.parentNode.insertBefore(uploadField, this);
 					
 					var uploadCancel = document.createElement('input');
@@ -938,12 +1031,19 @@ function MediaAsset ( assetId, xmlElement, library ) {
 						this.dummyField.style.display = 'inline';
 						this.parentNode.removeChild(this);
 						delete this.uploadField;
-						delete this;
+						try {
+							delete this;
+						} catch (error) {
+						}
 					}
 					this.parentNode.insertBefore(uploadCancel, this);
 					
 					this.style.display = 'none';
+					
+// 					alert(this.form.innerHTML);
 				}
+				
+				datum.appendChild(dummyField);
 			}
 		}
 		// Allow the user to add a file
@@ -975,6 +1075,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		
 		this.infoElement.innerHTML = '';
 		this.infoElement.appendChild(this.uploadForm);
+		
 		this.uploadForm.elements[1].focus();
 	}
 	
@@ -996,6 +1097,12 @@ function MediaAsset ( assetId, xmlElement, library ) {
 	 * @since 1/26/07
 	 */
 	MediaAsset.prototype.startUploadCallback = function () {
+		// IE 6 will not load properly, so set a timeout and reload soon after.
+		if (getBrowser()[2] == 'msie' && getMajorVersion(getBrowser()[3]) < 7) {
+			var currentObj = this;
+			window.setTimeout(function() {currentObj.forceReload();}, 15000);
+			alert("IE6 does not refresh properly. \nMediaLibrary will reload in 15 seconds. \nIf you file does not appear after the media library reloads, refresh the page and open the media library again.");
+		}
 		return true;
 	}
 	
@@ -1041,11 +1148,11 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		
 // 		var xmlSerializer = new XMLSerializer();
 // 		alert(xmlSerializer.serializeToString(responseElement));
-		
-		for (var i = 0; i < responseElement.childNodes.length; i++) {
-			if (responseElement.childNodes[i].nodeName == 'asset') {
-				this.init(this.assetId, responseElement.childNodes[i], this.library);
-				
+		var fileAssets = responseElement.getElementsByTagName('asset');
+		if (fileAssets.length) {
+			for (var i = 0; i < fileAssets.length; i++) {
+				this.init(this.assetId, fileAssets.item(i), this.library);
+			
 				// refresh our row.
 				if (this.entryElement) {
 					var nextSibling = this.entryElement.nextSibling;
@@ -1061,6 +1168,11 @@ function MediaAsset ( assetId, xmlElement, library ) {
 				
 				break;
 			}
+		} else if (getBrowser()[2] == 'msie') {
+			// IE Renders the iframe document and barfs up the xml. Just reinitialize
+			// the entire media library as that is easier
+			this.forceReload();
+// 			alert('Error in file upload response: no files listed. ');
 		}
 		this.closeForm();
 		
@@ -1076,7 +1188,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.20 2008/02/20 18:00:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
@@ -1427,7 +1539,7 @@ AIM = {
         if (c && typeof(c.onComplete) == 'function') {
             i.onComplete = c.onComplete;
         }
-
+		
         return n;
     },
 
@@ -1446,6 +1558,7 @@ AIM = {
 
     loaded : function(id) {
         var i = document.getElementById(id);
+        
         if (i.contentDocument) {
             var d = i.contentDocument;
         } else if (i.contentWindow) {

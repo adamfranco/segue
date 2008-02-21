@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: filebrowser.act.php,v 1.1 2008/01/24 14:43:47 adamfranco Exp $
+ * @version $Id: filebrowser.act.php,v 1.2 2008/02/21 18:53:31 adamfranco Exp $
  */ 
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: filebrowser.act.php,v 1.1 2008/01/24 14:43:47 adamfranco Exp $
+ * @version $Id: filebrowser.act.php,v 1.2 2008/02/21 18:53:31 adamfranco Exp $
  * @since 4/28/05
  */
 class filebrowserAction
@@ -76,6 +76,7 @@ END;
 	<script type='text/javascript' src='$POLYPHONY_PATH/javascript/TabbedContent.js'></script>
 	<script type='text/javascript' src='$POLYPHONY_PATH/javascript/prototype.js'></script>
 	<script type='text/javascript' src='$POLYPHONY_PATH/javascript/js_quicktags.js'></script>
+	<script type='text/javascript' src='$POLYPHONY_PATH/javascript/brwsniff.js'></script>
 	<script type='text/javascript' src='$MYPATH/javascript/MediaLibrary.js'></script>
 	<link rel='stylesheet' type='text/css' href='$MYPATH/javascript/MediaLibrary.css'/>
 	

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.154 2008/02/19 23:27:47 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.155 2008/02/21 18:53:31 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -26,6 +26,9 @@
 		<fix author='adam' date='2008-02-19' ref='1896348' reftype='bug'>
 			MediaLibrary: Fixed a NULL_VALUE notice in the MediaLibrary that was
 			appearing in Safari.
+		</fix>
+		<fix author='adam' date='2008-02-20' ref='1897396' reftype='bug'>
+			MediaLibrary: Now works in InternetExplorer browsers.
 		</fix>
 		<change author='adam' date='2008-02-19'>
 			URLs: MYURL constant is now configurable via a config file.
@@ -55,6 +58,10 @@
 		</fix>
 		<fix author='adam' date='2008-02-19' ref='1897333' reftype='bug' reporter='sarah_franco'>
 			Comments: IE users can now choose the comment type.
+		</fix>
+		<fix author='adam' date='2008-02-21'>
+			Plugins: Now AJAX-updating doesn't return the user to the top of the
+			page.
 		</fix>
 	</version>
 	<version number="2.0-beta-11" date="2008-02-18">

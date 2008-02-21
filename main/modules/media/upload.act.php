@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.14 2008/02/15 16:46:19 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.15 2008/02/21 18:53:31 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.14 2008/02/15 16:46:19 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.15 2008/02/21 18:53:31 adamfranco Exp $
  */
 class uploadAction
 	extends MediaAction
@@ -57,10 +57,10 @@ class uploadAction
 	 */
 	function buildContent () {		
 		if (!isset($_FILES['media_file']))
-			$this->error('No Form Submitted');
+			$this->error('No file uploaded');
 		
 		if ($_FILES['media_file']['error'])
-			$this->error('No file uploaded.');
+			$this->error('An error occurred with the file uploaded.');
 			
 		if (!$_FILES['media_file']['size'])
 			$this->error('Uploaded file is empty');
