@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAjaxPlugin.abstract.php,v 1.6 2008/02/18 16:17:43 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.7 2008/02/21 18:53:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAjaxPlugin.abstract.php,v 1.6 2008/02/18 16:17:43 adamfranco Exp $
+ * @version $Id: SegueAjaxPlugin.abstract.php,v 1.7 2008/02/21 18:53:02 adamfranco Exp $
  */
 abstract class SegueAjaxPlugin 
 	extends SeguePluginsTemplate
@@ -48,7 +48,7 @@ abstract class SegueAjaxPlugin
 	 * @since 1/13/06
 	 */
 	final public function href ( $parameters = array() ) {		
-		return "href='#' onclick='".$this->locationSend($parameters)."'";
+		return "href='#' onclick='".$this->locationSend($parameters)." return false;'";
 	}
 	
 	/**
