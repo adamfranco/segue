@@ -23,7 +23,54 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-11</h2>
+<h2>Version 2.0-beta-12</h2>
+<h3>2008-02-21</h3>
+<p>This Segue beta release fixes a number of issues discovered in testing the previous beta release.
+<br>
+<br>Notable Improvements: Clean installs now work. Comments and MediaLibrary now work in InternetExplorer. Rich-Text Editor now uses the custom configuration properly. Invalid requests now generate HTTP error codes to indicate to web-crawlers that their request is invalid. Error pages are now friendlier. Cookie values are no longer added to URLs.
+<br>
+<br>Segue 2.0 beta 12 uses Harmoni 1.0.1 and Polyphony 1.0.1.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> DataPort: Added 'Author' role to the site schema. (<em>2008-02-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871478&amp;group_id=&amp;atid=">
+        			#1871478</a> UI2: Removed the ability to manually create a submenus from the arrange-mode UI. Submenus can now only be created as multi-component collections, the same as in edit-mode and classic-mode. (<em>2008-02-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1896348&amp;group_id=&amp;atid=">
+        			#1896348</a> MediaLibrary: Fixed a NULL_VALUE notice in the MediaLibrary that was appearing in Safari. (<em>2008-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897396&amp;group_id=&amp;atid=">
+        			#1897396</a> MediaLibrary: Now works in InternetExplorer browsers. (<em>2008-02-20 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> URLs: MYURL constant is now configurable via a config file. (<em>2008-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> URLs: POLYPHONY_PATH constant by default is now based on the MYPATH constant rather than the MYURL constant to allow more flexibility in the URL structure. (<em>2008-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> XHTML Output: Fixed a syntax error on the welcome page. (<em>2008-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871490&amp;group_id=&amp;atid=">
+        			#1871490</a> UI1: Rich-Text editor (FCKEditor) now is using the custom toolbar config. (<em>2008-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854972&amp;group_id=&amp;atid=">
+        			#1854972</a> UI1: Create Item links now include the option name to differentiate them. (<em>2008-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Logging: Added additional logging of user actions. (<em>2008-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Added a favicon.gif to the images/ directory. (<em>2008-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Installation: Fixed a Harmoni issue that was preventing successful clean installation. (<em>2008-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897333&amp;group_id=&amp;atid=">
+        			#1897333</a> Comments: IE users can now choose the comment type. (<em>2008-02-19 - Adam Franco</em>)<br> (<em>reported by Sarah Franco of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> Plugins: Now AJAX-updating doesn't return the user to the top of the page. (<em>2008-02-21 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897459&amp;group_id=&amp;atid=">
+        			#1897459</a> Uncaught exceptions now result in HTTP error codes being sent and a nicer error page being display during production use. (<em>2008-02-21 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-11</h2>
 <h3>2008-02-18</h3>
 <p>This release fixes a few bugs that were noticed in testing beta 10.</p>
 <ul>

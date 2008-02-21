@@ -4,6 +4,88 @@ Name: Segue Change Log
 
 
 
+v. 2.0-beta-12 (2008-02-21)
+----------------------------------------------------
+This Segue beta release fixes a number of issues discovered in testing the previous
+beta release.
+
+Notable Improvements: Clean installs now work. Comments and MediaLibrary now work
+in InternetExplorer. Rich-Text Editor now uses the custom configuration properly.
+Invalid requests now generate HTTP error codes to indicate to web-crawlers that
+their request is invalid. Error pages are now friendlier. Cookie values are no
+longer added to URLs.
+
+Segue 2.0 beta 12 uses Harmoni 1.0.1 and Polyphony 1.0.1.
+		
+		
+	* Bug Fix: 
+		DataPort: Added 'Author' role to the site schema.
+		(2008-02-18 - Adam Franco)
+		
+	* Bug Fix: #1871478 
+		UI2: Removed the ability to manually create a submenus from the arrange-mode
+		UI. Submenus can now only be created as multi-component collections, the
+		same as in edit-mode and classic-mode.
+		(2008-02-18 - Adam Franco)
+		
+	* Bug Fix: #1896348 
+		MediaLibrary: Fixed a NULL_VALUE notice in the MediaLibrary that was
+		appearing in Safari.
+		(2008-02-19 - Adam Franco)
+		
+	* Bug Fix: #1897396 
+		MediaLibrary: Now works in InternetExplorer browsers.
+		(2008-02-20 - Adam Franco)
+		
+	* Change: 
+		URLs: MYURL constant is now configurable via a config file.
+		(2008-02-19 - Adam Franco)
+		
+	* Change: 
+		URLs: POLYPHONY_PATH constant by default is now based on the MYPATH constant
+		rather than the MYURL constant to allow more flexibility in the URL
+		structure. 
+		(2008-02-19 - Adam Franco)
+		
+	* Bug Fix: 
+		XHTML Output: Fixed a syntax error on the welcome page.
+		(2008-02-19 - Adam Franco)
+		
+	* Bug Fix: #1871490 
+		UI1: Rich-Text editor (FCKEditor) now is using the custom toolbar config.
+		(2008-02-19 - Adam Franco)
+		
+	* Change: #1854972 
+		UI1: Create Item links now include the option name to differentiate them.
+		(2008-02-19 - Adam Franco)
+		
+	* Change: 
+		Logging: Added additional logging of user actions.
+		(2008-02-19 - Adam Franco)
+		
+	* New feature: 
+		Added a favicon.gif to the images/ directory.
+		(2008-02-19 - Adam Franco)
+		
+	* Bug Fix: 
+		Installation: Fixed a Harmoni issue that was preventing successful clean
+		installation. 
+		(2008-02-19 - Adam Franco)
+		
+	* Bug Fix: #1897333 
+		Comments: IE users can now choose the comment type.
+		(2008-02-19 - Adam Franco)
+		(reported by Sarah Franco of Middlebury College)
+		
+	* Bug Fix: 
+		Plugins: Now AJAX-updating doesn't return the user to the top of the page.
+		(2008-02-21 - Adam Franco)
+		
+	* New feature: #1897459 
+		Uncaught exceptions now result in HTTP error codes being sent and a nicer
+		error page being display during production use.
+		(2008-02-21 - Adam Franco)
+	
 v. 2.0-beta-11 (2008-02-18)
 ----------------------------------------------------
 This release fixes a few bugs that were noticed in testing beta 10.

@@ -3,6 +3,20 @@ Name: Segue Release Notes
 (See the Segue change log for more details)
 
 
+v. 2.0-beta-12 (2008-02-21)
+----------------------------------------------------
+This Segue beta release fixes a number of issues discovered in testing the previous
+beta release.
+
+Notable Improvements: Clean installs now work. Comments and MediaLibrary now work
+in InternetExplorer. Rich-Text Editor now uses the custom configuration properly.
+Invalid requests now generate HTTP error codes to indicate to web-crawlers that
+their request is invalid. Error pages are now friendlier. Cookie values are no
+longer added to URLs.
+
+Segue 2.0 beta 12 uses Harmoni 1.0.1 and Polyphony 1.0.1.
+
+
 v. 2.0-beta-11 (2008-02-18)
 ----------------------------------------------------
 This release fixes a few bugs that were noticed in testing beta 10.

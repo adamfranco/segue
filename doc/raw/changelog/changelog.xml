@@ -5,13 +5,24 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.156 2008/02/21 20:29:13 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.157 2008/02/21 20:40:37 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-12" date="The Future">
+	<version number="2.0-beta-12" date="2008-02-21">
 		<releaseNotes>
+			This Segue beta release fixes a number of issues discovered in testing
+			the previous beta release.
+			
+			Notable Improvements: 
+				Clean installs now work. 
+				Comments and MediaLibrary now work in InternetExplorer. 
+				Rich-Text Editor now uses the custom configuration properly. 
+				Invalid requests now generate HTTP error codes to indicate to web-crawlers
+				that their request is invalid.
+				Error pages are now friendlier.
+				Cookie values are no longer added to URLs.
 			
 			Segue 2.0 beta 12 uses Harmoni 1.0.1 and Polyphony 1.0.1.
 		</releaseNotes>
