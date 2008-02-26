@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.12 2008/02/21 20:29:13 adamfranco Exp $
+ * @version $Id: index.php,v 1.13 2008/02/26 14:08:10 adamfranco Exp $
  */
 
 /*********************************************************
@@ -71,27 +71,17 @@ try {
 // Send back HTTP Headers indicating that an error has ocurred to help prevent
 // crawlers from continuing to pound invalid urls.
 } catch (UnknownActionException $e) {
-	header('HTTP/1.1 400 Bad Request');
-	SegueErrorPrinter::printException($e, 400);
-	HarmoniErrorHandler::logException($e);
+	SegueErrorPrinter::handleException($e, 400);
 } catch (NullArgumentException $e) {
-	header('HTTP/1.1 400 Bad Request');
-	SegueErrorPrinter::printException($e, 400);
-	HarmoniErrorHandler::logException($e);
+	SegueErrorPrinter::handleException($e, 400);
 } catch (PermissionDeniedException $e) {
-	header('HTTP/1.1 403 Forbidden');
-	SegueErrorPrinter::printException($e, 403);
-	HarmoniErrorHandler::logException($e);
+	SegueErrorPrinter::handleException($e, 403);
 } catch (UnknownIdException $e) {
-	header('HTTP/1.1 404 Not Found');
-	SegueErrorPrinter::printException($e, 404);
-	HarmoniErrorHandler::logException($e);
+	SegueErrorPrinter::handleException($e, 404);
 }
 // Default 
 catch (Exception $e) {
-	header('HTTP/1.1 500 Internal Server Error');
-	SegueErrorPrinter::printException($e, 500);
-	HarmoniErrorHandler::logException($e);
+	SegueErrorPrinter::handleException($e, 500);
 }
 
 if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {

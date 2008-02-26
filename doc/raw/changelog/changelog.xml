@@ -5,11 +5,20 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.157 2008/02/21 20:40:37 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.158 2008/02/26 14:08:11 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-13" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2008-02-26'>
+			Logging: Can now filter certain UserAgent/Exception combinations to
+			prevent web-crawlers from filling up logs with repeated invalid requests.
+		</new>
+	</version>
 	<version number="2.0-beta-12" date="2008-02-21">
 		<releaseNotes>
 			This Segue beta release fixes a number of issues discovered in testing

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueErrorPrinter.class.php,v 1.1 2008/02/21 20:29:48 adamfranco Exp $
+ * @version $Id: SegueErrorPrinter.class.php,v 1.2 2008/02/26 14:08:11 adamfranco Exp $
  */ 
 
 /**
@@ -18,10 +18,132 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueErrorPrinter.class.php,v 1.1 2008/02/21 20:29:48 adamfranco Exp $
+ * @version $Id: SegueErrorPrinter.class.php,v 1.2 2008/02/26 14:08:11 adamfranco Exp $
  */
 class SegueErrorPrinter {
+	
+	/**
+ 	 * @var object  $instance;  
+ 	 * @access private
+ 	 * @since 10/10/07
+ 	 * @static
+ 	 */
+ 	private static $instance;
+
+	/**
+	 * This class implements the Singleton pattern. There is only ever
+	 * one instance of the this class and it is accessed only via the 
+	 * ClassName::instance() method.
+	 * 
+	 * @return object 
+	 * @access public
+	 * @since 5/26/05
+	 * @static
+	 */
+	public static function instance () {
+		if (!isset(self::$instance))
+			self::$instance = new SegueErrorPrinter;
 		
+		return self::$instance;
+	}
+	
+	/**
+	 * @var array $userAgentFilters;  
+	 * @access private
+	 * @since 2/26/08
+	 */
+	private $userAgentFilters;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @return void
+	 * @access private
+	 * @since 2/26/08
+	 */
+	private function __construct () {
+		$this->userAgentFilters = array();
+	}
+	
+	/**
+	 * Add a user agent string and an array of matching codes. If the user agent
+	 * matches the string and the code or exception class is in the list, the exception
+	 * will not be logged. This can be used to prevent misbehaving bots and web 
+	 * crawlers from filling the logs with repeated invalid requests.
+	 * 
+	 * @param string $userAgent
+	 * @param optional array $codesOrExceptionClasses If empty, no matches to the user agent will be logged.
+	 * @return void
+	 * @access public
+	 * @since 2/26/08
+	 */
+	public function addUserAgentFilter ($userAgent, $codesOrExceptionClasses = array()) {
+		$userAgent = trim($userAgent);
+		ArgumentValidator::validate($userAgent, NonzeroLengthStringValidatorRule::getRule());
+		ArgumentValidator::validate($codesOrExceptionClasses, 	
+			ArrayValidatorRuleWithRule::getRule(OrValidatorRule::getRule(
+				NonzeroLengthStringValidatorRule::getRule(),
+				IntegerValidatorRule::getRule())));
+		
+		$this->userAgentFilters[$userAgent] = $codesOrExceptionClasses;
+	}
+	
+	/**
+	 * Answer true if the Exception should be logged
+	 * 
+	 * @param object Exception $e
+	 * @param int $code
+	 * @return boolean
+	 * @access private
+	 * @since 2/26/08
+	 */
+	private function shouldLogException (Exception $e, $code) {
+		$userAgent = trim($_SERVER['HTTP_USER_AGENT']);
+		if (array_key_exists($userAgent, $this->userAgentFilters)) {
+			if (!count($this->userAgentFilters[$userAgent]))
+				return false;
+			if (in_array($code, $this->userAgentFilters[$userAgent]))
+				return false;
+			if (in_array(get_class($e), $this->userAgentFilters[$userAgent]))
+				return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Handle an Exception
+	 * 
+	 * @param object Exception $e
+	 * @parma int $code The HTTP status code to use.
+	 * @return void
+	 * @access public
+	 * @since 2/26/08
+	 * @static
+	 */
+	public static function handleException (Exception $e, $code) {
+		$printer = self::instance();
+		$printer->handleAnException($e, $code);
+	}
+	
+	/**
+	 * Handle an Exception
+	 * 
+	 * @param object Exception $e
+	 * @parma int $code The HTTP status code to use.
+	 * @return void
+	 * @access public
+	 * @since 2/26/08
+	 */
+	public function handleAnException (Exception $e, $code) {
+		ArgumentValidator::validate($code, IntegerValidatorRule::getRule());
+		header('HTTP/1.1 '.$code.' '.self::getCodeString($code));
+		$this->printException($e, $code);
+		if ($this->shouldLogException($e, $code))
+			HarmoniErrorHandler::logException($e);
+	}
+	
+	
 	/**
 	 * Print out a custom error page for an exception with the HTTP status code
 	 * specified
@@ -29,11 +151,10 @@ class SegueErrorPrinter {
 	 * @param object Exception $e
 	 * @param int $code
 	 * @return void
-	 * @access public
-	 * @static
+	 * @access private
 	 * @since 2/21/08
 	 */
-	public static function printException (Exception $e, $code) {
+	private function printException (Exception $e, $code) {
 		// Debugging mode for development, rethrow the exception
 		if (defined('DISPLAY_ERROR_BACKTRACE') && DISPLAY_ERROR_BACKTRACE) {
 			throw $e;
@@ -44,7 +165,10 @@ class SegueErrorPrinter {
 			$message = $e->getMessage();
 			$codeString = self::getCodeString($code);
 			$errorString = _('Error');
-			$logMessage = _('This error has been logged.');
+			if ($this->shouldLogException($e, $code))
+				$logMessage = _('This error has been logged.');
+			else
+				$logMessage = '';
 			print <<< END
 <html>	
 	<head>
