@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.158 2008/02/26 14:08:11 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.159 2008/02/27 21:51:10 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,11 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-02-27' ref='1899753' reftype='bug'>
+			SiteDisplay: If users only have access to later menu items, then the 
+			first of those will now be shown by default instead of no menu items
+			selected at all.
+		</fix>
 		<new author='adam' date='2008-02-26'>
 			Logging: Can now filter certain UserAgent/Exception combinations to
 			prevent web-crawlers from filling up logs with repeated invalid requests.

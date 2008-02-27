@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.22 2008/02/18 15:37:34 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.23 2008/02/27 21:51:10 adamfranco Exp $
  */
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -35,7 +35,7 @@ require_once(dirname(__FILE__)."/../../Rendering/VisibilitySiteVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.22 2008/02/18 15:37:34 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.23 2008/02/27 21:51:10 adamfranco Exp $
  */
 class AssetSiteDirector
 	implements SiteDirector 
@@ -185,6 +185,16 @@ class AssetSiteDirector
 	 * @since 4/4/06
 	 */
 	function activateDefaultsDownAsset ( $currentAsset ) {
+		// Escape on lack of view authorization anywhere below this node
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");	
+		if (!$authZ->isUserAuthorizedBelow(
+			$idManager->getId("edu.middlebury.authorization.view"), 
+			$currentAsset->getId()))
+		{
+			return false;
+		}
+		
 		// If this element is a NavBlock, record its Id as active and traverse
 		// its children
 		if ($this->NavBlockType->isEqual($currentAsset->getAssetType())
@@ -575,7 +585,7 @@ class AssetSiteDirector
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteDirector.class.php,v 1.22 2008/02/18 15:37:34 adamfranco Exp $
+ * @version $Id: AssetSiteDirector.class.php,v 1.23 2008/02/27 21:51:10 adamfranco Exp $
  */
 class NonNavException
 	extends Exception
