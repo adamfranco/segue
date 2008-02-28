@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.23 2008/02/19 19:42:58 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.24 2008/02/28 20:09:15 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.23 2008/02/19 19:42:58 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.24 2008/02/28 20:09:15 adamfranco Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -427,8 +427,8 @@ function printSiteShort($asset, $action, $num) {
 		$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
 	
 	if ($action->getUiModule() == 'ui2' 
-			&& $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
-		|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId))
+			&& ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
+		|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId)))
 	{
 		$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
 	}
