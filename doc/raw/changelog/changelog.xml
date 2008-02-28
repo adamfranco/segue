@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.163 2008/02/28 20:09:02 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.164 2008/02/28 20:57:55 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2008-02-28'>
+			Added more documentation about the license and included libraries.
+		</change>
 		<fix author='adam' date='2008-02-28' ref='1899707' reftype='bug'>
 			Portal: Now doesn't show 'arrange' option in classic mode.
 		</fix>
