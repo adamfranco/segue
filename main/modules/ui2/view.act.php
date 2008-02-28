@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.18 2008/02/19 23:25:15 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.19 2008/02/28 15:39:14 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,11 +27,45 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.18 2008/02/19 23:25:15 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.19 2008/02/28 15:39:14 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
+	
+	/**
+	 * AuthZ
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 10/24/07
+	 */
+	public function isAuthorizedToExecute () {
+		$idMgr = Services::getService('Id');
+		$azMgr = Services::getService('AuthZ');
+		return $azMgr->isUserAuthorizedBelow(
+			$idMgr->getId('edu.middlebury.authorization.view'),
+			$idMgr->getId($this->getNodeId()));
+	}
+	
+	/**
+	 * Answer a message in the case of no authorization
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/28/08
+	 */
+	public function getUnauthorizedMessage () {
+		$message = _("You are not authorized to view the requested node.");
+		$message .= "\n<br/>";
+		$authNMgr = Services::getService("AuthN");
+		if (!$authNMgr->isUserAuthenticatedWithAnyType())
+			$message .= _("Please log in or use your browser's 'Back' Button.");
+		else
+			$message .= _("Please use your browser's 'Back' Button.");
 		
+		return $message;
+	}
+	
 	/**
 	 * Execute the Action
 	 * 
@@ -131,8 +165,10 @@ class viewAction
 				null, null, RIGHT, TOP);
 		
 				
-		$rightHeadColumn->add($this->getCommandsComponent(), 
+		if ($this->isAuthorizedToExecute()) {
+			$rightHeadColumn->add($this->getCommandsComponent(), 
 				null, null, RIGHT, TOP);
+		}
 		
 		
 		$mainScreen = new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
@@ -152,23 +188,33 @@ class viewAction
 // 			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"),
 // 			null, null, LEFT, TOP);
 
-		// :: Breadcrumb row ::
-		$this->breadcrumb = $mainScreen->add(
-			new Container($xLayout, HEADER, 2), 
-			"100%", null, CENTER, TOP);
+		if ($this->isAuthorizedToExecute()) {
+			// :: Breadcrumb row ::
+			$this->breadcrumb = $mainScreen->add(
+				new Container($xLayout, HEADER, 2), 
+				"100%", null, CENTER, TOP);
+				
+			$this->breadcrumb->add(
+				new UnstyledBlock("<div class='breadcrumbs'>".$this->getBreadCrumbs()."</div>"), 
+				null, null, LEFT, TOP);
+	
+							
+			// :: Site ::
+			$mainScreen->add($this->siteGuiComponent);
+			// $mainScreen->add($this->siteGuiComponent,
+	// 			$rootSiteComponent->getWidth(), null, CENTER, TOP);
 			
-		$this->breadcrumb->add(
-			new UnstyledBlock("<div class='breadcrumbs'>".$this->getBreadCrumbs()."</div>"), 
-			null, null, LEFT, TOP);
-
-						
-		// :: Site ::
-		$mainScreen->add($this->siteGuiComponent);
-		// $mainScreen->add($this->siteGuiComponent,
-// 			$rootSiteComponent->getWidth(), null, CENTER, TOP);
+	// 		printpre("width:".$rootSiteComponent->getWidth());
+	// 		exit;
+		} else {
+			// Replace the title
+			$title = "\n\t\t<title>"._("Unauthorized")."</title>";
+			$outputHandler->setHead(
+				preg_replace("/<title>[^<]*<\/title>/", $title, $outputHandler->getHead()));			
 		
-// 		printpre("width:".$rootSiteComponent->getWidth());
-// 		exit;
+			$mainScreen->add(new Block($this->getUnauthorizedMessage(), EMPHASIZED_BLOCK),
+				"100%", null, CENTER, TOP);
+		}
 		
 		
 		// :: Footer ::
