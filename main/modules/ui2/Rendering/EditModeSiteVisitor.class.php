@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.29 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.30 2008/02/28 16:41:00 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.29 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.30 2008/02/28 16:41:00 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -306,14 +306,17 @@ END;
 			$childGuiComponents[] = $this->addFlowChildWrapper($organizer, $i, 
 				new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins())));
 		}
-		
-		$resultPrinter = new ArrayResultPrinter($childGuiComponents,
-									$organizer->getNumColumns(), $cellsPerPage);
-		$resultPrinter->setRenderDirection($organizer->getDirection());
-		$resultPrinter->setNamespace('pages_'.$organizer->getId());
-		$resultPrinter->addLinksStyleProperty(new MarginTopSP("10px"));
-		
-		$guiContainer = $resultPrinter->getLayout();
+		if (count($childGuiComponents)) {
+			$resultPrinter = new ArrayResultPrinter($childGuiComponents,
+										$organizer->getNumColumns(), $cellsPerPage);
+			$resultPrinter->setRenderDirection($organizer->getDirection());
+			$resultPrinter->setNamespace('pages_'.$organizer->getId());
+			$resultPrinter->addLinksStyleProperty(new MarginTopSP("10px"));
+			
+			$guiContainer = $resultPrinter->getLayout();
+		} else {
+			return null;
+		}
 		
 		// Add controls bar and border
 		$authZ = Services::getService("AuthZ");
@@ -405,8 +408,18 @@ END;
 	protected function getMenuTargetPlaceholder (MenuOrganizerSiteComponent $organizer) {
 		// Add a placeholder to our target if we don't have any children
 		ob_start();
-		print "<div style='height: 50px; border: 1px solid #F00; margin: 0px 5px 5px 5px; padding: 5px;'>";
-		print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idMgr->getId("edu.middlebury.authorization.add_children"),
+			$organizer->getQualifierId()))
+		{
+			print "<div style='height: 50px; border: 1px solid #F00; margin: 0px 5px 5px 5px; padding: 5px;'>";
+			print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+		} else {
+			print "<div style='height: 50px; margin: 0px 5px 5px 5px; padding: 5px;'>";
+			print " ";
+		}
 		print "\n</div>";
 		$placeholder = new UnstyledBlock(ob_get_clean());
 		

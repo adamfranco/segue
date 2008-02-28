@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.160 2008/02/28 15:39:14 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.161 2008/02/28 16:41:00 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -18,7 +18,14 @@
 			UI: Now displays an unauthorized error if the user is not authorized
 			to access any part of a site, hiding the site title.
 		</fix>
-		
+		<fix author='adam' date='2008-02-28' ref='1903445' reftype='bug'>
+			Editing UI: Now does not display menu help if the user is not authorized
+			to add content to the menu.
+		</fix>
+		<fix author='adam' date='2008-02-28'>
+			UI2: Now does not display empty content organizers when the user is not
+			authorized to view or add content to them.
+		</fix>
 		<fix author='adam' date='2008-02-27' ref='1899753' reftype='bug'>
 			SiteDisplay: If users only have access to later menu items, then the 
 			first of those will now be shown by default instead of no menu items

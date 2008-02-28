@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.21 2007/12/20 21:44:44 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.22 2008/02/28 16:41:00 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.21 2007/12/20 21:44:44 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.22 2008/02/28 16:41:00 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -397,7 +397,18 @@ class ArrangeModeSiteVisitor
 		// Add a placeholder to our target if we don't have any children
 		ob_start();
 		print "<div style='height: 50px;'>";
-		print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idMgr->getId("edu.middlebury.authorization.add_children"),
+			$organizer->getQualifierId()))
+		{
+			print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+		} else {
+			print " ";
+			print "\n</div>";
+			return new UnstyledBlock(ob_get_clean());
+		}
 		print "\n</div>";
 		$placeholder = new UnstyledBlock(ob_get_clean());
 		

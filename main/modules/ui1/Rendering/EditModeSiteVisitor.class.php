@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.24 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2008/02/28 16:41:00 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.24 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2008/02/28 16:41:00 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -294,8 +294,19 @@ END;
 	protected function getMenuTargetPlaceholder (MenuOrganizerSiteComponent $organizer) {
 		// Add a placeholder to our target if we don't have any children
 		ob_start();
-		print "<div style='height: 50px; border: 1px solid #F00; margin: 0px 5px 5px 5px; padding: 5px;'>";
-		print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+		
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idMgr->getId("edu.middlebury.authorization.add_children"),
+			$organizer->getQualifierId()))
+		{
+			print "<div style='height: 50px; border: 1px solid #F00; margin: 0px 5px 5px 5px; padding: 5px;'>";
+			print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+		} else {
+			print "<div style='height: 50px; margin: 0px 5px 5px 5px; padding: 5px;'>";
+			print " ";
+		}
 		print "\n</div>";
 		$placeholder = new UnstyledBlock(ob_get_clean());
 		
