@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.161 2008/02/28 16:41:00 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.162 2008/02/28 19:57:09 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-02-28' ref='1899137' reftype='bug'>
+			Editing UI: 'Edit Site Options' and 'Permissions' buttons now work in IE.
+		</fix>
 		<fix author='adam' date='2008-02-28' ref='1903445' reftype='bug'>
 			UI: Now displays an unauthorized error if the user is not authorized
 			to access any part of a site, hiding the site title.

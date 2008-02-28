@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.5 2007/11/29 21:01:25 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.6 2008/02/28 19:57:10 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RoleAction.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RoleAction.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.5 2007/11/29 21:01:25 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.6 2008/02/28 19:57:10 adamfranco Exp $
  */
 class choose_agentAction
 	extends RoleAction
@@ -126,12 +126,11 @@ class choose_agentAction
 			print "\n\t\t\t".$agent->getDisplayName();
 			print "\n\t\t</td>";
 			print "\n\t\t<td class='color$i' style='text-align: right;'>";
-			print "\n\t\t\t<a href='";
-			print $harmoni->request->quickURL('roles', 'modify', array(
+			$url = $harmoni->request->quickURL('roles', 'modify', array(
 				'node' => RequestContext::value('node'),
 				'agent' => $agent->getId()->getIdString()
 			));
-			print "'><input type='button' value=\""._("Modify Roles >>")."\"/></a>";
+			print "\n\t\t\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>"._("Modify Roles >>")."</button>";
 			print "\n\t\t</td>";
 			print "\n\t</tr>";
 			$i = intval(!$i);

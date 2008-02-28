@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.14 2007/11/29 20:49:55 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.15 2008/02/28 19:57:10 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.14 2007/11/29 20:49:55 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.15 2008/02/28 19:57:10 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -83,22 +83,23 @@ class editviewAction
 				$idManager->getId("edu.middlebury.authorization.modify"), 
 				$siteId))
 			{
-				print "\n<a href='".$harmoni->request->quickURL("ui1", "editSite", 
+				$url = $harmoni->request->quickURL("ui1", "editSite", 
 					array("node" => $siteId->getIdString(),
 					"returnNode" => RequestContext::value("node"),
-					"returnAction" => $harmoni->request->getRequestedAction()))."'>";
-				print "\n\t<input type='button' value='"._("Edit Site Options")."'/>";
-				print "\n</a>";
+					"returnAction" => $harmoni->request->getRequestedAction()));
+				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
+				print _("Edit Site Options")."</button>";
 			}
 			if ($authZ->isUserAuthorizedBelow(
 				$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
 				$siteId))
 			{
-				print "\n<a href='".$harmoni->request->quickURL("roles", "choose_agent", 
+				$url = $harmoni->request->quickURL("roles", "choose_agent", 
 					array("node" => RequestContext::value("node"),
 					"returnModule" => $harmoni->request->getRequestedModule(),
-					"returnAction" => $harmoni->request->getRequestedAction()))."'>";
-				print "\n\t<input type='button' value='"._("Permissions")."'/>";
+					"returnAction" => $harmoni->request->getRequestedAction()));
+				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
+				print _("Permissions")."</button>";
 				print "\n</a>";
 			}
 			print "\n</div>";

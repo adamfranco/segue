@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.9 2007/12/20 20:18:46 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.10 2008/02/28 19:57:10 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.9 2007/12/20 20:18:46 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.10 2008/02/28 19:57:10 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -92,12 +92,12 @@ class editviewAction
 			ob_start();
 			$harmoni = Harmoni::instance();
 			print "\n<div style='text-align: right;'>";
-			print "\n<a href='".$harmoni->request->quickURL("roles", "choose_agent", 
+			$url = $harmoni->request->quickURL("roles", "choose_agent", 
 					array("node" => RequestContext::value("node"),
 					"returnModule" => $harmoni->request->getRequestedModule(),
-					"returnAction" => $harmoni->request->getRequestedAction()))."'>";
-			print "\n\t<input type='button' value='"._("Permissions")."'/>";
-			print "\n</a>";
+					"returnAction" => $harmoni->request->getRequestedAction()));
+			print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
+			print _("Permissions")."</button>";
 			print "\n</div>";
 			$allwrapper->add(new UnstyledBlock(ob_get_clean()), $this->rootSiteComponent->getWidth(), null, CENTER, BOTTOM);
 		}
