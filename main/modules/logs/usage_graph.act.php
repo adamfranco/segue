@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: usage_graph.act.php,v 1.1 2008/02/29 20:04:07 adamfranco Exp $
+ * @version $Id: usage_graph.act.php,v 1.2 2008/02/29 21:20:41 adamfranco Exp $
  */ 
 
 if (!defined('JPGRAPH_DIR'))
@@ -26,7 +26,7 @@ require_once(JPGRAPH_DIR."/src/jpgraph_line.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: usage_graph.act.php,v 1.1 2008/02/29 20:04:07 adamfranco Exp $
+ * @version $Id: usage_graph.act.php,v 1.2 2008/02/29 21:20:41 adamfranco Exp $
  */
 class usage_graphAction
 	extends Action
@@ -109,19 +109,32 @@ class usage_graphAction
 		
 		
 		
-		$l2 = new LinePlot($this->getErrors());
-		$l2->SetLegend(_("Errors"));
-		$l2->SetColor('#FF0000');
-		$l2->SetWeight(1);
-		$l2->SetBarCenter(true);
-		$graph->Add($l2);
+		$line = new LinePlot($this->getErrors());
+		$line->SetLegend(_("Errors"));
+		$line->SetColor('#FF0000');
+		$line->SetWeight(1);
+		$line->SetBarCenter(true);
+		$graph->Add($line);
 		
-		$l1 = new LinePlot($this->getLogins());
-		$l1->SetLegend(_("Logins"));
-		$l1->SetColor('#0F3F00');
-		$l1->SetWeight(3);
-		$l1->SetBarCenter(true);
-		$graph->Add($l1);
+		$line = new LinePlot($this->getLogins());
+		$line->SetLegend(_("Logins"));
+		$line->SetColor('#615FFF');
+		$line->SetWeight(1);
+		$line->SetBarCenter(true);
+		$graph->Add($line);
+		
+		$line = new LinePlot($this->getUsers());
+		$line->SetLegend(_("Distinct Users"));
+		$line->SetColor('#0300FF');
+		$line->SetWeight(3);
+		$line->SetBarCenter(true);
+		// For months and less, display value for the number of users
+		if ($days < 32) {
+			$line->value->Show();
+			$line->value->HideZero();
+			$line->value->SetFormat("%d");
+		}
+		$graph->Add($line);
 		
 		
 		// Finally output the  image
@@ -192,6 +205,18 @@ class usage_graphAction
 	}
 	
 	/**
+	 * Answer the number of users per day
+	 * 
+	 * @return array
+	 * @access protected
+	 * @since 2/28/08
+	 */
+	protected function getUsers () {
+		$data = $this->getData();
+		return $data['users'];
+	}
+	
+	/**
 	 * Answer the number of errors
 	 * 
 	 * @return array
@@ -224,6 +249,7 @@ class usage_graphAction
 			$this->data['edits'][] = 0;
 			$this->data['files'][] = 0;
 			$this->data['logins'][] = 0;
+			$this->data['users'][] = 0;
 			$this->data['errors'][] = 0;
 			
 			$i = $i->plus(Duration::withDays(1));
@@ -248,6 +274,7 @@ class usage_graphAction
 			$this->data['edits'] = array();
 			$this->data['files'] = array();
 			$this->data['logins'] = array();
+			$this->data['users'] = array();
 			$this->data['errors'] = array();
 			
 			while ($result->hasNext()) {
@@ -258,6 +285,7 @@ class usage_graphAction
 				$this->data['edits'][] = $row['num_modifications'];
 				$this->data['files'][] = $row['num_media'];
 				$this->data['logins'][] = $row['num_logins'];
+				$this->data['users'][] = $row['num_users'];
 				$this->data['errors'][] = $row['num_errors'];
 			}
 		}
@@ -272,12 +300,14 @@ class usage_graphAction
 	 * @since 2/28/08
 	 */
 	protected function getQuery () {
-		return new GenericSQLQuery("SELECT
+		return new GenericSQLQuery(
+"SELECT
 	log_date, 
 	IFNULL(MAX(num_mod_events), 0) AS num_modifications, 
 	IFNULL(MAX(num_media_events), 0) AS num_media, 
 	IFNULL(MAX(num_comment_events), 0) AS num_comments,
 	IFNULL(MAX(num_login_events), 0) AS num_logins,
+	IFNULL(MAX(num_users), 0) AS num_users,
 	IFNULL(MAX(num_error_events), 0) AS num_errors
 FROM
 		(SELECT 
@@ -286,6 +316,7 @@ FROM
 			NULL AS num_media_events,
 			NULL AS num_comment_events,
 			NULL AS num_login_events,
+			NULL AS num_users,
 			NULL AS num_error_events
 		FROM `log_entry` 
 		WHERE 
@@ -309,6 +340,7 @@ FROM
 			count(*) AS num_media_events,
 			NULL AS num_comment_events,
 			NULL AS num_login_events,
+			NULL AS num_users,
 			NULL AS num_error_events
 		FROM `log_entry` 
 		WHERE log_name = 'Segue' 
@@ -323,6 +355,7 @@ FROM
 			NULL AS num_media_events,
 			count(*) AS num_comment_events,
 			NULL AS num_login_events,
+			NULL AS num_users,
 			NULL AS num_error_events
 		FROM `log_entry` 
 		WHERE log_name = 'Segue' 
@@ -337,10 +370,31 @@ FROM
 			NULL AS num_media_events,
 			NULL AS num_comment_events,
 			count(*) AS num_login_events,
+			NULL AS num_users,
 			NULL AS num_error_events
 		FROM `log_entry` 
 		WHERE log_name = 'Authentication' AND category = 'Authentication Sucess'
 		GROUP BY date(timestamp)
+	UNION
+		SELECT
+			log_date,
+			NULL AS num_mod_events, 
+			NULL AS num_media_events,
+			NULL AS num_comment_events,
+			NULL AS num_login_events,
+			count(*) AS num_users,
+			NULL AS num_error_events
+		FROM
+			(SELECT 
+				date(`timestamp`) AS log_date,
+				fk_agent
+			FROM
+				log_entry
+				INNER JOIN log_agent ON id = fk_entry
+			WHERE log_name = 'Authentication' AND category = 'Authentication Sucess'
+			GROUP BY log_date, fk_agent
+			) as authn_agents_each_day
+		GROUP BY log_date
 	UNION
 		SELECT 
 			date(`timestamp`) AS log_date, 
@@ -348,6 +402,7 @@ FROM
 			NULL AS num_media_events,
 			NULL AS num_comment_events,
 			NULL AS num_login_events,
+			NULL AS num_users,
 			count(*) AS num_error_events
 		FROM `log_entry` 
 		WHERE log_name = 'Harmoni' 
