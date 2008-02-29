@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.7 2007/12/18 20:22:15 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.8 2008/02/29 20:04:07 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: main.act.php,v 1.7 2007/12/18 20:22:15 adamfranco Exp $
+ * @version $Id: main.act.php,v 1.8 2008/02/29 20:04:07 adamfranco Exp $
  */
 class mainAction 
 	extends MainWindowAction
@@ -168,6 +168,11 @@ class mainAction
 		print "\n\t<li><a href='".$harmoni->request->quickURL("logs","browse")."'>";
 		print _("Browse Logs");
 		print "</a></li>";
+		
+		print "\n\t<li><a href='".$harmoni->request->quickURL("logs","usage")."'>";
+		print _("Usage Statistics");
+		print "</a></li>";
+		
 		print "\n</ul>";
 		
 		$introText = new Block(ob_get_contents(),2);

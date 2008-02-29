@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: libraries_default.conf.php,v 1.3 2008/02/19 16:57:10 adamfranco Exp $
+ * @version $Id: libraries_default.conf.php,v 1.4 2008/02/29 20:04:06 adamfranco Exp $
  */
 
 /*********************************************************
@@ -26,3 +26,8 @@ define("HARMONI_DIR", MYDIR."/main/harmoni/");
  *********************************************************/
 define("POLYPHONY_DIR", MYDIR."/main/polyphony/");
 define("POLYPHONY_PATH", trim(MYPATH, '/')."/main/polyphony/");
+
+/*********************************************************
+ * JPGraph location
+ *********************************************************/
+define("JPGRAPH_DIR", MYDIR."/main/jpgraph");

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.164 2008/02/28 20:57:55 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.165 2008/02/29 20:04:06 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,12 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-02-29'>
+			Logging: Now can view graphs of usage statistics.
+		</new>
+		<change author='adam' date='2008-02-29'>
+			Basket: Hiding 'basket'/'selection' from display as it isn't in use yet.
+		</change>
 		<change author='adam' date='2008-02-28'>
 			Added more documentation about the license and included libraries.
 		</change>
