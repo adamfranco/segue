@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -131,7 +131,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -466,7 +466,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -579,7 +579,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -626,7 +626,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -1188,7 +1188,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.21 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {
@@ -1566,9 +1566,13 @@ AIM = {
         } else {
             var d = window.frames[id].document;
         }
-        if (d.location.href == "about:blank") {
-            return;
+        // Safari will sometimes not have d.location set, but will have the baseURI property set, 
+        // so check for both as well as the value.
+//         alert("location: " + d.location + "\nbaseURI: " + d.baseURI);
+	    if ((!d.location || d.location.href == "about:blank") && (!d.baseURI || d.baseURI == "about:blank")) {
+    		return;
         }
+//         alert("completing");
 
         if (typeof(i.onComplete) == 'function') {
 //            i.onComplete(d.body.innerHTML);
