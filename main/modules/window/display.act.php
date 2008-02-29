@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.24 2008/02/19 23:25:15 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.25 2008/02/29 20:03:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.24 2008/02/19 23:25:15 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.25 2008/02/29 20:03:21 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -150,10 +150,10 @@ class displayAction
 		// Right Column
 		$rightColumn = $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);
 		// Basket
-		$basket = Basket::instance();
-		$rightColumn->add($basket->getSmallBasketBlock(), "100%", null, LEFT, TOP);
-		if (ereg("^(collection|asset)\.browse$", $harmoni->getCurrentAction()))
-			$rightColumn->add(AssetPrinter::getMultiEditOptionsBlock(), "100%", null, LEFT, TOP);
+// 		$basket = Basket::instance();
+// 		$rightColumn->add($basket->getSmallBasketBlock(), "100%", null, LEFT, TOP);
+// 		if (ereg("^(collection|asset)\.browse$", $harmoni->getCurrentAction()))
+// 			$rightColumn->add(AssetPrinter::getMultiEditOptionsBlock(), "100%", null, LEFT, TOP);
 		
 	// :: Footer ::
 		$footer = new Container (new XLayout, FOOTER, 1);
