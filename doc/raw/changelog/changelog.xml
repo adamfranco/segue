@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.169 2008/03/03 17:25:10 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.168 2008/03/03 17:23:44 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -21,8 +21,6 @@
 			graphing of Segue usage statistics.
 			
 			See the change log for details on further fixes and improvements.
-			
-			Segue 2.0 beta 13 uses Harmoni 1.0.2 and Polyphony 1.0.1.
 		</releaseNotes>
 		<fix author='adam' date='2008-02-29' ref='1899147' reftype='bug'>
 			MediaLibrary: Fixed Safari Javascript error.

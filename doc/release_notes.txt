@@ -13,8 +13,6 @@ filtering of some errors (such as from web-crawlers) and the graphing of Segue u
 
 See the change log for details on further fixes and improvements.
 
-Segue 2.0 beta 13 uses Harmoni 1.0.2 and Polyphony 1.0.1.
-
 
 v. 2.0-beta-12 (2008-02-21)
 ----------------------------------------------------

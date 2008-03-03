@@ -13,8 +13,6 @@ Also in this release are some improvements to the logging system that allow
 filtering of some errors (such as from web-crawlers) and the graphing of Segue usage statistics.
 
 See the change log for details on further fixes and improvements.
-
-Segue 2.0 beta 13 uses Harmoni 1.0.2 and Polyphony 1.0.1.
 		
 		
 	* Bug Fix: #1899147 
