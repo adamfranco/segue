@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.166 2008/02/29 21:48:51 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.167 2008/03/03 15:17:57 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -43,6 +43,9 @@
 		<fix author='adam' date='2008-02-28'>
 			UI2: Now does not display empty content organizers when the user is not
 			authorized to view or add content to them.
+		</fix>
+		<fix author='adam' date='2008-03-03' ref='1904983' reftype='bug'>
+			UI2: Fixed IE7 'Add Content' button error.
 		</fix>
 		<fix author='adam' date='2008-02-27' ref='1899753' reftype='bug'>
 			SiteDisplay: If users only have access to later menu items, then the 

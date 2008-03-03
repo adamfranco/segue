@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.30 2008/02/28 16:41:00 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.31 2008/03/03 15:17:58 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.30 2008/02/28 16:41:00 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.31 2008/03/03 15:17:58 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -450,14 +450,14 @@ END;
 			print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
 		//print "\n\t<div class='block2Content' style='text-align: center;'";
 		print "\n\t<a style='text-align: center; display: block;'";
-		print " onclick='this.style.display=\"none\"; this.nextSibling.nextSibling.style.display=\"block\";'";
+		print " onclick='this.style.display=\"none\"; this.nextSibling.style.display=\"block\";'";
 		print ">";
 		if ($isMenu)
 			print "\n\t\t\t"._("+ Menu Item");
 		else
 			print "\n\t\t\t"._("+ Content");
 		print "\n\t</a>";
-		print "\n\t<div style='display: none'>";
+		print "<div style='display: none'>";
 		
 		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
 		
@@ -501,7 +501,7 @@ END;
 		print "}";
 		print "' />";
 		print "\n\t\t\t<input type='button' ";
-		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.previousSibling.style.display=\"block\";'";
+		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.style.display=\"block\";'";
 		print " value='"._("Cancel")."'/>";
 		print "\n\t\t</div>";
 		print "\n\t</div>";
