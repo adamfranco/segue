@@ -3,6 +3,19 @@ Name: Segue Release Notes
 (See the Segue change log for more details)
 
 
+v. 2.0-beta-13 (2008-03-03)
+----------------------------------------------------
+This release fixes a number of Javascript bugs htat were preventing some site
+editing and commenting actions from working for users of Safari and InternetExplorer.
+
+Also in this release are some improvements to the logging system that allow
+filtering of some errors (such as from web-crawlers) and the graphing of Segue usage statistics.
+
+See the change log for details on further fixes and improvements.
+
+Segue 2.0 beta 13 uses Harmoni 1.0.2 and Polyphony 1.0.1.
+
+
 v. 2.0-beta-12 (2008-02-21)
 ----------------------------------------------------
 This Segue beta release fixes a number of issues discovered in testing the previous
