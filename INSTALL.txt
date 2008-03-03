@@ -4,21 +4,26 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: INSTALL.txt,v 1.2 2006/01/13 18:51:16 adamfranco Exp $
+ * @version $Id: INSTALL.txt,v 1.3 2008/03/03 20:30:16 adamfranco Exp $
  */
 
 ------Segue Installation-------
 
-----------------------------------
-Bundle Installation:
-
-These instructions assume that you have downloaded the Segue bundle
-(which includes the Harmoni, Polyphony, and DOMIT libraries as well as the
-Segue viewer).
-
 Dependencies:
-	- a MySql database
+	- a MySQL database
 	- imagemagick
+
+PHP Configuration requirements:
+	--with-mysql
+	--with-zlib
+	
+	(options needed for changing the language of the UI, unneeded for English-only usage)
+	--with-gettext
+	
+	(options needed for usage statistics graph generation)
+	--with-gd
+	--enable-gd-native-ttf Or one of the other TTF-enabling options.
+	
 
 Setting up Segue:
 	1) Create a MySQL database for Segue to use.
@@ -59,6 +64,3 @@ Setting up Segue:
 		Use the Segue Admin tools to create a new admin account and delete
 		the default one.
 
-----------------------------------
-Developer Installation:
-	Please read install/INSTALL-DEVELOPERS.txt

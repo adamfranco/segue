@@ -5,14 +5,22 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.168 2008/03/03 17:23:44 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.170 2008/03/03 20:30:19 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-14" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<change author='adam' date='2008-03-03'>
+			Adding PHP configuration documentation to the INSTALL.txt file.
+		</change>
+	</version>
 	<version number="2.0-beta-13" date="2008-03-03">
 		<releaseNotes>
-			This release fixes a number of Javascript bugs htat were preventing
+			This release fixes a number of Javascript bugs that were preventing
 			some site editing and commenting actions from working for users of
 			Safari and InternetExplorer.
 			
@@ -21,6 +29,8 @@
 			graphing of Segue usage statistics.
 			
 			See the change log for details on further fixes and improvements.
+			
+			Segue 2.0 beta 13 uses Harmoni 1.0.2 and Polyphony 1.0.1.
 		</releaseNotes>
 		<fix author='adam' date='2008-02-29' ref='1899147' reftype='bug'>
 			MediaLibrary: Fixed Safari Javascript error.
