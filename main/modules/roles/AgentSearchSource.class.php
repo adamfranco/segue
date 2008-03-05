@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.5 2008/03/05 21:30:29 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.6 2008/03/05 21:45:12 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.5 2008/03/05 21:30:29 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.6 2008/03/05 21:45:12 adamfranco Exp $
  */
 class AgentSearchSource
 	implements WSearchSource
@@ -103,7 +103,7 @@ class AgentSearchSource
 					'node' => RequestContext::value('node'),
 					'agent' => $result->getIdString()
 				));
-				print "\n\t\t\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>"._("Modify Roles &raquo;")."</button>";
+				print "\n\t\t\t<button onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>"._("Modify Roles &raquo;")."</button>";
 				print "\n\t\t\t</td>";
 				print "\n\t\t</tr>";
 				
@@ -123,7 +123,7 @@ class AgentSearchSource
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.5 2008/03/05 21:30:29 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.6 2008/03/05 21:45:12 adamfranco Exp $
  */
 class AgentSearchResult
 	implements WSearchResult
