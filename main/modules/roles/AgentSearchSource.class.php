@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.3 2008/02/28 19:57:10 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.4 2008/03/05 21:30:14 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.3 2008/02/28 19:57:10 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.4 2008/03/05 21:30:14 adamfranco Exp $
  */
 class AgentSearchSource
 	implements WSearchSource
@@ -87,27 +87,30 @@ class AgentSearchSource
 	 */
 	public function getResultsMarkup ($fieldName, $results) {
 		$harmoni = Harmoni::instance();
-		print "\n\t<table id='".RequestContext::name($fieldName)."_output' class='search_results' cellspacing='0'>";
 		
-		$colorKey = 0;
-		
-		foreach ($results as $result) {
-			print "\n\t\t<tr class='search_result_item '>";
-			print "\n\t\t\t<td class='color".$colorKey."'>";
-			print $result->getMarkup();
-			print "\n\t\t\t</td>";
-			print "\n\t\t\t<td class='action_button color".$colorKey."'>";
-			$url =  $harmoni->request->quickURL('roles', 'modify', array(
-				'node' => RequestContext::value('node'),
-				'agent' => $result->getIdString()
-			));
-			print "\n\t\t\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>"._("Modify Roles >>")."</button>";
-			print "\n\t\t\t</td>";
-			print "\n\t\t</tr>";
+		if (count($results)) {
+			print "\n\t<table id='".RequestContext::name($fieldName)."_output' class='search_results' cellspacing='0'>";
 			
-			$colorKey = intval(!$colorKey);
+			$colorKey = 0;
+			
+			foreach ($results as $result) {
+				print "\n\t\t<tr class='search_result_item '>";
+				print "\n\t\t\t<td class='color".$colorKey."'>";
+				print $result->getMarkup();
+				print "\n\t\t\t</td>";
+				print "\n\t\t\t<td class='action_button color".$colorKey."'>";
+				$url =  $harmoni->request->quickURL('roles', 'modify', array(
+					'node' => RequestContext::value('node'),
+					'agent' => $result->getIdString()
+				));
+				print "\n\t\t\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>"._("Modify Roles >>")."</button>";
+				print "\n\t\t\t</td>";
+				print "\n\t\t</tr>";
+				
+				$colorKey = intval(!$colorKey);
+			}
+			print "\n\t</table>";
 		}
-		print "\n\t</table>";
 	}
 }
 
@@ -120,7 +123,7 @@ class AgentSearchSource
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.3 2008/02/28 19:57:10 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.4 2008/03/05 21:30:14 adamfranco Exp $
  */
 class AgentSearchResult
 	implements WSearchResult
