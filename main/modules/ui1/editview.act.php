@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.15 2008/02/28 19:57:10 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.16 2008/03/05 21:46:01 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/view.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.15 2008/02/28 19:57:10 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.16 2008/03/05 21:46:01 adamfranco Exp $
  */
 class editviewAction
 	extends viewAction {
@@ -100,7 +100,6 @@ class editviewAction
 					"returnAction" => $harmoni->request->getRequestedAction()));
 				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
 				print _("Permissions")."</button>";
-				print "\n</a>";
 			}
 			print "\n</div>";
 			
