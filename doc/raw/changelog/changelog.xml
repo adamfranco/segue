@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.171 2008/03/05 21:45:12 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.172 2008/03/05 21:45:23 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -20,6 +20,9 @@
 		<fix author='adam' date='2008-03-05' ref='1908315' reftype='bug'>
 			Permissions: Modify Roles buttons now work in Firefox and Safari again. 
 			The previous fix for IE broke the buttons in Firefox and Safari.
+		</fix>
+		<fix author='adam' date='2008-03-05'>
+			Fixed some HTML validation errors.
 		</fix>
 	</version>
 	<version number="2.0-beta-13" date="2008-03-03">
