@@ -5,19 +5,28 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.172 2008/03/05 21:45:23 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.173 2008/03/06 15:22:35 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
 	<version number="2.0-beta-14" date="The Future">
 		<releaseNotes>
-			
+			This release fixes a few bugs in the permissions UI and fixes some HTML
+			validation errors.
 		</releaseNotes>
+		<fix author='adam' date='2008-03-06'>
+			Roles: Now include needed classes directly so that there are not errors
+			when the user gets logged out.
+		</fix>
+		<change author='adam' date='2008-03-06'>
+			SiteDisplay: Now throws a NullArgumentException if no site or node
+			is specified rather than a generic Error.
+		</change>
 		<change author='adam' date='2008-03-03'>
 			Adding PHP configuration documentation to the INSTALL.txt file.
 		</change>
-		<fix author='adam' date='2008-03-05' ref='1908315' reftype='bug'>
+		<fix author='adam' date='2008-03-05' ref='1908315' reftype='bug' reporter='bryan_carson'>
 			Permissions: Modify Roles buttons now work in Firefox and Safari again. 
 			The previous fix for IE broke the buttons in Firefox and Safari.
 		</fix>
@@ -889,6 +898,10 @@
 	<reporters>
 		<reporter short="sarah_franco">
 			<name>Sarah Franco</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="bryan_carson">
+			<name>Bryan Carson</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.19 2008/02/28 15:39:14 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.20 2008/03/06 15:22:35 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.19 2008/02/28 15:39:14 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.20 2008/03/06 15:22:35 adamfranco Exp $
  */
 class viewAction
 	extends displayAction {
@@ -250,8 +250,8 @@ class viewAction
 			$nodeId = RequestContext::value("node");
 		}
 		
-		if (!$nodeId)
-			throwError(new Error('No site node specified.', 'SiteDisplay'));
+		if (!isset($nodeId) || !$nodeId)
+			throw new NullArgumentException('No site node specified.');
 		
 		return $nodeId;
 	}
