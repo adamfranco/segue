@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RoleAction.class.php,v 1.2 2007/11/16 21:41:46 adamfranco Exp $
+ * @version $Id: RoleAction.class.php,v 1.3 2008/03/06 15:22:17 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 
 /**
  * An abstract class to provide common methods
@@ -20,7 +21,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RoleAction.class.php,v 1.2 2007/11/16 21:41:46 adamfranco Exp $
+ * @version $Id: RoleAction.class.php,v 1.3 2008/03/06 15:22:17 adamfranco Exp $
  */
 abstract class RoleAction
 	extends MainWindowAction
