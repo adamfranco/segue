@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.173 2008/03/06 15:22:35 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.174 2008/03/06 20:29:45 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -32,6 +32,10 @@
 		</fix>
 		<fix author='adam' date='2008-03-05'>
 			Fixed some HTML validation errors.
+		</fix>
+		<fix author='adam' date='2008-03-06' ref='1909030' reftype='bug' reporter='alex'>
+			Plugins: File for Download description now updates imediately after being
+			changed.
 		</fix>
 	</version>
 	<version number="2.0-beta-13" date="2008-03-03">
@@ -896,6 +900,14 @@
 		<name short="chris">Christopher Shubert</name>
 	</authors>
 	<reporters>
+		<reporter short="alex">
+			<name>Alex Chapin</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="adam">
+			<name>Adam Franco</name>
+			<institution>Middlebury College</institution>
+		</reporter>
 		<reporter short="sarah_franco">
 			<name>Sarah Franco</name>
 			<institution>Middlebury College</institution>

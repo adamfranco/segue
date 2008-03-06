@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.17 2008/01/25 18:47:04 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.18 2008/03/06 20:29:45 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.17 2008/01/25 18:47:04 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.18 2008/03/06 20:29:45 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SegueAjaxPlugin
@@ -194,8 +194,8 @@ class EduMiddleburyDownloadPlugin
 // 				print "\n<div onclick=".$this->url(array('edit' => 'true')).">";
 //  			}
  			
- 			if ($this->getDescription()) {
-				print "\n<p>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getDescription())))."</p>";
+ 			if ($this->getRawDescription()) {
+				print "\n<p>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getRawDescription())))."</p>";
 				print "\n<hr/>";
 			}
  			
