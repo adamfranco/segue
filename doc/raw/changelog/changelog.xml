@@ -5,15 +5,20 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.174 2008/03/06 20:29:45 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.175 2008/03/10 17:03:28 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-14" date="The Future">
+	<version number="2.0-beta-14" date="2008-03-10">
 		<releaseNotes>
 			This release fixes a few bugs in the permissions UI and fixes some HTML
 			validation errors.
+			
+			Notable Changes:
+			- Permissions are more reliable cross-browser
+			- File downloads now work in IE
+			- Download Plugin description now updates imediately after change.
 		</releaseNotes>
 		<fix author='adam' date='2008-03-06'>
 			Roles: Now include needed classes directly so that there are not errors

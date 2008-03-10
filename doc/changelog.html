@@ -23,13 +23,37 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-13</h2>
+<h2>Version 2.0-beta-14</h2>
+<h3>2008-03-10</h3>
+<p>This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
+<br>
+<br>Notable Changes: - Permissions are more reliable cross-browser - File downloads now work in IE - Download Plugin description now updates imediately after change.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> Roles: Now include needed classes directly so that there are not errors when the user gets logged out. (<em>2008-03-06 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> SiteDisplay: Now throws a NullArgumentException if no site or node is specified rather than a generic Error. (<em>2008-03-06 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Adding PHP configuration documentation to the INSTALL.txt file. (<em>2008-03-03 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1908315&amp;group_id=&amp;atid=">
+        			#1908315</a> Permissions: Modify Roles buttons now work in Firefox and Safari again. The previous fix for IE broke the buttons in Firefox and Safari. (<em>2008-03-05 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> Fixed some HTML validation errors. (<em>2008-03-05 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1909030&amp;group_id=&amp;atid=">
+        			#1909030</a> Plugins: File for Download description now updates imediately after being changed. (<em>2008-03-06 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-13</h2>
 <h3>2008-03-03</h3>
-<p>This release fixes a number of Javascript bugs htat were preventing some site editing and commenting actions from working for users of Safari and InternetExplorer.
+<p>This release fixes a number of Javascript bugs that were preventing some site editing and commenting actions from working for users of Safari and InternetExplorer.
 <br>
 <br>Also in this release are some improvements to the logging system that allow filtering of some errors (such as from web-crawlers) and the graphing of Segue usage statistics.
 <br>
-<br>See the change log for details on further fixes and improvements.</p>
+<br>See the change log for details on further fixes and improvements.
+<br>
+<br>Segue 2.0 beta 13 uses Harmoni 1.0.2 and Polyphony 1.0.1.</p>
 <ul>
 		
 		<li>
