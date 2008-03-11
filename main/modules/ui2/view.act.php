@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.20 2008/03/06 15:22:35 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.21 2008/03/11 17:45:30 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.20 2008/03/06 15:22:35 adamfranco Exp $
+ * @version $Id: view.act.php,v 1.21 2008/03/11 17:45:30 achapin Exp $
  */
 class viewAction
 	extends displayAction {
@@ -288,7 +288,7 @@ class viewAction
 		$node = $this->_director->getSiteComponentById(
 				$this->getNodeId());
 		
-		return $node->acceptVisitor(new BreadCrumbsVisitor);
+		return $node->acceptVisitor(new BreadCrumbsVisitor($this->getNodeId()));
 	}
 	
 	/**
