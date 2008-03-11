@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.20 2008/02/15 17:40:29 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.21 2008/03/11 17:38:44 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.20 2008/02/15 17:40:29 adamfranco Exp $
+ * @version $Id: CommentManager.class.php,v 1.21 2008/03/11 17:38:44 achapin Exp $
  */
 class CommentManager {
 		
@@ -372,7 +372,7 @@ class CommentManager {
 	/**
 	 * Answer all of the comments attached to an asset
 	 * 
-	 * @param object $assetOrId
+	 * @param object $assetOrId An Asset object or an Id object
 	 * @param string $order The constant ASC or DESC for ascending time (oldest 
 	 *			first) or decending time (recent first).
 	 * @return object Iterator
@@ -380,6 +380,10 @@ class CommentManager {
 	 * @since 7/3/07
 	 */
 	function getAllComments ( $assetOrId, $order = ASC ) {
+		ArgumentValidator::validate($assetOrId, OrValidatorRule::getRule(
+			ExtendsValidatorRule::getRule('Asset'),
+			ExtendsValidatorRule::getRule('Id')));
+		
 		if (method_exists($assetOrId, 'getId')) {
 			$asset = $assetOrId;
 			$assetId = $asset->getId();
@@ -568,14 +572,14 @@ class CommentManager {
 			print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('top')."' method='post'  style='float: right; text-align: right;'>";
 	
 			
-			print "\n\t\t<select name='".RequestContext::name('displayMode')."'/>";
+			print "\n\t\t<select name='".RequestContext::name('displayMode')."'>";
 			print "\n\t\t\t<option value='threaded'".(($this->getDisplayMode() == 'threaded')?" selected='selected'":"").">";
 			print _("Threaded")."</option>";
 			print "\n\t\t\t<option value='flat'".(($this->getDisplayMode() == 'flat')?" selected='selected'":"").">";
 			print _("Flat")."</option>";
 			print "\n\t\t</select>";
 			
-			print "\n\t\t<select name='".RequestContext::name('order')."'/>";
+			print "\n\t\t<select name='".RequestContext::name('order')."'>";
 			print "\n\t\t\t<option value='".ASC."'".(($this->getDisplayOrder() == ASC)?" selected='selected'":"").">";
 			print _("Oldest First")."</option>";
 			print "\n\t\t\t<option value='".DESC."'".(($this->getDisplayOrder() == DESC)?" selected='selected'":"").">";

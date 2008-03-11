@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.14 2008/01/18 21:37:03 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.15 2008/03/11 17:38:44 achapin Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.14 2008/01/18 21:37:03 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.15 2008/03/11 17:38:44 achapin Exp $
  */
 class CommentNode {
 		
@@ -118,11 +118,12 @@ class CommentNode {
 	/**
 	 * Answer the comment body.
 	 * 
+	 * @param optional boolean $showControls Defaults to true.
 	 * @return string
 	 * @access public
 	 * @since 7/3/07
 	 */
-	function getBody () {
+	function getBody ($showControls = true) {
 		// Only return a body if we are authorized to view the comment
 		if ($this->canView()) {
 			$pluginManager = Services::getService('PluginManager');
@@ -133,7 +134,7 @@ class CommentNode {
 			// We've just checked our view permission, so use true
 			$plugin->setCanViewFunction(create_function('$plugin', 'return true;'));
 			
-			if ($this->canModify())
+			if ($this->canModify() && $showControls)
 			{
 				$plugin->setCanModifyFunction(create_function('$plugin', 'return true;'));
 				return $plugin->executeAndGetMarkup(true);
@@ -355,7 +356,7 @@ class CommentNode {
 		$harmoni = Harmoni::instance();
 		
 		ob_start();
-		print "\n\t<div class='comment' id='".$this->getIdString()."'>";
+		print "\n\t<div class='comment' id='comment_".$this->getIdString()."'>";
 		
 		if ($this->_enableEditForm) {
 			print "<a name='".RequestContext::name('current')."'></a>";
@@ -363,7 +364,7 @@ class CommentNode {
 		
 		print "\n\t\t<div class='comment_display'>";
 		
-		print "\n\t\t\t<form class='comment_controls'>";
+		print "\n\t\t\t<form class='comment_controls' action='#' method='get'>";
 		$controls = array();
 		if ($this->canModify()) {
 			ob_start();
@@ -445,7 +446,7 @@ class CommentNode {
 				// If this is a work in progress that has not had content added yet, 
 				// do not display it.
 				if ($reply->hasContent() || $reply->isAuthor()) {
-					print "\n\t\t\t\t<img src='".MYPATH."/images/reply_indent.png' class='reply_icon'/>";
+					print "\n\t\t\t\t<img src='".MYPATH."/images/reply_indent.png' class='reply_icon' alt='"._('reply')."'/>";
 					print "\n\t\t\t<div class='comment_reply'>";
 					print $reply->getMarkup(true);
 					
