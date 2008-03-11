@@ -5,11 +5,33 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.175 2008/03/10 17:03:28 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.176 2008/03/11 17:49:16 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-15" date="The Future">
+		<releaseNotes>
+		</releaseNotes>
+		<fix author='adam' date='2008-03-11'>
+			Comments: added argument validation
+		</fix>
+		<fix author='alex' date='2008-03-11'>
+			Comments: fixed html markup
+		</fix>
+		<change author='adam' date='2008-03-11'>
+			Comments: can now get comment body without editing controls
+		</change>
+		<change author='adam' date='2008-03-11'>
+			UI1/UI2: now passes current node id to breadcrumbs
+		</change>
+		<new author='alex' date='2008-03-11' ref='1799956' reftype='fr'>
+			Site Display: added link to RSS feeds
+		</new>
+		<new author='alex' date='2008-03-11' ref='1799956' reftype='fr'>
+			RSS: new actions for publishing RSS of content and comments.
+		</new>	
+	</version>
 	<version number="2.0-beta-14" date="2008-03-10">
 		<releaseNotes>
 			This release fixes a few bugs in the permissions UI and fixes some HTML

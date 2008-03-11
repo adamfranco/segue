@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.3 2007/09/04 15:05:32 adamfranco Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.4 2008/03/11 17:49:17 achapin Exp $
  */ 
  
 require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
@@ -20,22 +20,33 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.3 2007/09/04 15:05:32 adamfranco Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.4 2008/03/11 17:49:17 achapin Exp $
  */
 class BreadCrumbsVisitor 
 	implements SiteVisitor
 {
+	
+	/**
+	 * @var string $currentNodeId;  
+	 * @access private
+	 * @since 3/11/08
+	 */
+	private $currentNodeId;
 
 	/**
 	 * Constructor
 	 * 
+	 * @param string $currentNodeId
 	 * @return void
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function BreadCrumbsVisitor () {
+	function BreadCrumbsVisitor ($currentNodeId) {
+		ArgumentValidator::validate($currentNodeId, NonzeroLengthStringValidatorRule::getRule());
+		
 		$this->_links = array();
 		$this->_separator = " &raquo; ";
+		$this->currentNodeId = $currentNodeId;
 	}
 	
 	/**
@@ -106,11 +117,24 @@ class BreadCrumbsVisitor
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteNavBlock ) {
 		$this->addLink($siteNavBlock);
 		
-		$val = implode(
+		$harmoni = Harmoni::instance();
+		$RssLink = "<a href='"
+							.$harmoni->request->quickUrl(
+								"rss",
+								"content",
+								array('node' => $this->currentNodeId))
+							."'><img src='".MYPATH."/images/Rss.png' alt='rss' align='right' title='RSS feed of this node' border='0'/></a>";
+		
+		$nodeLinks = implode(
 					$this->_separator,
 					array_reverse($this->_links));
+					
+		$breadcrumbs = "<table style='width: 100%'><tr>";
+		$breadcrumbs .= "<td>".$nodeLinks."</td>";
+		$breadcrumbs .= "<td style='text-align: right'>".$RssLink."</td>";
+		$breadcrumbs .= "</tr></table>";
 		
-		return $val;
+		return $breadcrumbs;
 	}
 
 	/**
