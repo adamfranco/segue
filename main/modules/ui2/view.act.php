@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.21 2008/03/11 17:45:30 achapin Exp $
+ * @version $Id: view.act.php,v 1.22 2008/03/11 18:49:24 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.21 2008/03/11 17:45:30 achapin Exp $
+ * @version $Id: view.act.php,v 1.22 2008/03/11 18:49:24 achapin Exp $
  */
 class viewAction
 	extends displayAction {
@@ -141,6 +141,10 @@ class viewAction
 		print "\n\t\t<link rel='stylesheet' type='text/css' href='".MYPATH."/javascript/MediaLibrary.css'/>";
 		
 		$outputHandler->setHead(ob_get_clean());
+		
+		
+		// Add the RSS head links
+		RssLinkPrinter::addHeadLinks($this->_director->getSiteComponentById($this->getNodeId()));
 		
 				
 		$xLayout = new XLayout();
@@ -288,7 +292,7 @@ class viewAction
 		$node = $this->_director->getSiteComponentById(
 				$this->getNodeId());
 		
-		return $node->acceptVisitor(new BreadCrumbsVisitor($this->getNodeId()));
+		return $node->acceptVisitor(new BreadCrumbsVisitor($node));
 	}
 	
 	/**
