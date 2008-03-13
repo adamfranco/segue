@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RssLinkPrinter.class.php,v 1.1 2008/03/11 18:49:23 achapin Exp $
+ * @version $Id: RssLinkPrinter.class.php,v 1.2 2008/03/13 19:25:16 achapin Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RssLinkPrinter.class.php,v 1.1 2008/03/11 18:49:23 achapin Exp $
+ * @version $Id: RssLinkPrinter.class.php,v 1.2 2008/03/13 19:25:16 achapin Exp $
  */
 class RssLinkPrinter {
 		
@@ -37,7 +37,8 @@ class RssLinkPrinter {
 		foreach (self::getLinks($siteComponent) as $link) {
 			print "\n\t\t<div>";
 			print "\n\t\t<a href='".$link['url']."' title=\"".$link['title']."\">";
-			print "\n\t\t\t<img src='".MYPATH."/images/Rss.png' alt='rss' style='border: 0; vertical-align: middle;'/>";
+			print "\n\t\t\t<img src='".MYPATH."/images/Rss.png' alt='rss' style='border: 0; vertical-align: middle;'/></a>";
+			print "\n\t\t<a href='".$link['url']."' title=\"".$link['title']."\">";
 			print " ".$link['label'];
 			print "\n\t\t\t</a>";
 			print "\n\t\t</div>";

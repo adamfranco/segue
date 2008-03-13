@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.176 2008/03/11 17:49:16 achapin Exp $
+ @version $Id: changelog.xml,v 1.177 2008/03/13 19:25:16 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -13,6 +13,12 @@
 	<version number="2.0-beta-15" date="The Future">
 		<releaseNotes>
 		</releaseNotes>
+		<new author='alex' date='2008-03-13'>
+			Plugins: added a RSS links plugin
+		</new>		
+		<new author='alex' date='2008-03-13'>
+			Plugins: added breadcrumbs plugin
+		</new>		
 		<fix author='adam' date='2008-03-11'>
 			Comments: added argument validation
 		</fix>
