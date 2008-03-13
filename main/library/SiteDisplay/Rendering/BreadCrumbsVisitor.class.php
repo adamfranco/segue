@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.4 2008/03/11 17:49:17 achapin Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.5 2008/03/13 14:48:56 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
+require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
 
 /**
  * Return a bread-crumbs string
@@ -20,33 +21,32 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.4 2008/03/11 17:49:17 achapin Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.5 2008/03/13 14:48:56 adamfranco Exp $
  */
 class BreadCrumbsVisitor 
 	implements SiteVisitor
 {
 	
 	/**
-	 * @var string $currentNodeId;  
+	 * @var object SiteComponent $currentSiteComponent;  
 	 * @access private
 	 * @since 3/11/08
 	 */
-	private $currentNodeId;
+	private $currentSiteComponent;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param string $currentNodeId
+	 * @param object SiteComponent $currentSiteComponent
 	 * @return void
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function BreadCrumbsVisitor ($currentNodeId) {
-		ArgumentValidator::validate($currentNodeId, NonzeroLengthStringValidatorRule::getRule());
+	function BreadCrumbsVisitor (SiteComponent $currentSiteComponent) {
 		
 		$this->_links = array();
 		$this->_separator = " &raquo; ";
-		$this->currentNodeId = $currentNodeId;
+		$this->currentSiteComponent = $currentSiteComponent;
 	}
 	
 	/**
@@ -117,21 +117,13 @@ class BreadCrumbsVisitor
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteNavBlock ) {
 		$this->addLink($siteNavBlock);
 		
-		$harmoni = Harmoni::instance();
-		$RssLink = "<a href='"
-							.$harmoni->request->quickUrl(
-								"rss",
-								"content",
-								array('node' => $this->currentNodeId))
-							."'><img src='".MYPATH."/images/Rss.png' alt='rss' align='right' title='RSS feed of this node' border='0'/></a>";
-		
 		$nodeLinks = implode(
 					$this->_separator,
 					array_reverse($this->_links));
 					
 		$breadcrumbs = "<table style='width: 100%'><tr>";
 		$breadcrumbs .= "<td>".$nodeLinks."</td>";
-		$breadcrumbs .= "<td style='text-align: right'>".$RssLink."</td>";
+		$breadcrumbs .= "<td style='text-align: right'>".RssLinkPrinter::getLinkBlock($this->currentSiteComponent)."</td>";
 		$breadcrumbs .= "</tr></table>";
 		
 		return $breadcrumbs;
