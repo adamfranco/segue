@@ -6,8 +6,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.7 2008/01/04 18:43:21 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.8 2008/03/13 13:29:32 adamfranco Exp $
  */ 
+
+require_once(dirname(__FILE__)."/Slot.interface.php");
+
 
 /**
  * The Slot is a placeholder for a Segue site. Slots have an 'alias', a short-name for 
@@ -20,32 +23,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.7 2008/01/04 18:43:21 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.8 2008/03/13 13:29:32 adamfranco Exp $
  */
-abstract class Slot {
-	
-	/**
-	 * @const string $custom;  
-	 * @access public
-	 * @since 8/14/07
-	 */
-	const custom = "custom";
-	
-	/**
-	 * @const string $course;  
-	 * @access public
-	 * @since 8/14/07
-	 */
-	const course = "course";
-	
-	/**
-	 * @const string $personal;  
-	 * @access public
-	 * @since 8/14/07
-	 */
-	const personal = "personal";
-	
-	
+abstract class SlotAbstract 
+	implements Slot
+{
 	
 /*********************************************************
  * Static Methods
@@ -59,7 +41,7 @@ abstract class Slot {
 	 * @static
 	 * @since 8/14/07
 	 */
-	abstract public static function getExternalSlotDefinitionsForUser ();
+// 	abstract public static function getExternalSlotDefinitionsForUser ();
 	
 	/**
 	 * Answer an array of allowed location categories.
@@ -149,7 +131,7 @@ abstract class Slot {
 	 * @access public
 	 * @since 8/14/07
 	 */
-	abstract public function getType ();
+// 	abstract public function getType ();
 	
 	/**
 	 * Given an internal definition of the slot, load any extra owners
@@ -159,7 +141,7 @@ abstract class Slot {
 	 * @access public
 	 * @since 8/14/07
 	 */
-	abstract public function mergeWithExternal ();
+// 	abstract public function mergeWithExternal ();
 	
 	/**
 	 * Merge this slot with one defined internally to the system.
@@ -324,7 +306,7 @@ abstract class Slot {
 	}
 	
 	/**
-	 * Answer the owners of this slot
+	 * Answer the owners of this slot that have been manually removed.
 	 * 
 	 * @return array
 	 * @access private
@@ -588,7 +570,7 @@ abstract class Slot {
 	 * @access public
 	 * @since 12/6/07
 	 */
-	abstract public function getDefaultLocationCategory ();
+// 	abstract public function getDefaultLocationCategory ();
 	
 	/**
 	 * Record an entry for the slot in the local database

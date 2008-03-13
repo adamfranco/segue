@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CourseSlot.class.php,v 1.3 2008/01/04 18:43:20 adamfranco Exp $
+ * @version $Id: CourseSlot.class.php,v 1.4 2008/03/13 13:29:29 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.abstract.php");
@@ -25,10 +25,10 @@ require_once(dirname(__FILE__)."/Slot.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CourseSlot.class.php,v 1.3 2008/01/04 18:43:20 adamfranco Exp $
+ * @version $Id: CourseSlot.class.php,v 1.4 2008/03/13 13:29:29 adamfranco Exp $
  */
 class CourseSlot
-	extends Slot
+	extends SlotAbstract
 {
 
 	/**
