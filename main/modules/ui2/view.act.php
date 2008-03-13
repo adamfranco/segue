@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.23 2008/03/13 19:35:18 achapin Exp $
+ * @version $Id: view.act.php,v 1.24 2008/03/13 19:57:38 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.23 2008/03/13 19:35:18 achapin Exp $
+ * @version $Id: view.act.php,v 1.24 2008/03/13 19:57:38 achapin Exp $
  */
 class viewAction
 	extends displayAction {
@@ -349,13 +349,13 @@ class viewAction
 			print " | <a href='";
 			print $harmoni->request->quickURL('ui2', 'editview', array(
 					'node' => $this->getNodeId()));
-			print "' alt='"._("Go to Edit-Mode")."'>";
+			print "' title='"._("Go to Edit-Mode")."'>";
 			print _("edit")."</a>";
 			
 			print " | <a href='";
 			print $harmoni->request->quickURL('ui2', 'arrangeview', array(
 					'node' => $this->getNodeId()));
-			print "' alt='"._("Go to Arrange-Mode")."'>";
+			print "' title='"._("Go to Arrange-Mode")."'>";
 			print _("arrange")."</a>";
 			
 			print " | ".self::getUiSwitchForm();
