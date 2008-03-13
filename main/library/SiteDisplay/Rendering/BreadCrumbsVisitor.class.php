@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.5 2008/03/13 14:48:56 adamfranco Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.6 2008/03/13 18:58:21 achapin Exp $
  */ 
  
 require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.5 2008/03/13 14:48:56 adamfranco Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.6 2008/03/13 18:58:21 achapin Exp $
  */
 class BreadCrumbsVisitor 
 	implements SiteVisitor
@@ -120,13 +120,8 @@ class BreadCrumbsVisitor
 		$nodeLinks = implode(
 					$this->_separator,
 					array_reverse($this->_links));
-					
-		$breadcrumbs = "<table style='width: 100%'><tr>";
-		$breadcrumbs .= "<td>".$nodeLinks."</td>";
-		$breadcrumbs .= "<td style='text-align: right'>".RssLinkPrinter::getLinkBlock($this->currentSiteComponent)."</td>";
-		$breadcrumbs .= "</tr></table>";
 		
-		return $breadcrumbs;
+		return $nodeLinks;
 	}
 
 	/**
