@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.22 2008/03/11 18:49:24 achapin Exp $
+ * @version $Id: view.act.php,v 1.23 2008/03/13 19:35:18 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.22 2008/03/11 18:49:24 achapin Exp $
+ * @version $Id: view.act.php,v 1.23 2008/03/13 19:35:18 achapin Exp $
  */
 class viewAction
 	extends displayAction {
@@ -222,7 +222,7 @@ class viewAction
 		
 		
 		// :: Footer ::
-		$footer = $allWrapper->add(
+		$footer = $mainScreen->add(
 			new Container (new XLayout, FOOTER, 1),
 			"100%", null, RIGHT, BOTTOM);
 		
