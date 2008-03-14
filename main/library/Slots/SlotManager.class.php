@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.9 2008/01/04 19:47:55 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.10 2008/03/14 15:35:14 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/AllSlotsIterator.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.9 2008/01/04 19:47:55 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.10 2008/03/14 15:35:14 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -109,23 +109,35 @@ class SlotManager {
 			throw new Exception ("Unknown SlotType, $slotType.");
 		}
 		
-		$slotClass = $this->slotTypes[$slotType];
+		// Each time a slot is requested by name, but doesn't exist this method gets
+		// run. This is particularly the case in the Segue1to2 migration screens.
+		// By caching these results for the execution cycle, this process can be
+		// greatly speeded.
+		if (!isset($this->slotsByTypeCache))
+			$this->slotsByTypeCache = array();
 		
-		eval('$extSlots = '.$slotClass.'::getExternalSlotDefinitionsForUser();');
-		$extNames = array();
-		foreach($extSlots as $slot) {
-			$extNames[] = $slot->getShortname();
+		if (!isset($this->slotsByTypeCache[$slotType])) {
+			$this->slotsByTypeCache[$slotType] = array();
+		
+			$slotClass = $this->slotTypes[$slotType];
+			
+			eval('$extSlots = '.$slotClass.'::getExternalSlotDefinitionsForUser();');
+			$extNames = array();
+			foreach($extSlots as $slot) {
+				$extNames[] = $slot->getShortname();
+			}
+			
+			$intSlots = $this->getInternalSlotDefinitionsForUserByType($slotType);
+			$intDefsOfExtSlots = $this->getInternalSlotDefinitionsForShortnames($extNames);
+			$intSlots = array_merge($intSlots, $intDefsOfExtSlots);
+			
+			$slots = $this->mergeSlots($extSlots, $intSlots);
+			foreach ($slots as $slot)
+				$this->slots[$slot->getShortname()] = $slot;
+			
+			$this->slotsByTypeCache[$slotType] = $slots;
 		}
-		
-		$intSlots = $this->getInternalSlotDefinitionsForUserByType($slotType);
-		$intDefsOfExtSlots = $this->getInternalSlotDefinitionsForShortnames($extNames);
-		$intSlots = array_merge($intSlots, $intDefsOfExtSlots);
-		
-		$slots = $this->mergeSlots($extSlots, $intSlots);
-		foreach ($slots as $slot)
-			$this->slots[$slot->getShortname()] = $slot;
-		
-		return $slots;
+		return $this->slotsByTypeCache[$slotType];
 	}
 	
 	/**
