@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.1 2008/03/14 15:39:41 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.2 2008/03/14 17:12:13 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/Segue1Slot.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.1 2008/03/14 15:39:41 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.2 2008/03/14 17:12:13 adamfranco Exp $
  */
 class choose_siteAction
 	extends MainWindowAction
@@ -73,9 +73,16 @@ class choose_siteAction
 	 */
 	public function getMessage () {
 		ob_start();
+		print "<p>";
 		print _("On this screen you can choose to import your Segue 1 sites into Segue 2.");
 		print " "._("This process will not change or delete your Segue 1 site.");
 		print " "._("You can only import sites into empty placeholders.");
+		print "</p>";
+		print "<p>";
+		print _("Please note that at this time Segue 2 does not support all of the features of Segue 1.");
+		print " "._("As a result, if part of your site does not import properly please view these lists of <a href='https://sourceforge.net/tracker/?group_id=82171&atid=565237'>outstanding features</a> and <a href='https://sourceforge.net/tracker/?group_id=82171&atid=565234'>bugs</a> to check the status of support for that feature.");
+		print " "._("If you do not find a listing there, please submit a report in one of the trackers listed or email <a href='mailto:afranco@middlebury.edu'>Adam Franco</a>");
+		print "</p>";
 		return new Block(ob_get_clean(), STANDARD_BLOCK);
 	}
 	
@@ -199,6 +206,7 @@ class choose_siteAction
 		$url = $harmoni->request->quickURL('dataport', 'convert');
 		print "\n\t\t\t\t<form action='".$url."' method='post'>";
 		print "\n\t\t\t\t\t<input type='hidden' name='".RequestContext::name('source_slot')."' value='".$slot->getShortname()."'/>";
+		print "\n\t\t\t\t\t<input type='submit' value='"._("Import into")."'/>";
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('dest_slot')."'>";
 		print "\n\t\t\t\t\t\t<option value=''>"._("Choose Destination")."</option>";
 		foreach ($this->getSlotNames() as $destSlotname) {
@@ -206,11 +214,12 @@ class choose_siteAction
 			$destSlot = $slotMgr->getSlotByShortname($destSlotname);
 			if ($destSlot->siteExists())
 				print " disabled='disabled'";
+			else if ($destSlotname == $slot->getShortname())
+				print " selected='selected'";
 			print ">";
 			print $destSlot->getShortname()."</option>";
 		}
 		print "\n\t\t\t\t\t</select>";
-		print "\n\t\t\t\t\t<input type='submit' value='"._("Import")."'/>";
 		print "\n\t\t\t\t</form>";
 	}
 	
