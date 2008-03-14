@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2008, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: dataport_default.conf.php,v 1.1 2008/01/28 19:54:28 adamfranco Exp $
+ * @version $Id: dataport_default.conf.php,v 1.2 2008/03/14 15:38:30 adamfranco Exp $
  */ 
  
 if (!defined('DATAPORT_TMP_DIR'))
@@ -14,3 +14,15 @@ if (!defined('DATAPORT_TMP_DIR'))
 
 // if (!defined('DATAPORT_BACKUP_DIR'))
 // 	define('DATAPORT_TMP_DIR', '/var/segue_backups');
+
+/*********************************************************
+ * Configuration for importing from Segue1
+ *********************************************************/
+// if (!defined('DATAPORT_SEGUE1_URL'))
+// 	define('DATAPORT_SEGUE1_URL', 'http://segue.example.edu/');
+
+// if (!defined('DATAPORT_SEGUE1_SECRET_KEY'))
+// 	define('DATAPORT_SEGUE1_SECRET_KEY', 'sadfj234j1');
+
+// if (!defined('DATAPORT_SEGUE1_SECRET_VALUE'))
+// 	define('DATAPORT_SEGUE1_SECRET_VALUE', '28usafnjm023jfa0235rhj2052');

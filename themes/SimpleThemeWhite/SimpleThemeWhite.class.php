@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.23 2008/03/06 14:25:39 adamfranco Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.24 2008/03/14 15:38:30 adamfranco Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -2047,6 +2047,32 @@ class SimpleThemeWhite extends Theme {
 	
 	table.dataport_choose_table td.import_controls {
 		text-align: center;
+	}
+	
+	table.dataport_choose_table td.filled {
+		background-color: #FCC;
+	}
+	
+	table.dataport_choose_table td.open {
+		background-color: #AFA;
+	}
+	
+	table.dataport_choose_table div.slotname {
+		float: left;
+		padding-right: 10px;
+	}
+	
+	table.dataport_choose_table div.site_info {
+		float: left;
+		padding-left: 10px;
+	}
+	
+	table.dataport_choose_table div.site_description {
+		font-size: smaller;
+	}
+	
+	table.dataport_choose_table form {
+		float: right;
 	}
 
 /*********************************************************

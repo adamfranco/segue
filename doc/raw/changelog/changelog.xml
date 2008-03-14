@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.179 2008/03/14 15:31:04 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.180 2008/03/14 15:38:30 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -16,6 +16,10 @@
 		<change author='adam' date='2008-03-13'>
 			Slots: Slots are now defined by a 'Slot' interface to allow for implementation
 			from outside of this package.
+		</change>
+		<change author='adam' date='2008-03-14'>
+			Slots: Slot fetching is now cached for the execution cycle to speed
+			repeated access.
 		</change>
 		<fix author='alex' date='2008-03-13'>
 			Fixed invalid markup in ui2 edit commands display.
@@ -41,6 +45,10 @@
 		<change author='adam' date='2008-03-11'>
 			UI1/UI2: now passes current node id to breadcrumbs
 		</change>
+		<fix author='adam' date='2008-03-14'>
+			UI2: Now UI2 gives the same error as UI1 when no site exists with the 
+			placeholder name given.
+		</fix>
 		<new author='alex' date='2008-03-11' ref='1799956' reftype='fr'>
 			Site Display: added link to RSS feeds
 		</new>
