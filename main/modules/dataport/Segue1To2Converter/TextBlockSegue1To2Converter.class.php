@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.2 2008/03/17 17:25:10 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.2 2008/03/17 17:25:10 adamfranco Exp $
  */
 class TextBlockSegue1To2Converter
 	extends BlockSegue1To2Converter
@@ -55,6 +55,14 @@ class TextBlockSegue1To2Converter
 		}
 		
 		$shortHtml = $this->getStringValue($shortTextElement);
+		
+		// Convert Line returns if needed
+		if ($shortTextElement->hasAttribute('text_type')
+			&& $shortTextElement->getAttribute('text_type') == 'text')
+		{
+			$shortHtml = nl2br($shortHtml);
+		}
+		
 		// Attach any media linked from the HTML
 		$shortHtml = $this->attachMediaFromHtml($shortHtml, $mediaElement);
 		$shortHtml = $this->rewriteLocalLinks($shortHtml);
@@ -78,6 +86,7 @@ class TextBlockSegue1To2Converter
 		catch (MissingNodeException $e) {
 			$shortTextElement = $this->getSingleSourceElement('./text', $this->sourceElement);
 		}
+		
 		$shortHtml = $this->getStringValue($shortTextElement);
 		
 		$longTextElement = $this->sourceXPath->query('./longertext', $this->sourceElement)->item(0);
@@ -85,6 +94,19 @@ class TextBlockSegue1To2Converter
 			$longHtml = $this->getStringValue($longTextElement);
 		else
 			$longHtml = '';
+			
+		// Convert Line returns if needed
+		if ($shortTextElement->hasAttribute('text_type')
+			&& $shortTextElement->getAttribute('text_type') == 'text')
+		{
+			$shortHtml = nl2br($shortHtml);
+		}
+		if ($longTextElement 
+			&& $longTextElement->hasAttribute('text_type')
+			&& $longTextElement->getAttribute('text_type') == 'text')
+		{
+			$longHtml = nl2br($longHtml);
+		}
 		
 		// Replace links to media files with new versions
 		$shortHtml = $this->attachMediaFromHtml($shortHtml, $mediaElement);
