@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.13 2007/10/25 17:44:11 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.14 2008/03/17 17:24:49 adamfranco Exp $
  */
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueMenuGenerator.class.php,v 1.13 2007/10/25 17:44:11 adamfranco Exp $
+ * @version $Id: SegueMenuGenerator.class.php,v 1.14 2008/03/17 17:24:49 adamfranco Exp $
  */
 
 class SegueMenuGenerator {
@@ -57,6 +57,12 @@ class SegueMenuGenerator {
 			_("Portal"),
 			$harmoni->request->quickURL('portal', "list"), 
 			($module == "portal" && $action == 'list')?TRUE:FALSE,1);
+		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);		
+		
+		$mainMenu_item = new MenuItemLink(
+			_("Migrate Sites"),
+			$harmoni->request->quickURL('dataport', "choose_site"), 
+			($module == "dataport" && $action == 'choose_site')?TRUE:FALSE,1);
 		$mainMenu->add($mainMenu_item, "100%", null, LEFT, CENTER);		
 		
 		$mainMenu_item8 = new MenuItemLink(
