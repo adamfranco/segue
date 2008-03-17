@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.9 2008/02/07 20:02:06 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.10 2008/03/17 15:21:50 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.9 2008/02/07 20:02:06 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.10 2008/03/17 15:21:50 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -912,8 +912,10 @@ class DomImportSiteVisitor
 	 * @since 1/25/08
 	 */
 	protected function setAssetAuthorship (Asset $asset, DOMElement $element) {
-		$createAgentId = $this->getAgentId($element->getAttribute('create_agent'));
-		$asset->forceSetCreator($createAgentId);
+		if ($element->hasAttribute('create_agent')) {
+			$createAgentId = $this->getAgentId($element->getAttribute('create_agent'));
+			$asset->forceSetCreator($createAgentId);
+		}
 	}
 	
 	/**
@@ -928,11 +930,15 @@ class DomImportSiteVisitor
 	 * @since 1/25/08
 	 */
 	protected function setAssetDates (Asset $asset, DOMElement $element) {
-		$date = DateAndTime::fromString($element->getAttribute('create_date'));
-		$asset->forceSetCreationDate($date);
+		if ($element->hasAttribute('create_date')) {
+			$date = DateAndTime::fromString($element->getAttribute('create_date'));
+			$asset->forceSetCreationDate($date);
+		}
 		
-		$date = DateAndTime::fromString($element->getAttribute('modify_date'));
-		$asset->forceSetModificationDate($date);
+		if ($element->hasAttribute('modify_date')) {
+			$date = DateAndTime::fromString($element->getAttribute('modify_date'));
+			$asset->forceSetModificationDate($date);
+		}
 	}
 	
 	/**
@@ -966,7 +972,7 @@ class DomImportSiteVisitor
 		$role = $roleMgr->getRole($element->getAttribute('role'));
 		$role->apply(
 			$this->getAgentId($element->getAttribute('agent_id')),
-			$siteComponent->getQualifierId());
+			$siteComponent->getQualifierId(), true);
 	}
 	
 /*********************************************************
@@ -1149,7 +1155,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.9 2008/02/07 20:02:06 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.10 2008/03/17 15:21:50 adamfranco Exp $
  */
 class MissingNodeException
 	extends Exception
