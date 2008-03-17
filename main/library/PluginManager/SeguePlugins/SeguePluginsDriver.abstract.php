@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.11 2008/02/18 16:17:43 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.12 2008/03/17 20:51:56 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.11 2008/02/18 16:17:43 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.12 2008/03/17 20:51:56 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -441,6 +441,25 @@ abstract class SeguePluginsDriver
 			
 			$htmlString = $this->str_replace_once($matches[0][$j], 
 				'[[localurl:'.implode('&amp;', $args).']]', $htmlString);
+		}
+		
+		// File URLs
+		preg_match_all('/\[\[fileurl:([^\]]*)\]\]/', $htmlString, $matches);
+		for ($j = 0; $j < count($matches[1]); $j++) {
+			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1][$j], $paramMatches);
+			$args = array();
+			for ($i = 0; $i < count($paramMatches[1]); $i++) {
+				$key = $paramMatches[3][$i];
+				$value = urldecode($paramMatches[4][$i]);
+				
+				if ($key != 'module' && $key != 'action' && isset($idMap[$value]))
+					$args[] = $key."=".urlencode($idMap[$value]);
+				else
+					$args[] = $key."=".urlencode($value);
+			}
+			
+			$htmlString = $this->str_replace_once($matches[0][$j], 
+				'[[fileurl:'.implode('&amp;', $args).']]', $htmlString);
 		}
 		
 		// Wiki-links

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WikiResolver.class.php,v 1.3 2008/02/14 21:16:37 adamfranco Exp $
+ * @version $Id: WikiResolver.class.php,v 1.4 2008/03/17 20:50:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TitleSearcher.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TitleSearcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WikiResolver.class.php,v 1.3 2008/02/14 21:16:37 adamfranco Exp $
+ * @version $Id: WikiResolver.class.php,v 1.4 2008/03/17 20:50:51 adamfranco Exp $
  */
 class WikiResolver {
 
@@ -240,8 +240,10 @@ class WikiResolver {
 	 *
 	 * Local URL form:
 	 *		[[localurl:module=modName&amp;action=actName&amp;param1=value1]]
-	 * Unlike other forms, the local URL form does not write link tags. It gets replaced
-	 * with only the URL string itself.
+	 * File URL form:
+	 *		[[fileurl:repository_id=123&amp;asset_id=1234&amp;record_id=12345]]
+	 * Unlike other forms, the local URL form and the file URL form do not write link tags. 
+	 * They gets replaced with only the URL string itself.
 	 * 
 	 * @param string $wikiText
 	 * @param object SiteComponent $startingSiteComponent
@@ -314,6 +316,20 @@ $		# Anchor for the end of the line
 	\s*		# optional whitespace
 
 	(?: localurl:([^\]]+) )?	# A designator for linking to a local url
+
+\]\]	# The closing link tags
+$		# Anchor for the end of the line
+
+/xi";
+
+		$fileUrlRegexp = "/
+
+^		# Anchor for the beginning of the line
+\[\[	# The opening link tags
+
+	\s*		# optional whitespace
+
+	(?: fileurl:([^\]]+) )?	# A designator for linking to a local file
 
 \]\]	# The closing link tags
 $		# Anchor for the end of the line
@@ -397,6 +413,55 @@ $		# Anchor for the end of the line
 			
 			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace(null);
+			$newUrl = $harmoni->request->mkURLWithoutContext($module, $action, $args);
+			$harmoni->request->endNamespace();
+			
+			return $newUrl->write();
+		}
+		
+		// Check for a link to a file url:
+		// [[fileurl:repository_id=123&amp;asset_id=1234&amp;record_id=12345]]
+		if (preg_match($fileUrlRegexp, $wikiText, $matches)) {			
+			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1], $paramMatches);
+			$args = array();
+			
+			for ($i = 0; $i < count($paramMatches[1]); $i++) {
+				$key = $paramMatches[3][$i];
+				$value = $paramMatches[4][$i];
+				
+				switch ($key) {
+					// Filtered Keys
+					case 'module':
+					case 'action':
+						break;
+					case 'repositoryId':
+					case 'repository_id':
+						$args['repository_id'] = $value;
+						break;
+					case 'assetId':
+					case 'asset_id':
+						$args['asset_id'] = $value;
+						break;
+					case 'recordId':
+					case 'record_id':
+						$args['record_id'] = $value;
+						break;
+					default:
+						$args[$key] = $value;
+				}
+				
+			}
+			
+			if (!isset($module))
+				$module = 'repository';
+			if (!isset($action))
+				$action = 'viewfile';
+			
+			if (!isset($args['repository_id']))
+				$args['repository_id'] = 'edu.middlebury.segue.sites_repository';
+			
+			$harmoni = Harmoni::instance();
+			$harmoni->request->startNamespace('polyphony-repository');
 			$newUrl = $harmoni->request->mkURLWithoutContext($module, $action, $args);
 			$harmoni->request->endNamespace();
 			

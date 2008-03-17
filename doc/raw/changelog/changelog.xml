@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.180 2008/03/14 15:38:30 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.181 2008/03/17 20:50:48 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -32,6 +32,9 @@
 		</new>		
 		<new author='alex' date='2008-03-13' ref='1798877' reftype='fr'>
 			Plugins: added breadcrumbs plugin
+		</new>
+		<new author='adam' date='2008-03-17'>
+			WikiText: Now supports [[fileurl:asset_id=1234]] syntax for urls to files.
 		</new>
 		<fix author='adam' date='2008-03-11'>
 			Comments: added argument validation
