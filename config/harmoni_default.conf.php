@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: harmoni_default.conf.php,v 1.19 2008/01/08 21:50:53 adamfranco Exp $
+ * @version $Id: harmoni_default.conf.php,v 1.20 2008/03/17 20:56:00 achapin Exp $
  */
 
 // :: set up the $harmoni object :: 
@@ -39,7 +39,8 @@
 									"ui1.*",
 									"ui2.*",
 									"versioning.*",
-									"help.*"
+									"help.*",
+									"view.*"
 								);
 	
 	$harmoni->setPostProcessAction("window.display", $postProcessIgnoreList);

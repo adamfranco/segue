@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ContentRssSiteVisitor.class.php,v 1.4 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: ContentRssSiteVisitor.class.php,v 1.5 2008/03/17 20:56:00 achapin Exp $
  */ 
 
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 
 /**
  * <##>
@@ -20,10 +20,10 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.clas
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ContentRssSiteVisitor.class.php,v 1.4 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: ContentRssSiteVisitor.class.php,v 1.5 2008/03/17 20:56:00 achapin Exp $
  */
 class ContentRssSiteVisitor
-	extends ViewModeSiteVisitor
+	implements SiteVisitor
 {
 
 	/**
@@ -43,8 +43,6 @@ class ContentRssSiteVisitor
 	 */
 	public function __construct (RSSAction $rssFeed) {
 		$this->rssFeed = $rssFeed;
-		
-		parent::__construct();
 	}
 	
 	/**

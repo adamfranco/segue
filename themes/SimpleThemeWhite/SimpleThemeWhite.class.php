@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.24 2008/03/14 15:38:30 adamfranco Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.25 2008/03/17 20:56:00 achapin Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -2074,6 +2074,48 @@ class SimpleThemeWhite extends Theme {
 	table.dataport_choose_table form {
 		float: right;
 	}
+
+/*********************************************************
+ * Site Map Styles
+ *********************************************************/
+	div.siteMap div.children {
+		margin-left: 20px;
+		clear: both;
+	}
+	
+	div.siteMap div.current {
+		font-weight: bold
+	}
+	
+	div.siteMap div.expandSpacer {
+		float: left;
+		width: 10px;
+	}
+	
+	div.siteMap div.expand {
+		float: left;
+		width: 10px;
+		cursor: pointer;
+	}
+	
+	div.siteMap div.title {
+		float: left;
+		padding-right: 30px;
+	}
+	
+	div.siteMap div.node {
+		border-top: 1px dotted #aaa;
+		clear: both;
+	}
+	
+	div.siteMap div.description {
+		font-size: 10px;
+		font-weight: normal;
+		padding-top: 2px;
+		
+	}
+	
+
 
 /*********************************************************
  * Wizard Styles
