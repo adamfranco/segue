@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomAgentImporter.class.php,v 1.2 2008/02/14 20:14:17 adamfranco Exp $
+ * @version $Id: DomAgentImporter.class.php,v 1.3 2008/03/17 15:18:16 adamfranco Exp $
  */ 
 
 require_once(HARMONI."oki2/shared/NonReferenceProperties.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."oki2/shared/NonReferenceProperties.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomAgentImporter.class.php,v 1.2 2008/02/14 20:14:17 adamfranco Exp $
+ * @version $Id: DomAgentImporter.class.php,v 1.3 2008/03/17 15:18:16 adamfranco Exp $
  */
 class DomAgentImporter {
 		
@@ -206,7 +206,7 @@ class DomAgentImporter {
 	protected function getAgentsMatchingProperty ($propertyKey, DOMElement $element) {
 		ArgumentValidator::validate($propertyKey, NonZeroLengthStringValidatorRule::getRule());
 		
-		$valueElements = $this->xpath->evaluate('./property[key = \''.$propertyKey.'\']/value', $element);
+		$valueElements = $this->xpath->evaluate('./property[key = \''.$propertyKey.'\']/string', $element);
 		if ($valueElements->length) {
 			$value = $this->getStringValue($valueElements->item(0));
 			if (strlen($value)) {
@@ -247,13 +247,18 @@ class DomAgentImporter {
 		$properties = $element->getElementsByTagName('property');
 		foreach ($properties as $property) {
 			$key = $this->getStringValue($this->getSingleElement('./key', $property));
-			$value = $this->getStringValue($this->getSingleElement('./value', $property));
+			$value = $this->getStringValue($this->getSingleElement('./string', $property));
 			$agentProperties->addProperty($key, $value);
 		}
 		
 		$agentProperties->addProperty("status", "Expired");
+		try {
+			$displayName = $this->getStringValue($this->getSingleElement('./displayName', $element));
+		} catch (Exception $e) {
+			$displayName = $element->getAttribute('id');
+		}
 		$agent = $agentManager->createAgent(
-			$this->getStringValue($this->getSingleElement('./displayName', $element))." - Historical", 
+			$displayName." - Historical", 
 			$agentType, $agentProperties);
 		
 		$element->setAttribute('new_id', $agent->getId()->getIdString());
