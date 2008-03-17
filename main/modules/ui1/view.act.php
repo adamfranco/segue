@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.24 2008/03/11 18:49:23 achapin Exp $
+ * @version $Id: view.act.php,v 1.25 2008/03/17 21:19:52 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view.act.php,v 1.24 2008/03/11 18:49:23 achapin Exp $
+ * @version $Id: view.act.php,v 1.25 2008/03/17 21:19:52 achapin Exp $
  */
 class viewAction
 	extends displayAction 
@@ -227,6 +227,12 @@ class viewAction
 		$helpText = "<a target='_blank' href='";
 		$helpText .= $harmoni->request->quickURL("help", "browse_help");
 		$helpText .= "'>"._("Help")."</a>";
+		
+		$helpText .= " | <a target='_blank' href='";
+		$helpText .= $harmoni->request->quickURL("view", "map", array(
+					'node' => $this->getNodeId()));
+		$helpText .= "'>"._("Site Map")."</a>";
+		
 		$footer->add(new UnstyledBlock($helpText), "50%", null, LEFT, BOTTOM);
 		
 		$footer->add(new UnstyledBlock(displayAction::getVersionText()), "50%", null, RIGHT, BOTTOM);
