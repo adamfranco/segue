@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.2 2008/03/14 17:12:13 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.3 2008/03/17 15:17:10 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/Segue1Slot.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.2 2008/03/14 17:12:13 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.3 2008/03/17 15:17:10 adamfranco Exp $
  */
 class choose_siteAction
 	extends MainWindowAction
@@ -454,7 +454,10 @@ class choose_siteAction
 		$agent = $agentMgr->getAgent($authNMgr->getFirstUserId());
 		
 		$properties = $agent->getPropertiesByType(new Type('Authentication', 'edu.middlebury.harmoni', 'Middlebury LDAP'));
-		return $properties->getProperty('username');
+		if (is_object($properties))
+			return $properties->getProperty('username');
+		else
+			throw new OperationFailedException("Could not map a Segue 1 username for ".$agent->getDisplayName().".");
 	}
 	
 	/**
