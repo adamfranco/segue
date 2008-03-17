@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.2 2008/03/17 15:25:11 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
@@ -15,6 +15,7 @@ require_once(dirname(__FILE__)."/DownloadBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/HeadingBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/RssBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/ImageBlockSegue1To2Converter.class.php");
+require_once(dirname(__FILE__)."/../Rendering/DomImportSiteVisitor.class.php");
 
 /**
  * This is an abstract parent class that all converters will inherit.
@@ -25,7 +26,7 @@ require_once(dirname(__FILE__)."/ImageBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.2 2008/03/17 15:25:11 adamfranco Exp $
  */
 abstract class Segue1To2Converter {
 
@@ -208,7 +209,7 @@ abstract class Segue1To2Converter {
 			}
 		}
 		if ($value)
-			$destElement->setAttribute('create_agent', $value);
+			$destElement->setAttribute('create_agent', $this->addAgent($value));
 		
 		try {
 			$value = $this->getStringValue($this->getSingleSourceElement('./history/created_time', $this->sourceElement));
@@ -341,10 +342,8 @@ abstract class Segue1To2Converter {
 		}
 		
 		$entry = $rolesElement->appendChild($this->doc->createElement('entry'));
-		$entry->setAttribute('agent_id', $agentId);
+		$entry->setAttribute('agent_id', $this->addAgent($agentId));
 		$entry->setAttribute('role', $role);
-		
-		$this->addAgent($agentId);
 	}
 	
 	/**
@@ -356,6 +355,14 @@ abstract class Segue1To2Converter {
 	 * @since 2/13/08
 	 */
 	protected function addAgent ($agentId) {
+		switch ($agentId) {
+			case 'everyone':
+				$agentId = 'edu.middlebury.agents.everyone';
+				break;
+			case 'institute':
+				$agentId = 'edu.middlebury.institute';
+		}
+		
 		try {
 			$agentElement = $this->getSingleElement('/Segue2/agents/agent[@id = "'.$agentId.'"]');
 		} catch (MissingNodeException $e) {
@@ -364,6 +371,8 @@ abstract class Segue1To2Converter {
 			$agentElement->setAttribute('id', $agentId);
 			$agentElement->appendChild($this->createProperty('username', $agentId));
 		}
+		
+		return $agentId;
 	}
 	
 /*********************************************************
@@ -551,23 +560,6 @@ abstract class Segue1To2Converter {
 }
 
 /**
- * An exception for missing XML nodes
- * 
- * @since 2/5/08
- * @package segue.dataport
- * 
- * @copyright Copyright &copy; 2007, Middlebury College
- * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
- */
-class MissingNodeException
-	extends Exception
-{
-
-}
-
-/**
  * A Class to resolve matching permissions sets into roles
  * 
  * @since 2/5/08
@@ -576,7 +568,7 @@ class MissingNodeException
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.2 2008/03/17 15:25:11 adamfranco Exp $
  */
 class PermissionResolver {
 		
