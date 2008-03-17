@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.9 2008/02/04 20:37:16 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.10 2008/03/17 15:16:24 adamfranco Exp $
  */ 
 require_once(MYDIR."/main/modules/ui1/add.act.php");
 
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Rendering/UntrustedAgentAndTimeDomImportSiteVis
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.9 2008/02/04 20:37:16 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.10 2008/03/17 15:16:24 adamfranco Exp $
  */
 class importAction
 	extends addAction
@@ -68,7 +68,18 @@ class importAction
 	 */
 	protected function getSlot () {
 		$slotMgr = SlotManager::instance();
-		return $slotMgr->getSlotByShortname(RequestContext::value('site'));
+		return $slotMgr->getSlotByShortname($this->getSlotName());
+	}
+	
+	/**
+	 * Answer the name of the requested slot.
+	 * 
+	 * @return string
+	 * @access protected
+	 * @since 3/14/08
+	 */
+	protected function getSlotName () {
+		return RequestContext::value('site');
 	}
 	
 	/**
@@ -190,33 +201,7 @@ class importAction
 			$archiveName = basename($archivePath);
 			$decompressDir = DATAPORT_TMP_DIR.'/'.$archiveName.'_source';
 			
-			// Decompress the archive into our temp-dir
-			$archive = new Archive_Tar($archivePath);
-			
-			// Check for a containing directory and strip it if needed.
-			$content = @$archive->listContent();
-			if (!is_array($content) || !count($content))
-				throw new Exception("Invalid Segue archive. '".$values['mode']['backup_file']['name']."' is not a valid GZIPed Tar archive.");
-			$containerName = null;
-// 			printpre($content);
-			if ($content[0]['typeflag'] == 5) {
-				$containerName = trim($content[0]['filename'], '/').'/';
-				for ($i = 1; $i < count($content); $i++) {
-					// if one of the files isn't in the container, then we don't have a container of all
-					if (strpos($content[$i]['filename'], $containerName) === false) {
-						$containerName = null;
-						break;
-					}
-				}
-			}
-// 			printpre($containerName);
-			
-			$decompressResult = @$archive->extractModify($decompressDir, $containerName);
-			if (!$decompressResult)
-				throw new Exception("Invalid Segue archive. '".$values['mode']['backup_file']['name']."' is not a valid GZIPed Tar archive.");
-				
-			if (!file_exists($decompressDir."/site.xml"))
-				throw new Exception("Invalid Segue archive. 'site.xml' was not found in '".implode("', '", scandir($decompressDir))."'.");
+			$this->decompressArchive($archivePath, $decompressDir);
 			
 			
 			// Do the import
@@ -291,6 +276,45 @@ class importAction
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Decompress a tar archive of a site.
+	 * 
+	 * @param string $archivePath
+	 * @param string $decompressDir
+	 * @return void
+	 * @access public
+	 * @since 3/14/08
+	 */
+	public function decompressArchive ($archivePath, $decompressDir) {
+		// Decompress the archive into our temp-dir
+		$archive = new Archive_Tar($archivePath);
+		
+		// Check for a containing directory and strip it if needed.
+		$content = @$archive->listContent();
+		if (!is_array($content) || !count($content))
+			throw new Exception("Invalid Segue archive. '".$values['mode']['backup_file']['name']."' is not a valid GZIPed Tar archive.");
+		$containerName = null;
+// 			printpre($content);
+		if ($content[0]['typeflag'] == 5) {
+			$containerName = trim($content[0]['filename'], '/').'/';
+			for ($i = 1; $i < count($content); $i++) {
+				// if one of the files isn't in the container, then we don't have a container of all
+				if (strpos($content[$i]['filename'], $containerName) === false) {
+					$containerName = null;
+					break;
+				}
+			}
+		}
+// 			printpre($containerName);
+		
+		$decompressResult = @$archive->extractModify($decompressDir, $containerName);
+		if (!$decompressResult)
+			throw new Exception("Invalid Segue archive. '".$values['mode']['backup_file']['name']."' is not a valid GZIPed Tar archive.");
+			
+		if (!file_exists($decompressDir."/site.xml"))
+			throw new Exception("Invalid Segue archive. 'site.xml' was not found in '".implode("', '", scandir($decompressDir))."'.");
 	}
 	
 	/**
