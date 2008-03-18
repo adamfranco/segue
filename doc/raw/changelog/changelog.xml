@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.183 2008/03/17 21:19:52 achapin Exp $
+ @version $Id: changelog.xml,v 1.184 2008/03/18 17:46:59 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -40,8 +40,16 @@
 			Plugins: added breadcrumbs plugin
 		</new>
 		<new author='adam' date='2008-03-17'>
-			WikiText: Now supports [[fileurl:asset_id=1234]] syntax for urls to files.
+			WikiText: Now supports [[fileurl:asset_id=1234&record_id=5678]] syntax for urls to files.
 		</new>
+		<change author='adam' date='2008-03-18'>
+			MediaLibrary: Default repository id 'edu.middlebury.segue.sites_repository'
+			is now used if no repository id is specified.
+		</change>
+		<change author='adam' date='2008-03-18'>
+			MediaLibrary: Now is more flexible of id-strings, supporting both plain
+			and escaped ampersands as well as 'asset_id' in addition to 'assetId'.
+		</change>
 		<fix author='adam' date='2008-03-11'>
 			Comments: added argument validation
 		</fix>
