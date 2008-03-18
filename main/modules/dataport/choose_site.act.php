@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.3 2008/03/17 15:17:10 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.4 2008/03/18 19:06:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/Segue1Slot.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.3 2008/03/17 15:17:10 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.4 2008/03/18 19:06:41 adamfranco Exp $
  */
 class choose_siteAction
 	extends MainWindowAction
@@ -204,7 +204,9 @@ class choose_siteAction
 		$harmoni = Harmoni::instance();
 		$slotMgr = SlotManager::instance();
 		$url = $harmoni->request->quickURL('dataport', 'convert');
-		print "\n\t\t\t\t<form action='".$url."' method='post'>";
+		print "\n\t\t\t\t<form action='".$url."' method='post' ";
+		print " onsubmit=\"if (!this.elements['".RequestContext::name('dest_slot')."'].value) {alert('"._("Please choose a destination")."'); return false;}\"";
+		print ">";
 		print "\n\t\t\t\t\t<input type='hidden' name='".RequestContext::name('source_slot')."' value='".$slot->getShortname()."'/>";
 		print "\n\t\t\t\t\t<input type='submit' value='"._("Import into")."'/>";
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('dest_slot')."'>";
