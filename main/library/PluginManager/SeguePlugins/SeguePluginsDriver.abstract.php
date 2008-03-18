@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.12 2008/03/17 20:51:56 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.13 2008/03/18 17:32:12 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.12 2008/03/17 20:51:56 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.13 2008/03/18 17:32:12 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -350,8 +350,19 @@ abstract class SeguePluginsDriver
 		$urls = preg_match_all($pattern, $htmlString, $matches);
 		foreach ($matches[0] as $url) {
 			$paramString = $harmoni->request->getParameterListFromUrl($url);
-			if ($paramString !== false)
-				$htmlString = $this->str_replace_once($url, '[[localurl:'.$paramString.']]', $htmlString);
+			if ($paramString !== false) {
+				// File urls
+				if ($harmoni->request->getModuleFromUrl($url) == 'repository'
+					&& $harmoni->request->getActionFromUrl($url) == 'viewfile')
+				{
+					$htmlString = $this->str_replace_once($url, '[[fileurl:'.MediaFile::getIdStringFromUrl($url).']]', $htmlString);
+				}
+				
+				// other local urls
+				else {
+					$htmlString = $this->str_replace_once($url, '[[localurl:'.$paramString.']]', $htmlString);
+				}
+			}
 		}
 		
 		return $htmlString;
@@ -367,6 +378,18 @@ abstract class SeguePluginsDriver
 	 */
 	public function untokenizeLocalUrls ($htmlString) {
 		$harmoni = Harmoni::instance();
+		
+		// File URLs
+		preg_match_all('/\[\[fileurl:([^\]]*)\]\]/', $htmlString, $matches);
+		for ($i = 0; $i < count($matches[0]); $i++) {
+			try {
+				$mediaFile = MediaFile::withIdString($matches[1][$i]);
+				$htmlString = $this->str_replace_once($matches[0][$i], $mediaFile->getUrl(), $htmlString);
+			} catch (InvalidArgumentException $e) {
+			}
+		}
+		
+		// other local urls
 		$harmoni->request->startNamespace(null);
 		while (preg_match('/\[\[localurl:([^\]]*)\]\]/', $htmlString, $matches)) {
 			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1], $paramMatches);

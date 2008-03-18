@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.18 2008/03/06 20:29:45 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
  */
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.18 2008/03/06 20:29:45 adamfranco Exp $
+ * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
  */
 class EduMiddleburyDownloadPlugin
 	extends SegueAjaxPlugin
@@ -327,11 +327,17 @@ class EduMiddleburyDownloadPlugin
 	 */
 	function getMediaFile () {
 		if (!isset($this->_mediaFile)) {
-			if ($this->getContent()) {
-				$this->_mediaFile = MediaFile::withIdString($this->getContent());				
-			} else {
-				$null = null;
-				return $null;
+			try {
+				if ($this->getContent())
+					$this->_mediaFile = MediaFile::withIdString($this->getContent());				
+				else
+					return null;
+			} catch (InvalidArgumentException $e) {
+				HarmoniErrorHandler::logException($e, 'Segue');
+				return null;
+			} catch (UnknownIdException $e) {
+				HarmoniErrorHandler::logException($e, 'Segue');
+				return null;
 			}
 		}
 		

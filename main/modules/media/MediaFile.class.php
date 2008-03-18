@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.6 2008/03/18 15:46:17 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.7 2008/03/18 17:32:12 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAsset.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.6 2008/03/18 15:46:17 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.7 2008/03/18 17:32:12 adamfranco Exp $
  */
 class MediaFile {
 		
@@ -40,6 +40,8 @@ class MediaFile {
 	 */
 	public static function withIdString ( $idString) {
 		if (preg_match('/^(?:(?:repositoryId=(.+)&(?:amp;)?)|(?:&(?:amp;)?))?assetId=(.+)&(?:amp;)?recordId=(.+)$/', $idString, $matches))
+			return MediaFile::withIdStrings($matches[1], $matches[2], $matches[3]);
+		else if (preg_match('/^(?:(?:repository_id=(.+)&(?:amp;)?)|(?:&(?:amp;)?))?asset_id=(.+)&(?:amp;)?record_id=(.+)$/', $idString, $matches))
 			return MediaFile::withIdStrings($matches[1], $matches[2], $matches[3]);
 		else
 			throw new InvalidArgumentException("Invalid Id format, '".$idString."'");
@@ -137,6 +139,32 @@ class MediaFile {
 		return $id;
 	}
 	
+	/**
+	 * Answer an IdString from a URL written by this class
+	 * 
+	 * @param string $url
+	 * @return string An Id string
+	 * @access public
+	 * @since 3/18/08
+	 * @static
+	 */
+	public static function getIdStringFromUrl ($url) {
+		$harmoni = Harmoni::instance();
+		$fileParams = $harmoni->request->getNamespaceParameterArrayFromUrl('polyphony-repository', $url);
+		$pairs = array();
+		foreach ($fileParams as $key => $val)
+			$pairs[] = $key."=".urlencode($val);
+		$idString = implode('&amp;', $pairs);
+		
+		// Try running this string through our methods to clean it up.
+		try {
+			$mediaFile = self::withIdString($idString);
+			return $mediaFile->getIdString();
+		} catch (InvalidArgumentException $e) {
+			return $idString;
+		}
+	}
+	
 	/*********************************************************
 	 * Public Instance Methods
 	 *********************************************************/
@@ -150,11 +178,11 @@ class MediaFile {
 	 */
 	function getIdString () {
 		if ($this->_getRepositoryIdString() == 'edu.middlebury.segue.sites_repository')
-			return "assetId=".$this->_getIdString()
+			return "assetId=".$this->_getAssetIdString()
 				."&recordId=".$this->_getRecordIdString();
 		else
 			return "repositoryId=".$this->_getRepositoryIdString()
-				."&assetId=".$this->_getIdString()
+				."&assetId=".$this->_getAssetIdString()
 				."&recordId=".$this->_getRecordIdString();
 	}
 	
