@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.25 2008/02/29 20:03:21 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.26 2008/03/18 20:25:30 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.25 2008/02/29 20:03:21 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.26 2008/03/18 20:25:30 achapin Exp $
  */
 class displayAction 
 	extends Action
@@ -304,43 +304,60 @@ class displayAction
 	}
 	
 	/**
+	 * Answer the current UI module
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 7/27/07
+	 */
+	function getUiModule () {
+		if (!isset($_SESSION['UI_MODULE']))
+			$this->setUiModule('ui1');
+			
+		return $_SESSION['UI_MODULE'];
+	}
+
+	
+	/**
+	 * Set the UI module
+	 * 
+	 * @param string $module
+	 * @return void
+	 * @access public
+	 * @since 7/27/07
+	 */
+	function setUiModule ($module) {
+		$_SESSION['UI_MODULE'] = $module;
+	}
+
+	
+	/**
 	 * Get the form for switching to a different UI mode.
 	 * 
 	 * @return string
 	 * @access public
 	 * @since 9/6/07
 	 */
-	public function getUiSwitchForm ($targetAction = 'view') {
+	public function getUiSwitchForm () {		
 		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough('node');
 		$harmoni->request->passthrough('site');
 		ob_start();
-		print "\n\t<form action='#' method='post' ";
+		print "\n\t<form action='";
+		print $harmoni->request->quickURL('view', 'change_ui');
+		print "' method='post' ";
 		print "style='display: inline;'>";
-		$newUrl = $harmoni->request->quickURL('XXXMODULEXXX','XXXACTIONXXX');
-		$harmoni->request->forget('node');
-		$harmoni->request->forget('site');
+		$returnUrl = $harmoni->request->mkURLWithPassthrough();
 		
-		$options = array ('ui1' => _("Classic Mode"), 'ui2' => _("New Mode"));
+		print "\n\t\t<input type='hidden' name='".RequestContext::name('returnUrl')."' value='".rawurlencode($returnUrl->write())."'/>";
 		
 		print "\n\t\t<select style='font-size: 10px' name='".RequestContext::name('user_interface')."' ";
-		
-		print "onchange=\"";
-		print "var module = this.value; ";
-		print "var action = '".$targetAction."'; ";
-		print "var url = '$newUrl'; ";
-// 		print "alert(url); ";
-		print "url = url.replace(/XXXMODULEXXX/, module); ";
-		print "url = url.replace(/XXXACTIONXXX/, action); ";
-		print "url = url.urlDecodeAmpersands(); ";
-// 		print "alert(url); ";
-		print "window.location = url; ";
-		print "return false;";
-		
+		print "onchange=\"this.form.submit();\"";		
 		print "\">";
+		$options = array ('ui1' => _("Classic Mode"), 'ui2' => _("New Mode"));
 		foreach ($options as $key => $val) {
 			print "\n\t\t\t<option value='$key'";
-			print (($harmoni->request->getRequestedModule() == $key)?" selected='selected'":"");
+			print (($this->getUiModule() == $key)?" selected='selected'":"");
 			print ">$val</option>";
 		}
 		print "\n\t\t</select>";

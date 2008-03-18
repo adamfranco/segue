@@ -6,14 +6,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.8 2007/12/20 20:18:46 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.9 2008/03/18 20:25:30 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/Rendering/ArrangeModeSiteVisitor.class.php");
-require_once(dirname(__FILE__)."/view.act.php");
+require_once(MYDIR."/main/modules/view/html.act.php");
 require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
 
 /**
@@ -25,10 +25,11 @@ require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.8 2007/12/20 20:18:46 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.9 2008/03/18 20:25:30 achapin Exp $
  */
 class arrangeviewAction
-	extends viewAction {
+	extends htmlAction 
+{
 	
 	/**
 	 * Answer the appropriate site visitor for this action
@@ -92,12 +93,12 @@ class arrangeviewAction
 		ob_start();
 		print "<div class='commands'>";
 		print "<a href='";
-		print $harmoni->request->quickURL('ui2', 'view', array(
+		print $harmoni->request->quickURL('view', 'html', array(
 				'node' => RequestContext::value("node")));
 		print "' title='"._("Go to View-Mode")."'>";
 		print _("view")."</a>";
 		
-		print "| <a href='";
+		print " | <a href='";
 		print $harmoni->request->quickURL('ui2', 'editview', array(
 				'node' => RequestContext::value("node")));
 		print "' title='"._("Go to Edit-Mode")."'>";

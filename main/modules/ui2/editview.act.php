@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.10 2008/02/28 19:57:10 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.11 2008/03/18 20:25:30 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -14,7 +14,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/X
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/Rendering/DetailEditModeSiteVisitor.class.php");
-require_once(dirname(__FILE__)."/view.act.php");
+require_once(MYDIR."/main/modules/view/html.act.php");
 require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
 
 /**
@@ -26,10 +26,11 @@ require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.10 2008/02/28 19:57:10 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.11 2008/03/18 20:25:30 achapin Exp $
  */
 class editviewAction
-	extends viewAction {
+	extends htmlAction 
+{
 	
 	/**
 	 * Answer the appropriate site visitor for this action
@@ -118,7 +119,7 @@ class editviewAction
 		ob_start();
 		print "<div class='commands'>";
 		print "<a href='";
-		print $harmoni->request->quickURL('ui2', 'view', array(
+		print $harmoni->request->quickURL('view', 'html', array(
 				'node' => RequestContext::value("node")));
 		print "' title='"._("Go to View-Mode")."'>";
 		print _("view")."</a>";

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.184 2008/03/18 17:46:59 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.185 2008/03/18 20:25:30 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -13,11 +13,14 @@
 	<version number="2.0-beta-15" date="The Future">
 		<releaseNotes>
 		</releaseNotes>
+		<new author='alex' date='2008-03-18'>
+			View/UI1/UI2: added a view module with unified view actions and redirected view actions in UI1 and UI2 to it.
+		</new>
 		<change author='alex' date='2008-03-17'>
-			Added link to site map in site footer.
+			View: Added link to site map in site footer.
 		</change>
 		<new author='alex' date='2008-03-17' ref='1844315' reftype='fr'>
-			Added module and action for displayingh a site map.  
+			View: Added module and action for displaying a site map.  
 		</new>
 		<change author='adam' date='2008-03-13'>
 			Slots: Slots are now defined by a 'Slot' interface to allow for implementation
@@ -27,11 +30,18 @@
 			Slots: Slot fetching is now cached for the execution cycle to speed
 			repeated access.
 		</change>
-		<fix author='alex' date='2008-03-13'>
-			Fixed invalid markup in ui2 edit commands display.
+		<change author='adam' date='2008-03-11'>
+			UI1/UI2: now passes current node id to breadcrumbs
+		</change>
+		<fix author='adam' date='2008-03-14'>
+			UI2: Now UI2 gives the same error as UI1 when no site exists with the 
+			placeholder name given.
 		</fix>
 		<fix author='alex' date='2008-03-13'>
-			Fixed footer width in ui2.
+			UI2: Fixed invalid markup in ui2 edit commands display.
+		</fix>
+		<fix author='alex' date='2008-03-13'>
+			UI2: Fixed footer width in ui2.
 		</fix>
 		<new author='alex' date='2008-03-13' ref='1798877' reftype='fr'>
 			Plugins: added a RSS links plugin
@@ -59,13 +69,7 @@
 		<change author='adam' date='2008-03-11'>
 			Comments: can now get comment body without editing controls
 		</change>
-		<change author='adam' date='2008-03-11'>
-			UI1/UI2: now passes current node id to breadcrumbs
-		</change>
-		<fix author='adam' date='2008-03-14'>
-			UI2: Now UI2 gives the same error as UI1 when no site exists with the 
-			placeholder name given.
-		</fix>
+		
 		<new author='alex' date='2008-03-11' ref='1799956' reftype='fr'>
 			Site Display: added link to RSS feeds
 		</new>

@@ -5,12 +5,14 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.24 2008/02/28 20:09:15 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.25 2008/03/18 20:25:30 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(HARMONI."GUIManager/StyleProperties/MinHeightSP.class.php");
 require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
+require_once(MYDIR."/main/modules/window/display.act.php");
+
 
 /**
  * 
@@ -20,7 +22,7 @@ require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.24 2008/02/28 20:09:15 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.25 2008/03/18 20:25:30 achapin Exp $
  */
 class listAction 
 	extends MainWindowAction
@@ -60,7 +62,10 @@ class listAction
 	 */
 	function getHeadingText () {
 		ob_start();
-		print $this->getUIModeForm();
+		
+		// print the ui-mode changing form
+		print $this->getUiSwitchForm();
+	
 		$authN = Services::getService("AuthN");
 		if ($authN->isUserAuthenticatedWithAnyType()) {
 			print _("Your Portal");
@@ -73,35 +78,27 @@ class listAction
 	}
 	
 	/**
-	 * Answer the UI mode form
+	 * Answer the switching form
 	 * 
 	 * @return string
 	 * @access private
-	 * @since 12/14/07
+	 * @since 3/18/08
 	 */
-	private function getUIModeForm () {
-		$harmoni = Harmoni::instance();
-
-		if (RequestContext::value('user_interface')) {
-			$this->setUiModule(RequestContext::value('user_interface'));
-		}
-		
-		ob_start();
-		
-		// UI selection
-		print "\n\t<form action='".$harmoni->request->quickURL()."' method='post' style='float: right;'>";
-		$options = array ('ui1' => _("Classic Mode"), 'ui2' => _("New Mode"));
-		print "\n\t\t<select style='font-size: 10px' name='".RequestContext::name('user_interface')."'";
-		print " onchange='this.form.submit();'";
-		print ">";
-		foreach ($options as $key => $val) {
-			print "\n\t\t\t<option value='$key'";
-			print (($this->getUiModule() == $key)?" selected='selected'":"");
-			print ">$val</option>";
-		}
-		print "\n\t\t</select>";
-		print "\n\t</form>";
-		return ob_get_clean();
+	private function getUiSwitchForm () {
+		$displayAction = new displayAction;
+		return $displayAction->getUiSwitchForm();
+	}
+	
+	/**
+	 * Answer the ui module
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 3/18/08
+	 */
+	public function getUiModule () {
+		$displayAction = new displayAction;
+		return $displayAction->getUiModule();
 	}
 	
 	/**
@@ -313,32 +310,6 @@ class listAction
 			return new Block(ob_get_clean(), EMPHASIZED_BLOCK);
 		}
 	}
-	
-	/**
-	 * Answer the current UI module
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 7/27/07
-	 */
-	function getUiModule () {
-		if (!isset($_SESSION['UI_MODULE']))
-			$this->setUiModule('ui1');
-			
-		return $_SESSION['UI_MODULE'];
-	}
-	
-	/**
-	 * Set the UI module
-	 * 
-	 * @param string $module
-	 * @return void
-	 * @access public
-	 * @since 7/27/07
-	 */
-	function setUiModule ($module) {
-		$_SESSION['UI_MODULE'] = $module;
-	}
 }
 
 /**
@@ -397,7 +368,7 @@ function printSiteShort($asset, $action, $num) {
 	} catch (Exception $e) {
 		$params = array('node' => $assetId->getIdString());
 	}
-	$viewUrl = $harmoni->request->quickURL($action->getUiModule(), 'view', $params);
+	$viewUrl = $harmoni->request->quickURL('view', 'html', $params);
 	
 	// Print out the content
 	ob_start();
