@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.4 2008/03/18 19:06:56 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.5 2008/03/18 20:48:14 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/import.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.4 2008/03/18 19:06:56 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.5 2008/03/18 20:48:14 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -71,11 +71,27 @@ class convertAction
 // 			$outputDoc2->loadXML($doc->saveXMLWithWhitespace());
 // 			printpre(htmlentities($outputDoc2->saveXML()));
 			
+			// Make the slot personal if it matches the personal naming scheme.
+			$authN = Services::getService("AuthN");
+			$userName = PersonalSlot::getPersonalShortname($authN->getFirstUserId());
+			if (preg_match('/^'.$userName.'(-.+)?$/', $this->getDestSlotName())) {
+				$slot = new PersonalSlot($this->getDestSlotName());
+				$slot->addOwner($authN->getFirstUserId());
+			}
+			// Other slots, add the user as the owner
+			else {
+				$slotMgr = SlotManager::instance();
+				$slot = $slotMgr->getSlotByShortname($this->getDestSlotName());
+				$slot->addOwner($authN->getFirstUserId());
+			}
+			
 			// Import the converted site
 			$director = $this->getSiteDirector();
 			$importer = new DomImportSiteVisitor($doc, $destPath, $director);
 			$importer->enableRoleImport();
 			$importer->importAtSlot($this->getDestSlotName());
+			
+			
 			
 			// Delete the output directory
 			try {
