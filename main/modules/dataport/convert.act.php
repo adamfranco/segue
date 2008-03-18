@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.3 2008/03/18 13:22:57 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.4 2008/03/18 19:06:56 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/import.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.3 2008/03/18 13:22:57 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.4 2008/03/18 19:06:56 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -67,13 +67,9 @@ class convertAction
 			$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			
 			// Debug output
-			$outputDoc2 = new Harmoni_DOMDocument;
-			$outputDoc2->loadXML($doc->saveXMLWithWhitespace());
-			printpre(htmlentities($outputDoc2->saveXML()));
-// 			header("Content-type: text/plain");
-// 			print $outputDoc2->saveXML();
-// 			exit;
-			$outputDoc2->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+// 			$outputDoc2 = new Harmoni_DOMDocument;
+// 			$outputDoc2->loadXML($doc->saveXMLWithWhitespace());
+// 			printpre(htmlentities($outputDoc2->saveXML()));
 			
 			// Import the converted site
 			$director = $this->getSiteDirector();
@@ -90,6 +86,9 @@ class convertAction
 				print $deleteException->getMessage();
 				print "\n</div>";
 			}
+			
+			$harmoni = Harmoni::instance();
+			RequestContext::sendTo($harmoni->request->quickURL('dataport', 'choose_site'));
 			
 		} catch (Exception $importException) {
 			
