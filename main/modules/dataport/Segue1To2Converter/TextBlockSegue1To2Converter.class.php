@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.2 2008/03/17 17:25:10 adamfranco Exp $
+ * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.3 2008/03/18 13:21:04 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.2 2008/03/17 17:25:10 adamfranco Exp $
+ * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.3 2008/03/18 13:21:04 adamfranco Exp $
  */
 class TextBlockSegue1To2Converter
 	extends BlockSegue1To2Converter
@@ -48,19 +48,19 @@ class TextBlockSegue1To2Converter
 	protected function getDescriptionElement (DOMElement $mediaElement) {
 		try {
 			$shortTextElement = $this->getSingleSourceElement('./shorttext', $this->sourceElement);
+			$shortHtml = htmlspecialchars_decode($this->getStringValue($shortTextElement));
+			
+			// Convert Line returns if needed
+			if ($shortTextElement->hasAttribute('text_type')
+				&& $shortTextElement->getAttribute('text_type') == 'text')
+			{
+				$shortHtml = nl2br($shortHtml);
+			}
 		}
 		// Page content and comments have their text in the 'text' node instead of shorttext
 		catch (MissingNodeException $e) {
 			$shortTextElement = $this->getSingleSourceElement('./text', $this->sourceElement);
-		}
-		
-		$shortHtml = $this->getStringValue($shortTextElement);
-		
-		// Convert Line returns if needed
-		if ($shortTextElement->hasAttribute('text_type')
-			&& $shortTextElement->getAttribute('text_type') == 'text')
-		{
-			$shortHtml = nl2br($shortHtml);
+			$shortHtml = $this->getStringValue($shortTextElement);
 		}
 		
 		// Attach any media linked from the HTML
@@ -81,31 +81,31 @@ class TextBlockSegue1To2Converter
 	protected function getContentElement (DOMElement $mediaElement) {
 		try {
 			$shortTextElement = $this->getSingleSourceElement('./shorttext', $this->sourceElement);
+			$shortHtml = htmlspecialchars_decode($this->getStringValue($shortTextElement));
+			
+			// Convert Line returns if needed
+			if ($shortTextElement->hasAttribute('text_type')
+				&& $shortTextElement->getAttribute('text_type') == 'text')
+			{
+				$shortHtml = nl2br($shortHtml);
+			}
+			$longTextElement = $this->sourceXPath->query('./longertext', $this->sourceElement)->item(0);
+			
+			if ($longTextElement) {
+				$longHtml = $this->getStringValue($longTextElement);
+				if ($longTextElement->hasAttribute('text_type')
+					&& $longTextElement->getAttribute('text_type') == 'text')
+				{
+					$longHtml = nl2br($longHtml);
+				}
+			} else
+				$longHtml = '';
 		}
 		// Page content and comments have their text in the 'text' node instead of shorttext
 		catch (MissingNodeException $e) {
 			$shortTextElement = $this->getSingleSourceElement('./text', $this->sourceElement);
-		}
-		
-		$shortHtml = $this->getStringValue($shortTextElement);
-		
-		$longTextElement = $this->sourceXPath->query('./longertext', $this->sourceElement)->item(0);
-		if ($longTextElement)
-			$longHtml = $this->getStringValue($longTextElement);
-		else
+			$shortHtml = $this->getStringValue($shortTextElement);
 			$longHtml = '';
-			
-		// Convert Line returns if needed
-		if ($shortTextElement->hasAttribute('text_type')
-			&& $shortTextElement->getAttribute('text_type') == 'text')
-		{
-			$shortHtml = nl2br($shortHtml);
-		}
-		if ($longTextElement 
-			&& $longTextElement->hasAttribute('text_type')
-			&& $longTextElement->getAttribute('text_type') == 'text')
-		{
-			$longHtml = nl2br($longHtml);
 		}
 		
 		// Replace links to media files with new versions

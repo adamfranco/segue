@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DownloadBlockSegue1To2Converter.class.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: DownloadBlockSegue1To2Converter.class.php,v 1.2 2008/03/18 13:21:04 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DownloadBlockSegue1To2Converter.class.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: DownloadBlockSegue1To2Converter.class.php,v 1.2 2008/03/18 13:21:04 adamfranco Exp $
  */
 class DownloadBlockSegue1To2Converter
 	extends BlockSegue1To2Converter
@@ -70,8 +70,13 @@ class DownloadBlockSegue1To2Converter
 		// Content
 		$filename = $this->getStringValue($this->getSingleSourceElement('./filename', $this->sourceElement));
 		$currentContent = $this->doc->createElement('currentContent');
-		$content = $currentContent->appendChild($this->createCDATAElement('content',
-			$this->attachFile($filename, $mediaElement)));
+		
+		$fileUrlString = $this->attachFile($filename, $mediaElement);
+		$fileUrlString = str_replace('asset_id', 'assetId', $fileUrlString);
+		$fileUrlString = str_replace('record_id', 'recordId', $fileUrlString);
+		$fileUrlString = str_replace('&amp;', '&', $fileUrlString);
+		$content = $currentContent->appendChild($this->createCDATAElement('content', $fileUrlString));
+		
 		$rawDesc = $currentContent->appendChild($this->createCDATAElement('rawDescription',  $this->cleanHtml($descHtml)));
 		
 		return $currentContent;

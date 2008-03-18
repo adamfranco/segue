@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.2 2008/03/17 15:25:05 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.3 2008/03/18 13:21:04 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/DownloadCommentSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.2 2008/03/17 15:25:05 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.3 2008/03/18 13:21:04 adamfranco Exp $
  */
 abstract class BlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -214,10 +214,10 @@ abstract class BlockSegue1To2Converter
 			$filename = $matches[1][$i];
 			
 			// Attach the media files and get the new id.
-			$fileId = $this->attachFile($filename, $attachedMedia);
+			$fileUrlVal = $this->attachFile($filename, $attachedMedia);
 		
 			// Re-Write the media url to use the new id.
-			$html = str_replace($link, "[[fileurl:".$fileId."]]", $html);
+			$html = str_replace($link, "[[fileurl:".$fileUrlVal."]]", $html);
 		}
 	
 		return $html;
@@ -321,7 +321,7 @@ abstract class BlockSegue1To2Converter
 	 * 
 	 * @param string $filename
 	 * @param object DOMElement $destAttachedMedia
-	 * @return string The file id
+	 * @return string The fileurl value for the file
 	 * @access protected
 	 * @since 2/11/08
 	 */
@@ -330,14 +330,17 @@ abstract class BlockSegue1To2Converter
 			return;
 		
 		// Currently attached locations here
-		$currentlyAttachedLocations = $this->xpath->query('./mediaAsset[file/name = "'.$filename.'"]', $destAttachedMedia);
+		$currentlyAttachedLocations = $this->xpath->query('./mediaAsset/file[name = "'.$filename.'"]', $destAttachedMedia);
 		if ($currentlyAttachedLocations->length)
-			return $currentlyAttachedLocations->item(0)->getAttribute('id');
+			return 'asset_id='.$currentlyAttachedLocations->item(0)->parentNode->getAttribute('id')
+			.'&amp;record_id='.$currentlyAttachedLocations->item(0)->getAttribute('id');
 		
 		// Currently attached locations elsewhere in the document.
-		$currentlyAttachedLocations = $this->xpath->query('//mediaAsset[file/name = "'.$filename.'"]');
-		if ($currentlyAttachedLocations->length)
-			return $currentlyAttachedLocations->item(0)->getAttribute('id');
+		$currentlyAttachedLocations = $this->xpath->query('//mediaAsset/file[name = "'.$filename.'"]');
+		if ($currentlyAttachedLocations->length) {
+			return 'asset_id='.$currentlyAttachedLocations->item(0)->parentNode->getAttribute('id')
+			.'&amp;record_id='.$currentlyAttachedLocations->item(0)->getAttribute('id');
+		}
 		
 		$sourceFile = $this->sourceXPath->query('/site/media/media_file[filename = "'.$filename.'"]')->item(0);
 		if (!$sourceFile)
@@ -375,7 +378,8 @@ abstract class BlockSegue1To2Converter
 				$element->setAttribute('modify_date', $value);
 		} catch (MissingNodeException $e) {}
 		
-		return $fileElement->getAttribute('id');
+		return 'asset_id='.$element->getAttribute('id')
+			.'&amp;record_id='.$fileElement->getAttribute('id');
 	}
 		
 	/**
