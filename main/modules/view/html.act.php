@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.2 2008/03/18 20:25:30 achapin Exp $
+ * @version $Id: html.act.php,v 1.3 2008/03/18 20:47:08 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -28,7 +28,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.2 2008/03/18 20:25:30 achapin Exp $
+ * @version $Id: html.act.php,v 1.3 2008/03/18 20:47:08 achapin Exp $
  */
 
 /**
@@ -40,7 +40,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.2 2008/03/18 20:25:30 achapin Exp $
+ * @version $Id: html.act.php,v 1.3 2008/03/18 20:47:08 achapin Exp $
  */
 class htmlAction
 	extends displayAction 
@@ -241,17 +241,25 @@ class htmlAction
 			new Container (new XLayout, FOOTER, 1),
 			"100%", null, RIGHT, BOTTOM);
 		
-		$helpText = "<a target='_blank' href='";
-		$helpText .= $harmoni->request->quickURL("help", "browse_help");
-		$helpText .= "'>"._("Help")."</a>";
 		
-		$helpText .= " | <a target='_blank' href='";
-		$helpText .= $harmoni->request->quickURL("view", "map", array(
-					'node' => $this->getNodeId()));
-		$helpText .= "'>"._("Site Map")."</a>";
+		ob_start();
+		print "<a target='_blank' href='";
+		print $harmoni->request->quickURL("help", "browse_help");
+		print "'>"._("Help")."</a>";
+		
+		// Site Map
+		$siteMapUrl = $harmoni->request->quickURL("view", "map", array('node' => $this->getNodeId()));
+		print " | <a target='_blank' href='".$siteMapUrl."'";
+		
+		print ' onclick="';
+		print "var url = '".$siteMapUrl."'; ";
+		print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
+		print "return false;";
+		print '"';
+		print ">"._("Site Map")."</a>";
 		
 				
-		$footer->add(new UnstyledBlock($helpText), "50%", null, LEFT, BOTTOM);
+		$footer->add(new UnstyledBlock(ob_get_clean()), "50%", null, LEFT, BOTTOM);
 		
 		$footer->add(new UnstyledBlock(displayAction::getVersionText()), "50%", null, RIGHT, BOTTOM);
 

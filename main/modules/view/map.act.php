@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.2 2008/03/17 20:56:00 achapin Exp $
+ * @version $Id: map.act.php,v 1.3 2008/03/18 20:47:08 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteMapSiteVisitor.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.2 2008/03/17 20:56:00 achapin Exp $
+ * @version $Id: map.act.php,v 1.3 2008/03/18 20:47:08 achapin Exp $
  */
 class mapAction 
 	extends MainWindowAction
@@ -259,9 +259,14 @@ class mapAction
 		
 		print $this->getTabs()."\t\t";
 		print "<div class='title'>";
-		print "<a href='";
-		print $harmoni->request->quickURL('ui1', 'view', array('node' => $siteComponent->getId()));
-		print "' title='"._("View this node")."'>";
+		$nodeUrl = $harmoni->request->quickURL('ui1', 'view', array('node' => $siteComponent->getId()));
+		print "<a href='".$nodeUrl."' ";
+		print ' onclick="';
+		print "if (window.opener) { ";
+		print 		"window.opener.location = this.href; ";
+		print 		"return false; ";
+		print '}" ';
+		print " title='"._("View this node")."'>";
 		print $siteComponent->getDisplayName();
 		print "</a>";
 		print "</div>";
