@@ -6,13 +6,14 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.10 2008/03/17 15:21:50 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.11 2008/03/18 13:23:07 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
 require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
 require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
 
 /**
@@ -25,7 +26,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.10 2008/03/17 15:21:50 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.11 2008/03/18 13:23:07 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -227,8 +228,8 @@ class DomImportSiteVisitor
 		$this->applyDisplayName($siteComponent, $element);
 		$this->applyDescription($siteComponent, $element);
 		$this->applyCommonProperties($siteComponent, $element);
-		$this->applyPluginContent($siteComponent->getAsset(), $element);
 		$this->applyMedia($siteComponent->getAsset(), $element);
+		$this->applyPluginContent($siteComponent->getAsset(), $element);
 		if ($this->importComments)
 			$this->applyComments($siteComponent, $element);
 		
@@ -1155,7 +1156,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.10 2008/03/17 15:21:50 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.11 2008/03/18 13:23:07 adamfranco Exp $
  */
 class MissingNodeException
 	extends Exception

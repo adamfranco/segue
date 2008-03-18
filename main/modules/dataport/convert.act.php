@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.2 2008/03/17 15:16:24 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.3 2008/03/18 13:22:57 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/import.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.2 2008/03/17 15:16:24 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.3 2008/03/18 13:22:57 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -70,6 +70,9 @@ class convertAction
 			$outputDoc2 = new Harmoni_DOMDocument;
 			$outputDoc2->loadXML($doc->saveXMLWithWhitespace());
 			printpre(htmlentities($outputDoc2->saveXML()));
+// 			header("Content-type: text/plain");
+// 			print $outputDoc2->saveXML();
+// 			exit;
 			$outputDoc2->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			
 			// Import the converted site
