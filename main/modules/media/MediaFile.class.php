@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.7 2008/03/18 17:32:12 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.8 2008/03/18 17:37:07 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAsset.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.7 2008/03/18 17:32:12 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.8 2008/03/18 17:37:07 adamfranco Exp $
  */
 class MediaFile {
 		
@@ -161,6 +161,8 @@ class MediaFile {
 			$mediaFile = self::withIdString($idString);
 			return $mediaFile->getIdString();
 		} catch (InvalidArgumentException $e) {
+			return $idString;
+		} catch (UnknownIdException $e) {
 			return $idString;
 		}
 	}

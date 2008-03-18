@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.13 2008/03/18 17:32:12 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.14 2008/03/18 17:37:07 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.13 2008/03/18 17:32:12 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.14 2008/03/18 17:37:07 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -386,6 +386,7 @@ abstract class SeguePluginsDriver
 				$mediaFile = MediaFile::withIdString($matches[1][$i]);
 				$htmlString = $this->str_replace_once($matches[0][$i], $mediaFile->getUrl(), $htmlString);
 			} catch (InvalidArgumentException $e) {
+			} catch (UnknownIdException $e) {
 			}
 		}
 		
