@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.5 2008/01/25 18:47:04 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.6 2008/03/18 15:46:17 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAsset.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.5 2008/01/25 18:47:04 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.6 2008/03/18 15:46:17 adamfranco Exp $
  */
 class MediaFile {
 		
@@ -39,15 +39,10 @@ class MediaFile {
 	 * @static
 	 */
 	public static function withIdString ( $idString) {
-		if (preg_match('/^repositoryId=(.+)&assetId=(.+)&recordId=(.+)$/', 
-			$idString, $matches)) 
-		{
-			$obj = MediaFile::withIdStrings($matches[1], $matches[2], $matches[3]);
-			return $obj;
-		} else {
-			$null = null;
-			return $null;
-		}
+		if (preg_match('/^(?:(?:repositoryId=(.+)&(?:amp;)?)|(?:&(?:amp;)?))?assetId=(.+)&(?:amp;)?recordId=(.+)$/', $idString, $matches))
+			return MediaFile::withIdStrings($matches[1], $matches[2], $matches[3]);
+		else
+			throw new InvalidArgumentException("Invalid Id format, '".$idString."'");
 	}
 	
 	/**
@@ -78,7 +73,7 @@ class MediaFile {
 	/**
 	 * Answer a new MediaAsset that wraps the Asset identified with the passed Ids.
 	 * 
-	 * @param string $repositoryId
+	 * @param string $repositoryId May be null of an empty string.
 	 * @param string $assetId
 	 * @return object MediaAsset
 	 * @access public
@@ -86,11 +81,14 @@ class MediaFile {
 	 * @static
 	 */
 	public static function withIdStrings ( $repositoryId, $assetId, $recordId ) {
-		ArgumentValidator::validate($repositoryId, NonZeroLengthStringValidatorRule::getRule());
+		ArgumentValidator::validate($repositoryId, OptionalRule::getRule(StringValidatorRule::getRule()));
 		ArgumentValidator::validate($assetId, NonZeroLengthStringValidatorRule::getRule());
 		ArgumentValidator::validate($recordId, NonZeroLengthStringValidatorRule::getRule());
 		
 		$idManager = Services::getService("Id");
+		
+		if (!$repositoryId)
+			$repositoryId = 'edu.middlebury.segue.sites_repository';
 		
 		$mediaFile = MediaFile::withIds(
 			$idManager->getId($repositoryId),
@@ -113,18 +111,23 @@ class MediaFile {
 	 */
 	public static function getMappedIdString (array $idMap, $idString) {
 		ArgumentValidator::validate($idString, NonZeroLengthStringValidatorRule::getRule());
-		if (!preg_match('/^repositoryId=(.+)&assetId=(.+)&recordId=(.+)$/', $idString, $matches)) 
-			throw new Exception("Invalid Id format, '$idString'");
+		if (!preg_match('/^(?:(?:repositoryId=(.+)&(?:amp;)?)|(?:&(?:amp;)?))?assetId=(.+)&(?:amp;)?recordId=(.+)$/', $idString, $matches)) 
+			throw new InvalidArgumentException("Invalid Id format, '$idString'");
+		
+		printpre($matches);
 			
-		if (isset($idMap[$matches[1]]))
-			$id = "repositoryId=".$idMap[$matches[1]];
-		else
-			$id = "repositoryId=".$matches[1];
+		if (isset($matches[1]) && $matches[1]) {
+			if (isset($idMap[$matches[1]]))
+				$id = "repositoryId=".$idMap[$matches[1]]."&";
+			else
+				$id = "repositoryId=".$matches[1]."&";
+		} else
+			$id = "";
 		
 		if (isset($idMap[$matches[2]]))
-			$id .= "&assetId=".$idMap[$matches[2]];
+			$id .= "assetId=".$idMap[$matches[2]];
 		else
-			$id .= "&assetId=".$matches[2];
+			$id .= "assetId=".$matches[2];
 		
 		if (isset($idMap[$matches[3]]))
 			$id .= "&recordId=".$idMap[$matches[3]];
@@ -146,9 +149,13 @@ class MediaFile {
 	 * @since 4/27/07
 	 */
 	function getIdString () {
-		return "repositoryId=".$this->_getRepositoryIdString()
-			."&assetId=".$this->_getIdString()
-			."&recordId=".$this->_getRecordIdString();
+		if ($this->_getRepositoryIdString() == 'edu.middlebury.segue.sites_repository')
+			return "assetId=".$this->_getIdString()
+				."&recordId=".$this->_getRecordIdString();
+		else
+			return "repositoryId=".$this->_getRepositoryIdString()
+				."&assetId=".$this->_getIdString()
+				."&recordId=".$this->_getRecordIdString();
 	}
 	
 	/**
