@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.4 2008/03/19 18:19:31 adamfranco Exp $
+ * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.5 2008/03/19 21:20:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/CategoryListBlockSegue1To2Converter.class.php")
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.4 2008/03/19 18:19:31 adamfranco Exp $
+ * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.5 2008/03/19 21:20:51 adamfranco Exp $
  */
 class SectionNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -56,6 +56,54 @@ class SectionNavBlockSegue1To2Converter
 	 */
 	protected function getIdString ($idString) {
 		return 'section_'.$idString;
+	}
+	
+	/**
+	 * Add the comments enabled attribute if needed
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function setCommentsEnabled (DOMElement $element) {
+		if ($this->sectionCommentsEnabled() && !$this->siteCommentsEnabled()) {
+			$element->setAttribute('commentsEnabled', 'true');
+		}
+	}
+	
+	/**
+	 * Answer true if all blocks in the section have comments enabled and that
+	 * the commentsEnabled setting should be made on the section level or higher.
+	 * 
+	 * @return boolean
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function sectionCommentsEnabled () {
+		$storyNodes = $this->sourceXPath->query('./page/story | ./page/file | ./page/link | ./page/rss | ./page/image', $this->sourceElement);
+		$discussionNodes = $this->sourceXPath->query('./page/*/discussion', $this->sourceElement);
+		if ($discussionNodes->length > 0 && $storyNodes->length == $discussionNodes->length)
+			return true;
+		else
+			return false;
+	}
+	
+	/**
+	 * Answer true if all blocks in the site have comments enabled and that
+	 * the commentsEnabled setting should be made on the site level or higher.
+	 * 
+	 * @return boolean
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function siteCommentsEnabled () {
+		$storyNodes = $this->sourceXPath->query('../section/page/story | ../section/page/file | ../section/page/link | ../section/page/rss | ../section/page/image', $this->sourceElement);
+		$discussionNodes = $this->sourceXPath->query('../section/page/*/discussion', $this->sourceElement);
+		if ($storyNodes->length == $discussionNodes->length)
+			return true;
+		else
+			return false;
 	}
 	
 	/**
@@ -177,9 +225,11 @@ class SectionNavBlockSegue1To2Converter
 		
 		foreach ($pages as $page) {
 			$cell = $menuOrg->appendChild($this->doc->createElement('cell'));
+			$turnOffComments = true;
 			switch ($page->nodeName) {
 				case 'page':
 					$converter = new PageNavBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					$turnOffComments = false;
 					break;
 				case 'pageContent':
 					$converter = new TextBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
@@ -206,7 +256,9 @@ class SectionNavBlockSegue1To2Converter
 					throw new Exception("Unknown page type '".$page->nodeName."'.");
 			}
 			
-			$cell->appendChild($converter->convert());
+			$childElement = $cell->appendChild($converter->convert());
+			if ($turnOffComments)
+				$childElement->setAttribute('commentsEnabled', 'false');
 		}
 		
 		return $menuOrg;
@@ -260,7 +312,8 @@ class SectionNavBlockSegue1To2Converter
 				default:
 					throw new Exception("Unknown page type '".$page->nodeName."'.");
 			}
-			$cell->appendChild($converter->convert());
+			$childElement = $cell->appendChild($converter->convert());
+			$childElement->setAttribute('commentsEnabled', 'false');
 		}
 		
 		if ($this->xpath->query('./cell', $org)->length)

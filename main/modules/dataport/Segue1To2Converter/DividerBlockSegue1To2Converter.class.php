@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DividerBlockSegue1To2Converter.class.php,v 1.1 2008/03/19 17:13:39 adamfranco Exp $
+ * @version $Id: DividerBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 21:20:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DividerBlockSegue1To2Converter.class.php,v 1.1 2008/03/19 17:13:39 adamfranco Exp $
+ * @version $Id: DividerBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 21:20:51 adamfranco Exp $
  */
 class DividerBlockSegue1To2Converter
 	extends TextBlockSegue1To2Converter
@@ -37,6 +37,7 @@ class DividerBlockSegue1To2Converter
 		$element = parent::convert();
 		
 		$element->setAttribute('showDisplayNames', 'false');
+		$element->setAttribute('commentsEnabled', 'false');
 		
 		return $element;
 	}

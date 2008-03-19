@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 18:19:31 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.3 2008/03/19 21:20:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/SectionNavBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 18:19:31 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.3 2008/03/19 21:20:51 adamfranco Exp $
  */
 class SiteNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -56,6 +56,37 @@ class SiteNavBlockSegue1To2Converter
 	}
 	
 	/**
+	 * Add the comments enabled attribute if needed
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function setCommentsEnabled (DOMElement $element) {
+		if ($this->siteCommentsEnabled()) {
+			$element->setAttribute('commentsEnabled', 'true');
+		}
+	}
+	
+	/**
+	 * Answer true if all blocks in the site have comments enabled and that
+	 * the commentsEnabled setting should be made here.
+	 * 
+	 * @return boolean
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function siteCommentsEnabled () {
+		$storyNodes = $this->sourceXPath->query('./section/page/story | ./section/page/file | ./section/page/link | ./section/page/rss | ./section/page/image', $this->sourceElement);
+		$discussionNodes = $this->sourceXPath->query('./section/page/*/discussion', $this->sourceElement);
+		if ($discussionNodes->length > 0 && $storyNodes->length == $discussionNodes->length)
+			return true;
+		else
+			return false;
+	}
+	
+	/**
 	 * Add the NavOrganizer and children to the NavBlock
 	 * 
 	 * @param object DOMElement $navBlockElement
@@ -78,6 +109,7 @@ class SiteNavBlockSegue1To2Converter
 		}
 		$org = $cell->appendChild($this->doc->createElement('FlowOrganizer'));
 		$org->setAttribute('id', $this->createId());
+		$org->setAttribute('commentsEnabled', 'false');
 		$org->setAttribute('rows', 0);
 		$org->setAttribute('cols', 1);
 		$org->setAttribute('showDisplayNames', 'false');
@@ -97,6 +129,7 @@ class SiteNavBlockSegue1To2Converter
 		}
 		$org = $cell->appendChild($this->doc->createElement('FlowOrganizer'));
 		$org->setAttribute('id', $this->createId());
+		$org->setAttribute('commentsEnabled', 'false');
 		$org->setAttribute('rows', 0);
 		$org->setAttribute('cols', 1);
 		$org->setAttribute('showDisplayNames', 'false');

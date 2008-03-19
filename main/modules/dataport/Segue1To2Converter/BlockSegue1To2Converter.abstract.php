@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.4 2008/03/19 19:44:08 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.5 2008/03/19 21:20:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/DownloadCommentSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.4 2008/03/19 19:44:08 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.5 2008/03/19 21:20:51 adamfranco Exp $
  */
 abstract class BlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -76,6 +76,7 @@ abstract class BlockSegue1To2Converter
 		$element->appendChild($media);
 		
 		// Comments
+		$this->setCommentsEnabled($element);
 		$this->addComments($comments);
 		
 		return $element;
@@ -169,6 +170,39 @@ abstract class BlockSegue1To2Converter
 		foreach ($comments as $comment) {
 			$this->addComment($comment, $commentsElement);
 		}
+	}
+	
+	/**
+	 * Add the comments enabled attribute if needed
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function setCommentsEnabled (DOMElement $element) {
+		if (!$this->pageCommentsEnabled()) {
+			$discussionNodes = $this->sourceXPath->query('./discussion', $this->sourceElement);
+			if ($discussionNodes->length)
+				$element->setAttribute('commentsEnabled', 'true');
+		}
+	}
+	
+	/**
+	 * Answer true if all blocks in the page have comments enabled and that
+	 * the commentsEnabled setting should be made on the page level or higher.
+	 * 
+	 * @return boolean
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function pageCommentsEnabled () {
+		$storyNodes = $this->sourceXPath->query('../story | ../file | ../link | ../rss | ../image', $this->sourceElement);
+		$discussionNodes = $this->sourceXPath->query('../*/discussion', $this->sourceElement);
+		if ($storyNodes->length == $discussionNodes->length)
+			return true;
+		else
+			return false;
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 21:20:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 21:20:51 adamfranco Exp $
  */
 class PageNavBlockSegue1To2Converter 
 	extends NavBlockSegue1To2Converter
@@ -49,6 +49,54 @@ class PageNavBlockSegue1To2Converter
 	 */
 	protected function getIdString ($idString) {
 		return 'page_'.$idString;
+	}
+	
+	/**
+	 * Add the comments enabled attribute if needed
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function setCommentsEnabled (DOMElement $element) {
+		if ($this->pageCommentsEnabled() && !$this->sectionCommentsEnabled()) {
+			$element->setAttribute('commentsEnabled', 'true');
+		}
+	}
+	
+	/**
+	 * Answer true if all blocks in the page have comments enabled and that
+	 * the commentsEnabled setting should be made on the page level or higher.
+	 * 
+	 * @return boolean
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function pageCommentsEnabled () {
+		$storyNodes = $this->sourceXPath->query('./story | ./file | ./link | ./rss | ./image', $this->sourceElement);
+		$discussionNodes = $this->sourceXPath->query('./*/discussion', $this->sourceElement);
+		if ($discussionNodes->length > 0 && $storyNodes->length == $discussionNodes->length)
+			return true;
+		else
+			return false;
+	}
+	
+	/**
+	 * Answer true if all blocks in the section have comments enabled and that
+	 * the commentsEnabled setting should be made on the section level or higher.
+	 * 
+	 * @return boolean
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function sectionCommentsEnabled () {
+		$storyNodes = $this->sourceXPath->query('../page/story | ../page/file | ../page/link | ../page/rss | ../page/image', $this->sourceElement);
+		$discussionNodes = $this->sourceXPath->query('../page/*/discussion', $this->sourceElement);
+		if ($storyNodes->length == $discussionNodes->length)
+			return true;
+		else
+			return false;
 	}
 	
 	/**

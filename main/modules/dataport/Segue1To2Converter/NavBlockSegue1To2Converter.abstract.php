@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavBlockSegue1To2Converter.abstract.php,v 1.2 2008/03/19 18:19:31 adamfranco Exp $
+ * @version $Id: NavBlockSegue1To2Converter.abstract.php,v 1.3 2008/03/19 21:20:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavBlockSegue1To2Converter.abstract.php,v 1.2 2008/03/19 18:19:31 adamfranco Exp $
+ * @version $Id: NavBlockSegue1To2Converter.abstract.php,v 1.3 2008/03/19 21:20:51 adamfranco Exp $
  */
 abstract class NavBlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -45,6 +45,8 @@ abstract class NavBlockSegue1To2Converter
 		$element->appendChild($this->createCDATAElement('description', ''));
 		
 		$this->addRoles($element);
+		
+		$this->setCommentsEnabled($element);
 		
 		$this->addCreationInfo($element);
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.3 2008/03/19 18:19:31 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.4 2008/03/19 21:20:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/../Rendering/DomImportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.3 2008/03/19 18:19:31 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.4 2008/03/19 21:20:51 adamfranco Exp $
  */
 abstract class Segue1To2Converter {
 
@@ -267,7 +267,7 @@ abstract class Segue1To2Converter {
 					case 'view_permission':
 						$agents[$agentId][] = 'view';
 						break;
-					case 'comment_permission':
+					case 'discuss_permission':
 						$agents[$agentId][] = 'comment';
 						break;
 					case 'add_permission':
@@ -571,7 +571,7 @@ abstract class Segue1To2Converter {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.3 2008/03/19 18:19:31 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.4 2008/03/19 21:20:51 adamfranco Exp $
  */
 class PermissionResolver {
 		
