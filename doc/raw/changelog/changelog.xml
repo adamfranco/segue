@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.187 2008/03/19 17:02:01 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.188 2008/03/19 19:33:55 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -78,6 +78,10 @@
 		<new author='alex' date='2008-03-11' ref='1799956' reftype='fr'>
 			Site Display: added link to RSS feeds
 		</new>
+		<fix author='adam' date='2008-03-19'>
+			Site Display: Fixed error in FlowOrgaizer sorting when sort-keys were
+			not unique.
+		</fix>
 		<new author='alex' date='2008-03-11' ref='1799956' reftype='fr'>
 			RSS: new actions for publishing RSS of content and comments.
 		</new>	

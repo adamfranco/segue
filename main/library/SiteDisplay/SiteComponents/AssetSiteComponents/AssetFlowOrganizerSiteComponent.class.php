@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.18 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.19 2008/03/19 19:33:47 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/FlowOrganizerSiteComp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.18 2008/01/23 15:06:02 adamfranco Exp $
+ * @version $Id: AssetFlowOrganizerSiteComponent.class.php,v 1.19 2008/03/19 19:33:47 adamfranco Exp $
  */
 class AssetFlowOrganizerSiteComponent
 	extends AssetOrganizerSiteComponent 
@@ -337,8 +337,15 @@ class AssetFlowOrganizerSiteComponent
 				$methods = array('default', 'custom', 'title_asc', 'title_desc', 'create_date_asc', 'create_date_desc', 'mod_date_asc', 'mod_date_desc');
 				throw new Exception("Invalid sort method, '$sortMethod', not one of '".implode("', ", $methods)."'.");
 		}
-		
-		array_multisort($sortKeys, $direction, SORT_STRING, $subcomponents); 
+
+		// if the sort keys match, then sorting will be attempted on the subcomponents,
+		// resulting in an error. To prevent this, generate an array of unique integers
+		// to do secondary sorting on if sort-keys match.
+		$secondaryKeys = array_keys($subcomponents);
+		array_multisort(
+			$sortKeys, $direction, SORT_STRING, 
+			$secondaryKeys, SORT_ASC, SORT_NUMERIC, 
+			$subcomponents); 
 		return $subcomponents;
 	}
 	
