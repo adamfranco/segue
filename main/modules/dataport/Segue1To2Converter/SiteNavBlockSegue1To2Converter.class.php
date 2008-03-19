@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 18:19:31 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/SectionNavBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 18:19:31 adamfranco Exp $
  */
 class SiteNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -36,6 +36,7 @@ class SiteNavBlockSegue1To2Converter
 	public function convert () {
 		$element = parent::convert();
 		$element->setAttribute('slot_name', $this->sourceElement->getAttribute('id'));
+		$this->setSiteWidth($element);
 		
 		// Convert links of the form [[localurl:site=xxxx&amp;section=yyyy&amp;page=zzzz]] to [[nodeurl:xxxx]]
 		$this->updateAllLocalUrls();
@@ -127,6 +128,7 @@ class SiteNavBlockSegue1To2Converter
 			$organizer->setAttribute('rows', '1');
 			$organizer->setAttribute('cols', '2');
 			$sectionMenu->setAttribute('direction', 'Top-Bottom/Left-Right');
+			$this->setNavigationWidth($sectionMenu);
 		} else {
 			$organizer->setAttribute('rows', '2');
 			$organizer->setAttribute('cols', '1');

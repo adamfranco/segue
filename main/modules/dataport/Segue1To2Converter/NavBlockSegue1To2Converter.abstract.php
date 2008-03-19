@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavBlockSegue1To2Converter.abstract.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: NavBlockSegue1To2Converter.abstract.php,v 1.2 2008/03/19 18:19:31 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NavBlockSegue1To2Converter.abstract.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: NavBlockSegue1To2Converter.abstract.php,v 1.2 2008/03/19 18:19:31 adamfranco Exp $
  */
 abstract class NavBlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -121,6 +121,45 @@ abstract class NavBlockSegue1To2Converter
 	 */
 	protected function useSideSections () {
 		return true;
+	}
+	
+	/**
+	 * Set the navigation width attribute for an element
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function setNavigationWidth (DOMElement $element) {
+		try {
+			$widthElement = $this->getSingleSourceElement('/site/theme/navigation_width');
+			if (preg_match('/([0-9]+)/', $widthElement->nodeValue, $matches))
+				$width = $matches[1].'px';
+			else
+				$width = '200px';
+		} catch (MissingNodeException $e) {
+			$width = '200px';
+		}
+		
+		$element->setAttribute('width', $width);
+	}
+	
+	/**
+	 * Set the width attribute for a site element
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function setSiteWidth (DOMElement $element) {
+		try {
+			$widthElement = $this->getSingleSourceElement('/site/theme/site_width');
+			if (preg_match('/([0-9]+)/', $widthElement->nodeValue, $matches))
+				$element->setAttribute('width', $matches[1].'px');
+		} catch (MissingNodeException $e) {
+		}
 	}
 }
 

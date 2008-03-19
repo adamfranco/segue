@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.2 2008/03/17 15:25:11 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.3 2008/03/19 18:19:31 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/../Rendering/DomImportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.2 2008/03/17 15:25:11 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.3 2008/03/19 18:19:31 adamfranco Exp $
  */
 abstract class Segue1To2Converter {
 
@@ -466,8 +466,11 @@ abstract class Segue1To2Converter {
 	 * @access protected
 	 * @since 1/22/08
 	 */
-	protected function getSingleSourceElement ($xpath, DOMElement $element) {
-		$nodes = $this->sourceXPath->evaluate($xpath, $element);
+	protected function getSingleSourceElement ($xpath, DOMElement $element = null) {
+		if (is_null($element))
+			$nodes = $this->sourceXPath->evaluate($xpath);
+		else
+			$nodes = $this->sourceXPath->evaluate($xpath, $element);
 		for ($i = 0; $i < $nodes->length; $i++) {
 			$node = $nodes->item($i);
 			if ($node->nodeType == XML_ELEMENT_NODE) {
@@ -568,7 +571,7 @@ abstract class Segue1To2Converter {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.2 2008/03/17 15:25:11 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.3 2008/03/19 18:19:31 adamfranco Exp $
  */
 class PermissionResolver {
 		
