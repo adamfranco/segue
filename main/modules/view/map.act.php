@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.3 2008/03/18 20:47:08 achapin Exp $
+ * @version $Id: map.act.php,v 1.4 2008/03/19 20:46:03 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteMapSiteVisitor.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.3 2008/03/18 20:47:08 achapin Exp $
+ * @version $Id: map.act.php,v 1.4 2008/03/19 20:46:03 achapin Exp $
  */
 class mapAction 
 	extends MainWindowAction
@@ -373,7 +373,7 @@ class mapAction
 	 */
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
 		$actionRows = $this->getActionRows();
-		$actionRows->add(new Heading(_("Site map for: ").$siteComponent->getDisplayName(), 1));
+		$actionRows->add(new Heading(_("Site map for: ").$siteComponent->getDisplayName(), 2));
 		
 		$this->printNodeStart($siteComponent);
 		
