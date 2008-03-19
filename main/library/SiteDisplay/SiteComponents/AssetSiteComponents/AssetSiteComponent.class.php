@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.17 2008/02/18 15:43:17 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.18 2008/03/19 21:24:00 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.17 2008/02/18 15:43:17 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.18 2008/03/19 21:24:00 adamfranco Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -415,9 +415,9 @@ abstract class AssetSiteComponent
 		if (!$element->hasAttribute('commentsEnabled'))
 			return 'default';
 		
-		if ($element->getAttribute('commentsEnabled') == 'true')
+		if ($element->getAttribute('commentsEnabled') === 'true')
 			return true;
-		else if ($element->getAttribute('commentsEnabled') == 'false')
+		else if ($element->getAttribute('commentsEnabled') === 'false')
 			return false;
 		else
 			return 'default';

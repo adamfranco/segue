@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.11 2008/03/19 21:24:00 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.12 2008/03/19 21:24:43 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteCompo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.11 2008/03/19 21:24:00 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.12 2008/03/19 21:24:43 adamfranco Exp $
  */
 class AssetSiteNavBlockSiteComponent
 	extends AssetNavBlockSiteComponent
@@ -85,7 +85,7 @@ class AssetSiteNavBlockSiteComponent
 	 */
 	function showDisplayNames () {
 		$showDisplayNames = parent::showDisplayNames();
-		if ($showDisplayNames == 'default')
+		if ($showDisplayNames === 'default')
 			return true;
 		else
 			return $showDisplayNames;
