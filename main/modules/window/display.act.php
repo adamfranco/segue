@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.26 2008/03/18 20:25:30 achapin Exp $
+ * @version $Id: display.act.php,v 1.27 2008/03/19 17:12:05 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.26 2008/03/18 20:25:30 achapin Exp $
+ * @version $Id: display.act.php,v 1.27 2008/03/19 17:12:05 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -353,7 +353,7 @@ class displayAction
 		
 		print "\n\t\t<select style='font-size: 10px' name='".RequestContext::name('user_interface')."' ";
 		print "onchange=\"this.form.submit();\"";		
-		print "\">";
+		print ">";
 		$options = array ('ui1' => _("Classic Mode"), 'ui2' => _("New Mode"));
 		foreach ($options as $key => $val) {
 			print "\n\t\t\t<option value='$key'";
