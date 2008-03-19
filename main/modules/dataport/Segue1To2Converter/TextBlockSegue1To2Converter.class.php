@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.4 2008/03/19 19:55:52 adamfranco Exp $
+ * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.5 2008/03/19 19:57:41 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.4 2008/03/19 19:55:52 adamfranco Exp $
+ * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.5 2008/03/19 19:57:41 adamfranco Exp $
  */
 class TextBlockSegue1To2Converter
 	extends BlockSegue1To2Converter
@@ -123,7 +123,7 @@ class TextBlockSegue1To2Converter
 		
 		if (strlen(trim($longHtml))) {
 			$version->appendChild($this->createCDATAElement('content', 
-				$shortHtml."\n".$longHtml));
+				$shortHtml."\n<br/><br/>\n".$longHtml));
 			$version->appendChild($this->doc->createElement('abstractLength', 
 				str_word_count(strip_tags($shortHtml))));
 		} else {
