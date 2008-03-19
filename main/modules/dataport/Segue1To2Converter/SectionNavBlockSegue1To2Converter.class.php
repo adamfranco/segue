@@ -6,13 +6,15 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 17:02:03 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
 require_once(dirname(__FILE__)."/PageNavBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/LinkBlockSegue1To2Converter.class.php");
+require_once(dirname(__FILE__)."/ParticipantListBlockSegue1To2Converter.class.php");
+require_once(dirname(__FILE__)."/CategoryListBlockSegue1To2Converter.class.php");
 
 /**
  * A converter for Section-level NavBlock
@@ -23,7 +25,7 @@ require_once(dirname(__FILE__)."/LinkBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.1 2008/02/14 20:25:43 adamfranco Exp $
+ * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 17:02:03 adamfranco Exp $
  */
 class SectionNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -162,9 +164,9 @@ class SectionNavBlockSegue1To2Converter
 		
 		// Note: Ignoring dividers for now.
 		if ($side == 'all_items')
-			$pages = $this->sourceXPath->query('./page | ./pageContent | ./navlink | ./heading | ./pageRSS', $this->sourceElement);
+			$pages = $this->sourceXPath->query('./page | ./pageContent | ./navlink | ./heading | ./pageRSS | ./participantList | ./categoryList', $this->sourceElement);
 		else
-			$pages = $this->sourceXPath->query("./page[@location = '$side'] | ./pageContent[@location = '$side'] | ./navlink[@location = '$side'] | ./heading[@location = '$side'] | ./pageRSS[@location = '$side']", $this->sourceElement);
+			$pages = $this->sourceXPath->query("./page[@location = '$side'] | ./pageContent[@location = '$side'] | ./navlink[@location = '$side'] | ./heading[@location = '$side'] | ./pageRSS[@location = '$side'] | ./participantList[@location = '$side'] | ./categoryList[@location = '$side']", $this->sourceElement);
 		
 		foreach ($pages as $page) {
 			$cell = $menuOrg->appendChild($this->doc->createElement('cell'));
@@ -183,6 +185,12 @@ class SectionNavBlockSegue1To2Converter
 					break;
 				case 'pageRSS':
 					$converter = new RssBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					break;
+				case 'participantList':
+					$converter = new ParticipantListBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					break;
+				case 'categoryList':
+					$converter = new CategoryListBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 					break;
 				default:
 					throw new Exception("Unknown page type '".$page->nodeName."'.");
@@ -214,15 +222,27 @@ class SectionNavBlockSegue1To2Converter
 		
 		// Note: Ignoring dividers for now.
 		if ($side == 'all_items')
-			$pages = $this->sourceXPath->query('./pageContent | ./navlink | ./heading', $this->sourceElement);
+			$pages = $this->sourceXPath->query('./pageContent | ./navlink | ./heading | ./participantList | ./categoryList', $this->sourceElement);
 		else
-			$pages = $this->sourceXPath->query("./pageContent[@location = '$side'] | ./navlink[@location = '$side'] | ./heading[@location = '$side']", $this->sourceElement);
+			$pages = $this->sourceXPath->query("./pageContent[@location = '$side'] | ./navlink[@location = '$side'] | ./heading[@location = '$side'] | ./participantList[@location = '$side'] | ./categoryList[@location = '$side']", $this->sourceElement);
 		
 		foreach ($pages as $page) {
 			$cell = $org->appendChild($this->doc->createElement('cell'));
 			switch ($page->nodeName) {
 				case 'pageContent':
 					$converter = new TextBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					break;
+				case 'heading':
+					$converter = new HeadingBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					break;
+				case 'pageRSS':
+					$converter = new RssBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					break;
+				case 'participantList':
+					$converter = new ParticipantListBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					break;
+				case 'categoryList':
+					$converter = new CategoryListBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 					break;
 				default:
 					throw new Exception("Unknown page type '".$page->nodeName."'.");
