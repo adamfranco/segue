@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.6 2008/03/19 17:02:02 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.7 2008/03/19 19:44:08 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/import.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.6 2008/03/19 17:02:02 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.7 2008/03/19 19:44:08 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -70,6 +70,7 @@ class convertAction
 // 			$outputDoc2 = new Harmoni_DOMDocument;
 // 			$outputDoc2->loadXML($doc->saveXMLWithWhitespace());
 // 			printpre(htmlentities($outputDoc2->saveXML()));
+// 			throw new Exception('test');
 			
 			// Add the user as the owner
 			$authN = Services::getService("AuthN");
