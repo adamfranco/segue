@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HeadingBlockSegue1To2Converter.class.php,v 1.3 2008/03/19 17:13:39 adamfranco Exp $
+ * @version $Id: DividerBlockSegue1To2Converter.class.php,v 1.1 2008/03/19 17:13:39 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
@@ -20,11 +20,12 @@ require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HeadingBlockSegue1To2Converter.class.php,v 1.3 2008/03/19 17:13:39 adamfranco Exp $
+ * @version $Id: DividerBlockSegue1To2Converter.class.php,v 1.1 2008/03/19 17:13:39 adamfranco Exp $
  */
-class HeadingBlockSegue1To2Converter
+class DividerBlockSegue1To2Converter
 	extends TextBlockSegue1To2Converter
 {
+	
 	/**
 	 * Convert the source element and return our resulting element
 	 * 
@@ -49,7 +50,7 @@ class HeadingBlockSegue1To2Converter
 	 * @since 3/19/08
 	 */
 	protected function getDescriptionElement (DOMElement $mediaElement) {
-		return $this->createCDATAElement('description', 'A heading between items.');
+		return $this->createCDATAElement('description', 'A divider between items.');
 	}
 	
 	/**
@@ -64,7 +65,7 @@ class HeadingBlockSegue1To2Converter
 		$version = $currentVersion->appendChild($this->doc->createElement('version'));
 		
 		$version->appendChild($this->createCDATAElement('content', 
-		"<h3>".$this->getDisplayName()."</h3>"));
+		"<hr/>"));
 		$version->appendChild($this->doc->createElement('abstractLength', 0));
 		
 		return $currentVersion;
