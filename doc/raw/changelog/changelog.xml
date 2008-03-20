@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.193 2008/03/20 20:42:57 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.194 2008/03/20 20:43:14 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -51,7 +51,7 @@
 			repeated access.
 		</change>
 		<new author='adam' date='2008-03-20' ref='1820917' reftype='fr'>
-			Slots: Now upload limits can be set for sites
+			Slots: Now upload limits can be set for sites.
 		</new>
 		<change author='adam' date='2008-03-11'>
 			UI1/UI2: now passes current node id to breadcrumbs
