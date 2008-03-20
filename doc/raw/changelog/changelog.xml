@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.191 2008/03/20 15:45:52 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.192 2008/03/20 19:07:04 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -13,6 +13,21 @@
 	<version number="2.0-beta-15" date="The Future">
 		<releaseNotes>
 		</releaseNotes>
+		<new author='adam' date='2008-03-20' ref='1820829' reftype='fr'>
+			Importer/Migration: Site migration tools to allow users to import Segue 1 sites.
+		</new>
+		<new author='adam' date='2008-03-20'>
+			URLs/Migration: A URL resolver has been added that can redirect 
+			Segue 1-style urls. If the Segue 1 site has bee imported into Segue 2
+			then the user will be redirected to the Segue 2 version, otherwise,
+			they will be redirected to the Segue 1 instance. 
+			
+			This feature allows Segue 2 to be placed at the previous location of a
+			Segue 1 instance (e.g. http://segue.example.edu) and the Segue 1 instance
+			to be moved to a new location (e.g. http://segue1.example.edu). With this
+			switch, Segue 2 will be able to forward old urls to either new versions
+			or to the Segue 1 instance for the duration of a migration period.
+		</new>
 		<new author='alex' date='2008-03-18'>
 			View/UI1/UI2: added a view module with unified view actions and redirected view actions in UI1 and UI2 to it.
 		</new>

@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.13 2008/02/26 14:08:10 adamfranco Exp $
+ * @version $Id: index.php,v 1.14 2008/03/20 19:07:04 adamfranco Exp $
  */
 
 /*********************************************************
@@ -65,7 +65,31 @@ if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
 }
 
 try {
-	$harmoni->execute();
+	try {
+		/*********************************************************
+		 * Redirect for short form /sites/mysitename urls
+		 *********************************************************/
+		if (isset($_SERVER['PATH_INFO']) 
+			&& preg_match('/^\/sites\/(\w+)\/?/', $_SERVER['PATH_INFO'], $matches)) 
+		{
+			$harmoni->request->set('site', $matches[1]);
+			$harmoni->request->setModuleAction('view', 'html');
+		}
+
+		$harmoni->execute();
+	} catch (UnknownActionException $e) {
+		// If we are passed a Segue1-style URL, forward to an appropriate place.
+		Segue1UrlResolver::forwardCurrentIfNeeded();
+		
+		// If we were not forwarded, re-throw
+		throw $e;
+	} catch (UnknownIdException $e) {
+		// If we are passed a Segue1-style URL, forward to an appropriate place.
+		Segue1UrlResolver::forwardCurrentIfNeeded();
+		
+		// If we were not forwarded, re-throw
+		throw $e;
+	}
 
 // Handle certain types of uncaught exceptions specially. In particular,
 // Send back HTTP Headers indicating that an error has ocurred to help prevent
