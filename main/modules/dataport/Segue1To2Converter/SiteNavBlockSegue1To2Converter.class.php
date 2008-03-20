@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.3 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.4 2008/03/20 14:14:25 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
+require_once(dirname(__FILE__)."/NavLinkBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/SectionNavBlockSegue1To2Converter.class.php");
 
 /**
@@ -21,7 +22,7 @@ require_once(dirname(__FILE__)."/SectionNavBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.3 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.4 2008/03/20 14:14:25 adamfranco Exp $
  */
 class SiteNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -185,10 +186,16 @@ class SiteNavBlockSegue1To2Converter
 		
 		$organizer->setAttribute('id', $this->createId());
 		
-		$sections = $this->sourceXPath->query('/site/section');
+		$sections = $this->sourceXPath->query('/site/section | /site/navlink');
 		foreach ($sections as $section) {
 			$cell = $organizer->appendChild($this->doc->createElement('cell'));
-			$converter = new SectionNavBlockSegue1To2Converter($section, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+			switch ($section->nodeName) {
+				case 'navlink':
+					$converter = new NavLinkBlockSegue1To2Converter($section, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					break;
+				default:
+					$converter = new SectionNavBlockSegue1To2Converter($section, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+			}
 			$cell->appendChild($converter->convert());
 		}
 		

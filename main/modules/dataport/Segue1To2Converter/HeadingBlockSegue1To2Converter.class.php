@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HeadingBlockSegue1To2Converter.class.php,v 1.4 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: HeadingBlockSegue1To2Converter.class.php,v 1.5 2008/03/20 14:14:24 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HeadingBlockSegue1To2Converter.class.php,v 1.4 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: HeadingBlockSegue1To2Converter.class.php,v 1.5 2008/03/20 14:14:24 adamfranco Exp $
  */
 class HeadingBlockSegue1To2Converter
 	extends TextBlockSegue1To2Converter
@@ -37,6 +37,7 @@ class HeadingBlockSegue1To2Converter
 		
 		$element->setAttribute('showDisplayNames', 'false');
 		$element->setAttribute('commentsEnabled', 'false');
+		$element->setAttribute('showHistory', 'false');
 		
 		return $element;
 	}
@@ -65,7 +66,7 @@ class HeadingBlockSegue1To2Converter
 		$version = $currentVersion->appendChild($this->doc->createElement('version'));
 		
 		$version->appendChild($this->createCDATAElement('content', 
-		"<h3>".$this->getDisplayName()."</h3>"));
+"<div style='font-weight: bold; font-size: larger;'>".$this->getDisplayName()."</div>"));
 		$version->appendChild($this->doc->createElement('abstractLength', 0));
 		
 		return $currentVersion;

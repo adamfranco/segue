@@ -6,10 +6,11 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.5 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.6 2008/03/20 14:14:25 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
+require_once(dirname(__FILE__)."/NavLinkBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/PageNavBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/LinkBlockSegue1To2Converter.class.php");
@@ -27,7 +28,7 @@ require_once(dirname(__FILE__)."/CategoryListBlockSegue1To2Converter.class.php")
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.5 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.6 2008/03/20 14:14:25 adamfranco Exp $
  */
 class SectionNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -235,7 +236,7 @@ class SectionNavBlockSegue1To2Converter
 					$converter = new TextBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 					break;
 				case 'navlink':
-					$converter = new LinkBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					$converter = new NavLinkBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 					break;
 				case 'heading':
 					$converter = new HeadingBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
@@ -293,6 +294,9 @@ class SectionNavBlockSegue1To2Converter
 			switch ($page->nodeName) {
 				case 'pageContent':
 					$converter = new TextBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					break;
+				case 'navlink':
+					$converter = new NavLinkBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 					break;
 				case 'heading':
 					$converter = new HeadingBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);

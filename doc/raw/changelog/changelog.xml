@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.189 2008/03/19 21:24:00 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.190 2008/03/20 14:14:24 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -87,7 +87,10 @@
 		</fix>
 		<new author='alex' date='2008-03-11' ref='1799956' reftype='fr'>
 			RSS: new actions for publishing RSS of content and comments.
-		</new>	
+		</new>
+		<fix author='adam' date='2008-03-20'>
+			Importer: Fixed notice when invalid archives are uploaded.
+		</fix>
 	</version>
 	<version number="2.0-beta-14" date="2008-03-10">
 		<releaseNotes>
