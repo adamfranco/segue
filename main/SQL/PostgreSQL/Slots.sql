@@ -21,6 +21,7 @@ CREATE TABLE segue_slot (
   site_id varchar(50) default NULL,
   "type" varchar(10) NOT NULL default 'personal',
   location_category NOT NULL,
+  media_quota int default NULL,
   PRIMARY KEY  (shortname)
 );
 

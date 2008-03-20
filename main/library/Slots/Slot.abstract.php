@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.8 2008/03/13 13:29:32 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.9 2008/03/20 20:42:57 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.interface.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/Slot.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.8 2008/03/13 13:29:32 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.9 2008/03/20 20:42:57 adamfranco Exp $
  */
 abstract class SlotAbstract 
 	implements Slot
@@ -53,6 +53,18 @@ abstract class SlotAbstract
 	 */
 	public static function getLocationCategories () {
 		return array('main', 'community');
+	}
+	
+	/**
+	 * Set the default media quota
+	 * 
+	 * @param object Integer $quota
+	 * @return void
+	 * @access public
+	 * @since 3/20/08
+	 */
+	public function setDefaultMediaQuota (Integer $quota) {
+		self::$defaultMediaQuota = $quota->value();
 	}
 	
 
@@ -102,6 +114,21 @@ abstract class SlotAbstract
 	 */
 	private $locationCategory;
 	
+	/**
+	 * @var int $mediaQuota; The quota for media in this slot's site. 10485760 = 10MB
+	 * @access private
+	 * @since 3/20/08
+	 */
+	private $mediaQuota = 0;
+	
+	/**
+	 * @var int $defaultMediaQuota; The default quota for media in any slots' site. 10485760 = 10MB 
+	 * @access private
+	 * @since 3/20/08
+	 * @static
+	 */
+	private static $defaultMediaQuota = 10485760;
+	
 /*********************************************************
  * Instance Methods
  *********************************************************/
@@ -119,6 +146,8 @@ abstract class SlotAbstract
 		$this->owners = array();
 		$this->removedOwners = array();
 		$this->isInDB = $fromDB;
+		
+		$this->mediaQuota = self::$defaultMediaQuota;
 	}
 	
 	/**
@@ -592,7 +621,10 @@ abstract class SlotAbstract
 					$query->addValue('site_id', $this->getSiteId()->getIdString());
 				$query->addValue('type', $this->getType());
 				$query->addValue('location_category', $this->getLocationCategory());
-							
+				if ($this->mediaQuota == self::$defaultMediaQuota)
+					$query->addRawValue('media_quota', 'null');
+				else
+					$query->addValue('media_quota', $this->mediaQuota);
 				$dbc->query($query, IMPORTER_CONNECTION);
 			} catch (DuplucateKeyDatabaseException $e) {
 				// Update row to the slot table
@@ -603,6 +635,10 @@ abstract class SlotAbstract
 					$query->addValue('site_id', $this->getSiteId()->getIdString());
 				$query->addValue('type', $this->getType());
 				$query->addValue('location_category', $this->getLocationCategory());
+				if ($this->mediaQuota == self::$defaultMediaQuota)
+					$query->addRawValue('media_quota', 'null');
+				else
+					$query->addValue('media_quota', $this->mediaQuota);
 				
 				$dbc->query($query, IMPORTER_CONNECTION);
 			}
@@ -625,6 +661,60 @@ abstract class SlotAbstract
 			
 			$this->isInDB = true;
 		}
+	}
+	
+	/**
+	 * Answer the media library quota
+	 * 
+	 * @return object ByteSize
+	 * @access public
+	 * @since 3/20/08
+	 */
+	public function getMediaQuota () {
+		return ByteSize::withValue($this->mediaQuota);
+	}
+	
+	/**
+	 * Set the media library quota
+	 * 
+	 * @param object Integer $quota
+	 * @return void
+	 * @access public
+	 * @since 3/20/08
+	 */
+	public function setMediaQuota (Integer $quota) {
+		$this->mediaQuota = $quota->value();
+		
+		$this->recordInDB();
+			
+		$query = new UpdateQuery;
+		$query->setTable('segue_slot');
+		$query->addWhereEqual('shortname', $this->getShortname());
+		$query->addValue('media_quota', $this->mediaQuota);
+		
+		$dbc = Services::getService('DBHandler');
+		$dbc->query($query, IMPORTER_CONNECTION);
+	}
+	
+	/**
+	 * Set the media library quota to be the default
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 3/20/08
+	 */
+	public function useDefaultMediaQuota () {
+		$this->mediaQuota = self::$defaultMediaQuota;
+		
+		$this->recordInDB();
+			
+		$query = new UpdateQuery;
+		$query->setTable('segue_slot');
+		$query->addWhereEqual('shortname', $this->getShortname());
+		$query->addRawValue('media_quota', 'NULL');
+		
+		$dbc = Services::getService('DBHandler');
+		$dbc->query($query, IMPORTER_CONNECTION);
 	}
 }
 

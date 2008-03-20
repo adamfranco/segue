@@ -21,6 +21,7 @@ CREATE TABLE `segue_slot` (
   `site_id` varchar(50) collate utf8_bin NOT NULL,
   `type` enum('personal','course','custom') collate utf8_bin NOT NULL default 'personal',
   `location_category` enum('main','community') collate utf8_bin NOT NULL,
+  `media_quota` int(11) default NULL,
   PRIMARY KEY  (`shortname`),
   KEY `site_id` (`site_id`),
   KEY `location_category` (`location_category`)
