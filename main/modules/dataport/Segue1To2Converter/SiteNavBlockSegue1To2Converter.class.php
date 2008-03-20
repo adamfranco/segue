@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.4 2008/03/20 14:14:25 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.5 2008/03/20 15:44:51 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/SectionNavBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.4 2008/03/20 14:14:25 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.5 2008/03/20 15:44:51 adamfranco Exp $
  */
 class SiteNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -37,6 +37,9 @@ class SiteNavBlockSegue1To2Converter
 	public function convert () {
 		$element = parent::convert();
 		$element->setAttribute('slot_name', $this->sourceElement->getAttribute('id'));
+		// Reset the id to encode it as a slot
+		$element->setAttribute('id', 'site_'.$this->sourceElement->getAttribute('id'));
+		
 		$this->setSiteWidth($element);
 		
 		// Convert links of the form [[localurl:site=xxxx&amp;section=yyyy&amp;page=zzzz]] to [[nodeurl:xxxx]]
@@ -259,10 +262,10 @@ class SiteNavBlockSegue1To2Converter
 		for ($i = 0; $i < count($matches[0]); $i++) {
 			try {
 				$nodeId = $this->getNodeIdForParamString($matches[1][$i]);
-				printpre($nodeId);
+// 				printpre($nodeId);
 				$html = str_replace($matches[0][$i], '[[nodeurl:'.$nodeId.']]', $html);
 			} catch (UnknownIdException $e) {
-				printpre($e->getMessage());
+// 				printpre($e->getMessage());
 			};
 		}
 		

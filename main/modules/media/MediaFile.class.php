@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.8 2008/03/18 17:37:07 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.9 2008/03/20 15:43:56 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAsset.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaFile.class.php,v 1.8 2008/03/18 17:37:07 adamfranco Exp $
+ * @version $Id: MediaFile.class.php,v 1.9 2008/03/20 15:43:56 adamfranco Exp $
  */
 class MediaFile {
 		
@@ -116,7 +116,7 @@ class MediaFile {
 		if (!preg_match('/^(?:(?:repositoryId=(.+)&(?:amp;)?)|(?:&(?:amp;)?))?assetId=(.+)&(?:amp;)?recordId=(.+)$/', $idString, $matches)) 
 			throw new InvalidArgumentException("Invalid Id format, '$idString'");
 		
-		printpre($matches);
+// 		printpre($matches);
 			
 		if (isset($matches[1]) && $matches[1]) {
 			if (isset($idMap[$matches[1]]))

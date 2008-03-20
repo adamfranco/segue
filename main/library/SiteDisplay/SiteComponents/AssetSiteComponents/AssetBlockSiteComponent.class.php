@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.18 2008/02/18 15:41:12 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.19 2008/03/20 15:43:56 adamfranco Exp $
  */ 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.abstract.php");
 
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/BlockSiteComponent.ab
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetBlockSiteComponent.class.php,v 1.18 2008/02/18 15:41:12 adamfranco Exp $
+ * @version $Id: AssetBlockSiteComponent.class.php,v 1.19 2008/03/20 15:43:56 adamfranco Exp $
  */
 class AssetBlockSiteComponent
 	extends AssetSiteComponent
@@ -321,15 +321,15 @@ class AssetBlockSiteComponent
 	 * @since 10/5/06
 	 */
 	function _saveXml () {
-		printpre("<hr/><h2>Saving Parent AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
-		print("<h3>Previous XML</h3>");
+// 		printpre("<hr/><h2>Saving Parent AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
+// 		print("<h3>Previous XML</h3>");
 		$parentComponent = $this->getParentComponent();
 		$parentAsset = $parentComponent->getAsset();
-		$oldContent = $parentAsset->getContent();
-		printpre(htmlentities($oldContent->asString()));
-		print("<h3>New XML</h3>");
+// 		$oldContent = $parentAsset->getContent();
+// 		printpre(htmlentities($oldContent->asString()));
+// 		print("<h3>New XML</h3>");
 		$element = $this->getElement();
-		printpre(htmlentities($element->ownerDocument->saveXMLWithWhitespace()));
+// 		printpre(htmlentities($element->ownerDocument->saveXMLWithWhitespace()));
 // 		exit;
 		
 		$parentAsset->updateContent(

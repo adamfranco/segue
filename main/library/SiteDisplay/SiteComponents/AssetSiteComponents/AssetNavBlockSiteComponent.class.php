@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.18 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.19 2008/03/20 15:43:56 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.18 2008/01/23 22:07:15 adamfranco Exp $
+ * @version $Id: AssetNavBlockSiteComponent.class.php,v 1.19 2008/03/20 15:43:56 adamfranco Exp $
  */
 class AssetNavBlockSiteComponent
 	extends AssetBlockSiteComponent
@@ -324,13 +324,13 @@ class AssetNavBlockSiteComponent
 	 * @since 10/5/06
 	 */
 	function _saveXml () {
-		printpre("<hr/><h2>Saving AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
-		print("<h3>Previous XML</h3>");
-		$oldContent = $this->_asset->getContent();
-		printpre(htmlentities($oldContent->asString()));
-		print("<h3>New XML</h3>");
+// 		printpre("<hr/><h2>Saving AssetXML for ".get_class($this)." ".$this->getId().": </h2>");
+// 		print("<h3>Previous XML</h3>");
+// 		$oldContent = $this->_asset->getContent();
+// 		printpre(htmlentities($oldContent->asString()));
+// 		print("<h3>New XML</h3>");
 		$element = $this->getElement();
-		printpre(htmlentities($element->ownerDocument->saveXMLWithWhitespace()));
+// 		printpre(htmlentities($element->ownerDocument->saveXMLWithWhitespace()));
 // 		exit;
 		
 		$this->_asset->updateContent(

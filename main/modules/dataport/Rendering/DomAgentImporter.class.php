@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomAgentImporter.class.php,v 1.3 2008/03/17 15:18:16 adamfranco Exp $
+ * @version $Id: DomAgentImporter.class.php,v 1.4 2008/03/20 15:43:56 adamfranco Exp $
  */ 
 
 require_once(HARMONI."oki2/shared/NonReferenceProperties.class.php");
@@ -21,7 +21,7 @@ require_once(HARMONI."oki2/shared/NonReferenceProperties.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomAgentImporter.class.php,v 1.3 2008/03/17 15:18:16 adamfranco Exp $
+ * @version $Id: DomAgentImporter.class.php,v 1.4 2008/03/20 15:43:56 adamfranco Exp $
  */
 class DomAgentImporter {
 		
@@ -174,11 +174,11 @@ class DomAgentImporter {
 		$agentPropertiesIterator = $agent->getProperties();
 		while ($agentPropertiesIterator->hasNext()) {
 			$properties = $agentPropertiesIterator->next();
-			printpre($properties->getKeys());
+// 			printpre($properties->getKeys());
 			foreach ($agentPropertiesToCheck as $key) {
 				try {
 					$value = $properties->getProperty($key);
-					printpre($value);
+// 					printpre($value);
 					if (!is_null($value) && in_array($value, $xmlValues))
 						$matches++;
 				} catch (UnknownKeyException $e) {
