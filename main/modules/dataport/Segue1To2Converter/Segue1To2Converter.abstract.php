@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.4 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.5 2008/03/20 13:08:21 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/../Rendering/DomImportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.4 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.5 2008/03/20 13:08:21 adamfranco Exp $
  */
 abstract class Segue1To2Converter {
 
@@ -254,8 +254,11 @@ abstract class Segue1To2Converter {
 		} catch (MissingNodeException $e) {
 			$rolesElement = $destElement->appendChild($this->doc->createElement('roles'));
 		}
+// 		printpre("<hr/>Adding Roles at ".$destElement->nodeName." ".$destElement->getAttribute('id'));
 		
-		$permissions = $this->sourceXPath->query('./permissions/*', $this->sourceElement);
+		// need to traverse up the hierarchy and combine permissions above.
+		$permissions = $this->sourceXPath->query('./permissions/* | ../permissions/* | ../../permissions/* | ../../../permissions/*', $this->sourceElement);
+		
 		$agents = array();
 		foreach ($permissions as $perm) {
 			$agentsHavingPerm = $this->sourceXPath->query('./agent', $perm);
@@ -303,6 +306,7 @@ abstract class Segue1To2Converter {
 	protected function addPermsForAgent ($agentId, array $perms, DOMElement $destElement) {
 // 		try {
 			$role = $this->getRoleFromPerms($perms);
+// 			printpre($role." \tfor ".$agentId." \tat ".$destElement->nodeName." ".$destElement->getAttribute('id')." \tmatches (".implode(", ", $perms).')');
 			$this->addRoleForAgent($agentId, $role, $destElement);
 // 		} catch (Exception $e) {}
 	}
@@ -571,7 +575,7 @@ abstract class Segue1To2Converter {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.4 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.5 2008/03/20 13:08:21 adamfranco Exp $
  */
 class PermissionResolver {
 		
