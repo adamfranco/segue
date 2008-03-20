@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.9 2008/03/20 20:42:57 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.10 2008/03/20 20:53:01 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.interface.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/Slot.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.9 2008/03/20 20:42:57 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.10 2008/03/20 20:53:01 adamfranco Exp $
  */
 abstract class SlotAbstract 
 	implements Slot
@@ -62,8 +62,9 @@ abstract class SlotAbstract
 	 * @return void
 	 * @access public
 	 * @since 3/20/08
+	 * @static
 	 */
-	public function setDefaultMediaQuota (Integer $quota) {
+	public static function setDefaultMediaQuota (Integer $quota) {
 		self::$defaultMediaQuota = $quota->value();
 	}
 	

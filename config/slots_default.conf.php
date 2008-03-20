@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: slots_default.conf.php,v 1.2 2008/01/03 19:45:58 adamfranco Exp $
+ * @version $Id: slots_default.conf.php,v 1.3 2008/03/20 20:53:01 adamfranco Exp $
  */
  
  	$idMgr = Services::getService("Id");
@@ -30,3 +30,6 @@
 	SegueCourseSection::$instructorGroups[] = $idMgr->getId('CN=All LS Faculty,OU=LS Lists,OU=Groups,DC=middlebury,DC=edu');
 	SegueCourseSection::$instructorGroups[] = $idMgr->getId('CN=MIIS Faculty,OU=Groups,DC=middlebury,DC=edu');
 	SegueCourseSection::$instructorGroups[] = $idMgr->getId('CN=MIIS Staff,OU=Groups,DC=middlebury,DC=edu');
+	
+	// Set a default Media quota
+// 	SlotAbstract::setDefaultMediaQuota(ByteSize::fromString('10MB'));
