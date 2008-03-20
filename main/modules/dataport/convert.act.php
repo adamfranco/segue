@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.9 2008/03/20 13:08:20 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.10 2008/03/20 15:45:52 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -14,6 +14,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
 
 require_once(dirname(__FILE__)."/Segue1To2Converter/Segue1To2Director.class.php");
 require_once(dirname(__FILE__)."/import.act.php");
+require_once(dirname(__FILE__)."/Rendering/Segue1MappingImportSiteVisitor.class.php");
 
 
 /**
@@ -26,7 +27,7 @@ require_once(dirname(__FILE__)."/import.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.9 2008/03/20 13:08:20 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.10 2008/03/20 15:45:52 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -88,8 +89,11 @@ class convertAction
 			
 			// Import the converted site
 			$director = $this->getSiteDirector();
-			$importer = new DomImportSiteVisitor($doc, $destPath, $director);
+			$importer = new Segue1MappingImportSiteVisitor($doc, $destPath, $director);
+			$importer->makeUserSiteAdministrator();
 			$importer->enableRoleImport();
+			$importer->setOrigenSlotname($this->getSourceSlotName());
+			$importer->setDestinationSlotname($this->getDestSlotName());
 			$importer->importAtSlot($this->getDestSlotName());
 			
 			

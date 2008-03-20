@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.190 2008/03/20 14:14:24 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.191 2008/03/20 15:45:52 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -84,6 +84,9 @@
 		</fix>
 		<fix author='adam' date='2008-03-19'>
 			Site Display: Site-level comment-enabling now works.
+		</fix>
+		<fix author='adam' date='2008-03-20'>
+			Site Display: Removed debugging lines from component saving methods.
 		</fix>
 		<new author='alex' date='2008-03-11' ref='1799956' reftype='fr'>
 			RSS: new actions for publishing RSS of content and comments.
