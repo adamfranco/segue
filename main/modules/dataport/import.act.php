@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.10 2008/03/17 15:16:24 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.11 2008/03/20 13:36:25 adamfranco Exp $
  */ 
 require_once(MYDIR."/main/modules/ui1/add.act.php");
 
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Rendering/UntrustedAgentAndTimeDomImportSiteVis
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.10 2008/03/17 15:16:24 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.11 2008/03/20 13:36:25 adamfranco Exp $
  */
 class importAction
 	extends addAction
@@ -294,7 +294,7 @@ class importAction
 		// Check for a containing directory and strip it if needed.
 		$content = @$archive->listContent();
 		if (!is_array($content) || !count($content))
-			throw new Exception("Invalid Segue archive. '".$values['mode']['backup_file']['name']."' is not a valid GZIPed Tar archive.");
+			throw new Exception("Invalid Segue archive. '".basename($archivePath)."' is not a valid GZIPed Tar archive.");
 		$containerName = null;
 // 			printpre($content);
 		if ($content[0]['typeflag'] == 5) {
