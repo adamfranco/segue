@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.196 2008/03/21 15:49:24 achapin Exp $
+ @version $Id: changelog.xml,v 1.197 2008/03/21 18:01:24 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -58,7 +58,7 @@
 			repeated access.
 		</change>
 		<new author='adam' date='2008-03-20' ref='1820917' reftype='fr'>
-			Slots: Now upload limits can be set for sites.
+			Slots: Now media size quotas can be set for sites.
 		</new>
 		<change author='adam' date='2008-03-11'>
 			UI1/UI2: now passes current node id to breadcrumbs
@@ -118,6 +118,9 @@
 		</new>
 		<fix author='adam' date='2008-03-20'>
 			Importer: Fixed notice when invalid archives are uploaded.
+		</fix>
+		<fix author='adam' date='2008-03-21'>
+			ErrorPrinter: Now doesn't try to send headers if they are already sent.
 		</fix>
 	</version>
 	<version number="2.0-beta-14" date="2008-03-10">

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.12 2008/03/20 15:43:56 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.13 2008/03/21 18:01:24 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.12 2008/03/20 15:43:56 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.13 2008/03/21 18:01:24 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -61,6 +61,13 @@ class DomImportSiteVisitor
 		
 		$this->agentImporter = new DomAgentImporter($this->doc);
 	}
+	
+	/**
+	 * @var int $mediaQuota;  
+	 * @access private
+	 * @since 3/21/08
+	 */
+	private $mediaQuota;
 	
 	/**
 	 * Add an agent who should be a an administer of the new site. This method
@@ -141,6 +148,12 @@ class DomImportSiteVisitor
 			throw new Exception("Import source has ".$elements->length." SiteNavBlock elements. There must be one and only one for importSite().");
 		$siteElement = $elements->item(0);
 		
+		// Store the media quota if it exists
+		if ($siteElement->hasAttribute('mediaQuota'))
+			$this->mediaQuota = $siteElement->getAttribute('mediaQuota');
+		else
+			$this->mediaQuota = null;
+		
 		$site = $this->createComponent($siteElement, null);
 		
 		$roleMgr = SegueRoleManager::instance();
@@ -157,6 +170,30 @@ class DomImportSiteVisitor
 		$this->updateMenuTargets();
 		$this->updateStoredIds();
 		return $site;
+	}
+	
+	/**
+	 * Answer the media quota from the import
+	 *
+	 * @return int
+	 * @access public
+	 * @since 3/21/08
+	 */
+	public function getMediaQuota () {
+		if (!isset($this->mediaQuota)) {
+			$elements = $this->xpath->evaluate('/Segue2/SiteNavBlock');
+			if (!$elements->length === 1)
+				throw new Exception("Import source has ".$elements->length." SiteNavBlock elements. There must be one and only one for importSite().");
+			$siteElement = $elements->item(0);
+			
+			// Store the media quota if it exists
+			if ($siteElement->hasAttribute('mediaQuota'))
+				$this->mediaQuota = $siteElement->getAttribute('mediaQuota');
+			else
+				$this->mediaQuota = null;
+		}
+		
+		return $this->mediaQuota;
 	}
 	
 	/**
@@ -1157,7 +1194,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.12 2008/03/20 15:43:56 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.13 2008/03/21 18:01:24 adamfranco Exp $
  */
 class MissingNodeException
 	extends Exception

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.11 2008/03/21 16:06:03 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.12 2008/03/21 18:01:24 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/Segue1MappingImportSiteVisitor.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.11 2008/03/21 16:06:03 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.12 2008/03/21 18:01:24 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -104,6 +104,11 @@ class convertAction
 			$importer->setOrigenSlotname($this->getSourceSlotName());
 			$importer->setDestinationSlotname($this->getDestSlotName());
 			$importer->importAtSlot($this->getDestSlotName());
+			
+			// Set the media quota if it is bigger than our default
+			$quota = $importer->getMediaQuota();
+			if ($quota > $slot->getMediaQuota()->value())
+				$slot->setMediaQuota(ByteSize::withValue($quota));
 			
 			$status->updateStatistics();
 			

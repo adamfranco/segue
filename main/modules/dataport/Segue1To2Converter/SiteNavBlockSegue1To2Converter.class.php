@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.6 2008/03/21 17:10:27 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.7 2008/03/21 18:01:24 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/SectionNavBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.6 2008/03/21 17:10:27 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.7 2008/03/21 18:01:24 adamfranco Exp $
  */
 class SiteNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -39,6 +39,9 @@ class SiteNavBlockSegue1To2Converter
 		$element->setAttribute('slot_name', $this->sourceElement->getAttribute('id'));
 		// Reset the id to encode it as a slot
 		$element->setAttribute('id', 'site_'.$this->sourceElement->getAttribute('id'));
+		
+		if ($this->sourceElement->hasAttribute('mediaQuota'))
+			$element->setAttribute('mediaQuota', $this->sourceElement->getAttribute('mediaQuota'));
 		
 		$this->setSiteWidth($element);
 		

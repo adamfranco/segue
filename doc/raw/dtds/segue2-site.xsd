@@ -107,6 +107,7 @@ elementFormDefault="qualified">
 
 <!-- Site -->
 <xs:attribute name="slot_name" type="xs:string"/>
+<xs:attribute name="mediaQuota" type="xs:integer"/>
 
 <!-- Common -->
 <xs:attribute name="id">
@@ -248,6 +249,7 @@ elementFormDefault="qualified">
 		</xs:sequence>
 		
 		<xs:attribute ref="slot_name"/>
+		<xs:attribute ref="mediaQuota"/>
 		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
