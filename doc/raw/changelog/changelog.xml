@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.198 2008/03/21 18:21:02 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.199 2008/03/21 18:21:44 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -58,7 +58,7 @@
 			repeated access.
 		</change>
 		<new author='adam' date='2008-03-20' ref='1820917' reftype='fr'>
-			Slots: Now media size quotas can be set for sites.
+			Slots: Now media-upload quotas can be set for sites.
 		</new>
 		<change author='adam' date='2008-03-11'>
 			UI1/UI2: now passes current node id to breadcrumbs
