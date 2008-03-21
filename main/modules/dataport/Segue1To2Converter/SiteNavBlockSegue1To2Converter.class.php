@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.7 2008/03/21 18:01:24 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.8 2008/03/21 19:16:14 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/SectionNavBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.7 2008/03/21 18:01:24 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.8 2008/03/21 19:16:14 adamfranco Exp $
  */
 class SiteNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -121,7 +121,8 @@ class SiteNavBlockSegue1To2Converter
 		$org->setAttribute('cols', 1);
 		$org->setAttribute('showDisplayNames', 'false');
 		$cell = $org->appendChild($this->doc->createElement('cell'));
-		$cell->appendChild($this->createTextBlockForHtml($html, 'header'));
+		if (strlen(trim($html)))
+			$cell->appendChild($this->createTextBlockForHtml($html, 'header'));
 		
 		// Central content area
 		$cell = $navOrgElement->appendChild($this->doc->createElement('cell'));
@@ -141,7 +142,8 @@ class SiteNavBlockSegue1To2Converter
 		$org->setAttribute('cols', 1);
 		$org->setAttribute('showDisplayNames', 'false');
 		$cell = $org->appendChild($this->doc->createElement('cell'));
-		$cell->appendChild($this->createTextBlockForHtml($html, 'footer'));
+		if (strlen(trim($html)))
+			$cell->appendChild($this->createTextBlockForHtml($html, 'footer'));
 	}
 	
 	/**
