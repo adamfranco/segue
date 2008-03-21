@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit.act.php,v 1.5 2008/03/21 18:21:02 adamfranco Exp $
+ * @version $Id: edit.act.php,v 1.6 2008/03/21 18:28:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit.act.php,v 1.5 2008/03/21 18:21:02 adamfranco Exp $
+ * @version $Id: edit.act.php,v 1.6 2008/03/21 18:28:21 adamfranco Exp $
  */
 class editAction
 	extends MainWindowAction
@@ -102,7 +102,7 @@ class editAction
 			$property->addOption($category, ucfirst($category));
 		
 		$property = $step->addComponent('quota', new WTextField);
-		$property->setSize(6);
+		$property->setSize(10);
 		if (!$slot->usesDefaultMediaQuota())
 			$property->setValue($slot->getMediaQuota()->asString());
 			

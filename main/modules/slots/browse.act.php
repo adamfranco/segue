@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.7 2008/03/21 18:21:02 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.8 2008/03/21 18:28:21 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/TableIteratorResultPrinter.c
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.7 2008/03/21 18:21:02 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.8 2008/03/21 18:28:21 adamfranco Exp $
  */
 class browseAction
 	extends MainWindowAction
@@ -173,9 +173,12 @@ class browseAction
 		
 		// Media Quota
 		print "\n\t\t<td>";
-		if ($slot->usesDefaultMediaQuota())
-			print _("Default")." (".SlotAbstract::getDefaultMediaQuota()->asString().")";
-		else
+		if ($slot->usesDefaultMediaQuota()) {
+			$quota = SlotAbstract::getDefaultMediaQuota()->asString();
+			print "<a href='#' title='$quota' onclick='alert(\"$quota\"); return false;'>";
+			print _("Default");
+			print "</a>";
+		} else
 			print $slot->getMediaQuota()->asString();
 		print "</td>";
 		
