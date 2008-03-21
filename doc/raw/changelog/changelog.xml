@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.194 2008/03/20 20:43:14 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.195 2008/03/21 00:29:19 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -13,6 +13,13 @@
 	<version number="2.0-beta-15" date="The Future">
 		<releaseNotes>
 		</releaseNotes>
+		<new author='alex' date='2008-03-20' ref='1820861' reftype='fr'>
+			View: added settings for displaying block create and update timestamps, 
+			as well as names of block creators and editors in UI1		
+		</new>
+		<fix author='alex' date='2008-03-20'>
+			Versioning: Fixed history action to use new view module
+		</fix>
 		<new author='adam' date='2008-03-20' ref='1820829' reftype='fr'>
 			Importer/Migration: Site migration tools to allow users to import Segue 1 sites.
 		</new>

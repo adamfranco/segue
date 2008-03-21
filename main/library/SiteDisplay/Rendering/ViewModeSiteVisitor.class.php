@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.56 2008/02/18 15:39:47 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.57 2008/03/21 00:29:19 achapin Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -34,7 +34,7 @@ require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.56 2008/02/18 15:39:47 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.57 2008/03/21 00:29:19 achapin Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -167,6 +167,87 @@ class ViewModeSiteVisitor
 	function showBlockTitle ( $block ) {
 		return $block->showDisplayName();
 	}
+
+	/**
+	 * Answer the date display settings for this block
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return array date values
+	 * @access public
+	 * @since 3/20/08
+	 */
+	function getBlockDateDisplay (BlockSiteComponent $block ) {
+	
+		$dateObjects = array();
+		$dateValues = array();
+		
+		if ($block->showDates() === 'creation_date') {
+			$dateObjects[] = $block->getCreationDate();
+		} else if ($block->showDates() === 'modification_date') {
+			$dateObjects[] = $block->getModificationDate();
+		} else if ($block->showDates() === 'both') {
+			$dateObjects[] = $block->getCreationDate();
+			$dateObjects[] = $block->getModificationDate();
+		}
+		
+		foreach ($dateObjects as $dateObject) {
+			$date = $dateObject->ymdString();
+			$time = $dateObject->asTime();
+			$time = $time->string12(false);			
+			$dateValues[] = $date." ".$time;		
+		}
+			
+		return $dateValues;
+	}
+
+	/**
+	 * Answer the attribution settings for this block
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return array agent name values
+	 * @access public
+	 * @since 3/20/08
+	 */
+	function getBlockAttributionDisplay (BlockSiteComponent $block ) {
+		$pluginManager = Services::getService('PluginManager');
+		$plugin = $pluginManager->getPlugin($block->getAsset());
+ 		$agentManager = Services::getService("Agent");
+		
+		$contributorsIds = array();
+		$contributorsNames = array();
+		
+		if ($block->showAttribution() === 'creator') {
+			$creatorId = $block->getCreator();
+			$agent = $agentManager->getAgent($creatorId);	
+			$contributorsNames[] = $agent->getDisplayName();
+			
+		} else if ($block->showAttribution() === 'last_editor') {
+			
+			if ($plugin->supportsVersioning()) {
+				$versions = $plugin->getVersions();
+				$lastVersion = $versions[0];
+				$lastEditor = $lastVersion->getAgent()->getDisplayName();
+				$contributorsNames[] = $lastEditor;
+				
+			}
+		
+		} else if ($block->showAttribution() === 'all_editors') {
+			if ($plugin->supportsVersioning()) {
+				$versions = $plugin->getVersions();
+				
+				$numVersions = count($versions);
+				foreach ($versions as $version) {
+					$editor = $version->getAgent()->getDisplayName();
+					if (!in_array($editor, $contributorsNames)) {
+						$contributorsNames[] = $editor;
+					}
+				}				
+			}
+		}
+			
+		return $contributorsNames;
+	}
+
 	
 	/**
 	 * Answer the plugin content for a block
@@ -190,13 +271,33 @@ class ViewModeSiteVisitor
 		
 		if ($block->showComments()) {
 			$cm = CommentManager::instance();
-			print "\n<div style='float: right; margin-left: 10px;'>";
+			print "\n<div class='comments'>";
 			print "\n\t<a href='".$this->getDetailUrl($block->getId())."#";
 			$harmoni->request->startNamespace("comments");
 			print RequestContext::name('top')."'>";
 			$harmoni->request->endNamespace();
 			print str_replace("%1", $cm->getNumComments($block->getAsset()), _("Comments (%1) &raquo;"));
 			print "</a>";
+			print "\n</div>";
+		}
+		
+		if ($block->showDates() != 'none') {
+			print "\n<div class='dates'>";			
+			$dates = $this->getBlockDateDisplay($block);
+			foreach ($dates as $date) {
+				print $date;
+				print " ";
+			}			
+			print "\n</div>";
+		}
+		
+		if ($block->showAttribution() != 'none') {
+			print "\n<div class='attribution'>";			
+			$contributors = $this->getBlockAttributionDisplay($block);
+			foreach ($contributors as $contributor) {
+				print $contributor;
+				print ", ";
+			}			
 			print "\n</div>";
 		}
 		
@@ -210,7 +311,7 @@ class ViewModeSiteVisitor
 		
 		print $this->getHistoryLink($block, $plugin);
 		
-		print "\n<div style='clear: both'></div>";
+		print "\n<div class='history'></div>";
 		return ob_get_clean();
 	}
 	
@@ -265,9 +366,9 @@ class ViewModeSiteVisitor
 	public function getHistoryLink (BlockSiteComponent $block, SeguePluginsAPI $plugin) {
 		ob_start();
 		if ($plugin->supportsVersioning() && $block->showHistory() && !$this->isInHeaderOrFooter($block)) {	
-			print "\n<div style='text-align: right;'>";
+			print "\n<div class='history'>";
 			print "\n\t<a href='".$this->getHistoryUrl($block->getId())."'>";
-			print _("history");
+			print _("History");
 			print "</a>";
 			print "\n</div>";
 		}

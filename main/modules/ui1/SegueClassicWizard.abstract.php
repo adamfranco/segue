@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.18 2008/01/10 21:03:29 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.19 2008/03/21 00:29:19 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.18 2008/01/10 21:03:29 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.19 2008/03/21 00:29:19 achapin Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -354,7 +354,10 @@ class SegueClassicWizard
 		$step = new WizardStep();
 		$step->setDisplayName(_("Display Options"));
 		
-		// Create the step text
+		/******************************************************************************
+		 * Create the step text
+		 ******************************************************************************/
+
 		ob_start();
 		
 		$property = $step->addComponent("show_titles", new WSelectList());
@@ -383,7 +386,10 @@ class SegueClassicWizard
 		}
 		print "\n</p>";
 		
-		// Show history
+		/******************************************************************************
+		 * Show history
+		 ******************************************************************************/
+
 		$property = $step->addComponent("show_history", new WSelectList());
 		$this->addTitlesOptions($property);
 		
@@ -412,9 +418,85 @@ class SegueClassicWizard
 		print _("This setting will cause the 'history' link to be shown or hidden when any user views this part of the site. The 'history' link will always be shown when users edit this part of the site.");
 		print "</span>";
 		print "\n</p>";
+
+		/******************************************************************************
+		 * Show creation and/or modification dates
+		 ******************************************************************************/
+
+		$property = $step->addComponent("show_dates", new WSelectList());
+		$this->addDateSettingsOptions($property);
 		
+		if ($component) {
+			$val = $component->showDatesSetting();	
+			if ($val === 'none')
+				$property->setValue('none');
+			else if ($val === 'creation_date')
+				$property->setValue('creation_date');
+			else if ($val === 'modification_date')
+				$property->setValue('modification_date');
+			else if ($val === 'both')
+				$property->setValue('both');
+				
+							
+			$parent = $component->getParentComponent();
+		} else {
+			$parent = null;
+		}
+
+		print "\n<p><strong>"._("Display Dates:")."</strong> ";
+		print "\n[[show_dates]]";
 		
-		// Enable Comments
+		if ($parent) {
+			print "\n<br/>".str_replace('%1', 
+				$parent->showDates(),
+				_("Current default setting: %1"));
+		}
+		print "\n<br/><span style='font-size: smaller;'>";
+		print _("This setting determine whether creation and/or modification dates are displayed.");
+		print "</span>";
+		print "\n</p>";	
+		
+		/******************************************************************************
+		 * Show attribution (creator and/or editor(s)
+		 ******************************************************************************/
+
+		$property = $step->addComponent("show_attribution", new WSelectList());
+		$this->addAttributionSettingsOptions($property);
+		
+		if ($component) {
+			$val = $component->showAttributionSetting();	
+			if ($val === 'none')
+				$property->setValue('none');
+			else if ($val === 'creator')
+				$property->setValue('creator');
+			else if ($val === 'last_editor')
+				$property->setValue('last_editor');
+			else if ($val === 'all_editors')
+				$property->setValue('all_editors');
+				
+							
+			$parent = $component->getParentComponent();
+		} else {
+			$parent = null;
+		}
+
+		print "\n<p><strong>"._("Display Authors/Editors:")."</strong> ";
+		print "\n[[show_attribution]]";
+		
+		if ($parent) {
+			print "\n<br/>".str_replace('%1', 
+				$parent->showAttribution(),
+				_("Current default setting: %1"));
+		}
+		print "\n<br/><span style='font-size: smaller;'>";
+		print _("This setting determine whether the original author and/or editor(s) are displayed.");
+		print "</span>";
+		print "\n</p>";	
+		
+		/******************************************************************************
+		 * Enable Comments
+		 ******************************************************************************/
+
 		$property = $step->addComponent("enable_comments", new WSelectList());
 		$this->addCommentsOptions($property);
 		
@@ -472,6 +554,39 @@ class SegueClassicWizard
 		$property->setValue('default');
 	}
 	
+	/**
+	 * Add the date settings options to the property
+	 * 
+	 * @param object WSelectList $property
+	 * @return void
+	 * @access public
+	 * @since 3/20/08
+	 */
+	public function addDateSettingsOptions (WSelectList $property) {
+		$property->addOption('default', _("use default"));
+		$property->addOption('none', _("override-show no dates"));
+		$property->addOption('creation_date', _("override-show date created"));
+		$property->addOption('modification_date', _("override-show date last modified"));
+		$property->addOption('both', _("override-show both creation and modification dates"));
+		$property->setValue('default');
+	}
+
+	/**
+	 * Add the attribution settings options to the property
+	 * 
+	 * @param object WSelectList $property
+	 * @return void
+	 * @access public
+	 * @since 3/20/08
+	 */
+	public function addAttributionSettingsOptions (WSelectList $property) {
+		$property->addOption('default', _("use default"));
+		$property->addOption('creator', _("override-show original author"));
+		$property->addOption('last_editor', _("override-show last editor"));
+		$property->addOption('all_editors', _("override-show all editors"));
+		$property->setValue('default');
+	}
+
 	
 	/**
 	 * save the display options step
@@ -485,6 +600,8 @@ class SegueClassicWizard
 		$component = $this->getSiteComponent();
 		$component->updateShowDisplayNames($values['show_titles']);
 		$component->updateShowHistorySetting($values['show_history']);
+		$component->updateShowDatesSetting($values['show_dates']);
+		$component->updateshowAttributionSetting($values['show_attribution']);
 		$component->updateCommentsEnabled($values['enable_comments']);
 		$this->saveWidth($component, $values);
 		return true;

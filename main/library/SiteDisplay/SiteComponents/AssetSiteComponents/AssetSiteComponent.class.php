@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.18 2008/03/19 21:24:00 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.19 2008/03/21 00:29:19 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.18 2008/03/19 21:24:00 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.19 2008/03/21 00:29:19 achapin Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -442,6 +442,130 @@ abstract class AssetSiteComponent
 				return false;
 		} else {
 			return $this->commentsEnabled();
+		}
+	}
+
+	/**
+	 * Answer the setting of 'showDates' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * Dates can be 'none', 'creation_date', 'modification_date', 'both'
+	 * @access public
+	 * @since 3/20/08
+	 */
+	function showDatesSetting () {
+		$element = $this->getElement();
+		
+		if (!$element->hasAttribute('showDates'))
+			return 'none';
+		
+		return $element->getAttribute('showDates');
+	}
+
+	/**
+	 * change the setting of 'showDates' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @param string  $showDates 'default', 'none', 'creation_date', 'modification_date',
+	 *	'both'
+	 * @return void
+	 * @access public
+	 * @since 3/20/08
+	 */
+	function updateShowDatesSetting ( $showDates ) {
+		$element = $this->getElement();
+		
+		$dates = array('default', 'none', 'creation_date', 'modification_date', 'both');
+		if (!in_array($showDates, $dates))
+			throw new Exception("Invalid date setting, '$showDates', not one of '".implode("', ", $dates)."'.");
+		$element = $this->getElement();
+		
+		$element->setAttribute('showDates', $showDates);
+		
+		$this->_saveXml();
+	}
+
+	/**
+	 * Answer the date setting to be shown for this component.
+	 * taking into account its settings and those in the hierarchy above it.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 3/20/08
+	 */
+	public function showDates () {
+		if ($this->showDatesSetting() === 'default') {
+			$parent = $this->getParentComponent();
+			
+			if ($parent)
+				return $parent->showDates();
+			// Base case if none is specified anywhere in the hierarchy
+			else
+				return 'none';
+		} else {
+			return $this->showDatesSetting();
+		}		
+	}
+
+	/**
+	 * Answer the setting of 'showAttribution' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used.
+	 *
+	 * Show attributions settings are 'creator', 'last_editor', 'all_editors'
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 3/20/08
+	 */
+	function showAttributionSetting () {
+		$element = $this->getElement();
+		
+		if (!$element->hasAttribute('showAttribution'))
+			return 'default';
+		
+		return $element->getAttribute('showAttribution');
+	}
+	
+	/**
+	 * change the setting of 'showAttribution' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @param string  $showAttribution 'none' 'default', 'creator', 'last_editor', 
+	 * 'all_editors'
+	 * @return void
+	 * @access public
+	 * @since 3/20/08
+	 */
+	function updateshowAttributionSetting ( $showAttribution ) {
+		$attributions = array('default', 'none', 'creator', 'last_editor', 'all_editors');
+		if (!in_array($showAttribution, $attributions))
+			throw new Exception("Invalid attribution, '$showAttribution', not one of '".implode("', ", $attributions)."'.");
+		$element = $this->getElement();
+		
+		$element->setAttribute('showAttribution', $showAttribution);
+		
+		$this->_saveXml();
+	}
+	
+	/**
+	 * Answer the attribution to show for this component,
+	 * taking into account its setting and those in the hierarchy above it.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 3/20/08
+	 */
+	function showAttribution () {
+		if ($this->showAttributionSetting() === 'default') {
+			$parent = $this->getParentComponent();
+			
+			if ($parent)
+				return $parent->showAttribution();
+			// Base case if none is specified anywhere in the hierarchy
+			else
+				return 'none';
+		} else {
+			return $this->showAttributionSetting();
 		}
 	}
 	

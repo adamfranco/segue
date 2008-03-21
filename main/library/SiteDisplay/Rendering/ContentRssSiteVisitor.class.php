@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ContentRssSiteVisitor.class.php,v 1.5 2008/03/17 20:56:00 achapin Exp $
+ * @version $Id: ContentRssSiteVisitor.class.php,v 1.6 2008/03/21 00:29:19 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ContentRssSiteVisitor.class.php,v 1.5 2008/03/17 20:56:00 achapin Exp $
+ * @version $Id: ContentRssSiteVisitor.class.php,v 1.6 2008/03/21 00:29:19 achapin Exp $
  */
 class ContentRssSiteVisitor
 	implements SiteVisitor
@@ -65,10 +65,6 @@ class ContentRssSiteVisitor
 			$item->setTitle($block->getDisplayName());
 			$item->setDescription($this->getPluginContent($block));
 			$item->setLink($this->getDetailUrl($block->getId()));
-		//	$item->setPubDate();
-		//	$item->setLastBuildDate();
-		//	$item->setManagingEditor();
-
 			
 			return;
 		} else {		
