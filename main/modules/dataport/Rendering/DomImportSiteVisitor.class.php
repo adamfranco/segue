@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.13 2008/03/21 18:01:24 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.14 2008/03/21 20:28:37 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.13 2008/03/21 18:01:24 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.14 2008/03/21 20:28:37 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -443,6 +443,10 @@ class DomImportSiteVisitor
 		if ($element->hasAttribute('showDisplayNames'))
 			$siteComponent->updateShowDisplayNames($element->getAttribute('showDisplayNames'));
 		if ($element->hasAttribute('showHistory'))
+			$siteComponent->updateShowHistorySetting($element->getAttribute('showHistory'));
+		if ($element->hasAttribute('showDates'))
+			$siteComponent->updateShowHistorySetting($element->getAttribute('showHistory'));
+		if ($element->hasAttribute('showAttribution'))
 			$siteComponent->updateShowHistorySetting($element->getAttribute('showHistory'));
 		if ($element->hasAttribute('sortMethod'))
 			$siteComponent->updateSortMethodSetting($element->getAttribute('sortMethod'));
@@ -1194,7 +1198,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.13 2008/03/21 18:01:24 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.14 2008/03/21 20:28:37 adamfranco Exp $
  */
 class MissingNodeException
 	extends Exception

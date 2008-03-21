@@ -151,6 +151,29 @@ elementFormDefault="qualified">
 		</xs:restriction>
 	</xs:simpleType>
 </xs:attribute>
+<xs:attribute name="showAttribution">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="default"/>
+			<xs:enumeration value="none"/>
+			<xs:enumeration value="creator"/>
+			<xs:enumeration value="last_editor"/>
+			<xs:enumeration value="both"/>
+			<xs:enumeration value="all_editors"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="showDates">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="default"/>
+			<xs:enumeration value="none"/>
+			<xs:enumeration value="creation_date"/>
+			<xs:enumeration value="modification_date"/>
+			<xs:enumeration value="both"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
 <xs:attribute name="commentsEnabled">
 	<xs:simpleType>
 		<xs:restriction base="xs:string">
@@ -253,6 +276,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="showDates"/>
+		<xs:attribute ref="showAttribution"/>
 		<xs:attribute ref="sortMethod"/>
 		<xs:attribute ref="commentsEnabled"/>
 		<xs:attribute ref="width"/>
@@ -275,6 +300,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="showDates"/>
+		<xs:attribute ref="showAttribution"/>
 		<xs:attribute ref="sortMethod"/>
 		<xs:attribute ref="commentsEnabled"/>
 		<xs:attribute ref="width"/>
@@ -301,6 +328,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="showDates"/>
+		<xs:attribute ref="showAttribution"/>
 		<xs:attribute ref="sortMethod"/>
 		<xs:attribute ref="commentsEnabled"/>
 		<xs:attribute ref="width"/>
@@ -331,6 +360,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="showDates"/>
+		<xs:attribute ref="showAttribution"/>
 		<xs:attribute ref="sortMethod"/>
 		<xs:attribute ref="commentsEnabled"/>
 		<xs:attribute ref="width"/>
@@ -359,6 +390,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="showDates"/>
+		<xs:attribute ref="showAttribution"/>
 		<xs:attribute ref="sortMethod"/>
 		<xs:attribute ref="commentsEnabled"/>
 		<xs:attribute ref="width"/>
@@ -389,6 +422,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="showDates"/>
+		<xs:attribute ref="showAttribution"/>
 		<xs:attribute ref="sortMethod"/>
 		<xs:attribute ref="commentsEnabled"/>
 		<xs:attribute ref="width"/>
@@ -427,6 +462,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
+		<xs:attribute ref="showDates"/>
+		<xs:attribute ref="showAttribution"/>
 		<xs:attribute ref="sortMethod"/>
 		<xs:attribute ref="commentsEnabled"/>
 		<xs:attribute ref="width"/>

@@ -6,12 +6,14 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.8 2008/03/21 19:16:14 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.9 2008/03/21 20:28:37 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
 require_once(dirname(__FILE__)."/NavLinkBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/SectionNavBlockSegue1To2Converter.class.php");
+require_once(dirname(__FILE__)."/BreadcrumbsBlockSegue1To2Converter.class.php");
+require_once(dirname(__FILE__)."/RssLinksBlockSegue1To2Converter.class.php");
 
 /**
  * A nav Block for the overall site
@@ -22,7 +24,7 @@ require_once(dirname(__FILE__)."/SectionNavBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.8 2008/03/21 19:16:14 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.9 2008/03/21 20:28:37 adamfranco Exp $
  */
 class SiteNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -107,8 +109,18 @@ class SiteNavBlockSegue1To2Converter
 		$navOrgElement->setAttribute('rows', 3);
 		$navOrgElement->setAttribute('cols', 1);
 		
-		// Add the header
+		/*********************************************************
+		 * Add the header
+		 *********************************************************/
+		// Outer layout organizer
 		$cell = $navOrgElement->appendChild($this->doc->createElement('cell'));
+		$outerHeaderLayout = $cell->appendChild($this->doc->createElement("FixedOrganizer"));
+		$outerHeaderLayout->setAttribute('id', $this->createId());
+		$outerHeaderLayout->setAttribute('rows', 2);
+		$outerHeaderLayout->setAttribute('cols', 1);
+		
+		// Header content
+		$cell = $outerHeaderLayout->appendChild($this->doc->createElement('cell'));
 		try {
 			$html = $this->getStringValue($this->getSingleSourceElement('./header', $this->sourceElement));
 		} catch (MissingNodeException $e) {
@@ -117,18 +129,65 @@ class SiteNavBlockSegue1To2Converter
 		$org = $cell->appendChild($this->doc->createElement('FlowOrganizer'));
 		$org->setAttribute('id', $this->createId());
 		$org->setAttribute('commentsEnabled', 'false');
+		$org->setAttribute('showDisplayNames', 'false');
+		$org->setAttribute('showHistory', 'false');
+		$org->setAttribute('showDates', 'none');
+		$org->setAttribute('showAttribution', 'none');
 		$org->setAttribute('rows', 0);
 		$org->setAttribute('cols', 1);
-		$org->setAttribute('showDisplayNames', 'false');
 		$cell = $org->appendChild($this->doc->createElement('cell'));
 		if (strlen(trim($html)))
 			$cell->appendChild($this->createTextBlockForHtml($html, 'header'));
 		
-		// Central content area
+		// Layout Organizer for breadcrumbs and RSS
+		$cell = $outerHeaderLayout->appendChild($this->doc->createElement('cell'));
+		$statusLayout = $cell->appendChild($this->doc->createElement("FixedOrganizer"));
+		$statusLayout->setAttribute('id', $this->createId());
+		$statusLayout->setAttribute('rows', 1);
+		$statusLayout->setAttribute('cols', 2);
+		
+		// Add the breadcrumbs
+		$cell = $statusLayout->appendChild($this->doc->createElement('cell'));
+		$org = $cell->appendChild($this->doc->createElement('FlowOrganizer'));
+		$org->setAttribute('id', $this->createId());
+		$org->setAttribute('commentsEnabled', 'false');
+		$org->setAttribute('showDisplayNames', 'false');
+		$org->setAttribute('showHistory', 'false');
+		$org->setAttribute('showDates', 'none');
+		$org->setAttribute('showAttribution', 'none');
+		$org->setAttribute('rows', 0);
+		$org->setAttribute('cols', 1);
+		
+		$converter = new BreadcrumbsBlockSegue1To2Converter($this->sourceElement, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+		$cell = $org->appendChild($this->doc->createElement('cell'));
+		$cell->appendChild($converter->convert());
+		
+		// Add the RSS Links
+		$cell = $statusLayout->appendChild($this->doc->createElement('cell'));
+		$org = $cell->appendChild($this->doc->createElement('FlowOrganizer'));
+		$org->setAttribute('id', $this->createId());
+		$org->setAttribute('commentsEnabled', 'false');
+		$org->setAttribute('showDisplayNames', 'false');
+		$org->setAttribute('showHistory', 'false');
+		$org->setAttribute('showDates', 'none');
+		$org->setAttribute('showAttribution', 'none');
+		$org->setAttribute('width', '250px');
+		$org->setAttribute('rows', 0);
+		$org->setAttribute('cols', 1);
+		
+		$converter = new RssLinksBlockSegue1To2Converter($this->sourceElement, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+		$cell = $org->appendChild($this->doc->createElement('cell'));
+		$cell->appendChild($converter->convert());
+				
+		/*********************************************************
+		 * Central content area
+		 *********************************************************/
 		$cell = $navOrgElement->appendChild($this->doc->createElement('cell'));
 		$cell->appendChild($this->getMainContentArea($this->sourceElement));
 		
-		// Add the footer
+		/*********************************************************
+		 * Add the footer
+		 *********************************************************/
 		$cell = $navOrgElement->appendChild($this->doc->createElement('cell'));
 		try {
 			$html = $this->getStringValue($this->getSingleSourceElement('./footer', $this->sourceElement));
