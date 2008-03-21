@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.10 2008/03/20 20:53:01 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.11 2008/03/21 17:59:17 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.interface.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/Slot.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.10 2008/03/20 20:53:01 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.11 2008/03/21 17:59:17 adamfranco Exp $
  */
 abstract class SlotAbstract 
 	implements Slot
@@ -66,6 +66,18 @@ abstract class SlotAbstract
 	 */
 	public static function setDefaultMediaQuota (Integer $quota) {
 		self::$defaultMediaQuota = $quota->value();
+	}
+	
+	/**
+	 * Answer the default media quota
+	 * 
+	 * @return object ByteSize
+	 * @access public
+	 * @since 3/20/08
+	 * @static
+	 */
+	public static function getDefaultMediaQuota () {
+		return ByteSize::withValue(self::$defaultMediaQuota);
 	}
 	
 
@@ -691,7 +703,7 @@ abstract class SlotAbstract
 		$query = new UpdateQuery;
 		$query->setTable('segue_slot');
 		$query->addWhereEqual('shortname', $this->getShortname());
-		$query->addValue('media_quota', $this->mediaQuota);
+		$query->addValue('media_quota', strval($this->mediaQuota));
 		
 		$dbc = Services::getService('DBHandler');
 		$dbc->query($query, IMPORTER_CONNECTION);
@@ -716,6 +728,20 @@ abstract class SlotAbstract
 		
 		$dbc = Services::getService('DBHandler');
 		$dbc->query($query, IMPORTER_CONNECTION);
+	}
+	
+	/**
+	 * Set the media quota without writing to the database.
+	 * This method is internal to this package and should not be used
+	 * by clients.
+	 * 
+	 * @param integer $mediaQuota
+	 * @return void
+	 * @access public
+	 * @since 3/21/08
+	 */
+	public function populateMediaQuota ($mediaQuota) {
+		$this->mediaQuota = intval($mediaQuota);
 	}
 }
 

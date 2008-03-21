@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.5 2008/01/28 21:18:46 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.6 2008/03/21 17:59:17 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/TableIteratorResultPrinter.c
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: browse.act.php,v 1.5 2008/01/28 21:18:46 adamfranco Exp $
+ * @version $Id: browse.act.php,v 1.6 2008/03/21 17:59:17 adamfranco Exp $
  */
 class browseAction
 	extends MainWindowAction
@@ -127,6 +127,7 @@ class browseAction
 		<th>"._("Placeholder Name")."</th>
 		<th>"._("Type")."</th>
 		<th>"._("Category")."</th>
+		<th>"._("Media Quota")."</th>
 		<th>"._("Site Exists")."</th>
 		<th>"._("Owners")."</th>
 		<th>"._("Actions")."</th>
@@ -169,6 +170,15 @@ class browseAction
 		print "</td>";
 		print "\n\t\t<td>".$slot->getType()."</td>";
 		print "\n\t\t<td>".$slot->getLocationCategory()."</td>";
+		
+		// Media Quota
+		print "\n\t\t<td>";
+		if ($slot->getMediaQuota()->isEqual(SlotAbstract::getDefaultMediaQuota()))
+			print _("Default")." (".SlotAbstract::getDefaultMediaQuota()->asString().")";
+		else
+			print $slot->getMediaQuota()->asString();
+		print "</td>";
+		
 		print "\n\t\t<td style='text-align: center'>".(($slot->siteExists())?"yes":'')."</td>";
 		print "\n\t\t<td>";
 		$owners = $slot->getOwners();

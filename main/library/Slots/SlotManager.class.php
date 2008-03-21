@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.10 2008/03/14 15:35:14 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.11 2008/03/21 17:59:17 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/AllSlotsIterator.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.10 2008/03/14 15:35:14 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.11 2008/03/21 17:59:17 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -218,6 +218,7 @@ class SlotManager {
 		$query->addColumn('segue_slot.site_id', 'site_id');
 		$query->addColumn('segue_slot.type', 'type');
 		$query->addColumn('segue_slot.location_category', 'location_category');
+		$query->addColumn('segue_slot.media_quota', 'media_quota');
 		$query->addColumn('all_owners.owner_id', 'owner_id');
 		$query->addColumn('all_owners.removed', 'removed');
 		
@@ -271,6 +272,7 @@ class SlotManager {
 			$query->addColumn('segue_slot.site_id', 'site_id');
 			$query->addColumn('segue_slot.type', 'type');
 			$query->addColumn('segue_slot.location_category', 'location_category');
+			$query->addColumn('segue_slot.media_quota', 'media_quota');
 			$query->addColumn('all_owners.owner_id', 'owner_id');
 			$query->addColumn('all_owners.removed', 'removed');
 			
@@ -340,6 +342,7 @@ class SlotManager {
 		$query->addColumn('segue_slot.site_id', 'site_id');
 		$query->addColumn('segue_slot.type', 'type');
 		$query->addColumn('segue_slot.location_category', 'location_category');
+		$query->addColumn('segue_slot.media_quota', 'media_quota');
 		$query->addColumn('all_owners.owner_id', 'owner_id');
 		$query->addColumn('all_owners.removed', 'removed');
 		
@@ -380,6 +383,7 @@ class SlotManager {
 		$query->addColumn('segue_slot.site_id', 'site_id');
 		$query->addColumn('segue_slot.type', 'type');
 		$query->addColumn('segue_slot.location_category', 'location_category');
+		$query->addColumn('segue_slot.media_quota', 'media_quota');
 		$query->addColumn('all_owners.owner_id', 'owner_id');
 		$query->addColumn('all_owners.removed', 'removed');
 		
@@ -421,6 +425,9 @@ class SlotManager {
 				if ($result->field('location_category') !== '')
 					$slot->populateLocationCategory($result->field('location_category'));
 				
+				print "<pre>"; var_dump($result->field('media_quota')); print "</pre>";
+				if (is_numeric($result->field('media_quota')))
+					$slot->populateMediaQuota(intval($result->field('media_quota')));
 				
 				while($result->hasMoreRows() && $slot->getShortname() == $result->field('shortname')) {
 					if ($result->field('owner_id') !== '') {
@@ -500,6 +507,8 @@ class SlotManager {
 				$query->addValue('site_id', $slot->getSiteId()->getIdString());
 			$query->addValue('type', $type);
 			$query->addValue('location_category', $slot->getLocationCategory());
+			if (!$slot->getMediaQuota->isEqual(SlotAbstract::getDefaultMediaQuota()))
+				$query->addValue('media_quota', $slot->getMediaQuota());
 						
 			$dbc->query($query, IMPORTER_CONNECTION);
 		} catch (DuplucateKeyDatabaseException $e) {
