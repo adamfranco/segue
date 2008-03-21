@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueErrorPrinter.class.php,v 1.2 2008/02/26 14:08:11 adamfranco Exp $
+ * @version $Id: SegueErrorPrinter.class.php,v 1.3 2008/03/21 18:00:43 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueErrorPrinter.class.php,v 1.2 2008/02/26 14:08:11 adamfranco Exp $
+ * @version $Id: SegueErrorPrinter.class.php,v 1.3 2008/03/21 18:00:43 adamfranco Exp $
  */
 class SegueErrorPrinter {
 	
@@ -137,7 +137,8 @@ class SegueErrorPrinter {
 	 */
 	public function handleAnException (Exception $e, $code) {
 		ArgumentValidator::validate($code, IntegerValidatorRule::getRule());
-		header('HTTP/1.1 '.$code.' '.self::getCodeString($code));
+		if (!headers_sent())
+			header('HTTP/1.1 '.$code.' '.self::getCodeString($code));
 		$this->printException($e, $code);
 		if ($this->shouldLogException($e, $code))
 			HarmoniErrorHandler::logException($e);
