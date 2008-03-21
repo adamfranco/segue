@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.33 2008/02/18 17:31:42 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.34 2008/03/21 19:17:31 adamfranco Exp $
  */ 
 
 /**
@@ -22,7 +22,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginManager.class.php,v 1.33 2008/02/18 17:31:42 adamfranco Exp $
+ * @version $Id: PluginManager.class.php,v 1.34 2008/03/21 19:17:31 adamfranco Exp $
  */
 class PluginManager {
 		
@@ -725,17 +725,18 @@ class PluginManager {
 	 * @since 8/22/07
 	 */
 	public function enablePlugin (Type $type) {
-			$db = Services::getService("DBHandler");
-		// write the type to the database
-			$query = new UpdateQuery();
-			$query->setTable('plugin_type');
-			$query->addValue("type_enabled", '1');
-			$query->addWhereEqual("type_domain", $type->getDomain());
-			$query->addWhereEqual("type_Authority", $type->getAuthority());
-			$query->addWhereEqual("type_keyword", $type->getKeyword());
-			
-			$db->query($query, IMPORTER_CONNECTION);
-			
+		$db = Services::getService("DBHandler");
+	// write the type to the database
+		$query = new UpdateQuery();
+		$query->setTable('plugin_type');
+		$query->addValue("type_enabled", '1');
+		$query->addWhereEqual("type_domain", $type->getDomain());
+		$query->addWhereEqual("type_Authority", $type->getAuthority());
+		$query->addWhereEqual("type_keyword", $type->getKeyword());
+		
+		$db->query($query, IMPORTER_CONNECTION);
+		
+		$this->addPluginToArray($type, 'enabled');
 	}
 
 	function _loadPlugins() {

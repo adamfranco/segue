@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.199 2008/03/21 18:21:44 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.200 2008/03/21 19:17:31 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -79,6 +79,9 @@
 		<new author='alex' date='2008-03-13' ref='1798877' reftype='fr'>
 			Plugins: added breadcrumbs plugin
 		</new>
+		<fix author='adam' date='2008-03-21'>
+			Plugins: PluginManager now adds newly enabled plugins to the session cache as such.
+		</fix>
 		<new author='adam' date='2008-03-17'>
 			WikiText: Now supports [[fileurl:asset_id=1234&amp;record_id=5678]] syntax for urls to files.
 		</new>
