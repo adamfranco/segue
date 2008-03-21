@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.6 2008/03/20 13:08:21 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.7 2008/03/21 17:10:27 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/DownloadCommentSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.6 2008/03/20 13:08:21 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.7 2008/03/21 17:10:27 adamfranco Exp $
  */
 abstract class BlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -250,10 +250,20 @@ abstract class BlockSegue1To2Converter
 			$filename = $matches[1][$i];
 			
 			// Attach the media files and get the new id.
-			$fileUrlVal = $this->attachFile($filename, $attachedMedia);
-		
-			// Re-Write the media url to use the new id.
-			$html = str_replace($link, "[[fileurl:".$fileUrlVal."]]", $html);
+			try {
+				$fileUrlVal = $this->attachFile($filename, $attachedMedia);
+				
+				// Re-Write the media url to use the new id.
+				$html = $this->str_replace_once($link, "[[fileurl:".$fileUrlVal."]]", $html);
+			}
+			// If the HTML references a file that doesn't exist, just put a link
+			// to a missing file action.
+			catch (MissingNodeException $e) {
+				$html = $this->str_replace_once($link, 
+					"[[localurl:&amp;module=media&amp;action=missing&amp;filename="
+						.rawurlencode($filename)."]]",
+					$html, 1);
+			}
 		}
 	
 		return $html;
@@ -341,7 +351,7 @@ abstract class BlockSegue1To2Converter
 // 			printpre($paramString);
 
 			// Re-Write the media url to use the new id.
-			$html = str_replace($link, "[[localurl:".$paramString."]]", $html);
+			$html = $this->str_replace_once($link, "[[localurl:".$paramString."]]", $html);
 		}
 		
 // 		printpre(htmlentities($html));
@@ -435,7 +445,6 @@ abstract class BlockSegue1To2Converter
 		
 		return $element;
 	}
-	
 }
 
 

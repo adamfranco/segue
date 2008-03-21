@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.5 2008/03/20 13:08:21 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.6 2008/03/21 17:10:27 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/../Rendering/DomImportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.5 2008/03/20 13:08:21 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.6 2008/03/21 17:10:27 adamfranco Exp $
  */
 abstract class Segue1To2Converter {
 
@@ -564,6 +564,21 @@ abstract class Segue1To2Converter {
 			$string->trim($numWords);
 		return $string->asString();
 	}
+	
+	/**
+	 * Utility method to do a single string replacement.
+	 * 
+	 * @param string $search
+	 * @param string $replacement
+	 * @param string $subject
+	 * @return string
+	 * @access protected
+	 * @since 1/24/08
+	 */
+	protected function str_replace_once ($search, $replacement, $subject) {
+		$position = strpos($subject, $search);
+		return substr_replace($subject, $replacement, $position, strlen($search));
+	}
 }
 
 /**
@@ -575,7 +590,7 @@ abstract class Segue1To2Converter {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.5 2008/03/20 13:08:21 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.6 2008/03/21 17:10:27 adamfranco Exp $
  */
 class PermissionResolver {
 		

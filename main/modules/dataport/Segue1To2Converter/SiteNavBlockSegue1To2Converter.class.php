@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.5 2008/03/20 15:44:51 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.6 2008/03/21 17:10:27 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/SectionNavBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.5 2008/03/20 15:44:51 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.6 2008/03/21 17:10:27 adamfranco Exp $
  */
 class SiteNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -263,7 +263,7 @@ class SiteNavBlockSegue1To2Converter
 			try {
 				$nodeId = $this->getNodeIdForParamString($matches[1][$i]);
 // 				printpre($nodeId);
-				$html = str_replace($matches[0][$i], '[[nodeurl:'.$nodeId.']]', $html);
+				$html = $this->str_replace_once($matches[0][$i], '[[nodeurl:'.$nodeId.']]', $html);
 			} catch (UnknownIdException $e) {
 // 				printpre($e->getMessage());
 			};
@@ -362,6 +362,8 @@ class SiteNavBlockSegue1To2Converter
 				return $id;
 			}
 		}
+		
+		throw new UnknownIdException("Cannot find a node id in '$params'.");
 		
 	}
 }
