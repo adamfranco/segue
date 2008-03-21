@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ImageBlockSegue1To2Converter.class.php,v 1.2 2008/03/18 13:21:04 adamfranco Exp $
+ * @version $Id: ImageBlockSegue1To2Converter.class.php,v 1.3 2008/03/21 21:11:24 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ImageBlockSegue1To2Converter.class.php,v 1.2 2008/03/18 13:21:04 adamfranco Exp $
+ * @version $Id: ImageBlockSegue1To2Converter.class.php,v 1.3 2008/03/21 21:11:24 adamfranco Exp $
  */
 class ImageBlockSegue1To2Converter
 	extends BlockSegue1To2Converter
@@ -76,13 +76,29 @@ class ImageBlockSegue1To2Converter
 		
 		$title = $this->getDisplayName();
 		$filename = $this->getStringValue($this->getSingleSourceElement('./filename', $this->sourceElement));
-		$fileUrlVal = $this->attachFile($filename, $mediaElement);
 		
 		// Content
 		$currentVersion = $this->doc->createElement('currentVersion');
 		$version = $currentVersion->appendChild($this->doc->createElement('version'));
-		$version->appendChild($this->createCDATAElement('content', 
+		
+		try {
+			$fileUrlVal = $this->attachFile($filename, $mediaElement);
+			$version->appendChild($this->createCDATAElement('content', 
 			"<img src='[[fileurl:".$fileUrlVal."]]' alt=\"".$title."\"/>\n<br/>".$descHtml));
+		}
+		// If the HTML references a file that doesn't exist, just put a link
+		// to a missing file action.
+		catch (MissingNodeException $e) {
+			$version->appendChild($this->createCDATAElement('content', 
+			_("The image referenced was not found.")."\n<br/>".$descHtml));
+		}
+		// If the HTML references a file that doesn't exist, just put a link
+		// to a missing file action.
+		catch (Segue1To2_MissingFileException $e) {
+			$version->appendChild($this->createCDATAElement('content', 
+			_("The image referenced was not found.")."\n<br/>".$descHtml));
+		}
+		
 		$version->appendChild($this->doc->createElement('abstractLength', '0'));
 		
 		return $currentVersion;

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.3 2008/03/21 20:47:59 adamfranco Exp $
+ * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.4 2008/03/21 21:11:24 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.3 2008/03/21 20:47:59 adamfranco Exp $
+ * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.4 2008/03/21 21:11:24 adamfranco Exp $
  */
 class PageNavBlockSegue1To2Converter 
 	extends NavBlockSegue1To2Converter
@@ -175,8 +175,9 @@ class PageNavBlockSegue1To2Converter
 			&& $this->sourceElement->getAttribute('show_editor') == 'TRUE')
 		{
 			$attribution = 'last_editor';
-		} else
+		} else {
 			$attribution = 'default';
+		}
 			
 		$flowOrg->setAttribute('showAttribution', $attribution);
 		

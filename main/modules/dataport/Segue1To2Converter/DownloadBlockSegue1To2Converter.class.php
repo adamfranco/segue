@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DownloadBlockSegue1To2Converter.class.php,v 1.2 2008/03/18 13:21:04 adamfranco Exp $
+ * @version $Id: DownloadBlockSegue1To2Converter.class.php,v 1.3 2008/03/21 21:11:24 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DownloadBlockSegue1To2Converter.class.php,v 1.2 2008/03/18 13:21:04 adamfranco Exp $
+ * @version $Id: DownloadBlockSegue1To2Converter.class.php,v 1.3 2008/03/21 21:11:24 adamfranco Exp $
  */
 class DownloadBlockSegue1To2Converter
 	extends BlockSegue1To2Converter
@@ -71,11 +71,23 @@ class DownloadBlockSegue1To2Converter
 		$filename = $this->getStringValue($this->getSingleSourceElement('./filename', $this->sourceElement));
 		$currentContent = $this->doc->createElement('currentContent');
 		
-		$fileUrlString = $this->attachFile($filename, $mediaElement);
-		$fileUrlString = str_replace('asset_id', 'assetId', $fileUrlString);
-		$fileUrlString = str_replace('record_id', 'recordId', $fileUrlString);
-		$fileUrlString = str_replace('&amp;', '&', $fileUrlString);
-		$content = $currentContent->appendChild($this->createCDATAElement('content', $fileUrlString));
+		try {
+			$fileUrlString = $this->attachFile($filename, $mediaElement);
+			$fileUrlString = str_replace('asset_id', 'assetId', $fileUrlString);
+			$fileUrlString = str_replace('record_id', 'recordId', $fileUrlString);
+			$fileUrlString = str_replace('&amp;', '&', $fileUrlString);
+			$content = $currentContent->appendChild($this->createCDATAElement('content', $fileUrlString));
+		}
+		// If the HTML references a file that doesn't exist, just put a link
+		// to a missing file action.
+		catch (MissingNodeException $e) {
+			$content = $currentContent->appendChild($this->createCDATAElement('content', ''));
+		}
+		// If the HTML references a file that doesn't exist, just put a link
+		// to a missing file action.
+		catch (Segue1To2_MissingFileException $e) {
+			$content = $currentContent->appendChild($this->createCDATAElement('content', ''));
+		}
 		
 		$rawDesc = $currentContent->appendChild($this->createCDATAElement('rawDescription',  $this->cleanHtml($descHtml)));
 		

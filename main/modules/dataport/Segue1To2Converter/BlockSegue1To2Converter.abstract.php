@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.7 2008/03/21 17:10:27 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.8 2008/03/21 21:11:24 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/DownloadCommentSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.7 2008/03/21 17:10:27 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.8 2008/03/21 21:11:24 adamfranco Exp $
  */
 abstract class BlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -264,6 +264,14 @@ abstract class BlockSegue1To2Converter
 						.rawurlencode($filename)."]]",
 					$html, 1);
 			}
+			// If the HTML references a file that doesn't exist, just put a link
+			// to a missing file action.
+			catch (Segue1To2_MissingFileException $e) {
+				$html = $this->str_replace_once($link, 
+					"[[localurl:&amp;module=media&amp;action=missing&amp;filename="
+						.rawurlencode($filename)."]]",
+					$html, 1);
+			}
 		}
 	
 		return $html;
@@ -392,7 +400,7 @@ abstract class BlockSegue1To2Converter
 		if (!$sourceFile)
 			throw new MissingNodeException("Could not find entry for media file, '$filename'.");
 		
-		$element = $destAttachedMedia->appendChild($this->doc->createElement('mediaAsset'));
+		$element = $this->doc->createElement('mediaAsset');
 		$element->setAttribute('id', $this->createId());
 		$element->appendChild($this->createCDATAElement('displayName', $filename));
 		$element->appendChild($this->createCDATAElement('description', ''));
@@ -423,6 +431,8 @@ abstract class BlockSegue1To2Converter
 			if ($value)
 				$element->setAttribute('modify_date', $value);
 		} catch (MissingNodeException $e) {}
+		
+		$destAttachedMedia->appendChild($element);
 		
 		return 'asset_id='.$element->getAttribute('id')
 			.'&amp;record_id='.$fileElement->getAttribute('id');
