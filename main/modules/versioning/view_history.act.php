@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_history.act.php,v 1.2 2008/01/08 21:59:57 adamfranco Exp $
+ * @version $Id: view_history.act.php,v 1.3 2008/03/21 00:16:31 achapin Exp $
  */ 
 
-require_once(dirname(__FILE__)."/../ui1/view.act.php");
+require_once(dirname(__FILE__)."/../view/html.act.php");
 require_once(dirname(__FILE__)."/Rendering/HistorySiteVisitor.class.php");
 
 
@@ -22,10 +22,10 @@ require_once(dirname(__FILE__)."/Rendering/HistorySiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_history.act.php,v 1.2 2008/01/08 21:59:57 adamfranco Exp $
+ * @version $Id: view_history.act.php,v 1.3 2008/03/21 00:16:31 achapin Exp $
  */
 class view_historyAction
-	extends viewAction
+	extends htmlAction
 {
 		
 	/**
