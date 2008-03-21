@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.14 2008/03/21 20:28:37 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.15 2008/03/21 21:11:04 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.14 2008/03/21 20:28:37 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.15 2008/03/21 21:11:04 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -445,9 +445,9 @@ class DomImportSiteVisitor
 		if ($element->hasAttribute('showHistory'))
 			$siteComponent->updateShowHistorySetting($element->getAttribute('showHistory'));
 		if ($element->hasAttribute('showDates'))
-			$siteComponent->updateShowHistorySetting($element->getAttribute('showHistory'));
+			$siteComponent->updateShowDatesSetting($element->getAttribute('showDates'));
 		if ($element->hasAttribute('showAttribution'))
-			$siteComponent->updateShowHistorySetting($element->getAttribute('showHistory'));
+			$siteComponent->updateShowAttributionSetting($element->getAttribute('showAttribution'));
 		if ($element->hasAttribute('sortMethod'))
 			$siteComponent->updateSortMethodSetting($element->getAttribute('sortMethod'));
 		if ($element->hasAttribute('commentsEnabled'))
@@ -781,8 +781,11 @@ class DomImportSiteVisitor
 		// If our image format is supported by the image processor,
 		// generate a thumbnail.
 		if ($imageProcessor->isFormatSupported($mimeType)) {
-			$sourceData = file_get_contents($filePath);		
-			$thumbnailData = $imageProcessor->generateThumbnailData($mimeType, $sourceData);
+			$sourceData = file_get_contents($filePath);
+			try {
+				$thumbnailData = $imageProcessor->generateThumbnailData($mimeType, $sourceData);
+			} catch (ImageProcessingFailedException $e) {
+			}
 		}
 		
 		$parts = $record->getPartsByPartStructure($idManager->getId("THUMBNAIL_DATA"));
@@ -1198,7 +1201,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.14 2008/03/21 20:28:37 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.15 2008/03/21 21:11:04 adamfranco Exp $
  */
 class MissingNodeException
 	extends Exception
