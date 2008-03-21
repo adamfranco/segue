@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.197 2008/03/21 18:01:24 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.198 2008/03/21 18:21:02 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -119,6 +119,9 @@
 		<fix author='adam' date='2008-03-20'>
 			Importer: Fixed notice when invalid archives are uploaded.
 		</fix>
+		<new author='adam' date='2008-03-21'>
+			Importer: Now can import media quotas.
+		</new>
 		<fix author='adam' date='2008-03-21'>
 			ErrorPrinter: Now doesn't try to send headers if they are already sent.
 		</fix>

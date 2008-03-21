@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.11 2008/03/21 17:59:17 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.12 2008/03/21 18:21:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.interface.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/Slot.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.11 2008/03/21 17:59:17 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.12 2008/03/21 18:21:02 adamfranco Exp $
  */
 abstract class SlotAbstract 
 	implements Slot
@@ -728,6 +728,20 @@ abstract class SlotAbstract
 		
 		$dbc = Services::getService('DBHandler');
 		$dbc->query($query, IMPORTER_CONNECTION);
+	}
+	
+	/**
+	 * Answer true if the slot uses the default media quota
+	 *
+	 * @return boolean
+	 * @access public
+	 * @since 3/21/08
+	 */
+	public function usesDefaultMediaQuota () {
+		if ($this->getMediaQuota()->isEqual(self::getDefaultMediaQuota()))
+			return true;
+		else
+			return false;
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit.act.php,v 1.4 2008/02/19 19:42:58 adamfranco Exp $
+ * @version $Id: edit.act.php,v 1.5 2008/03/21 18:21:02 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: edit.act.php,v 1.4 2008/02/19 19:42:58 adamfranco Exp $
+ * @version $Id: edit.act.php,v 1.5 2008/03/21 18:21:02 adamfranco Exp $
  */
 class editAction
 	extends MainWindowAction
@@ -98,8 +98,13 @@ class editAction
 		
 		$property = $step->addComponent('category', new WSelectList);
 		$property->setValue($slot->getLocationCategory());
-		foreach (Slot::getLocationCategories() as $category)
+		foreach (SlotAbstract::getLocationCategories() as $category)
 			$property->addOption($category, ucfirst($category));
+		
+		$property = $step->addComponent('quota', new WTextField);
+		$property->setSize(6);
+		if (!$slot->usesDefaultMediaQuota())
+			$property->setValue($slot->getMediaQuota()->asString());
 			
 		$property = $step->addComponent('owners', new WSearchList);
 		$property->setSearchSource(new AgentSearchSource);
@@ -124,6 +129,11 @@ class editAction
 		print "\n<p><strong>"._("Location Category").":</strong> [[category]]</p>";
 		print "<div style='margin-left: 10px;'>";
 		print _("The 'Location Category' is the Segue location in which this site will be made available. In the default installation this is disregarded, however some installations will be divided into 'main' and 'community', or other combinations. This flag is what is used in that determination.");
+		print "</div>";
+		
+		print "\n<p><strong>"._("Media Library Quota").":</strong> [[quota]]</p>";
+		print "<div style='margin-left: 10px;'>";
+		print _("The 'Media Library Quota' is a limit on the size of media that can be uploaded to a Segue site. Quotas greater or smaller than the default can be set, leave blank for the default. Quotas can be specified in B, kB, MB, GB (e.g. 25MB).");
 		print "</div>";
 		
 		print "\n<p><strong>"._("Owners").":</strong> </p>";
@@ -166,6 +176,14 @@ class editAction
 				$changes[] = "Location Category changed from ".$slot->getLocationCategory()." to ".$values['slot']['category'];
 			
 				$slot->setLocationCategory($values['slot']['category']);
+			}
+			
+			if (strlen($values['slot']['quota'])) {
+				$quota = ByteSize::fromString($values['slot']['quota']);
+				if (!$quota->isEqual($slot->getMediaQuota()))
+					$slot->setMediaQuota($quota);
+			} else {
+				$slot->useDefaultMediaQuota();
 			}
 			
 			$idMgr = Services::getService("Id");

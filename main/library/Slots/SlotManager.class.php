@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.11 2008/03/21 17:59:17 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.12 2008/03/21 18:21:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/AllSlotsIterator.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.11 2008/03/21 17:59:17 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.12 2008/03/21 18:21:02 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -425,7 +425,6 @@ class SlotManager {
 				if ($result->field('location_category') !== '')
 					$slot->populateLocationCategory($result->field('location_category'));
 				
-				print "<pre>"; var_dump($result->field('media_quota')); print "</pre>";
 				if (is_numeric($result->field('media_quota')))
 					$slot->populateMediaQuota(intval($result->field('media_quota')));
 				
@@ -507,7 +506,7 @@ class SlotManager {
 				$query->addValue('site_id', $slot->getSiteId()->getIdString());
 			$query->addValue('type', $type);
 			$query->addValue('location_category', $slot->getLocationCategory());
-			if (!$slot->getMediaQuota->isEqual(SlotAbstract::getDefaultMediaQuota()))
+			if (!$slot->usesDefaultMediaQuota())
 				$query->addValue('media_quota', $slot->getMediaQuota());
 						
 			$dbc->query($query, IMPORTER_CONNECTION);
