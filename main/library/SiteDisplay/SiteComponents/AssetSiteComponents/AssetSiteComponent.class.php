@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.21 2008/03/21 21:01:11 achapin Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.22 2008/03/21 21:10:05 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.21 2008/03/21 21:01:11 achapin Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.22 2008/03/21 21:10:05 adamfranco Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -349,7 +349,7 @@ abstract class AssetSiteComponent
 	function updateSortMethodSetting ( $sortMethod ) {
 		$methods = array('default', 'custom', 'title_asc', 'title_desc', 'create_date_asc', 'create_date_desc', 'mod_date_asc', 'mod_date_desc');
 		if (!in_array($sortMethod, $methods))
-			throw new Exception("Invalid sort method, '$sortMethod', not one of '".implode("', ", $methods)."'.");
+			throw new InvalidArgumentException("Invalid sort method, '$sortMethod', not one of '".implode("', ", $methods)."'.");
 		$element = $this->getElement();
 		
 		$element->setAttribute('sortMethod', $sortMethod);
@@ -477,7 +477,7 @@ abstract class AssetSiteComponent
 		
 		$dates = array('default', 'none', 'creation_date', 'modification_date', 'both');
 		if (!in_array($showDates, $dates))
-			throw new Exception("Invalid date setting, '$showDates', not one of '".implode("', ", $dates)."'.");
+			throw new InvalidArgumentException("Invalid date setting, '$showDates', not one of '".implode("', ", $dates)."'.");
 		$element = $this->getElement();
 		
 		$element->setAttribute('showDates', $showDates);
@@ -539,7 +539,7 @@ abstract class AssetSiteComponent
 	function updateShowAttributionSetting ( $showAttribution ) {
 		$attributions = array('default', 'none', 'creator', 'last_editor', 'both', 'all_editors');
 		if (!in_array($showAttribution, $attributions))
-			throw new Exception("Invalid attribution, '$showAttribution', not one of '".implode("', ", $attributions)."'.");
+			throw new InvalidArgumentException("Invalid attribution, '$showAttribution', not one of '".implode("', ", $attributions)."'.");
 		$element = $this->getElement();
 		
 		$element->setAttribute('showAttribution', $showAttribution);
