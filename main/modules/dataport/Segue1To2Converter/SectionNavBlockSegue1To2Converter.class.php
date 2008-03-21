@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.6 2008/03/20 14:14:25 adamfranco Exp $
+ * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.7 2008/03/21 15:24:24 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -28,7 +28,7 @@ require_once(dirname(__FILE__)."/CategoryListBlockSegue1To2Converter.class.php")
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.6 2008/03/20 14:14:25 adamfranco Exp $
+ * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.7 2008/03/21 15:24:24 adamfranco Exp $
  */
 class SectionNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -128,25 +128,30 @@ class SectionNavBlockSegue1To2Converter
 		if ($this->useSideSections()) {
 			$leftContent = null;
 			$rightContent = $this->getPageContent('right');
-			$this->setNavigationWidth($rightContent);
+			if (!is_null($rightContent))
+				$this->setNavigationWidth($rightContent);
 			$menu = $this->getNestedMenu();
 		} 
 		// If the menu is on the right, separate all menu items and other right content
 		// from other content on the left.
 		else  if ($this->getPageMenuSide($this->sourceElement) == 'right') {
 			$leftContent = $this->getPageContent('left');
-			$this->setNavigationWidth($leftContent);
+			if (!is_null($leftContent))
+				$this->setNavigationWidth($leftContent);
 			$rightContent = $this->getPageMenu('right');
-			$this->setNavigationWidth($rightContent);
+			if (!is_null($rightContent))
+				$this->setNavigationWidth($rightContent);
 			$menu = $rightContent;
 		}
 		// The default is for the menu to be on the left, separate all menu items
 		// and other left content from other content on the right.
 		else {
 			$leftContent = $this->getPageMenu('left');
-			$this->setNavigationWidth($leftContent);
+			if (!is_null($leftContent))
+				$this->setNavigationWidth($leftContent);
 			$rightContent = $this->getPageContent('right');
-			$this->setNavigationWidth($rightContent);
+			if (!is_null($rightContent))
+				$this->setNavigationWidth($rightContent);
 			$menu = $leftContent;
 		}
 		
