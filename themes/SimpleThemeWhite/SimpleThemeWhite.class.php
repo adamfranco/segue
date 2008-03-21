@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.27 2008/03/21 00:29:19 achapin Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.28 2008/03/21 15:49:25 achapin Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -1933,6 +1933,33 @@ class SimpleThemeWhite extends Theme {
 	.ui2_reorder {
 		float: right;
 		font-size: 10px;
+	}
+
+	.ui2_setting {
+		white-space: nowrap;
+		font-size: 12px;
+		font-weight: bold;
+		padding: 2px;
+
+	}
+	
+	.ui2_field {
+		font-size: 11px;
+		border: 1px solid #666666;
+	}
+
+	.ui2_text {
+		font-size: 11px;
+		font-weight: normal;
+	}
+	
+	.ui2_button {
+		font-size: 12px;
+		color: #000000;
+		border: 1px solid #666666;
+		background-color: #FFFFFF;
+		margin-bottom: 5px;
+		margin-right: 5px;
 	}
 	
 /*********************************************************

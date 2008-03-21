@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.2 2008/01/10 21:03:29 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.3 2008/03/21 15:49:25 achapin Exp $
  */ 
  
  require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.2 2008/01/10 21:03:29 adamfranco Exp $
+ * @version $Id: ModifySettingsSiteVisitor.class.php,v 1.3 2008/03/21 15:49:25 achapin Exp $
  */
 class ModifySettingsSiteVisitor 
 	implements SiteVisitor
@@ -115,6 +115,38 @@ class ModifySettingsSiteVisitor
 			&& RequestContext::value('showHistory') !== $siteComponent->showHistorySetting())
 		{
 			$siteComponent->updateShowHistorySetting(RequestContext::value('showHistory'));
+		}
+	}
+
+	/**
+	 * Apply the show dates settings.
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 3/21/08
+	 */
+	public function applyShowDates ( SiteComponent $siteComponent ) {
+		if(RequestContext::value('showDates') 
+			&& RequestContext::value('showDates') !== $siteComponent->showDatesSetting())
+		{
+			$siteComponent->updateShowDatesSetting(RequestContext::value('showDates'));
+		}
+	}
+
+	/**
+	 * Apply the show attribution settings.
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 3/21/08
+	 */
+	public function applyShowAttribution ( SiteComponent $siteComponent ) {
+		if(RequestContext::value('showAttribution') 
+			&& RequestContext::value('showAttribution') !== $siteComponent->showAttributionSetting())
+		{
+			$siteComponent->updateShowAttributionSetting(RequestContext::value('showAttribution'));
 		}
 	}
 	
@@ -231,6 +263,8 @@ class ModifySettingsSiteVisitor
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyShowHistory($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyShowDates($siteComponent);
+		$this->applyShowAttribution($siteComponent);
 		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
@@ -273,6 +307,8 @@ class ModifySettingsSiteVisitor
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyShowHistory($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyShowDates($siteComponent);
+		$this->applyShowAttribution($siteComponent);
 		$this->applySortMethod($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
@@ -293,6 +329,8 @@ class ModifySettingsSiteVisitor
 		$this->applyDescription($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyShowDates($siteComponent);
+		$this->applyShowAttribution($siteComponent);
 		$this->applyShowHistory($siteComponent);
 		$this->applyWidth($siteComponent);
 		$this->applySortMethod($siteComponent);
@@ -315,6 +353,8 @@ class ModifySettingsSiteVisitor
 // 		$this->applyDirection($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyShowDates($siteComponent);
+		$this->applyShowAttribution($siteComponent);
 		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
@@ -335,6 +375,8 @@ class ModifySettingsSiteVisitor
 // 		$this->applyDirection($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyShowDates($siteComponent);
+		$this->applyShowAttribution($siteComponent);
 		$this->applyWidth($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
@@ -355,6 +397,8 @@ class ModifySettingsSiteVisitor
 		$this->applyDirection($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyShowDates($siteComponent);
+		$this->applyShowAttribution($siteComponent);
 		$this->applyShowHistory($siteComponent);
 		$this->applyWidth($siteComponent);
 		$this->applySortMethod($siteComponent);
@@ -376,6 +420,8 @@ class ModifySettingsSiteVisitor
 		$this->applyDirection($siteComponent);
 		$this->applyShowDisplayNames($siteComponent);
 		$this->applyCommentsEnabled($siteComponent);
+		$this->applyShowDates($siteComponent);
+		$this->applyShowAttribution($siteComponent);
 		$this->applyShowHistory($siteComponent);
 		$this->applyWidth($siteComponent);
 		$this->applySortMethod($siteComponent);

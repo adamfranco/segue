@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.19 2008/03/21 00:29:19 achapin Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.20 2008/03/21 15:49:25 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.19 2008/03/21 00:29:19 achapin Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.20 2008/03/21 15:49:25 achapin Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -564,10 +564,10 @@ class SegueClassicWizard
 	 */
 	public function addDateSettingsOptions (WSelectList $property) {
 		$property->addOption('default', _("use default"));
-		$property->addOption('none', _("override-show no dates"));
-		$property->addOption('creation_date', _("override-show date created"));
-		$property->addOption('modification_date', _("override-show date last modified"));
-		$property->addOption('both', _("override-show both creation and modification dates"));
+		$property->addOption('none', _("override- No dates"));
+		$property->addOption('creation_date', _("override-Date created"));
+		$property->addOption('modification_date', _("override-Date last modified"));
+		$property->addOption('both', _("override-Both created and last modified dates"));
 		$property->setValue('default');
 	}
 
@@ -581,9 +581,9 @@ class SegueClassicWizard
 	 */
 	public function addAttributionSettingsOptions (WSelectList $property) {
 		$property->addOption('default', _("use default"));
-		$property->addOption('creator', _("override-show original author"));
-		$property->addOption('last_editor', _("override-show last editor"));
-		$property->addOption('all_editors', _("override-show all editors"));
+		$property->addOption('creator', _("override-Original author"));
+		$property->addOption('last_editor', _("override-Last editor"));
+		$property->addOption('all_editors', _("override-All editors"));
 		$property->setValue('default');
 	}
 
@@ -601,7 +601,7 @@ class SegueClassicWizard
 		$component->updateShowDisplayNames($values['show_titles']);
 		$component->updateShowHistorySetting($values['show_history']);
 		$component->updateShowDatesSetting($values['show_dates']);
-		$component->updateshowAttributionSetting($values['show_attribution']);
+		$component->updateShowAttributionSetting($values['show_attribution']);
 		$component->updateCommentsEnabled($values['enable_comments']);
 		$this->saveWidth($component, $values);
 		return true;

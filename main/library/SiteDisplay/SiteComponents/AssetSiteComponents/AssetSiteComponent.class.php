@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.19 2008/03/21 00:29:19 achapin Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.20 2008/03/21 15:49:24 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.19 2008/03/21 00:29:19 achapin Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.20 2008/03/21 15:49:24 achapin Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -457,7 +457,7 @@ abstract class AssetSiteComponent
 		$element = $this->getElement();
 		
 		if (!$element->hasAttribute('showDates'))
-			return 'none';
+			return 'default';
 		
 		return $element->getAttribute('showDates');
 	}
@@ -536,7 +536,7 @@ abstract class AssetSiteComponent
 	 * @access public
 	 * @since 3/20/08
 	 */
-	function updateshowAttributionSetting ( $showAttribution ) {
+	function updateShowAttributionSetting ( $showAttribution ) {
 		$attributions = array('default', 'none', 'creator', 'last_editor', 'all_editors');
 		if (!in_array($showAttribution, $attributions))
 			throw new Exception("Invalid attribution, '$showAttribution', not one of '".implode("', ", $attributions)."'.");

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.195 2008/03/21 00:29:19 achapin Exp $
+ @version $Id: changelog.xml,v 1.196 2008/03/21 15:49:24 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -15,7 +15,7 @@
 		</releaseNotes>
 		<new author='alex' date='2008-03-20' ref='1820861' reftype='fr'>
 			View: added settings for displaying block create and update timestamps, 
-			as well as names of block creators and editors in UI1		
+			as well as names of block creators and editors	
 		</new>
 		<fix author='alex' date='2008-03-20'>
 			Versioning: Fixed history action to use new view module

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.16 2008/02/18 19:12:18 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.17 2008/03/21 15:49:25 achapin Exp $
  */ 
  
  require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.16 2008/02/18 19:12:18 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.17 2008/03/21 15:49:25 achapin Exp $
  */
 class ControlsSiteVisitor 
 	extends GeneralControlsSiteVisitor
@@ -89,7 +89,7 @@ class ControlsSiteVisitor
 	 */
 	function controlsEnd ( $siteComponent ) {
 		print "\n\t\t\t\t<div style='text-align: right;'>";
-		print "<input type='submit' value='"._("Apply Changes")."'/>";
+		print "<input type='submit' class='ui2_button' value='"._("Apply Changes")."'/>";
 		print "</div>";
 		print "\n\t\t\t</form>";
 		
@@ -119,7 +119,7 @@ class ControlsSiteVisitor
 					));
 		
 		print "\n\t\t\t\t<div style='margin-top: 5px; margin-bottom: 5px;'>";
-		print "\n\t\t\t\t\t<input type='button' onclick='";
+		print "\n\t\t\t\t\t<input type='button' class='ui2_button' onclick='";
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.delete"), 
 			$siteComponent->getQualifierId()))
@@ -132,7 +132,7 @@ class ControlsSiteVisitor
 			print "alert(\""._('You are not authorized to delete this item.')."\"); return false;";
 		}
 		print "' value='";
-		print _("delete");
+		print _("Delete");
 		print "'/>";
 		print "\n\t\t\t\t</div>";
 	}
@@ -165,7 +165,7 @@ class ControlsSiteVisitor
 						'returnAction' => $this->action,
 						'direction' => urlencode($parentMenuOrganizer->getDirection())));
 			
-			print "\n\t\t\t\t\t<button onclick='";
+			print "\n\t\t\t\t\t<button class='ui2_button' onclick='";
 			if ($authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.add_children"), 
 				$siteComponent->getQualifierId()))
@@ -192,9 +192,9 @@ class ControlsSiteVisitor
 	 * @since 4/17/06
 	 */
 	function printDisplayName ( $siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
+		print "\n\t\t\t\t<div class='ui2_setting'>";
 		print _('Title: ');
-		print "<input type='text' size='25' ";
+		print "<input type='text' size='25' class='ui2_field' ";
 		print " name='".RequestContext::name('displayName')."'";
 		
 		$authZ = Services::getService("AuthZ");
@@ -219,7 +219,7 @@ class ControlsSiteVisitor
 	 * @since 1/16/07
 	 */
 	function printShowDisplayNames ( $siteComponent, $isSite = false ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		print "\n\t\t\t\t<div class='ui2_setting'>";
 		print "<strong>"._('Display Block Titles: ')."</strong>";
 		
 		$authZ = Services::getService("AuthZ");
@@ -233,14 +233,14 @@ class ControlsSiteVisitor
 			$canEdit = false;
 		}
 		
-		print "\n\t\t\t\t\t<select ";
+		print "\n\t\t\t\t\t<select class='ui2_field' ";
 		print (($canEdit)?"":" disabled='disabled'");
 		print " name='".RequestContext::name('showDisplayNames')."'>";
 		
 		if (!$isSite) {
 			print "\n\t\t\t\t\t\t<option value='default'";
 			print (($siteComponent->showDisplayNames() === 'default')?" selected='selected'":"");
-			print ">"._(" use default");
+			print ">"._(" Use default");
 			print "</option>";
 		}
 		
@@ -266,9 +266,9 @@ class ControlsSiteVisitor
 		
 		$parent = $siteComponent->getParentComponent();
 		if ($parent) {
-			print "("._("current default").": ";
+			print "\n<span class='ui2_text'>("._("current default").": ";
 			print (($parent->showDisplayName() === true)?_("show"):_("hide"));
-			print ")";
+			print ")</span>";
 		}
 		
 		print "\n\t\t\t\t</div>";
@@ -283,7 +283,7 @@ class ControlsSiteVisitor
 	 * @since 1/10/08
 	 */
 	function printShowHistory ( $siteComponent, $isSite = false ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		print "\n\t\t\t\t<div class='ui2_setting'>";
 		print "<strong>"._('Display History Link: ')."</strong>";
 		
 		$authZ = Services::getService("AuthZ");
@@ -297,14 +297,14 @@ class ControlsSiteVisitor
 			$canEdit = false;
 		}
 		
-		print "\n\t\t\t\t\t<select ";
+		print "\n\t\t\t\t\t<select class='ui2_field' ";
 		print (($canEdit)?"":" disabled='disabled'");
 		print " name='".RequestContext::name('showHistory')."'>";
 		
 		if (!$isSite) {
 			print "\n\t\t\t\t\t\t<option value='default'";
 			print (($siteComponent->showHistorySetting() === 'default')?" selected='selected'":"");
-			print ">"._(" use default");
+			print ">"._(" Use default");
 			print "</option>";
 		}
 		
@@ -330,9 +330,137 @@ class ControlsSiteVisitor
 		
 		$parent = $siteComponent->getParentComponent();
 		if ($parent) {
-			print "("._("current default").": ";
+			print "\n<span class='ui2_text'>("._("current default").": ";
 			print (($parent->showHistory() === true)?_("show"):_("hide"));
-			print ")";
+			print ")</span>";
+		}
+		
+		print "\n\t\t\t\t</div>";
+	}
+
+	/**
+	 * Print the block date display in view-mode
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 1/10/08
+	 */
+	function printShowDates ( $siteComponent, $isSite = false ) {
+		print "\n\t\t\t\t<div class='ui2_setting'>";
+		print "<strong>"._('Display Dates: ')."</strong>";
+		
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$canEdit = true;
+		} else {
+			$canEdit = false;
+		}
+		
+		print "\n\t\t\t\t\t<select class='ui2_field' ";
+		print (($canEdit)?"":" disabled='disabled'");
+		print " name='".RequestContext::name('showDates')."'>";
+		
+		if (!$isSite) {
+			print "\n\t\t\t\t\t\t<option value='default'";
+			print (($siteComponent->showDatesSetting() === 'default')?" selected='selected'":"");
+			print ">"._(" Use default");
+			print "</option>";
+		}
+		
+
+		$dates = array(
+			'none' => _('No dates'), 
+			'creation_date' => _('Date created'), 
+			'modification_date' => _('Date last modified'),
+			'both' => _("Date created and last modified"));
+			
+		foreach ($dates as $date => $display) {
+			print "\n\t\t\t\t\t\t<option value='".$date."'";
+			print (($siteComponent->showDatesSetting() == $date)?" selected='selected'":"");
+			print ">";
+			if ($isSite)
+				print $display;
+			else
+				print _("Override")." - ".$display;
+			print "</option>";
+		}
+		
+		print "\n\t\t\t\t\t</select><br/> ";
+		
+		$parent = $siteComponent->getParentComponent();
+		if ($parent) {
+			print "\n<span class='ui2_text'>("._("current default").": ";
+			print $dates[$parent->showDates()];
+			print ")</span>";
+		}
+		
+		print "\n\t\t\t\t</div>";
+	}
+	
+		/**
+	 * Print the block attribution setting in view-mode
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 1/10/08
+	 */
+	function printShowAttribution ( $siteComponent, $isSite = false ) {
+		print "\n\t\t\t\t<div class='ui2_setting'>";
+		print "<strong>"._('Display Attribution: ')."</strong>";
+		
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$canEdit = true;
+		} else {
+			$canEdit = false;
+		}
+		
+		print "\n\t\t\t\t\t<select class='ui2_field'";
+		print (($canEdit)?"":" disabled='disabled'");
+		print " name='".RequestContext::name('showAttribution')."'>";
+		
+		if (!$isSite) {
+			print "\n\t\t\t\t\t\t<option value='default'";
+			print (($siteComponent->showAttributionSetting() === 'default')?" selected='selected'":"");
+			print ">"._(" Use default");
+			print "</option>";
+		}
+		
+
+		$attributions = array(
+			'none' => _('No attribution'), 
+			'creator' => _('Original author'), 
+			'last_editor' => _('Last editor'),
+			'all_editors' => _("All editors"));
+			
+		foreach ($attributions as $attribution => $display) {
+			print "\n\t\t\t\t\t\t<option value='".$attribution."'";
+			print (($siteComponent->showAttributionSetting() == $attribution)?" selected='selected'":"");
+			print ">";
+			if ($isSite)
+				print $display;
+			else
+				print _("Override")." - ".$display;
+			print "</option>";
+		}
+		
+		print "\n\t\t\t\t\t</select><br/> ";
+		
+		$parent = $siteComponent->getParentComponent();
+		if ($parent) {
+			print "\n<span class='ui2_text'>("._("current default").": ";
+			print $attributions[$parent->showAttribution()];
+			print ")</span>";
 		}
 		
 		print "\n\t\t\t\t</div>";
@@ -348,8 +476,8 @@ class ControlsSiteVisitor
 	 * @since 1/10/08
 	 */
 	public function printSortMethod ( SiteComponent $siteComponent, $isSite = false ) {
-		print "\n\t\t\t\t<div><span style='white-space: nowrap;'>";
-		print "<strong>"._('Content Sort Method: ')."</strong>";
+		print "\n\t\t\t\t<div class='ui2_setting'>";
+		print "<strong>"._('Sort Content: ')."</strong>";
 		
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -362,25 +490,35 @@ class ControlsSiteVisitor
 			$canEdit = false;
 		}
 		
-		print "\n\t\t\t\t\t<select ";
+		print "\n\t\t\t\t\t<select class='ui2_field'";
 		print (($canEdit)?"":" disabled='disabled'");
 		print " name='".RequestContext::name('sortMethod')."'>";
 		
 		if (!$isSite) {
 			print "\n\t\t\t\t\t\t<option value='default'";
 			print (($siteComponent->sortMethodSetting() === 'default')?" selected='selected'":"");
-			print ">"._("use default");
+			print ">"._("Use default");
 			print "</option>";
 		}
 		
+// 		$methods = array(
+// 			'custom' => _('Custom'), 
+// 			'title_asc' => _('Alphabetic by Title - Ascending'), 
+// 			'title_desc' => _('Alphabetic by Title - Descending'),
+// 			'create_date_asc' => _("Chronologically by Create Date - Ascending"),
+// 			'create_date_desc' => _("Chronologically by Create Date - Descending"),
+// 			'mod_date_asc' => _("Chronologically by Modification Date - Ascending"),
+// 			'mod_date_desc' => _("Chronologically by Modification Date - Descending"));
+
 		$methods = array(
 			'custom' => _('Custom'), 
-			'title_asc' => _('Alphabetic by Title - Ascending'), 
-			'title_desc' => _('Alphabetic by Title - Descending'),
-			'create_date_asc' => _("Chronologically by Create Date - Ascending"),
-			'create_date_desc' => _("Chronologically by Create Date - Descending"),
-			'mod_date_asc' => _("Chronologically by Modification Date - Ascending"),
-			'mod_date_desc' => _("Chronologically by Modification Date - Descending"));
+			'title_asc' => _('Title: A-Z'), 
+			'title_desc' => _('Title: Z-A'),
+			'create_date_asc' => _("Creation Date: Recent Last"),
+			'create_date_desc' => _("Creation Date: Recent First"),
+			'mod_date_asc' => _("Modification Date: Recent Last"),
+			'mod_date_desc' => _("Modification Date: Recent First"));
+			
 		foreach ($methods as $method => $display) {
 			print "\n\t\t\t\t\t\t<option value='".$method."'";
 			print (($siteComponent->sortMethodSetting() == $method)?" selected='selected'":"");
@@ -392,11 +530,11 @@ class ControlsSiteVisitor
 			print "</option>";
 		}
 		
-		print "\n\t\t\t\t\t</select></span> ";
+		print "\n\t\t\t\t\t</select><br/> ";
 		
 		$parent = $siteComponent->getParentComponent();
 		if ($parent) {
-			print "<span style='white-space: nowrap;'>("._("current default").": ";
+			print "\n<span class='ui2_text'>("._("current default").": ";
 			print $methods[$parent->sortMethod()];
 			print ")</span>";
 		}
@@ -413,7 +551,7 @@ class ControlsSiteVisitor
 	 * @since 7/16/07
 	 */
 	function printCommentSettings ( $siteComponent, $isSite = false ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap;'>";
+		print "\n\t\t\t\t<div class='ui2_setting'>";
 		print "<strong>"._('Enable Comments: ')."</strong>";
 		
 		$authZ = Services::getService("AuthZ");
@@ -428,14 +566,14 @@ class ControlsSiteVisitor
 		}
 		
 		
-		print "\n\t\t\t\t\t<select ";
+		print "\n\t\t\t\t\t<select class='ui2_field'";
 		print (($canEdit)?"":" disabled='disabled'");
 		print " name='".RequestContext::name('commentsEnabled')."'>";
 				
 		if (!$isSite) {
 			print "\n\t\t\t\t\t\t<option value='default'";
 			print (($siteComponent->commentsEnabled() === 'default')?" selected='selected'":"");
-			print ">"._(" use default");
+			print ">"._(" Use default");
 			print "</option>";
 		}
 		
@@ -461,9 +599,9 @@ class ControlsSiteVisitor
 		
 		$parent = $siteComponent->getParentComponent();
 		if ($parent) {
-			print "("._("current default").": ";
+			print "\n<span class='ui2_text'>("._("current default").": ";
 			print (($parent->showComments() === true)?_("yes"):_("no"));
-			print ")";
+			print ")</span>";
 		}
 		
 		print "\n\t\t\t\t</div>";
@@ -482,7 +620,7 @@ class ControlsSiteVisitor
 		print "<div style='font-weight: bold;'>"._('Description: ')."</div>";
 		print "<div style='font-size: smaller; width: 125px;'>"
 			._("The description will be included in RSS feeds, title attributes, and other external references to this item.")."</div>";
-		print "\n\t\t\t\t\t</td><td valign='top'><textarea rows='5' cols='25'";
+		print "\n\t\t\t\t\t</td><td valign='top'><textarea rows='5' cols='25' class='ui2_field'";
 		print " name='".RequestContext::name('description')."'";
 		
 		$authZ = Services::getService("AuthZ");
@@ -509,7 +647,7 @@ class ControlsSiteVisitor
 	 */
 	function printWidth ( $siteComponent ) {
 		print "<div style='font-weight: bold;'>"._('Maximum Width Guideline: ');
-		print "<input type='text' size='6' ";
+		print "<input type='text' size='6' class='ui2_field' ";
 		print " name='".RequestContext::name('width')."'";
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -534,10 +672,10 @@ class ControlsSiteVisitor
 	 * @since 4/17/06
 	 */
 	function printRowsColumns ( $siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
+		print "\n\t\t\t\t<div class='ui2_setting'>";
 		$minCells = $siteComponent->getMinNumCells();
 		print "\n\t\t\t\t\t"._('Rows: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'";
+		print "\n\t\t\t\t\t<select class='ui2_field' name='".RequestContext::name('rows')."'";
 		
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -558,8 +696,8 @@ class ControlsSiteVisitor
 			print "</option>";
 		}
 		print "\n\t\t\t\t\t</select>";
-		print "\n\t\t\t\t\t<br/>"._('Columns: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('columns')."'";
+		print "\n\t\t\t\t\t"._('Columns: ');
+		print "\n\t\t\t\t\t<select class='ui2_field' name='".RequestContext::name('columns')."'";
 		print " onchange='updateMinCells(this.previousSibling.previousSibling.previousSibling.previousSibling, this, $minCells);'>";
 
 		for ($i = 1; $i <= 10; $i++) {
@@ -608,11 +746,11 @@ END;
 	 * @since 4/17/06
 	 */
 	function printFlowRowsColumns ( $siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
+		print "\n\t\t\t\t<div class='ui2_setting'>";
 		$numRows = $siteComponent->getNumRows();
 		$numColumns = $siteComponent->getNumColumns();
 		print "\n\t\t\t\t\t"._('Columns: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('columns')."'";
+		print "\n\t\t\t\t\t<select class='ui2_field' name='".RequestContext::name('columns')."'";
 		
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -633,8 +771,8 @@ END;
 			print "</option>";
 		}
 		print "\n\t\t\t\t\t</select>";
-		print "\n\t\t\t\t\t<br/>"._('Rows: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('rows')."'>";
+		print "\n\t\t\t\t\t"._('Rows: ');
+		print "\n\t\t\t\t\t<select class='ui2_field' name='".RequestContext::name('rows')."'>";
 		for ($i = 0; $i <= 10; $i++) {
 			print "\n\t\t\t\t\t\t<option value='".$i."'";
 			print (($i == $siteComponent->getNumRows())?" selected='selected'":"");
@@ -655,9 +793,9 @@ END;
 	 * @since 4/17/06
 	 */
 	function printDirection ( $siteComponent ) {
-		print "\n\t\t\t\t<div style='white-space: nowrap; font-weight: bold;'>";
-		print "\n\t\t\t\t\t"._('Index Direction: ');
-		print "\n\t\t\t\t\t<select name='".RequestContext::name('direction')."'";
+		print "\n\t\t\t\t<div class='ui2_setting'>";
+		print "\n\t\t\t\t\t"._('Flow Content: ');
+		print "\n\t\t\t\t\t<select class='ui2_field'  name='".RequestContext::name('direction')."'";
 		
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -701,13 +839,14 @@ END;
 	 */
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
-		
-		$this->printShowDisplayNames($siteComponent);
 		$this->printDisplayName($siteComponent);
+		$this->printShowDisplayNames($siteComponent);		
 // 		$this->printDescription($siteComponent);
 // 		$this->printWidth($siteComponent);
 		$this->printCommentSettings($siteComponent);
 		$this->printShowHistory($siteComponent);
+		$this->printShowDates($siteComponent);
+		$this->printShowAttribution($siteComponent);
 		$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
@@ -735,13 +874,14 @@ END;
 	 * @since 4/17/06
 	 */
 	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
-		$this->controlsStart($siteComponent);
-		
-		$this->printShowDisplayNames($siteComponent);
-		$this->printDisplayName($siteComponent);		
+		$this->controlsStart($siteComponent);		
+		$this->printDisplayName($siteComponent);
 		$this->printDescription($siteComponent);
+		$this->printShowDisplayNames($siteComponent);		
 		$this->printShowHistory($siteComponent);
 		$this->printCommentSettings($siteComponent);
+		$this->printShowDates($siteComponent);
+		$this->printShowAttribution($siteComponent);
 		$this->printSortMethod($siteComponent);
 // 		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
@@ -751,12 +891,13 @@ END;
 	
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
 		$this->controlsStart($siteComponent);
-		
-		$this->printShowDisplayNames($siteComponent, true);
-		$this->printDisplayName($siteComponent);		
+		$this->printDisplayName($siteComponent);			
+		$this->printShowDisplayNames($siteComponent, true);	
 		$this->printDescription($siteComponent);
 		$this->printShowHistory($siteComponent, true);
 		$this->printCommentSettings($siteComponent, true);
+		$this->printShowDates($siteComponent, true);
+		$this->printShowAttribution($siteComponent, true);
 		$this->printSortMethod($siteComponent, true);
 		$this->printWidth($siteComponent);
 		return $this->controlsEnd($siteComponent);
@@ -811,6 +952,8 @@ END;
 		$this->printShowDisplayNames($siteComponent);
 		$this->printShowHistory($siteComponent);
 		$this->printCommentSettings($siteComponent);
+		$this->printShowDates($siteComponent);
+		$this->printShowAttribution($siteComponent);
 		$this->printSortMethod($siteComponent);
 		$this->printFlowRowsColumns($siteComponent);
 		$this->printDirection($siteComponent);
@@ -834,6 +977,8 @@ END;
 		$this->printShowDisplayNames($siteComponent);
 		$this->printShowHistory($siteComponent);
 		$this->printCommentSettings($siteComponent);
+		$this->printShowDates($siteComponent);
+		$this->printShowAttribution($siteComponent);
 		$this->printSortMethod($siteComponent);
 		$this->printDirection($siteComponent);
 		$this->printWidth($siteComponent);
