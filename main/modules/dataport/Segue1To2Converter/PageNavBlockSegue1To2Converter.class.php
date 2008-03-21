@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.3 2008/03/21 20:47:59 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.2 2008/03/19 21:20:51 adamfranco Exp $
+ * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.3 2008/03/21 20:47:59 adamfranco Exp $
  */
 class PageNavBlockSegue1To2Converter 
 	extends NavBlockSegue1To2Converter
@@ -158,6 +158,40 @@ class PageNavBlockSegue1To2Converter
 // 				break;
 			default:
 				$flowOrg->setAttribute('sortMethod', 'default');
+		}
+		
+		// Attribution
+		if ($this->sourceElement->hasAttribute('show_creator') 
+			&& $this->sourceElement->getAttribute('show_creator') == 'TRUE'
+			&& $this->sourceElement->hasAttribute('show_editor') 
+			&& $this->sourceElement->getAttribute('show_editor') == 'TRUE')
+		{
+			$attribution = 'both';
+		} else if ($this->sourceElement->hasAttribute('show_creator') 
+			&& $this->sourceElement->getAttribute('show_creator') == 'TRUE')
+		{
+			$attribution = 'creator';
+		} else if ($this->sourceElement->hasAttribute('show_editor') 
+			&& $this->sourceElement->getAttribute('show_editor') == 'TRUE')
+		{
+			$attribution = 'last_editor';
+		} else
+			$attribution = 'default';
+			
+		$flowOrg->setAttribute('showAttribution', $attribution);
+		
+		// Dates
+		if ($this->sourceElement->hasAttribute('show_date') 
+			&& $this->sourceElement->getAttribute('show_date') == 'TRUE')
+		{
+			$flowOrg->setAttribute('showDates', 'both');
+		}
+		
+		// History Links
+		if ($this->sourceElement->hasAttribute('show_versions') 
+			&& $this->sourceElement->getAttribute('show_versions') == 'TRUE')
+		{
+			$flowOrg->setAttribute('showHistory', 'true');
 		}
 		
 		// Add the cells and their stories to the flow organizer.
