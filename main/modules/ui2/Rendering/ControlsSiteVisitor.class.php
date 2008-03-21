@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.17 2008/03/21 15:49:25 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.18 2008/03/21 20:27:36 achapin Exp $
  */ 
  
  require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.17 2008/03/21 15:49:25 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.18 2008/03/21 20:27:36 achapin Exp $
  */
 class ControlsSiteVisitor 
 	extends GeneralControlsSiteVisitor
@@ -266,7 +266,7 @@ class ControlsSiteVisitor
 		
 		$parent = $siteComponent->getParentComponent();
 		if ($parent) {
-			print "\n<span class='ui2_text'>("._("current default").": ";
+			print "\n<span class='ui2_text'>("._("default").": ";
 			print (($parent->showDisplayName() === true)?_("show"):_("hide"));
 			print ")</span>";
 		}
@@ -330,7 +330,7 @@ class ControlsSiteVisitor
 		
 		$parent = $siteComponent->getParentComponent();
 		if ($parent) {
-			print "\n<span class='ui2_text'>("._("current default").": ";
+			print "\n<span class='ui2_text'>("._("default").": ";
 			print (($parent->showHistory() === true)?_("show"):_("hide"));
 			print ")</span>";
 		}
@@ -394,7 +394,7 @@ class ControlsSiteVisitor
 		
 		$parent = $siteComponent->getParentComponent();
 		if ($parent) {
-			print "\n<span class='ui2_text'>("._("current default").": ";
+			print "\n<span class='ui2_text'>("._("default").": ";
 			print $dates[$parent->showDates()];
 			print ")</span>";
 		}
@@ -458,7 +458,7 @@ class ControlsSiteVisitor
 		
 		$parent = $siteComponent->getParentComponent();
 		if ($parent) {
-			print "\n<span class='ui2_text'>("._("current default").": ";
+			print "\n<span class='ui2_text'>("._("default").": ";
 			print $attributions[$parent->showAttribution()];
 			print ")</span>";
 		}
@@ -534,7 +534,7 @@ class ControlsSiteVisitor
 		
 		$parent = $siteComponent->getParentComponent();
 		if ($parent) {
-			print "\n<span class='ui2_text'>("._("current default").": ";
+			print "\n<span class='ui2_text'>("._("default").": ";
 			print $methods[$parent->sortMethod()];
 			print ")</span>";
 		}
@@ -599,7 +599,7 @@ class ControlsSiteVisitor
 		
 		$parent = $siteComponent->getParentComponent();
 		if ($parent) {
-			print "\n<span class='ui2_text'>("._("current default").": ";
+			print "\n<span class='ui2_text'>("._("default").": ";
 			print (($parent->showComments() === true)?_("yes"):_("no"));
 			print ")</span>";
 		}

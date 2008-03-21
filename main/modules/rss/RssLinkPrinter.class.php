@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RssLinkPrinter.class.php,v 1.2 2008/03/13 19:25:16 achapin Exp $
+ * @version $Id: RssLinkPrinter.class.php,v 1.3 2008/03/21 20:27:36 achapin Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RssLinkPrinter.class.php,v 1.2 2008/03/13 19:25:16 achapin Exp $
+ * @version $Id: RssLinkPrinter.class.php,v 1.3 2008/03/21 20:27:36 achapin Exp $
  */
 class RssLinkPrinter {
 		
@@ -34,15 +34,22 @@ class RssLinkPrinter {
 	public static function getLinkBlock (SiteComponent $siteComponent) {
 		ob_start();
 		print "\n\t<div>";
-		foreach (self::getLinks($siteComponent) as $link) {
-			print "\n\t\t<div>";
+		print "\n\t\t<div>";
+		$first = true;
+		foreach (self::getLinks($siteComponent)  as $link) {
+			
 			print "\n\t\t<a href='".$link['url']."' title=\"".$link['title']."\">";
 			print "\n\t\t\t<img src='".MYPATH."/images/Rss.png' alt='rss' style='border: 0; vertical-align: middle;'/></a>";
 			print "\n\t\t<a href='".$link['url']."' title=\"".$link['title']."\">";
 			print " ".$link['label'];
-			print "\n\t\t\t</a>";
-			print "\n\t\t</div>";
+			print "\n\t\t\t</a> ";
+			
+			if ($first)
+				print " &nbsp; &nbsp; ";
+			$first = false;
+			
 		}
+		print "\n\t\t</div>";
 		print "\n\t</div>";
 		return ob_get_clean();
 	}
@@ -91,7 +98,7 @@ class RssLinkPrinter {
 						"rss",
 						"content",
 						array('node' => $siteComponent->getId())),
-			'label' => _('Content RSS &nbsp; &nbsp;'),
+			'label' => _('Content RSS'),
 			'title' => _("Content RSS for")." ".$siteComponent->getDisplayName()
 		);
 		
