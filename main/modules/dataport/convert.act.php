@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.10 2008/03/20 15:45:52 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.11 2008/03/21 16:06:03 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/Segue1MappingImportSiteVisitor.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.10 2008/03/20 15:45:52 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.11 2008/03/21 16:06:03 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -57,15 +57,22 @@ class convertAction
 	 */
 	public function buildContent () {
 		try {
+		
+			$status = new StatusStars(_("Importing Site"));
+			$status->initializeStatistics(5);
 			
 			$destPath = DATAPORT_TMP_DIR."/Segue1Conversion-".$this->getDestSlotName();
 			mkdir($destPath);
 			$destFilePath = $destPath.'/media';
 			mkdir($destFilePath);
 			
+			$status->updateStatistics();
+			
 			// Download and convert the site
 			$doc = $this->convertFrom1To2($destFilePath, 'media');
 			$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+			
+			$status->updateStatistics();
 			
 			// Debug output
 // 			$outputDoc2 = new Harmoni_DOMDocument;
@@ -87,6 +94,8 @@ class convertAction
 				$slot = $slotMgr->convertSlotToType($slot, Slot::personal);
 			}
 			
+			$status->updateStatistics();
+			
 			// Import the converted site
 			$director = $this->getSiteDirector();
 			$importer = new Segue1MappingImportSiteVisitor($doc, $destPath, $director);
@@ -96,7 +105,7 @@ class convertAction
 			$importer->setDestinationSlotname($this->getDestSlotName());
 			$importer->importAtSlot($this->getDestSlotName());
 			
-			
+			$status->updateStatistics();
 			
 			// Delete the output directory
 			try {
@@ -107,6 +116,8 @@ class convertAction
 				print $deleteException->getMessage();
 				print "\n</div>";
 			}
+			
+			$status->updateStatistics();
 			
 			$harmoni = Harmoni::instance();
 			RequestContext::sendTo($harmoni->request->quickURL('dataport', 'choose_site'));
