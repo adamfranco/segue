@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.57 2008/03/21 00:29:19 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.58 2008/03/21 21:01:11 achapin Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -34,7 +34,7 @@ require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.57 2008/03/21 00:29:19 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.58 2008/03/21 21:01:11 achapin Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -222,6 +222,19 @@ class ViewModeSiteVisitor
 			$contributorsNames[] = $agent->getDisplayName();
 			
 		} else if ($block->showAttribution() === 'last_editor') {
+			
+			if ($plugin->supportsVersioning()) {
+				$versions = $plugin->getVersions();
+				$lastVersion = $versions[0];
+				$lastEditor = $lastVersion->getAgent()->getDisplayName();
+				$contributorsNames[] = $lastEditor;
+				
+			}
+		
+		} else if ($block->showAttribution() === 'both') {
+			$creatorId = $block->getCreator();
+			$agent = $agentManager->getAgent($creatorId);	
+			$contributorsNames[] = $agent->getDisplayName();
 			
 			if ($plugin->supportsVersioning()) {
 				$versions = $plugin->getVersions();

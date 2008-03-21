@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.18 2008/03/21 20:27:36 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.19 2008/03/21 21:01:11 achapin Exp $
  */ 
  
  require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.18 2008/03/21 20:27:36 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.19 2008/03/21 21:01:11 achapin Exp $
  */
 class ControlsSiteVisitor 
 	extends GeneralControlsSiteVisitor
@@ -441,6 +441,7 @@ class ControlsSiteVisitor
 			'none' => _('No attribution'), 
 			'creator' => _('Original author'), 
 			'last_editor' => _('Last editor'),
+			'both' => _('Both author and last editor'),
 			'all_editors' => _("All editors"));
 			
 		foreach ($attributions as $attribution => $display) {

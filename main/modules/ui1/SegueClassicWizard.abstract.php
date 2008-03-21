@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.20 2008/03/21 15:49:25 achapin Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.21 2008/03/21 21:01:11 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsAuthorizableVisitor.cl
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.20 2008/03/21 15:49:25 achapin Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.21 2008/03/21 21:01:11 achapin Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -583,7 +583,7 @@ class SegueClassicWizard
 		$property->addOption('default', _("use default"));
 		$property->addOption('creator', _("override-Original author"));
 		$property->addOption('last_editor', _("override-Last editor"));
-		$property->addOption('all_editors', _("override-All editors"));
+		$property->addOption('both', _("override-Both author and last editor"));		$property->addOption('all_editors', _("override-All editors"));
 		$property->setValue('default');
 	}
 

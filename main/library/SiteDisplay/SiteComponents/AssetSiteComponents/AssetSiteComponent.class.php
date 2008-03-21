@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.20 2008/03/21 15:49:24 achapin Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.21 2008/03/21 21:01:11 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.20 2008/03/21 15:49:24 achapin Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.21 2008/03/21 21:01:11 achapin Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -530,14 +530,14 @@ abstract class AssetSiteComponent
 	 * change the setting of 'showAttribution' for this component. 'default'
 	 * indicates that a value set further up the hierarchy should be used
 	 * 
-	 * @param string  $showAttribution 'none' 'default', 'creator', 'last_editor', 
-	 * 'all_editors'
+	 * @param string  $showAttribution 'none' 'default', 'creator', 'both'\
+	 * 'last_editor', 'all_editors'
 	 * @return void
 	 * @access public
 	 * @since 3/20/08
 	 */
 	function updateShowAttributionSetting ( $showAttribution ) {
-		$attributions = array('default', 'none', 'creator', 'last_editor', 'all_editors');
+		$attributions = array('default', 'none', 'creator', 'last_editor', 'both', 'all_editors');
 		if (!in_array($showAttribution, $attributions))
 			throw new Exception("Invalid attribution, '$showAttribution', not one of '".implode("', ", $attributions)."'.");
 		$element = $this->getElement();
