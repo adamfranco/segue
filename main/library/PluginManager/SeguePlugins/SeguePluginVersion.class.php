@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginVersion.class.php,v 1.4 2008/01/25 18:47:03 adamfranco Exp $
+ * @version $Id: SeguePluginVersion.class.php,v 1.5 2008/03/24 16:29:30 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginVersion.class.php,v 1.4 2008/01/25 18:47:03 adamfranco Exp $
+ * @version $Id: SeguePluginVersion.class.php,v 1.5 2008/03/24 16:29:30 adamfranco Exp $
  */
 class SeguePluginVersion {
 	
@@ -196,7 +196,7 @@ class SeguePluginVersion {
 			$dbc = Services::getService('DBHandler');
 			$result = $dbc->query($query, IMPORTER_CONNECTION);
 			
-			$this->versionXml = new DOMDocument;
+			$this->versionXml = new Harmoni_DOMDocument;
 			$this->versionXml->loadXML($result->field('version_xml'));
 		}
 		
