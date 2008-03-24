@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.5 2008/03/18 19:20:43 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.6 2008/03/24 19:28:55 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/Segue1Slot.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.5 2008/03/18 19:20:43 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.6 2008/03/24 19:28:55 adamfranco Exp $
  */
 class choose_siteAction
 	extends MainWindowAction
@@ -180,10 +180,9 @@ class choose_siteAction
 				$description->trim(25);
 				print  "\n\t<div class='site_description'>".$description->asString()."</div>";
 				print "\n</div>";
+				
+				$this->printControls($slot);
 			}
-			
-			
-			$this->printControls($slot);
 			
 		} catch (UnknownIdException $e) {
 			print "\n\t\t\t<td class='nonexistant'>";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.13 2008/03/24 18:52:36 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.14 2008/03/24 19:28:55 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/Segue1MappingImportSiteVisitor.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.13 2008/03/24 18:52:36 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.14 2008/03/24 19:28:55 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -58,8 +58,8 @@ class convertAction
 	public function buildContent () {
 		try {
 		
-			$status = new StatusStars(_("Importing Site"));
-			$status->initializeStatistics(5);
+			$status = new StatusStars(_("Preparing Site Import"));
+			$status->initializeStatistics(4);
 			
 			$destPath = DATAPORT_TMP_DIR."/Segue1Conversion-".$this->getDestSlotName();
 			mkdir($destPath);
@@ -99,6 +99,8 @@ class convertAction
 			// Import the converted site
 			$director = $this->getSiteDirector();
 			$importer = new Segue1MappingImportSiteVisitor($doc, $destPath, $director);
+			$status->updateStatistics();
+			$importer->enableStatusOutput();
 			$importer->makeUserSiteAdministrator();
 			$importer->enableRoleImport();
 			$importer->setOrigenSlotname($this->getSourceSlotName());
@@ -109,9 +111,7 @@ class convertAction
 			$quota = $importer->getMediaQuota();
 			if ($quota > $slot->getMediaQuota()->value())
 				$slot->setMediaQuota(ByteSize::withValue($quota));
-			
-			$status->updateStatistics();
-			
+						
 			// Delete the output directory
 			try {
 				if (file_exists($destPath))
@@ -121,9 +121,7 @@ class convertAction
 				print $deleteException->getMessage();
 				print "\n</div>";
 			}
-			
-			$status->updateStatistics();
-			
+						
 			$harmoni = Harmoni::instance();
 			RequestContext::sendTo($harmoni->request->quickURL('dataport', 'choose_site'));
 			
@@ -175,7 +173,7 @@ class convertAction
 			$this->cleanUpSourcePath($sourcePath);
 			
 			if ($e->getCode() === DOMSTRING_SIZE_ERR)
-				throw new DOMException("The export of '".$this->getSourceSlotName()."' is too large to load (".$size->asString().").", DOMSTRING_SIZE_ERR);
+				throw new DOMException("The export of '".$this->getSourceSlotName()."' is too large to load (".$size->asString().") or contains an element that is too large to load.", DOMSTRING_SIZE_ERR);
 			
 			throw $e;
 		} catch (Exception $e) {		

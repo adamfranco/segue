@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.15 2008/03/21 21:11:04 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.16 2008/03/24 19:28:55 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.15 2008/03/21 21:11:04 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.16 2008/03/24 19:28:55 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -114,6 +114,19 @@ class DomImportSiteVisitor
 	 */
 	public function enableRoleImport () {
 		$this->importRoles = true;
+	}
+	
+	/**
+	 * Enable usage of a status indicator.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 3/24/08
+	 */
+	public function enableStatusOutput () {
+		$this->status = new StatusStars(_("Importing Site"));
+		$elements = $this->xpath->query('//SiteNavBlock | //NavBlock | //Block | //FixedOrganizer | //FlowOrganizer | //MenuOrganizer | //Comment');
+		$this->status->initializeStatistics($elements->length);
 	}
 	
 	/**
@@ -222,7 +235,10 @@ class DomImportSiteVisitor
 			$component = $this->director->createSiteComponent(
 						new Type('segue', 'edu.middlebury', $element->nodeName),
 						$parentComponent);
-				
+			
+		if (isset($this->status))
+			$this->status->updateStatistics();
+		
 		return $component;
 	}
 	
@@ -916,6 +932,9 @@ class DomImportSiteVisitor
 		$this->setAssetAuthorship($comment->getAsset(), $element);
 		$this->setAssetDates($comment->getAsset(), $element);
 		
+		if (isset($this->status))
+			$this->status->updateStatistics();
+		
 		// Replies
 		$commentMgr = CommentManager::instance();
 		$replyElements = $this->xpath->query('./replies/Comment', $element);
@@ -1201,7 +1220,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.15 2008/03/21 21:11:04 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.16 2008/03/24 19:28:55 adamfranco Exp $
  */
 class MissingNodeException
 	extends Exception
