@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.9 2008/03/24 17:31:32 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.10 2008/03/24 19:42:33 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/DownloadCommentSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.9 2008/03/24 17:31:32 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.10 2008/03/24 19:42:33 adamfranco Exp $
  */
 abstract class BlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -257,7 +257,7 @@ abstract class BlockSegue1To2Converter
 		
 		for ($i = 0; $i < count($matches[1]); $i++) {
 			$link = $matches[0][$i];
-			$filename = $matches[1][$i];
+			$filename = urldecode($matches[1][$i]);
 			
 			// Attach the media files and get the new id.
 			try {

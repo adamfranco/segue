@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.202 2008/03/24 16:32:32 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.203 2008/03/24 19:42:33 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -135,6 +135,9 @@
 		</fix>
 		<new author='adam' date='2008-03-21'>
 			Importer: Now can import media quotas.
+		</new>
+		<new author='adam' date='2008-03-24'>
+			Importer: Can now display status during import.
 		</new>
 		<fix author='adam' date='2008-03-21'>
 			ErrorPrinter: Now doesn't try to send headers if they are already sent.
