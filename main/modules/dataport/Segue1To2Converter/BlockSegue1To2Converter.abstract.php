@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.8 2008/03/21 21:11:24 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.9 2008/03/24 17:31:32 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/DownloadCommentSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.8 2008/03/21 21:11:24 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.9 2008/03/24 17:31:32 adamfranco Exp $
  */
 abstract class BlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -59,6 +59,16 @@ abstract class BlockSegue1To2Converter
 		
 		$element->appendChild($this->createMyPluginType());
 		$element->appendChild($this->getDisplayNameElement());
+		
+		// Hide the title for this block if there is no title specified.
+		try {
+			$name = $this->getStringValue($this->getSingleSourceElement('./title', $this->sourceElement));
+			if (!strlen(trim($name)))
+				$element->setAttribute('showDisplayNames', 'false');
+		} catch (MissingNodeException $e) {
+			$element->setAttribute('showDisplayNames', 'false');
+		}
+		
 		$element->appendChild($this->getDescriptionElement($media));
 		
 		$this->addRoles($element);
