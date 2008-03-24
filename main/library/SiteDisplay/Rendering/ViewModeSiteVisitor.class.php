@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.59 2008/03/24 15:18:08 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.60 2008/03/24 21:35:31 achapin Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -25,6 +25,8 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
 require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
 require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
 
+require_once(MYDIR."/main/modules/view/attributionPrinter.class.php");
+
 /**
  * The ViewModeVisitor traverses the site hierarchy, rendering each component.
  * 
@@ -34,7 +36,7 @@ require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.59 2008/03/24 15:18:08 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.60 2008/03/24 21:35:31 achapin Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -168,101 +170,6 @@ class ViewModeSiteVisitor
 		return $block->showDisplayName();
 	}
 
-	/**
-	 * Answer the date display settings for this block
-	 * 
-	 * @param object BlockSiteComponent $block
-	 * @return array date values
-	 * @access public
-	 * @since 3/20/08
-	 */
-	function getBlockDateDisplay (BlockSiteComponent $block ) {
-	
-		$dateObjects = array();
-		$dateValues = array();
-		
-		if ($block->showDates() === 'creation_date') {
-			$dateObjects[] = $block->getCreationDate();
-		} else if ($block->showDates() === 'modification_date') {
-			$dateObjects[] = $block->getModificationDate();
-		} else if ($block->showDates() === 'both') {
-			$dateObjects[] = $block->getCreationDate();
-			$dateObjects[] = $block->getModificationDate();
-		}
-		
-		foreach ($dateObjects as $dateObject) {
-			$date = $dateObject->ymdString();
-			$time = $dateObject->asTime();
-			$time = $time->string12(false);			
-			$dateValues[] = $date." ".$time;		
-		}
-			
-		return $dateValues;
-	}
-
-	/**
-	 * Answer the attribution settings for this block
-	 * 
-	 * @param object BlockSiteComponent $block
-	 * @return array agent name values
-	 * @access public
-	 * @since 3/20/08
-	 */
-	function getBlockAttributionDisplay (BlockSiteComponent $block ) {
-		$pluginManager = Services::getService('PluginManager');
-		$plugin = $pluginManager->getPlugin($block->getAsset());
- 		$agentManager = Services::getService("Agent");
-		
-		$contributorsIds = array();
-		$contributorsNames = array();
-		
-		if ($block->showAttribution() === 'creator') {
-			$creatorId = $block->getCreator();
-			$agent = $agentManager->getAgent($creatorId);	
-			$contributorsNames[] = $agent->getDisplayName();
-			
-		} else if ($block->showAttribution() === 'last_editor') {
-			
-			if ($plugin->supportsVersioning()) {
-				$versions = $plugin->getVersions();
-				if ($versions) {
-					$lastVersion = $versions[0];
-					$lastEditor = $lastVersion->getAgent()->getDisplayName();
-					$contributorsNames[] = $lastEditor;
-				}				
-			}
-		
-		} else if ($block->showAttribution() === 'both') {
-			$creatorId = $block->getCreator();
-			$agent = $agentManager->getAgent($creatorId);	
-			$contributorsNames[] = $agent->getDisplayName();
-			
-			if ($plugin->supportsVersioning()) {
-				$versions = $plugin->getVersions();
-				if ($versions) {
-					$lastVersion = $versions[0];
-					$lastEditor = $lastVersion->getAgent()->getDisplayName();
-					$contributorsNames[] = $lastEditor;
-				}				
-			}
-		
-		} else if ($block->showAttribution() === 'all_editors') {
-			if ($plugin->supportsVersioning()) {
-				$versions = $plugin->getVersions();
-				
-				$numVersions = count($versions);
-				foreach ($versions as $version) {
-					$editor = $version->getAgent()->getDisplayName();
-					if (!in_array($editor, $contributorsNames)) {
-						$contributorsNames[] = $editor;
-					}
-				}				
-			}
-		}
-			
-		return $contributorsNames;
-	}
-
 	
 	/**
 	 * Answer the plugin content for a block
@@ -295,26 +202,16 @@ class ViewModeSiteVisitor
 			print "</a>";
 			print "\n</div>";
 		}
-		
-		if ($block->showDates() != 'none') {
-			print "\n<div class='dates'>";			
-			$dates = $this->getBlockDateDisplay($block);
-			foreach ($dates as $date) {
-				print $date;
-				print " ";
-			}			
-			print "\n</div>";
+
+		// print out attribution based on block settings
+		$attribution = new AttributionPrinter($block);
+		$attributionDisplay = $attribution->getAttributionMarkUp();
+		if (!is_null($attributionDisplay) && strlen($attributionDisplay)) {
+		//	print "\n<div class='attribution'>";			
+			print $attributionDisplay;
+		//	print "\n</div>";
 		}
-		
-		if ($block->showAttribution() != 'none') {
-			print "\n<div class='attribution'>";			
-			$contributors = $this->getBlockAttributionDisplay($block);
-			foreach ($contributors as $contributor) {
-				print $contributor;
-				print ", ";
-			}			
-			print "\n</div>";
-		}
+
 		
 		if ($plugin->hasExtendedMarkup()) {	
 			print "\n<div style='text-align: right;'>";

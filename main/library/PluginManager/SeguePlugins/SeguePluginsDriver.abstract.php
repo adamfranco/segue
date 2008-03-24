@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.14 2008/03/18 17:37:07 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.15 2008/03/24 21:35:31 achapin Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.14 2008/03/18 17:37:07 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.15 2008/03/24 21:35:31 achapin Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -1671,7 +1671,8 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
  * Versioning
  *********************************************************/
 	/**
-	 * Answer an array of the versions for this plugin instance.
+	 * Answer an array of the versions for this plugin instance with the most 
+	 * recent version first.
 	 *
 	 * @return array of SeguePluginVersion objects
 	 * @access public
