@@ -4,7 +4,7 @@
 -- @copyright Copyright &copy; 2005, Middlebury College
 -- @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
 --
--- @version $Id: PluginManager.sql,v 1.3 2008/01/11 20:28:33 adamfranco Exp $
+-- @version $Id: PluginManager.sql,v 1.4 2008/03/24 16:36:11 adamfranco Exp $
 -- */
 -- --------------------------------------------------------
 
@@ -60,3 +60,13 @@ ALTER TABLE ONLY segue_plugin_version
 	ADD CONSTRAINT segue_plugin_version_primary_key PRIMARY KEY (version_id);
 
 CREATE INDEX segue_plugin_version_node_id_index ON segue_plugin_version (node_id);
+
+
+
+-- --------------------------------------------------------
+
+-- 
+-- patch the DataManager table to make it use long blobs.
+-- 
+
+ALTER TABLE `dm_blob` CHANGE `data` `data` LONGBLOB NOT NULL

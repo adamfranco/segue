@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.201 2008/03/24 15:18:07 achapin Exp $
+ @version $Id: changelog.xml,v 1.202 2008/03/24 16:32:32 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -85,6 +85,14 @@
 		<fix author='adam' date='2008-03-21'>
 			Plugins: PluginManager now adds newly enabled plugins to the session cache as such.
 		</fix>
+		<change author='adam' date='2008-03-24'>
+			Plugins: Versions and Content now are stored in LONGBLOB fields to allow
+			more than 64kB of data.
+		</change>
+		<important author='adam' date='2008-03-24'>
+			Plugin data changes require execution of a Segue update -- located under
+			Admin Tools --&gt; Segue Updates.
+		</important>
 		<new author='adam' date='2008-03-17'>
 			WikiText: Now supports [[fileurl:asset_id=1234&amp;record_id=5678]] syntax for urls to files.
 		</new>

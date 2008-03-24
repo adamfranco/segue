@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Update003_PluginVersion.act.php,v 1.1 2008/01/11 20:28:33 adamfranco Exp $
+ * @version $Id: Update003_PluginVersion.act.php,v 1.2 2008/03/24 16:32:32 adamfranco Exp $
  */ 
  
 require_once(HARMONI.'/DBHandler/GenericSQLQuery.class.php');
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Update.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Update003_PluginVersion.act.php,v 1.1 2008/01/11 20:28:33 adamfranco Exp $
+ * @version $Id: Update003_PluginVersion.act.php,v 1.2 2008/03/24 16:32:32 adamfranco Exp $
  */
 class Update003_PluginVersionAction
 	extends Update
@@ -93,7 +93,7 @@ class Update003_PluginVersionAction
   tstamp timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `comment` varchar(255) collate utf8_bin NOT NULL,
   agent_id varchar(170) collate utf8_bin NOT NULL,
-  version_xml blob NOT NULL,
+  version_xml longblob NOT NULL,
   PRIMARY KEY  (version_id),
   KEY node_id (node_id)
 )
