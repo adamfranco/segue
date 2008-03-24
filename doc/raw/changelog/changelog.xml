@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.200 2008/03/21 19:17:31 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.201 2008/03/24 15:18:07 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -13,6 +13,9 @@
 	<version number="2.0-beta-15" date="The Future">
 		<releaseNotes>
 		</releaseNotes>
+		<change author='alex' date='2008-03-24'>
+			UI2: refined the layout of UI2 settings.
+		</change>
 		<new author='alex' date='2008-03-20' ref='1820861' reftype='fr'>
 			View: added settings for displaying block create and update timestamps, 
 			as well as names of block creators and editors	
