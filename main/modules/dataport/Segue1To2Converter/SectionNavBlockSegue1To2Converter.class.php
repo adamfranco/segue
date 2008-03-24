@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.7 2008/03/21 15:24:24 adamfranco Exp $
+ * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.8 2008/03/24 19:53:08 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -28,7 +28,7 @@ require_once(dirname(__FILE__)."/CategoryListBlockSegue1To2Converter.class.php")
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.7 2008/03/21 15:24:24 adamfranco Exp $
+ * @version $Id: SectionNavBlockSegue1To2Converter.class.php,v 1.8 2008/03/24 19:53:08 adamfranco Exp $
  */
 class SectionNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -223,11 +223,10 @@ class SectionNavBlockSegue1To2Converter
 		$menuOrg->setAttribute('id', $this->createId());
 		$menuOrg->setAttribute('direction', 'Top-Bottom/Left-Right');
 		
-		// Note: Ignoring dividers for now.
 		if ($side == 'all_items')
 			$pages = $this->sourceXPath->query('./page | ./pageContent | ./navlink | ./heading  | ./divider | ./pageRSS | ./participantList | ./categoryList', $this->sourceElement);
 		else
-			$pages = $this->sourceXPath->query("./page[@location = '$side'] | ./pageContent[@location = '$side'] | ./navlink[@location = '$side'] | ./heading[@location = '$side'] | ./divider[@location = '$side'] | ./pageRSS[@location = '$side'] | ./participantList[@location = '$side'] | ./categoryList[@location = '$side']", $this->sourceElement);
+			$pages = $this->sourceXPath->query("./page | ./pageContent[@location = '$side'] | ./navlink[@location = '$side'] | ./heading[@location = '$side'] | ./divider[@location = '$side'] | ./pageRSS[@location = '$side'] | ./participantList[@location = '$side'] | ./categoryList[@location = '$side']", $this->sourceElement);
 		
 		foreach ($pages as $page) {
 			$cell = $menuOrg->appendChild($this->doc->createElement('cell'));
