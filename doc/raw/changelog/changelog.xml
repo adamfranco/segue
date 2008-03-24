@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.204 2008/03/24 23:01:36 achapin Exp $
+ @version $Id: changelog.xml,v 1.205 2008/03/24 23:37:56 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -66,6 +66,9 @@
 		<change author='alex' date='2008-03-24'>
 			UI2: refined the layout of UI2 settings.
 		</change>
+		<fix author='alex' date='2008-03-24' ref='1919951' reftype='bug'>
+			UI2: fixed UI2 so that site options appear in arrange mode
+		</fix>		
 		<fix author='adam' date='2008-03-14'>
 			UI2: Now UI2 gives the same error as UI1 when no site exists with the 
 			placeholder name given.
