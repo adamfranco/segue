@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.5 2008/03/19 19:57:41 adamfranco Exp $
+ * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.6 2008/03/24 18:52:36 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.5 2008/03/19 19:57:41 adamfranco Exp $
+ * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.6 2008/03/24 18:52:36 adamfranco Exp $
  */
 class TextBlockSegue1To2Converter
 	extends BlockSegue1To2Converter
@@ -48,7 +48,7 @@ class TextBlockSegue1To2Converter
 	protected function getDescriptionElement (DOMElement $mediaElement) {
 		try {
 			$shortTextElement = $this->getSingleSourceElement('./shorttext', $this->sourceElement);
-			$shortHtml = htmlspecialchars_decode($this->getStringValue($shortTextElement));
+			$shortHtml = $this->getStringValue($shortTextElement);
 			
 			// Convert Line returns if needed
 			if ($shortTextElement->hasAttribute('text_type')
@@ -81,7 +81,7 @@ class TextBlockSegue1To2Converter
 	protected function getContentElement (DOMElement $mediaElement) {
 		try {
 			$shortTextElement = $this->getSingleSourceElement('./shorttext', $this->sourceElement);
-			$shortHtml = htmlspecialchars_decode($this->getStringValue($shortTextElement));
+			$shortHtml = $this->getStringValue($shortTextElement);
 			
 			// Convert Line returns if needed
 			if ($shortTextElement->hasAttribute('text_type')

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.12 2008/03/21 18:01:24 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.13 2008/03/24 18:52:36 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/Segue1MappingImportSiteVisitor.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.12 2008/03/21 18:01:24 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.13 2008/03/24 18:52:36 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -129,6 +129,7 @@ class convertAction
 			
 		} catch (Exception $importException) {
 			
+			
 			// Delete the output directory
 			try {
 				if (file_exists($destPath))
@@ -166,30 +167,43 @@ class convertAction
 			$outputDoc = $converter->convert($sourceDoc, $sourceFilePath);
 			
 			// Delete the source directory
-			try {
-				if (isset($sourcePath) && file_exists($sourcePath))
-					$this->deleteRecursive($sourcePath);
-			} catch (Exception $deleteException) {
-				print "\n<div>\n\t";
-				print $deleteException->getMessage();
-				print "\n</div>";
-			}
+			$this->cleanUpSourcePath($sourcePath);
 			
-		} catch (Exception $e) {
-			// Delete the source directory
-			try {
-				if (isset($sourcePath) && file_exists($sourcePath))
-					$this->deleteRecursive($sourcePath);
-			} catch (Exception $deleteException) {
-				print "\n<div>\n\t";
-				print $deleteException->getMessage();
-				print "\n</div>";
-			}
+		} catch (DOMException $e) {			
+			$size = ByteSize::withValue(filesize($sourceDocPath));
+			
+			$this->cleanUpSourcePath($sourcePath);
+			
+			if ($e->getCode() === DOMSTRING_SIZE_ERR)
+				throw new DOMException("The export of '".$this->getSourceSlotName()."' is too large to load (".$size->asString().").", DOMSTRING_SIZE_ERR);
 			
 			throw $e;
+		} catch (Exception $e) {		
+			if (isset($sourcePath))
+				$this->cleanUpSourcePath($sourcePath);
+			throw $e;
 		}
-		
 		return $outputDoc;
+	}
+	
+	/**
+	 * Clean up our source docs
+	 * 
+	 * @param string $sourcePath
+	 * @return void
+	 * @access private
+	 * @since 3/24/08
+	 */
+	private function cleanUpSourcePath ($sourcePath) {
+		// Delete the source directory
+		try {
+			if (isset($sourcePath) && file_exists($sourcePath))
+				$this->deleteRecursive($sourcePath);
+		} catch (Exception $deleteException) {
+			print "\n<div>\n\t";
+			print $deleteException->getMessage();
+			print "\n</div>";
+		}
 	}
 	
 	/**
