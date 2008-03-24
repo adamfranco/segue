@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.11 2008/03/18 20:25:30 achapin Exp $
+ * @version $Id: editview.act.php,v 1.12 2008/03/24 22:58:09 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.11 2008/03/18 20:25:30 achapin Exp $
+ * @version $Id: editview.act.php,v 1.12 2008/03/24 22:58:09 achapin Exp $
  */
 class editviewAction
 	extends htmlAction 
@@ -115,9 +115,10 @@ class editviewAction
 	 */
 	function getCommandsComponent () {
 		$harmoni = Harmoni::instance();
-		
+		//printpre("module: ".$_SESSION['UI_MODULE']);
 		ob_start();
 		print "<div class='commands'>";
+		
 		print "<a href='";
 		print $harmoni->request->quickURL('view', 'html', array(
 				'node' => RequestContext::value("node")));
@@ -131,7 +132,7 @@ class editviewAction
 				'node' => RequestContext::value("node")));
 		print "' title='"._("Go to Arrange-Mode")."'>";
 		print _("arrange")."</a>";
-		print " | ".self::getUiSwitchForm('editview');
+		print " | ".self::getUiSwitchForm();
 		print "</div>";
 				
 		$ret = new Component(ob_get_clean(), BLANK, 2);

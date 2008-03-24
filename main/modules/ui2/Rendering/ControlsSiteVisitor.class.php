@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.20 2008/03/24 15:18:08 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.21 2008/03/24 22:58:09 achapin Exp $
  */ 
  
  require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.20 2008/03/24 15:18:08 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.21 2008/03/24 22:58:09 achapin Exp $
  */
 class ControlsSiteVisitor 
 	extends GeneralControlsSiteVisitor
@@ -486,8 +486,8 @@ class ControlsSiteVisitor
 			'none' => _('No attribution'), 
 			'creator' => _('Original author'), 
 			'last_editor' => _('Last editor'),
-			'both' => _('Both author and last editor'),
-			'all_editors' => _("All editors"));
+			'both' => _('Author and last editor'),
+			'all_editors' => _("All contributors"));
 		
 		print "\n\t\t\t\t\t<select class='ui2_field'";
 		print (($canEdit)?"":" disabled='disabled'");

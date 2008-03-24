@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_ui.act.php,v 1.1 2008/03/19 17:16:13 achapin Exp $
+ * @version $Id: change_ui.act.php,v 1.2 2008/03/24 22:58:09 achapin Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_ui.act.php,v 1.1 2008/03/19 17:16:13 achapin Exp $
+ * @version $Id: change_ui.act.php,v 1.2 2008/03/24 22:58:09 achapin Exp $
  */
 class change_uiAction
 	extends Action
@@ -45,11 +45,37 @@ class change_uiAction
 	 * @since 3/18/08
 	 */
 	public function execute () {
+		$harmoni = Harmoni::instance();
+		
 		if (RequestContext::value('user_interface')) {
 			$this->setUiModule(RequestContext::value('user_interface'));
 		}
 		
-		RequestContext::sendTo(rawurldecode(RequestContext::value('returnUrl')));	
+		$returnUrl = rawurldecode(RequestContext::value('returnUrl'));
+		$oldModule = $harmoni->request->getModuleFromUrl ($returnUrl);
+		$oldAction = $harmoni->request->getActionFromUrl ($returnUrl);
+		$newModule = RequestContext::value('user_interface');
+
+		printpre($returnUrl);
+		printpre($oldAction);
+		printpre($oldModule);
+		printpre($newModule);
+	//	exit;
+		
+		if ($oldModule != $newModule && $oldModule != "view") {
+			if ($oldAction == "arrangeview") {
+				$newAction = "editview";
+				$returnUrl = str_replace($oldModule, $newModule, $returnUrl);
+				$returnUrl = str_replace($oldAction, $newAction, $returnUrl);
+			} else {
+				$returnUrl = str_replace($oldModule, $newModule, $returnUrl);
+			}
+		}
+		
+		printpre($returnUrl);
+//		exit;
+		
+		RequestContext::sendTo($returnUrl);	
 	}
 	
 	/**
