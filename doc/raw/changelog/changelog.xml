@@ -5,13 +5,34 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.212 2008/03/25 15:50:05 achapin Exp $
+ @version $Id: changelog.xml,v 1.213 2008/03/25 16:23:01 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-15" date="The Future">
+	<version number="2.0-beta-15" date="2008-03-25">
 		<releaseNotes>
+			The Segue 2.0 beta is capable of most of the site creation and editing needs of 
+			users. We are continually adding features to bring Segue 2 up to feature parity
+			with Segue 1.x. See the Feature Request Tracker for a list of features that still
+			need to be completed:  
+			https://sourceforge.net/tracker/?group_id=82171&amp;atid=565237  
+			 
+			This release adds a number of major improvements as well as fixes a large number
+			of bugs.
+			 
+			Notable user-facing changes: 
+			- Migration tools for importing Segue 1 sites
+			- New plugins for Breadcrumbs and RSS links
+			- Improvements to UI2, 'New Mode' editing interface to reduce visual clutter.
+			- New Site-Map view.
+			- New version of FCK editor, now supports Safari.
+			
+			Upgrade Notes: 
+			For upgrades from releases prior to beta 15, please run the updates 
+			located under Admin Tools --> Segue Updates.  
+			
+			Segue 2.0 beta 15 uses Polyphony 1.0.4 and Harmoni 1.0.5.  
 		</releaseNotes>
 		<new author='alex' date='2008-03-20' ref='1820861' reftype='fr'>
 			View: added settings for displaying block create and update timestamps, 

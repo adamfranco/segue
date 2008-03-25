@@ -4,6 +4,234 @@ Name: Segue Change Log
 
 
 
+v. 2.0-beta-15 (2008-03-25)
+----------------------------------------------------
+The Segue 2.0 beta is capable of most of the site creation and editing needs of
+users. We are continually adding features to bring Segue 2 up to feature parity with
+Segue 1.x. See the Feature Request Tracker for a list of features that still need to
+be completed: https://sourceforge.net/tracker/?group_id=82171&amp;atid=565237 This
+release adds a number of major improvements as well as fixes a large number of bugs.
+Notable user-facing changes: - Migration tools for importing Segue 1 sites - New
+plugins for Breadcrumbs and RSS links - Improvements to UI2, 'New Mode' editing
+interface to reduce visual clutter. - New Site-Map view. - New version of FCK
+editor, now supports Safari.
+
+Upgrade Notes: For upgrades from releases prior to beta 15, please run the updates
+located under Admin Tools --&gt; Segue Updates. 
+
+Segue 2.0 beta 15 uses Polyphony 1.0.4 and Harmoni 1.0.5.
+		
+		
+	* New feature: #1820861 
+		View: added settings for displaying block create and update timestamps, as
+		well as names of block creators and editors
+		(2008-03-20 - Alex Chapin)
+		
+	* Bug Fix: 
+		Versioning: Fixed history action to use new view module
+		(2008-03-20 - Alex Chapin)
+		
+	* New feature: #1820829 
+		Importer/Migration: Site migration tools to allow users to import Segue 1
+		sites. 
+		(2008-03-20 - Adam Franco)
+		
+	* New feature: 
+		URLs/Migration: A URL resolver has been added that can redirect Segue
+		1-style urls. If the Segue 1 site has bee imported into Segue 2 then the
+		user will be redirected to the Segue 2 version, otherwise, they will be
+		redirected to the Segue 1 instance. 
+		
+		This feature allows Segue 2 to be placed at the previous location of a
+		Segue 1 instance (e.g. http://segue.example.edu) and the Segue 1 instance to
+		be moved to a new location (e.g. http://segue1.example.edu). With this
+		switch, Segue 2 will be able to forward old urls to either new versions or
+		to the Segue 1 instance for the duration of a migration period.
+		(2008-03-20 - Adam Franco)
+		
+	* New feature: 
+		View/UI1/UI2: added a view module with unified view actions and redirected
+		view actions in UI1 and UI2 to it.
+		(2008-03-18 - Alex Chapin)
+		
+	* Change: 
+		View: Added link to site map in site footer.
+		(2008-03-17 - Alex Chapin)
+		
+	* New feature: 
+		View: added javascript to site map link in footer so that link opens in a
+		new sized window and site map links open in window that was the source of
+		the link.
+		(2008-03-18 - Adam Franco)
+		
+	* New feature: #1844315 
+		View: Added module and action for displaying a site map.
+		(2008-03-17 - Alex Chapin)
+		
+	* Change: 
+		Slots: Slots are now defined by a 'Slot' interface to allow for
+		implementation from outside of this package.
+		(2008-03-13 - Adam Franco)
+		
+	* Change: 
+		Slots: Slot fetching is now cached for the execution cycle to speed repeated
+		access. 
+		(2008-03-14 - Adam Franco)
+		
+	* New feature: #1820917 
+		Slots: Now media-upload quotas can be set for sites.
+		(2008-03-20 - Adam Franco)
+		
+	* Change: 
+		UI1/UI2: Updated FCKeditor from version 2.4.3 to 2.5.1 This version of this
+		editor now works in Safari and Opera web browsers
+		(2008-03-25 - Alex Chapin)
+		
+	* Change: 
+		UI1/UI2: now passes current node id to breadcrumbs
+		(2008-03-11 - Adam Franco)
+		
+	* Change: 
+		UI1/UI2: Site Template now uses the new Breadcrumbs and RSS plugins.
+		(2008-03-24 - Adam Franco)
+		
+	* Change: 
+		UI2: refined the layout of UI2 settings.
+		(2008-03-24 - Alex Chapin)
+		
+	* Bug Fix: #1919951 
+		UI2: fixed UI2 so that site options appear in arrange mode
+		(2008-03-24 - Alex Chapin)		
+		
+	* Bug Fix: 
+		UI2: Now UI2 gives the same error as UI1 when no site exists with the
+		placeholder name given.
+		(2008-03-14 - Adam Franco)
+		
+	* Bug Fix: 
+		UI2: Fixed invalid markup in ui2 edit commands display.
+		(2008-03-13 - Alex Chapin)
+		
+	* Bug Fix: 
+		UI2: Fixed footer width in ui2.
+		(2008-03-13 - Alex Chapin)
+		
+	* Bug Fix: #1922512 
+		UI2: Edit mode detail view now doesn't show hidden titles in header.
+		(2008-03-25 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: #1913755 
+		UI2: Fixed issue where containers couldn't be added to the first cell of a
+		layout organizer.
+		(2008-03-25 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: 
+		UI2: Fixed Insert form HTML syntax.
+		(2008-03-25 - Adam Franco)
+		
+	* Change: 
+		UI2: Header and footer controls are now hidden in default edit mode.
+		(2008-03-25 - Adam Franco)
+		
+	* New feature: 
+		UI2: New action for only editing header and footer.
+		(2008-03-25 - Adam Franco)
+		
+	* New feature: #1798877 
+		Plugins: added a RSS links plugin
+		(2008-03-13 - Alex Chapin)		
+		
+	* New feature: #1798877 
+		Plugins: added breadcrumbs plugin
+		(2008-03-13 - Alex Chapin)
+		
+	* Bug Fix: 
+		Plugins: PluginManager now adds newly enabled plugins to the session cache
+		as such.
+		(2008-03-21 - Adam Franco)
+		
+	* Change: 
+		Plugins: Versions and Content now are stored in LONGBLOB fields to allow
+		more than 64kB of data.
+		(2008-03-24 - Adam Franco)
+		
+	* Bug Fix: #1918452 
+		Plugins: TextBlock plugin's 'Add Image' and 'Add File' buttons now work in
+		the plain-text editor in IE.
+		(2008-03-25 - Adam Franco)
+		
+	**** IMPORTANT *** Change: 
+		Plugin data changes require execution of a Segue update -- located under
+		Admin Tools --&gt; Segue Updates.
+		(2008-03-24 - Adam Franco)
+		
+	* New feature: 
+		WikiText: Now supports [[fileurl:asset_id=1234&amp;record_id=5678]] syntax for
+		urls to files.
+		(2008-03-17 - Adam Franco)
+		
+	* Change: 
+		MediaLibrary: Default repository id 'edu.middlebury.segue.sites_repository'
+		is now used if no repository id is specified.
+		(2008-03-18 - Adam Franco)
+		
+	* Change: 
+		MediaLibrary: Now is more flexible of id-strings, supporting both plain and
+		escaped ampersands as well as 'asset_id' in addition to 'assetId'.
+		(2008-03-18 - Adam Franco)
+		
+	* Bug Fix: 
+		Comments: added argument validation
+		(2008-03-11 - Adam Franco)
+		
+	* Bug Fix: 
+		Comments: fixed html markup
+		(2008-03-11 - Alex Chapin)
+		
+	* Change: 
+		Comments: can now get comment body without editing controls
+		(2008-03-11 - Adam Franco)
+		
+		
+	* New feature: #1799956 
+		Site Display: added link to RSS feeds
+		(2008-03-11 - Alex Chapin)
+		
+	* Bug Fix: 
+		Site Display: Fixed error in FlowOrgaizer sorting when sort-keys were not
+		unique. 
+		(2008-03-19 - Adam Franco)
+		
+	* Bug Fix: 
+		Site Display: Site-level comment-enabling now works.
+		(2008-03-19 - Adam Franco)
+		
+	* Bug Fix: 
+		Site Display: Removed debugging lines from component saving methods.
+		(2008-03-20 - Adam Franco)
+		
+	* New feature: #1799956 
+		RSS: new actions for publishing RSS of content and comments.
+		(2008-03-11 - Alex Chapin)
+		
+	* Bug Fix: 
+		Importer: Fixed notice when invalid archives are uploaded.
+		(2008-03-20 - Adam Franco)
+		
+	* New feature: 
+		Importer: Now can import media quotas.
+		(2008-03-21 - Adam Franco)
+		
+	* New feature: 
+		Importer: Can now display status during import.
+		(2008-03-24 - Adam Franco)
+		
+	* Bug Fix: 
+		ErrorPrinter: Now doesn't try to send headers if they are already sent.
+		(2008-03-21 - Adam Franco)
+	
 v. 2.0-beta-14 (2008-03-10)
 ----------------------------------------------------
 This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
