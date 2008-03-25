@@ -6,11 +6,11 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: headerfooter.act.php,v 1.1 2008/03/25 15:29:12 adamfranco Exp $
+ * @version $Id: headerfooter.act.php,v 1.2 2008/03/25 15:40:49 adamfranco Exp $
  */ 
-require_once(dirname(__FILE__)."/editview.act.php");
-require_once(dirname(__FILE__)."/Rendering/DetailEditModeSiteVisitor.class.php");
-require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
+require_once(dirname(__FILE__)."/../view/html.act.php");
+require_once(dirname(__FILE__)."/Rendering/DetailEditHeaderFooterSiteVisitor.class.php");
+require_once(dirname(__FILE__)."/Rendering/EditHeaderFooterSiteVisitor.class.php");
 
 /**
  * An action for editing the header and footer in UI2
@@ -21,10 +21,10 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: headerfooter.act.php,v 1.1 2008/03/25 15:29:12 adamfranco Exp $
+ * @version $Id: headerfooter.act.php,v 1.2 2008/03/25 15:40:49 adamfranco Exp $
  */
 class headerFooterAction 
-	extends editviewAction
+	extends htmlAction
 {
 		
 	/**
@@ -41,9 +41,9 @@ class headerFooterAction
 				RequestContext::value("node"));
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
-				$this->visitor = new DetailEditModeSiteVisitor($requestedNode);
+				$this->visitor = new DetailEditHeaderFooterSiteVisitor($requestedNode);
 			else
-				$this->visitor = new EditModeSiteVisitor();
+				$this->visitor = new EditHeaderFooterSiteVisitor();
 		}
 		return $this->visitor;
 	}
