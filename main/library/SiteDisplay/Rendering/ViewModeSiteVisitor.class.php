@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.60 2008/03/24 21:35:31 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.61 2008/03/25 14:48:23 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -25,7 +25,7 @@ require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
 require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
 require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
 
-require_once(MYDIR."/main/modules/view/attributionPrinter.class.php");
+require_once(MYDIR."/main/modules/view/AttributionPrinter.class.php");
 
 /**
  * The ViewModeVisitor traverses the site hierarchy, rendering each component.
@@ -36,7 +36,7 @@ require_once(MYDIR."/main/modules/view/attributionPrinter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.60 2008/03/24 21:35:31 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.61 2008/03/25 14:48:23 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor

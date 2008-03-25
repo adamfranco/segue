@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: attributionPrinter.class.php,v 1.2 2008/03/25 13:44:07 achapin Exp $
+ * @version $Id: AttributionPrinter.class.php,v 1.1 2008/03/25 14:48:23 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: attributionPrinter.class.php,v 1.2 2008/03/25 13:44:07 achapin Exp $
+ * @version $Id: AttributionPrinter.class.php,v 1.1 2008/03/25 14:48:23 adamfranco Exp $
  */
 class AttributionPrinter {
 		
