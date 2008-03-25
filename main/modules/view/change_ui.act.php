@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_ui.act.php,v 1.3 2008/03/24 23:01:36 achapin Exp $
+ * @version $Id: change_ui.act.php,v 1.4 2008/03/25 15:50:05 achapin Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_ui.act.php,v 1.3 2008/03/24 23:01:36 achapin Exp $
+ * @version $Id: change_ui.act.php,v 1.4 2008/03/25 15:50:05 achapin Exp $
  */
 class change_uiAction
 	extends Action
@@ -57,7 +57,7 @@ class change_uiAction
 		$newModule = RequestContext::value('user_interface');
 		
 		if ($oldModule != $newModule && $oldModule != "view") {
-			if ($oldAction == "arrangeview") {
+			if ($oldAction == "arrangeview" || $oldAction == "headerfooter") {
 				$returnUrl = str_replace($oldAction, "editview", $returnUrl);
 			} 
 			$returnUrl = str_replace($oldModule, $newModule, $returnUrl);			
