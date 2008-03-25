@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.4 2008/03/25 15:01:36 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.5 2008/03/25 15:29:13 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -27,7 +27,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.4 2008/03/25 15:01:36 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.5 2008/03/25 15:29:13 adamfranco Exp $
  */
 
 /**
@@ -39,7 +39,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.4 2008/03/25 15:01:36 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.5 2008/03/25 15:29:13 adamfranco Exp $
  */
 class htmlAction
 	extends displayAction 
@@ -364,6 +364,13 @@ class htmlAction
 				print "' title='"._("Go to Edit-Mode")."'>";
 				print _("edit")."</a>";
 				
+				
+				print " | <a href='";
+				print $harmoni->request->quickURL('ui2', 'headerfooter', array(
+						'node' => RequestContext::value("node")));
+				print "' title='"._("Go to Header/Footer Edit-Mode")."'>";
+				print _("header/footer")."</a>";
+		
 				print " | <a href='";
 				print $harmoni->request->quickURL('ui2', 'arrangeview', array(
 						'node' => $this->getNodeId()));

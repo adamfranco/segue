@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.11 2008/03/24 23:37:56 achapin Exp $
+ * @version $Id: arrangeview.act.php,v 1.12 2008/03/25 15:29:12 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.11 2008/03/24 23:37:56 achapin Exp $
+ * @version $Id: arrangeview.act.php,v 1.12 2008/03/25 15:29:12 adamfranco Exp $
  */
 class arrangeviewAction
 	extends htmlAction 
@@ -119,6 +119,13 @@ class arrangeviewAction
 				'node' => RequestContext::value("node")));
 		print "' title='"._("Go to Edit-Mode")."'>";
 		print _("edit")."</a>";
+		
+		
+		print " | <a href='";
+		print $harmoni->request->quickURL('ui2', 'headerfooter', array(
+				'node' => RequestContext::value("node")));
+		print "' title='"._("Go to Header/Footer Edit-Mode")."'>";
+		print _("header/footer")."</a>";
 		
 		print " | "._("arrange");
 		print " | ".self::getUiSwitchForm();

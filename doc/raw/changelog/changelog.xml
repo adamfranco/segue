@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.210 2008/03/25 14:58:02 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.211 2008/03/25 15:29:12 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -92,6 +92,12 @@
 		<fix author='adam' date='2008-03-25'>
 			UI2: Fixed Insert form HTML syntax.
 		</fix>
+		<change author='adam' date='2008-03-25'>
+			UI2: Header and footer controls are now hidden in default edit mode.
+		</change>
+		<new author='adam' date='2008-03-25'>
+			UI2: New action for only editing header and footer.
+		</new>
 		<new author='alex' date='2008-03-13' ref='1798877' reftype='fr'>
 			Plugins: added a RSS links plugin
 		</new>		

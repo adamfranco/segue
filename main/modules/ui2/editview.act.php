@@ -6,16 +6,18 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.12 2008/03/24 22:58:09 achapin Exp $
+ * @version $Id: editview.act.php,v 1.13 2008/03/25 15:29:12 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
-require_once(dirname(__FILE__)."/Rendering/DetailEditModeSiteVisitor.class.php");
+require_once(dirname(__FILE__)."/Rendering/NoHeaderFooterDetailEditModeSiteVisitor.class.php");
 require_once(MYDIR."/main/modules/view/html.act.php");
 require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
+require_once(dirname(__FILE__)."/Rendering/NoHeaderFooterEditModeSiteVisitor.class.php");
+
 
 /**
  * Test view using new components
@@ -26,7 +28,7 @@ require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.12 2008/03/24 22:58:09 achapin Exp $
+ * @version $Id: editview.act.php,v 1.13 2008/03/25 15:29:12 adamfranco Exp $
  */
 class editviewAction
 	extends htmlAction 
@@ -46,9 +48,9 @@ class editviewAction
 				RequestContext::value("node"));
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
-				$this->visitor = new DetailEditModeSiteVisitor($requestedNode);
+				$this->visitor = new NoHeaderFooterDetailEditModeSiteVisitor($requestedNode);
 			else
-				$this->visitor = new EditModeSiteVisitor();
+				$this->visitor = new NoHeaderFooterEditModeSiteVisitor();
 		}
 		return $this->visitor;
 	}
@@ -126,6 +128,12 @@ class editviewAction
 		print _("view")."</a>";
 		
 		print " | "._("edit");
+		
+		print " | <a href='";
+		print $harmoni->request->quickURL('ui2', 'headerfooter', array(
+				'node' => RequestContext::value("node")));
+		print "' title='"._("Go to Header/Footer Edit-Mode")."'>";
+		print _("header/footer")."</a>";
 		
 		print " | <a href='";
 		print $harmoni->request->quickURL('ui2', 'arrangeview', array(
