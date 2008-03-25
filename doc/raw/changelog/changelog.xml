@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.207 2008/03/25 13:49:47 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.208 2008/03/25 14:09:15 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -99,6 +99,10 @@
 			Plugins: Versions and Content now are stored in LONGBLOB fields to allow
 			more than 64kB of data.
 		</change>
+		<fix author='adam' date='2008-03-25' ref='1918452' reftype='bug'>
+			Plugins: TextBlock plugin's 'Add Image' and 'Add File' buttons now work
+			in the plain-text editor in IE.
+		</fix>
 		<important author='adam' date='2008-03-24'>
 			Plugin data changes require execution of a Segue update -- located under
 			Admin Tools --&gt; Segue Updates.

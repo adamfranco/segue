@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.46 2008/02/19 17:25:28 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.47 2008/03/25 14:09:15 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.46 2008/02/19 17:25:28 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.47 2008/03/25 14:09:15 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -352,7 +352,9 @@ class EduMiddleburyTextBlockPlugin
 		// Image button
 		print "\n\t<br/><input type='button' value='"._('Add Image')."' onclick=\"";
 		print "this.onUse = function (mediaFile) { ";
-		print 		"var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + mediaFile.getTitles()[0].escapeHTML() + '\'/>' ; ";
+		print 		"var title = mediaFile.getTitles()[0]; ";
+		print		"if (title) { title = title.escapeHTML(); }; ";
+		print 		"var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + title + '\'/>' ; ";
 		print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
 		print "}; "; 
 		print "MediaLibrary.run('".$this->getId()."', this); ";
@@ -364,7 +366,9 @@ class EduMiddleburyTextBlockPlugin
 		print		"var downloadBar = document.createElement('div'); ";
 		print 		"var link = downloadBar.appendChild(document.createElement('a')); ";
 		print 		"link.href = mediaFile.getUrl().escapeHTML(); ";
-		print		"link.title = mediaFile.getTitles()[0].escapeHTML(); ";
+		
+		print 		"link.title = mediaFile.getTitles()[0]; ";
+		print		"if (link.title) { link.title = link.title.escapeHTML(); }; ";
 		
 		print		"var img = link.appendChild(document.createElement('img')); ";
 		print		"img.src = mediaFile.getThumbnailUrl(); ";
@@ -521,7 +525,9 @@ class EduMiddleburyTextBlockPlugin
  		print "<br/>";
 		print "\n\t<input type='button' value='"._('Add Image')."' onclick=\"";
 		print "this.onUse = function (mediaFile) { ";
-		print 		"var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + mediaFile.getTitles()[0].escapeHTML() + '\'/>' ; ";
+		print 		"var title = mediaFile.getTitles()[0]; ";
+		print		"if (title) { title = title.escapeHTML(); }; ";
+		print 		"var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + title + '\'/>' ; ";
 		print 		"edInsertContent(this.form.elements['[[fieldname:]]'], newString); ";
 		print "}; "; 
 		print "MediaLibrary.run('".$this->getId()."', this); ";
@@ -533,7 +539,8 @@ class EduMiddleburyTextBlockPlugin
 		print		"var downloadBar = document.createElement('div'); ";
 		print 		"var link = downloadBar.appendChild(document.createElement('a')); ";
 		print 		"link.href = mediaFile.getUrl().escapeHTML(); ";
-		print		"link.title = mediaFile.getTitles()[0].escapeHTML(); ";
+		print 		"link.title = mediaFile.getTitles()[0]; ";
+		print		"if (link.title) { link.title = link.title.escapeHTML(); }; ";
 		
 		print		"var img = link.appendChild(document.createElement('img')); ";
 		print		"img.src = mediaFile.getThumbnailUrl(); ";
