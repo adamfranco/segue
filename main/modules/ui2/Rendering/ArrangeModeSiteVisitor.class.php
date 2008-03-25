@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.22 2008/02/28 16:41:00 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.23 2008/03/25 14:25:35 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.22 2008/02/28 16:41:00 adamfranco Exp $
+ * @version $Id: ArrangeModeSiteVisitor.class.php,v 1.23 2008/03/25 14:25:35 adamfranco Exp $
  */
 class ArrangeModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -559,11 +559,11 @@ class ArrangeModeSiteVisitor
 		print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
 		
 		print "\n\t<div style='text-decoration: underline; cursor: pointer; white-space: nowrap;'";
-		print "onclick='this.style.display=\"none\"; this.nextSibling.nextSibling.style.display=\"block\";'";
+		print "onclick='this.style.display=\"none\"; this.nextSibling.style.display=\"block\";'";
 		print ">";
 		print "\n\t\t"._("Insert New...");
 		print "\n\t</div>";
-		print "\n\t\t<div style='display: none'>";
+		print "<div style='display: none'>";
 		
 		// Selection of our menu target
 		if (in_array('MenuOrganizer', $allowed)) {
@@ -588,12 +588,11 @@ class ArrangeModeSiteVisitor
 		
 		print "\n\t\t</select>";
 		
-		print "\n\t\t\t<div style='text-align: right;'>";
-		print "\n\t\t\t\t<input type='submit' value='"._('Submit')."'/>";
-		print "\n\t\t\t\t<input type='button' ";
-		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.previousSibling.style.display=\"block\";'";
+		print "\n\t\t<div style='text-align: right;'>";
+		print "\n\t\t\t<input type='submit' value='"._('Submit')."'/>";
+		print "\n\t\t\t<input type='button' ";
+		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.style.display=\"block\";'";
 		print " value='"._("Cancel")."'/>";
-		print "\n\t\t\t</div>";
 		print "\n\t\t</div>";
 		print "\n\t</div>";
 		print "</form>";

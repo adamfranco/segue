@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.208 2008/03/25 14:09:15 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.209 2008/03/25 14:25:34 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -85,6 +85,9 @@
 		<fix author='adam' date='2008-03-25' ref='1913755' reftype='bug' reporter='alex'>
 			UI2: Fixed issue where containers couldn't be added to the first cell
 			of a layout organizer.
+		</fix>
+		<fix author='adam' date='2008-03-25'>
+			UI2: Fixed Insert form HTML syntax.
 		</fix>
 		<new author='alex' date='2008-03-13' ref='1798877' reftype='fr'>
 			Plugins: added a RSS links plugin
