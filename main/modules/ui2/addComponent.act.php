@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.11 2008/02/18 15:45:10 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.12 2008/03/25 13:49:47 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: addComponent.act.php,v 1.11 2008/02/18 15:45:10 adamfranco Exp $
+ * @version $Id: addComponent.act.php,v 1.12 2008/03/25 13:49:47 adamfranco Exp $
  */
 class addComponentAction 
 	extends EditModeSiteAction
@@ -69,7 +69,7 @@ class addComponentAction
 		else
 			$component = $director->createSiteComponent($componentType, $organizer);
 		
-		if ($targetCell)
+		if (!is_null($targetCell))
 			$oldCellId = $organizer->putSubcomponentInCell($component, $targetCell);
 		
 		if (RequestContext::value('displayName'))
