@@ -6,9 +6,10 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.4 2008/02/15 20:08:58 adamfranco Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.5 2008/03/25 15:30:14 achapin Exp $
  */ 
 
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/DetailViewModeSiteVisitor.class.php");
 
 /**
  * Rendering visitor for the history browser.
@@ -19,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.4 2008/02/15 20:08:58 adamfranco Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.5 2008/03/25 15:30:14 achapin Exp $
  */
 class HistorySiteVisitor
 	extends DetailViewModeSiteVisitor
@@ -73,7 +74,7 @@ class HistorySiteVisitor
 		
 		$harmoni->request->passthrough('node');
 		ob_start();
-		print "\n<form action='".$harmoni->request->quickURL($harmoni->request->getRequestedModule(), 'compare_versions')."' method='get'>";
+		print "\n<form action='".$harmoni->request->quickURL('versioning', 'compare_versions')."' method='get'>";
 		print "\n\t<div style='float: right;'>";
 		print "\n\t<input type='submit' value='"._("Compare Selected Revisions &raquo;")."'";
 		if (count($plugin->getVersions()) <= 1) {
@@ -83,7 +84,7 @@ class HistorySiteVisitor
 		print "\n\t</div>";
 		print "\n\t<div style='float: left;'>\n\t\t<a href='".$harmoni->history->getReturnURL('view_history_'.$block->getId())."'>";
 		print "\n\t\t\t<input type='button' value='"._("&laquo; Go Back")."'/>\n\t\t</a>\n\t</div>";
-		print "\n\t\t<input type='hidden' name='module' value='".$harmoni->request->getRequestedModule()."'/>";
+		print "\n\t\t<input type='hidden' name='module' value='versioning'/>";
 		print "\n\t<input type='hidden' name='action' value='compare_versions'/>";
 		print "\n\t<input type='hidden' name='node' value='".RequestContext::value('node')."'/>";
 		
