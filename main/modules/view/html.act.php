@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.3 2008/03/18 20:47:08 achapin Exp $
+ * @version $Id: html.act.php,v 1.4 2008/03/25 15:01:36 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -15,7 +15,6 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/DetailViewModeSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class.php");
 // require_once(MYDIR."/main/modules/ui1/Rendering/EditModeSiteVisitor.class.php");
 //require_once(MYDIR."/main/modules/ui2/Rendering/EditModeSiteVisitor.class.php");
 
@@ -28,7 +27,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.3 2008/03/18 20:47:08 achapin Exp $
+ * @version $Id: html.act.php,v 1.4 2008/03/25 15:01:36 adamfranco Exp $
  */
 
 /**
@@ -40,7 +39,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.3 2008/03/18 20:47:08 achapin Exp $
+ * @version $Id: html.act.php,v 1.4 2008/03/25 15:01:36 adamfranco Exp $
  */
 class htmlAction
 	extends displayAction 
@@ -213,15 +212,6 @@ class htmlAction
 // 			null, null, LEFT, TOP);
 
 		if ($this->isAuthorizedToExecute()) {
-			// :: Breadcrumb row ::
-			$this->breadcrumb = $mainScreen->add(
-				new Container($xLayout, HEADER, 2), 
-				"100%", null, CENTER, TOP);
-				
-			$this->breadcrumb->add(
-				new UnstyledBlock("<div class='breadcrumbs'>".$this->getBreadCrumbs()."</div>"), 
-				null, null, LEFT, TOP);
-	
 							
 			// :: Site ::
 			$mainScreen->add($this->siteGuiComponent);
@@ -313,21 +303,7 @@ class htmlAction
 		}
 		return $this->visitor;
 	}
-	
-	/**
-	 * Answer the bread crumbs for the current node
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 5/31/07
-	 */
-	function getBreadCrumbs () {
-		$node = $this->_director->getSiteComponentById(
-				$this->getNodeId());
 		
-		return $node->acceptVisitor(new BreadCrumbsVisitor($node));
-	}
-	
 	/**
 	 * Answer a links back to the main Segue pages
 	 * 
