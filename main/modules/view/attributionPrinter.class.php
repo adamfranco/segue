@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: attributionPrinter.class.php,v 1.1 2008/03/24 21:35:31 achapin Exp $
+ * @version $Id: attributionPrinter.class.php,v 1.2 2008/03/25 13:44:07 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: attributionPrinter.class.php,v 1.1 2008/03/24 21:35:31 achapin Exp $
+ * @version $Id: attributionPrinter.class.php,v 1.2 2008/03/25 13:44:07 achapin Exp $
  */
 class AttributionPrinter {
 		
@@ -72,13 +72,13 @@ class AttributionPrinter {
 	public function getAttributionMarkUp () {
 		
 		ob_start();
-		print "<div class=attribution_line>";
+		print "<div class='attribution_line'>";
 		print $this->getCreationLine();
 		print "</div>";
-		print "<div class=attribution_line>";
+		print "<div class='attribution_line'>";
 		print $this->getModificationLine();
 		print "</div>";
-		print "<div class=attribution_line>";
+		print "<div class='attribution_line'>";
 		print $this->getContributorsLine();
 		print "</div>";		
 		return ob_get_clean();
