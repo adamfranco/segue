@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.9 2008/01/11 20:03:04 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.10 2008/03/25 13:28:03 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.9 2008/01/11 20:03:04 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.10 2008/03/25 13:28:03 adamfranco Exp $
  */
 class DetailEditModeSiteVisitor
 	extends EditModeSiteVisitor
@@ -102,7 +102,10 @@ class DetailEditModeSiteVisitor
 	 * @since 5/24/07
 	 */
 	function showBlockTitle ( $block ) {
-		return true;
+		if ($block->getId() == $this->_node->getId())
+			return true;
+		else
+			return $block->showDisplayName();
 	}
 	
 	/**
