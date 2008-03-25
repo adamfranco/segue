@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NoHeaderFooterDetailEditModeSiteVisitor.class.php,v 1.1 2008/03/25 15:29:12 adamfranco Exp $
+ * @version $Id: NoHeaderFooterDetailEditModeSiteVisitor.class.php,v 1.2 2008/03/25 16:11:07 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NoHeaderFooterEditModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/NoHeaderFooterEditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NoHeaderFooterDetailEditModeSiteVisitor.class.php,v 1.1 2008/03/25 15:29:12 adamfranco Exp $
+ * @version $Id: NoHeaderFooterDetailEditModeSiteVisitor.class.php,v 1.2 2008/03/25 16:11:07 achapin Exp $
  */
 class NoHeaderFooterDetailEditModeSiteVisitor
 	extends NoHeaderFooterEditModeSiteVisitor
@@ -89,6 +89,14 @@ class NoHeaderFooterDetailEditModeSiteVisitor
 		$harmoni->request->passthrough('node');
 		print $plugin->executeAndGetExtendedMarkup(true);
 		$harmoni->request->forget('node');
+		
+		// print out attribution based on block settings
+		$attribution = new AttributionPrinter($block);
+		$attributionDisplay = $attribution->getAttributionMarkUp();
+		if (!is_null($attributionDisplay) && strlen($attributionDisplay)) {			
+			print $attributionDisplay;
+		}
+
 		
 		return ob_get_clean();
 	}

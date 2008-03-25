@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.61 2008/03/25 14:48:23 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.62 2008/03/25 16:11:07 achapin Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -36,7 +36,7 @@ require_once(MYDIR."/main/modules/view/AttributionPrinter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.61 2008/03/25 14:48:23 adamfranco Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.62 2008/03/25 16:11:07 achapin Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -206,10 +206,8 @@ class ViewModeSiteVisitor
 		// print out attribution based on block settings
 		$attribution = new AttributionPrinter($block);
 		$attributionDisplay = $attribution->getAttributionMarkUp();
-		if (!is_null($attributionDisplay) && strlen($attributionDisplay)) {
-		//	print "\n<div class='attribution'>";			
+		if (!is_null($attributionDisplay) && strlen($attributionDisplay)) {			
 			print $attributionDisplay;
-		//	print "\n</div>";
 		}
 
 		
