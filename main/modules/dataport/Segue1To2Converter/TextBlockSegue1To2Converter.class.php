@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.6 2008/03/24 18:52:36 adamfranco Exp $
+ * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.7 2008/03/25 19:41:44 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.6 2008/03/24 18:52:36 adamfranco Exp $
+ * @version $Id: TextBlockSegue1To2Converter.class.php,v 1.7 2008/03/25 19:41:44 adamfranco Exp $
  */
 class TextBlockSegue1To2Converter
 	extends BlockSegue1To2Converter
@@ -59,8 +59,12 @@ class TextBlockSegue1To2Converter
 		}
 		// Page content and comments have their text in the 'text' node instead of shorttext
 		catch (MissingNodeException $e) {
-			$shortTextElement = $this->getSingleSourceElement('./text', $this->sourceElement);
-			$shortHtml = $this->getStringValue($shortTextElement);
+			try {
+				$shortTextElement = $this->getSingleSourceElement('./text', $this->sourceElement);
+				$shortHtml = $this->getStringValue($shortTextElement);
+			} catch (MissingNodeException $e) {
+				$shortHtml = '';
+			}
 		}
 		
 		// Attach any media linked from the HTML
@@ -103,8 +107,12 @@ class TextBlockSegue1To2Converter
 		}
 		// Page content and comments have their text in the 'text' node instead of shorttext
 		catch (MissingNodeException $e) {
-			$shortTextElement = $this->getSingleSourceElement('./text', $this->sourceElement);
-			$shortHtml = $this->getStringValue($shortTextElement);
+			try {
+				$shortTextElement = $this->getSingleSourceElement('./text', $this->sourceElement);
+				$shortHtml = $this->getStringValue($shortTextElement);
+			} catch (MissingNodeException $e) {
+				$shortHtml = '';
+			}
 			$longHtml = '';
 		}
 		

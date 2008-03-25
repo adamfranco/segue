@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.47 2008/03/25 14:09:15 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.48 2008/03/25 19:41:45 adamfranco Exp $
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
@@ -20,7 +20,7 @@ require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.47 2008/03/25 14:09:15 adamfranco Exp $
+ * @version $Id: EduMiddleburyTextBlockPlugin.class.php,v 1.48 2008/03/25 19:41:45 adamfranco Exp $
  */
 class EduMiddleburyTextBlockPlugin
 	extends SegueAjaxPlugin
@@ -755,10 +755,16 @@ class EduMiddleburyTextBlockPlugin
  		
  		$contentElement = $contentElements->item(0);
  		$content = $contentElement->firstChild;
- 		if ($content && $content->nodeType == XML_CDATA_SECTION_NODE) {
- 			return $content;
-		} else {
-			throw new InvalidVersionException("The 'content' element should contain one CDATA section.");
+ 		if ($content) {
+ 			if ($content->nodeType == XML_CDATA_SECTION_NODE) {
+				return $content;
+			} else {
+				throw new InvalidVersionException("The 'content' element should contain one CDATA section.");
+			}
+		}
+		// if empty, append an empty CDATA Section
+		else {
+			return $contentElement->appendChild($version->createCDATASection(''));
 		}
 
   	}
