@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.13 2008/03/25 14:58:02 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.14 2008/03/25 21:01:03 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteCompo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.13 2008/03/25 14:58:02 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.14 2008/03/25 21:01:03 adamfranco Exp $
  */
 class AssetSiteNavBlockSiteComponent
 	extends AssetNavBlockSiteComponent
@@ -116,7 +116,7 @@ class AssetSiteNavBlockSiteComponent
 	 * @since 1/17/07
 	 */
 	function showHistorySetting () {
-		$setting = parent::commentsEnabled();
+		$setting = parent::showHistorySetting();
 		if ($setting === 'default')
 			return false;
 		else
@@ -132,7 +132,7 @@ class AssetSiteNavBlockSiteComponent
 	 * @since 3/20/08
 	 */
 	function showDatesSetting () {
-		$setting = parent::commentsEnabled();
+		$setting = parent::showDatesSetting();
 		if ($setting === 'default')
 			return 'none';
 		else
@@ -150,7 +150,7 @@ class AssetSiteNavBlockSiteComponent
 	 * @since 3/20/08
 	 */
 	function showAttributionSetting () {
-		$setting = parent::commentsEnabled();
+		$setting = parent::showAttributionSetting();
 		if ($setting === 'default')
 			return 'none';
 		else

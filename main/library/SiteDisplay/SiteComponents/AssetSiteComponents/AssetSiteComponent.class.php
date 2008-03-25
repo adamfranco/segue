@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.22 2008/03/21 21:10:05 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.23 2008/03/25 21:01:03 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteComponent.abstrac
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteComponent.class.php,v 1.22 2008/03/21 21:10:05 adamfranco Exp $
+ * @version $Id: AssetSiteComponent.class.php,v 1.23 2008/03/25 21:01:03 adamfranco Exp $
  */
 abstract class AssetSiteComponent 
 	implements SiteComponent
@@ -551,7 +551,7 @@ abstract class AssetSiteComponent
 	 * Answer the attribution to show for this component,
 	 * taking into account its setting and those in the hierarchy above it.
 	 * 
-	 * @return boolean
+	 * @return string
 	 * @access public
 	 * @since 3/20/08
 	 */
