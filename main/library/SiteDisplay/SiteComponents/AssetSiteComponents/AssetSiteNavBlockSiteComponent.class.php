@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.12 2008/03/19 21:24:43 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.13 2008/03/25 14:58:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteComponent.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/SiteNavBlockSiteCompo
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.12 2008/03/19 21:24:43 adamfranco Exp $
+ * @version $Id: AssetSiteNavBlockSiteComponent.class.php,v 1.13 2008/03/25 14:58:02 adamfranco Exp $
  */
 class AssetSiteNavBlockSiteComponent
 	extends AssetNavBlockSiteComponent
@@ -105,6 +105,56 @@ class AssetSiteNavBlockSiteComponent
 			return false;
 		else
 			return $commentsEnabled;
+	}
+	
+	/**
+	 * Answer the setting of 'showHistory' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * @return mixed true, false, or 'default'
+	 * @access public
+	 * @since 1/17/07
+	 */
+	function showHistorySetting () {
+		$setting = parent::commentsEnabled();
+		if ($setting === 'default')
+			return false;
+		else
+			return $setting;
+	}
+	
+	/**
+	 * Answer the setting of 'showDates' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used
+	 * 
+	 * Dates can be 'none', 'creation_date', 'modification_date', 'both'
+	 * @access public
+	 * @since 3/20/08
+	 */
+	function showDatesSetting () {
+		$setting = parent::commentsEnabled();
+		if ($setting === 'default')
+			return 'none';
+		else
+			return $setting;
+	}
+	
+	/**
+	 * Answer the setting of 'showAttribution' for this component. 'default'
+	 * indicates that a value set further up the hierarchy should be used.
+	 *
+	 * Show attributions settings are 'creator', 'last_editor', 'all_editors'
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 3/20/08
+	 */
+	function showAttributionSetting () {
+		$setting = parent::commentsEnabled();
+		if ($setting === 'default')
+			return 'none';
+		else
+			return $setting;
 	}
 	
 	/*********************************************************

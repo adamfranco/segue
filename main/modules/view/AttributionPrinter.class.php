@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AttributionPrinter.class.php,v 1.1 2008/03/25 14:48:23 adamfranco Exp $
+ * @version $Id: AttributionPrinter.class.php,v 1.2 2008/03/25 14:58:02 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AttributionPrinter.class.php,v 1.1 2008/03/25 14:48:23 adamfranco Exp $
+ * @version $Id: AttributionPrinter.class.php,v 1.2 2008/03/25 14:58:02 adamfranco Exp $
  */
 class AttributionPrinter {
 		
@@ -248,7 +248,8 @@ class AttributionPrinter {
 		 	
 			$editors = $this->getEditors();
 			$creator = $this->getCreator();
-			if ($editors[0] != $creator) return true;
+			if (isset($editors[0]) && $editors[0] != $creator) 
+				return true;
 		}		
 	}
 	

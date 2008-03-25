@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.209 2008/03/25 14:25:34 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.210 2008/03/25 14:58:02 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -62,6 +62,9 @@
 		</new>
 		<change author='adam' date='2008-03-11'>
 			UI1/UI2: now passes current node id to breadcrumbs
+		</change>
+		<change author='adam' date='2008-03-24'>
+			UI1/UI2: Site Template now uses the new Breadcrumbs and RSS plugins.
 		</change>
 		<change author='alex' date='2008-03-24'>
 			UI2: refined the layout of UI2 settings.
