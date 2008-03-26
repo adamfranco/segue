@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.220 2008/03/26 18:25:04 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.221 2008/03/26 18:36:42 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -15,7 +15,7 @@
 			This release adds Media Library quotas and enables redirects from Segue 1
 			instances.
 			
-			Segue 2.0 beta 16 uses Polyphony 1.0.4 and Harmoni 1.0.5.  
+			Segue 2.0 beta 16 uses Polyphony 1.0.5 and Harmoni 1.0.5.  
 		</releaseNotes>
 		<fix author='adam' date='2008-03-26'>
 			View: Now doesn't throw an error when viewing restricted sites while 
