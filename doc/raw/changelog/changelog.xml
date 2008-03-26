@@ -5,11 +5,20 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.215 2008/03/25 21:05:02 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.216 2008/03/26 12:55:13 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-15.2" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-03-26'>
+			View: Now doesn't throw an error when viewing restricted sites while 
+			not logged in. Included a missing class.
+		</fix>
+	</version>
 	<version number="2.0-beta-15.1" date="2008-03-25">
 		<releaseNotes>
 			This release fixes a little bug introduce in beta 15.

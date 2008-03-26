@@ -6,9 +6,10 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.5 2008/03/25 15:29:13 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.6 2008/03/26 12:55:14 adamfranco Exp $
  */ 
 
+require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
@@ -27,7 +28,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.5 2008/03/25 15:29:13 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.6 2008/03/26 12:55:14 adamfranco Exp $
  */
 
 /**
@@ -39,7 +40,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.5 2008/03/25 15:29:13 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.6 2008/03/26 12:55:14 adamfranco Exp $
  */
 class htmlAction
 	extends displayAction 
