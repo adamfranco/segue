@@ -5,7 +5,9 @@ Name: Segue Release Notes
 
 v. 2.0-beta-16 (2008-03-26)
 ----------------------------------------------------
-This release fixes a little bug introduce in beta 15.
+This release adds Media Library quotas and enables redirects from Segue 1 instances.
+
+Segue 2.0 beta 16 uses Polyphony 1.0.4 and Harmoni 1.0.5.
 
 
 v. 2.0-beta-15.1 (2008-03-25)
