@@ -45,3 +45,41 @@
 .medialibrary a img {
 	border: 0px;
 }
+
+
+/*********************************************************
+ * Media Quotas
+ *********************************************************/
+.media_quota_title {
+	font-weight: bold;
+	padding: 3px;
+}
+.media_quota {
+	position: relative;
+}
+
+.media_quota_used {
+	float: left;
+	background-color: #F99;
+	width: 50%;
+	text-align: left;
+}
+
+.media_quota_free {
+	float: right;
+	background-color: #9F9;
+	width: 50%;
+	text-align: right;
+}
+
+.media_quota_used_label {
+	position: absolute;
+	left: 2px;
+	top: 2px;
+}
+
+.media_quota_free_label {
+	position: absolute;
+	right: 2px;
+	top: 2px;
+}

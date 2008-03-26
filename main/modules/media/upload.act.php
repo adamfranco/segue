@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.15 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.16 2008/03/26 18:23:18 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: upload.act.php,v 1.15 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: upload.act.php,v 1.16 2008/03/26 18:23:18 adamfranco Exp $
  */
 class uploadAction
 	extends MediaAction
@@ -72,6 +72,7 @@ class uploadAction
 		}		
 		
 		$this->start();
+		print $this->getQuota();
 		print $this->getAssetXml($newFileAsset);
 		$this->end();
 	}
@@ -92,6 +93,11 @@ class uploadAction
 		
 		if (!($description = RequestContext::value('description')))
 			$description = '';
+		
+		// Check the quota
+		$slot = $this->getSlot();
+		if ($this->getQuotaUsed() + $_FILES['media_file']['size'] >  $slot->getMediaQuota()->value())
+			throw new Exception("Cannot add File, $displayName, quota of ".$slot->getMediaQuota()->asString()." exceeded.");
 		
 		// Create the asset
 		$asset->updateDisplayName($displayName);

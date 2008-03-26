@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.3 2008/03/26 18:23:18 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/MediaAction.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/MediaAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.2 2007/09/04 15:07:43 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.3 2008/03/26 18:23:18 adamfranco Exp $
  */
 class listAction
 	extends MediaAction
@@ -38,6 +38,7 @@ class listAction
 		
 		
 		$this->start();
+		print $this->getQuota();
 		$children = $contentAsset->getAssets();
 		while ($children->hasNext()) {
 			$child = $children->next();

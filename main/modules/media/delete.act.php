@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.2 2007/10/25 16:06:25 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.3 2008/03/26 18:23:18 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/update.act.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/update.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: delete.act.php,v 1.2 2007/10/25 16:06:25 adamfranco Exp $
+ * @version $Id: delete.act.php,v 1.3 2008/03/26 18:23:18 adamfranco Exp $
  */
 class deleteAction
 	extends updateAction
@@ -88,6 +88,7 @@ class deleteAction
 		}
 		
 		$this->start();
+		print $this->getQuota();
 		// No content.
 		$this->end();
 	}

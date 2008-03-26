@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.23 2008/03/26 18:23:17 adamfranco Exp $
  */
 
 MediaLibrary.prototype = new CenteredPanel();
@@ -21,7 +21,7 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.23 2008/03/26 18:23:17 adamfranco Exp $
  */
 function MediaLibrary ( assetId, callingElement ) {
 	if ( arguments.length > 0 ) {
@@ -131,7 +131,7 @@ function MediaLibrary ( assetId, callingElement ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.23 2008/03/26 18:23:17 adamfranco Exp $
  */
 function FileLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -157,6 +157,7 @@ function FileLibrary ( owner, assetId, caller, container ) {
 		this.assetId = assetId;
 		this.caller = caller;
 		this.container = container;
+		this.media = new Array();
 	}
 
 	/**
@@ -310,6 +311,8 @@ function FileLibrary ( owner, assetId, caller, container ) {
 	FileLibrary.prototype.addMediaAsset = function (mediaAsset) {
 		this.mediaList.appendChild(mediaAsset.getEntryElement());
 		this.owner.center();
+		
+		this.media.push(mediaAsset);
 	}
 	
 	/**
@@ -466,7 +469,7 @@ AssetLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.23 2008/03/26 18:23:17 adamfranco Exp $
  */
 function AssetLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -488,6 +491,7 @@ function AssetLibrary ( owner, assetId, caller, container ) {
 			this.tabIndex = 1;
 			this.uploadFormDefaults = new Array();
 			
+			this.createQuotaDisplay(this.container);
 			this.createForm(this.container);
 			this.createMediaList(this.container);
 			this.fetchMedia();
@@ -503,6 +507,131 @@ function AssetLibrary ( owner, assetId, caller, container ) {
 	 */
 	AssetLibrary.prototype.getMediaListUrl = function () {
 		return Harmoni.quickUrl('media', 'list', {'assetId': this.assetId});
+	}
+	
+	/**
+	 * Create an empty quota display
+	 * 
+	 * @param object DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 3/26/08
+	 */
+	AssetLibrary.prototype.createQuotaDisplay = function (container) {
+		this.quotaUsedDisplay = container.appendChild(document.createElement('div'));
+		this.quotaUsedDisplay.className = 'media_quota_title';
+		this.quotaUsedDisplay.innerHTML = "Media Quota for this site:";
+		
+		this.quotaDisplay = document.createElement('div');
+		this.quotaDisplay.className = 'media_quota';
+		this.quotaDisplay.style.width = '100%';
+		
+		this.quotaUsedDisplay = this.quotaDisplay.appendChild(document.createElement('div'));
+		this.quotaUsedDisplay.className = 'media_quota_used';
+		this.quotaUsedDisplay.innerHTML = " &nbsp; ";
+		
+		this.quotaUsedLabel = this.quotaDisplay.appendChild(document.createElement('div'));
+		this.quotaUsedLabel.className = 'media_quota_used_label';
+		this.quotaUsedLabel.innerHTML = "Used: Unknown";
+		
+		this.quotaFreeDisplay = this.quotaDisplay.appendChild(document.createElement('div'));
+		this.quotaFreeDisplay.className = 'media_quota_free';
+		this.quotaFreeDisplay.innerHTML = " &nbsp; ";
+		
+		this.quotaFreeLabel = this.quotaDisplay.appendChild(document.createElement('div'));
+		this.quotaFreeLabel.className = 'media_quota_free_label';
+		this.quotaFreeLabel.innerHTML = "Free: Unknown";
+		
+		this.writeQuota();
+		
+		container.appendChild(this.quotaDisplay);
+		var spacer = document.createElement("div");
+		spacer.style.clear = 'both';
+		spacer.innerHTML = " &nbsp; ";
+		container.appendChild(spacer);
+	}
+	
+	/**
+	 * Write the quota values to the quota display
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 3/26/08
+	 */
+	AssetLibrary.prototype.writeQuota = function () {
+		if (this.quota == undefined || this.quotaUsed == undefined) {
+			var quota = 2;
+			var quotaUsed = 1;
+			this.quotaUsedLabel.innerHTML = "Used: Unknown";
+			this.quotaFreeLabel.innerHTML = "Free: Unknown";
+		} else {
+			var quota = this.quota;
+			var quotaUsed = this.quotaUsed;
+			this.quotaUsedLabel.innerHTML = "Used: " + quotaUsed.asByteSizeString();
+			this.quotaFreeLabel.innerHTML = "Free: " + (quota - quotaUsed).asByteSizeString();
+		}
+		
+		var percentUsed = (quotaUsed/quota);
+		// Show little bits at either end if not at exactly 0% or 100%
+		if (percentUsed < .5)
+			percentUsed = Math.ceil(percentUsed * 100);
+		else
+			percentUsed = Math.floor(percentUsed * 100);
+		var percentFree = 100 - percentUsed;
+		
+		this.quotaUsedDisplay.style.width = (percentUsed) + '%';
+		this.quotaFreeDisplay.style.width = (percentFree) + '%';
+	}
+	
+	/**
+	 * Update the quota value
+	 * 
+	 * @param int quota
+	 * @param int used
+	 * @return void
+	 * @access public
+	 * @since 3/26/08
+	 */
+	AssetLibrary.prototype.updateQuota = function (quota, used) {
+		this.quota = quota;
+		this.quotaUsed = used;
+		
+		this.writeQuota();
+	}
+	
+	/**
+	 * Load the existing media for this asset
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/26/07
+	 */
+	AssetLibrary.prototype.loadMedia = function (xmldoc) {
+		AssetLibrary.superclass.loadMedia.call(this, xmldoc);
+		
+		this.updateQuotaFromDocument(xmldoc);
+	}
+	
+	/**
+	 * Update the quota from an xml document
+	 * 
+	 * @param DOM_Document xmldoc
+	 * @return void
+	 * @access public
+	 * @since 3/26/08
+	 */
+	AssetLibrary.prototype.updateQuotaFromDocument = function (xmldoc) {
+		var quotaElements = xmldoc.getElementsByTagName('quota');
+		var quotaElement = quotaElements.item(0);
+		if (quotaElement) {
+			this.updateQuota(parseInt(quotaElement.getAttribute('quota')), parseInt(quotaElement.getAttribute('quotaUsed')));
+		}
+	}
+	
+	AssetLibrary.prototype.completeUploadCallback = function (xmldoc) {
+		AssetLibrary.superclass.completeUploadCallback.call(this, xmldoc);
+		
+		this.updateQuotaFromDocument(xmldoc);
 	}
 	
 	/**
@@ -579,7 +708,7 @@ SiteLibrary.superclass = FileLibrary.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.23 2008/03/26 18:23:17 adamfranco Exp $
  */
 function SiteLibrary ( owner, assetId, caller, container ) {
 	if ( arguments.length > 0 ) {
@@ -626,7 +755,7 @@ function SiteLibrary ( owner, assetId, caller, container ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.23 2008/03/26 18:23:17 adamfranco Exp $
  */
 function MediaAsset ( assetId, xmlElement, library ) {
 	if ( arguments.length > 0 ) {
@@ -823,6 +952,9 @@ function MediaAsset ( assetId, xmlElement, library ) {
 				throw new Error(errors[i].firstChild.data);
 			}
 		}
+		
+		if (this.library.updateQuotaFromDocument)
+			this.library.updateQuotaFromDocument(xmldoc);
 		
 		this.entryElement.parentNode.removeChild(this.entryElement);
 	}
@@ -1146,6 +1278,9 @@ function MediaAsset ( assetId, xmlElement, library ) {
 			return false;
 		}
 		
+		if (this.library.updateQuotaFromDocument)
+			this.library.updateQuotaFromDocument(xmldoc);
+		
 // 		var xmlSerializer = new XMLSerializer();
 // 		alert(xmlSerializer.serializeToString(responseElement));
 		var fileAssets = responseElement.getElementsByTagName('asset');
@@ -1188,7 +1323,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaLibrary.js,v 1.22 2008/02/29 21:48:51 adamfranco Exp $
+ * @version $Id: MediaLibrary.js,v 1.23 2008/03/26 18:23:17 adamfranco Exp $
  */
 function MediaFile ( xmlElement, asset, library) {
 	if ( arguments.length > 0 ) {

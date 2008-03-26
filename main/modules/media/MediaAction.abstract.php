@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.13 2008/01/24 14:43:13 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.14 2008/03/26 18:23:17 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.13 2008/01/24 14:43:13 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.14 2008/03/26 18:23:17 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -106,6 +106,121 @@ class MediaAction
 		}
 		
 		return $this->_contentAsset;
+	}
+	
+	/**
+	 * Answer the slot for the site.
+	 *
+	 * @return object Slot
+	 * @access protected
+	 * @since 3/26/08
+	 */
+	protected function getSlot () {
+		if (!isset($this->slot)) {			
+			$slotMgr = SlotManager::instance();
+			$this->slot = $slotMgr->getSlotBySiteId($this->getSiteAsset($this->getContentAsset())->getId());
+		
+		}
+		
+		return $this->slot;
+	}
+	
+	/**
+	 * Answer the Site asset for a content asset
+	 * 
+	 * @param object Asset $asset
+	 * @return object Asset
+	 * @access protected
+	 * @since 2/26/07
+	 */
+	protected function getSiteAsset ( Asset $asset ) {
+		$siteType = new Type ('segue', 'edu.middlebury', 'SiteNavBlock');
+		if ($siteType->isEqual($asset->getAssetType())) {
+			return $asset;
+		} else {
+			$parents = $asset->getParents();
+			while ($parents->hasNext()) {
+				$result = $this->getSiteAsset($parents->next());
+				if ($result)
+					return $result;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Answer all media assets below the specified asset
+	 * 
+	 * @param object Asset $asset
+	 * @param optional object Id $excludeId
+	 * @return object Iterator
+	 * @access protected
+	 * @since 2/26/07
+	 */
+	protected function getAllMediaAssets ( Asset $asset, $excludeId = null ) {
+		if ($excludeId && $excludeId->isEqual($asset->getId())) {
+			return false;
+		}
+		
+		if ($this->mediaFileType->isEqual($asset->getAssetType())) {
+			$tmp = array();
+			$tmp[] = $asset;
+			$iterator = new HarmoniIterator($tmp);
+			return $iterator;
+		} else {
+			$iterator = new MultiIteratorIterator();
+			$children = $asset->getAssets();
+			while ($children->hasNext()) {
+				$result = $this->getAllMediaAssets($children->next(), $excludeId);
+				if ($result) {
+					$iterator->addIterator($result);
+				}
+			}
+			
+			if ($iterator->count())
+				return $iterator;
+			else {
+				return false;
+			}
+		}
+	}
+	
+	/**
+	 * Answer elements for the quota of the current Site.
+	 * 
+	 * @return void
+	 * @access protected
+	 * @since 3/26/08
+	 */
+	protected function getQuota () {
+		$slot = $this->getSlot();
+		$quota = $slot->getMediaQuota();
+		print "\n\t<quota slot='".$slot->getShortname()."' quota='".$quota->value()."'  quotaUsed='".$this->getQuotaUsed()."' />";
+	}
+	
+	/**
+	 * Answer the size of media used in the site
+	 * 
+	 * @return int
+	 * @access protected
+	 * @since 3/26/08
+	 */
+	protected function getQuotaUsed () {
+		$total = 0;
+		$idManager = Services::getService("Id");
+		$mediaAssets = $this->getAllMediaAssets($this->getSiteAsset($this->getContentAsset()));
+		while ($mediaAssets->hasNext()) {
+			$mediaAsset = $mediaAssets->next();
+			$fileRecords = $mediaAsset->getRecordsByRecordStructure($idManager->getId('FILE'));
+			while ($fileRecords->hasNext()) {
+				$fileRecord = $fileRecords->next();
+				$parts = $fileRecord->getPartsByPartStructure($idManager->getId("FILE_SIZE"));
+				$part = $parts->next();
+				$total = $total + intval($part->getValue());
+			}
+		}
+		return $total;
 	}
 	
 	/**
@@ -315,6 +430,17 @@ class MediaAction
 			$mime = Services::getService("MIME");
 			$mimeType = $mime->getMimeTypeForFileName($name);
 		}
+		
+		
+		// Check the quota
+		$parts = $record->getPartsByPartStructure($idManager->getId("FILE_SIZE"));
+		$part = $parts->next();
+		$currentSize = $part->getValue();
+		
+		$slot = $this->getSlot();
+		if ($this->getQuotaUsed() + $_FILES[$fieldName]['size'] - $currentSize >  $slot->getMediaQuota()->value())
+			throw new Exception("Cannot add File, $name, quota of ".$slot->getMediaQuota()->asString()." exceeded.");
+			
 		
 		$parts = $record->getPartsByPartStructure($idManager->getId("FILE_DATA"));
 		$part = $parts->next();

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.218 2008/03/26 14:39:06 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.219 2008/03/26 18:23:17 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -28,6 +28,10 @@
 			Migration: Now can accept Segue 1-style URLs to Segue 2 sites that
 			were created in the Segue 2 instance and not imported.
 		</fix>
+		<new author='adam' date='2008-03-26' ref='1820917' reftype='fr'>
+			MediaLibrary: Quotas are now displayed in the media library and enforced
+			by the upload actions.
+		</new>
 	</version>
 	<version number="2.0-beta-15.1" date="2008-03-25">
 		<releaseNotes>

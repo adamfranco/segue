@@ -25,6 +25,11 @@ This release fixes a little bug introduce in beta 15.
 		Migration: Now can accept Segue 1-style URLs to Segue 2 sites that were
 		created in the Segue 2 instance and not imported.
 		(2008-03-26 - Adam Franco)
+		
+	* New feature: #1820917 
+		MediaLibrary: Quotas are now displayed in the media library and enforced by
+		the upload actions.
+		(2008-03-26 - Adam Franco)
 	
 v. 2.0-beta-15.1 (2008-03-25)
 ----------------------------------------------------
