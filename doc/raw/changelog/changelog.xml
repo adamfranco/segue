@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.217 2008/03/26 13:52:11 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.218 2008/03/26 14:39:06 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -20,8 +20,14 @@
 		</fix>
 		<new author='adam' date='2008-03-26' ref='1926129' reftype='fr'>
 			Migration: New action for reporting the existence of a site to a
-			Segue 1 instance.
+			Segue 1 instance. With Segue 1.9.1, this allows forwarding from a
+			Segue 1 instance to the Segue 2 instance in addition to forwarding
+			in the other direction (supported in 2.0-beta 15/1.9.0).
 		</new>
+		<fix author='adam' date='2008-03-26'>
+			Migration: Now can accept Segue 1-style URLs to Segue 2 sites that
+			were created in the Segue 2 instance and not imported.
+		</fix>
 	</version>
 	<version number="2.0-beta-15.1" date="2008-03-25">
 		<releaseNotes>

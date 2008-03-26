@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1UrlResolver.class.php,v 1.1 2008/03/20 19:07:04 adamfranco Exp $
+ * @version $Id: Segue1UrlResolver.class.php,v 1.2 2008/03/26 14:39:07 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1UrlResolver.class.php,v 1.1 2008/03/20 19:07:04 adamfranco Exp $
+ * @version $Id: Segue1UrlResolver.class.php,v 1.2 2008/03/26 14:39:07 adamfranco Exp $
  */
 class Segue1UrlResolver {
 		
@@ -152,7 +152,6 @@ class Segue1UrlResolver {
 	 */
 	public function resolveGetArray (array $get) {
 		$harmoni = Harmoni::instance();
-		
 		if (!count($get))
 			throw new Exception("Could not resolve Segue 1 site, no parameters specified.");
 		
@@ -167,6 +166,15 @@ class Segue1UrlResolver {
 				} catch (UnknownIdException $e) {
 				}
 			}
+		}
+		
+		// Send to a Segue 2 site with the same site-name if that exists.
+		if (isset($get['site']) && $get['site']) {
+			$slotMgr = SlotManager::instance();
+			$slot = $slotMgr->getSlotByShortname($get['site']);
+			if ($slot->siteExists())
+				RequestContext::sendTo(
+						$harmoni->request->quickURL('view', 'html', array('site' => $get['site'])));
 		}
 		
 		// Send to the old Segue 1 instance if it is configured.
