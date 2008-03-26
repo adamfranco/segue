@@ -23,13 +23,18 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-15.2</h2>
+<h2>Version 2.0-beta-16</h2>
 <h3>2008-03-26</h3>
 <p>This release fixes a little bug introduce in beta 15.</p>
 <ul>
 		
 		<li>
 <b>Bug Fix:</b> View: Now doesn't throw an error when viewing restricted sites while not logged in. Included a missing class. (<em>2008-03-26 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1926129&amp;group_id=&amp;atid=">
+        			#1926129</a> Migration: New action for reporting the existence of a site to a Segue 1 instance. With Segue 1.9.1, this allows forwarding from a Segue 1 instance to the Segue 2 instance in addition to forwarding in the other direction (supported in 2.0-beta 15/1.9.0). (<em>2008-03-26 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Now can accept Segue 1-style URLs to Segue 2 sites that were created in the Segue 2 instance and not imported. (<em>2008-03-26 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-15.1</h2>
 <h3>2008-03-25</h3>
@@ -158,7 +163,7 @@
 <h3>2008-03-10</h3>
 <p>This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
 <br>
-<br>Notable Changes: - Permissions are more reliable cross-browser - File downloads now work in IE - Download Plugin description now updates imediately after change.</p>
+<br>Notable Changes: - Permissions are more reliable cross-browser - File downloads now work in IE - Download Plugin description now updates immediately after change.</p>
 <ul>
 		
 		<li>
@@ -174,7 +179,7 @@
 <b>Bug Fix:</b> Fixed some HTML validation errors. (<em>2008-03-05 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1909030&amp;group_id=&amp;atid=">
-        			#1909030</a> Plugins: File for Download description now updates imediately after being changed. (<em>2008-03-06 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+        			#1909030</a> Plugins: File for Download description now updates immediately after being changed. (<em>2008-03-06 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-13</h2>
 <h3>2008-03-03</h3>
@@ -282,10 +287,10 @@
 <b>Bug Fix:</b> SiteDisplay: Removed some debugging lines. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1894688&amp;group_id=&amp;atid=">
-        			#1894688</a> Portal: Now doesn't re-encode html entites in Site titles. (<em>2008-02-18 - Adam Franco</em>)</li>
+        			#1894688</a> Portal: Now doesn't re-encode html entities in Site titles. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1894694&amp;group_id=&amp;atid=">
-        			#1894694</a> Plugins: WikiText Links generated in ajax editing responce now go to the appropriate module and action. (<em>2008-02-18 - Adam Franco</em>)</li>
+        			#1894694</a> Plugins: WikiText Links generated in ajax editing response now go to the appropriate module and action. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799748&amp;group_id=&amp;atid=">
         			#1799748</a> Plugins: PluginManager now respects the order of the plugin-type ids. Still need the ability to change the plugin order from the admin UI, but at least order can be manually set in the database now. (<em>2008-02-18 - Adam Franco</em>)</li>
@@ -379,7 +384,7 @@
 	</ul>
 <br><h2>Version 2.0-beta-8</h2>
 <h3>2008-01-14</h3>
-<p>This release clarifies the role of slots/site-placehoders and brings some performance improvements to the portal page, especially for users with large numbers of course sites.
+<p>This release clarifies the role of slots/site-placeholders and brings some performance improvements to the portal page, especially for users with large numbers of course sites.
 <br>
 <br>This version also adds versioning support for content blocks and programatic sorting of content to enable blogging.
 <br>
@@ -457,19 +462,19 @@
         			#1851019</a> UI2: Options in 'Add Menu Item' list are now categorized. (<em>2007-12-14 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1850944&amp;group_id=&amp;atid=">
-        			#1850944</a> UI1/UI2: 'Page with Sidebar' option is now not as promonently listed. (<em>2007-12-14 - Adam Franco</em>)</li>
+        			#1850944</a> UI1/UI2: 'Page with Sidebar' option is now not as prominently listed. (<em>2007-12-14 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854964&amp;group_id=&amp;atid=">
         			#1854964</a> UI1/UI2: When editing a page and viewing and empty menu, instructions are now printed to the screen describing how to add a Content Page on which content can be added. (<em>2007-12-20 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b> UI2: Upgraded Scriptaculous library to latest version and moved the overriden Draggables.isAffected() method to the ArrangeModeVisitor where it is used, allowing a plain vanilla Scriptaculous library to be included in the source. (<em>2007-12-17 - Adam Franco</em>)</li>
+<b>Change:</b> UI2: Upgraded Scriptaculous library to latest version and moved the overridden Draggables.isAffected() method to the ArrangeModeVisitor where it is used, allowing a plain vanilla Scriptaculous library to be included in the source. (<em>2007-12-17 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> UI2: Arrange mode now shows the move-cursor for only draggable items. (<em>2007-12-18 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> UI2: Arrange mode now only allows dragging by the controls bar. (<em>2007-12-18 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798921&amp;group_id=&amp;atid=">
-        			#1798921</a> UI2: Arrange mode now renders more closely to edit mode. Refactored Arrange mode visitor to only add its needed additions rather than replicating functions in edit mode. (<em>2007-12-17 - Adam Franco</em>)</li>
+        			#1798921</a> UI2: Arrange mode now renders more closely to edit mode. Re-factored Arrange mode visitor to only add its needed additions rather than replicating functions in edit mode. (<em>2007-12-17 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> UI2: Some fixes to the Javascript syntax to aid XHTML validation. (<em>2007-12-17 - Adam Franco</em>)</li>
 		<li>
@@ -494,7 +499,7 @@
 <br>
 <br>For upgrades from earlier releases, please run the update located under Admin Tools --&gt; Segue Updates.
 <br>
-<br>This relase of Segue uses Harmoni 0.13.5 and Polyphony 0.10.5.</p>
+<br>This release of Segue uses Harmoni 0.13.5 and Polyphony 0.10.5.</p>
 <ul>
 		
 		<li>
@@ -521,17 +526,17 @@
 <b>New feature:</b> New data updater system. (<em>2007-12-06 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799957&amp;group_id=&amp;atid=">
-        			#1799957</a> Wiki-Linking: New Wiki-Linking support to use double-square-brackets links ala MediaWiki for link between parts of a site or between sites. (<em>2007-12-03 - Adam Franco</em>)</li>
+        			#1799957</a> Wiki-Linking: New Wiki-Linking support to use double-square-brackets links a la MediaWiki for link between parts of a site or between sites. (<em>2007-12-03 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b> Permissions: Titles are now are consistantly tabbed using padding. (<em>2007-11-30 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Permissions: Titles are now are consistently tabbed using padding. (<em>2007-11-30 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1841252&amp;group_id=&amp;atid=">
-        			#1841252</a> Permissions: AZs set for all of Segue are now not changable in the permissions UI. (<em>2007-11-30 - Adam Franco</em>)</li>
+        			#1841252</a> Permissions: AZs set for all of Segue are now not changeable in the permissions UI. (<em>2007-11-30 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1831274&amp;group_id=&amp;atid=">
         			#1831274</a> 'Show Titles' and 'Enable Comments' settings are now only 'yes' or 'no' at the root (site) level, so the default setting is clear. (<em>2007-11-30 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b> Fixed an error in the changelog that was preventing it from displaying. (<em>2007-11-30 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Fixed an error in the change log that was preventing it from displaying. (<em>2007-11-30 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0.0-beta-5</h2>
 <h3>2007-11-29</h3>
@@ -561,12 +566,12 @@
 <ul>
 		
 		<li>
-<b>Bug Fix:</b> UI2: Menu Items are now filtered from being droped on their own cells, preventing inadvertent nudges from triggering 'do you want to move' prompts. (<em>2007-11-13 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> UI2: Menu Items are now filtered from being dropped on their own cells, preventing inadvertent nudges from triggering 'do you want to move' prompts. (<em>2007-11-13 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1830622&amp;group_id=&amp;atid=">
         			#1830622</a> UI2: Menus now are not draggable to content organizers.
 <br>
-<br>The issue was an comparrison between a string id and an integer id was improperly evaluating to true. (<em>2007-11-13 - Adam Franco</em>)</li>
+<br>The issue was an comparison between a string id and an integer id was improperly evaluating to true. (<em>2007-11-13 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819565&amp;group_id=&amp;atid=">
         			#1819565</a> Installer: Moved install script to segue/main/install/ since it isn't really end-user modifiable. (<em>2007-11-12 - Adam Franco</em>)</li>
@@ -727,7 +732,7 @@
 		<li>
 <b>Change:</b> Removing ampersands for compatibility with other PHP5 code. The BBEdit-grep string used for the find and replace was: (function )&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$) replaced with \1\2\3\4\5 (<em>2007-09-04 - Adam Franco</em>)</li>
 		<li>
-<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> In order to support PostgreSQL without refactoring of the Database Handler, column names have been all made lowercase. To update a currently populated harmoni database to the new names, run the following updater script: harmoni/core/DBHandler/db_updater.php (<em>2007-09-11 - Adam Franco</em>)</li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> In order to support PostgreSQL without re-factoring of the Database Handler, column names have been all made lowercase. To update a currently populated harmoni database to the new names, run the following updater script: harmoni/core/DBHandler/db_updater.php (<em>2007-09-11 - Adam Franco</em>)</li>
 		
 		<li>
 <b>Change:</b> Libraries: Moved default location of harmoni and polyphony to segue/main/. (<em>2007-09-20 - Adam Franco</em>)</li>
@@ -737,7 +742,7 @@
 		<li>
 <b>Bug Fix:</b> TextBlock: Now works with both editors as an AJAX Plugin. (<em>2007-09-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b> AJAX Plugins: Now updates textareas that use the FCK Editor before submitting. (<em>2007-09-20 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> AJAX Plugins: Now updates text-areas that use the FCK Editor before submitting. (<em>2007-09-20 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> TextBlock: Now uses a full-width text field. (<em>2007-09-20 - Adam Franco</em>)</li>
 		<li>
