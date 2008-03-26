@@ -5,19 +5,23 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.216 2008/03/26 12:55:13 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.217 2008/03/26 13:52:11 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-15.2" date="The Future">
+	<version number="2.0-beta-16" date="2008-03-26">
 		<releaseNotes>
-			
+			This release fixes a little bug introduce in beta 15.
 		</releaseNotes>
 		<fix author='adam' date='2008-03-26'>
 			View: Now doesn't throw an error when viewing restricted sites while 
 			not logged in. Included a missing class.
 		</fix>
+		<new author='adam' date='2008-03-26' ref='1926129' reftype='fr'>
+			Migration: New action for reporting the existence of a site to a
+			Segue 1 instance.
+		</new>
 	</version>
 	<version number="2.0-beta-15.1" date="2008-03-25">
 		<releaseNotes>
@@ -219,7 +223,7 @@
 			Notable Changes:
 			- Permissions are more reliable cross-browser
 			- File downloads now work in IE
-			- Download Plugin description now updates imediately after change.
+			- Download Plugin description now updates immediately after change.
 		</releaseNotes>
 		<fix author='adam' date='2008-03-06'>
 			Roles: Now include needed classes directly so that there are not errors
@@ -240,7 +244,7 @@
 			Fixed some HTML validation errors.
 		</fix>
 		<fix author='adam' date='2008-03-06' ref='1909030' reftype='bug' reporter='alex'>
-			Plugins: File for Download description now updates imediately after being
+			Plugins: File for Download description now updates immediately after being
 			changed.
 		</fix>
 	</version>
@@ -390,10 +394,10 @@
 			SiteDisplay: Removed some debugging lines.
 		</fix>
 		<fix author='adam' date='2008-02-18' ref='1894688' reftype='bug'>
-			Portal: Now doesn't re-encode html entites in Site titles.
+			Portal: Now doesn't re-encode html entities in Site titles.
 		</fix>
 		<fix author='adam' date='2008-02-18' ref='1894694' reftype='bug'>
-			Plugins: WikiText Links generated in ajax editing responce now go to
+			Plugins: WikiText Links generated in ajax editing response now go to
 			the appropriate module and action.
 		</fix>
 		<fix author='adam' date='2008-02-18' ref='1799748' reftype='bug'>
@@ -523,7 +527,7 @@
 	</version>
 	<version number="2.0-beta-8" date="2008-01-14">
 		<releaseNotes>
-			This release clarifies the role of slots/site-placehoders and brings
+			This release clarifies the role of slots/site-placeholders and brings
 			some performance improvements to the portal page, especially for users
 			with large numbers of course sites.
 			
@@ -626,7 +630,7 @@
 			UI2: Options in 'Add Menu Item' list are now categorized.
 		</fix>
 		<fix author='adam' date='2007-12-14' ref='1850944' reftype='bug'>
-			UI1/UI2: 'Page with Sidebar' option is now not as promonently listed.
+			UI1/UI2: 'Page with Sidebar' option is now not as prominently listed.
 		</fix>
 		<change author='adam' date='2007-12-20' ref='1854964' reftype='bug'>
 			UI1/UI2: When editing a page and viewing and empty menu, instructions
@@ -635,7 +639,7 @@
 		</change>
 		<change author='adam' date='2007-12-17'>
 			UI2: Upgraded Scriptaculous library to latest version and moved the
-			overriden Draggables.isAffected() method to the ArrangeModeVisitor
+			overridden Draggables.isAffected() method to the ArrangeModeVisitor
 			where it is used, allowing a plain vanilla Scriptaculous library to
 			be included in the source.
 		</change>
@@ -647,7 +651,7 @@
 		</change>
 		<fix author='adam' date='2007-12-17' ref='1798921' reftype='bug'>
 			UI2: Arrange mode now renders more closely to edit mode.
-			Refactored Arrange mode visitor to only add its needed additions rather
+			Re-factored Arrange mode visitor to only add its needed additions rather
 			than replicating functions in edit mode.
 		</fix>
 		<fix author='adam' date='2007-12-17'>
@@ -682,7 +686,7 @@
 			For upgrades from earlier releases, please run the update located under 
 			Admin Tools --&gt; Segue Updates.
 			
-			This relase of Segue uses Harmoni 0.13.5 and Polyphony 0.10.5.
+			This release of Segue uses Harmoni 0.13.5 and Polyphony 0.10.5.
 		</releaseNotes>
 		<fix author='adam' date='2007-12-07' ref='1845759' reftype='bug'>
 			Security: All titles, descriptions, and other user-supplied text is
@@ -714,13 +718,13 @@
 		</new>
 		<new author='adam' date='2007-12-03' ref='1799957' reftype='fr'>
 			Wiki-Linking: New Wiki-Linking support to use double-square-brackets
-			links ala MediaWiki for link between parts of a site or between sites.
+			links a la MediaWiki for link between parts of a site or between sites.
 		</new>
 		<fix author='adam' date='2007-11-30'>
-			Permissions: Titles are now are consistantly tabbed using padding.
+			Permissions: Titles are now are consistently tabbed using padding.
 		</fix>
 		<fix author='adam' date='2007-11-30' ref='1841252' reftype='bug'>
-			Permissions: AZs set for all of Segue are now not changable in the
+			Permissions: AZs set for all of Segue are now not changeable in the
 			permissions UI.
 		</fix>
 		<fix author='adam' date='2007-11-30' ref='1831274' reftype='bug'>
@@ -728,7 +732,7 @@
 			at the root (site) level, so the default setting is clear.
 		</fix>
 		<fix author='adam' date='2007-11-30'>
-			Fixed an error in the changelog that was preventing it from displaying.
+			Fixed an error in the change log that was preventing it from displaying.
 		</fix>
 	</version>
 	<version number="2.0.0-beta-5" date="2007-11-29">
@@ -764,13 +768,13 @@
 			This release uses Harmoni 0.13.4 and Polyphony 0.10.3.
 		</releaseNotes>
 		<fix author='adam' date='2007-11-13'>
-			UI2: Menu Items are now filtered from being droped on their own cells,
+			UI2: Menu Items are now filtered from being dropped on their own cells,
 			preventing inadvertent nudges from triggering 'do you want to move' prompts.
 		</fix>
 		<fix author='adam' date='2007-11-13' ref='1830622' reftype='bug'>
 			UI2: Menus now are not draggable to content organizers.
 			
-			The issue was an comparrison between a string id and an integer id
+			The issue was an comparison between a string id and an integer id
 			was improperly evaluating to true.
 		</fix>
 		<fix author='adam' date='2007-11-12' ref='1819565' reftype='bug'>
@@ -980,7 +984,7 @@
 					\1\2\3\4\5
 		</change>
 		<important author='adam' date='2007-09-11'>
-			In order to support PostgreSQL without refactoring of the Database Handler,
+			In order to support PostgreSQL without re-factoring of the Database Handler,
 			column names have been all made lowercase. To update a currently populated
 			harmoni database to the new names, run the following updater script:
 			harmoni/core/DBHandler/db_updater.php
@@ -997,7 +1001,7 @@
 			TextBlock: Now works with both editors as an AJAX Plugin.
 		</fix>
 		<fix author='adam' date='2007-09-20'>
-			AJAX Plugins: Now updates textareas that use the FCK Editor before submitting.
+			AJAX Plugins: Now updates text-areas that use the FCK Editor before submitting.
 		</fix>
 		<fix author='adam' date='2007-09-20'>
 			TextBlock: Now uses a full-width text field.

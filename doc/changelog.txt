@@ -4,6 +4,16 @@ Name: Segue Change Log
 
 
 
+v. 2.0-beta-15.2 (2008-03-26)
+----------------------------------------------------
+This release fixes a little bug introduce in beta 15.
+		
+		
+	* Bug Fix: 
+		View: Now doesn't throw an error when viewing restricted sites while not
+		logged in. Included a missing class.
+		(2008-03-26 - Adam Franco)
+	
 v. 2.0-beta-15.1 (2008-03-25)
 ----------------------------------------------------
 This release fixes a little bug introduce in beta 15.
