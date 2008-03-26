@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.11 2008/03/20 13:36:25 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.12 2008/03/26 20:57:20 adamfranco Exp $
  */ 
 require_once(MYDIR."/main/modules/ui1/add.act.php");
 
@@ -29,7 +29,7 @@ require_once(dirname(__FILE__)."/Rendering/UntrustedAgentAndTimeDomImportSiteVis
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.11 2008/03/20 13:36:25 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.12 2008/03/26 20:57:20 adamfranco Exp $
  */
 class importAction
 	extends addAction
@@ -311,7 +311,7 @@ class importAction
 		
 		$decompressResult = @$archive->extractModify($decompressDir, $containerName);
 		if (!$decompressResult)
-			throw new Exception("Invalid Segue archive. '".$values['mode']['backup_file']['name']."' is not a valid GZIPed Tar archive.");
+			throw new Exception("Could not decompress Segue archive: '".basename($archivePath)."' size, ".ByteSize::withValue(filesize($archivePath))->asString().".");
 			
 		if (!file_exists($decompressDir."/site.xml"))
 			throw new Exception("Invalid Segue archive. 'site.xml' was not found in '".implode("', '", scandir($decompressDir))."'.");

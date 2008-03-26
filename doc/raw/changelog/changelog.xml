@@ -5,11 +5,19 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.221 2008/03/26 18:36:42 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.222 2008/03/26 20:57:19 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-16.1" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-03-26'>
+			Migration: Fixes to allow migration to work on servers with high security settings.
+		</fix>
+	</version>
 	<version number="2.0-beta-16" date="2008-03-26">
 		<releaseNotes>
 			This release adds Media Library quotas and enables redirects from Segue 1

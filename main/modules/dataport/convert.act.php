@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.14 2008/03/24 19:28:55 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.15 2008/03/26 20:57:20 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/Segue1MappingImportSiteVisitor.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.14 2008/03/24 19:28:55 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.15 2008/03/26 20:57:20 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -228,6 +228,7 @@ class convertAction
 				.'&'.DATAPORT_SEGUE1_SECRET_KEY.'='.DATAPORT_SEGUE1_SECRET_VALUE;
 		
 		$destDir = DATAPORT_TMP_DIR."/Segue1Export-".$this->getSourceSlotName();
+		mkdir($destDir);
 		$destArchive = $destDir.".tar.gz";
 		
 		try {
