@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.14 2008/03/20 19:07:04 adamfranco Exp $
+ * @version $Id: index.php,v 1.15 2008/03/28 23:14:25 adamfranco Exp $
  */
 
 /*********************************************************
@@ -70,7 +70,7 @@ try {
 		 * Redirect for short form /sites/mysitename urls
 		 *********************************************************/
 		if (isset($_SERVER['PATH_INFO']) 
-			&& preg_match('/^\/sites\/(\w+)\/?/', $_SERVER['PATH_INFO'], $matches)) 
+                        && preg_match('/^\/sites\/([\w_-]+)\/?/', $_SERVER['PATH_INFO'], $matches))
 		{
 			$harmoni->request->set('site', $matches[1]);
 			$harmoni->request->setModuleAction('view', 'html');
