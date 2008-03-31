@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.5 2008/03/31 16:31:09 achapin Exp $
+ * @version $Id: map.act.php,v 1.6 2008/03/31 16:43:14 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteMapSiteVisitor.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.5 2008/03/31 16:31:09 achapin Exp $
+ * @version $Id: map.act.php,v 1.6 2008/03/31 16:43:14 achapin Exp $
  */
 class mapAction 
 	extends MainWindowAction
@@ -345,33 +345,25 @@ class mapAction
 		print "</div>";
 		
 		$this->printNodeInfo($siteComponent);
-				
-		$nestedMenuOrganizer = $siteComponent->getNestedMenuOrganizer();
-		// sub-menu children
-		if (!is_null($nestedMenuOrganizer)) {
-			print $this->getTabs()."\t";
-			print "<div class='children'>";
-			$this->depth++;
-			$this->depth++;			
-			$nestedMenuOrganizer->acceptVisitor($this);
-			$this->depth--;
-			$this->depth--;			
-			print $this->getTabs()."\t";
-			print "</div>";		
 		
+		print $this->getTabs()."\t";
+		print "<div class='children'>";
+		$this->depth++;
+		$this->depth++;			
+				
+		// sub-menu children
+		if (!is_null($siteComponent->getNestedMenuOrganizer())) {		
+			$siteComponent->getNestedMenuOrganizer()->acceptVisitor($this);		
 		// plugin children
 		} else {			
-			print $this->getTabs()."\t";
-			print "<div class='children'>";
-			$this->depth++;
-			$this->depth++;
 			$organizer = $siteComponent->getOrganizer();
-			$organizer->acceptVisitor($this);
-			$this->depth--;
-			$this->depth--;			
-			print $this->getTabs()."\t";
-			print "</div>";				
+			$organizer->acceptVisitor($this);				
 		}
+		
+		$this->depth--;
+		$this->depth--;			
+		print $this->getTabs()."\t";
+		print "</div>";				
 		$this->printNodeEnd($siteComponent);
 	}
 	
