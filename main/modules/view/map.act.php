@@ -6,14 +6,14 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.7 2008/03/31 18:52:29 achapin Exp $
+ * @version $Id: map.act.php,v 1.8 2008/03/31 20:07:48 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteMapSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/HeaderFooterSiteVisitor.class.php");
-
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 /**
  * action for displaying site maps
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/HeaderFooterSiteVisitor.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.7 2008/03/31 18:52:29 achapin Exp $
+ * @version $Id: map.act.php,v 1.8 2008/03/31 20:07:48 adamfranco Exp $
  */
 class mapAction 
 	extends MainWindowAction
@@ -59,7 +59,7 @@ class mapAction
 		$azMgr = Services::getService('AuthZ');
 		return $azMgr->isUserAuthorizedBelow(
 			$idMgr->getId('edu.middlebury.authorization.view'),
-			$idMgr->getId($this->getNodeId()));
+			SiteDispatcher::getCurrentRootSiteNode()->getQualifierId());
 	}
 	
 	/**
@@ -90,17 +90,7 @@ class mapAction
 	 */
 	public function buildContent () {
 		$actionRows = $this->getActionRows();
-		
-		$repositoryManager = Services::getService('Repository');
-		$idManager = Services::getService('Id');
-
-		$director = new AssetSiteDirector(
-			$repositoryManager->getRepository(
-				$idManager->getId('edu.middlebury.segue.sites_repository')));
 				
-		if (!$nodeId = $this->getNodeId())
-			throwError(new Error('No site node specified.', 'SiteDisplay'));
-		
 		ob_start();
 		
 		print "
@@ -161,8 +151,7 @@ class mapAction
 		print "\n\t<button onclick='expandAllSiteMapChildren(document.get_element_by_id(\"site_children\"));'>"._("Expand All")."</button>";
 		print "\n\t<button onclick='collapseAllSiteMapChildren(document.get_element_by_id(\"site_children\"));'>"._("Collapse All")."</button>";
 						
-		$rootSiteComponent = $director->getRootSiteComponent($nodeId);		
-		$siteComponent = $director->getSiteComponentById($nodeId);
+		$rootSiteComponent = SiteDispatcher::getCurrentRootSiteNode();
 		
 		$this->isHeaderFooterVisitor = new HeaderFooterSiteVisitor($rootSiteComponent);
 		
@@ -174,32 +163,6 @@ class mapAction
 		
 		$actionRows->add ( new Block(ob_get_clean(), STANDARD_BLOCK));
 		
-	}
-
-
-	/**
-	 * Answer the nodeId
-	 * 
-	 * @return string
-	 * @access protected
-	 * @since 7/30/07
-	 */
-	protected function getNodeId () {
-		if (RequestContext::value("site")) {
-			$slotManager = SlotManager::instance();
-			$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
-			if ($slot->siteExists())
-				$nodeId = $slot->getSiteId()->getIdString();
-			else
-				throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
-		} else if (RequestContext::value("node")) {
-			$nodeId = RequestContext::value("node");
-		}
-		
-		if (!isset($nodeId) || !strlen($nodeId))
-			throw new NullArgumentException('No site node specified.');
-		
-		return $nodeId;
 	}
 	
 	/**
@@ -254,7 +217,7 @@ class mapAction
 		$harmoni = Harmoni::instance();
 		
 		print $this->getTabs()."\t";
-		if ($siteComponent->getId() == $this->getNodeId()) {
+		if ($siteComponent->getId() == SiteDispatcher::getCurrentNodeId()) {
 			print "<div class='info current'>";
 		} else {
 			print "<div class='info'>";

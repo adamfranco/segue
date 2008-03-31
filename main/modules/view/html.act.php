@@ -6,13 +6,12 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.7 2008/03/31 19:04:54 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.8 2008/03/31 20:07:48 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
 require_once(MYDIR."/main/modules/window/display.act.php");
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/DetailViewModeSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php");
@@ -28,7 +27,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.7 2008/03/31 19:04:54 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.8 2008/03/31 20:07:48 adamfranco Exp $
  */
 
 /**
@@ -40,7 +39,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.7 2008/03/31 19:04:54 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.8 2008/03/31 20:07:48 adamfranco Exp $
  */
 class htmlAction
 	extends displayAction 
@@ -58,7 +57,7 @@ class htmlAction
 		$azMgr = Services::getService('AuthZ');
 		return $azMgr->isUserAuthorizedBelow(
 			$idMgr->getId('edu.middlebury.authorization.view'),
-			$this->getCurrentNode()->getQualifierId());
+			SiteDispatcher::getCurrentNode()->getQualifierId());
 	}
 	
 	/**
@@ -91,12 +90,12 @@ class htmlAction
 	function execute () {
 		$harmoni = Harmoni::instance();
 		
-		$node = $this->getCurrentNode();
+		$node = SiteDispatcher::getCurrentNode();
 		
 		/*********************************************************
 		 * Additional setup
 		 *********************************************************/
-		$rootSiteComponent = $this->getCurrentRootSiteNode();
+		$rootSiteComponent = SiteDispatcher::getCurrentRootSiteNode();
 		
 		$visitor = $this->getSiteVisitor();
 		
@@ -131,7 +130,7 @@ class htmlAction
 		
 		
 		// Add the RSS head links
-		RssLinkPrinter::addHeadLinks($this->getCurrentNode());
+		RssLinkPrinter::addHeadLinks(SiteDispatcher::getCurrentNode());
 		
 				
 		$xLayout = new XLayout();
@@ -211,7 +210,7 @@ class htmlAction
 		print "'>"._("Help")."</a>";
 		
 		// Site Map
-		$siteMapUrl = $harmoni->request->quickURL("view", "map", array('node' => $this->getCurrentNodeId()));
+		$siteMapUrl = $harmoni->request->quickURL("view", "map", array('node' => SiteDispatcher::getCurrentNodeId()));
 		print " | <a target='_blank' href='".$siteMapUrl."'";
 		
 		print ' onclick="';
@@ -230,134 +229,6 @@ class htmlAction
 		$this->mainScreen = $mainScreen;
 		return $allWrapper;
 	}
-	
-	/**
-	 * Answer the nodeId
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 7/30/07
-	 */
-	function getCurrentNodeId () {
-		if (!isset($this->currentNodeId)) {
-			if (RequestContext::value("site")) {
-				$slotManager = SlotManager::instance();
-				$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
-				if ($slot->siteExists())
-					$nodeId = $slot->getSiteId()->getIdString();
-				else
-					throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
-			} else if (RequestContext::value("node")) {
-				$nodeId = RequestContext::value("node");
-			}
-			
-			if (!isset($nodeId) || !$nodeId)
-				throw new NullArgumentException('No site node specified.');
-				
-			$this->currentNodeId = $nodeId;
-		}
-		
-		return $this->currentNodeId;
-	}
-	
-	/**
-	 * @var object SiteComponent $currentNode;  
-	 * @access private
-	 * @since 3/31/08
-	 */
-	private $currentNode;
-	
-	/**
-	 * @var string $currentNodeId;  
-	 * @access private
-	 * @since 3/31/08
-	 */
-	private $currentNodeId;
-	
-	/**
-	 * @var object SiteDirector $director;  
-	 * @access private
-	 * @since 3/31/08
-	 */
-	private $director;
-	
-	/**
-	 * @var object SiteNavBlockSiteComponent $rootSiteComponent;  
-	 * @access private
-	 * @since 3/31/08
-	 */
-	private $rootSiteComponent;
-	
-	/**
-	 * Answer the current node
-	 *
-	 * @return object SiteComponent
-	 * @access protected
-	 * @since 3/31/08
-	 */
-	protected function getCurrentNode () {
-		if (!isset($this->currentNode)) {
-			$nodeId = $this->getCurrentNodeId();
-				
-			$this->currentNode = $this->getSiteDirector()->getSiteComponentById($this->getCurrentNodeId());
-		}
-		
-		return $this->currentNode;
-	}
-	
-	/**
-	 * Answer the site node above the current Node
-	 *
-	 * @return object SiteNavBlockSiteComponent
-	 * @access protected
-	 * @since 3/31/08
-	 */
-	protected function getCurrentRootSiteNode () {
-		if (!isset($this->rootSiteComponent))
-			$this->rootSiteComponent = $this->getSiteDirector()->getRootSiteComponent($this->getCurrentNodeId());
-		
-		return $this->rootSiteComponent;
-	}
-	
-	/**
-	 * Answer the Site Director
-	 *
-	 * @return object SiteDirector
-	 * @access protected
-	 * @since 3/31/08
-	 */
-	protected function getSiteDirector () {
-		if (!isset($this->director)) {
-			/*********************************************************
-			 * XML Version
-			 *********************************************************/
-	// 		$testDocument = new DOMIT_Document();
-	// 		$testDocument->setNamespaceAwareness(true);
-	// 		$success = $testDocument->loadXML(MYDIR."/main/library/SiteDisplay/test/testSite.xml");
-	// 
-	// 		if ($success !== true) {
-	// 			throwError(new Error("DOMIT error: ".$testDocument->getErrorCode().
-	// 				"<br/>\t meaning: ".$testDocument->getErrorString()."<br/>", "SiteDisplay"));
-	// 		}
-	// 
-	// 		$director = new XmlSiteDirector($testDocument);
-	// 		
-	// 		if (!$nodeId = RequestContext::value("node"))
-	// 			$nodeId = "1";
-	
-			/*********************************************************
-			 * Asset version
-			 *********************************************************/
-			$repositoryManager = Services::getService('Repository');
-			$idManager = Services::getService('Id');
-			
-			$this->director = new AssetSiteDirector(
-				$repositoryManager->getRepository(
-					$idManager->getId('edu.middlebury.segue.sites_repository')));	
-		}
-		
-		return $this->director;
-	}
 
 	/**
 	 * Answer the appropriate site visitor for this action
@@ -369,7 +240,7 @@ class htmlAction
 	function getSiteVisitor () {
 		if (!isset($this->visitor)) {
 			
-			$requestedNode = $this->getCurrentNode();
+			$requestedNode = SiteDispatcher::getCurrentNode();
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
 				$this->visitor = new DetailViewModeSiteVisitor($requestedNode);
@@ -421,10 +292,10 @@ class htmlAction
 		ob_start();
 		if ($authZ->isUserAuthorizedBelow(
 				$idManager->getId("edu.middlebury.authorization.modify"),
-				$idManager->getId($this->rootSiteComponent->getId()))
+				SiteDispatcher::getCurrentRootSiteNode()->getQualifierId())
 			|| $authZ->isUserAuthorizedBelow(
 				$idManager->getId("edu.middlebury.authorization.add_children"),
-				$idManager->getId($this->rootSiteComponent->getId())))
+				SiteDispatcher::getCurrentRootSiteNode()->getQualifierId()))
 		{
 			print "<div class='commands'>";
 
@@ -435,7 +306,7 @@ class htmlAction
 			
 				print " | <a href='";
 				print $harmoni->request->quickURL('ui2', 'editview', array(
-						'node' => $this->getCurrentNodeId()));
+						'node' => SiteDispatcher::getCurrentNodeId()));
 				print "' title='"._("Go to Edit-Mode")."'>";
 				print _("edit")."</a>";
 				
@@ -448,7 +319,7 @@ class htmlAction
 		
 				print " | <a href='";
 				print $harmoni->request->quickURL('ui2', 'arrangeview', array(
-						'node' => $this->getCurrentNodeId()));
+						'node' => SiteDispatcher::getCurrentNodeId()));
 				print "' title='"._("Go to Arrange-Mode")."'>";
 				print _("arrange")."</a>";
 			
@@ -456,7 +327,7 @@ class htmlAction
 			
 				print " | <a href='";
 				print $harmoni->request->quickURL('ui1', 'editview', array(
-						'node' => $this->getCurrentNodeId()));
+						'node' => SiteDispatcher::getCurrentNodeId()));
 				print "' title='"._("Go to Edit-Mode")."'>";
 				print _("edit")."</a>";			
 			}

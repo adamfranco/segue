@@ -6,11 +6,11 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RoleAction.class.php,v 1.3 2008/03/06 15:22:17 adamfranco Exp $
+ * @version $Id: RoleAction.class.php,v 1.4 2008/03/31 20:07:47 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 /**
  * An abstract class to provide common methods
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RoleAction.class.php,v 1.3 2008/03/06 15:22:17 adamfranco Exp $
+ * @version $Id: RoleAction.class.php,v 1.4 2008/03/31 20:07:47 adamfranco Exp $
  */
 abstract class RoleAction
 	extends MainWindowAction
@@ -35,8 +35,7 @@ abstract class RoleAction
 	 * @since 11/14/07
 	 */
 	protected function getSiteId () {
-		$idManager = Services::getService("Id");
-		return $idManager->getId($this->getSite()->getId());
+		return SiteDispatcher::getCurrentRootSiteNode()->getQualifierId();
 	}
 	
 	/**
@@ -47,8 +46,7 @@ abstract class RoleAction
 	 * @since 11/14/07
 	 */
 	protected function getSite () {
-		$siteComponent = $this->getSiteComponent();
-		return $siteComponent->getDirector()->getRootSiteComponent($siteComponent->getId());
+		return SiteDispatcher::getCurrentRootSiteNode();
 	}
 	
 	/**
@@ -59,7 +57,7 @@ abstract class RoleAction
 	 * @since 5/8/07
 	 */
 	protected function getQualifierId () {
-		$component = $this->getSiteComponent();
+		$component = SiteDispatcher::getCurrentNode();
 		return $component->getQualifierId();
 	}
 	
@@ -72,9 +70,7 @@ abstract class RoleAction
 	 * @since 5/8/07
 	 */
 	protected function getSiteComponent () {
-		$idManager = Services::getService("Id");
-		return $this->getSiteComponentForId(
-			$idManager->getId(RequestContext::value("node")));
+		return SiteDispatcher::getCurrentNode();
 	}
 	
 	/**
@@ -86,7 +82,7 @@ abstract class RoleAction
 	 * @since 5/8/07
 	 */
 	protected function getSiteComponentForId ( $id ) {
-		$director = $this->getSiteDirector();
+		$director = SiteDispatcher::getSiteDirector();
 		return $director->getSiteComponentById($id->getIdString());
 	}
 	
@@ -99,50 +95,9 @@ abstract class RoleAction
 	 * @since 6/4/07
 	 */
 	protected function getSiteComponentForIdString ( $id ) {
-		$director = $this->getSiteDirector();
+		$director = SiteDispatcher::getSiteDirector();
 		return $director->getSiteComponentById(strval($id));
 	}
-	
-	/**
-	 * Set up our SiteDirector and make any needed data available
-	 * 
-	 * @return object SiteDirector
-	 * @access protected
-	 * @since 4/14/06
-	 */
-	protected function getSiteDirector () {
-			if (!isset($this->_director)) {
-			/*********************************************************
-			 * XML Version
-			 *********************************************************/
-	// 		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
-	// 		
-	// 		$this->document = new DOMIT_Document();
-	// 		$this->document->setNamespaceAwareness(true);
-	// 		$success = $this->document->loadXML($this->filename);
-	// 
-	// 		if ($success !== true) {
-	// 			throwError(new Error("DOMIT error: ".$this->document->getErrorCode().
-	// 				"<br/>\t meaning: ".$this->document->getErrorString()."<br/>", "SiteDisplay"));
-	// 		}
-	// 
-	// 		$director = new XmlSiteDirector($this->document);
-			
-			
-			/*********************************************************
-			 * Asset version
-			 *********************************************************/
-			$repositoryManager = Services::getService('Repository');
-			$idManager = Services::getService('Id');
-			
-			$this->_director = new AssetSiteDirector(
-				$repositoryManager->getRepository(
-					$idManager->getId('edu.middlebury.segue.sites_repository')));
-		}
-		
-		return $this->_director;
-	}
-	
 }
 
 ?>

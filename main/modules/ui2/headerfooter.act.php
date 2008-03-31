@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: headerfooter.act.php,v 1.3 2008/03/31 19:04:54 adamfranco Exp $
+ * @version $Id: headerfooter.act.php,v 1.4 2008/03/31 20:07:48 adamfranco Exp $
  */ 
 require_once(dirname(__FILE__)."/../view/html.act.php");
 require_once(dirname(__FILE__)."/Rendering/DetailEditHeaderFooterSiteVisitor.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Rendering/EditHeaderFooterSiteVisitor.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: headerfooter.act.php,v 1.3 2008/03/31 19:04:54 adamfranco Exp $
+ * @version $Id: headerfooter.act.php,v 1.4 2008/03/31 20:07:48 adamfranco Exp $
  */
 class headerFooterAction 
 	extends htmlAction
@@ -37,7 +37,7 @@ class headerFooterAction
 	function getSiteVisitor () {
 		if (!isset($this->visitor)) {
 			
-			$requestedNode = $this->getCurrentNode();
+			$requestedNode = SiteDispatcher::getCurrentNode();
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
 				$this->visitor = new DetailEditHeaderFooterSiteVisitor($requestedNode);

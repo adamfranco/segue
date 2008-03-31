@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.230 2008/03/31 19:44:02 achapin Exp $
+ @version $Id: changelog.xml,v 1.231 2008/03/31 20:07:47 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -21,9 +21,11 @@
 			UI1: Deleting a parent node no longer causes an error.
 		</fix>
 		<change author='adam' date='2008-03-31' ref='1930271' reftype='bug'>
-			View/UI1/UI2: Refactored access to the current node and the site director
-			between the view, ui1, and ui2 modules. Now use methods: getCurrentNode(), 
-			getCurrentNodeId(), getCurrentRootSiteNode(), getDirector().
+			View/UI1/UI2/Roles/RSS: Refactored access to the current node and the site
+			director to move all access to a new SiteDispatcher class in the view module.
+			Now use methods: SiteDispatcher::getCurrentNode(),
+			SiteDispatcher::getCurrentNodeId(), SiteDispatcher::getCurrentRootSiteNode(),
+			SiteDispatcher::getDirector().
 		</change>
 		<fix author='adam' date='2008-03-31' >
 			View: Fixed site map so that header and footer items are labelled.

@@ -5,10 +5,11 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.14 2008/03/25 14:58:02 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.15 2008/03/31 20:07:47 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 
 /**
@@ -19,7 +20,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: add.act.php,v 1.14 2008/03/25 14:58:02 adamfranco Exp $
+ * @version $Id: add.act.php,v 1.15 2008/03/31 20:07:47 adamfranco Exp $
  */
 class addAction 
 	extends MainWindowAction
@@ -224,7 +225,7 @@ class addAction
 		/*********************************************************
 		 * Create the site Asset
 		 *********************************************************/			
-		$director = $this->getSiteDirector();
+		$director = SiteDispatcher::getSiteDirector();
 		$site = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'SiteNavBlock'), $null = null);
 		
 		$site->updateDisplayName($properties['namedescstep']['display_name']);
@@ -318,6 +319,7 @@ class addAction
 		
 		// Breadcrumbs
 		$breadcrumbs = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'Breadcrumbs'), $breadcrumbsOrganizer);
+		$breadcrumbs->updateDisplayName(_("Breadcrumbs"));
 		
 		// RSS Content Organizer
 		$rssOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $statusLayout);
@@ -331,6 +333,7 @@ class addAction
 		
 		// Breadcrumbs
 		$rss = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'Rsslinks'), $rssOrganizer);
+		$rss->updateDisplayName(_("RSS Links"));
 		
 		
 		//--------------------------------------------------------
@@ -441,45 +444,6 @@ class addAction
 				"node" => $this->_siteId));
 		else
 			return $harmoni->request->quickURL('portal', "list");
-	}
-	
-	/**
-	 * Set up our SiteDirector and make any needed data available
-	 * 
-	 * @return object SiteDirector
-	 * @access public
-	 * @since 4/14/06
-	 */
-	function getSiteDirector () {
-		/*********************************************************
-		 * XML Version
-		 *********************************************************/
-// 		$this->filename = MYDIR."/main/library/SiteDisplay/test/testSite.xml";
-// 		
-// 		$this->document = new DOMIT_Document();
-// 		$this->document->setNamespaceAwareness(true);
-// 		$success = $this->document->loadXML($this->filename);
-// 
-// 		if ($success !== true) {
-// 			throwError(new Error("DOMIT error: ".$this->document->getErrorCode().
-// 				"<br/>\t meaning: ".$this->document->getErrorString()."<br/>", "SiteDisplay"));
-// 		}
-// 
-// 		$director = new XmlSiteDirector($this->document);
-		
-		
-		/*********************************************************
-		 * Asset version
-		 *********************************************************/
-		$repositoryManager = Services::getService('Repository');
-		$idManager = Services::getService('Id');
-		
-		$director = new AssetSiteDirector(
-			$repositoryManager->getRepository(
-				$idManager->getId('edu.middlebury.segue.sites_repository')));
-		
-		
-		return $director;
 	}
 	
 	/**

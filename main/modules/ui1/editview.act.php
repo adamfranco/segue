@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.19 2008/03/31 19:04:54 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.20 2008/03/31 20:07:47 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(MYDIR."/main/modules/view/html.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.19 2008/03/31 19:04:54 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.20 2008/03/31 20:07:47 adamfranco Exp $
  */
 class editviewAction
 	extends htmlAction 
@@ -41,7 +41,7 @@ class editviewAction
 	function getSiteVisitor () {
 		if (!isset($this->visitor)) {
 			
-			$requestedNode = $this->getCurrentNode();
+			$requestedNode = SiteDispatcher::getCurrentNode();
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
 				$this->visitor = new DetailEditModeSiteVisitor($requestedNode);
@@ -64,7 +64,7 @@ class editviewAction
 		// Add permissions button
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
-		$siteId = $this->getCurrentRootSiteNode()->getQualifierId();
+		$siteId = SiteDispatcher::getCurrentRootSiteNode()->getQualifierId();
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteId)
@@ -73,7 +73,7 @@ class editviewAction
 			$siteId))
 		{
 		
-			$rootSiteComponent = $this->getCurrentRootSiteNode();
+			$rootSiteComponent = SiteDispatcher::getCurrentRootSiteNode();
 			
 			ob_start();
 			$harmoni = Harmoni::instance();

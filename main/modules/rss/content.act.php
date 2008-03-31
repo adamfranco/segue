@@ -6,12 +6,12 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content.act.php,v 1.2 2008/03/31 16:06:19 achapin Exp $
+ * @version $Id: content.act.php,v 1.3 2008/03/31 20:07:47 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 /**
  * generate RSS feed of content blocks
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content.act.php,v 1.2 2008/03/31 16:06:19 achapin Exp $
+ * @version $Id: content.act.php,v 1.3 2008/03/31 20:07:47 adamfranco Exp $
  */
 class contentAction
 	extends RSSAction
@@ -37,7 +37,7 @@ class contentAction
 	 * @since 3/10/08
 	 */
 	function isExecutionAuthorized () {
-		$siteComponent = $this->getSiteComponent();
+		$siteComponent = SiteDispatcher::getCurrentNode();
 		
 		$idMgr = Services::getService('Id');
 		$azMgr = Services::getService('AuthZ');
@@ -56,7 +56,7 @@ class contentAction
 	public function buildFeed () {
 		$harmoni = Harmoni::instance();
 		
-		$siteComponent = $this->getSiteComponent();
+		$siteComponent = SiteDispatcher::getCurrentNode();
 		
 		// set feed channel title and url
 		$this->setTitle($siteComponent->getDisplayName()." - "._("Content"));
@@ -68,53 +68,6 @@ class contentAction
 		// add items to the feed
 		$siteComponent->acceptVisitor($this);
 		
-	}
-
-	/**
-	 * answer the site component specified in url
-	 * 
-	 * @return object SiteComponent
-	 * @access protected
-	 * @since 3/10/08
-	 */
-	protected function getSiteComponent () {
-		
-		$repositoryManager = Services::getService('Repository');
-		$idManager = Services::getService('Id');
-		
-		$director = new AssetSiteDirector(
-			$repositoryManager->getRepository(
-				$idManager->getId('edu.middlebury.segue.sites_repository')));			
-		
-		if (!$nodeId = $this->getNodeId())
-			throwError(new Error('No site node specified.', 'SiteDisplay'));
-
-		return $director->getSiteComponentById($nodeId);
-	}	
-
-	/**
-	 * Answer the nodeId
-	 * 
-	 * @return string
-	 * @access protected
-	 * @since 7/30/07
-	 */
-	protected function getNodeId () {
-		if (RequestContext::value("site")) {
-			$slotManager = SlotManager::instance();
-			$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
-			if ($slot->siteExists())
-				$nodeId = $slot->getSiteId()->getIdString();
-			else
-				throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
-		} else if (RequestContext::value("node")) {
-			$nodeId = RequestContext::value("node");
-		}
-		
-		if (!isset($nodeId) || !strlen($nodeId))
-			throw new NullArgumentException('No site node specified.');
-		
-		return $nodeId;
 	}
 	
 	/*********************************************************

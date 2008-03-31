@@ -6,15 +6,13 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.5 2008/02/04 20:37:16 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.6 2008/03/31 20:07:47 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
-
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 require_once(dirname(__FILE__)."/Rendering/DomExportSiteVisitor.class.php");
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 
 /**
@@ -26,7 +24,7 @@ require_once(dirname(__FILE__)."/Rendering/DomExportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.5 2008/02/04 20:37:16 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.6 2008/03/31 20:07:47 adamfranco Exp $
  */
 class exportAction
 	extends Action
@@ -54,38 +52,9 @@ class exportAction
 	 */
 	public function execute () {
 		$harmoni = Harmoni::instance();
-		/*********************************************************
-		 * XML Version
-		 *********************************************************/
-// 		$testDocument = new DOMIT_Document();
-// 		$testDocument->setNamespaceAwareness(true);
-// 		$success = $testDocument->loadXML(MYDIR."/main/library/SiteDisplay/test/testSite.xml");
-// 
-// 		if ($success !== true) {
-// 			throwError(new Error("DOMIT error: ".$testDocument->getErrorCode().
-// 				"<br/>\t meaning: ".$testDocument->getErrorString()."<br/>", "SiteDisplay"));
-// 		}
-// 
-// 		$director = new XmlSiteDirector($testDocument);
-// 		
-// 		if (!$nodeId = RequestContext::value("node"))
-// 			$nodeId = "1";
-
-		/*********************************************************
-		 * Asset version
-		 *********************************************************/
-		$repositoryManager = Services::getService('Repository');
-		$idManager = Services::getService('Id');
-		
-		$this->_director = new AssetSiteDirector(
-			$repositoryManager->getRepository(
-				$idManager->getId('edu.middlebury.segue.sites_repository')));			
-		
-		if (!$nodeId = $this->getNodeId())
-			throwError(new Error('No site node specified.', 'SiteDisplay'));
-		
-		$component = $this->_director->getSiteComponentById($nodeId);
-		$site = $this->_director->getRootSiteComponent($nodeId);
+				
+		$component = SiteDispatcher::getCurrentNode();
+		$site = SiteDispatcher::getCurrentRootSiteNode();
 		
 		$slotMgr = SlotManager::instance();
 		$slot = $slotMgr->getSlotBySiteId($site->getId());

@@ -6,12 +6,12 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: comments.act.php,v 1.1 2008/03/11 17:49:17 achapin Exp $
+ * @version $Id: comments.act.php,v 1.2 2008/03/31 20:07:47 adamfranco Exp $
  */ 
  
-require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
+require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
+require_once(MYDIR."/main/modules/rss/content.act.php");
 
 /**
  * generate RSS feed of comments in content blocks
@@ -22,11 +22,8 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: comments.act.php,v 1.1 2008/03/11 17:49:17 achapin Exp $
- */
-require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
-require_once(MYDIR."/main/modules/rss/content.act.php");
-  
+ * @version $Id: comments.act.php,v 1.2 2008/03/31 20:07:47 adamfranco Exp $
+ */  
 class commentsAction
 	extends contentAction
 
