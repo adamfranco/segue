@@ -6,11 +6,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.15 2008/03/24 21:35:31 achapin Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.16 2008/03/31 21:02:11 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
 require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
 require_once(MYDIR."/main/library/Wiki/WikiResolver.class.php");
 require_once(MYDIR."/main/library/DiffEngine.php");
@@ -19,6 +18,7 @@ require_once(dirname(__FILE__)."/SeguePluginsDriverAPI.interface.php");
 require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
 require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
 
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 
 /**
@@ -30,7 +30,7 @@ require_once(dirname(__FILE__)."/SeguePluginVersion.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.15 2008/03/24 21:35:31 achapin Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.16 2008/03/31 21:02:11 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -321,14 +321,12 @@ abstract class SeguePluginsDriver
 		
 		$wikiResolver->setViewAction($this->_baseUrl->getModule(), $this->_baseUrl->getAction());
 		
-		// Get the site Id (Note: this creates a circular dependancy between
-		// the plugins package and the SiteDisplay Package.
-		$idManager = Services::getService("Id");
-		$nodeId = $this->_asset->getId();
-		$director = new AssetSiteDirector($this->_asset->getRepository());	
-		$siteComponent = $director->getSiteComponentById($nodeId->getIdString());
+		try {
+			$siteComponent = $this->getRelatedSiteComponent();
 		
-		$text = $wikiResolver->parseText($text, $siteComponent);
+			$text = $wikiResolver->parseText($text, $siteComponent);
+		} catch (OperationFailedException $e) {
+		}
 		
 		return $text;
 	}
@@ -853,14 +851,17 @@ abstract class SeguePluginsDriver
 			
 			// Get the site Id (Note: this creates a circular dependancy between
 			// the plugins package and the SiteDisplay Package.
-			$idManager = Services::getService("Id");
-			$nodeId = $this->_asset->getId();
-			$director = new AssetSiteDirector($this->_asset->getRepository());	
-			$rootSiteComponent = $director->getRootSiteComponent($nodeId->getIdString());
-			
-			$item->addNodeId($idManager->getId($rootSiteComponent->getId()));
-			
-			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			try {
+				$idManager = Services::getService("Id");
+				$director = SiteDispatcher::getSiteDirector();
+				$relatedComponent = $this->getRelatedSiteComponent();
+				$rootSiteComponent = $director->getRootSiteComponent($relatedComponent->getId());
+				
+				$item->addNodeId($idManager->getId($rootSiteComponent->getId()));
+				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			} catch (OperationFailedException $e) {
+			}
 		}
 	}
 	
@@ -1084,6 +1085,62 @@ abstract class SeguePluginsDriver
 						$type->getAuthority()."/".$type->getKeyword()."/";
 		
 		$this->_loadData();
+	}
+	
+	/**
+	 * Answer a site component that relates to this plugin instance. This site component
+	 * may be for this plugin instance or not. This method will throw an OperationFailedException
+	 * if no corresponding site component exists or is set.
+	 *
+	 * @return object SiteComponent
+	 * @access public
+	 * @since 3/31/08
+	 */
+	final public function getRelatedSiteComponent () {
+		if (isset($this->relatedSiteComponent))
+			return $this->relatedSiteComponent;
+		
+		// If we don't have a related site component, assume that this plugin equates
+		// to a site component and try to return a matching one.
+		// @todo This part should probably be removed and the code that instantiates the plugin
+		// should be forced to call the setRelatedSiteComponent() method.
+		
+		// Get the site Id (Note: this creates a circular dependancy between
+		// the plugins package and the SiteDisplay Package.
+		$idManager = Services::getService("Id");
+		$nodeId = $this->_asset->getId();
+		$director = SiteDispatcher::getSiteDirector();
+		$siteComponent = $director->getSiteComponentById($nodeId->getIdString());
+		
+		// Test if getting the parent component works.
+		try {
+			$siteComponent->getParentComponent();
+		} catch (NonNavException $e) {
+			throw new OperationFailedException("No SiteComponent available for ".get_class($this).", '".$this->_asset->getDisplayName()."'.");
+		}
+		
+		return $siteComponent;
+	}
+	
+	/**
+	 * @var object SiteComponent $relatedSiteComponent;  
+	 * @access private
+	 * @since 3/31/08
+	 */
+	private $relatedSiteComponent;
+	
+	/**
+	 * Set a SiteComponent that is related to this plugin. It may be another representation
+	 * of the same data in the system or an entirely different object. This SiteComponent
+	 * will be used for doing WikiResolving and Logging.
+	 * 
+	 * @param object SiteComponent $relatedSiteComponent
+	 * @return void
+	 * @access public
+	 * @since 3/31/08
+	 */
+	final public function setRelatedSiteComponent (SiteComponent $relatedSiteComponent) {
+		$this->relatedSiteComponent = $relatedSiteComponent;
 	}
 	
 	/**

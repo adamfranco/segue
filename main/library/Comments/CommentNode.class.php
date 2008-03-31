@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.15 2008/03/11 17:38:44 achapin Exp $
+ * @version $Id: CommentNode.class.php,v 1.16 2008/03/31 21:02:11 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.15 2008/03/11 17:38:44 achapin Exp $
+ * @version $Id: CommentNode.class.php,v 1.16 2008/03/31 21:02:11 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -128,6 +128,13 @@ class CommentNode {
 		if ($this->canView()) {
 			$pluginManager = Services::getService('PluginManager');
 			$plugin = $pluginManager->getPlugin($this->_asset);
+			
+			// Attach the owning Site component
+			$owningAsset = CommentManager::getCommentParentAsset($this);
+			$director = SiteDispatcher::getSiteDirector();
+			$owningComponent = $director->getSiteComponentFromAsset($owningAsset);
+			$plugin->setRelatedSiteComponent($owningComponent);
+			
 			
 			$plugin->setUpdateAction('comments', 'update_plugin_ajax');
 			
