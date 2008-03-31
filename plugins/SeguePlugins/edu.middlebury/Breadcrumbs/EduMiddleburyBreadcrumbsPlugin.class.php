@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyBreadcrumbsPlugin.class.php,v 1.1 2008/03/13 19:00:53 achapin Exp $
+ * @version $Id: EduMiddleburyBreadcrumbsPlugin.class.php,v 1.2 2008/03/31 23:03:54 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyBreadcrumbsPlugin.class.php,v 1.1 2008/03/13 19:00:53 achapin Exp $
+ * @version $Id: EduMiddleburyBreadcrumbsPlugin.class.php,v 1.2 2008/03/31 23:03:54 adamfranco Exp $
  */
 class EduMiddleburyBreadcrumbsPlugin 
 	extends SeguePlugin
@@ -93,56 +93,14 @@ class EduMiddleburyBreadcrumbsPlugin
  	 */
  	public function getMarkup () {
 		ob_start();
-		$harmoni = Harmoni::instance();
-		$harmoni->request->startNamespace(null);
 		
-		$repositoryManager = Services::getService('Repository');
-		$idManager = Services::getService('Id');
-		
-		$director = new AssetSiteDirector(
-			$repositoryManager->getRepository(
-				$idManager->getId('edu.middlebury.segue.sites_repository')));			
-		
-		if (!$nodeId = $this->getNodeId())
-			throwError(new Error('No site node specified.', 'SiteDisplay'));
-		
-		$node = $director->getSiteComponentById(
-				$this->getNodeId());
-		
+		$node = SiteDispatcher::getCurrentNode();
 		$breadcrumbs = $node->acceptVisitor(new BreadCrumbsVisitor($node));
 		$breadcrumbs = "<div class='breadcrumbs'>".$breadcrumbs."</div>";
 		print $breadcrumbs;
 		
-		$harmoni->request->endNamespace();
-		
 		return ob_get_clean();
  	}
-	
- 	
-	/**
-	 * Answer the nodeId
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 7/30/07
-	 */
-	function getNodeId () {
-		if (RequestContext::value("site")) {
-			$slotManager = SlotManager::instance();
-			$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
-			if ($slot->siteExists())
-				$nodeId = $slot->getSiteId()->getIdString();
-			else
-				throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
-		} else if (RequestContext::value("node")) {
-			$nodeId = RequestContext::value("node");
-		}
-		
-		if (!isset($nodeId) || !strlen($nodeId))
-			throw new NullArgumentException('No site node specified.');
-		
-		return $nodeId;
-	}
  
 }
 

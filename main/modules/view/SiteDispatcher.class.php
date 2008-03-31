@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDispatcher.class.php,v 1.2 2008/03/31 20:10:28 adamfranco Exp $
+ * @version $Id: SiteDispatcher.class.php,v 1.3 2008/03/31 23:03:54 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDispatcher.class.php,v 1.2 2008/03/31 20:10:28 adamfranco Exp $
+ * @version $Id: SiteDispatcher.class.php,v 1.3 2008/03/31 23:03:54 adamfranco Exp $
  */
 class SiteDispatcher {
 		
@@ -70,6 +70,9 @@ class SiteDispatcher {
 	 */
 	public static function getCurrentNodeId () {
 		if (!isset(self::$currentNodeId)) {
+			$harmoni = Harmoni::instance();
+			$harmoni->request->startNamespace(null);
+			
 			if (RequestContext::value("site")) {
 				$slotManager = SlotManager::instance();
 				$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
@@ -85,6 +88,8 @@ class SiteDispatcher {
 				throw new NullArgumentException('No site node specified.');
 				
 			self::$currentNodeId = $nodeId;
+			
+			$harmoni->request->endNamespace();
 		}
 		
 		return self::$currentNodeId;

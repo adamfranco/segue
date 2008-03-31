@@ -6,11 +6,10 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyRsslinksPlugin.class.php,v 1.1 2008/03/13 19:02:53 achapin Exp $
+ * @version $Id: EduMiddleburyRsslinksPlugin.class.php,v 1.2 2008/03/31 23:03:54 adamfranco Exp $
  */ 
 
-
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 /**
  * A simple plugin for displaying links to a site's RSS feeds
@@ -23,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyRsslinksPlugin.class.php,v 1.1 2008/03/13 19:02:53 achapin Exp $
+ * @version $Id: EduMiddleburyRsslinksPlugin.class.php,v 1.2 2008/03/31 23:03:54 adamfranco Exp $
  */
 class EduMiddleburyRsslinksPlugin 
 	extends SeguePlugin
@@ -93,71 +92,12 @@ class EduMiddleburyRsslinksPlugin
  	 */
  	public function getMarkup () {
 		ob_start();
-		$harmoni = Harmoni::instance();
-		$harmoni->request->startNamespace(null);
 		
-		$repositoryManager = Services::getService('Repository');
-		$idManager = Services::getService('Id');
-		
-		$director = new AssetSiteDirector(
-			$repositoryManager->getRepository(
-				$idManager->getId('edu.middlebury.segue.sites_repository')));			
-		
-		if (!$nodeId = $this->getNodeId())
-			throwError(new Error('No site node specified.', 'SiteDisplay'));
-		
-		$node = $director->getSiteComponentById(
-				$this->getNodeId());
-		
-		$node = $director->getSiteComponentById($nodeId);
-		
-		$RssLinks = RssLinkPrinter::getLinkBlock($node);
-		print "<div class='breadcrumbs'>".$RssLinks."</div>";	
-		
-		$harmoni->request->endNamespace();
+		$RssLinks = RssLinkPrinter::getLinkBlock(SiteDispatcher::getCurrentNode());
+		print "<div class='breadcrumbs'>".$RssLinks."</div>";
 		
 		return ob_get_clean();
  	}
- 	
-	/**
-	 * Answer the bread crumbs for the current node
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 5/31/07
-	 */
-	function getBreadCrumbs () {
-		$node = $this->_director->getSiteComponentById(
-				$this->getId());
-		
-		return $node->acceptVisitor(new BreadCrumbsVisitor($node));
-	}
-	
- 	
-	/**
-	 * Answer the nodeId
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 7/30/07
-	 */
-	function getNodeId () {
-		if (RequestContext::value("site")) {
-			$slotManager = SlotManager::instance();
-			$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
-			if ($slot->siteExists())
-				$nodeId = $slot->getSiteId()->getIdString();
-			else
-				throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
-		} else if (RequestContext::value("node")) {
-			$nodeId = RequestContext::value("node");
-		}
-		
-		if (!isset($nodeId) || !strlen($nodeId))
-			throw new NullArgumentException('No site node specified.');
-		
-		return $nodeId;
-	}
  
 }
 
