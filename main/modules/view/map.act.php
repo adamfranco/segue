@@ -6,12 +6,13 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.6 2008/03/31 16:43:14 achapin Exp $
+ * @version $Id: map.act.php,v 1.7 2008/03/31 18:52:29 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteMapSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/HeaderFooterSiteVisitor.class.php");
 
 
 /**
@@ -23,7 +24,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.6 2008/03/31 16:43:14 achapin Exp $
+ * @version $Id: map.act.php,v 1.7 2008/03/31 18:52:29 achapin Exp $
  */
 class mapAction 
 	extends MainWindowAction
@@ -162,6 +163,8 @@ class mapAction
 						
 		$rootSiteComponent = $director->getRootSiteComponent($nodeId);		
 		$siteComponent = $director->getSiteComponentById($nodeId);
+		
+		$this->isHeaderFooterVisitor = new HeaderFooterSiteVisitor($rootSiteComponent);
 		
 	//	$currentNode = $this->getNodeId();
 		//printpre ($currentNode);				
@@ -305,8 +308,7 @@ class mapAction
 		{
 			return;
 		}
-		
-		
+				
 		$this->printNodeStart($siteComponent);
 		print $this->getTabs()."\t";
 		print "<div class='expandSpacer'>";		
@@ -410,11 +412,35 @@ class mapAction
 	 * @since 8/31/07
 	 */
 	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $siteComponent ) {
+		
 		$numCells = $siteComponent->getTotalNumberOfCells();
 		for ($i = 0; $i < $numCells; $i++) {
 			$child = $siteComponent->getSubcomponentForCell($i);
 			if (is_object($child)) {
+				$isInHeaderOrFooter = false;
+				if ($this->isHeaderFooterVisitor->getHeaderCellId() == $siteComponent->getId()."_cell:".$i) {
+					print $this->getTabs();
+					print "<div class='header_area'>"._("The following are header items:");
+					$this->depth++;
+					$isInHeaderOrFooter = true;
+				} else if ($this->isHeaderFooterVisitor->getFooterCellId() == $siteComponent->getId()."_cell:".$i) {
+					print $this->getTabs();
+					print "<div class='footer_area'>"._("The following are footer items:");
+					$this->depth++;
+					$isInHeaderOrFooter = true;
+				}
+								
 				$child->acceptVisitor($this);
+				
+				if ($isInHeaderOrFooter) {
+					// Spacer
+					print $this->getTabs();
+					print "<div class='header_spacer'>&nbsp;</div>";					
+					$this->depth--;
+					print $this->getTabs();
+					print "</div>";
+				}
+					
 			}
 		}
 	}
