@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TitleSearcher.class.php,v 1.2 2007/12/20 16:50:44 adamfranco Exp $
+ * @version $Id: TitleSearcher.class.php,v 1.3 2008/03/31 19:44:02 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TitleSearcher.class.php,v 1.2 2007/12/20 16:50:44 adamfranco Exp $
+ * @version $Id: TitleSearcher.class.php,v 1.3 2008/03/31 19:44:02 achapin Exp $
  */
 class TitleSearcher
 	implements SiteVisitor
@@ -105,7 +105,7 @@ class TitleSearcher
 			return null;
 		$this->visited[] = $siteComponent->getId();
 		
-		if (strtolower($this->title) == strtolower(trim($siteComponent->getDisplayName())))
+		if (strtolower($this->title) == strtolower(($siteComponent->getDisplayName())))
 			return $siteComponent->getId();
 		
 		return null;
@@ -136,7 +136,11 @@ class TitleSearcher
 		if (!is_null($result))
 			return $result;
 		
-		return $siteComponent->getOrganizer()->acceptVisitor($this);
+		if (!is_null($siteComponent->getNestedMenuOrganizer()))	{
+			return $siteComponent->getNestedMenuOrganizer()->acceptVisitor($this);	
+		} else {
+			return $siteComponent->getOrganizer()->acceptVisitor($this);
+		}
 	}
 	
 	/**
@@ -235,7 +239,7 @@ class TitleSearcher
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TitleSearcher.class.php,v 1.2 2007/12/20 16:50:44 adamfranco Exp $
+ * @version $Id: TitleSearcher.class.php,v 1.3 2008/03/31 19:44:02 achapin Exp $
  */
 class UnknownTitleException
 	extends Exception
