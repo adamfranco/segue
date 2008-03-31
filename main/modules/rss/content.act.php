@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content.act.php,v 1.3 2008/03/31 20:07:47 adamfranco Exp $
+ * @version $Id: content.act.php,v 1.4 2008/03/31 21:11:21 achapin Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/HeaderFooterSiteVisitor.class.php");
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 /**
@@ -22,7 +23,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content.act.php,v 1.3 2008/03/31 20:07:47 adamfranco Exp $
+ * @version $Id: content.act.php,v 1.4 2008/03/31 21:11:21 achapin Exp $
  */
 class contentAction
 	extends RSSAction
@@ -164,10 +165,19 @@ class contentAction
 	 */
 	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $siteComponent ) {
 		$numCells = $siteComponent->getTotalNumberOfCells();
-		for ($i = 0; $i < $numCells; $i++) {
-			$child = $siteComponent->getSubcomponentForCell($i);
-			if (is_object($child)) {
-				$child->acceptVisitor($this);
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		$isHeaderFooterVisitor = new HeaderFooterSiteVisitor($rootSiteComponent);
+		
+ 		for ($i = 0; $i < $numCells; $i++) {
+ 		
+			// don't include in feed if header and footer blocks
+			if ($isHeaderFooterVisitor->getHeaderCellId() != $siteComponent->getId()."_cell:".$i
+				&& $isHeaderFooterVisitor->getFooterCellId() != $siteComponent->getId()."_cell:".$i
+			) {			
+				$child = $siteComponent->getSubcomponentForCell($i);
+				if (is_object($child)) {
+					$child->acceptVisitor($this);
+				}
 			}
 		}
 	}
