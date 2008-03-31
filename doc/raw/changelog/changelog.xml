@@ -5,15 +5,22 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.232 2008/03/31 20:10:28 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.233 2008/03/31 21:05:43 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-16.1" date="The Future">
+	<version number="2.0-beta-17" date="The Future">
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-03-31' ref='1930252' reftype='bug' reporter='jeff_rehbach'>
+			Comments/WikiText: Wiki-links in comments now don't cause error.
+		</fix>
+		<change author='adam' date='2008-03-31' ref='1930252' reftype='bug'>
+			Plugins: Now can attach a related site component to a plugin for use in 
+			resolving wiki links.
+		</change>
 		<fix author='alex' date='2008-03-31' ref='1930258' reftype='bug'>
 			WikiText: fixed wiki-text matching so that matches in the sub-menus of
 			other navigational nodes are found.
@@ -1171,6 +1178,10 @@
 		</reporter>
 		<reporter short="bryan_carson">
 			<name>Bryan Carson</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="jeff_rehbach">
+			<name>Jeff Rehbach</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>
