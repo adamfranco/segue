@@ -5,14 +5,18 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.234 2008/03/31 21:11:21 achapin Exp $
+ @version $Id: changelog.xml,v 1.235 2008/03/31 23:09:48 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-17" date="The Future">
+	<version number="2.0-beta-17" date="2008-03-31">
 		<releaseNotes>
+			This release fixes a number of bugs to avoid errors in RSS feeds,
+			Wiki-Text in comments, and the site map. As well, short-form URLs now
+			work with placeholder names that contain hyphens and under-scores.
 			
+			Segue 2.0 beta 17 uses Polyphony 1.0.5 and Harmoni 1.0.5. 
 		</releaseNotes>
 		<fix author='adam' date='2008-03-31' ref='1930252' reftype='bug' reporter='jeff_rehbach'>
 			Comments/WikiText: Wiki-links in comments now don't cause error.

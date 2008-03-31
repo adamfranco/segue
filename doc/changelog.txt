@@ -4,6 +4,69 @@ Name: Segue Change Log
 
 
 
+v. 2.0-beta-17 (2008-03-31)
+----------------------------------------------------
+This release fixes a number of bugs to avoid errors in RSS feeds, Wiki-Text in
+comments, and the site map. As well, short-form URLs now work with placeholder names
+that contain hyphens and under-scores.
+
+Segue 2.0 beta 17 uses Polyphony 1.0.5 and Harmoni 1.0.5.
+		
+		
+	* Bug Fix: #1930252 
+		Comments/WikiText: Wiki-links in comments now don't cause error.
+		(2008-03-31 - Adam Franco)
+		(reported by Jeff Rehbach of Middlebury College)
+		
+	* Change: #1930252 
+		Plugins: Now can attach a related site component to a plugin for use in
+		resolving wiki links.
+		(2008-03-31 - Adam Franco)
+		
+	* Bug Fix: #1930258 
+		RSS: Removed header and footer blocks from RSS feeds.
+		(2008-03-31 - Alex Chapin)
+		
+	* Bug Fix: #1930257 
+		WikiText: fixed wiki-text matching so that matches in the sub-menus of other
+		navigational nodes are found.
+		(2008-03-31 - Alex Chapin)
+		
+	* Bug Fix: #1930271 
+		UI1: Deleting a parent node no longer causes an error.
+		(2008-03-31 - Adam Franco)
+		
+	* Change: #1930271 
+		View/UI1/UI2/Roles/RSS: Refactored access to the current node and the site
+		director to move all access to a new SiteDispatcher class in the view
+		module. Now use methods: SiteDispatcher::getCurrentNode(),
+		SiteDispatcher::getCurrentNodeId(), SiteDispatcher::getCurrentRootNode(),
+		SiteDispatcher::getDirector(). 
+		(2008-03-31 - Adam Franco)
+		
+	* Bug Fix: 
+		View: Fixed site map so that header and footer items are labelled.
+		(2008-03-31 - Adam Franco)
+		
+	* Bug Fix: #1930278 
+		View: Fixed site map so that sub-menu items are displayed.
+		(2008-03-31 - Alex Chapin)
+		
+	* Bug Fix: #1930254 
+		Site Display: Fixed RSS feeds of navigational nodes with sub-menus so that
+		content blocks in sub-menus are also included in the feed.
+		(2008-03-31 - Alex Chapin)
+		
+	* Bug Fix: 
+		Short-form urls of the style '/sites/siteName' now work with site names that
+		contain hyphens and underscores.
+		(2008-03-28 - Adam Franco)
+		
+	* Bug Fix: 
+		Migration: Fixes to allow migration to work on servers with high security
+		settings. 
+		(2008-03-26 - Adam Franco)
+	
 v. 2.0-beta-16 (2008-03-26)
 ----------------------------------------------------
 This release adds Media Library quotas and enables redirects from Segue 1 instances.

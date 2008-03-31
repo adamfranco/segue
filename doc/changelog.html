@@ -23,7 +23,45 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-16</h2>
+<h2>Version 2.0-beta-17</h2>
+<h3>2008-03-31</h3>
+<p>This release fixes a number of bugs to avoid errors in RSS feeds, Wiki-Text in comments, and the site map. As well, short-form URLs now work with placeholder names that contain hyphens and under-scores.
+<br>
+<br>Segue 2.0 beta 17 uses Polyphony 1.0.5 and Harmoni 1.0.5.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930252&amp;group_id=&amp;atid=">
+        			#1930252</a> Comments/WikiText: Wiki-links in comments now don't cause error. (<em>2008-03-31 - Adam Franco</em>)<br> (<em>reported by Jeff Rehbach of Middlebury College</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930252&amp;group_id=&amp;atid=">
+        			#1930252</a> Plugins: Now can attach a related site component to a plugin for use in resolving wiki links. (<em>2008-03-31 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930258&amp;group_id=&amp;atid=">
+        			#1930258</a> RSS: Removed header and footer blocks from RSS feeds. (<em>2008-03-31 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930257&amp;group_id=&amp;atid=">
+        			#1930257</a> WikiText: fixed wiki-text matching so that matches in the sub-menus of other navigational nodes are found. (<em>2008-03-31 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930271&amp;group_id=&amp;atid=">
+        			#1930271</a> UI1: Deleting a parent node no longer causes an error. (<em>2008-03-31 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930271&amp;group_id=&amp;atid=">
+        			#1930271</a> View/UI1/UI2/Roles/RSS: Refactored access to the current node and the site director to move all access to a new SiteDispatcher class in the view module. Now use methods: SiteDispatcher::getCurrentNode(), SiteDispatcher::getCurrentNodeId(), SiteDispatcher::getCurrentRootNode(), SiteDispatcher::getDirector(). (<em>2008-03-31 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> View: Fixed site map so that header and footer items are labelled. (<em>2008-03-31 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930278&amp;group_id=&amp;atid=">
+        			#1930278</a> View: Fixed site map so that sub-menu items are displayed. (<em>2008-03-31 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930254&amp;group_id=&amp;atid=">
+        			#1930254</a> Site Display: Fixed RSS feeds of navigational nodes with sub-menus so that content blocks in sub-menus are also included in the feed. (<em>2008-03-31 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b> Short-form urls of the style '/sites/siteName' now work with site names that contain hyphens and underscores. (<em>2008-03-28 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Fixes to allow migration to work on servers with high security settings. (<em>2008-03-26 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-16</h2>
 <h3>2008-03-26</h3>
 <p>This release adds Media Library quotas and enables redirects from Segue 1 instances.
 <br>
