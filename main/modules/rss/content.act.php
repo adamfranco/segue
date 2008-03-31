@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content.act.php,v 1.1 2008/03/11 17:49:17 achapin Exp $
+ * @version $Id: content.act.php,v 1.2 2008/03/31 16:06:19 achapin Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content.act.php,v 1.1 2008/03/11 17:49:17 achapin Exp $
+ * @version $Id: content.act.php,v 1.2 2008/03/31 16:06:19 achapin Exp $
  */
 class contentAction
 	extends RSSAction
@@ -182,6 +182,11 @@ class contentAction
 	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
 		$organizer = $siteComponent->getOrganizer();
 		$organizer->acceptVisitor($this);
+		
+		$nestedMenuOrganizer = $siteComponent->getNestedMenuOrganizer();
+		if (!is_null($nestedMenuOrganizer)) {
+			$nestedMenuOrganizer->acceptVisitor($this);
+		}
 	}
 	
 	/**
