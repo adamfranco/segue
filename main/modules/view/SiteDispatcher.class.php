@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDispatcher.class.php,v 1.1 2008/03/31 20:07:48 adamfranco Exp $
+ * @version $Id: SiteDispatcher.class.php,v 1.2 2008/03/31 20:10:28 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDispatcher.class.php,v 1.1 2008/03/31 20:07:48 adamfranco Exp $
+ * @version $Id: SiteDispatcher.class.php,v 1.2 2008/03/31 20:10:28 adamfranco Exp $
  */
 class SiteDispatcher {
 		
@@ -114,7 +114,7 @@ class SiteDispatcher {
 	 * @access public
 	 * @since 3/31/08
 	 */
-	public static function getCurrentRootSiteNode () {
+	public static function getCurrentRootNode () {
 		if (!isset(self::$rootSiteComponent))
 			self::$rootSiteComponent = self::getSiteDirector()->getRootSiteComponent(self::getCurrentNodeId());
 		

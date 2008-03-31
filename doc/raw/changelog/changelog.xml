@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.231 2008/03/31 20:07:47 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.232 2008/03/31 20:10:28 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -24,7 +24,7 @@
 			View/UI1/UI2/Roles/RSS: Refactored access to the current node and the site
 			director to move all access to a new SiteDispatcher class in the view module.
 			Now use methods: SiteDispatcher::getCurrentNode(),
-			SiteDispatcher::getCurrentNodeId(), SiteDispatcher::getCurrentRootSiteNode(),
+			SiteDispatcher::getCurrentNodeId(), SiteDispatcher::getCurrentRootNode(),
 			SiteDispatcher::getDirector().
 		</change>
 		<fix author='adam' date='2008-03-31' >

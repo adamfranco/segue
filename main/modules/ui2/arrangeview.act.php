@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.14 2008/03/31 20:07:47 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.15 2008/03/31 20:10:28 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.14 2008/03/31 20:07:47 adamfranco Exp $
+ * @version $Id: arrangeview.act.php,v 1.15 2008/03/31 20:10:28 adamfranco Exp $
  */
 class arrangeviewAction
 	extends htmlAction 
@@ -60,13 +60,13 @@ class arrangeviewAction
 		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
-			SiteDispatcher::getCurrentRootSiteNode()->getQualifierId()))
+			SiteDispatcher::getCurrentRootNode()->getQualifierId()))
 		{
 			$visitor = $this->getSiteVisitor();
 			$controlsHTML = $visitor->getBarPreHTML('#090')
 				.$visitor->getControlsHTML(
 					"<em>"._("Site")."</em>", 
-					SiteDispatcher::getCurrentRootSiteNode()->acceptVisitor($visitor->_controlsVisitor), 
+					SiteDispatcher::getCurrentRootNode()->acceptVisitor($visitor->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, false);
 			$mainScreen->setPreHTML($controlsHTML.$mainScreen->getPreHTML($null = null));
 			
@@ -78,7 +78,7 @@ class arrangeviewAction
 		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorizedBelow(
 			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
-			SiteDispatcher::getCurrentRootSiteNode()->getQualifierId()))
+			SiteDispatcher::getCurrentRootNode()->getQualifierId()))
 		{
 			ob_start();
 			$harmoni = Harmoni::instance();
@@ -90,7 +90,7 @@ class arrangeviewAction
 			print "\n\t<input type='button' value='"._("Permissions")."'/>";
 			print "\n</a>";
 			print "\n</div>";
-			$allwrapper->add(new UnstyledBlock(ob_get_clean()), SiteDispatcher::getCurrentRootSiteNode()->getWidth(), null, CENTER, BOTTOM);
+			$allwrapper->add(new UnstyledBlock(ob_get_clean()), SiteDispatcher::getCurrentRootNode()->getWidth(), null, CENTER, BOTTOM);
 		}
 		
 		return $allwrapper;

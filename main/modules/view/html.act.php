@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.8 2008/03/31 20:07:48 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.9 2008/03/31 20:10:29 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
@@ -27,7 +27,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.8 2008/03/31 20:07:48 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.9 2008/03/31 20:10:29 adamfranco Exp $
  */
 
 /**
@@ -39,7 +39,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.8 2008/03/31 20:07:48 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.9 2008/03/31 20:10:29 adamfranco Exp $
  */
 class htmlAction
 	extends displayAction 
@@ -95,7 +95,7 @@ class htmlAction
 		/*********************************************************
 		 * Additional setup
 		 *********************************************************/
-		$rootSiteComponent = SiteDispatcher::getCurrentRootSiteNode();
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
 		
 		$visitor = $this->getSiteVisitor();
 		
@@ -292,10 +292,10 @@ class htmlAction
 		ob_start();
 		if ($authZ->isUserAuthorizedBelow(
 				$idManager->getId("edu.middlebury.authorization.modify"),
-				SiteDispatcher::getCurrentRootSiteNode()->getQualifierId())
+				SiteDispatcher::getCurrentRootNode()->getQualifierId())
 			|| $authZ->isUserAuthorizedBelow(
 				$idManager->getId("edu.middlebury.authorization.add_children"),
-				SiteDispatcher::getCurrentRootSiteNode()->getQualifierId()))
+				SiteDispatcher::getCurrentRootNode()->getQualifierId()))
 		{
 			print "<div class='commands'>";
 

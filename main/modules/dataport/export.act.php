@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.6 2008/03/31 20:07:47 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.7 2008/03/31 20:10:28 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.6 2008/03/31 20:07:47 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.7 2008/03/31 20:10:28 adamfranco Exp $
  */
 class exportAction
 	extends Action
@@ -54,7 +54,7 @@ class exportAction
 		$harmoni = Harmoni::instance();
 				
 		$component = SiteDispatcher::getCurrentNode();
-		$site = SiteDispatcher::getCurrentRootSiteNode();
+		$site = SiteDispatcher::getCurrentRootNode();
 		
 		$slotMgr = SlotManager::instance();
 		$slot = $slotMgr->getSlotBySiteId($site->getId());

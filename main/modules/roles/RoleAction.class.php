@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RoleAction.class.php,v 1.4 2008/03/31 20:07:47 adamfranco Exp $
+ * @version $Id: RoleAction.class.php,v 1.5 2008/03/31 20:10:28 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RoleAction.class.php,v 1.4 2008/03/31 20:07:47 adamfranco Exp $
+ * @version $Id: RoleAction.class.php,v 1.5 2008/03/31 20:10:28 adamfranco Exp $
  */
 abstract class RoleAction
 	extends MainWindowAction
@@ -35,7 +35,7 @@ abstract class RoleAction
 	 * @since 11/14/07
 	 */
 	protected function getSiteId () {
-		return SiteDispatcher::getCurrentRootSiteNode()->getQualifierId();
+		return SiteDispatcher::getCurrentRootNode()->getQualifierId();
 	}
 	
 	/**
@@ -46,7 +46,7 @@ abstract class RoleAction
 	 * @since 11/14/07
 	 */
 	protected function getSite () {
-		return SiteDispatcher::getCurrentRootSiteNode();
+		return SiteDispatcher::getCurrentRootNode();
 	}
 	
 	/**

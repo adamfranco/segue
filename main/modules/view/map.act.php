@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.8 2008/03/31 20:07:48 adamfranco Exp $
+ * @version $Id: map.act.php,v 1.9 2008/03/31 20:10:29 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteMapSiteVisitor.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.8 2008/03/31 20:07:48 adamfranco Exp $
+ * @version $Id: map.act.php,v 1.9 2008/03/31 20:10:29 adamfranco Exp $
  */
 class mapAction 
 	extends MainWindowAction
@@ -59,7 +59,7 @@ class mapAction
 		$azMgr = Services::getService('AuthZ');
 		return $azMgr->isUserAuthorizedBelow(
 			$idMgr->getId('edu.middlebury.authorization.view'),
-			SiteDispatcher::getCurrentRootSiteNode()->getQualifierId());
+			SiteDispatcher::getCurrentRootNode()->getQualifierId());
 	}
 	
 	/**
@@ -151,7 +151,7 @@ class mapAction
 		print "\n\t<button onclick='expandAllSiteMapChildren(document.get_element_by_id(\"site_children\"));'>"._("Expand All")."</button>";
 		print "\n\t<button onclick='collapseAllSiteMapChildren(document.get_element_by_id(\"site_children\"));'>"._("Collapse All")."</button>";
 						
-		$rootSiteComponent = SiteDispatcher::getCurrentRootSiteNode();
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
 		
 		$this->isHeaderFooterVisitor = new HeaderFooterSiteVisitor($rootSiteComponent);
 		
