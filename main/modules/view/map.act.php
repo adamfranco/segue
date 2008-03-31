@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.4 2008/03/19 20:46:03 achapin Exp $
+ * @version $Id: map.act.php,v 1.5 2008/03/31 16:31:09 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteMapSiteVisitor.class.php");
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.4 2008/03/19 20:46:03 achapin Exp $
+ * @version $Id: map.act.php,v 1.5 2008/03/31 16:31:09 achapin Exp $
  */
 class mapAction 
 	extends MainWindowAction
@@ -259,7 +259,7 @@ class mapAction
 		
 		print $this->getTabs()."\t\t";
 		print "<div class='title'>";
-		$nodeUrl = $harmoni->request->quickURL('ui1', 'view', array('node' => $siteComponent->getId()));
+		$nodeUrl = $harmoni->request->quickURL('view', 'html', array('node' => $siteComponent->getId()));
 		print "<a href='".$nodeUrl."' ";
 		print ' onclick="';
 		print "if (window.opener) { ";
@@ -345,21 +345,33 @@ class mapAction
 		print "</div>";
 		
 		$this->printNodeInfo($siteComponent);
+				
+		$nestedMenuOrganizer = $siteComponent->getNestedMenuOrganizer();
+		// sub-menu children
+		if (!is_null($nestedMenuOrganizer)) {
+			print $this->getTabs()."\t";
+			print "<div class='children'>";
+			$this->depth++;
+			$this->depth++;			
+			$nestedMenuOrganizer->acceptVisitor($this);
+			$this->depth--;
+			$this->depth--;			
+			print $this->getTabs()."\t";
+			print "</div>";		
 		
-		//children
-		print $this->getTabs()."\t";
-		print "<div class='children'>";
-		$this->depth++;
-		$this->depth++;
-		$organizer = $siteComponent->getOrganizer();
-		$organizer->acceptVisitor($this);
-		$this->depth--;
-		$this->depth--;
-		
-		print $this->getTabs()."\t";
-		print "</div>";
-		
-		
+		// plugin children
+		} else {			
+			print $this->getTabs()."\t";
+			print "<div class='children'>";
+			$this->depth++;
+			$this->depth++;
+			$organizer = $siteComponent->getOrganizer();
+			$organizer->acceptVisitor($this);
+			$this->depth--;
+			$this->depth--;			
+			print $this->getTabs()."\t";
+			print "</div>";				
+		}
 		$this->printNodeEnd($siteComponent);
 	}
 	

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.225 2008/03/31 16:06:19 achapin Exp $
+ @version $Id: changelog.xml,v 1.226 2008/03/31 16:31:08 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='alex' date='2008-03-31' ref='1930278' reftype='bug'>
+			View: Fixed site map so that sub-menu items are displayed.
+		</fix>
 		<fix author='alex' date='2008-03-31' ref='1930254' reftype='bug'>
 			Site Display: Fixed RSS feeds of navigational nodes with sub-menus so that 
 			content blocks in sub-menus are also included in the feed.
