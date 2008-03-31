@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editHeader.act.php,v 1.1 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: editHeader.act.php,v 1.2 2008/03/31 19:04:54 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/view.act.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/Rendering/EditHeaderFooterSiteVisitor.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editHeader.act.php,v 1.1 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: editHeader.act.php,v 1.2 2008/03/31 19:04:54 adamfranco Exp $
  */
 class editHeaderAction
 	extends viewAction
@@ -38,8 +38,7 @@ class editHeaderAction
 	function getSiteVisitor () {
 		if (!isset($this->visitor)) {
 			
-			$requestedNode = $this->_director->getSiteComponentById(
-				RequestContext::value("node"));
+			$requestedNode = $this->getCurrentNode());
 			
 			$this->visitor = new EditHeaderFooterSiteVisitor();
 		}

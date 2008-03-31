@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.13 2008/03/25 15:29:12 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.14 2008/03/31 19:04:54 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -28,7 +28,7 @@ require_once(dirname(__FILE__)."/Rendering/NoHeaderFooterEditModeSiteVisitor.cla
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.13 2008/03/25 15:29:12 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.14 2008/03/31 19:04:54 adamfranco Exp $
  */
 class editviewAction
 	extends htmlAction 
@@ -44,8 +44,7 @@ class editviewAction
 	function getSiteVisitor () {
 		if (!isset($this->visitor)) {
 			
-			$requestedNode = $this->_director->getSiteComponentById(
-				RequestContext::value("node"));
+			$requestedNode = $this->getCurrentNode();
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
 				$this->visitor = new NoHeaderFooterDetailEditModeSiteVisitor($requestedNode);
@@ -72,13 +71,13 @@ class editviewAction
 		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$this->rootSiteComponent->getQualifierId()))
+			$this->getCurrentRootSiteNode()->getQualifierId()))
 		{
 			$visitor = $this->getSiteVisitor();
 			$controlsHTML = $visitor->getBarPreHTML('#090')
 				.$visitor->getControlsHTML(
 					"<em>"._("Site")."</em>", 
-					$this->rootSiteComponent->acceptVisitor($visitor->_controlsVisitor), 
+					$this->getCurrentRootSiteNode()->acceptVisitor($visitor->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, false);
 			$mainScreen->setPreHTML($controlsHTML.$mainScreen->getPreHTML($null = null));
 			
@@ -90,7 +89,7 @@ class editviewAction
 		$idManager = Services::getService("Id");
 		if ($authZ->isUserAuthorizedBelow(
 			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
-			$this->rootSiteComponent->getQualifierId()))
+			$this->getCurrentRootSiteNode()->getQualifierId()))
 		{
 			ob_start();
 			$harmoni = Harmoni::instance();
@@ -102,7 +101,7 @@ class editviewAction
 			print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
 			print _("Permissions")."</button>";
 			print "\n</div>";
-			$allwrapper->add(new UnstyledBlock(ob_get_clean()), $this->rootSiteComponent->getWidth(), null, CENTER, BOTTOM);
+			$allwrapper->add(new UnstyledBlock(ob_get_clean()), $this->getCurrentRootSiteNode()->getWidth(), null, CENTER, BOTTOM);
 		}
 		
 		return $allwrapper;

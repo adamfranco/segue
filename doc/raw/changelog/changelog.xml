@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.228 2008/03/31 19:04:54 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.229 2008/03/31 19:05:07 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -19,7 +19,8 @@
 		</fix>
 		<change author='adam' date='2008-03-31' ref='1930271' reftype='bug'>
 			View/UI1/UI2: Refactored access to the current node and the site director
-			between the view, ui1, and ui2 modules. Now use methods: getCurrentNode(), getCurrentNodeId(), getCurrentRootSiteNode(), getDirector().
+			between the view, ui1, and ui2 modules. Now use methods: getCurrentNode(), 
+			getCurrentNodeId(), getCurrentRootSiteNode(), getDirector().
 		</change>
 		<fix author='adam' date='2008-03-31' >
 			View: Fixed site map so that header and footer items are labelled.
