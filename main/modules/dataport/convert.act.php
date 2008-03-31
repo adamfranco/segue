@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.15 2008/03/26 20:57:20 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.16 2008/03/31 23:18:49 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/Segue1MappingImportSiteVisitor.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.15 2008/03/26 20:57:20 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.16 2008/03/31 23:18:49 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -97,7 +97,7 @@ class convertAction
 			$status->updateStatistics();
 			
 			// Import the converted site
-			$director = $this->getSiteDirector();
+			$director = SiteDispatcher::getSiteDirector();
 			$importer = new Segue1MappingImportSiteVisitor($doc, $destPath, $director);
 			$status->updateStatistics();
 			$importer->enableStatusOutput();

@@ -6,13 +6,12 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.12 2008/03/26 20:57:20 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.13 2008/03/31 23:18:49 adamfranco Exp $
  */ 
 require_once(MYDIR."/main/modules/ui1/add.act.php");
 
 
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
 
 require_once(dirname(__FILE__)."/Rendering/DomImportSiteVisitor.class.php");
@@ -29,7 +28,7 @@ require_once(dirname(__FILE__)."/Rendering/UntrustedAgentAndTimeDomImportSiteVis
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.12 2008/03/26 20:57:20 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.13 2008/03/31 23:18:49 adamfranco Exp $
  */
 class importAction
 	extends addAction
@@ -205,7 +204,7 @@ class importAction
 			
 			
 			// Do the import
-			$director = $this->getSiteDirector();
+			$director = SiteDispatcher::getSiteDirector();
 			
 			$doc = new Harmoni_DOMDocument;
 			$doc->load($decompressDir."/site.xml");
