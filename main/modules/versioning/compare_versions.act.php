@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: compare_versions.act.php,v 1.3 2008/03/25 15:30:14 achapin Exp $
+ * @version $Id: compare_versions.act.php,v 1.4 2008/04/01 16:21:21 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../view/html.act.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/Rendering/HistoryCompareSiteVisitor.class.php")
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: compare_versions.act.php,v 1.3 2008/03/25 15:30:14 achapin Exp $
+ * @version $Id: compare_versions.act.php,v 1.4 2008/04/01 16:21:21 adamfranco Exp $
  */
 class compare_versionsAction
 	extends htmlAction
@@ -38,8 +38,7 @@ class compare_versionsAction
 	public function getSiteVisitor () {
 		if (!isset($this->visitor)) {
 			
-			$requestedNode = $this->_director->getSiteComponentById(
-				RequestContext::value("node"));
+			$requestedNode = SiteDispatcher::getCurrentNode();
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
 				$this->visitor = new HistoryCompareSiteVisitor($requestedNode);

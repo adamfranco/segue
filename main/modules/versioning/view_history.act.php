@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_history.act.php,v 1.3 2008/03/21 00:16:31 achapin Exp $
+ * @version $Id: view_history.act.php,v 1.4 2008/04/01 16:21:21 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../view/html.act.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/Rendering/HistorySiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: view_history.act.php,v 1.3 2008/03/21 00:16:31 achapin Exp $
+ * @version $Id: view_history.act.php,v 1.4 2008/04/01 16:21:21 adamfranco Exp $
  */
 class view_historyAction
 	extends htmlAction
@@ -38,8 +38,7 @@ class view_historyAction
 	public function getSiteVisitor () {
 		if (!isset($this->visitor)) {
 			
-			$requestedNode = $this->_director->getSiteComponentById(
-				RequestContext::value("node"));
+			$requestedNode = SiteDispatcher::getCurrentNode();
 			
 			if ($requestedNode->acceptVisitor(new IsBlockVisitor))
 				$this->visitor = new HistorySiteVisitor($requestedNode);
