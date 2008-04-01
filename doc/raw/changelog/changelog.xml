@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.238 2008/04/01 16:21:21 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.239 2008/04/01 16:31:14 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -26,6 +26,9 @@
 		</fix>
 		<fix author='adam' date='2008-04-01' ref='1931223' reftype='bug'>
 			Versioning: fixing up action to use the new SiteDispatcher.
+		</fix>
+		<fix author='adam' date='2008-04-01' ref='1931211' reftype='bug'>
+			Slots: Updated default config to reflect actual groups.
 		</fix>
 	</version>
 	<version number="2.0-beta-17" date="2008-03-31">
