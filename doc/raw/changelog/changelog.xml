@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.240 2008/04/01 16:46:40 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.241 2008/04/01 20:32:48 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-04-01' ref='1918691' reftype='fr'>
+			Portal: New Folder-View for portal. This speeds loading and provides for
+			easier finding of sites.
+		</new>
 		<change author='adam' date='2008-04-01' ref='1926683' reftype='fr'>
 			Migration: Site importing is now logged.
 		</change>

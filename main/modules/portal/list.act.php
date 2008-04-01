@@ -1,46 +1,36 @@
 <?php
 /**
- * @package segue.modules.classic_ui
+ * @since 4/1/08
+ * @package segue.modules.portal
  * 
- * @copyright Copyright &copy; 2005, Middlebury College
+ * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.25 2008/03/18 20:25:30 achapin Exp $
+ * @version $Id: list.act.php,v 1.26 2008/04/01 20:32:50 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
-require_once(HARMONI."GUIManager/StyleProperties/MinHeightSP.class.php");
 require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 require_once(MYDIR."/main/modules/window/display.act.php");
+require_once(HARMONI."GUIManager/StyleProperties/MinHeightSP.class.php");
 
+require_once(dirname(__FILE__)."/PortalManager.class.php");
 
 /**
+ * This is a new portal list that makes use of the new PortalCategories and PortalFolders
+ * systems.
  * 
+ * @since 4/1/08
+ * @package segue.modules.portal
  * 
- * @package segue.modules.classic_ui
- * 
- * @copyright Copyright &copy; 2005, Middlebury College
+ * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.25 2008/03/18 20:25:30 achapin Exp $
+ * @version $Id: list.act.php,v 1.26 2008/04/01 20:32:50 adamfranco Exp $
  */
-class listAction 
+class listAction
 	extends MainWindowAction
 {
-
-	/**
-	 * @var array $sitesPrinted;  
-	 * @access public
-	 * @since 8/23/07
-	 */
-	public static $sitesPrinted = array();
-	
-	/**
-	 * @var array $slotsPrinted;  
-	 * @access public
-	 * @since 8/23/07
-	 */
-	public static $slotsPrinted = array();
 	
 	/**
 	 * Check Authorizations
@@ -51,30 +41,6 @@ class listAction
 	 */
 	function isAuthorizedToExecute () {
 		return TRUE;
-	}
-	
-	/**
-	 * Return the heading text for this action, or an empty string.
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 4/26/05
-	 */
-	function getHeadingText () {
-		ob_start();
-		
-		// print the ui-mode changing form
-		print $this->getUiSwitchForm();
-	
-		$authN = Services::getService("AuthN");
-		if ($authN->isUserAuthenticatedWithAnyType()) {
-			print _("Your Portal");
-		} else {
-			print _("Portal (log in to see your own portal)");
-		}
-		print "\n\t<div style='clear: both; height: 0px;'>&nbsp;</div>";
-		
-		return ob_get_clean();
 	}
 	
 	/**
@@ -102,169 +68,129 @@ class listAction
 	}
 	
 	/**
-	 * Build the content for this action
+	 * Return the heading text for this action, or an empty string.
 	 * 
-	 * @return boolean
+	 * @return string
 	 * @access public
 	 * @since 4/26/05
 	 */
-	function buildContent () {
-		$repositoryManager = Services::getService("Repository");
-		$idManager = Services::getService("Id");
-		$authZ = Services::getService("AuthZ");
-		$authN = Services::getService("AuthN");
-		$harmoni = Harmoni::instance();
-		
-		// Creation of new personal slots
-		$harmoni->request->startNamespace('personal_slot');
-		if (RequestContext::value('slot_postfix') && PersonalSlot::hasPersonal()) {
-			$newSlotname = PersonalSlot::getPersonalShortname($authN->getFirstUserId())
-				."-".RequestContext::value('slot_postfix');
-			// Replace delimiting marks with an underscore
-			$newSlotname = preg_replace('/[\s\/=+.,()]+/i', '_', $newSlotname);
-			// Remove anything left over (other than letters/numbers/-/_)
-			$newSlotname = preg_replace('/[^a-z0-9_-]/i', '', $newSlotname);
-			
-			$slot = new PersonalSlot(strtolower($newSlotname));
-			$slot->addOwner($authN->getFirstUserId());
-			
-			// Log this change.
-			if (Services::serviceRunning("Logging")) {
-				$loggingManager = Services::getService("Logging");
-				$log = $loggingManager->getLogForWriting("Segue");
-				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
-								"A format in which the acting Agent[s] and the target nodes affected are specified.");
-				$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
-								"Normal events.");
-				
-				$item = new AgentNodeEntryItem("Create Placeholder", "New placeholder created:  '".$slot->getShortname()."'.");
-				
-				$log->appendLogWithTypes($item,	$formatType, $priorityType);
-			}
-		}
-		$harmoni->request->endNamespace();
-		
-		$actionRows = $this->getActionRows();
-				
-		
-		
-		$repository = $repositoryManager->getRepository(
-			$idManager->getId("edu.middlebury.segue.sites_repository"));
-		
-		
-		$siteType = new HarmoniType('segue', 
-							'edu.middlebury', 
-							'SiteNavBlock', 
-							'An Asset of this type is the root node of a Segue site.');
-		
-		$courseMgr = SegueCourseManager::instance();
-		$slotMgr = SlotManager::instance();
-		
-		/*********************************************************
-		 * Future Classes
-		 *********************************************************/
-		$courses = $courseMgr->getUsersFutureCourses(SORT_DESC);
-		if (count($courses)) {
-			$actionRows->add(new Heading(_("Future Classes"), 2));
-			foreach ($courses as $course) {
-				$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
-				self::$slotsPrinted[] = $slot->getShortname();
-				$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
-			}
-		}
-		
-		/*********************************************************
-		 * Current Classes
-		 *********************************************************/
-		$courses = $courseMgr->getUsersCurrentCourses(SORT_DESC);
-		if (count($courses)) {
-			$actionRows->add(new Heading(_("Current Classes"), 2));
-			foreach ($courses as $course) {
-				$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
-				self::$slotsPrinted[] = $slot->getShortname();
-				$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
-			}
-		}
-		
-		/*********************************************************
-		 * Past Classes
-		 *********************************************************/
-		$courses = $courseMgr->getUsersPastCourses(SORT_DESC);
-		if (count($courses)) {
-			$actionRows->add(new Heading(_("Past Classes"), 2));
-			foreach ($courses as $course) {
-				$slot = $slotMgr->getSlotByShortname($course->getId()->getIdString());
-				self::$slotsPrinted[] = $slot->getShortname();
-				$actionRows->add($this->printSlot($slot), null, null, LEFT, CENTER);
-			}
-		}
-		
-		/*********************************************************
-		 * Personal Slots owned by the user
-		 *********************************************************/
+	function getHeadingText () {
 		ob_start();
 		
-		if (PersonalSlot::hasPersonal()) {
-			$harmoni->request->startNamespace('personal_slot');
-			$url = $harmoni->request->quickURL();
-			print "\n<form class='add_slot_form' method='post' action='$url'>";
-			print "<strong>"._("Create a new placeholder:")."</strong><br/>";
-			print PersonalSlot::getPersonalShortname($authN->getFirstUserId());
-			print "-";
-			print "\n\t<input type='text' name='".RequestContext::name('slot_postfix')."' value='' size='10'/>";
-			print "\n\t<input type='submit' value='"._('Create')."'/>";
-			print "\n</form>\n";
-			$harmoni->request->endNamespace();
-		}
-		
-		$slotComponents = array();
-		foreach ($slotMgr->getSlotsByType(Slot::personal) as $slot) {
-			if (!in_array($slot->getShortName(), self::$slotsPrinted)) {
-				self::$slotsPrinted[] = $slot->getShortname();
-				$slotComponents[] = $this->printSlot($slot);
-			}
-		}
-		
-		if (PersonalSlot::hasPersonal() || count($slotComponents)) {
-			print _("Personal Sites");
-			$actionRows->add(new Heading(ob_get_clean(), 2));
-			foreach ($slotComponents as $component) {
-				$actionRows->add($component, null, null, LEFT, CENTER);
-			}
+		// print the ui-mode changing form
+		print $this->getUiSwitchForm();
+	
+		$authN = Services::getService("AuthN");
+		if ($authN->isUserAuthenticatedWithAnyType()) {
+			print _("Your Portal");
 		} else {
-			ob_end_clean();
+			print _("Portal (log in to see your own portal)");
 		}
+		print "\n\t<div style='clear: both; height: 0px;'>&nbsp;</div>";
+		
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Execute this action
+	 * 
+	 * @return mixed
+	 * @access public
+	 * @since 4/1/08
+	 */
+	public function buildContent () {
+		$actionRows = $this->getActionRows();
+		$portalWrapper = $actionRows->add(new Container(new XLayout, BLANK, 1), "100%", null, CENTER, TOP);
+		
+		$harmoni = Harmoni::instance();
+		// Categories
+		ob_start();
+		$portalMgr = PortalManager::instance();
+		print "\n<ul class='portal_categories'>";
+		foreach ($portalMgr->getCategories() as $category) {
+			print "\n\t<li class='portal_category'>";
+			print "\n\t\t<div class='title'>".$category->getDisplayName()."</div>";
+			if (strlen($category->getDescription()))
+				print "\n\t\t<div class='description'>".$category->getDescription()."</div>";
+			
+			print "\n\t\t<ul class='portal_folders'>";
+			foreach ($category->getFolders() as $folder) {
+				print "\n\t\t\t<li class='portal_folder";
+				if ($folder->getIdString() == $this->getCurrentFolderId())
+					print " current";
+				print "'>";
+				print "\n\t\t\t\t<div class='title'>";
+				print "<a href='";
+				print $harmoni->request->quickURL(
+					$harmoni->request->getRequestedModule(),
+					$harmoni->request->getRequestedAction(),
+					array('folder' => $folder->getIdString()));
+				print "'>";
+				print $folder->getDisplayName();
+				print "</a></div>";
+				if (strlen($folder->getDescription()))
+					print "\n\t\t\t\t<div class='description'>".$folder->getDescription()."</div>";
+				print "\n\t\t\t</li>";
+			}
+			print "\n\t\t</ul>";
+			
+			print "\n\t</li>";
+		}
+		print "\n</ul>";
+		$portalWrapper->add(new Block(ob_get_clean(), STANDARD_BLOCK), "150px", null, CENTER, TOP);
 		
 		/*********************************************************
-		 * Other Slots owned by the user
+		 * Sites in the current folder.
 		 *********************************************************/
-		$slotComponents = array();
+		$siteList = $portalWrapper->add(new Container(new YLayout, BLOCK, 1), null, null, CENTER, TOP);
+		$currentFolder = $portalMgr->getFolder($this->getCurrentFolderId());
 		
-		foreach ($slotMgr->getSlots() as $slot) {
-			if (!in_array($slot->getShortName(), self::$slotsPrinted)) {
-				self::$slotsPrinted[] = $slot->getShortname();
-				$slotComponents[] = $this->printSlot($slot);
+		// controls
+		$controls = $currentFolder->getControlsHtml();
+		if (strlen($controls))
+			$siteList->add(new Block($controls, HIGHLIT_BLOCK));
+		
+		// Sites
+		$resultPrinter = new ArrayResultPrinter($currentFolder->getSlots(), 1, 20, array($this, "printSlot"));
+		$resultLayout = $resultPrinter->getLayout(array($this, "canView"));
+		$siteList->add($resultLayout, "100%", null, LEFT, CENTER);
+		
+	}
+	
+	/**
+	 * Answer a list of categories
+	 * 
+	 * @return array of PortalCategory objects
+	 * @access protected
+	 * @since 4/1/08
+	 */
+	protected function getCategories () {
+		return array(new MainPortalCategory);
+	}
+	
+	/**
+	 * Answer the current Folder id
+	 * 
+	 * @return string
+	 * @access private
+	 * @since 4/1/08
+	 */
+	private function getCurrentFolderId () {
+		if (!isset($this->currentFolderId)) {
+			if (RequestContext::value('folder')) {
+				try {
+					$portalMgr = PortalManager::instance();
+					$folder = $portalMgr->getFolder(RequestContext::value('folder'));
+					$this->currentFolderId = $folder->getIdString();
+				} catch (UnknownIdException $e) {
+					$this->currentFolderId = 'personal';
+				}
+			} else {
+				$this->currentFolderId = 'personal';
 			}
 		}
 		
-		if (count($slotComponents)) {
-			$actionRows->add(new Heading(_("Other Sites"), 2));
-			foreach ($slotComponents as $component) {
-				$actionRows->add($component, null, null, LEFT, CENTER);
-			}
-		}
-		
-		/*********************************************************
-		 * All other Sites
-		 *********************************************************/
-		$actionRows->add(new Heading(_("All Other Sites You Can View"), 2));
-		$assets = $repository->getAssetsByType($siteType);
-		
-		
-		// Print out the results
-		$resultPrinter = new IteratorResultPrinter($assets, 1, 10, "printSiteShort", $this);
-		$resultLayout = $resultPrinter->getLayout("canView");
-		$actionRows->add($resultLayout, "100%", null, LEFT, CENTER);
+		return $this->currentFolderId;
 	}
 	
 	/**
@@ -275,9 +201,9 @@ class listAction
 	 * @access protected
 	 * @since 8/22/07
 	 */
-	protected function printSlot ( Slot $slot ) {
+	public function printSlot ( Slot $slot ) {
 		if ($slot->getSiteId()) {
-			return printSiteShort($slot->getSiteAsset(), $this, 0); 			
+			return $this->printSiteShort($slot->getSiteAsset(), $this, 0); 			
 		} 
 		// If no site is created
 		else {
@@ -310,115 +236,111 @@ class listAction
 			return new Block(ob_get_clean(), EMPHASIZED_BLOCK);
 		}
 	}
-}
-
-/**
- * return true if the current user can view this asset
- * 
- * @param object Asset $asset
- * @return boolean
- * @access public
- * @since 1/18/06
- */
-function canView( $asset ) {
-	// Filter out any sites we have already printed.
-	if (in_array($asset->getId()->getIdString(), listAction::$sitesPrinted))
-		return false;
 	
-	$authZ = Services::getService("AuthZ");
-	$idManager = Services::getService("Id");
-	
-	if ($authZ->isUserAuthorizedBelow($idManager->getId("edu.middlebury.authorization.view"), $asset->getId()))
-	{
-		return TRUE;
-	} else {
-		return FALSE;
-	}
-}
-
-/**
- * 
- * 
- * @param <##>
- * @return <##>
- * @access public
- * @since 1/18/06
- */
-function printSiteShort($asset, $action, $num) {
-	$harmoni = Harmoni::instance();
-	$assetId = $asset->getId();
-	
-	listAction::$sitesPrinted[] = $assetId->getIdString();
-			
-	$container = new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
-	$fillContainerSC = new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
-	$fillContainerSC->addSP(new MinHeightSP("88%"));
-// 	$fillContainerSC->addSP(new WidthSP("100%"));
-// 	$fillContainerSC->addSP(new BorderSP("3px", "solid", "#F00"));
-	$container->addStyle($fillContainerSC);
-	
-	$centered = new StyleCollection("*.centered", "centered", "Centered", "Centered Text");
-	$centered->addSP(new TextAlignSP("center"));	
-	
-	// Use the alias instead of the Id if it is available.
-	$slotManager = SlotManager::instance();
-	try {
-		$slot = $slotManager->getSlotBySiteId($assetId);
-		$params = array('site' => $slot->getShortname());
-	} catch (Exception $e) {
-		$params = array('node' => $assetId->getIdString());
-	}
-	$viewUrl = $harmoni->request->quickURL('view', 'html', $params);
-	
-	// Print out the content
-	ob_start();
-	print "\n\t<div class='portal_list_slotname'>";
-	if (isset($slot)) {
-		print $slot->getShortname();
-	} else {
-		print _("ID#").": ".$assetId->getIdString();
-	}
-	print "\n\t</div>";
-	print "\n\t<div class='portal_list_site_title'>";
-	print "\n\t\t<a href='".$viewUrl."'>";
-	print "\n\t\t\t<strong>".HtmlString::getSafeHtml($asset->getDisplayName())."</strong>";
-	print "\n\t\t</a>";
-	print "\n\t</div>";
-	
-	print "\n\t<div class='portal_list_controls'>\n\t\t";
-	$controls = array();
-	$authZ = Services::getService('AuthZ');
-	$idMgr = Services::getService('Id');
-	
-// 	if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId))
-		$controls[] = "<a href='".$viewUrl."'>"._("view")."</a>";
-	
-	if ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
-		|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId))
-		$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
-	
-	if ($action->getUiModule() == 'ui2' 
-			&& ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
-		|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId)))
-	{
-		$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+	/**
+	 * return true if the current user can view this asset
+	 * 
+	 * @param object Slot $slot
+	 * @return boolean
+	 * @access public
+	 * @since 1/18/06
+	 */
+	public function canView( Slot $slot ) {		
+		if (!$slot->siteExists())
+			return true;
+		
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorizedBelow($idManager->getId("edu.middlebury.authorization.view"), $slot->getSiteId()))
+		{
+			return TRUE;
+		} else {
+			return FALSE;
+		}
 	}
 	
-	if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
-		$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
-	
-	print implode("\n\t\t | ", $controls);
-	print "\n\t</div>";
-	
-	$description = HtmlString::withValue($asset->getDescription());
-	$description->trim(25);
-	print  "\n\t<div class='portal_list_site_description'>".$description->asString()."</div>";	
-	
-	$component = new UnstyledBlock(ob_get_contents());
-	ob_end_clean();
-	$container->add($component, "100%", null, LEFT, TOP);
-	
-	return $container;
+	/**
+	 * 
+	 * 
+	 * @param <##>
+	 * @return <##>
+	 * @access public
+	 * @since 1/18/06
+	 */
+	public function printSiteShort(Asset $asset, $action, $num) {
+		$harmoni = Harmoni::instance();
+		$assetId = $asset->getId();
+						
+		$container = new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
+		$fillContainerSC = new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
+		$fillContainerSC->addSP(new MinHeightSP("88%"));
+	// 	$fillContainerSC->addSP(new WidthSP("100%"));
+	// 	$fillContainerSC->addSP(new BorderSP("3px", "solid", "#F00"));
+		$container->addStyle($fillContainerSC);
+		
+		$centered = new StyleCollection("*.centered", "centered", "Centered", "Centered Text");
+		$centered->addSP(new TextAlignSP("center"));	
+		
+		// Use the alias instead of the Id if it is available.
+		$slotManager = SlotManager::instance();
+		try {
+			$slot = $slotManager->getSlotBySiteId($assetId);
+			$params = array('site' => $slot->getShortname());
+		} catch (Exception $e) {
+			$params = array('node' => $assetId->getIdString());
+		}
+		$viewUrl = $harmoni->request->quickURL('view', 'html', $params);
+		
+		// Print out the content
+		ob_start();
+		print "\n\t<div class='portal_list_slotname'>";
+		if (isset($slot)) {
+			print $slot->getShortname();
+		} else {
+			print _("ID#").": ".$assetId->getIdString();
+		}
+		print "\n\t</div>";
+		print "\n\t<div class='portal_list_site_title'>";
+		print "\n\t\t<a href='".$viewUrl."'>";
+		print "\n\t\t\t<strong>".HtmlString::getSafeHtml($asset->getDisplayName())."</strong>";
+		print "\n\t\t</a>";
+		print "\n\t</div>";
+		
+		print "\n\t<div class='portal_list_controls'>\n\t\t";
+		$controls = array();
+		$authZ = Services::getService('AuthZ');
+		$idMgr = Services::getService('Id');
+		
+	// 	if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId))
+			$controls[] = "<a href='".$viewUrl."'>"._("view")."</a>";
+		
+		if ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
+			|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId))
+			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
+		
+		if ($action->getUiModule() == 'ui2' 
+				&& ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
+			|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId)))
+		{
+			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+		}
+		
+		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
+			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
+		
+		print implode("\n\t\t | ", $controls);
+		print "\n\t</div>";
+		
+		$description = HtmlString::withValue($asset->getDescription());
+		$description->trim(25);
+		print  "\n\t<div class='portal_list_site_description'>".$description->asString()."</div>";	
+		
+		$component = new UnstyledBlock(ob_get_contents());
+		ob_end_clean();
+		$container->add($component, "100%", null, LEFT, TOP);
+		
+		return $container;
+	}
 }
 
 ?>

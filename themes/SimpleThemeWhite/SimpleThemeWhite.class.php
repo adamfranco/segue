@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.32 2008/03/31 18:52:29 achapin Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.33 2008/04/01 20:32:50 adamfranco Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -2116,6 +2116,46 @@ class SimpleThemeWhite extends Theme {
 		font-size: 10px;
 		vertical-align: middle;	
 		border: 1px solid;
+	}
+	
+	ul.portal_categories {
+		padding-left: 20px;
+		white-space: nowrap;
+	}
+	
+	ul.portal_categories div.title {
+		font-weight: bolder;
+	}
+	
+	ul.portal_categories li {
+		list-style-image:  url(".MYPATH."/images/icons/16x16/folder_open.png);
+		list-style-position: outside;
+		margin-bottom: 15px;
+		border-top: 1px dotted;
+	}
+	
+	ul.portal_categories div.description {
+		white-space: normal;
+		font-size: smaller;
+	}
+	
+	ul.portal_folders div.title {
+		font-weight: normal;
+	}
+	
+	ul.portal_categories li.current div.title {
+		font-weight: bolder;
+	}
+	
+	
+	ul.portal_folders {
+		margin-top: 5px;
+		padding-left: 10px;
+	}
+	
+	ul.portal_folders li {
+		margin-bottom: 5px;
+		border: 0px;
 	}
 
 /*********************************************************

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.12 2008/03/21 18:21:02 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.13 2008/04/01 20:32:49 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/AllSlotsIterator.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.12 2008/03/21 18:21:02 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.13 2008/04/01 20:32:49 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -238,7 +238,7 @@ class SlotManager {
 			$slot->mergeWithExternal();
 			$this->slots[$slot->getShortname()] = $slot;
 		} else {
-			throw new Exception("No Slot Found for site id, '$siteId'");
+			throw new UnknownIdException("No Slot Found for site id, '$siteId'");
 		}
 		
 		return $slot;
