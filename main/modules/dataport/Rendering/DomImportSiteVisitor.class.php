@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.16 2008/03/24 19:28:55 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.17 2008/04/01 13:36:30 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.16 2008/03/24 19:28:55 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.17 2008/04/01 13:36:30 adamfranco Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -133,7 +133,7 @@ class DomImportSiteVisitor
 	 * Start the import as a new site for the slot given.
 	 * 
 	 * @param string $slotShortname
-	 * @return void
+	 * @return object SiteNavBlockSiteComponent
 	 * @access public
 	 * @since 1/22/08
 	 */
@@ -146,6 +146,8 @@ class DomImportSiteVisitor
 		$site = $this->importSite();
 		$idMgr = Services::getService('Id');
 		$slot->setSiteId($idMgr->getId($site->getId()));
+		
+		return $site;
 	}
 	
 	/**
@@ -1220,7 +1222,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.16 2008/03/24 19:28:55 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.17 2008/04/01 13:36:30 adamfranco Exp $
  */
 class MissingNodeException
 	extends Exception

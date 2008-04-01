@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.13 2008/03/31 23:18:49 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.14 2008/04/01 13:36:30 adamfranco Exp $
  */ 
 require_once(MYDIR."/main/modules/ui1/add.act.php");
 
@@ -28,7 +28,7 @@ require_once(dirname(__FILE__)."/Rendering/UntrustedAgentAndTimeDomImportSiteVis
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: import.act.php,v 1.13 2008/03/31 23:18:49 adamfranco Exp $
+ * @version $Id: import.act.php,v 1.14 2008/04/01 13:36:30 adamfranco Exp $
  */
 class importAction
 	extends addAction
@@ -236,7 +236,7 @@ class importAction
 					$importer->addSiteAdministrator($idMgr->getId($adminIdString));
 			}
 			
-			$importer->importAtSlot($values['mode']['slotname']);
+			$site = $importer->importAtSlot($values['mode']['slotname']);
 			
 			// Delete the uploaded file
 			unlink($archivePath);
@@ -271,7 +271,40 @@ class importAction
 			
 			$wizard->backupFile->setValue(array('name' => null, 'size' => null, 'type' => null));
 			
+			/*********************************************************
+			 * Log the failure
+			 *********************************************************/
+			if (Services::serviceRunning("Logging")) {
+				$loggingManager = Services::getService("Logging");
+				$log = $loggingManager->getLogForWriting("Segue");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType = new Type("logging", "edu.middlebury", "Error",
+								"Recoverable errors.");
+				
+				$item = new AgentNodeEntryItem("Create Site", "Failure in importing site for placeholder, '".$values['mode']['slotname']."'.");
+				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			}
+			
 			return false;
+		}
+		
+		/*********************************************************
+		 * Log the success
+		 *********************************************************/
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			$item = new AgentNodeEntryItem("Create Site", "Site imported for placeholder, '".$values['mode']['slotname']."'.");
+			$item->addNodeId($site->getQualifierId());
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
 		}
 		
 		return true;

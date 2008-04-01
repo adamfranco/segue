@@ -5,11 +5,22 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.235 2008/03/31 23:09:48 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.236 2008/04/01 13:36:29 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-18" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<change author='adam' date='2008-04-01' ref='1926683' reftype='fr'>
+			Migration: Site importing is now logged.
+		</change>
+		<change author='adam' date='2008-04-01'>
+			Migration: Can now get site from import.
+		</change>
+	</version>
 	<version number="2.0-beta-17" date="2008-03-31">
 		<releaseNotes>
 			This release fixes a number of bugs to avoid errors in RSS feeds,

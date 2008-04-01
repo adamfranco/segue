@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.16 2008/03/31 23:18:49 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.17 2008/04/01 13:36:30 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/Segue1MappingImportSiteVisitor.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.16 2008/03/31 23:18:49 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.17 2008/04/01 13:36:30 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -105,7 +105,7 @@ class convertAction
 			$importer->enableRoleImport();
 			$importer->setOrigenSlotname($this->getSourceSlotName());
 			$importer->setDestinationSlotname($this->getDestSlotName());
-			$importer->importAtSlot($this->getDestSlotName());
+			$site = $importer->importAtSlot($this->getDestSlotName());
 			
 			// Set the media quota if it is bigger than our default
 			$quota = $importer->getMediaQuota();
@@ -120,6 +120,23 @@ class convertAction
 				print "\n<div>\n\t";
 				print $deleteException->getMessage();
 				print "\n</div>";
+			}
+			
+			/*********************************************************
+			 * Log the success
+			 *********************************************************/
+			if (Services::serviceRunning("Logging")) {
+				$loggingManager = Services::getService("Logging");
+				$log = $loggingManager->getLogForWriting("Segue");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+								"Normal events.");
+				
+				$item = new AgentNodeEntryItem("Create Site", "Site imported for placeholder, '".$this->getDestSlotName()."', from Segue 1 placeholder, '".$this->getSourceSlotName()."'.");
+				$item->addNodeId($site->getQualifierId());
+				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
 			}
 						
 			$harmoni = Harmoni::instance();
@@ -136,6 +153,22 @@ class convertAction
 				print "\n<div>\n\t";
 				print $deleteException->getMessage();
 				print "\n</div>";
+			}
+			
+			/*********************************************************
+			 * Log the failure
+			 *********************************************************/
+			if (Services::serviceRunning("Logging")) {
+				$loggingManager = Services::getService("Logging");
+				$log = $loggingManager->getLogForWriting("Segue");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType = new Type("logging", "edu.middlebury", "Error",
+								"Recoverable errors.");
+				
+				$item = new AgentNodeEntryItem("Create Site", "Failure in importing site for placeholder, '".$this->getDestSlotName()."', from Segue 1 placeholder, '".$this->getSourceSlotName()."'.");
+				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
 			}
 			
 			throw $importException;			
