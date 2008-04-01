@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.27 2008/03/19 17:12:05 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.28 2008/04/01 20:45:17 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.27 2008/03/19 17:12:05 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.28 2008/04/01 20:45:17 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -148,7 +148,7 @@ class displayAction
 			$contentDestination->add(new Block($harmoni->result, STANDARD_BLOCK), null, null, CENTER, TOP);
 		
 		// Right Column
-		$rightColumn = $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);
+// 		$rightColumn = $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);
 		// Basket
 // 		$basket = Basket::instance();
 // 		$rightColumn->add($basket->getSmallBasketBlock(), "100%", null, LEFT, TOP);
