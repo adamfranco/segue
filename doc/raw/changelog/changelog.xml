@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.241 2008/04/01 20:32:48 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.242 2008/04/01 20:35:45 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,7 +14,7 @@
 		<releaseNotes>
 			
 		</releaseNotes>
-		<new author='adam' date='2008-04-01' ref='1918691' reftype='fr'>
+		<new author='adam' date='2008-04-01' ref='1918691' reftype='fr' reporter='shell_sax'>
 			Portal: New Folder-View for portal. This speeds loading and provides for
 			easier finding of sites.
 		</new>
@@ -1218,6 +1218,10 @@
 		</reporter>
 		<reporter short="jeff_rehbach">
 			<name>Jeff Rehbach</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="shel_sax">
+			<name>Shel Sax</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>
