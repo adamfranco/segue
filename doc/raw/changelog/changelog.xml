@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.239 2008/04/01 16:31:14 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.240 2008/04/01 16:46:40 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -30,6 +30,9 @@
 		<fix author='adam' date='2008-04-01' ref='1931211' reftype='bug'>
 			Slots: Updated default config to reflect actual groups.
 		</fix>
+		<change author='adam' date='2008-04-01'>
+			UI1: Removed unused ui1.content_rss action.
+		</change>
 	</version>
 	<version number="2.0-beta-17" date="2008-03-31">
 		<releaseNotes>
