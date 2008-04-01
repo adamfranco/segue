@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.236 2008/04/01 13:36:29 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.237 2008/04/01 16:08:19 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -20,6 +20,10 @@
 		<change author='adam' date='2008-04-01'>
 			Migration: Can now get site from import.
 		</change>
+		<fix author='adam' date='2008-04-01' ref='1931244' reftype='bug'>
+			Breadcrumbs/RSS: Namespaces are now properly set when generating links.
+			This was broken in beta 17.
+		</fix>
 	</version>
 	<version number="2.0-beta-17" date="2008-03-31">
 		<releaseNotes>

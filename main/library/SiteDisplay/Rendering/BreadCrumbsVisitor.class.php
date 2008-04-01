@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.6 2008/03/13 18:58:21 achapin Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.7 2008/04/01 16:08:19 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.6 2008/03/13 18:58:21 achapin Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.7 2008/04/01 16:08:19 adamfranco Exp $
  */
 class BreadCrumbsVisitor 
 	implements SiteVisitor
@@ -59,12 +59,14 @@ class BreadCrumbsVisitor
 	 */
 	function addLink ( $node ) {
 		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
 		$this->_links[] = "<a href='"
 							.$harmoni->request->quickUrl(
 								$harmoni->request->getRequestedModule(),
 								$harmoni->request->getRequestedAction(),
 								array('node' => $node->getId()))
 							."'>".$node->getDisplayName()."</a>";
+		$harmoni->request->endNamespace();
 	}
 		
 	/**

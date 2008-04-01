@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RssLinkPrinter.class.php,v 1.3 2008/03/21 20:27:36 achapin Exp $
+ * @version $Id: RssLinkPrinter.class.php,v 1.4 2008/04/01 16:08:19 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: RssLinkPrinter.class.php,v 1.3 2008/03/21 20:27:36 achapin Exp $
+ * @version $Id: RssLinkPrinter.class.php,v 1.4 2008/04/01 16:08:19 adamfranco Exp $
  */
 class RssLinkPrinter {
 		
@@ -90,6 +90,7 @@ class RssLinkPrinter {
 	 */
 	private static function getLinks (SiteComponent $siteComponent) {
 		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
 		$links = array();
 		
 		// Content RSS
@@ -112,6 +113,7 @@ class RssLinkPrinter {
 			'title' => _("Comments RSS for")." ".$siteComponent->getDisplayName()
 		);
 		
+		$harmoni->request->endNamespace();
 		return $links;
 	}
 	
