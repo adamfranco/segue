@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.16 2008/03/31 20:10:28 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.17 2008/04/02 21:15:22 achapin Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -28,7 +28,7 @@ require_once(dirname(__FILE__)."/Rendering/NoHeaderFooterEditModeSiteVisitor.cla
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.16 2008/03/31 20:10:28 adamfranco Exp $
+ * @version $Id: editview.act.php,v 1.17 2008/04/02 21:15:22 achapin Exp $
  */
 class editviewAction
 	extends htmlAction 
@@ -121,22 +121,22 @@ class editviewAction
 		print "<div class='commands'>";
 		
 		print "<a href='";
-		print $harmoni->request->quickURL('view', 'html', array(
-				'node' => RequestContext::value("node")));
+		$url = $harmoni->request->mkURLWithPassthrough('view', 'html');
+		print $url->write();
 		print "' title='"._("Go to View-Mode")."'>";
 		print _("view")."</a>";
 		
 		print " | "._("edit");
 		
 		print " | <a href='";
-		print $harmoni->request->quickURL('ui2', 'headerfooter', array(
-				'node' => RequestContext::value("node")));
+		$url = $harmoni->request->mkURLWithPassthrough('ui2', 'headerfooter');
+		print $url->write();
 		print "' title='"._("Go to Header/Footer Edit-Mode")."'>";
 		print _("header/footer")."</a>";
 		
 		print " | <a href='";
-		print $harmoni->request->quickURL('ui2', 'arrangeview', array(
-				'node' => RequestContext::value("node")));
+		$url = $harmoni->request->mkURLWithPassthrough('ui2', 'arrangeview');
+		print $url->write();
 		print "' title='"._("Go to Arrange-Mode")."'>";
 		print _("arrange")."</a>";
 		print " | ".self::getUiSwitchForm();

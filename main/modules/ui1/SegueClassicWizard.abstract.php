@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.23 2008/03/31 20:07:47 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.24 2008/04/02 21:15:22 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueClassicWizard.abstract.php,v 1.23 2008/03/31 20:07:47 adamfranco Exp $
+ * @version $Id: SegueClassicWizard.abstract.php,v 1.24 2008/04/02 21:15:22 achapin Exp $
  */
 class SegueClassicWizard
 	extends MainWindowAction
@@ -123,10 +123,6 @@ class SegueClassicWizard
 		$centerPane = $this->getActionRows();
 		$qualifierId = $this->getQualifierId();
 		$cacheName = get_class($this).'_'.$qualifierId->getIdString();
-		$harmoni = Harmoni::instance();
-		$harmoni->request->passthrough("node");
-		$harmoni->request->passthrough("returnNode");
-		$harmoni->request->passthrough("returnAction");
 		
 		$this->runWizard ( $cacheName, $centerPane );
 	}

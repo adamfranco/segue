@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.17 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.18 2008/04/02 21:15:22 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.17 2008/01/11 21:24:40 adamfranco Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.18 2008/04/02 21:15:22 achapin Exp $
  */
 class ControlsSiteVisitor
 	extends GeneralControlsSiteVisitor
@@ -176,13 +176,19 @@ class ControlsSiteVisitor
 			$siteComponent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', $action, array(
+			// if parent is flow organizer and rows are limited	then
+			// get pages of 
+			$parent = $siteComponent->getParentComponent();
+			$parent->getId();
+			
+			
+			$url = 	$harmoni->request->mkURLWithPassthrough('ui1', $action, array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => RequestContext::value('node'),
 						'returnAction' => $this->action
 						));
 			
-			print "\n\t\t\t\t\t<a href='".$url."'>";
+			print "\n\t\t\t\t\t<a href='".$url->write()."'>";
 			print _("edit");
 			print "</a>";
 		}

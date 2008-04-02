@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.9 2008/03/31 20:10:29 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.10 2008/04/02 21:15:22 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
@@ -27,7 +27,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.9 2008/03/31 20:10:29 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.10 2008/04/02 21:15:22 achapin Exp $
  */
 
 /**
@@ -39,7 +39,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.9 2008/03/31 20:10:29 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.10 2008/04/02 21:15:22 achapin Exp $
  */
 class htmlAction
 	extends displayAction 
@@ -305,29 +305,29 @@ class htmlAction
 			if ($this->getUiModule() == "ui2") {
 			
 				print " | <a href='";
-				print $harmoni->request->quickURL('ui2', 'editview', array(
-						'node' => SiteDispatcher::getCurrentNodeId()));
+				$url = $harmoni->request->mkURLWithPassthrough('ui2', 'editview');
+				print $url->write();
 				print "' title='"._("Go to Edit-Mode")."'>";
 				print _("edit")."</a>";
 				
 				
 				print " | <a href='";
-				print $harmoni->request->quickURL('ui2', 'headerfooter', array(
-						'node' => RequestContext::value("node")));
+				$url = $harmoni->request->mkURLWithPassthrough('ui2', 'headerfooter');
+				print $url->write();
 				print "' title='"._("Go to Header/Footer Edit-Mode")."'>";
 				print _("header/footer")."</a>";
 		
 				print " | <a href='";
-				print $harmoni->request->quickURL('ui2', 'arrangeview', array(
-						'node' => SiteDispatcher::getCurrentNodeId()));
+				$url = $harmoni->request->mkURLWithPassthrough('ui2', 'arrangeview');
+				print $url->write();
 				print "' title='"._("Go to Arrange-Mode")."'>";
 				print _("arrange")."</a>";
 			
 			} else {
 			
 				print " | <a href='";
-				print $harmoni->request->quickURL('ui1', 'editview', array(
-						'node' => SiteDispatcher::getCurrentNodeId()));
+				$url = $harmoni->request->mkURLWithPassthrough('ui1', 'editview');
+				print $url->write();
 				print "' title='"._("Go to Edit-Mode")."'>";
 				print _("edit")."</a>";			
 			}
