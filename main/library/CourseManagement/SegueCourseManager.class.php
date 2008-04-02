@@ -6,12 +6,13 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.6 2007/12/20 16:35:55 adamfranco Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.7 2008/04/02 13:42:46 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueCourseSection.class.php");
 require_once(dirname(__FILE__)."/SegueCourseGroup.class.php");
 require_once(HARMONI."oki2/agent/AgentSearches/ClassTokenSearch.class.php");
+require_once(HARMONI."oki2/agentmanagement/AuthNMethods/LDAPAuthNMethod.class.php");
 
 
 /**
@@ -28,7 +29,7 @@ require_once(HARMONI."oki2/agent/AgentSearches/ClassTokenSearch.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseManager.class.php,v 1.6 2007/12/20 16:35:55 adamfranco Exp $
+ * @version $Id: SegueCourseManager.class.php,v 1.7 2008/04/02 13:42:46 adamfranco Exp $
  */
 class SegueCourseManager {
 
@@ -132,21 +133,27 @@ class SegueCourseManager {
 	 * @since 8/20/07
 	 */
 	public function getAllCourses ( Id $agentId, $sortDirection = SORT_ASC ) {
-		$agentManager = Services::getService("Agent");
-		$ancestorSearchType = new HarmoniType("Agent & Group Search",
-												"edu.middlebury.harmoni","AncestorGroups");
-		$containingGroups = $agentManager->getGroupsBySearch(
-						$agentId, $ancestorSearchType);
-						
-		$courseSections = array();
-		while ($containingGroups->hasNext()) {
-			$group = $containingGroups->next();
-			if (preg_match(self::$classGroupIdRegexp, $group->getId()->getIdString())) {
-				$courseSections[] = $this->getCourseForGroup($group);
+		if (!isset($_SESSION['all_courses']))
+			$_SESSION['all_courses'] = array();
+		if (!isset($_SESSION['all_courses'][$agentId->getIdString()])) {
+			$agentManager = Services::getService("Agent");
+			$ancestorSearchType = new HarmoniType("Agent & Group Search",
+													"edu.middlebury.harmoni","AncestorGroups");
+			$containingGroups = $agentManager->getGroupsBySearch(
+							$agentId, $ancestorSearchType);
+							
+			$courseSections = array();
+			while ($containingGroups->hasNext()) {
+				$group = $containingGroups->next();
+				if (preg_match(self::$classGroupIdRegexp, $group->getId()->getIdString())) {
+					$courseSections[] = $this->getCourseForGroup($group);
+				}
 			}
+			
+			$_SESSION['all_courses'][$agentId->getIdString()] = $courseSections;
 		}
 		
-		return $this->sortCourses($courseSections, $sortDirection);
+		return $this->sortCourses($_SESSION['all_courses'][$agentId->getIdString()], $sortDirection);
 	}
 	
 	/**

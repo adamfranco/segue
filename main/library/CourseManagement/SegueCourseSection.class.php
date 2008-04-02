@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseSection.class.php,v 1.4 2008/02/07 20:03:24 adamfranco Exp $
+ * @version $Id: SegueCourseSection.class.php,v 1.5 2008/04/02 13:42:46 adamfranco Exp $
  */ 
 
 /**
@@ -19,7 +19,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueCourseSection.class.php,v 1.4 2008/02/07 20:03:24 adamfranco Exp $
+ * @version $Id: SegueCourseSection.class.php,v 1.5 2008/04/02 13:42:46 adamfranco Exp $
  */
 class SegueCourseSection {
 
@@ -138,32 +138,37 @@ class SegueCourseSection {
 		// will be the same accross all courses in which the user is a member,
 		// we are caching "instructor" status in a class variable.
 		if (!isset(self::$isInstructor[$agentId->getIdString()])) {
-// 			if ($agentId->getIdString() != '7362') {
-// 				$agentManager = Services::getService("Agent");
-// 				$agent = $agentManager->getAgentOrGroup($agentId);
-// 				printpre("Checking if instructor. ".$agentId->getIdString()." (".$agent->getDisplayName().") not in:");
-// 				printpre(self::$isInstructor);
-// 				
-// 				throw new Exception("testing");
-// 			}
-			// Match the groups the user is in against our configuration of
-			// groups whose members should have personal sites.
-			$ancestorSearchType = new HarmoniType("Agent & Group Search",
-													"edu.middlebury.harmoni","AncestorGroups");
-			$containingGroups = $agentManager->getGroupsBySearch(
-							$agentId, $ancestorSearchType);
-			$isInstructor = false;
-			while (!$isInstructor && $containingGroups->hasNext()) {
-				$group = $containingGroups->next();
-				foreach (self::$instructorGroups as $validGroupId) {
-					if ($validGroupId->isEqual($group->getId())) {
-						$isInstructor = true;
-						break;
+			if (!isset($_SESSION['coursemanagement_isinstructor']))
+				$_SESSION['coursemanagement_isinstructor'] = array();
+			if (!isset($_SESSION['coursemanagement_isinstructor'][$agentId->getIdString()])) {
+	// 			if ($agentId->getIdString() != '7362') {
+	// 				$agentManager = Services::getService("Agent");
+	// 				$agent = $agentManager->getAgentOrGroup($agentId);
+	// 				printpre("Checking if instructor. ".$agentId->getIdString()." (".$agent->getDisplayName().") not in:");
+	// 				printpre(self::$isInstructor);
+	// 				
+	// 				throw new Exception("testing");
+	// 			}
+				// Match the groups the user is in against our configuration of
+				// groups whose members should have personal sites.
+				$ancestorSearchType = new HarmoniType("Agent & Group Search",
+														"edu.middlebury.harmoni","AncestorGroups");
+				$containingGroups = $agentManager->getGroupsBySearch(
+								$agentId, $ancestorSearchType);
+				$isInstructor = false;
+				while (!$isInstructor && $containingGroups->hasNext()) {
+					$group = $containingGroups->next();
+					foreach (self::$instructorGroups as $validGroupId) {
+						if ($validGroupId->isEqual($group->getId())) {
+							$isInstructor = true;
+							break;
+						}
 					}
 				}
+				$_SESSION['coursemanagement_isinstructor'][$agentId->getIdString()] = $isInstructor;
 			}
 			
-			self::$isInstructor[$agentId->getIdString()] = $isInstructor;
+			self::$isInstructor[$agentId->getIdString()] = $_SESSION['coursemanagement_isinstructor'][$agentId->getIdString()];
 		}
 		
 		// Also verify that the user is a member in our group.		

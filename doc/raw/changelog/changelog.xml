@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.243 2008/04/01 20:45:17 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.244 2008/04/02 13:42:46 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-04-02' ref='1897447' reftype='fr'>
+			CourseManagement/Portal: Added session-caching of user's courses, halving 
+			loading time of class-site lists.
+		</new>
 		<change author='adam' date='2008-04-01'>
 			Removed unused right column from the main window.
 		</change>
