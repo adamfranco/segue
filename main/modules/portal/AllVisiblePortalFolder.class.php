@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AllVisiblePortalFolder.class.php,v 1.1 2008/04/01 20:32:49 adamfranco Exp $
+ * @version $Id: AllVisiblePortalFolder.class.php,v 1.2 2008/04/02 14:35:04 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/PortalFolder.interface.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/PortalFolder.interface.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AllVisiblePortalFolder.class.php,v 1.1 2008/04/01 20:32:49 adamfranco Exp $
+ * @version $Id: AllVisiblePortalFolder.class.php,v 1.2 2008/04/02 14:35:04 adamfranco Exp $
  */
 class AllVisiblePortalFolder
 	implements PortalFolder 
@@ -104,26 +104,49 @@ class AllVisiblePortalFolder
 	 * @since 4/1/08
 	 */
 	private function getSiteIds () {
-		$repositoryManager = Services::getService("Repository");
-		$idManager = Services::getService("Id");
-		$authZ = Services::getService("AuthZ");
-		
-		$repository = $repositoryManager->getRepository(
-			$idManager->getId("edu.middlebury.segue.sites_repository"));
-		$assets = $repository->getAssetsByType(new HarmoniType('segue', 
-							'edu.middlebury', 
-							'SiteNavBlock', 
-							'An Asset of this type is the root node of a Segue site.'));
-		
-		$siteIds = array();
-		while ($assets->hasNext()) {
-			$asset = $assets->next();
-			if ($this->includeSite($asset->getId()))
-				$siteIds[] = $asset->getId()->getIdString();
+		if (!isset($_SESSION['PORTAL_ALL_SITES_CACHE']) 
+			|| !isset($_SESSION['PORTAL_ALL_SITES_CACHE_USER'])
+			|| $_SESSION['PORTAL_ALL_SITES_CACHE_USER'] != $this->getUserIdString())
+		{
+			$_SESSION['PORTAL_ALL_SITES_CACHE'] = array();
+			$_SESSION['PORTAL_ALL_SITES_CACHE_USER'] = $this->getUserIdString();
 		}
 		
-		sort($siteIds);
-		return $siteIds;
+		if (!isset($_SESSION['PORTAL_ALL_SITES_CACHE'][$this->getIdString()])) {
+			$repositoryManager = Services::getService("Repository");
+			$idManager = Services::getService("Id");
+			$authZ = Services::getService("AuthZ");
+			
+			$repository = $repositoryManager->getRepository(
+				$idManager->getId("edu.middlebury.segue.sites_repository"));
+			$assets = $repository->getAssetsByType(new HarmoniType('segue', 
+								'edu.middlebury', 
+								'SiteNavBlock', 
+								'An Asset of this type is the root node of a Segue site.'));
+			
+			$siteIds = array();
+			while ($assets->hasNext()) {
+				$asset = $assets->next();
+				if ($this->includeSite($asset->getId()))
+					$siteIds[] = $asset->getId()->getIdString();
+			}
+			
+			sort($siteIds);
+			$_SESSION['PORTAL_ALL_SITES_CACHE'][$this->getIdString()] = $siteIds;
+		}
+		return $_SESSION['PORTAL_ALL_SITES_CACHE'][$this->getIdString()];
+	}
+	
+	/**
+	 * Answer the current user's id string.
+	 * 
+	 * @return string
+	 * @access private
+	 * @since 4/2/08
+	 */
+	private function getUserIdString () {
+		$authN = Services::getService('AuthN');
+		return $authN->getFirstUserId()->getIdString();
 	}
 	
 	/**
