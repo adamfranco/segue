@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.12 2008/03/21 18:21:02 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.13 2008/04/02 17:20:36 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.interface.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/Slot.interface.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.abstract.php,v 1.12 2008/03/21 18:21:02 adamfranco Exp $
+ * @version $Id: Slot.abstract.php,v 1.13 2008/04/02 17:20:36 adamfranco Exp $
  */
 abstract class SlotAbstract 
 	implements Slot
@@ -381,7 +381,11 @@ abstract class SlotAbstract
 			$query->addValue('removed', '0');
 			
 			$dbc = Services::getService('DBHandler');
-			$result = $dbc->query($query, IMPORTER_CONNECTION);
+			try {
+				$result = $dbc->query($query, IMPORTER_CONNECTION);
+			} catch (DuplucateKeyDatabaseException $e) {
+				throw new OperationFailedException("Owner already exists for slot, '".$this->getShortname()."'.", Slot::OWNER_EXISTS);
+			}
 			
 			if ($this->isRemovedOwner($ownerId)) {
 				foreach ($this->removedOwners as $key => $id) {

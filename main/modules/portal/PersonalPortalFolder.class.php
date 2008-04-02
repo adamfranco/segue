@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalPortalFolder.class.php,v 1.1 2008/04/01 20:32:49 adamfranco Exp $
+ * @version $Id: PersonalPortalFolder.class.php,v 1.2 2008/04/02 17:20:36 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/PortalFolder.interface.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/PortalFolder.interface.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalPortalFolder.class.php,v 1.1 2008/04/01 20:32:49 adamfranco Exp $
+ * @version $Id: PersonalPortalFolder.class.php,v 1.2 2008/04/02 17:20:36 adamfranco Exp $
  */
 class PersonalPortalFolder
 	implements PortalFolder 
@@ -81,7 +81,12 @@ class PersonalPortalFolder
 	 * @since 4/1/08
 	 */
 	public function getControlsHtml () {
-		$this->createNewSlotIfRequested();		
+		$message = '';
+		try {
+			$this->createNewSlotIfRequested();
+		} catch (OperationFailedException $e) {
+			$message = $e->getMessage();
+		}
 		
 		// Form
 		if (PersonalSlot::hasPersonal()) {
@@ -96,6 +101,8 @@ class PersonalPortalFolder
 			print "-";
 			print "\n\t<input type='text' name='".RequestContext::name('slot_postfix')."' value='' size='10'/>";
 			print "\n\t<input type='submit' value='"._('Create')."'/>";
+			if (strlen($message))
+				print "\n\t<div class='error'>".$message."</div>";
 			print "\n</form>\n";
 			$harmoni->request->endNamespace();
 			return ob_get_clean();
@@ -116,15 +123,25 @@ class PersonalPortalFolder
 		// Creation of new personal slots.
 		$harmoni->request->startNamespace('personal_slot');
 		if (RequestContext::value('slot_postfix') && PersonalSlot::hasPersonal()) {
-			$newSlotname = PersonalSlot::getPersonalShortname($authN->getFirstUserId())
-				."-".RequestContext::value('slot_postfix');
-			// Replace delimiting marks with an underscore
-			$newSlotname = preg_replace('/[\s\/=+.,()]+/i', '_', $newSlotname);
-			// Remove anything left over (other than letters/numbers/-/_)
-			$newSlotname = preg_replace('/[^a-z0-9_-]/i', '', $newSlotname);
+			try {
+				$newSlotname = PersonalSlot::getPersonalShortname($authN->getFirstUserId())
+					."-".RequestContext::value('slot_postfix');
+				// Replace delimiting marks with an underscore
+				$newSlotname = preg_replace('/[\s\/=+.,()]+/i', '_', $newSlotname);
+				// Remove anything left over (other than letters/numbers/-/_)
+				$newSlotname = preg_replace('/[^a-z0-9_-]/i', '', $newSlotname);
 			
-			$slot = new PersonalSlot(strtolower($newSlotname));
-			$slot->addOwner($authN->getFirstUserId());
+			
+				$slot = new PersonalSlot(strtolower($newSlotname));
+				$slot->addOwner($authN->getFirstUserId());
+			} catch (OperationFailedException $e) {
+				$harmoni->request->endNamespace();
+				
+				if ($e->getCode() == Slot::OWNER_EXISTS)
+					throw new OperationFailedException("Placeholder '".strtolower($newSlotname)."' already exists.");
+				else
+					throw $e;
+			}
 			
 			// Log this change.
 			if (Services::serviceRunning("Logging")) {

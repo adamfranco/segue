@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.interface.php,v 1.1 2008/03/13 13:29:32 adamfranco Exp $
+ * @version $Id: Slot.interface.php,v 1.2 2008/04/02 17:20:36 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Slot.interface.php,v 1.1 2008/03/13 13:29:32 adamfranco Exp $
+ * @version $Id: Slot.interface.php,v 1.2 2008/04/02 17:20:36 adamfranco Exp $
  */
 interface Slot {
 
@@ -44,6 +44,13 @@ interface Slot {
 	 * @since 8/14/07
 	 */
 	const personal = "personal";
+	
+	/**
+	 * @const int $OWNER_EXISTS;  An error code for owner existing. 
+	 * @access public
+	 * @since 8/14/07
+	 */
+	const OWNER_EXISTS = 1001;
 	
 /*********************************************************
  * Static Methods
