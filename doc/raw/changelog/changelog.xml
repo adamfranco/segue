@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.246 2008/04/02 17:20:36 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.247 2008/04/02 18:18:23 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,7 +14,7 @@
 		<releaseNotes>
 			
 		</releaseNotes>
-		<fix author='adam' date='2008-04-02' ref='1931238' reftype='bug'>
+		<fix author='adam' date='2008-04-02' ref='1922490' reftype='bug'>
 			Portal/Slots: entering an existing slot name into the 'create-slot' form
 			now doesn't give the user an error-screen.
 		</fix>
