@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentSegue1To2Converter.abstract.php,v 1.2 2008/03/24 16:30:16 adamfranco Exp $
+ * @version $Id: CommentSegue1To2Converter.abstract.php,v 1.3 2008/04/03 13:17:59 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentSegue1To2Converter.abstract.php,v 1.2 2008/03/24 16:30:16 adamfranco Exp $
+ * @version $Id: CommentSegue1To2Converter.abstract.php,v 1.3 2008/04/03 13:17:59 adamfranco Exp $
  */
 abstract class CommentSegue1To2Converter
 	extends BlockSegue1To2Converter
@@ -53,6 +53,7 @@ abstract class CommentSegue1To2Converter
 // 		$element->appendChild($this->getDescriptionElement($media));
 		
 // 		$element->appendChild($this->doc->createElement('roles'));
+		$this->addCreationInfo($element);
 		
 		$element->appendChild($this->getContentElement($media));
 		

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.250 2008/04/03 12:40:02 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.251 2008/04/03 13:17:59 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-04-03' ref='1930617' reftype='bug' reporter='alex'>
+			Migration: Comment authors are now preserved when migrating from Segue 1
+			to Segue 2.
+		</fix>
 		<fix author='adam' date='2008-04-03' ref='1931259' reftype='bug'>
 			Migration: Forced migration table columns to be 50% width, so buttons
 			shouldn't jump when clicked.
