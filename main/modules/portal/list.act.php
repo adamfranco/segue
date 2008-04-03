@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.26 2008/04/01 20:32:50 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.27 2008/04/03 12:30:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/PortalManager.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.26 2008/04/01 20:32:50 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.27 2008/04/03 12:30:41 adamfranco Exp $
  */
 class listAction
 	extends MainWindowAction
@@ -151,9 +151,13 @@ class listAction
 			$siteList->add(new Block($controls, HIGHLIT_BLOCK));
 		
 		// Sites
-		$resultPrinter = new ArrayResultPrinter($currentFolder->getSlots(), 1, 20, array($this, "printSlot"));
+		$slots = $currentFolder->getSlots();
+		$resultPrinter = new ArrayResultPrinter($slots, 1, 20, array($this, "printSlot"));
 		$resultLayout = $resultPrinter->getLayout(array($this, "canView"));
-		$siteList->add($resultLayout, "100%", null, LEFT, CENTER);
+		if ($resultPrinter->getNumItemsPrinted())
+			$siteList->add($resultLayout, "100%", null, LEFT, CENTER);
+		else
+			$siteList->add(new Block(_('No items to display.'), STANDARD_BLOCK), "100%", null, LEFT, CENTER);
 		
 	}
 	
