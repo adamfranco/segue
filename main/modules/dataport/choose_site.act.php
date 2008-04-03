@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.6 2008/03/24 19:28:55 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.7 2008/04/03 12:40:02 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/Segue1Slot.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.6 2008/03/24 19:28:55 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.7 2008/04/03 12:40:02 adamfranco Exp $
  */
 class choose_siteAction
 	extends MainWindowAction
@@ -98,9 +98,9 @@ class choose_siteAction
 		print "\n<table border='1' class='dataport_choose_table'>";
 		print "\n\t<thead>";
 		print "\n\t\t<tr>";
-		print "\n\t\t\t<th>"._("Segue 1 Sites")."</th>";
+		print "\n\t\t\t<th style='width: 50%'>"._("Segue 1 Sites")."</th>";
 // 		print "\n\t\t\t<th>&nbsp;</th>";
-		print "\n\t\t\t<th>"._("Segue 2 Sites &amp; Placeholders")."</th>";
+		print "\n\t\t\t<th style='width: 50%'>"._("Segue 2 Sites &amp; Placeholders")."</th>";
 		print "\n\t\t</tr>";
 		print "\n\t</thead>";
 		print "\n\t<tbody>";
