@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.11 2008/04/03 15:18:14 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.12 2008/04/03 17:08:11 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/DownloadCommentSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.11 2008/04/03 15:18:14 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.12 2008/04/03 17:08:11 adamfranco Exp $
  */
 abstract class BlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -374,8 +374,8 @@ abstract class BlockSegue1To2Converter
 // 		printpre(htmlentities($html));
 
 		if (strpos($html, 'linkpath') !== false)
-			throw new Exception("Did not fully convert links. Linkpath found in: \n ".htmlentities($html));
-	
+			throw new Exception("Did not fully convert links. Linkpath found in: \n ".htmlentities($html));		
+			
 		return $html;
 	}
 	
@@ -394,9 +394,9 @@ abstract class BlockSegue1To2Converter
 			$segue1Identifiers = array('story', 'page', 'section');
 			foreach ($segue1Identifiers as $key) {
 				if (isset($params[$key]))
-					return "[[node:".$params[$key]."]]";
+					return "[[localurl:module=view&amp;action=html&amp;node=".$key."_".$params[$key]."]]";
 			}
-			return "[[site:".$this->getSlotName()."]]";
+			return "[[localurl:module=view&amp;action=html&amp;site=".$this->getSlotName()."]]";
 		} 
 		// If there is a site specified, then it may or may not have been imported
 		// yet.
@@ -408,7 +408,7 @@ abstract class BlockSegue1To2Converter
 			foreach ($segue1Identifiers as $identifier) {
 				if (isset($get[$identifier]) && $get[$identifier]) {
 					try {
-						return "[[node:".$resolver->getSegue2IdForOld($identifier, $get[$identifier])."]]";
+						return "[[localurl:module=view&amp;action=html&amp;node=".$resolver->getSegue2IdForOld($identifier, $get[$identifier])."]]";
 					} catch (UnknownIdException $e) {
 					}
 				}
