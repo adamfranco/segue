@@ -3,6 +3,18 @@ Name: Segue Release Notes
 (See the Segue change log for more details)
 
 
+v. 2.0-beta-18 (2008-04-03)
+----------------------------------------------------
+This release fixes a number of bugs and adds a new Portal display.
+
+Notable user-facing changes: - Portal 'Folders' to break up the lists of sites -
+Major speed improvements to the portal - Comment authors are now preserved when
+migrating from Segue 1 - URLs to elsewhere in Segue now work more reliably when
+migrating from Segue 1.
+
+Segue 2.0 beta 17 uses Polyphony 1.0.6 and Harmoni 1.0.6.
+
+
 v. 2.0-beta-17 (2008-03-31)
 ----------------------------------------------------
 This release fixes a number of bugs to avoid errors in RSS feeds, Wiki-Text in

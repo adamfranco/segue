@@ -23,7 +23,58 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-17</h2>
+<h2>Version 2.0-beta-18</h2>
+<h3>2008-04-03</h3>
+<p>This release fixes a number of bugs and adds a new Portal display.
+<br>
+<br>Notable user-facing changes: - Portal 'Folders' to break up the lists of sites - Major speed improvements to the portal - Comment authors are now preserved when migrating from Segue 1 - URLs to elsewhere in Segue now work more reliably when migrating from Segue 1.
+<br>
+<br>Segue 2.0 beta 17 uses Polyphony 1.0.6 and Harmoni 1.0.6.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> Migration: Local URLs are now resolved in migration or pointed at a resolver action for run-time redirection if they are external to the site. (<em>2008-04-03 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930617&amp;group_id=&amp;atid=">
+        			#1930617</a> Migration: Comment authors are now preserved when migrating from Segue 1 to Segue 2. (<em>2008-04-03 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931259&amp;group_id=&amp;atid=">
+        			#1931259</a> Migration: Forced migration table columns to be 50% width, so buttons shouldn't jump when clicked. (<em>2008-04-03 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1922304&amp;group_id=&amp;atid=">
+        			#1922304</a> Fixed UI switcher to include pagination from flow organizer. (<em>2008-04-02 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931238&amp;group_id=&amp;atid=">
+        			#1931238</a> Fixed change UI mode selector in portal so that it properly changes the UI without throwing an error. (<em>2008-04-02 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1922490&amp;group_id=&amp;atid=">
+        			#1922490</a> Portal/Slots: entering an existing slot name into the 'create-slot' form now doesn't give the user an error-screen. (<em>2008-04-02 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897447&amp;group_id=&amp;atid=">
+        			#1897447</a> CourseManagement/Portal: Added session-caching of user's courses, halving loading time of class-site lists. (<em>2008-04-02 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Removed unused right column from the main window. (<em>2008-04-01 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1918691&amp;group_id=&amp;atid=">
+        			#1918691</a> Portal: New Folder-View for portal. This speeds loading and provides for easier finding of sites. (<em>2008-04-01 - Adam Franco</em>)<br> (<em>reported by shell_sax</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1926683&amp;group_id=&amp;atid=">
+        			#1926683</a> Migration: Site importing is now logged. (<em>2008-04-01 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Migration: Can now get site from import. (<em>2008-04-01 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931244&amp;group_id=&amp;atid=">
+        			#1931244</a> Breadcrumbs/RSS: Namespaces are now properly set when generating links. This was broken in beta 17. (<em>2008-04-01 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931223&amp;group_id=&amp;atid=">
+        			#1931223</a> Versioning: fixing up action to use the new SiteDispatcher. (<em>2008-04-01 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931211&amp;group_id=&amp;atid=">
+        			#1931211</a> Slots: Updated default config to reflect actual groups. (<em>2008-04-01 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> UI1: Removed unused ui1.content_rss action. (<em>2008-04-01 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-17</h2>
 <h3>2008-03-31</h3>
 <p>This release fixes a number of bugs to avoid errors in RSS feeds, Wiki-Text in comments, and the site map. As well, short-form URLs now work with placeholder names that contain hyphens and under-scores.
 <br>

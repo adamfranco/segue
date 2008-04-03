@@ -5,16 +5,24 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.252 2008/04/03 15:18:14 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.253 2008/04/03 17:15:59 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-18" date="The Future">
+	<version number="2.0-beta-18" date="2008-04-03">
 		<releaseNotes>
+			This release fixes a number of bugs and adds a new Portal display.
 			
+			Notable user-facing changes:
+			- Portal 'Folders' to break up the lists of sites
+			- Major speed improvements to the portal
+			- Comment authors are now preserved when migrating from Segue 1
+			- URLs to elsewhere in Segue now work more reliably when migrating from Segue 1.
+			
+			Segue 2.0 beta 17 uses Polyphony 1.0.6 and Harmoni 1.0.6. 
 		</releaseNotes>
-		<fix author='adam' date='2008-04-03' ref='1930266' reftype='bug'>
+		<fix author='adam' date='2008-04-03'>
 			Migration: Local URLs are now resolved in migration or pointed at a 
 			resolver action for run-time redirection if they are external to the
 			site.

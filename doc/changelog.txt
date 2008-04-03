@@ -4,6 +4,88 @@ Name: Segue Change Log
 
 
 
+v. 2.0-beta-18 (2008-04-03)
+----------------------------------------------------
+This release fixes a number of bugs and adds a new Portal display.
+
+Notable user-facing changes: - Portal 'Folders' to break up the lists of sites -
+Major speed improvements to the portal - Comment authors are now preserved when
+migrating from Segue 1 - URLs to elsewhere in Segue now work more reliably when
+migrating from Segue 1.
+
+Segue 2.0 beta 17 uses Polyphony 1.0.6 and Harmoni 1.0.6.
+		
+		
+	* Bug Fix: 
+		Migration: Local URLs are now resolved in migration or pointed at a resolver
+		action for run-time redirection if they are external to the site.
+		(2008-04-03 - Adam Franco)
+		
+	* Bug Fix: #1930617 
+		Migration: Comment authors are now preserved when migrating from Segue 1 to
+		Segue 2.
+		(2008-04-03 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: #1931259 
+		Migration: Forced migration table columns to be 50% width, so buttons
+		shouldn't jump when clicked.
+		(2008-04-03 - Adam Franco)
+		
+	* Bug Fix: #1922304 
+		Fixed UI switcher to include pagination from flow organizer.
+		(2008-04-02 - Alex Chapin)
+		
+	* Bug Fix: #1931238 
+		Fixed change UI mode selector in portal so that it properly changes the UI
+		without throwing an error.
+		(2008-04-02 - Alex Chapin)
+		
+	* Bug Fix: #1922490 
+		Portal/Slots: entering an existing slot name into the 'create-slot' form now
+		doesn't give the user an error-screen.
+		(2008-04-02 - Adam Franco)
+		
+	* Change: #1897447 
+		CourseManagement/Portal: Added session-caching of user's courses, halving
+		loading time of class-site lists.
+		(2008-04-02 - Adam Franco)
+		
+	* Change: 
+		Removed unused right column from the main window.
+		(2008-04-01 - Adam Franco)
+		
+	* New feature: #1918691 
+		Portal: New Folder-View for portal. This speeds loading and provides for
+		easier finding of sites.
+		(2008-04-01 - Adam Franco)
+		(reported by shell_sax)
+		
+	* Change: #1926683 
+		Migration: Site importing is now logged.
+		(2008-04-01 - Adam Franco)
+		
+	* Change: 
+		Migration: Can now get site from import.
+		(2008-04-01 - Adam Franco)
+		
+	* Bug Fix: #1931244 
+		Breadcrumbs/RSS: Namespaces are now properly set when generating links. This
+		was broken in beta 17.
+		(2008-04-01 - Adam Franco)
+		
+	* Bug Fix: #1931223 
+		Versioning: fixing up action to use the new SiteDispatcher.
+		(2008-04-01 - Adam Franco)
+		
+	* Bug Fix: #1931211 
+		Slots: Updated default config to reflect actual groups.
+		(2008-04-01 - Adam Franco)
+		
+	* Change: 
+		UI1: Removed unused ui1.content_rss action.
+		(2008-04-01 - Adam Franco)
+	
 v. 2.0-beta-17 (2008-03-31)
 ----------------------------------------------------
 This release fixes a number of bugs to avoid errors in RSS feeds, Wiki-Text in
