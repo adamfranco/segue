@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.9 2008/03/21 20:28:37 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.10 2008/04/03 15:18:15 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__)."/RssLinksBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.9 2008/03/21 20:28:37 adamfranco Exp $
+ * @version $Id: SiteNavBlockSegue1To2Converter.class.php,v 1.10 2008/04/03 15:18:15 adamfranco Exp $
  */
 class SiteNavBlockSegue1To2Converter
 	extends NavBlockSegue1To2Converter
@@ -38,9 +38,6 @@ class SiteNavBlockSegue1To2Converter
 	 */
 	public function convert () {
 		$element = parent::convert();
-		$element->setAttribute('slot_name', $this->sourceElement->getAttribute('id'));
-		// Reset the id to encode it as a slot
-		$element->setAttribute('id', 'site_'.$this->sourceElement->getAttribute('id'));
 		
 		if ($this->sourceElement->hasAttribute('mediaQuota'))
 			$element->setAttribute('mediaQuota', $this->sourceElement->getAttribute('mediaQuota'));
@@ -51,6 +48,20 @@ class SiteNavBlockSegue1To2Converter
 		$this->updateAllLocalUrls();
 		
 		return $element;
+	}
+	
+	/**
+	 * Add our Id to the output element
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 2/13/08
+	 */
+	protected function addId (DOMElement $element) {
+		$element->setAttribute('slot_name', $this->sourceElement->getAttribute('id'));
+		// Reset the id to encode it as a slot
+		$element->setAttribute('id', 'site_'.$this->sourceElement->getAttribute('id'));
 	}
 		
 	/**

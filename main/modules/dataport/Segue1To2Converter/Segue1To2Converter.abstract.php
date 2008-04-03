@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.6 2008/03/21 17:10:27 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.7 2008/04/03 15:18:15 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/../Rendering/DomImportSiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.6 2008/03/21 17:10:27 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.7 2008/04/03 15:18:15 adamfranco Exp $
  */
 abstract class Segue1To2Converter {
 
@@ -579,6 +579,25 @@ abstract class Segue1To2Converter {
 		$position = strpos($subject, $search);
 		return substr_replace($subject, $replacement, $position, strlen($search));
 	}
+	
+	/**
+	 * Answer the slot name if possible. Throw an OperationFailedException if not.
+	 *
+	 * @return string
+	 * @access protected
+	 * @since 4/3/08
+	 */
+	protected function getSlotName () {
+		$nodes = $this->xpath->query('//SiteNavBlock');
+		if (!$nodes->length)
+			throw new OperationFailedException("No SiteNavBlock elements found.");
+			
+		$node = $nodes->item(0);
+		if (!$node->hasAttribute('slot_name') || !$node->getAttribute('slot_name'))
+			throw new OperationFailedException("No slot name attribute found.");
+		
+		return $node->getAttribute('slot_name');
+	}
 }
 
 /**
@@ -590,7 +609,7 @@ abstract class Segue1To2Converter {
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: Segue1To2Converter.abstract.php,v 1.6 2008/03/21 17:10:27 adamfranco Exp $
+ * @version $Id: Segue1To2Converter.abstract.php,v 1.7 2008/04/03 15:18:15 adamfranco Exp $
  */
 class PermissionResolver {
 		

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.10 2008/03/24 19:42:33 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.11 2008/04/03 15:18:14 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/DownloadCommentSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.10 2008/03/24 19:42:33 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.11 2008/04/03 15:18:14 adamfranco Exp $
  */
 abstract class BlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -360,16 +360,15 @@ abstract class BlockSegue1To2Converter
 				// do nothing, allow an empty local url.
 			}
 			
-			$paramString = '';
-			foreach ($params as $key => $val)
-				$paramString .= '&amp;'.$key.'='.$val;
+			$newLink = $this->convertParamsToNewLink($params);
+			
 			
 // 			print "<hr/>";
 // 			printpre($link);
-// 			printpre($paramString);
+// 			printpre($newLink);
 
 			// Re-Write the media url to use the new id.
-			$html = $this->str_replace_once($link, "[[localurl:".$paramString."]]", $html);
+			$html = $this->str_replace_once($link, $newLink, $html);
 		}
 		
 // 		printpre(htmlentities($html));
@@ -378,6 +377,51 @@ abstract class BlockSegue1To2Converter
 			throw new Exception("Did not fully convert links. Linkpath found in: \n ".htmlentities($html));
 	
 		return $html;
+	}
+	
+	/**
+	 * Convert an array of parameters to a new link string.
+	 * 
+	 * @param array $params
+	 * @return string
+	 * @access protected
+	 * @since 4/3/08
+	 */
+	protected function convertParamsToNewLink (array $params) {
+		// If there is no site specified, then the site is the current one.
+		// In that case, we can do a [[node:smallest_node_id]] style url.
+		if (!isset($params['site'])) {
+			$segue1Identifiers = array('story', 'page', 'section');
+			foreach ($segue1Identifiers as $key) {
+				if (isset($params[$key]))
+					return "[[node:".$params[$key]."]]";
+			}
+			return "[[site:".$this->getSlotName()."]]";
+		} 
+		// If there is a site specified, then it may or may not have been imported
+		// yet.
+		else {
+			// First try resolving it. If it has been imported, then use the 
+			// new id.
+			$resolver = Segue1UrlResolver::instance();
+			$segue1Identifiers = array('story', 'page', 'section', 'site');
+			foreach ($segue1Identifiers as $identifier) {
+				if (isset($get[$identifier]) && $get[$identifier]) {
+					try {
+						return "[[node:".$resolver->getSegue2IdForOld($identifier, $get[$identifier])."]]";
+					} catch (UnknownIdException $e) {
+					}
+				}
+			}
+			
+			// If it hasn't been imported yet, build a url that will point to the old
+			// version and be pickup up later by the resolver.
+			$paramString = 'module=resolver&amp;action=segue1';
+			foreach ($params as $key => $val)
+				$paramString .= '&amp;'.$key.'='.$val;
+			
+			return "[[localurl:".$paramString."]]";
+		}
 	}
 	
 	/**
