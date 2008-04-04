@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.13 2008/04/01 20:32:49 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.13.2.1 2008/04/04 17:18:12 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CustomSlot.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/AllSlotsIterator.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SlotManager.class.php,v 1.13 2008/04/01 20:32:49 adamfranco Exp $
+ * @version $Id: SlotManager.class.php,v 1.13.2.1 2008/04/04 17:18:12 adamfranco Exp $
  */
 class SlotManager {
 		
@@ -210,24 +210,29 @@ class SlotManager {
 		}
 		
 		// Look up the slot in the database;
-		$query = new SelectQuery;
-		$query->addTable('segue_slot');
-		$query->addTable('segue_slot_owner AS all_owners', LEFT_JOIN, 'segue_slot.shortname = all_owners.shortname');
+		if (!isset($this->getSlotBySiteId_stmt)) {
+			$query = Harmoni_Db::getDatabase('segue_db')->select();
+			$query->addTable('segue_slot');
+			$query->addTable('segue_slot_owner AS all_owners', LEFT_JOIN, 'segue_slot.shortname = all_owners.shortname');
+			
+			$query->addColumn('segue_slot.shortname', 'shortname');
+			$query->addColumn('segue_slot.site_id', 'site_id');
+			$query->addColumn('segue_slot.type', 'type');
+			$query->addColumn('segue_slot.location_category', 'location_category');
+			$query->addColumn('segue_slot.media_quota', 'media_quota');
+			$query->addColumn('all_owners.owner_id', 'owner_id');
+			$query->addColumn('all_owners.removed', 'removed');
+			
+			$this->getSlotBySiteId_siteId_key = $query->addWhereEqual('segue_slot.site_id', $siteId);
+			
+			$this->getSlotBySiteId_stmt = $query->prepare();
+		}		
 		
-		$query->addColumn('segue_slot.shortname', 'shortname');
-		$query->addColumn('segue_slot.site_id', 'site_id');
-		$query->addColumn('segue_slot.type', 'type');
-		$query->addColumn('segue_slot.location_category', 'location_category');
-		$query->addColumn('segue_slot.media_quota', 'media_quota');
-		$query->addColumn('all_owners.owner_id', 'owner_id');
-		$query->addColumn('all_owners.removed', 'removed');
+		$this->getSlotBySiteId_stmt->bindParam($this->getSlotBySiteId_siteId_key, $siteId);
+		$this->getSlotBySiteId_stmt->execute();
+		$result = $this->getSlotBySiteId_stmt->getResult();
 		
-		$query->addWhereEqual('segue_slot.site_id', $siteId);
-		
-				
 // 		print $query->asString();
-		$dbc = Services::getService('DBHandler');
-		$result = $dbc->query($query, IMPORTER_CONNECTION);
 		
 		if ($result->getNumberOfRows()) {
 			$slots = $this->getSlotsFromQueryResult($result);

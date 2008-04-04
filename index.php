@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.15 2008/03/28 23:14:25 adamfranco Exp $
+ * @version $Id: index.php,v 1.15.2.1 2008/04/04 17:18:11 adamfranco Exp $
  */
 
 /*********************************************************
@@ -48,7 +48,7 @@ define("LOAD_GUI", true);
  * Include our libraries
  *********************************************************/
 require_once(dirname(__FILE__)."/main/include/libraries.inc.php");
-
+	
 /*********************************************************
  * Include our configuration and setup scripts
  *********************************************************/
@@ -120,6 +120,11 @@ if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
 	
 	$dbhandler = Services::getService("DBHandler");
 	printpre("NumQueries: ".$dbhandler->getTotalNumberOfQueries());
+	if (isset($dbhandler->recordQueryCallers) && $dbhandler->recordQueryCallers)
+		print $dbhandler->getQueryCallerStats();
+	
+	$db = Harmoni_Db::getDatabase('segue_db');
+	print "<p>".$db->getStats()."</p>";
 	
 // 	printpreArrayExcept($_SESSION, array('__temporarySets'));
 	// debug::output(session_id());
