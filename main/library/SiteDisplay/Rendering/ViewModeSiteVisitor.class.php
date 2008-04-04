@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.62 2008/03/25 16:11:07 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.63 2008/04/04 20:23:14 achapin Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -26,6 +26,7 @@ require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
 require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
 
 require_once(MYDIR."/main/modules/view/AttributionPrinter.class.php");
+require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
 
 /**
  * The ViewModeVisitor traverses the site hierarchy, rendering each component.
@@ -36,7 +37,7 @@ require_once(MYDIR."/main/modules/view/AttributionPrinter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.62 2008/03/25 16:11:07 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.63 2008/04/04 20:23:14 achapin Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -145,6 +146,15 @@ class ViewModeSiteVisitor
 			$block->getWidth(), null, null, TOP);
 		}
 		
+		if ($this->showTags($block)) {
+			$guiContainer->add(
+			new Block(
+				$this->getTags($block),
+				STANDARD_BLOCK), 
+			$block->getWidth(), null, null, TOP);
+		}
+
+		
 		// Plugin content		
 		$guiContainer->add(
 			new Block(
@@ -169,7 +179,6 @@ class ViewModeSiteVisitor
 	function showBlockTitle ( $block ) {
 		return $block->showDisplayName();
 	}
-
 	
 	/**
 	 * Answer the plugin content for a block
@@ -246,6 +255,48 @@ class ViewModeSiteVisitor
 	 */
 	function getBlockTitle ( $block ) {
 		return "<a href='".$this->getDetailUrl($block->getId())."'>".$block->getDisplayName()."</a>";
+	}
+
+	/**
+	 * Answer true if the block tags should be shown.
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return boolean
+	 * @access public
+	 * @since 4/3/08
+	 */
+	function showTags ( $block ) {
+		$harmoni = Harmoni::instance();		
+		$item = TaggedItem::forId($block->getQualifierId(), 'segue');
+		if (TagAction::getTagCloud($item->getTags())) {
+			return true;
+		} else {
+			return false;	
+		}		
+	}
+
+	
+	/**
+	 * Answer the tags for a block
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return string
+	 * @access public
+	 * @since 4/3/08
+	 */
+	function getTags ( $block ) {
+		$harmoni = Harmoni::instance();
+		ob_start();	
+			
+		// Tags
+		print "\n\t<div style='text-align: left;'>";
+		$item = TaggedItem::forId($block->getQualifierId(), 'segue');
+		print TagAction::getTagCloud($item->getTags(), 'view',
+				array(	'font-size: 90%;',
+						'font-size: 100%;',
+				));
+		print "\n\t</div>";
+		return ob_get_clean();
 	}
 	
 	/**

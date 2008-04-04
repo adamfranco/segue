@@ -5,11 +5,19 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.253 2008/04/03 17:15:59 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.254 2008/04/04 20:23:13 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='alex' date='2008-04-03' ref='1820853' reftype='fr'>
+			Added UI for tagging content blocks (i.e. nodes).
+		</new>
+	</version>
 	<version number="2.0-beta-18" date="2008-04-03">
 		<releaseNotes>
 			This release fixes a number of bugs and adds a new Portal display.

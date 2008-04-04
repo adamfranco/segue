@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.31 2008/03/03 15:17:58 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.32 2008/04/04 20:23:14 achapin Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.31 2008/03/03 15:17:58 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.32 2008/04/04 20:23:14 achapin Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -180,6 +180,41 @@ END;
 	function showPluginControls () {
 		return true;
 	}
+	
+	/**
+	 * Answer the tags for a block
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return string
+	 * @access public
+	 * @since 4/3/08
+	 */
+	function getTags ( $block ) {
+		$harmoni = Harmoni::instance();
+		ob_start();	
+			
+		// Tags
+		print "\n\t<div style='text-align: left;'>";
+		print TagAction::getTagCloudForItem(TaggedItem::forId($block->getQualifierId(), 'segue'), 'view',
+				array(	'font-size: 90%;',
+						'font-size: 100%;',
+				));		
+		print "\n\t</div>";
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer true if the block tags should be shown.
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return boolean
+	 * @access public
+	 * @since 4/3/08
+	 */
+	function showTags ( $block ) {
+		return true;	
+	}
+
 	
 	/**
 	 * Visit a block and return the resulting GUI component. (A menu item)

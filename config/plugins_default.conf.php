@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: plugins_default.conf.php,v 1.7 2008/03/13 18:58:21 achapin Exp $
+ * @version $Id: plugins_default.conf.php,v 1.8 2008/04/04 20:23:13 achapin Exp $
  */
  
 	require_once(MYDIR."/main/library/PluginManager/PluginManager.class.php");
@@ -25,8 +25,8 @@
 	Services::startManagerAsService("PluginManager", $context, $configuration);
 	
 	
-//  	$pluginManager = Services::getService("PluginManager");
-//  	$pluginManager->installPlugin(new Type ('SeguePlugins', 'edu.middlebury', 'Rsslinks'));
+//   	$pluginManager = Services::getService("PluginManager");
+//  	$pluginManager->enablePlugin(new Type ('SeguePlugins', 'edu.middlebury', 'Tags'));
 // 	$pluginManager->installPlugin(new Type ('SeguePlugins', 'edu.middlebury', 'Download'));
 // 	$pluginManager->installPlugin(new Type ('SeguePlugins', 'edu.middlebury', 'Assignment'));
 	
