@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: authentication_default.conf.php,v 1.5 2007/09/04 18:00:42 adamfranco Exp $
+ * @version $Id: authentication_default.conf.php,v 1.5.2.1 2008/04/04 20:34:06 adamfranco Exp $
  */
  
 // :: Start the AuthenticationManager OSID Impl.
@@ -92,4 +92,5 @@
 // :: Agent-Token Mapping Manager ::	
 	$configuration = new ConfigurationProperties;
 	$configuration->addProperty('database_id', $dbID);
+	$configuration->addProperty('harmoni_db_name', 'segue_db');
 	Services::startManagerAsService("AgentTokenMappingManager", $context, $configuration);
