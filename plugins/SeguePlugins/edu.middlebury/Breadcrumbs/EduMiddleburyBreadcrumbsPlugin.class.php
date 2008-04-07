@@ -6,11 +6,11 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyBreadcrumbsPlugin.class.php,v 1.2 2008/03/31 23:03:54 adamfranco Exp $
+ * @version $Id: EduMiddleburyBreadcrumbsPlugin.class.php,v 1.3 2008/04/07 19:25:28 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents/AssetSiteDirector.class.php");
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 /**
  * A simple plugin for displaying site breadcrumbs
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyBreadcrumbsPlugin.class.php,v 1.2 2008/03/31 23:03:54 adamfranco Exp $
+ * @version $Id: EduMiddleburyBreadcrumbsPlugin.class.php,v 1.3 2008/04/07 19:25:28 achapin Exp $
  */
 class EduMiddleburyBreadcrumbsPlugin 
 	extends SeguePlugin

@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.254 2008/04/04 20:23:13 achapin Exp $
+ @version $Id: changelog.xml,v 1.255 2008/04/07 19:25:28 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='alex, adam' date='2008-04-07' ref='1820857' reftype='fr'>
+			Added tag cloud plugin for displaying the tags for any given node and its
+			children.
+		</new>
 		<new author='alex' date='2008-04-03' ref='1820853' reftype='fr'>
 			Added UI for tagging content blocks (i.e. nodes).
 		</new>

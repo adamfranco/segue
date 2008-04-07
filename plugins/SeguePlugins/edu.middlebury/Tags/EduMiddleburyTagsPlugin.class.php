@@ -6,12 +6,11 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.1 2008/04/04 20:23:14 achapin Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.2 2008/04/07 19:25:28 achapin Exp $
  */ 
 
-
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
-require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
+require_once(dirname(__FILE__)."/TaggableItemVisitor.class.php");
 
 /**
  * A simple plugin for including links in a site
@@ -22,7 +21,7 @@ require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.1 2008/04/04 20:23:14 achapin Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.2 2008/04/07 19:25:28 achapin Exp $
  */
 class EduMiddleburyTagsPlugin 
 	extends SegueAjaxPlugin
@@ -94,34 +93,25 @@ class EduMiddleburyTagsPlugin
  	public function getMarkup () {
 		ob_start();
 		
+		print "tags";
+		
 		if ($this->canView()) {
- 		
- 				print "tags";		
+			$items = array();
+ 			$director = SiteDispatcher::getSiteDirector();
+ 			$node = $director->getSiteComponentById($this->getId());
+ 			$parentNode = $node->getParentComponent();
  			
+ 			//printpre($parentNode);
  			
-//  			if ($this->getTags()) {
-// 				$abstractLength = intval($this->getRawDescription());
-// 				if ($abstractLength) {
-// 					print "\n".$this->trimHTML($this->parseWikiText($this->getContent()), $abstractLength);
-// 				} else {
-// 					print "\n".$this->cleanHTML($this->parseWikiText($this->getContent()));
-// 				}
-// 			} else {
-// 				print "\n<div class='plugin_empty'>";
-// 				print _("No text has been added yet. ");
-// 				if ($this->shouldShowControls()) {
-// 					print "<br/>"._("Click the 'edit' link to add content. ");
-// 				}
-// 				print "</div>";
-// 			}
-// 		 	
-// 	 		
-// 	 		if ($this->shouldShowControls()) {
-// 				print "\n</div>";
-// 				print "\n<div style='text-align: right; white-space: nowrap;'>";
-// 				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._("edit")."</a>";
-// 				print "\n</div>";
-// 			}
+ 			$visitor = new TaggableItemVisitor;
+ 			$items = $parentNode->acceptVisitor($visitor);
+ 			
+ 			print TagAction::getReadOnlyTagCloudForItems($items);
+ 			
+ 			//$tags = TagAction::getTagCloudForRepository($node, "segue");
+ 			
+ 			//printpre($tags);	
+
 				
  		}
 		
