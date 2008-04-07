@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content.act.php,v 1.4 2008/03/31 21:11:21 achapin Exp $
+ * @version $Id: content.act.php,v 1.5 2008/04/07 23:08:10 achapin Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content.act.php,v 1.4 2008/03/31 21:11:21 achapin Exp $
+ * @version $Id: content.act.php,v 1.5 2008/04/07 23:08:10 achapin Exp $
  */
 class contentAction
 	extends RSSAction
@@ -204,7 +204,9 @@ class contentAction
 	 */
 	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $siteComponent ) {
 		foreach ($siteComponent->getSortedSubcomponents() as $child) {
-			$child->acceptVisitor($this);
+			if (is_object($child)) {
+				$child->acceptVisitor($this);
+			}
 		}
 	}
 	
