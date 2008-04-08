@@ -5,25 +5,34 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.256 2008/04/07 23:09:03 achapin Exp $
+ @version $Id: changelog.xml,v 1.257 2008/04/08 20:04:47 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="" date="The Future">
+	<version number="2.0-beta-19" date="The Future">
 		<releaseNotes>
 			
 		</releaseNotes>
-		<fix author='alex' date='2008-04-07' ref='' reftype=''>
-			Fixed RSS flow organizer visitor to call visitor only if child is object.
-		</fix>
 		<new author='alex, adam' date='2008-04-07' ref='1820857' reftype='fr'>
-			Added tag cloud plugin for displaying the tags for any given node and its
+			Tagging: Added tag cloud plugin for displaying the tags for any given node and its
 			children.
 		</new>
 		<new author='alex' date='2008-04-03' ref='1820853' reftype='fr'>
-			Added UI for tagging content blocks (i.e. nodes).
+			Tagging: Added UI for tagging content blocks (i.e. nodes).
 		</new>
+		<new author='adam' date='2008-04-08' ref='1814119' reftype='harmoni_fr'>
+			Harmoni_Db: New Harmoni_Db database access layer supports prepared statements.
+			Harmoni_Db can be optionally used along side the existing database access
+			layer to improve performance of some common page loads by 30% or more.
+		</new>
+		<new author='adam' date='2008-04-08' ref='1814119' reftype='harmoni_fr'>
+			Slots: SlotManager can now use Harmoni_Db if availible to speed loading
+			of slots.
+		</new>
+		<fix author='alex' date='2008-04-07' ref='' reftype=''>
+			Fixed RSS flow organizer visitor to call visitor only if child is object.
+		</fix>
 	</version>
 	<version number="2.0-beta-18" date="2008-04-03">
 		<releaseNotes>
