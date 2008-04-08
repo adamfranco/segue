@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.15.2.1 2008/04/04 17:18:11 adamfranco Exp $
+ * @version $Id: index.php,v 1.15.2.2 2008/04/08 14:47:28 adamfranco Exp $
  */
 
 /*********************************************************
@@ -123,8 +123,11 @@ if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
 	if (isset($dbhandler->recordQueryCallers) && $dbhandler->recordQueryCallers)
 		print $dbhandler->getQueryCallerStats();
 	
-	$db = Harmoni_Db::getDatabase('segue_db');
-	print "<p>".$db->getStats()."</p>";
+	try {
+		$db = Harmoni_Db::getDatabase('segue_db');
+		print "<p>".$db->getStats()."</p>";
+	} catch (UnknownIdException $e) {
+	}
 	
 // 	printpreArrayExcept($_SESSION, array('__temporarySets'));
 	// debug::output(session_id());

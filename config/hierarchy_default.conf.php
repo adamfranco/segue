@@ -10,12 +10,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: hierarchy_default.conf.php,v 1.3.2.1 2008/04/04 17:18:12 adamfranco Exp $
+ * @version $Id: hierarchy_default.conf.php,v 1.3.2.2 2008/04/08 14:47:28 adamfranco Exp $
  */
  
 // :: Set up the Hierarchy Manager ::
 	$configuration = new ConfigurationProperties;
 	$configuration->addProperty('database_index', $dbID);
 	$configuration->addProperty('database_name', $dbName);
-	$configuration->addProperty('harmoni_db_key', 'segue_db');
+	$configuration->addProperty('harmoni_db_name', 'segue_db');
 	Services::startManagerAsService("HierarchyManager", $context, $configuration);
