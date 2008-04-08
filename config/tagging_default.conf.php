@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: tagging_default.conf.php,v 1.1 2008/04/08 20:09:13 achapin Exp $
+ * @version $Id: tagging_default.conf.php,v 1.2 2008/04/08 20:57:37 achapin Exp $
  */
  
  	$configuration = new ConfigurationProperties;
@@ -130,17 +130,9 @@ function getConcertoNodeThumbnailUrl ( $item ) {
  * @since 11/8/06
  */
 function getSegueNodeUrl ( $item ) {
-	
-	$node =$item->getNode();
-	$nodeType =$node->getType();
-		
-	// Repositories
-	if ($nodeType->getDomain() == 'segue') {
-		$harmoni  = Harmoni::instance();
-		return $harmoni->request->quickURL('view', 'html', array('node' => $item->getIdString()));
-		
-// 		return $segueBaseUrl.'&module=site&action=newView&node='.$item->getIdString();
-	} else {
-		return '';
-	}
+	$harmoni  = Harmoni::instance();
+	$harmoni->request->startNamespace(null);
+	$url = $harmoni->request->quickURL('view', 'html', array('node' => $item->getIdString()));
+	$harmoni->request->endNamespace();
+	return $url;
 }
