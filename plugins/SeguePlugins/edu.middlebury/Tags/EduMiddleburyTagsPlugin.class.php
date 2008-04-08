@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.2 2008/04/07 19:25:28 achapin Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.3 2008/04/08 20:09:13 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/TaggableItemVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.2 2008/04/07 19:25:28 achapin Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.3 2008/04/08 20:09:13 achapin Exp $
  */
 class EduMiddleburyTagsPlugin 
 	extends SegueAjaxPlugin
@@ -93,7 +93,7 @@ class EduMiddleburyTagsPlugin
  	public function getMarkup () {
 		ob_start();
 		
-		print "tags";
+		print "tags plugin";
 		
 		if ($this->canView()) {
 			$items = array();
@@ -106,7 +106,7 @@ class EduMiddleburyTagsPlugin
  			$visitor = new TaggableItemVisitor;
  			$items = $parentNode->acceptVisitor($visitor);
  			
- 			print TagAction::getReadOnlyTagCloudForItems($items);
+ 			print TagAction::getReadOnlyTagCloudForItems($items, 'segue');
  			
  			//$tags = TagAction::getTagCloudForRepository($node, "segue");
  			

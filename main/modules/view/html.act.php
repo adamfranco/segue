@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.10 2008/04/02 21:15:22 achapin Exp $
+ * @version $Id: html.act.php,v 1.11 2008/04/08 20:09:13 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
@@ -27,7 +27,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.10 2008/04/02 21:15:22 achapin Exp $
+ * @version $Id: html.act.php,v 1.11 2008/04/08 20:09:13 achapin Exp $
  */
 
 /**
@@ -39,7 +39,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.10 2008/04/02 21:15:22 achapin Exp $
+ * @version $Id: html.act.php,v 1.11 2008/04/08 20:09:13 achapin Exp $
  */
 class htmlAction
 	extends displayAction 
@@ -89,17 +89,33 @@ class htmlAction
 	 */
 	function execute () {
 		$harmoni = Harmoni::instance();
+		$harmoni->request->passthrough('node');
+		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		
-		$node = SiteDispatcher::getCurrentNode();
+		$allWrapper = $this->addHeaderControls($mainScreen);
+		$this->addSiteContent($mainScreen);
+		$this->addFooterControls($mainScreen);
+
 		
+		$this->mainScreen = $mainScreen;
+		return $allWrapper;
+	}
+	
+	/**
+	 * Add the header controls to the main screen gui component
+	 * 
+	 * @param object Component $mainScreen
+	 * @return object Component The allWrapper
+	 * @access public
+	 * @since 4/7/08
+	 */
+	public function addHeaderControls (Component $mainScreen) {
+		$harmoni = Harmoni::instance();
+				
 		/*********************************************************
 		 * Additional setup
 		 *********************************************************/
 		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
-		
-		$visitor = $this->getSiteVisitor();
-		
-		$this->siteGuiComponent = $rootSiteComponent->acceptVisitor($visitor);
 		
 		
 		/*********************************************************
@@ -132,20 +148,16 @@ class htmlAction
 		// Add the RSS head links
 		RssLinkPrinter::addHeadLinks(SiteDispatcher::getCurrentNode());
 		
-				
-		$xLayout = new XLayout();
-		$yLayout = new YLayout();
+		$allWrapper = new Container(new YLayout, BLANK, 1);
 		
-		$allWrapper = new Container($yLayout, BLANK, 1);
 		
-		$mainScreen = new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		$allWrapper->add($mainScreen,
 			$rootSiteComponent->getWidth(), null, CENTER, TOP);
 		
 		// :: login, links and commands
 		$this->headRow = $mainScreen->add(
-			new Container($xLayout, BLOCK, 1), 
+			new Container(new XLayout, BLOCK, 1), 
 			"100%", null, CENTER, TOP);
 			
 		$this->leftHeadColumn = $this->headRow->add(
@@ -153,7 +165,7 @@ class htmlAction
 				null, null, LEFT, TOP);
 		
 		$rightHeadColumn = $this->headRow->add(
-			new Container($yLayout, BLANK, 1), 
+			new Container(new YLayout, BLANK, 1), 
 			null, null, CENTER, TOP);
 
 		$rightHeadColumn->add($this->getLoginComponent(), 
@@ -166,26 +178,39 @@ class htmlAction
 		}
 		
 		
-		$mainScreen = new Container($yLayout, BLOCK, BACKGROUND_BLOCK);
+		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		$allWrapper->add($mainScreen,
 			$rootSiteComponent->getWidth(), null, CENTER, TOP);
 		
-		
-		
-		
+				
 		// :: Top Row ::
 // 		$this->headRow = $mainScreen->add(
-// 			new Container($xLayout, HEADER, 1), 
+// 			new Container(new XLayout, HEADER, 1), 
 // 			"100%", null, CENTER, TOP);
 		
 // 		$this->leftHeadColumn = $this->headRow->add(
 // 			new UnstyledBlock("<h1>".$rootSiteComponent->getTitleMarkup()."</h1>"),
 // 			null, null, LEFT, TOP);
 
+		return $allWrapper;
+	}
+	
+	/**
+	 * Add the site content gui components
+	 * 
+	 * @param Component $mainScreen
+	 * @return void
+	 * @access public
+	 * @since 4/7/08
+	 */
+	public function addSiteContent (Component $mainScreen) {
+		$harmoni = Harmoni::instance();
 		if ($this->isAuthorizedToExecute()) {
 							
 			// :: Site ::
+			$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+			$this->siteGuiComponent = $rootSiteComponent->acceptVisitor($this->getSiteVisitor());
 			$mainScreen->add($this->siteGuiComponent);
 		} else {
 			// Replace the title
@@ -196,9 +221,19 @@ class htmlAction
 			$mainScreen->add(new Block($this->getUnauthorizedMessage(), EMPHASIZED_BLOCK),
 				"100%", null, CENTER, TOP);
 		}
-		
-		
+	}
+	
+	/**
+	 * Add the footer controls to the main screen gui component
+	 * 
+	 * @param object Component $mainScreen
+	 * @return void
+	 * @access public
+	 * @since 4/7/08
+	 */
+	public function addFooterControls (Component $mainScreen) {
 		// :: Footer ::
+		$harmoni = Harmoni::instance();
 		$footer = $mainScreen->add(
 			new Container (new XLayout, FOOTER, 1),
 			"100%", null, RIGHT, BOTTOM);
@@ -224,10 +259,6 @@ class htmlAction
 		$footer->add(new UnstyledBlock(ob_get_clean()), "50%", null, LEFT, BOTTOM);
 		
 		$footer->add(new UnstyledBlock(displayAction::getVersionText()), "50%", null, RIGHT, BOTTOM);
-
-		
-		$this->mainScreen = $mainScreen;
-		return $allWrapper;
 	}
 
 	/**

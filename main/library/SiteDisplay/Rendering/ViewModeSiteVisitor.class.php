@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.63 2008/04/04 20:23:14 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.64 2008/04/08 20:09:13 achapin Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -37,7 +37,7 @@ require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.63 2008/04/04 20:23:14 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.64 2008/04/08 20:09:13 achapin Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -194,11 +194,9 @@ class ViewModeSiteVisitor
 		$pluginManager = Services::getService('PluginManager');
 		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
-		$harmoni->request->passthrough('node');
 		print "\n<div class='plugin_content'>";
 		print $plugin->executeAndGetMarkup($this->showPluginControls());
 		print "\n</div>";
-		$harmoni->request->forget('node');
 		
 		if ($block->showComments()) {
 			$cm = CommentManager::instance();
@@ -290,8 +288,10 @@ class ViewModeSiteVisitor
 			
 		// Tags
 		print "\n\t<div style='text-align: left;'>";
+
+ 	
 		$item = TaggedItem::forId($block->getQualifierId(), 'segue');
-		print TagAction::getTagCloud($item->getTags(), 'view',
+		print TagAction::getTagCloud($item->getTags(), 'seguetag',
 				array(	'font-size: 90%;',
 						'font-size: 100%;',
 				));
