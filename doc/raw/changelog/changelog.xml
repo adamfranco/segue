@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.260 2008/04/09 21:12:01 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.261 2008/04/09 21:22:12 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,9 +14,6 @@
 		<releaseNotes>
 			
 		</releaseNotes>
-		<change author='alex' date='2008-04-09' ref='' reftype='fr'>
-			Refined site migration UI.
-		</change>
 		<new author='alex, adam' date='2008-04-07' ref='1820857' reftype='fr'>
 			Tagging: Added tag cloud plugin for displaying the tags for any given node and its
 			children.
@@ -40,6 +37,13 @@
 			Migration: Sites that contain the old 'archive posts by week' setting
 			now import without errors.
 		</fix>
+		<change author='alex' date='2008-04-09' ref='' reftype='fr'>
+			Migration: Refined site migration UI styles.
+		</change>
+		<change author='adam' date='2008-04-09' ref='1934801' reftype='bug'>
+			Request: Refactored how context (current node id or site id) parameters
+			are passed around.
+		</change>
 	</version>
 	<version number="2.0-beta-18" date="2008-04-03">
 		<releaseNotes>
