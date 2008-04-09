@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.7 2008/04/03 12:40:02 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.8 2008/04/09 17:26:52 achapin Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/Segue1Slot.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_site.act.php,v 1.7 2008/04/03 12:40:02 adamfranco Exp $
+ * @version $Id: choose_site.act.php,v 1.8 2008/04/09 17:26:52 achapin Exp $
  */
 class choose_siteAction
 	extends MainWindowAction
@@ -95,7 +95,7 @@ class choose_siteAction
 	 */
 	protected function getSiteTable () {
 		ob_start();
-		print "\n<table border='1' class='dataport_choose_table'>";
+		print "\n<table cellspacing='0' class='dataport_choose_table'>";
 		print "\n\t<thead>";
 		print "\n\t\t<tr>";
 		print "\n\t\t\t<th style='width: 50%'>"._("Segue 1 Sites")."</th>";
@@ -153,16 +153,13 @@ class choose_siteAction
 		try {
 			$slot = $this->getSegue1Slot($slotName);
 			
-			print "\n\t\t\t<td class='";
+			print "\n\t\t\t<td class='segue1slot ";
 // 			if ($slot->siteExists())
 // 				print 'filled';
 // 			else 
 // 				print 'open';
 			print "'>";
 			
-			print "\n\t<div class='slotname'>";
-			print $slot->getShortname();
-			print "\n\t</div>";
 			
 			if ($slot->siteExists()) {
 				$asset = $slot->getSiteAsset();
@@ -180,6 +177,10 @@ class choose_siteAction
 				$description->trim(25);
 				print  "\n\t<div class='site_description'>".$description->asString()."</div>";
 				print "\n</div>";
+
+			print "\n\t<div class='slotname'>";
+			print $slot->getShortname();
+			print "\n\t</div>";
 				
 				$this->printControls($slot);
 			}
@@ -207,7 +208,7 @@ class choose_siteAction
 		print " onsubmit=\"if (!this.elements['".RequestContext::name('dest_slot')."'].value) {alert('"._("Please choose a destination")."'); return false;}\"";
 		print ">";
 		print "\n\t\t\t\t\t<input type='hidden' name='".RequestContext::name('source_slot')."' value='".$slot->getShortname()."'/>";
-		print "\n\t\t\t\t\t<input type='submit' value='"._("Import into")."'/>";
+		print "\n\t\t\t\t\t<input type='submit' style='background-color;'value='"._("Import into")."'/>";
 		print "\n\t\t\t\t\t<select name='".RequestContext::name('dest_slot')."'>";
 		print "\n\t\t\t\t\t\t<option value=''>"._("Choose Destination")."</option>";
 		foreach ($this->getSlotNames() as $destSlotname) {
@@ -237,7 +238,7 @@ class choose_siteAction
 		try {
 			$slot = $slotMgr->getSlotByShortname($slotName);
 			
-			print "\n\t\t\t<td class='";
+			print "\n\t\t\t<td class='segue2slot ";
 			if ($slot->siteExists())
 				print 'filled';
 			else 
@@ -263,11 +264,7 @@ class choose_siteAction
 	 */
 	private function printSlotInfo (Slot $slot) {
 		$harmoni = Harmoni::instance();
-		
-		print "\n\t<div class='slotname'>";
-		print $slot->getShortname();
-		print "\n\t</div>";
-		
+				
 		if ($slot->siteExists()) {
 			$asset = $slot->getSiteAsset();
 			
@@ -304,6 +301,11 @@ class choose_siteAction
 			print  "\n\t<div class='site_description'>".$description->asString()."</div>";
 			print "\n</div>";
 		}
+		
+		print "\n\t<div class='slotname'>";
+		print $slot->getShortname();
+		print "\n\t</div>";
+
 	}
 	
 	/**

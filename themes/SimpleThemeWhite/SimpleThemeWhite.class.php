@@ -44,7 +44,7 @@ require_once(HARMONI."GUIManager/StyleProperties/PaddingBottomSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SimpleThemeWhite.class.php,v 1.34 2008/04/02 14:10:17 adamfranco Exp $
+ * @version $Id: SimpleThemeWhite.class.php,v 1.35 2008/04/09 17:26:52 achapin Exp $
  */
 class SimpleThemeWhite extends Theme {
 
@@ -2171,31 +2171,68 @@ class SimpleThemeWhite extends Theme {
 		text-align: center;
 	}
 	
-	table.dataport_choose_table td.filled {
-		background-color: #FCC;
+	table.dataport_choose_table td {
+		border-top: 1px dotted;
+		padding-bottom: 5px;
+		padding-top: 5px;
 	}
 	
+	table.dataport_choose_table td.filled {
+
+	}
+	
+	table.dataport_choose_table td.segue1slot {
+		padding-right: 5px;
+	}
+	
+	table.dataport_choose_table td.segue2slot {
+		border-left: 1px dotted;
+		padding-left: 5px;
+		vertical-align: bottom;
+	}
+		
 	table.dataport_choose_table td.open {
 		background-color: #AFA;
 	}
 	
 	table.dataport_choose_table div.slotname {
 		float: left;
-		padding-right: 10px;
+		clear: left;
+		padding-left: 5px;
+		font-size: 10px;
+	}
+	
+	table.dataport_choose_table div.site_title {
+		float: left;
+		font-size: 10px;
 	}
 	
 	table.dataport_choose_table div.site_info {
 		float: left;
-		padding-left: 10px;
+
 	}
 	
 	table.dataport_choose_table div.site_description {
 		font-size: smaller;
+		clear: both;
 	}
 	
 	table.dataport_choose_table form {
 		float: right;
 	}
+	
+	table.dataport_choose_table input {
+		font-size: 10px;
+		border: 1px solid #555;
+		background-color: transparent;
+	}
+	
+	table.dataport_choose_table select {
+		font-size: 10px;
+		border: 1px solid #555;
+	}
+	
+	
 
 /*********************************************************
  * Site Map Styles
