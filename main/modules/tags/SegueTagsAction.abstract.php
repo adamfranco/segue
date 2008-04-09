@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.1 2008/04/09 21:27:23 achapin Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.2 2008/04/09 21:52:12 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/html.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/modules/view/html.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.1 2008/04/09 21:27:23 achapin Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.2 2008/04/09 21:52:12 adamfranco Exp $
  */
 abstract class SegueTagsAction
 	extends htmlAction
@@ -124,7 +124,7 @@ abstract class SegueTagsAction
 		print _("tagged by: ");
 
 		if ($harmoni->getCurrentAction() != 'tags.usernodetag') {
-			$url = $harmoni->request->quickURL('tags', 'usernodetag', 
+			$url = SiteDispatcher::quickURL('tags', 'usernodetag', 
 				array('agent_id' => $tagManager->getCurrentUserIdString(),
 				'tag' => RequestContext::value('tag')));
 			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
@@ -136,7 +136,7 @@ abstract class SegueTagsAction
 		
 		// all nodes with tag by everone
 		if ($harmoni->getCurrentAction() != 'tags.nodetag') {
-			$url = $harmoni->request->quickURL('tags', 'nodetag', 
+			$url = SiteDispatcher::quickURL('tags', 'nodetag', 
 				array('agent_id' => $tagManager->getCurrentUserIdString(),
 				'tag' => RequestContext::value('tag')));
 			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("everyone"))."</a>";
@@ -152,7 +152,7 @@ abstract class SegueTagsAction
 		print "\n\t\t<td style='border: 1px solid;'>";
 		print _("tagged by: ");
 		if ($harmoni->getCurrentAction() != 'tags.usersitetag') {
-			$url = $harmoni->request->quickURL('tags', 'usersitetag', 
+			$url = SiteDispatcher::quickURL('tags', 'usersitetag', 
 				array('agent_id' => $tagManager->getCurrentUserIdString(),
 				'tag' => RequestContext::value('tag')));
 			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
@@ -165,7 +165,7 @@ abstract class SegueTagsAction
 			
 		// tagged with item in site by everyone
 		if ($harmoni->getCurrentAction() != 'tags.sitetag') {
-			$url = $harmoni->request->quickURL('tags', 'sitetag', 
+			$url = SiteDispatcher::quickURL('tags', 'sitetag', 
 				array('agent_id' => $tagManager->getCurrentUserIdString(),
 				'tag' => RequestContext::value('tag')));
 			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("everyone"))."</a>";
@@ -182,7 +182,7 @@ abstract class SegueTagsAction
 		print _("tagged by: ");
 		
 		if ($harmoni->getCurrentAction() != 'tags.userseguetag') {
-			$url = $harmoni->request->quickURL('tags', 'userseguetag', 
+			$url = SiteDispatcher::quickURL('tags', 'userseguetag', 
 				array('agent_id' => $tagManager->getCurrentUserIdString(),
 				'tag' => RequestContext::value('tag')));
 			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
@@ -195,7 +195,7 @@ abstract class SegueTagsAction
 
 		// tagged with item in all segue by everyone
 		if ($harmoni->getCurrentAction() != 'tags.seguetag') {
-			$url = $harmoni->request->quickURL('tags', 'seguetag', 
+			$url = SiteDispatcher::quickURL('tags', 'seguetag', 
 				array('agent_id' => $tagManager->getCurrentUserIdString(),
 				'tag' => RequestContext::value('tag')));
 			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("everyone"))."</a>";
@@ -248,7 +248,7 @@ abstract class SegueTagsAction
 			{
 				print ""._("by you")."";
 			} else {
-				$url = $harmoni->request->quickURL('tags', 'user', 
+				$url = SiteDispatcher::quickURL('tags', 'user', 
 					array('agent_id' => $tagManager->getCurrentUserIdString()));
 				print "<a href='".$url."'>"._("by you")."</a> | ";
 			}
@@ -256,7 +256,7 @@ abstract class SegueTagsAction
 		if ($harmoni->getCurrentAction() == 'tags.all') {
 			print _("everyone");
 		} else {
-			$url = $harmoni->request->quickURL('tags', 'all');
+			$url = SiteDispatcher::quickURL('tags', 'all');
 			print "<a href='".$url."'>"._("everyone")."</a>";
 		}
 		print "\n\t\t</td>";				
@@ -273,7 +273,7 @@ abstract class SegueTagsAction
 // 			{
 // 				print ""._("your tags")." &nbsp; ";
 // 			} else {
-// 				$url = $harmoni->request->quickURL('tags', 'user', 
+// 				$url = SiteDispatcher::quickURL('tags', 'user', 
 // 					array('agent_id' => $tagManager->getCurrentUserIdString()));
 // 				print "<a href='".$url."'>"._("your tags")."</a> &nbsp; ";
 // 			}
@@ -281,13 +281,13 @@ abstract class SegueTagsAction
 // 		if ($harmoni->getCurrentAction() == 'tags.all') {
 // 			print _("all tags");
 // 		} else {
-// 			$url = $harmoni->request->quickURL('tags', 'all');
+// 			$url = SiteDispatcher::quickURL('tags', 'all');
 // 			print "<a href='".$url."'>"._("all tags")."</a> &nbsp;";
 // 		}
 		
 		if (RequestContext::value('tag')) {
 // 			if ($harmoni->getCurrentAction() != 'tags.view') {
-// 				$url = $harmoni->request->quickURL('tags', 'view', 
+// 				$url = SiteDispatcher::quickURL('tags', 'view', 
 // 					array('agent_id' => $tagManager->getCurrentUserIdString(),
 // 					'tag' => RequestContext::value('tag')));
 // 				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("items tagged '%1' by everyone"))."</a> &nbsp; ";
@@ -338,7 +338,7 @@ abstract class SegueTagsAction
 				print "\">"._("delete")."</a> &nbsp; ";
 				
 			} else if ($tagManager->getCurrentUserIdString()) {
-// 				$url = $harmoni->request->quickURL('tags', 'viewuser', 
+// 				$url = SiteDispatcher::quickURL('tags', 'viewuser', 
 // 					array('agent_id' => $tagManager->getCurrentUserIdString(),
 // 					'tag' => RequestContext::value('tag')));
 // 				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("items tagged '%1' by you"))."</a> &nbsp; ";

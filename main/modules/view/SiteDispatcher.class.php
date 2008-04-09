@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDispatcher.class.php,v 1.4 2008/04/09 21:12:03 adamfranco Exp $
+ * @version $Id: SiteDispatcher.class.php,v 1.5 2008/04/09 21:52:14 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDispatcher.class.php,v 1.4 2008/04/09 21:12:03 adamfranco Exp $
+ * @version $Id: SiteDispatcher.class.php,v 1.5 2008/04/09 21:52:14 adamfranco Exp $
  */
 class SiteDispatcher {
 		
@@ -154,10 +154,12 @@ class SiteDispatcher {
 	 * @static
 	 */
 	public static function passthroughContext () {
-		$harmoni = Harmoni::instance();
 		$context = self::getContext();
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
 		foreach ($context as $key => $val)
 			$harmoni->request->passthrough($key);
+		$harmoni->request->endNamespace();
 	}
 	
 	/**
@@ -169,10 +171,12 @@ class SiteDispatcher {
 	 * @static
 	 */
 	public static function forgetContext () {
-		$harmoni = Harmoni::instance();
 		$context = self::getContext();
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
 		foreach ($context as $key => $val)
 			$harmoni->request->forget($key);
+		$harmoni->request->endNamespace();
 	}
 	
 	/**
@@ -184,6 +188,8 @@ class SiteDispatcher {
 	 * @public
 	 */
 	public static function getContext (array $params = null) {
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
 		// Determine the node id or site id to use
 		if (isset($params['node'])) {
 			$nodeKey = 'node';
@@ -198,6 +204,7 @@ class SiteDispatcher {
 			$nodeKey = 'node';
 			$nodeVal = self::getCurrentNodeId();
 		}
+		$harmoni->request->endNamespace();
 		
 		return array($nodeKey => $nodeVal);
 	}

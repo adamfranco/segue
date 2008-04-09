@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.33 2008/04/09 21:12:03 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.34 2008/04/09 21:52:14 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.33 2008/04/09 21:12:03 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.34 2008/04/09 21:52:14 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -195,10 +195,12 @@ END;
 			
 		// Tags
 		print "\n\t<div style='text-align: left;'>";
+		SiteDispatcher::passthroughContext();
 		print TagAction::getTagCloudForItem(TaggedItem::forId($block->getQualifierId(), 'segue'), 'view',
 				array(	'font-size: 90%;',
 						'font-size: 100%;',
-				), SiteDispatcher::getContext());		
+				));		
+		SiteDispatcher::forgetContext();
 		print "\n\t</div>";
 		return ob_get_clean();
 	}
