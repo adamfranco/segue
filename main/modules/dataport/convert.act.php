@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.17 2008/04/01 13:36:30 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.18 2008/04/09 16:19:49 adamfranco Exp $
  */ 
 
 require_once(HARMONI."/oki2/SimpleTableRepository/SimpleTableRepositoryManager.class.php");
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__)."/Rendering/Segue1MappingImportSiteVisitor.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: convert.act.php,v 1.17 2008/04/01 13:36:30 adamfranco Exp $
+ * @version $Id: convert.act.php,v 1.18 2008/04/09 16:19:49 adamfranco Exp $
  */
 class convertAction
 	extends importAction
@@ -70,6 +70,7 @@ class convertAction
 			
 			// Download and convert the site
 			$doc = $this->convertFrom1To2($destFilePath, 'media');
+//			printpre(htmlentities($doc->saveXMLWithWhitespace()));
 			$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			
 			$status->updateStatistics();

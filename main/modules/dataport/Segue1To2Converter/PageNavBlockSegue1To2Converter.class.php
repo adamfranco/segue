@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.4 2008/03/21 21:11:24 adamfranco Exp $
+ * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.5 2008/04/09 16:19:49 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/NavBlockSegue1To2Converter.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.4 2008/03/21 21:11:24 adamfranco Exp $
+ * @version $Id: PageNavBlockSegue1To2Converter.class.php,v 1.5 2008/04/09 16:19:49 adamfranco Exp $
  */
 class PageNavBlockSegue1To2Converter 
 	extends NavBlockSegue1To2Converter
@@ -125,8 +125,16 @@ class PageNavBlockSegue1To2Converter
 		// Pagination
 		if (!$this->sourceElement->hasAttribute('archiving') || $this->sourceElement->getAttribute('archiving') == 'none')
 			$flowOrg->setAttribute('rows', 0);
-		else
-			$flowOrg->setAttribute('rows', $this->sourceElement->getAttribute('archiving'));
+		else {
+			if (is_numeric($this->sourceElement->getAttribute('archiving')))
+				$flowOrg->setAttribute('rows', intval($this->sourceElement->getAttribute('archiving')));
+			else if ($this->sourceElement->getAttribute('archiving') == 'week')
+				$flowOrg->setAttribute('rows', 7);
+			else if ($this->sourceElement->getAttribute('archiving') == 'month')
+				$flowOrg->setAttribute('rows', 30);
+			else
+				$flowOrg->setAttribute('rows', 0);
+		}
 		
 		$flowOrg->setAttribute('cols', 1);
 		
