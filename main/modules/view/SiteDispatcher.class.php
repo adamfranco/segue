@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDispatcher.class.php,v 1.3 2008/03/31 23:03:54 adamfranco Exp $
+ * @version $Id: SiteDispatcher.class.php,v 1.4 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDispatcher.class.php,v 1.3 2008/03/31 23:03:54 adamfranco Exp $
+ * @version $Id: SiteDispatcher.class.php,v 1.4 2008/04/09 21:12:03 adamfranco Exp $
  */
 class SiteDispatcher {
 		
@@ -93,6 +93,113 @@ class SiteDispatcher {
 		}
 		
 		return self::$currentNodeId;
+	}
+	
+	/**
+	 * Answer a url string with the parameters passed, ensuring that the current node
+	 * id is passed as well.
+	 * 
+	 * @param optional string $module
+	 * @param optional string $action
+	 * @param optional array $params
+	 * @return string
+	 * @access public
+	 * @since 4/9/08
+	 * @static
+	 */
+	public static function quickURL ($module = null, $action = null, array $params = null) {
+		$url = self::mkURL($module, $action, $params);
+		return $url->write();
+	}
+	
+	/**
+	 * Answer a URL writer object with the parameters passed, ensuring that the current node
+	 * id is passed as well.
+	 * 
+	 * @param optional string $module
+	 * @param optional string $action
+	 * @param optional array $params
+	 * @return object URLWriter
+	 * @access public
+	 * @since 4/9/08
+	 * @static
+	 */
+	public static function mkURL ($module = null, $action = null, array $params = null) {
+		if (is_null($params))
+			$params = array();
+		
+		$context = self::getContext($params);
+		unset($params['node'], $params['site']);
+		$harmoni = Harmoni::instance();
+		
+		if (!count($params))
+			$params = null;
+		
+		$url = $harmoni->request->mkURL($module, $action, $params);
+		
+		$harmoni->request->startNamespace(null);
+		foreach ($context as $key => $val) {
+			$url->setValue($key, $val);
+		}
+		$harmoni->request->endNamespace();
+		return $url;
+	}
+	
+	/**
+	 * Set the context data to pass-through to subsequent urls.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/9/08
+	 * @static
+	 */
+	public static function passthroughContext () {
+		$harmoni = Harmoni::instance();
+		$context = self::getContext();
+		foreach ($context as $key => $val)
+			$harmoni->request->passthrough($key);
+	}
+	
+	/**
+	 * Unset the context data from being passed-through to subsequent urls.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 4/9/08
+	 * @static
+	 */
+	public static function forgetContext () {
+		$harmoni = Harmoni::instance();
+		$context = self::getContext();
+		foreach ($context as $key => $val)
+			$harmoni->request->forget($key);
+	}
+	
+	/**
+	 * Answer an array of key/value pairs that define the current context.
+	 * 
+	 * @return array
+	 * @access private
+	 * @since 4/9/08
+	 * @public
+	 */
+	public static function getContext (array $params = null) {
+		// Determine the node id or site id to use
+		if (isset($params['node'])) {
+			$nodeKey = 'node';
+			$nodeVal = $params['node'];
+		} else if (isset($params['site'])) {
+			$nodeKey = 'site';
+			$nodeVal = $params['site'];
+		} else if (RequestContext::value("site")) {
+			$nodeKey = 'site';
+			$nodeVal = RequestContext::value("site");
+		} else {
+			$nodeKey = 'node';
+			$nodeVal = self::getCurrentNodeId();
+		}
+		
+		return array($nodeKey => $nodeVal);
 	}
 	
 	/**

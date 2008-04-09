@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GeneralControlsSiteVisitor.abstract.php,v 1.2 2007/11/09 16:23:31 adamfranco Exp $
+ * @version $Id: GeneralControlsSiteVisitor.abstract.php,v 1.3 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: GeneralControlsSiteVisitor.abstract.php,v 1.2 2007/11/09 16:23:31 adamfranco Exp $
+ * @version $Id: GeneralControlsSiteVisitor.abstract.php,v 1.3 2008/04/09 21:12:03 adamfranco Exp $
  */
 abstract class GeneralControlsSiteVisitor {
 	
@@ -171,7 +171,7 @@ END;
 		{
 		
 			$url = 	$harmoni->request->quickURL($this->module, 'reorder', array(
-						'returnNode' => RequestContext::value('node'),
+						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action
 						));
 			

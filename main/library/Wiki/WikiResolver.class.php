@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WikiResolver.class.php,v 1.4 2008/03/17 20:50:51 adamfranco Exp $
+ * @version $Id: WikiResolver.class.php,v 1.5 2008/04/09 21:12:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/TitleSearcher.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/TitleSearcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: WikiResolver.class.php,v 1.4 2008/03/17 20:50:51 adamfranco Exp $
+ * @version $Id: WikiResolver.class.php,v 1.5 2008/04/09 21:12:02 adamfranco Exp $
  */
 class WikiResolver {
 
@@ -526,7 +526,7 @@ $		# Anchor for the end of the line
 		ob_start();
 		print "<a href='";
 		$harmoni->request->startNamespace(null);
-		print $harmoni->request->quickURL($this->viewModule, $this->viewAction, array('node' => $nodeIdString));
+		print SiteDispatcher::quickURL($this->viewModule, $this->viewAction, array('node' => $nodeIdString));
 		$harmoni->request->endNamespace();
 		print "'>";
 		print $display;
@@ -552,7 +552,7 @@ $		# Anchor for the end of the line
 		ob_start();
 		print "<a href='";
 		$harmoni->request->startNamespace(null);
-		print $harmoni->request->quickURL($this->viewModule, $this->viewAction, array('site' => $slotName, 'node' => null));
+		print SiteDispatcher::quickURL($this->viewModule, $this->viewAction, array('site' => $slotName, 'node' => null));
 		$harmoni->request->endNamespace();
 		print "'>";
 		print $display;

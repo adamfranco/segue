@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.7 2008/03/05 21:45:12 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.8 2008/04/09 21:12:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/RoleAction.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/RoleAction.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: choose_agent.act.php,v 1.7 2008/03/05 21:45:12 adamfranco Exp $
+ * @version $Id: choose_agent.act.php,v 1.8 2008/04/09 21:12:02 adamfranco Exp $
  */
 class choose_agentAction
 	extends RoleAction
@@ -128,7 +128,7 @@ class choose_agentAction
 				print "\n\t\t</td>";
 				print "\n\t\t<td class='color$i' style='text-align: right;'>";
 				$url = $harmoni->request->quickURL('roles', 'modify', array(
-					'node' => RequestContext::value('node'),
+					'node' => SiteDispatcher::getCurrentNodeId(),
 					'agent' => $agent->getId()->getIdString()
 				));
 				print "\n\t\t\t<button onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>"._("Modify Roles &raquo;")."</button>";

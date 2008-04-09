@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.14 2008/03/25 16:11:07 achapin Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.15 2008/04/09 21:12:02 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.14 2008/03/25 16:11:07 achapin Exp $
+ * @version $Id: DetailViewModeSiteVisitor.class.php,v 1.15 2008/04/09 21:12:02 adamfranco Exp $
  */
 class DetailViewModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -87,9 +87,7 @@ class DetailViewModeSiteVisitor
 		$pluginManager = Services::getService('PluginManager');
 		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
-		$harmoni->request->passthrough('node');
 		print $plugin->executeAndGetExtendedMarkup(false);
-		$harmoni->request->forget('node');
 
 		// print out attribution based on block settings
 		$attribution = new AttributionPrinter($block);

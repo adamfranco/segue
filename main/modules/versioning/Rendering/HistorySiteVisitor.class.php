@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.5 2008/03/25 15:30:14 achapin Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.6 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/DetailViewModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/DetailViewModeSiteVisito
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistorySiteVisitor.class.php,v 1.5 2008/03/25 15:30:14 achapin Exp $
+ * @version $Id: HistorySiteVisitor.class.php,v 1.6 2008/04/09 21:12:03 adamfranco Exp $
  */
 class HistorySiteVisitor
 	extends DetailViewModeSiteVisitor
@@ -72,7 +72,6 @@ class HistorySiteVisitor
 		$pluginManager = Services::getService('PluginManager');
 		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
-		$harmoni->request->passthrough('node');
 		ob_start();
 		print "\n<form action='".$harmoni->request->quickURL('versioning', 'compare_versions')."' method='get'>";
 		print "\n\t<div style='float: right;'>";
@@ -86,12 +85,11 @@ class HistorySiteVisitor
 		print "\n\t\t\t<input type='button' value='"._("&laquo; Go Back")."'/>\n\t\t</a>\n\t</div>";
 		print "\n\t\t<input type='hidden' name='module' value='versioning'/>";
 		print "\n\t<input type='hidden' name='action' value='compare_versions'/>";
-		print "\n\t<input type='hidden' name='node' value='".RequestContext::value('node')."'/>";
+		print "\n\t<input type='hidden' name='node' value='".SiteDispatcher::getCurrentNodeId()."'/>";
 		
 		print $this->getVersionTable($plugin);
 		print "\n</form>";
 		print $this->getVersionChoiceJS();
-		$harmoni->request->forget('node');
 		
 		return ob_get_clean();
 	}

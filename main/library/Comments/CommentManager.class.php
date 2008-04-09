@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.21 2008/03/11 17:38:44 achapin Exp $
+ * @version $Id: CommentManager.class.php,v 1.22 2008/04/09 21:12:01 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/CommentNode.class.php");
@@ -28,7 +28,7 @@ if (!defined('DESC'))
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentManager.class.php,v 1.21 2008/03/11 17:38:44 achapin Exp $
+ * @version $Id: CommentManager.class.php,v 1.22 2008/04/09 21:12:01 adamfranco Exp $
  */
 class CommentManager {
 		
@@ -88,7 +88,7 @@ class CommentManager {
 		if (is_null($assetId)) {
 			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace(null);
-			$assetId = $idManager->getId(RequestContext::value('node'));
+			$assetId = $idManager->getId(SiteDispatcher::getCurrentNodeId());
 			$harmoni->request->endNamespace();
 		}
 		
@@ -121,7 +121,7 @@ class CommentManager {
 		if (is_null($assetId)) {
 			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace(null);
-			$assetId = $idManager->getId(RequestContext::value('node'));
+			$assetId = $idManager->getId(SiteDispatcher::getCurrentNodeId());
 			$harmoni->request->endNamespace();
 		}
 		
@@ -478,14 +478,12 @@ class CommentManager {
 	 */
 	function getHeadingMarkup ( $asset ) {
 		$harmoni = Harmoni::instance();
-		$harmoni->request->passthrough('node');
 		$harmoni->request->startNamespace('comments');
 		ob_start();
 		
 		print _("Comments:");
 		print "<a name='".RequestContext::name('top')."'></a>";
 		
-		$harmoni->request->forget('node');
 		$harmoni->request->endNamespace();
 		return ob_get_clean();
 	}
@@ -501,7 +499,6 @@ class CommentManager {
 	 */
 	function getMarkup ( $asset ) {
 		$harmoni = Harmoni::instance();
-		$harmoni->request->passthrough('node');
 		$harmoni->request->startNamespace('comments');
 		
 		
@@ -555,7 +552,7 @@ class CommentManager {
 		if ($this->canComment($asset->getId())) {	
 			// New comment
 			print "\n<div style='float: left;'>";
-			$url = $harmoni->request->mkURL();
+			$url = SiteDispatcher::mkURL();
 			$url->setValue('create_new_comment', 'true');
 			print "\n\t<button ";
 			print "onclick=\"CommentPluginChooser.run(this, '".$url->write()."#".RequestContext::name('current')."', ''); return false;\">";
@@ -569,7 +566,7 @@ class CommentManager {
 		
 		if ($this->canViewComments($asset->getId())) {
 			// print the ordering form
-			print "\n\n<form action='".$harmoni->request->quickURL()."#".RequestContext::name('top')."' method='post'  style='float: right; text-align: right;'>";
+			print "\n\n<form action='".SiteDispatcher::quickURL()."#".RequestContext::name('top')."' method='post'  style='float: right; text-align: right;'>";
 	
 			
 			print "\n\t\t<select name='".RequestContext::name('displayMode')."'>";
@@ -616,7 +613,6 @@ class CommentManager {
 			print "\n<div>"._("You are not authorized to view comments.")."</div>";
 		}
 		
-		$harmoni->request->forget('node');
 		$harmoni->request->endNamespace();
 		return ob_get_clean();
 	}

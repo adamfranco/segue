@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.11 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.12 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: deleteComponent.act.php,v 1.11 2007/11/09 22:57:41 adamfranco Exp $
+ * @version $Id: deleteComponent.act.php,v 1.12 2008/04/09 21:12:03 adamfranco Exp $
  */
 class deleteComponentAction 
 	extends EditModeSiteAction
@@ -37,7 +37,7 @@ class deleteComponentAction
 		$idManager = Services::getService("Id");
 		
 		$director = $this->getSiteDirector();
-		$component = $director->getSiteComponentById(RequestContext::value('node'));
+		$component = $director->getSiteComponentById(SiteDispatcher::getCurrentNodeId());
 				
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.delete"),
@@ -54,7 +54,7 @@ class deleteComponentAction
 	 * @since 4/14/06
 	 */
 	function processChanges ( SiteDirector $director ) {		
-		$component = $director->getSiteComponentById(RequestContext::value('node'));
+		$component = $director->getSiteComponentById(SiteDispatcher::getCurrentNodeId());
 		
 		$this->findSafeReturnNode($director, $component);
 		
@@ -62,13 +62,13 @@ class deleteComponentAction
 		if ($organizer)
 			$organizer->detatchSubcomponent($component);
 
-		$rootSiteComponent = $director->getRootSiteComponent(RequestContext::value('node'));
+		$rootSiteComponent = $director->getRootSiteComponent(SiteDispatcher::getCurrentNodeId());
 		// If we are deleting the site unhitch it from the slot
-		if ($rootSiteComponent->getId() == RequestContext::value('node')) {
+		if ($rootSiteComponent->getId() == SiteDispatcher::getCurrentNodeId()) {
 			$slotMgr = SlotManager::instance();
 			$idMgr = Services::getService("Id");
 			try {
-				$slot = $slotMgr->getSlotBySiteId($idMgr->getId(RequestContext::value('node')));
+				$slot = $slotMgr->getSlotBySiteId($idMgr->getId(SiteDispatcher::getCurrentNodeId()));
 				$slot->deleteSiteId();
 			} catch (Exception $e) {
 				

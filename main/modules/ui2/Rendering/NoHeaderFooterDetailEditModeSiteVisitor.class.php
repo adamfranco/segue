@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NoHeaderFooterDetailEditModeSiteVisitor.class.php,v 1.2 2008/03/25 16:11:07 achapin Exp $
+ * @version $Id: NoHeaderFooterDetailEditModeSiteVisitor.class.php,v 1.3 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NoHeaderFooterEditModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/NoHeaderFooterEditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: NoHeaderFooterDetailEditModeSiteVisitor.class.php,v 1.2 2008/03/25 16:11:07 achapin Exp $
+ * @version $Id: NoHeaderFooterDetailEditModeSiteVisitor.class.php,v 1.3 2008/04/09 21:12:03 adamfranco Exp $
  */
 class NoHeaderFooterDetailEditModeSiteVisitor
 	extends NoHeaderFooterEditModeSiteVisitor
@@ -86,9 +86,7 @@ class NoHeaderFooterDetailEditModeSiteVisitor
 		$pluginManager = Services::getService('PluginManager');
 		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
-		$harmoni->request->passthrough('node');
 		print $plugin->executeAndGetExtendedMarkup(true);
-		$harmoni->request->forget('node');
 		
 		// print out attribution based on block settings
 		$attribution = new AttributionPrinter($block);

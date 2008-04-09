@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.3 2008/04/08 20:09:13 achapin Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.4 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/TaggableItemVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.3 2008/04/08 20:09:13 achapin Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.4 2008/04/09 21:12:03 adamfranco Exp $
  */
 class EduMiddleburyTagsPlugin 
 	extends SegueAjaxPlugin
@@ -106,57 +106,12 @@ class EduMiddleburyTagsPlugin
  			$visitor = new TaggableItemVisitor;
  			$items = $parentNode->acceptVisitor($visitor);
  			
- 			print TagAction::getReadOnlyTagCloudForItems($items, 'segue');
  			
- 			//$tags = TagAction::getTagCloudForRepository($node, "segue");
- 			
- 			//printpre($tags);	
-
-				
+ 			print TagAction::getReadOnlyTagCloudForItems($items, 'segue', null, SiteDispatcher::getContext());				
  		}
 		
 		return ob_get_clean();
- 	}
- 	
-	/**
-	 * Answer the bread crumbs for the current node
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 5/31/07
-	 */
-	function getTags () {
-		$node = SiteDispatcher::getCurrentNode();
-		
-		//return $node->acceptVisitor(new BreadCrumbsVisitor($node));
-	}
-	
- 	
-	/**
-	 * Answer the nodeId
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 7/30/07
-	 */
-	function getNodeId () {
-		if (RequestContext::value("site")) {
-			$slotManager = SlotManager::instance();
-			$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
-			if ($slot->siteExists())
-				$nodeId = $slot->getSiteId()->getIdString();
-			else
-				throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
-		} else if (RequestContext::value("node")) {
-			$nodeId = RequestContext::value("node");
-		}
-		
-		if (!isset($nodeId) || !strlen($nodeId))
-			throw new NullArgumentException('No site node specified.');
-		
-		return $nodeId;
-	}
- 
+ 	} 
 }
 
 ?>

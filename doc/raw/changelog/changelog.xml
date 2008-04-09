@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.259 2008/04/09 17:26:52 achapin Exp $
+ @version $Id: changelog.xml,v 1.260 2008/04/09 21:12:01 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -36,7 +36,7 @@
 		<fix author='alex' date='2008-04-07' ref='' reftype=''>
 			Fixed RSS flow organizer visitor to call visitor only if child is object.
 		</fix>
-		<fix author='adam' date='2008-04-09' ref='1938743' reftype='bug'>
+		<fix author='adam' date='2008-04-09' ref='1938743' reftype='bug' reporter='bryan_carson'>
 			Migration: Sites that contain the old 'archive posts by week' setting
 			now import without errors.
 		</fix>

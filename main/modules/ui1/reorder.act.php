@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: reorder.act.php,v 1.4 2008/01/10 20:24:19 adamfranco Exp $
+ * @version $Id: reorder.act.php,v 1.5 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/modules/ui2/Rendering/ModifySettingsSiteVisitor.class.
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: reorder.act.php,v 1.4 2008/01/10 20:24:19 adamfranco Exp $
+ * @version $Id: reorder.act.php,v 1.5 2008/04/09 21:12:03 adamfranco Exp $
  */
 class reorderAction 
 	extends EditModeSiteAction
@@ -41,7 +41,7 @@ class reorderAction
 		
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("reorder");
-		$block = $director->getSiteComponentById(RequestContext::value('node'));
+		$block = $director->getSiteComponentById(SiteDispatcher::getCurrentNodeId());
 		$harmoni->request->endNamespace();
 		
 		$parent = $block->getParentComponent();
@@ -65,7 +65,7 @@ class reorderAction
 		$harmoni->request->startNamespace("reorder");
 		
 		// Get our component
-		$block = $director->getSiteComponentById(RequestContext::value('node'));
+		$block = $director->getSiteComponentById(SiteDispatcher::getCurrentNodeId());
 		
 		// The reordering is in the Flow Organizer, so get the parent of our node
 		$organizer = $block->getParentComponent();

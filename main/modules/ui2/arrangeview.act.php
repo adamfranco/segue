@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.16 2008/04/02 21:15:22 achapin Exp $
+ * @version $Id: arrangeview.act.php,v 1.17 2008/04/09 21:12:03 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(dirname(__FILE__)."/Rendering/UI2.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: arrangeview.act.php,v 1.16 2008/04/02 21:15:22 achapin Exp $
+ * @version $Id: arrangeview.act.php,v 1.17 2008/04/09 21:12:03 adamfranco Exp $
  */
 class arrangeviewAction
 	extends htmlAction 
@@ -84,7 +84,7 @@ class arrangeviewAction
 			$harmoni = Harmoni::instance();
 			print "\n<div style='text-align: right;'>";
 			print "\n<a href='".$harmoni->request->quickURL("roles", "choose_agent", 
-					array("node" => RequestContext::value("node"),
+					array("node" => SiteDispatcher::getCurrentNodeId(),
 					"returnModule" => $harmoni->request->getRequestedModule(),
 					"returnAction" => $harmoni->request->getRequestedAction()))."'>";
 			print "\n\t<input type='button' value='"._("Permissions")."'/>";

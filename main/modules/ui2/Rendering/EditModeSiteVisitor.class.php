@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.32 2008/04/04 20:23:14 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.33 2008/04/09 21:12:03 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.32 2008/04/04 20:23:14 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.33 2008/04/09 21:12:03 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -198,7 +198,7 @@ END;
 		print TagAction::getTagCloudForItem(TaggedItem::forId($block->getQualifierId(), 'segue'), 'view',
 				array(	'font-size: 90%;',
 						'font-size: 100%;',
-				));		
+				), SiteDispatcher::getContext());		
 		print "\n\t</div>";
 		return ob_get_clean();
 	}
@@ -476,7 +476,7 @@ END;
 		$harmoni = Harmoni::instance();
 		print "\n<form action='";
 		print $harmoni->request->quickURL('ui2', 'addComponent', 
-				array('returnNode' => RequestContext::value('node'),
+				array('returnNode' => SiteDispatcher::getCurrentNodeId(),
 					'returnAction' => $this->_action));
 		print "' method='post'>";
 		

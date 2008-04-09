@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.11 2008/04/08 20:09:13 achapin Exp $
+ * @version $Id: html.act.php,v 1.12 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
@@ -27,7 +27,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.11 2008/04/08 20:09:13 achapin Exp $
+ * @version $Id: html.act.php,v 1.12 2008/04/09 21:12:03 adamfranco Exp $
  */
 
 /**
@@ -39,7 +39,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.11 2008/04/08 20:09:13 achapin Exp $
+ * @version $Id: html.act.php,v 1.12 2008/04/09 21:12:03 adamfranco Exp $
  */
 class htmlAction
 	extends displayAction 
@@ -89,7 +89,6 @@ class htmlAction
 	 */
 	function execute () {
 		$harmoni = Harmoni::instance();
-		$harmoni->request->passthrough('node');
 		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		$allWrapper = $this->addHeaderControls($mainScreen);
@@ -214,6 +213,7 @@ class htmlAction
 			$mainScreen->add($this->siteGuiComponent);
 		} else {
 			// Replace the title
+			$outputHandler = $harmoni->getOutputHandler();
 			$title = "\n\t\t<title>"._("Unauthorized")."</title>";
 			$outputHandler->setHead(
 				preg_replace("/<title>[^<]*<\/title>/", $title, $outputHandler->getHead()));			

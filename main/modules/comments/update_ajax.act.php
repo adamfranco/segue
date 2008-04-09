@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.2 2007/09/04 15:07:42 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.3 2008/04/09 21:12:02 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -19,7 +19,7 @@ require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: update_ajax.act.php,v 1.2 2007/09/04 15:07:42 adamfranco Exp $
+ * @version $Id: update_ajax.act.php,v 1.3 2008/04/09 21:12:02 adamfranco Exp $
  */
 class update_ajaxAction 
 	extends Action
@@ -45,7 +45,6 @@ class update_ajaxAction
 	 */
 	function execute () {
 		$harmoni = Harmoni::instance();
-		$harmoni->request->passthrough('node');
 		$harmoni->request->startNamespace('comments');
 		
 		$comment = $this->getComment();
@@ -75,7 +74,6 @@ class update_ajaxAction
 	
 		print "</comment>";
 		
-		$harmoni->request->forget('node');
 		$harmoni->request->endNamespace();
 		
 		exit();

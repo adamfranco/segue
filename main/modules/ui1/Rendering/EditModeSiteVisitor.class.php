@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2008/02/28 16:41:00 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.26 2008/04/09 21:12:03 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.25 2008/02/28 16:41:00 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.26 2008/04/09 21:12:03 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -328,8 +328,8 @@ END;
 		$harmoni = Harmoni::instance();
 
 		$params = array(
-					'node' => RequestContext::value('node'),
-					'returnNode' => RequestContext::value('node'),
+					'node' => SiteDispatcher::getCurrentNodeId(),
+					'returnNode' => SiteDispatcher::getCurrentNodeId(),
 					'returnAction' => $this->_action,
 					'organizerId' => $organizerId);
 		if (!is_null($cellIndex))

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.6 2008/03/05 21:45:12 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.7 2008/04/09 21:12:02 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.6 2008/03/05 21:45:12 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.7 2008/04/09 21:12:02 adamfranco Exp $
  */
 class AgentSearchSource
 	implements WSearchSource
@@ -100,7 +100,7 @@ class AgentSearchSource
 				print "\n\t\t\t</td>";
 				print "\n\t\t\t<td class='action_button color".$colorKey."'>";
 				$url =  $harmoni->request->quickURL('roles', 'modify', array(
-					'node' => RequestContext::value('node'),
+					'node' => SiteDispatcher::getCurrentNodeId(),
 					'agent' => $result->getIdString()
 				));
 				print "\n\t\t\t<button onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>"._("Modify Roles &raquo;")."</button>";
@@ -123,7 +123,7 @@ class AgentSearchSource
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AgentSearchSource.class.php,v 1.6 2008/03/05 21:45:12 adamfranco Exp $
+ * @version $Id: AgentSearchSource.class.php,v 1.7 2008/04/09 21:12:02 adamfranco Exp $
  */
 class AgentSearchResult
 	implements WSearchResult

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.21 2008/03/24 22:58:09 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.22 2008/04/09 21:12:03 adamfranco Exp $
  */ 
  
  require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.21 2008/03/24 22:58:09 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.22 2008/04/09 21:12:03 adamfranco Exp $
  */
 class ControlsSiteVisitor 
 	extends GeneralControlsSiteVisitor
@@ -69,7 +69,7 @@ class ControlsSiteVisitor
 		print " action='";
 		print $harmoni->request->quickURL('ui2', 'modifyComponent',
 				array('node' => $siteComponent->getId(),
-					"returnNode" => RequestContext::value('node'),
+					"returnNode" => SiteDispatcher::getCurrentNodeId(),
 					'returnAction' => $this->action));
 		print "'";
 		print " class='controls_form'";
@@ -119,7 +119,7 @@ class ControlsSiteVisitor
 		$message = _("Are you sure that you wish to delete this component and all of its children?");
 		$url = 	$harmoni->request->quickURL('ui2', 'deleteComponent', array(
 					'node' => $siteComponent->getId(),
-					'returnNode' => RequestContext::value('node'),
+					'returnNode' => SiteDispatcher::getCurrentNodeId(),
 					'returnAction' => $this->action
 					));
 		
@@ -168,7 +168,7 @@ class ControlsSiteVisitor
 			$message = _("Are you sure that you wish to create a submenu?");
 			$url = $harmoni->request->quickURL('ui2', 'createSubMenu', array(
 						'parent' => $siteComponent->getId(),
-						'returnNode' => RequestContext::value('node'),
+						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action,
 						'direction' => urlencode($parentMenuOrganizer->getDirection())));
 			

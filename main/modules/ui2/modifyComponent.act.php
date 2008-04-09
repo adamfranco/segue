@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modifyComponent.act.php,v 1.7 2008/01/10 20:24:19 adamfranco Exp $
+ * @version $Id: modifyComponent.act.php,v 1.8 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/modules/ui2/Rendering/ModifySettingsSiteVisitor.class.
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: modifyComponent.act.php,v 1.7 2008/01/10 20:24:19 adamfranco Exp $
+ * @version $Id: modifyComponent.act.php,v 1.8 2008/04/09 21:12:03 adamfranco Exp $
  */
 class modifyComponentAction 
 	extends EditModeSiteAction
@@ -38,7 +38,7 @@ class modifyComponentAction
 		$idManager = Services::getService("Id");
 		
 		$director = $this->getSiteDirector();
-		$component = $director->getSiteComponentById(RequestContext::value('node'));
+		$component = $director->getSiteComponentById(SiteDispatcher::getCurrentNodeId());
 				
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"),
@@ -55,7 +55,7 @@ class modifyComponentAction
 	 * @since 4/14/06
 	 */
 	function processChanges ( SiteDirector $director ) {		
-		$component = $director->getSiteComponentById(RequestContext::value('node'));
+		$component = $director->getSiteComponentById(SiteDispatcher::getCurrentNodeId());
 		$component->acceptVisitor(new ModifySettingsSiteVisitor());
 		
 		/*********************************************************

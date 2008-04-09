@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.9 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.10 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/NoHeaderFooterEditModeSiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/NoHeaderFooterEditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.9 2007/09/24 20:49:09 adamfranco Exp $
+ * @version $Id: DetailEditModeSiteVisitor.class.php,v 1.10 2008/04/09 21:12:03 adamfranco Exp $
  */
 class DetailEditModeSiteVisitor
 	extends NoHeaderFooterEditModeSiteVisitor
@@ -86,9 +86,8 @@ class DetailEditModeSiteVisitor
 		$pluginManager = Services::getService('PluginManager');
 		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
-		$harmoni->request->passthrough('node');
 		print $plugin->executeAndGetExtendedMarkup(false);
-		$harmoni->request->forget('node');
+		
 		print $block->acceptVisitor($this->_controlsVisitor);
 		
 		return ob_get_clean();

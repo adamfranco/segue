@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: filebrowser.act.php,v 1.2 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: filebrowser.act.php,v 1.3 2008/04/09 21:12:02 adamfranco Exp $
  */ 
 
 /**
@@ -16,7 +16,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: filebrowser.act.php,v 1.2 2008/02/21 18:53:31 adamfranco Exp $
+ * @version $Id: filebrowser.act.php,v 1.3 2008/04/09 21:12:02 adamfranco Exp $
  * @since 4/28/05
  */
 class filebrowserAction
@@ -56,7 +56,7 @@ class filebrowserAction
 		$title = $this->getHeadingText();
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace('media');
-		$nodeId = RequestContext::value('node');
+		$nodeId = SiteDispatcher::getCurrentNodeId();
 		$harmoni->request->endNamespace();
 		$POLYPHONY_PATH = POLYPHONY_PATH;
 		$MYPATH = MYPATH;

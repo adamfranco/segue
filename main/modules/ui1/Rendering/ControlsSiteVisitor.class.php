@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.18 2008/04/02 21:15:22 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.19 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/ui1/Rendering/GeneralControlsSiteVisitor.abstract.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ControlsSiteVisitor.class.php,v 1.18 2008/04/02 21:15:22 achapin Exp $
+ * @version $Id: ControlsSiteVisitor.class.php,v 1.19 2008/04/09 21:12:03 adamfranco Exp $
  */
 class ControlsSiteVisitor
 	extends GeneralControlsSiteVisitor
@@ -71,7 +71,7 @@ class ControlsSiteVisitor
 // 		print " action='";
 // 		print $harmoni->request->quickURL('ui1', 'modifyComponent',
 // 				array('node' => $siteComponent->getId(),
-// 					"returnNode" => RequestContext::value('node'),
+// 					"returnNode" => SiteDispatcher::getCurrentNodeId(),
 // 					'returnAction' => $this->action));
 // 		print "'";
 // 		print " class='controls_form'";
@@ -138,7 +138,7 @@ class ControlsSiteVisitor
 			$message = _("Are you sure that you wish to delete this component and all of its children?");
 			$url = 	$harmoni->request->quickURL('ui1', 'deleteComponent', array(
 						'node' => $siteComponent->getId(),
-						'returnNode' => RequestContext::value('node'),
+						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action
 						));
 			
@@ -184,7 +184,7 @@ class ControlsSiteVisitor
 			
 			$url = 	$harmoni->request->mkURLWithPassthrough('ui1', $action, array(
 						'node' => $siteComponent->getId(),
-						'returnNode' => RequestContext::value('node'),
+						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action
 						));
 			
@@ -252,7 +252,7 @@ class ControlsSiteVisitor
 			
 			$url = 	$harmoni->request->quickURL('ui1', 'editContentWizard', array(
 							'node' => $siteComponent->getId(),
-							'returnNode' => RequestContext::value('node'),
+							'returnNode' => SiteDispatcher::getCurrentNodeId(),
 							'returnAction' => $this->action
 							));
 			$url = "#";
@@ -292,7 +292,7 @@ class ControlsSiteVisitor
 			$url = str_replace('&amp;', '&', 
 					$harmoni->request->quickURL('ui1', 'createSubMenu', array(
 						'parent' => $siteComponent->getId(),
-						'returnNode' => RequestContext::value('node'),
+						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action,
 						'direction' => urlencode($parentMenuOrganizer->getDirection()))));
 			
@@ -452,7 +452,7 @@ class ControlsSiteVisitor
 		
 			$url = 	$harmoni->request->quickURL('ui1', 'editFlowOrg', array(
 						'node' => $siteComponent->getId(),
-						'returnNode' => RequestContext::value('node'),
+						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action
 						));
 		
@@ -495,7 +495,7 @@ class ControlsSiteVisitor
 		
 			$url = 	$harmoni->request->quickURL('ui1', 'editMenu', array(
 						'node' => $siteComponent->getId(),
-						'returnNode' => RequestContext::value('node'),
+						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action
 						));
 		

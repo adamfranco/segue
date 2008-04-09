@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.7 2008/03/31 20:10:28 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.8 2008/04/09 21:12:02 adamfranco Exp $
  */ 
 
 require_once("Archive/Tar.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: export.act.php,v 1.7 2008/03/31 20:10:28 adamfranco Exp $
+ * @version $Id: export.act.php,v 1.8 2008/04/09 21:12:02 adamfranco Exp $
  */
 class exportAction
 	extends Action
@@ -116,21 +116,7 @@ class exportAction
 	 * @since 7/30/07
 	 */
 	function getNodeId () {
-		if (RequestContext::value("site")) {
-			$slotManager = SlotManager::instance();
-			$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
-			if ($slot->siteExists())
-				$nodeId = $slot->getSiteId()->getIdString();
-			else
-				throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
-		} else if (RequestContext::value("node")) {
-			$nodeId = RequestContext::value("node");
-		}
-		
-		if (!$nodeId)
-			throwError(new Error('No site node specified.', 'SiteDisplay'));
-		
-		return $nodeId;
+		return SiteDispatcher::getCurrentNodeId();
 	}
 	
 	/**

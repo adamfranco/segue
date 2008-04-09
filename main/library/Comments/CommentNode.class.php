@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.16 2008/03/31 21:02:11 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.17 2008/04/09 21:12:01 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.16 2008/03/31 21:02:11 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.17 2008/04/09 21:12:01 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -379,7 +379,7 @@ class CommentNode {
 			$controls[] = ob_get_clean();
 			
 			ob_start();
-			$deleteUrl = $harmoni->request->mkURL();
+			$deleteUrl = SiteDispatcher::mkURL();
 			$deleteUrl->setValue('delete_comment', $this->getIdString());
 			print "\n\t\t\t\t<a ";
 			print "href='".$deleteUrl->write()."#".RequestContext::name('top')."'";
@@ -393,7 +393,7 @@ class CommentNode {
 		}
 		if ($this->hasContent() && $this->canReply()) {
 			ob_start();
-			$replyUrl = $harmoni->request->mkURL();
+			$replyUrl = SiteDispatcher::mkURL();
 			$replyUrl->setValue('reply_parent', $this->getIdString());
 			print "\n\t\t\t\t<a href='#' onclick=\"CommentPluginChooser.run(this, '".$replyUrl->write()."#".RequestContext::name('current')."', '".rawurlencode(_('Re: ').$this->getSubject())."'); return false;\">"._("reply")."</a>";
 			$controls[] = ob_get_clean();
@@ -411,7 +411,7 @@ class CommentNode {
 		print "\n\t\t\t</div>";
 		if ($this->canModify()) {
 			print "<form action='"
-				.$harmoni->request->quickURL()."#".RequestContext::name('top')."'"
+				.SiteDispatcher::quickURL()."#".RequestContext::name('top')."'"
 				." method='post'";
 			print " style='display: none;'";
 			print " onsubmit=\"";

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.22 2008/04/02 21:15:22 achapin Exp $
+ * @version $Id: editview.act.php,v 1.23 2008/04/09 21:12:03 adamfranco Exp $
  */ 
  
 require_once(MYDIR."/main/modules/window/display.act.php");
@@ -25,7 +25,7 @@ require_once(MYDIR."/main/modules/view/html.act.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editview.act.php,v 1.22 2008/04/02 21:15:22 achapin Exp $
+ * @version $Id: editview.act.php,v 1.23 2008/04/09 21:12:03 adamfranco Exp $
  */
 class editviewAction
 	extends htmlAction 
@@ -84,7 +84,7 @@ class editviewAction
 			{
 				$url = $harmoni->request->quickURL("ui1", "editSite", 
 					array("node" => $siteId->getIdString(),
-					"returnNode" => RequestContext::value("node"),
+					"returnNode" => SiteDispatcher::getCurrentNodeId(),
 					"returnAction" => $harmoni->request->getRequestedAction()));
 				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
 				print _("Edit Site Options")."</button>";
@@ -94,7 +94,7 @@ class editviewAction
 				$siteId))
 			{
 				$url = $harmoni->request->quickURL("roles", "choose_agent", 
-					array("node" => RequestContext::value("node"),
+					array("node" => SiteDispatcher::getCurrentNodeId(),
 					"returnModule" => $harmoni->request->getRequestedModule(),
 					"returnAction" => $harmoni->request->getRequestedAction()));
 				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";

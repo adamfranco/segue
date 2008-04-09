@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.4 2008/02/15 18:09:29 adamfranco Exp $
+ * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.5 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/HistorySiteVisitor.class.php");
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/HistorySiteVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.4 2008/02/15 18:09:29 adamfranco Exp $
+ * @version $Id: HistoryCompareSiteVisitor.class.php,v 1.5 2008/04/09 21:12:03 adamfranco Exp $
  */
 class HistoryCompareSiteVisitor
 	extends HistorySiteVisitor
@@ -53,7 +53,7 @@ class HistoryCompareSiteVisitor
 		print "\n<a href='";
 		$browseHistoryUrl = $harmoni->request->quickURL(
 			$harmoni->request->getRequestedModule(), 'view_history', 
-			array('node' => RequestContext::value('node'), 
+			array('node' => SiteDispatcher::getCurrentNodeId(), 
 				'early_rev' => RequestContext::value('early_rev'),
 				'late_rev' => RequestContext::value('late_rev')));
 		print $browseHistoryUrl;

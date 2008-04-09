@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.28 2008/04/01 20:45:17 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.29 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
@@ -32,7 +32,7 @@ require_once(HARMONI."GUIManager/StyleProperties/FloatSP.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: display.act.php,v 1.28 2008/04/01 20:45:17 adamfranco Exp $
+ * @version $Id: display.act.php,v 1.29 2008/04/09 21:12:03 adamfranco Exp $
  */
 class displayAction 
 	extends Action
@@ -340,8 +340,6 @@ class displayAction
 	 */
 	public function getUiSwitchForm () {		
 		$harmoni = Harmoni::instance();
-		$harmoni->request->passthrough('node');
-		$harmoni->request->passthrough('site');
 		ob_start();
 		print "\n\t<form action='";
 		print $harmoni->request->quickURL('view', 'change_ui');
