@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.10 2008/04/10 20:49:02 adamfranco Exp $
+ * @version $Id: map.act.php,v 1.11 2008/04/10 21:06:30 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteMapSiteVisitor.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.10 2008/04/10 20:49:02 adamfranco Exp $
+ * @version $Id: map.act.php,v 1.11 2008/04/10 21:06:30 adamfranco Exp $
  */
 class mapAction 
 	extends MainWindowAction
@@ -102,7 +102,7 @@ class mapAction
 		
 		print "
 <script type='text/javascript'>
-// <!CDATA[
+// <![CDATA[
 
 	function toggleSiteMapChildren(node) {
 		for (var i = 0; i < node.parentNode.childNodes.length; i++) {

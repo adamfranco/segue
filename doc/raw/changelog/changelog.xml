@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.266 2008/04/10 21:03:13 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.267 2008/04/10 21:06:29 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -69,6 +69,9 @@
 			SiteDisplay: New algorithm for determining if parts of the site are in a
 			'header' or 'footer' role allows for more variation in the arrangement of
 			'headers' and 'footers', not requiring there to be only one-cell of each.
+		</fix>
+		<fix author='adam' date='2008-04-10' ref='1938840' reftype='bug'>
+			SiteMap: Fixed HTML errors.
 		</fix>
 	</version>
 	<version number="2.0-beta-18" date="2008-04-03">
