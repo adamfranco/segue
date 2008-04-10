@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.5 2008/04/10 19:18:03 achapin Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.6 2008/04/10 19:59:59 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/html.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/modules/view/html.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.5 2008/04/10 19:18:03 achapin Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.6 2008/04/10 19:59:59 achapin Exp $
  */
 abstract class SegueTagsAction
 	extends htmlAction
@@ -44,7 +44,7 @@ abstract class SegueTagsAction
 		try {
 			$mainScreen->add($this->getSiteHeader());
 		} catch (UnimplementedException $e) {
-		}
+		}		
 		
 		$taggingColumns = $mainScreen->add(new Container(new XLayout, BLANK, 1));	
 		
@@ -54,13 +54,13 @@ abstract class SegueTagsAction
 		
 				
 //		$this->addTagsMenu($mainScreen);
-		$taggingColumns->add($this->getItemsMenu(), "100px", null, LEFT, TOP);
+		$taggingColumns->add($this->getItemsMenu(), "150px", null, LEFT, TOP);
 		
 		// implemented by child classes
 		//$this->getResult($mainScreen);
 		 $taggingColumns->add($this->getResult(), null, null, LEFT, CENTER);
 		 
- 		$taggingColumns->add($this->getTagsMenu(), "100px", null, LEFT, TOP);
+ 		$taggingColumns->add($this->getTagsMenu(), "150px", null, LEFT, TOP);
 
 		
 				
@@ -123,38 +123,16 @@ abstract class SegueTagsAction
 	 * @since 11/8/06
 	 */
 	public function getItemsMenu () {
-		ob_start();
-		
-		return new Block(ob_get_clean(), STANDARD_BLOCK);
-	}
-	
-	/**
-	 * Answer a menu for the tagging system
-	 * 
-	 * @return string
-	 * @access public
-	 * @since 11/8/06
-	 */
-	public function getTagsMenu () {
 		$harmoni = Harmoni::instance();
 		$tagManager = Services::getService("Tagging");
+		
 		ob_start();
-		print "\n<table cellpadding='5' cellspacing='0'>";
-		print "\n\t<tr>";
-		print "\n\t\t<td colspan='3'>".$this->getResultTitle()."\n\t\t</td>";
-		print "\n\t</tr>";
+		print "<div class='tagging_header'>".$this->getResultTitle()."</div>";
 		
-		print "\n\t<tr>";
-		print "\n\t\t<td style='border: 1px solid;'>"._("node")."\n\t\t</td>";
-		print "\n\t\t<td style='border: 1px solid;'>"._("site")."\n\t\t</td>";
-		print "\n\t\t<td style='border: 1px solid;'>"._("segue")."\n\t\t</td>";
-		print "\n\t</tr>";
-		
-		print "\n\t<tr>";	
-		
+		// all nodes
+		print "<div class='tagging_options'>";
 		// all nodes with tag by you
-		print "\n\t\t<td style='border: 1px solid;'>";
-		print _("tagged by: ");
+		print _("this node items tagged by:<br />");
 
 		if ($harmoni->getCurrentAction() != 'tags.usernodetag') {
 			$url = SiteDispatcher::quickURL('tags', 'usernodetag', 
@@ -177,13 +155,13 @@ abstract class SegueTagsAction
 			print "<strong>"._("everyone")."</strong>";		
 		} else {
 			print _("everyone");
-		}
+		}	
+		print "</div>";
 		
-		print "\n\t\t</td>";		
-		
-		// tagged with item in site by you
-		print "\n\t\t<td style='border: 1px solid;'>";
-		print _("tagged by: ");
+		// all site items
+		print "<div class='tagging_options'>";	
+		// all site items with tag by you
+		print _("the site items tagged by: <br />");
 		if ($harmoni->getCurrentAction() != 'tags.usersitetag') {
 			$url = SiteDispatcher::quickURL('tags', 'usersitetag', 
 				array('agent_id' => $tagManager->getCurrentUserIdString(),
@@ -194,8 +172,7 @@ abstract class SegueTagsAction
 		} else {
 			print _("you | ");
 		}
-		
-			
+				
 		// tagged with item in site by everyone
 		if ($harmoni->getCurrentAction() != 'tags.sitetag') {
 			$url = SiteDispatcher::quickURL('tags', 'sitetag', 
@@ -206,13 +183,13 @@ abstract class SegueTagsAction
 			print "<strong>"._("everyone")."</strong>";			
 		} else {
 			print _("everyone");
-		}
-				
-		print "\n\t\t</td>";
+		}				
+		print "</div>";
 		
+		// all segue
+		print "<div class='tagging_options'>";		
 		// tagged with item in all segue by you
-		print "\n\t\t<td style='border: 1px solid;'>";
-		print _("tagged by: ");
+		print _("Segue items tagged by: <br />");
 		
 		if ($harmoni->getCurrentAction() != 'tags.userseguetag') {
 			$url = SiteDispatcher::quickURL('tags', 'userseguetag', 
@@ -235,30 +212,87 @@ abstract class SegueTagsAction
 			print "<strong>"._("everyone")."</strong>";			
 		} else {
 			print _("everyone");
-		}
-	
-		print "\n\t\t</td>";				
+		}		
+		print "</div>";
 		
-		print "\n\t</tr>";
-		print "\n</table>";	
-		
-		
-		// All tags on item, in site and in all of segue
-		print "\n<table cellpadding='5' cellspacing='0'>";
-		print "\n\t<tr>";
-		print "\n\t\t<td colspan='3'>"._("All tags")."\n\t\t</td>";
-		print "\n\t</tr>";
-		
-		print "\n\t<tr>";
-		print "\n\t\t<td style='border: 1px solid;'>"._("node")."\n\t\t</td>";
-		print "\n\t\t<td style='border: 1px solid;'>"._("site")."\n\t\t</td>";
-		print "\n\t\t<td style='border: 1px solid;'>"._("segue")."\n\t\t</td>";
-		print "\n\t</tr>";
-		
-		print "\n\t<tr>";			
+		/*********************************************************
+		 * Tag renaming options
+		 *********************************************************/
+				
+		if (RequestContext::value('tag')) {
 
-		print "\n\t\t<td style='border: 1px solid;'>";
-		print _("by: ");
+			if (in_array($harmoni->request->getRequestedAction(), array('usernodetag', 'usersitetag', 'userseguetag'))
+				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $tagManager->getCurrentUserIdString())) 
+			{
+				print "<div class='rename_options'>";	
+				print " &nbsp; ";
+				
+				if (!defined('TAGGING_JS_LOADED')) {
+					// Add the tagging manager script to the header
+					$harmoni = Harmoni::instance();
+					$outputHandler =$harmoni->getOutputHandler();
+					$outputHandler->setHead($outputHandler->getHead()
+						."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/Tagger.js'></script>"
+						."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/quicksort.js'></script>"
+						."\n\t\t<link rel='stylesheet' type='text/css' href='".POLYPHONY_PATH."javascript/Tagger.css' />");
+					define('TAGGING_JS_LOADED', true);
+				}
+
+				
+				print "<a onclick=\"TagRenameDialog.run(new Tag('".RequestContext::value('tag')."'), this, '".$harmoni->request->getRequestedAction()."');\">"._("rename")."</a> | ";
+				
+				
+				print "<a onclick=\"";
+				print "if (confirm('"._('Are you sure you want to delete all of your instances of this tag?')."')) { ";
+				print 	"var req = Harmoni.createRequest(); ";
+				print	"var url = Harmoni.quickUrl('tags', 'deleteUser', {'tag': '".RequestContext::value('tag')."'}, 'polyphony-tags'); ";
+				print 	"if (req) { ";
+				print		"req.onreadystatechange = function () { ";
+				print 			"if (req.readyState == 4) { ";
+				print				"if (req.status == 200) { ";
+				print					"alert('"._('Tag successfully deleted.')."'); ";
+				print					"window.location =  Harmoni.quickUrl('tags', 'user', null, 'polyphony-tags'); ";
+				print				"} else { ";
+				print					"alert('There was a problem retrieving the XML data: ' + req.statusText); ";
+				print 				"} ";
+				print			"} ";
+				print 		"}; ";
+				print		"req.open('GET', url, true); ";
+				print 		"req.send(null); ";
+				print	"} else { ";
+				print 		"alert('Error: Unable to execute AJAX request. Please upgrade your browser.'); ";
+				print 	"} ";
+				print "} ";
+				print "\">"._("delete")."</a> &nbsp; ";
+				print "</div>";
+				
+			} else if ($tagManager->getCurrentUserIdString()) {
+// 				$url = SiteDispatcher::quickURL('tags', 'viewuser', 
+// 					array('agent_id' => $tagManager->getCurrentUserIdString(),
+// 					'tag' => RequestContext::value('tag')));
+// 				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("items tagged '%1' by you"))."</a> &nbsp; ";
+			}
+			
+		}		
+		return new Block(ob_get_clean(), STANDARD_BLOCK);
+	}
+	
+	/**
+	 * Answer a menu for the tagging system
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 11/8/06
+	 */
+	public function getTagsMenu () {
+		$harmoni = Harmoni::instance();
+		$tagManager = Services::getService("Tagging");
+		ob_start();
+		
+		print "<div class='tagging_header'>".$this->getResultTitle()."</div>";
+		
+		print "<div class='tagging_options'>";
+		print _("This node's tags by: <br />");
 		// all tags on node by you 
 		if ($harmoni->getCurrentAction() != 'tags.usernode') {
 			$url = SiteDispatcher::quickURL('tags', 'usernode', 
@@ -282,12 +316,11 @@ abstract class SegueTagsAction
 			print "<strong>"._("everyone")."</strong>";			
 		} else {
 			print _("everyone");
-		}
-		print "\n\t\t</td>";		
-		
+		}				
+		print "</div>";
+		print "<div class='tagging_options'>";
 		// all tags in site by you 
-		print "\n\t\t<td style='border: 1px solid;'>";
-		print _("by: ");
+		print _("This site's tags by: <br />");
 		
 		// all tags in site by you 
 		if ($harmoni->getCurrentAction() != 'tags.usersite') {
@@ -313,12 +346,11 @@ abstract class SegueTagsAction
 		} else {
 			print _("everyone");
 		}
-		
-		print "\n\t\t</td>";
-		
+				
+		print "</div>";
 
-		print "\n\t\t<td style='border: 1px solid;'>";
-		print _("by: ");
+		print "<div class='tagging_options'>";
+		print _("All tags by: <br />");
 		
 		// all tags from all segue by you
 		if ($harmoni->getCurrentAction() != 'tags.usersegue') {
@@ -344,73 +376,8 @@ abstract class SegueTagsAction
 			print _("everyone");
 		}
 		
-		print "\n\t\t</td>";				
-		
-		print "\n\t</tr>";
-		print "\n</table>";		
-		
-		
-		if (RequestContext::value('tag')) {
-
-			if (in_array($harmoni->request->getRequestedAction(), array('usernodetag', 'usersitetag', 'userseguetag'))
-				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $tagManager->getCurrentUserIdString())) 
-			{
-				
-				print " | &nbsp; ";
-				
-				if (!defined('TAGGING_JS_LOADED')) {
-					// Add the tagging manager script to the header
-					$harmoni = Harmoni::instance();
-					$outputHandler =$harmoni->getOutputHandler();
-					$outputHandler->setHead($outputHandler->getHead()
-						."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/Tagger.js'></script>"
-						."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."javascript/quicksort.js'></script>"
-						."\n\t\t<link rel='stylesheet' type='text/css' href='".POLYPHONY_PATH."javascript/Tagger.css' />");
-					define('TAGGING_JS_LOADED', true);
-				}
-
-				
-				print "<a onclick=\"TagRenameDialog.run(new Tag('".RequestContext::value('tag')."'), this, '".$harmoni->request->getRequestedAction()."');\">"._("rename")."</a> &nbsp; ";
-				
-				
-				print "<a onclick=\"";
-				print "if (confirm('"._('Are you sure you want to delete all of your instances of this tag?')."')) { ";
-				print 	"var req = Harmoni.createRequest(); ";
-				print	"var url = Harmoni.quickUrl('tags', 'deleteUser', {'tag': '".RequestContext::value('tag')."'}, 'polyphony-tags'); ";
-				print 	"if (req) { ";
-				print		"req.onreadystatechange = function () { ";
-				print 			"if (req.readyState == 4) { ";
-				print				"if (req.status == 200) { ";
-				print					"alert('"._('Tag successfully deleted.')."'); ";
-				print					"window.location =  Harmoni.quickUrl('tags', 'user', null, 'polyphony-tags'); ";
-				print				"} else { ";
-				print					"alert('There was a problem retrieving the XML data: ' + req.statusText); ";
-				print 				"} ";
-				print			"} ";
-				print 		"}; ";
-				print		"req.open('GET', url, true); ";
-				print 		"req.send(null); ";
-				print	"} else { ";
-				print 		"alert('Error: Unable to execute AJAX request. Please upgrade your browser.'); ";
-				print 	"} ";
-				print "} ";
-				print "\">"._("delete")."</a> &nbsp; ";
-				
-			} else if ($tagManager->getCurrentUserIdString()) {
-// 				$url = SiteDispatcher::quickURL('tags', 'viewuser', 
-// 					array('agent_id' => $tagManager->getCurrentUserIdString(),
-// 					'tag' => RequestContext::value('tag')));
-// 				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("items tagged '%1' by you"))."</a> &nbsp; ";
-			}
-						
-		}
-//		$tagsMenu = new Component(ob_get_clean(), BLANK, 2);		
-// 		$tagsContainer = $mainScreen->add(new Container(new XLayout, BLOCK, 2), "50%", null, RIGHT, TOP);
-// 		$tagsContainer->add($tagsMenu, "100%", null, LEFT, TOP);
-		
-		$tagsMenu = ob_get_clean();
-		//$mainScreen->add(new Block($tagsMenu, STANDARD_BLOCK), "100%", null, LEFT, TOP);
-		
+		print "</div>";		
+		$tagsMenu = ob_get_clean();		
 		return new Block($tagsMenu, STANDARD_BLOCK);
 	}	
 		
