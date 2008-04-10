@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.27 2008/04/03 12:30:41 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.28 2008/04/10 18:00:26 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/PortalManager.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.27 2008/04/03 12:30:41 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.28 2008/04/10 18:00:26 adamfranco Exp $
  */
 class listAction
 	extends MainWindowAction
@@ -219,8 +219,13 @@ class listAction
 				print " <a href='".$harmoni->request->quickURL($this->getUiModule(), 'add', array('slot' => $slot->getShortname()))."' class='create_site_link'>"._("Create Site")."</a>";
 				
 				$authN = Services::getService("AuthN");
+				try {
+					$personalShortname = PersonalSlot::getPersonalShortname($authN->getFirstUserId());
+				} catch (OperationFailedException $e) {
+					$personalShortname = null;
+				}
 				if ($slot->getType() == Slot::personal &&
-					$slot->getShortName() != PersonalSlot::getPersonalShortname($authN->getFirstUserId())) 
+					$slot->getShortName() != $personalShortname) 
 				{
 					$harmoni = Harmoni::instance();
 					$harmoni->request->startNamespace("slots");

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.7 2008/03/13 13:29:32 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.8 2008/04/10 18:00:26 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Slot.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/Slot.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PersonalSlot.class.php,v 1.7 2008/03/13 13:29:32 adamfranco Exp $
+ * @version $Id: PersonalSlot.class.php,v 1.8 2008/04/10 18:00:26 adamfranco Exp $
  */
 class PersonalSlot
 	extends SlotAbstract
@@ -138,7 +138,7 @@ class PersonalSlot
 		}
 		
 		if (!$email)
-			throw new Exception("No email found for agentId, '$agentId'.");
+			throw new OperationFailedException("No email found for agentId, '$agentId'.");
 		
 		return substr($email, 0, strpos($email, '@'));
 	}
