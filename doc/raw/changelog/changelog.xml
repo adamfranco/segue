@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.261 2008/04/09 21:22:12 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.262 2008/04/10 15:54:20 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -44,6 +44,11 @@
 			Request: Refactored how context (current node id or site id) parameters
 			are passed around.
 		</change>
+		<fix author='adam' date='2008-04-10' ref='' reftype='bug'>
+			Breadcrumbs: Now link to the view/html action if printed outside of 
+			one of the main UI modules (view, ui1, ui2), such as in the
+			versioning or tagging modules.
+		</fix>
 	</version>
 	<version number="2.0-beta-18" date="2008-04-03">
 		<releaseNotes>

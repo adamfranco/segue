@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.3 2008/04/10 02:56:25 achapin Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.4 2008/04/10 15:54:20 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/html.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/modules/view/html.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.3 2008/04/10 02:56:25 achapin Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.4 2008/04/10 15:54:20 adamfranco Exp $
  */
 abstract class SegueTagsAction
 	extends htmlAction
@@ -44,6 +44,7 @@ abstract class SegueTagsAction
 		$this->addSiteHeader($mainScreen);
 		
 		$harmoni = Harmoni::instance();
+		SiteDispatcher::passthroughContext();
 		$harmoni->request->startNamespace('polyphony-tags');
 				
 //		$tagsContainer = $mainScreen->add(new Container(new XLayout, BLOCK, 1), "50%", null, RIGHT, TOP);		
@@ -56,7 +57,8 @@ abstract class SegueTagsAction
 		
 		
 		$harmoni->request->endNamespace();
-	
+		SiteDispatcher::forgetContext();
+		
 		//implemented in parent class htmlAction
 		$this->addFooterControls($mainScreen);
 		$this->mainScreen = $mainScreen;

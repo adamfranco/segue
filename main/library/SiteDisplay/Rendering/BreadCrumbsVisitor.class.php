@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.7 2008/04/01 16:08:19 adamfranco Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.8 2008/04/10 15:54:20 adamfranco Exp $
  */ 
  
 require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BreadCrumbsVisitor.class.php,v 1.7 2008/04/01 16:08:19 adamfranco Exp $
+ * @version $Id: BreadCrumbsVisitor.class.php,v 1.8 2008/04/10 15:54:20 adamfranco Exp $
  */
 class BreadCrumbsVisitor 
 	implements SiteVisitor
@@ -47,6 +47,10 @@ class BreadCrumbsVisitor
 		$this->_links = array();
 		$this->_separator = " &raquo; ";
 		$this->currentSiteComponent = $currentSiteComponent;
+		
+		$this->allowedModules = array('view', 'ui1', 'ui2');
+		$this->defaultModule = 'view';
+		$this->defaultAction = 'html';
 	}
 	
 	/**
@@ -62,11 +66,41 @@ class BreadCrumbsVisitor
 		$harmoni->request->startNamespace(null);
 		$this->_links[] = "<a href='"
 							.$harmoni->request->quickUrl(
-								$harmoni->request->getRequestedModule(),
-								$harmoni->request->getRequestedAction(),
+								$this->getModule(),
+								$this->getAction(),
 								array('node' => $node->getId()))
 							."'>".$node->getDisplayName()."</a>";
 		$harmoni->request->endNamespace();
+	}
+	
+	/**
+	 * Answer the module to use in the links
+	 * 
+	 * @return string
+	 * @access private
+	 * @since 4/10/08
+	 */
+	private function getModule () {
+		$harmoni = Harmoni::instance();
+		if (in_array($harmoni->request->getRequestedModule(), $this->allowedModules))
+			return $harmoni->request->getRequestedModule();
+		else
+			return $this->defaultModule;
+	}
+	
+	/**
+	 * Answer the action to use in the links
+	 * 
+	 * @return string
+	 * @access private
+	 * @since 4/10/08
+	 */
+	private function getAction () {
+		$harmoni = Harmoni::instance();
+		if (in_array($harmoni->request->getRequestedModule(), $this->allowedModules))
+			return $harmoni->request->getRequestedAction();
+		else
+			return $this->defaultAction;
 	}
 		
 	/**
