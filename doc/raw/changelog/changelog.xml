@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.262 2008/04/10 15:54:20 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.263 2008/04/10 17:42:39 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -48,6 +48,14 @@
 			Breadcrumbs: Now link to the view/html action if printed outside of 
 			one of the main UI modules (view, ui1, ui2), such as in the
 			versioning or tagging modules.
+		</fix>
+		<change author='adam' date='2008-04-10'>
+			Breadcrumbs: now wraps breadcrumbs links in span tags with 'white-space: nowrap;'
+			to enable more legible output in narrow columns (with each level on its own row).
+		</change>
+		<fix author='adam' date='2008-04-10' ref='' reftype='bug'>
+			Request: Now doesn't keep 'site' parameter in urls when using the
+			/sites/sitename form of the urls.
 		</fix>
 	</version>
 	<version number="2.0-beta-18" date="2008-04-03">
