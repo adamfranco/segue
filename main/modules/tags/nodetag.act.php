@@ -53,10 +53,11 @@ class nodetagAction
 	function getItems () {		
 		$tag = $this->getTag();		
 		$SiteComponent = SiteDispatcher::getCurrentNode();
-
+		SiteDispatcher::passthroughContext();
 		$visitor = new TaggableItemVisitor;
-		$items = $SiteComponent->acceptVisitor($visitor);		
-		return $tag->getItemsInList($items);
+		$items = $SiteComponent->acceptVisitor($visitor);
+		$tagIds = $tag->getItemsInList($items);
+		return $tag->getItemsWithIdsInSystem($tagIds, "segue");
 	}	
 	
 	/**
