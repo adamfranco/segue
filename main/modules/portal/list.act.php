@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.28 2008/04/10 18:00:26 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.29 2008/04/10 21:03:13 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/PortalManager.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.28 2008/04/10 18:00:26 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.29 2008/04/10 21:03:13 adamfranco Exp $
  */
 class listAction
 	extends MainWindowAction
@@ -207,43 +207,47 @@ class listAction
 	 */
 	public function printSlot ( Slot $slot ) {
 		if ($slot->getSiteId()) {
-			return $this->printSiteShort($slot->getSiteAsset(), $this, 0); 			
+			try {
+				return $this->printSiteShort($slot->getSiteAsset(), $this, 0);
+			} 
+			// Cached slot may not know that it's site was deleted.
+			catch(UnknownIdException $e) {
+			}
 		} 
 		// If no site is created
-		else {
-			ob_start();
-			print $slot->getShortname();
-			print " - ";
-			if ($slot->isUserOwner()) {
-				$harmoni = Harmoni::instance();
-				print " <a href='".$harmoni->request->quickURL($this->getUiModule(), 'add', array('slot' => $slot->getShortname()))."' class='create_site_link'>"._("Create Site")."</a>";
-				
-				$authN = Services::getService("AuthN");
-				try {
-					$personalShortname = PersonalSlot::getPersonalShortname($authN->getFirstUserId());
-				} catch (OperationFailedException $e) {
-					$personalShortname = null;
-				}
-				if ($slot->getType() == Slot::personal &&
-					$slot->getShortName() != $personalShortname) 
-				{
-					$harmoni = Harmoni::instance();
-					$harmoni->request->startNamespace("slots");
-					print " | <a href='";
-					print $harmoni->request->quickURL('slots', 'delete', 
-						array('name' => $slot->getShortName(), 
-							'returnModule' => $harmoni->request->getRequestedModule(),
-							'returnAction' => $harmoni->request->getRequestedAction()));
-					print "'";
-					print " onclick=\"return confirm('"._("Are you sure that you want to delete this placeholder?")."');\" ";
-					print ">"._("delete placeholder")."</a>";
-					$harmoni->request->endNamespace();
-				}
-			} else {
-				print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
+
+		ob_start();
+		print $slot->getShortname();
+		print " - ";
+		if ($slot->isUserOwner()) {
+			$harmoni = Harmoni::instance();
+			print " <a href='".$harmoni->request->quickURL($this->getUiModule(), 'add', array('slot' => $slot->getShortname()))."' class='create_site_link'>"._("Create Site")."</a>";
+			
+			$authN = Services::getService("AuthN");
+			try {
+				$personalShortname = PersonalSlot::getPersonalShortname($authN->getFirstUserId());
+			} catch (OperationFailedException $e) {
+				$personalShortname = null;
 			}
-			return new Block(ob_get_clean(), EMPHASIZED_BLOCK);
+			if ($slot->getType() == Slot::personal &&
+				$slot->getShortName() != $personalShortname) 
+			{
+				$harmoni = Harmoni::instance();
+				$harmoni->request->startNamespace("slots");
+				print " | <a href='";
+				print $harmoni->request->quickURL('slots', 'delete', 
+					array('name' => $slot->getShortName(), 
+						'returnModule' => $harmoni->request->getRequestedModule(),
+						'returnAction' => $harmoni->request->getRequestedAction()));
+				print "'";
+				print " onclick=\"return confirm('"._("Are you sure that you want to delete this placeholder?")."');\" ";
+				print ">"._("delete placeholder")."</a>";
+				$harmoni->request->endNamespace();
+			}
+		} else {
+			print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
 		}
+		return new Block(ob_get_clean(), EMPHASIZED_BLOCK);
 	}
 	
 	/**
@@ -260,11 +264,15 @@ class listAction
 		
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
-		if ($authZ->isUserAuthorizedBelow($idManager->getId("edu.middlebury.authorization.view"), $slot->getSiteId()))
-		{
-			return TRUE;
-		} else {
-			return FALSE;
+		try {
+			if ($authZ->isUserAuthorizedBelow($idManager->getId("edu.middlebury.authorization.view"), $slot->getSiteId()))
+			{
+				return TRUE;
+			} else {
+				return FALSE;
+			}
+		} catch (UnknownIdException $e)  {
+			return true;
 		}
 	}
 	
