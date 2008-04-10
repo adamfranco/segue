@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.264 2008/04/10 18:00:26 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.265 2008/04/10 20:49:01 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -59,7 +59,12 @@
 		</fix>
 		<fix author='adam' date='2008-04-10' ref='' reftype='bug'>
 			Portal: now doesn't crash when an admin or with no valid 'personal-site shortname'
-			vies the portal.
+			views the portal.
+		</fix>
+		<fix author='adam' date='2008-04-10' ref='' reftype='bug'>
+			SiteDisplay: New algorithm for determining if parts of the site are in a
+			'header' or 'footer' role allows for more variation in the arrangement of
+			'headers' and 'footers', not requiring there to be only one-cell of each.
 		</fix>
 	</version>
 	<version number="2.0-beta-18" date="2008-04-03">

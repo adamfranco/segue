@@ -6,13 +6,13 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.9 2008/03/31 20:10:29 adamfranco Exp $
+ * @version $Id: map.act.php,v 1.10 2008/04/10 20:49:02 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteMapSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/HeaderFooterSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsHeaderFooterSiteVisitor.class.php");
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 /**
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: map.act.php,v 1.9 2008/03/31 20:10:29 adamfranco Exp $
+ * @version $Id: map.act.php,v 1.10 2008/04/10 20:49:02 adamfranco Exp $
  */
 class mapAction 
 	extends MainWindowAction
@@ -44,6 +44,13 @@ class mapAction
 	 * @since 3/17/08
 	 */
 	private $depth = 0;
+	
+	/**
+	 * @var boolean $inHeaderOrFooter; True if we are currently descended into a header or footer. 
+	 * @access private
+	 * @since 4/10/08
+	 */
+	private $inHeaderOrFooter = false;
 
 		
 	/**
@@ -153,7 +160,7 @@ class mapAction
 						
 		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
 		
-		$this->isHeaderFooterVisitor = new HeaderFooterSiteVisitor($rootSiteComponent);
+		$this->isHeaderFooterVisitor = new isHeaderFooterSiteVisitor();
 		
 	//	$currentNode = $this->getNodeId();
 		//printpre ($currentNode);				
@@ -380,28 +387,27 @@ class mapAction
 		for ($i = 0; $i < $numCells; $i++) {
 			$child = $siteComponent->getSubcomponentForCell($i);
 			if (is_object($child)) {
-				$isInHeaderOrFooter = false;
-				if ($this->isHeaderFooterVisitor->getHeaderCellId() == $siteComponent->getId()."_cell:".$i) {
+				$isHeaderOrFooter = false;
+				if (!$this->inHeaderOrFooter 
+					&& $child->acceptVisitor($this->isHeaderFooterVisitor)) 
+				{
+					$isHeaderOrFooter = true;
 					print $this->getTabs();
-					print "<div class='header_area'>"._("The following are header items:");
+					print "<div class='header_area'>"._("The following are header or footer items:");
 					$this->depth++;
-					$isInHeaderOrFooter = true;
-				} else if ($this->isHeaderFooterVisitor->getFooterCellId() == $siteComponent->getId()."_cell:".$i) {
-					print $this->getTabs();
-					print "<div class='footer_area'>"._("The following are footer items:");
-					$this->depth++;
-					$isInHeaderOrFooter = true;
+					$this->inHeaderOrFooter = true;
 				}
 								
 				$child->acceptVisitor($this);
 				
-				if ($isInHeaderOrFooter) {
+				if ($isHeaderOrFooter) {
 					// Spacer
 					print $this->getTabs();
 					print "<div class='header_spacer'>&nbsp;</div>";					
 					$this->depth--;
 					print $this->getTabs();
 					print "</div>";
+					$this->inHeaderOrFooter = false;
 				}
 					
 			}

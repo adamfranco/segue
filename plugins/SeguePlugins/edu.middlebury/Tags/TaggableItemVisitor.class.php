@@ -6,12 +6,12 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TaggableItemVisitor.class.php,v 1.2 2008/04/10 04:16:58 achapin Exp $
+ * @version $Id: TaggableItemVisitor.class.php,v 1.3 2008/04/10 20:49:02 adamfranco Exp $
  */
 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php"); 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/HeaderFooterSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsHeaderFooterSiteVisitor.class.php");
 require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
 
 /**
@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TaggableItemVisitor.class.php,v 1.2 2008/04/10 04:16:58 achapin Exp $
+ * @version $Id: TaggableItemVisitor.class.php,v 1.3 2008/04/10 20:49:02 adamfranco Exp $
  */ 
 
 class TaggableItemVisitor 

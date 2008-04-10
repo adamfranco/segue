@@ -6,12 +6,12 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content.act.php,v 1.5 2008/04/07 23:08:10 achapin Exp $
+ * @version $Id: content.act.php,v 1.6 2008/04/10 20:49:02 adamfranco Exp $
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/RSSAction.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/HeaderFooterSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsHeaderFooterSiteVisitor.class.php");
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 /**
@@ -23,7 +23,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: content.act.php,v 1.5 2008/04/07 23:08:10 achapin Exp $
+ * @version $Id: content.act.php,v 1.6 2008/04/10 20:49:02 adamfranco Exp $
  */
 class contentAction
 	extends RSSAction
@@ -166,16 +166,15 @@ class contentAction
 	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $siteComponent ) {
 		$numCells = $siteComponent->getTotalNumberOfCells();
 		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
-		$isHeaderFooterVisitor = new HeaderFooterSiteVisitor($rootSiteComponent);
+		$isHeaderFooterVisitor = new IsHeaderFooterSiteVisitor();
 		
  		for ($i = 0; $i < $numCells; $i++) {
  		
-			// don't include in feed if header and footer blocks
-			if ($isHeaderFooterVisitor->getHeaderCellId() != $siteComponent->getId()."_cell:".$i
-				&& $isHeaderFooterVisitor->getFooterCellId() != $siteComponent->getId()."_cell:".$i
-			) {			
-				$child = $siteComponent->getSubcomponentForCell($i);
-				if (is_object($child)) {
+				
+			$child = $siteComponent->getSubcomponentForCell($i);
+			if (is_object($child)) {
+				// don't include in feed if header and footer blocks
+				if (!$child->acceptVisitor($isHeaderFooterVisitor)) {
 					$child->acceptVisitor($this);
 				}
 			}

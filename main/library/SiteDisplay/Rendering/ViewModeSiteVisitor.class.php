@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.65 2008/04/10 04:16:58 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.66 2008/04/10 20:49:02 adamfranco Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -23,7 +23,7 @@ require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
 require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
 
 require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
-require_once(dirname(__FILE__)."/HeaderFooterSiteVisitor.class.php");
+require_once(dirname(__FILE__)."/IsHeaderFooterSiteVisitor.class.php");
 
 require_once(MYDIR."/main/modules/view/AttributionPrinter.class.php");
 require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
@@ -37,7 +37,7 @@ require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.65 2008/04/10 04:16:58 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.66 2008/04/10 20:49:02 adamfranco Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -326,7 +326,7 @@ class ViewModeSiteVisitor
 	 */
 	public function getHistoryLink (BlockSiteComponent $block, SeguePluginsAPI $plugin) {
 		ob_start();
-		if ($plugin->supportsVersioning() && $block->showHistory() && !$this->isInHeaderOrFooter($block)) {	
+		if ($plugin->supportsVersioning() && $block->showHistory() && !$this->isHeaderOrFooter($block)) {	
 			print "\n<div class='history'>";
 			print "\n\t<a href='".$this->getHistoryUrl($block->getId())."'>";
 			print _("History");
@@ -715,28 +715,6 @@ class ViewModeSiteVisitor
 	}
 	
 	/**
-	 * Answer true if the SiteComponent passed is the header or footer
-	 * 
-	 * @param SiteComponent $siteComponent
-	 * @return boolean
-	 * @access public
-	 * @since 9/24/07
-	 */
-	public function isHeaderOrFooter (SiteComponent $siteComponent) {
-		try {
-			if ($this->getHeaderId($siteComponent) == $siteComponent->getId())
-				return true;
-		} catch (Exception $e) {}
-
-		try {		
-			if ($this->getFooterId($siteComponent) == $siteComponent->getId())
-				return true;
-		} catch (Exception $e) {}
-			
-		return false;
-	}
-	
-	/**
 	 * Answer true if this block is in the header or footer
 	 * 
 	 * @param object SiteComponent $siteComponent
@@ -744,128 +722,11 @@ class ViewModeSiteVisitor
 	 * @access public
 	 * @since 1/10/08
 	 */
-	public function isInHeaderOrFooter (SiteComponent $siteComponent) {
-		if ($this->isHeaderOrFooter($siteComponent))
-			return true;
-		
-		$parent = $siteComponent->getParentComponent();
-		if ($parent)
-			return $this->isInHeaderOrFooter($parent);
-		
-		return false;
-	}
-	
-	/**
-	 * Answer the header id or throw an exception if not found.
-	 * 
-	 * @param object Site
-	 * @return string
-	 * @access public
-	 * @since 9/24/07
-	 */
-	public function getHeaderId (SiteComponent $siteComponent) {
-		if (is_null($this->headerId))
-			$this->searchHeaderFooter($siteComponent);
+	public function isHeaderOrFooter (SiteComponent $siteComponent) {
+		if (!isset($this->isHeaderFooterVisitor))
+			$this->isHeaderFooterVisitor = new IsHeaderFooterSiteVisitor;
 			
-		if ($this->headerId === false)
-			throw new Exception("No header found in this site.");
-		
-		return $this->headerId;
-	}
-	
-	/**
-	 * Answer the header id or throw an exception if not found.
-	 * 
-	 * @param object Site
-	 * @return string
-	 * @access public
-	 * @since 9/24/07
-	 */
-	public function getFooterId (SiteComponent $siteComponent) {
-		if (is_null($this->footerId))
-			$this->searchHeaderFooter($siteComponent);
-			
-		if ($this->footerId === false)
-			throw new Exception("No footer found in this site.");
-		
-		return $this->footerId;
-	}
-	
-	/**
-	 * Answer the cell id that the header is in or throw an exception if not found.
-	 * 
-	 * @param object Site
-	 * @return boolean
-	 * @access public
-	 * @since 9/24/07
-	 */
-	public function getHeaderCellId (SiteComponent $siteComponent) {
-		if (is_null($this->headerCellId))
-			$this->searchHeaderFooter($siteComponent);
-		
-		if ($this->headerCellId === false)
-			throw new Exception("No header cell found in this site.");
-		
-		return $this->headerCellId;
-	}
-	
-	/**
-	 * Answer true if there is an empty footer cell.
-	 * 
-	 * @param object Site
-	 * @return boolean
-	 * @access public
-	 * @since 9/24/07
-	 */
-	public function getFooterCellId (SiteComponent $siteComponent) {
-		if (is_null($this->footerCellId))
-			$this->searchHeaderFooter($siteComponent);
-		
-		if ($this->footerCellId === false)
-			throw new Exception("No footer cell found in this site.");
-		
-		return $this->footerCellId;
-	}
-	
-	/**
-	 * Search for a header and footer.
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 9/24/07
-	 */
-	public function searchHeaderFooter (SiteComponent $siteComponent) {
-		$siteNavBlock = $this->getSiteNavBlock($siteComponent);
-		
-		$visitor = new HeaderFooterSiteVisitor($siteNavBlock);
-		
-		if (is_null($visitor->getHeaderId()))
-			$this->headerId = false;
-		else
-			$this->headerId = $visitor->getHeaderId();
-		
-		if (is_null($visitor->getFooterId()))
-			$this->footerId = false;
-		else
-			$this->footerId = $visitor->getFooterId();
-		
-		
-		if (is_null($visitor->getHeaderCellId()))
-			$this->headerCellId = false;
-		else
-			$this->headerCellId = $visitor->getHeaderCellId();
-		
-		if (is_null($visitor->getFooterCellId()))
-			$this->footerCellId = false;
-		else
-			$this->footerCellId = $visitor->getFooterCellId();	
-		
-		
-		if (is_null($this->headerId))
-			throw new Exception ("Header search failed.");
-		
-		if (is_null($this->footerId))
-			throw new Exception ("Footer search failed.");
+		return $siteComponent->acceptVisitor($this->isHeaderFooterVisitor);
 	}
 	
 	/**
