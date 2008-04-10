@@ -6,11 +6,13 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.5 2008/04/09 21:52:14 adamfranco Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.6 2008/04/10 17:40:25 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class.php");
 require_once(dirname(__FILE__)."/TaggableItemVisitor.class.php");
+require_once(dirname(__FILE__)."/TagCloudNavParentVisitor.class.php");
 
 /**
  * A simple plugin for including links in a site
@@ -21,7 +23,7 @@ require_once(dirname(__FILE__)."/TaggableItemVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.5 2008/04/09 21:52:14 adamfranco Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.6 2008/04/10 17:40:25 adamfranco Exp $
  */
 class EduMiddleburyTagsPlugin 
 	extends SegueAjaxPlugin
@@ -92,23 +94,27 @@ class EduMiddleburyTagsPlugin
  	 */
  	public function getMarkup () {
 		ob_start();
-		
-		print "tags plugin";
-		
+				
 		if ($this->canView()) {
 			$items = array();
  			$director = SiteDispatcher::getSiteDirector();
  			$node = $director->getSiteComponentById($this->getId());
- 			$parentNode = $node->getParentComponent();
  			
- 			//printpre($parentNode);
- 			
+ 			// Determine the navigational node above this tag cloud.
+ 			$visitor = new TagCloudNavParentVisitor;
+ 			$parentNavNode = $node->acceptVisitor($visitor);
+ 			 			
  			$visitor = new TaggableItemVisitor;
- 			$items = $parentNode->acceptVisitor($visitor);
+ 			$items = $parentNavNode->acceptVisitor($visitor);
  			
  			SiteDispatcher::passthroughContext();
  			print TagAction::getReadOnlyTagCloudForItems($items, 'sitetag', null);				
  			SiteDispatcher::forgetContext();
+ 			
+ 			print "\n<div class='breadcrumbs' style='height: auto; margin-top: 10px; margin-bottom: 5px;'>(";
+ 			print str_replace('%1', $parentNavNode->acceptVisitor(new BreadCrumbsVisitor($parentNavNode)),
+ 				_("Tags within %1"));
+ 			print ")</div>";
  		}
 		
 		return ob_get_clean();
