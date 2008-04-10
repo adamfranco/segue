@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueSingleTagAction.abstract.php,v 1.2 2008/04/10 02:56:25 achapin Exp $
+ * @version $Id: SegueAllTagAction.abstract.php,v 1.1 2008/04/10 02:56:25 achapin Exp $
  */ 
 require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
 require_once(dirname(__FILE__)."/SegueTagsAction.abstract.php");
@@ -21,9 +21,9 @@ require_once(POLYPHONY."/main/library/ResultPrinter/IteratorResultPrinter.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueSingleTagAction.abstract.php,v 1.2 2008/04/10 02:56:25 achapin Exp $
+ * @version $Id: SegueAllTagAction.abstract.php,v 1.1 2008/04/10 02:56:25 achapin Exp $
  */
-abstract class SegueSingleTagAction
+abstract class SegueAllTagAction
 	extends SegueTagsAction
 {
 
@@ -33,6 +33,8 @@ abstract class SegueSingleTagAction
 	 * @since 4/8/08
 	 */
 	private $_tag;
+
+
 		
 	/**
 	 * Answer tag cloud of related tags
@@ -76,18 +78,13 @@ abstract class SegueSingleTagAction
 	 * @since 4/7/08
 	 */
 	public function getResult (Component $mainScreen) {
-	
- 
-		$harmoni = Harmoni::instance();
-		
+	 
+		$harmoni = Harmoni::instance();		
 		$items = $this->getItems();
-		$resultPrinter = new IteratorResultPrinter($items, 1, 5, 
-									array($this, 'getTaggedItemComponent'), $this->getViewAction());
-		$resultLayout = $resultPrinter->getLayout(array($this, "canViewItem"));	
-		
 				
-		$mainScreen->add($resultLayout, "100%", null, LEFT, CENTER);		
-		$mainScreen->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
+		ob_start();
+		print TagAction::getTagCloudDiv($this->getItems(), $this->getViewAction());
+		$mainScreen->add(new Block(ob_get_clean(), HIGHLIT_BLOCK), "100%", null, LEFT, TOP);
 
 				
 	}

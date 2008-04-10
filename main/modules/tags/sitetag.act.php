@@ -55,7 +55,7 @@ class sitetagAction
 		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
 
 		$visitor = new TaggableItemVisitor;
-		$items = $rootSiteComponent->acceptVisitor($visitor);		
+		$items = $rootSiteComponent->acceptVisitor($visitor);	
 		return $tag->getItemsInList($items);
 	}	
 	

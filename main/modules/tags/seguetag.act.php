@@ -30,6 +30,41 @@ class seguetagAction
 {		
 
 	/**
+	 * Build the content for this action
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 11/07/06
+	 */
+	function execute () {
+		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);	
+		
+		// implemented in parent class htmlAction
+		$allWrapper = $this->addHeaderControls($mainScreen);
+		
+		// implemented by this class
+	//	$this->addSiteHeader($mainScreen);
+		
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace('polyphony-tags');
+		
+		$this->addTagsMenu($mainScreen);
+	
+		// implemented by child classes
+		SiteDispatcher::passthroughContext();
+		$this->getResult($mainScreen);
+				
+		$harmoni->request->endNamespace();
+		
+		//not sure why output buffer needs to be started here...
+		ob_start();
+		//implemented in parent class htmlAction
+		$this->addFooterControls($mainScreen);
+		$this->mainScreen = $mainScreen;
+		return $allWrapper;
+	}
+
+	/**
 	 * Answer the title of this result set
 	 * 
 	 * @return string
@@ -64,6 +99,23 @@ class seguetagAction
 	function getViewAction () {
 		return 'seguetag';
 	}
+	
+	/**
+	 * Answer the number of tags to show
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 12/5/06
+	 */
+	function getNumTags () {
+		if (RequestContext::value('num_tags') !== null)
+			$_SESSION['__NUM_TAGS'] = intval(RequestContext::value('num_tags'));
+		else if (!isset($_SESSION['__NUM_TAGS']))
+			$_SESSION['__NUM_TAGS'] = 100;
+		
+		return $_SESSION['__NUM_TAGS'];
+	}
+
 
 }
 

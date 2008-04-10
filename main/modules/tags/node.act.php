@@ -10,7 +10,7 @@
  */ 
 
 // require_once(POLYPHONY."/main/library/ResultPrinter/IteratorResultPrinter.class.php");
-require_once(dirname(__FILE__)."/SegueSingleTagAction.abstract.php");
+require_once(dirname(__FILE__)."/SegueAllTagAction.abstract.php");
 require_once(dirname(__FILE__)."/TagModeSiteVisitor.class.php");
 require_once(MYDIR."/plugins/SeguePlugins/edu.middlebury/Tags/TaggableItemVisitor.class.php");
 
@@ -26,8 +26,8 @@ require_once(MYDIR."/plugins/SeguePlugins/edu.middlebury/Tags/TaggableItemVisito
  * @version $Id:
  */
  
-class usernodetagAction 
-	extends SegueSingleTagAction
+class nodeAction 
+	extends SegueAllTagAction
 {	
 
 	/**
@@ -40,7 +40,7 @@ class usernodetagAction
 	public function getResultTitle () {
 		$tag = RequestContext::value('tag');
 		return str_replace('%1', $tag,
-			_("items tagged with '%1' for this node and its subnodes by you (NOT IMPLEMENTED YET)"));
+			_("All tags in site by everyone"));
 	}
 	
 	/**
@@ -52,17 +52,33 @@ class usernodetagAction
 	 */
 	function getItems () {	
 		$harmoni = Harmoni::instance();
-		$tag = $this->getTag();		
-		$SiteComponent = SiteDispatcher::getCurrentNode();
-
 		$tagManager = Services::getService("Tagging");
 		
-		$agentId = $tagManager->getCurrentUserId();
-		
+		$SiteComponent = SiteDispatcher::getCurrentNode();
+
 		$visitor = new TaggableItemVisitor;
-		$items = $SiteComponent->acceptVisitor($visitor);		
-		return $tag->getItemsForAgent($agentId);
+		$items = $SiteComponent->acceptVisitor($visitor);
+		
+		$tags =$tagManager->getTagsForItems($items, TAG_SORT_ALFA, $this->getNumTags());
+
+		return $tags;
 	}	
+
+	/**
+	 * Answer the number of tags to show
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 12/5/06
+	 */
+	function getNumTags () {
+		if (RequestContext::value('num_tags') !== null)
+			$_SESSION['__NUM_TAGS'] = intval(RequestContext::value('num_tags'));
+		else if (!isset($_SESSION['__NUM_TAGS']))
+			$_SESSION['__NUM_TAGS'] = 100;
+		
+		return $_SESSION['__NUM_TAGS'];
+	}
 	
 	/**
 	 * Answer the action to use for viewing tags
@@ -72,7 +88,7 @@ class usernodetagAction
 	 * @since 11/8/06
 	 */
 	function getViewAction () {
-		return 'usernodetag';
+		return 'node';
 	}
 
 }

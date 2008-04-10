@@ -26,7 +26,7 @@ require_once(MYDIR."/plugins/SeguePlugins/edu.middlebury/Tags/TaggableItemVisito
  * @version $Id:
  */
  
-class userseguetagAction 
+class usersegueAction 
 	extends SegueAllTagAction
 {	
 
@@ -54,11 +54,24 @@ class userseguetagAction
 		// implemented by child classes
 		SiteDispatcher::passthroughContext();
 		$this->getResult($mainScreen);
-				
-		$harmoni->request->endNamespace();
 		
-		//not sure why output buffer needs to be started here...
 		ob_start();
+		print "\n<select name='".RequestContext::name('num_tags')."'";
+		print " onchange=\"";
+		print "var url='".$harmoni->request->quickURL(null, null, array('num_tags' => 'XXXXX'))."'; ";
+		print "window.location = url.replace(/XXXXX/, this.value).urlDecodeAmpersands(); ";
+		print "\">";
+		$options = array(50, 100, 200, 400, 600, 1000, 0);
+		foreach ($options as $option)
+			print "\n\t<option value='".$option."' ".(($option == $this->getNumTags())?" selected='selected'":"").">".(($option)?$option:_('all'))."</option>";
+		print "\n</select>";
+		print str_replace('%1', ob_get_clean(), _("Showing top %1 tags"));
+		
+		
+		$mainScreen->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
+		
+		$harmoni->request->endNamespace();
+	
 		//implemented in parent class htmlAction
 		$this->addFooterControls($mainScreen);
 		$this->mainScreen = $mainScreen;
@@ -75,48 +88,38 @@ class userseguetagAction
 	public function getResultTitle () {
 		$tag = RequestContext::value('tag');
 		return str_replace('%1', $tag,
-			_("items tagged with '%1' in all of Segue by you"));
+			_("All tags in Segue by you"));
 	}
 	
 	/**
-	 * Answer the items with given tag in a given Segue site
+	 * Answer the items with given tag for a given user 
 	 * 
 	 * @return object TagIterator
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function getItems () {		
-		$tag = $this->getTag();		
-		$SiteComponent = SiteDispatcher::getCurrentNode();
-
-		$visitor = new TaggableItemVisitor;
-		$items = $SiteComponent->acceptVisitor($visitor);		
-		return $tag->getItemsInList($items);
-	}
+	function getItems () {	
+		$harmoni = Harmoni::instance();
+		$tagManager = Services::getService("Tagging");
+		$tags =$tagManager->getUserTags(TAG_SORT_ALFA, $this->getNumTags());	
+		return $tags;
+	}	
 
 	/**
-	 * Add display of tags
+	 * Answer the number of tags to show
 	 * 
-	 * @param Component $mainScreen
-	 * @return void
+	 * @return integer
 	 * @access public
-	 * @since 4/7/08
+	 * @since 12/5/06
 	 */
-	public function getResult (Component $mainScreen) {
-	 
-		$harmoni = Harmoni::instance();
+	function getNumTags () {
+		if (RequestContext::value('num_tags') !== null)
+			$_SESSION['__NUM_TAGS'] = intval(RequestContext::value('num_tags'));
+		else if (!isset($_SESSION['__NUM_TAGS']))
+			$_SESSION['__NUM_TAGS'] = 100;
 		
-		$items = $this->getItems();
-		$resultPrinter = new IteratorResultPrinter($items, 1, 5, 
-									array($this, 'getTaggedItemComponent'), $this->getViewAction());
-		$resultLayout = $resultPrinter->getLayout(array($this, "canViewItem"));	
-		
-				
-		$mainScreen->add($resultLayout, "100%", null, LEFT, CENTER);		
-		$mainScreen->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
-				
+		return $_SESSION['__NUM_TAGS'];
 	}
-
 	
 	/**
 	 * Answer the action to use for viewing tags
@@ -126,7 +129,7 @@ class userseguetagAction
 	 * @since 11/8/06
 	 */
 	function getViewAction () {
-		return 'userseguetag';
+		return 'segue';
 	}
 
 }

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.2 2008/04/09 21:52:12 adamfranco Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.3 2008/04/10 02:56:25 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/html.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/modules/view/html.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.2 2008/04/09 21:52:12 adamfranco Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.3 2008/04/10 02:56:25 achapin Exp $
  */
 abstract class SegueTagsAction
 	extends htmlAction
@@ -34,6 +34,7 @@ abstract class SegueTagsAction
 	 * @since 11/07/06
 	 */
 	function execute () {
+			
 		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);	
 		
 		// implemented in parent class htmlAction
@@ -44,14 +45,18 @@ abstract class SegueTagsAction
 		
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace('polyphony-tags');
-		
+				
+//		$tagsContainer = $mainScreen->add(new Container(new XLayout, BLOCK, 1), "50%", null, RIGHT, TOP);		
 		$this->addTagsMenu($mainScreen);
-	
+		
 		// implemented by child classes
+//		$resultsContainer = $mainScreen->add(new Container(new XLayout, BLOCK, 1), "50%", null, LEFT, TOP);	
 		$this->getResult($mainScreen);
 		
+		
+		
 		$harmoni->request->endNamespace();
-		// 	
+	
 		//implemented in parent class htmlAction
 		$this->addFooterControls($mainScreen);
 		$this->mainScreen = $mainScreen;
@@ -192,7 +197,6 @@ abstract class SegueTagsAction
 			print _("you | ");
 		}
 
-
 		// tagged with item in all segue by everyone
 		if ($harmoni->getCurrentAction() != 'tags.seguetag') {
 			$url = SiteDispatcher::quickURL('tags', 'seguetag', 
@@ -224,41 +228,94 @@ abstract class SegueTagsAction
 		print "\n\t</tr>";
 		
 		print "\n\t<tr>";			
-		// all tags on node by you and everyone
+
+		print "\n\t\t<td style='border: 1px solid;'>";
+		print _("by: ");
+		// all tags on node by you 
+		if ($harmoni->getCurrentAction() != 'tags.usernode') {
+			$url = SiteDispatcher::quickURL('tags', 'usernode', 
+				array('agent_id' => $tagManager->getCurrentUserIdString(),
+				'tag' => RequestContext::value('tag')));
+			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
+		} else if ($harmoni->getCurrentAction() == 'tags.usernode') {
+			print "<strong>"._("you")."</strong> | ";		
+		} else {
+			print _("you | ");
+		}
+
+		
+		// all tags on node by everyone 
+		if ($harmoni->getCurrentAction() != 'tags.node') {
+			$url = SiteDispatcher::quickURL('tags', 'node', 
+				array('agent_id' => $tagManager->getCurrentUserIdString(),
+				'tag' => RequestContext::value('tag')));
+			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("everyone"))."</a>";
+		} else if ($harmoni->getCurrentAction() == 'tags.node') {
+			print "<strong>"._("everyone")."</strong>";			
+		} else {
+			print _("everyone");
+		}
+		print "\n\t\t</td>";		
+		
+		// all tags in site by you 
 		print "\n\t\t<td style='border: 1px solid;'>";
 		print _("by: ");
 		
+		// all tags in site by you 
+		if ($harmoni->getCurrentAction() != 'tags.usersite') {
+			$url = SiteDispatcher::quickURL('tags', 'usersite', 
+				array('agent_id' => $tagManager->getCurrentUserIdString(),
+				'tag' => RequestContext::value('tag')));
+			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
+		} else if ($harmoni->getCurrentAction() == 'tags.usersite') {
+			print "<strong>"._("you")."</strong> | ";		
+		} else {
+			print _("you | ");
+		}
 
-		print _("everyone")."";		
-		print "\n\t\t</td>";		
 		
-		// all tags in site by you and everyone
-		print "\n\t\t<td style='border: 1px solid;'>";
-		print _("by: ")._("you")." | ";
-		print _("everyone")."";		
+		// all tags in site by everyone 
+		if ($harmoni->getCurrentAction() != 'tags.site') {
+			$url = SiteDispatcher::quickURL('tags', 'site', 
+				array('agent_id' => $tagManager->getCurrentUserIdString(),
+				'tag' => RequestContext::value('tag')));
+			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("everyone"))."</a>";
+		} else if ($harmoni->getCurrentAction() == 'tags.site') {
+			print "<strong>"._("everyone")."</strong>";			
+		} else {
+			print _("everyone");
+		}
+		
 		print "\n\t\t</td>";
 		
-		// all tags from all segue by you and everyone
+
 		print "\n\t\t<td style='border: 1px solid;'>";
-	//	print _("by: ")._("you")." | ";
+		print _("by: ");
 		
-		if ($currentUserIdString = $tagManager->getCurrentUserIdString()) {
-			if ($harmoni->getCurrentAction() == 'tags.user' 
-				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $currentUserIdString)) 
-			{
-				print ""._("by you")."";
-			} else {
-				$url = SiteDispatcher::quickURL('tags', 'user', 
-					array('agent_id' => $tagManager->getCurrentUserIdString()));
-				print "<a href='".$url."'>"._("by you")."</a> | ";
-			}
-		}
-		if ($harmoni->getCurrentAction() == 'tags.all') {
-			print _("everyone");
+		// all tags from all segue by you
+		if ($harmoni->getCurrentAction() != 'tags.usersegue') {
+			$url = SiteDispatcher::quickURL('tags', 'usersegue', 
+				array('agent_id' => $tagManager->getCurrentUserIdString(),
+				'tag' => RequestContext::value('tag')));
+			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
+		} else if ($harmoni->getCurrentAction() == 'tags.usersegue') {
+			print "<strong>"._("you")."</strong> | ";		
 		} else {
-			$url = SiteDispatcher::quickURL('tags', 'all');
-			print "<a href='".$url."'>"._("everyone")."</a>";
+			print _("you | ");
 		}
+		
+		// all tags from all segue by everyone
+		if ($harmoni->getCurrentAction() != 'tags.segue') {
+			$url = SiteDispatcher::quickURL('tags', 'segue', 
+				array('agent_id' => $tagManager->getCurrentUserIdString(),
+				'tag' => RequestContext::value('tag')));
+			print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("everyone"))."</a>";
+		} else if ($harmoni->getCurrentAction() == 'tags.segue') {
+			print "<strong>"._("everyone")."</strong>";			
+		} else {
+			print _("everyone");
+		}
+		
 		print "\n\t\t</td>";				
 		
 		print "\n\t</tr>";
@@ -345,6 +402,10 @@ abstract class SegueTagsAction
 			}
 						
 		}
+//		$tagsMenu = new Component(ob_get_clean(), BLANK, 2);		
+// 		$tagsContainer = $mainScreen->add(new Container(new XLayout, BLOCK, 2), "50%", null, RIGHT, TOP);
+// 		$tagsContainer->add($tagsMenu, "100%", null, LEFT, TOP);
+		
 		$tagsMenu = ob_get_clean();
 		$mainScreen->add(new Block($tagsMenu, STANDARD_BLOCK), "100%", null, LEFT, TOP);
 	}	
