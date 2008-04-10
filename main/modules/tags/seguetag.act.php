@@ -30,38 +30,14 @@ class seguetagAction
 {		
 
 	/**
-	 * Build the content for this action
+	 * Add the site header gui components
 	 * 
-	 * @return void
+	 * @return Component
 	 * @access public
-	 * @since 11/07/06
+	 * @since 4/7/08
 	 */
-	function execute () {
-		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);	
-		
-		// implemented in parent class htmlAction
-		$allWrapper = $this->addHeaderControls($mainScreen);
-		
-		// implemented by this class
-	//	$this->addSiteHeader($mainScreen);
-		
-		$harmoni = Harmoni::instance();
-		$harmoni->request->startNamespace('polyphony-tags');
-		
-		$this->addTagsMenu($mainScreen);
-	
-		// implemented by child classes
-		SiteDispatcher::passthroughContext();
-		$this->getResult($mainScreen);
-				
-		$harmoni->request->endNamespace();
-		
-		//not sure why output buffer needs to be started here...
-		ob_start();
-		//implemented in parent class htmlAction
-		$this->addFooterControls($mainScreen);
-		$this->mainScreen = $mainScreen;
-		return $allWrapper;
+	public function getSiteHeader () {
+		throw new UnimplementedException("No site header for this action.");
 	}
 
 	/**

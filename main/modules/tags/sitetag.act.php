@@ -44,7 +44,7 @@ class sitetagAction
 	}
 	
 	/**
-	 * Answer the items with given tag in a given Segue site
+	 * Answer the items with given tag in a given Segue site by everyone
 	 * 
 	 * @return object TagIterator
 	 * @access public

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAllTagAction.abstract.php,v 1.1 2008/04/10 02:56:25 achapin Exp $
+ * @version $Id: SegueAllTagAction.abstract.php,v 1.2 2008/04/10 19:18:03 achapin Exp $
  */ 
 require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
 require_once(dirname(__FILE__)."/SegueTagsAction.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/IteratorResultPrinter.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAllTagAction.abstract.php,v 1.1 2008/04/10 02:56:25 achapin Exp $
+ * @version $Id: SegueAllTagAction.abstract.php,v 1.2 2008/04/10 19:18:03 achapin Exp $
  */
 abstract class SegueAllTagAction
 	extends SegueTagsAction
@@ -77,16 +77,8 @@ abstract class SegueAllTagAction
 	 * @access public
 	 * @since 4/7/08
 	 */
-	public function getResult (Component $mainScreen) {
-	 
-		$harmoni = Harmoni::instance();		
-		$items = $this->getItems();
-				
-		ob_start();
-		print TagAction::getTagCloudDiv($this->getItems(), $this->getViewAction());
-		$mainScreen->add(new Block(ob_get_clean(), HIGHLIT_BLOCK), "100%", null, LEFT, TOP);
-
-				
+	public function getResult () {
+		return new Block(TagAction::getTagCloudDiv($this->getTags(), $this->getViewAction()), STANDARD_BLOCK);
 	}
 	
 	/**

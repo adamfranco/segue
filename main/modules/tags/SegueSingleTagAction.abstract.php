@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueSingleTagAction.abstract.php,v 1.2 2008/04/10 02:56:25 achapin Exp $
+ * @version $Id: SegueSingleTagAction.abstract.php,v 1.3 2008/04/10 19:18:03 achapin Exp $
  */ 
 require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
 require_once(dirname(__FILE__)."/SegueTagsAction.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/IteratorResultPrinter.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueSingleTagAction.abstract.php,v 1.2 2008/04/10 02:56:25 achapin Exp $
+ * @version $Id: SegueSingleTagAction.abstract.php,v 1.3 2008/04/10 19:18:03 achapin Exp $
  */
 abstract class SegueSingleTagAction
 	extends SegueTagsAction
@@ -71,11 +71,11 @@ abstract class SegueSingleTagAction
 	 * Add display of tags
 	 * 
 	 * @param Component $mainScreen
-	 * @return void
+	 * @return Component
 	 * @access public
 	 * @since 4/7/08
 	 */
-	public function getResult (Component $mainScreen) {
+	public function getResult () {
 	
  
 		$harmoni = Harmoni::instance();
@@ -86,10 +86,10 @@ abstract class SegueSingleTagAction
 		$resultLayout = $resultPrinter->getLayout(array($this, "canViewItem"));	
 		
 				
-		$mainScreen->add($resultLayout, "100%", null, LEFT, CENTER);		
-		$mainScreen->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
+	//	$mainScreen->add($resultLayout, "100%", null, LEFT, CENTER);		
+	//	$mainScreen->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
 
-				
+		return $resultLayout;
 	}
 	
 	/**

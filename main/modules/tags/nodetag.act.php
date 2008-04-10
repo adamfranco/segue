@@ -44,7 +44,7 @@ class nodetagAction
 	}
 	
 	/**
-	 * Answer the items with given tag in a given Segue site
+	 * Answer the items with given tag for a given item
 	 * 
 	 * @return object TagIterator
 	 * @access public

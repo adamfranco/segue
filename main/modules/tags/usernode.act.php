@@ -40,17 +40,17 @@ class usernodeAction
 	public function getResultTitle () {
 		$tag = RequestContext::value('tag');
 		return str_replace('%1', $tag,
-			_("All tags in site by you"));
+			_("All tags on this node by you"));
 	}
 	
 	/**
-	 * Answer the items with given tag for a given user 
+	 * Answer the tags for a given items for a given user 
 	 * 
 	 * @return object TagIterator
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function getItems () {	
+	function getTags () {	
 		$harmoni = Harmoni::instance();
 		$tag = $this->getTag();		
 		$siteComponent = SiteDispatcher::getCurrentNode();

@@ -44,13 +44,13 @@ class usersiteAction
 	}
 	
 	/**
-	 * Answer the items with given tag for a given user 
+	 * Answer all the tags on this site by given user 
 	 * 
 	 * @return object TagIterator
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function getItems () {	
+	function getTags () {	
 		$harmoni = Harmoni::instance();
 		$tag = $this->getTag();		
 		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();

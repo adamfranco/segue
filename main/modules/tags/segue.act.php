@@ -29,32 +29,16 @@ require_once(MYDIR."/plugins/SeguePlugins/edu.middlebury/Tags/TaggableItemVisito
 class segueAction 
 	extends SegueAllTagAction
 {	
-
-	/**
-	 * Build the content for this action
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 11/07/06
-	 */
-	function execute () {
-		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);	
-		
-		// implemented in parent class htmlAction
-		$allWrapper = $this->addHeaderControls($mainScreen);
-		
-		// implemented by this class
-	//	$this->addSiteHeader($mainScreen);
-		
-		$harmoni = Harmoni::instance();
-		$harmoni->request->startNamespace('polyphony-tags');
-		
-		$this->addTagsMenu($mainScreen);
 	
-		// implemented by child classes
-		SiteDispatcher::passthroughContext();
-		$this->getResult($mainScreen);
-		
+	/**
+	 * Add the site header gui components
+	 * 
+	 * @return Component
+	 * @access public
+	 * @since 4/7/08
+	 */
+	public function getSiteHeader () {
+		$harmoni = Harmoni::instance();
 		ob_start();
 		print "\n<select name='".RequestContext::name('num_tags')."'";
 		print " onchange=\"";
@@ -65,19 +49,10 @@ class segueAction
 		foreach ($options as $option)
 			print "\n\t<option value='".$option."' ".(($option == $this->getNumTags())?" selected='selected'":"").">".(($option)?$option:_('all'))."</option>";
 		print "\n</select>";
-		print str_replace('%1', ob_get_clean(), _("Showing top %1 tags"));
 		
 		
-		$mainScreen->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
-		
-		$harmoni->request->endNamespace();
-	
-		//implemented in parent class htmlAction
-		$this->addFooterControls($mainScreen);
-		$this->mainScreen = $mainScreen;
-		return $allWrapper;
+		return new Block(str_replace('%1', ob_get_clean(), _("Showing top %1 tags")), STANDARD_BLOCK);
 	}
-	
 	
 	/**
 	 * Answer the title of this result set
@@ -93,13 +68,13 @@ class segueAction
 	}
 	
 	/**
-	 * Answer the items with given tag for a given user 
+	 * Answer all the tags in Segue by everyon 
 	 * 
 	 * @return object TagIterator
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function getItems () {	
+	function getTags () {	
 		$harmoni = Harmoni::instance();
 		$tagManager = Services::getService("Tagging");
 		$tags =$tagManager->getTags(TAG_SORT_ALFA, $this->getNumTags());

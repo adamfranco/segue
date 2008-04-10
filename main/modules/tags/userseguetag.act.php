@@ -29,42 +29,17 @@ require_once(MYDIR."/plugins/SeguePlugins/edu.middlebury/Tags/TaggableItemVisito
 class userseguetagAction 
 	extends SegueAllTagAction
 {	
-
 	/**
-	 * Build the content for this action
+	 * Add the site header gui components
 	 * 
-	 * @return void
+	 * @return Component
 	 * @access public
-	 * @since 11/07/06
+	 * @since 4/7/08
 	 */
-	function execute () {
-		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);	
-		
-		// implemented in parent class htmlAction
-		$allWrapper = $this->addHeaderControls($mainScreen);
-		
-		// implemented by this class
-	//	$this->addSiteHeader($mainScreen);
-		
-		$harmoni = Harmoni::instance();
-		$harmoni->request->startNamespace('polyphony-tags');
-		
-		$this->addTagsMenu($mainScreen);
-	
-		// implemented by child classes
-		SiteDispatcher::passthroughContext();
-		$this->getResult($mainScreen);
-				
-		$harmoni->request->endNamespace();
-		
-		//not sure why output buffer needs to be started here...
-		ob_start();
-		//implemented in parent class htmlAction
-		$this->addFooterControls($mainScreen);
-		$this->mainScreen = $mainScreen;
-		return $allWrapper;
+	public function getSiteHeader () {
+		throw new UnimplementedException("No site header for this action.");
 	}
-
+	
 	/**
 	 * Answer the title of this result set
 	 * 
@@ -79,7 +54,7 @@ class userseguetagAction
 	}
 	
 	/**
-	 * Answer the items with given tag in a given Segue site
+	 * Answer the items with given tag in a Segue site by a given user
 	 * 
 	 * @return object TagIterator
 	 * @access public
@@ -103,13 +78,11 @@ class userseguetagAction
 	/**
 	 * Add display of tags
 	 * 
-	 * @param Component $mainScreen
-	 * @return void
+	 * @return Component
 	 * @access public
 	 * @since 4/7/08
 	 */
-	public function getResult (Component $mainScreen) {
-	 
+	public function getResult () {	 
 		$harmoni = Harmoni::instance();
 		
 		$items = $this->getItems();
@@ -117,10 +90,8 @@ class userseguetagAction
 									array($this, 'getTaggedItemComponent'), $this->getViewAction());
 		$resultLayout = $resultPrinter->getLayout(array($this, "canViewItem"));	
 		
-				
-		$mainScreen->add($resultLayout, "100%", null, LEFT, CENTER);		
-		$mainScreen->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, LEFT, TOP);
-				
+			
+		return $resultLayout;
 	}
 
 	

@@ -40,17 +40,17 @@ class nodeAction
 	public function getResultTitle () {
 		$tag = RequestContext::value('tag');
 		return str_replace('%1', $tag,
-			_("All tags in site by everyone"));
+			_("All tags for this node by everyone"));
 	}
 	
 	/**
-	 * Answer the items with given tag for a given user 
+	 * Answer the tags for given item by everyone 
 	 * 
 	 * @return object TagIterator
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function getItems () {	
+	function getTags () {	
 		$harmoni = Harmoni::instance();
 		$tagManager = Services::getService("Tagging");
 		

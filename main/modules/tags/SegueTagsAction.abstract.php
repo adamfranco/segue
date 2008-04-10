@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.4 2008/04/10 15:54:20 adamfranco Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.5 2008/04/10 19:18:03 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/html.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/modules/view/html.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.4 2008/04/10 15:54:20 adamfranco Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.5 2008/04/10 19:18:03 achapin Exp $
  */
 abstract class SegueTagsAction
 	extends htmlAction
@@ -41,21 +41,29 @@ abstract class SegueTagsAction
 		$allWrapper = $this->addHeaderControls($mainScreen);
 		
 		// implemented by this class
-		$this->addSiteHeader($mainScreen);
+		try {
+			$mainScreen->add($this->getSiteHeader());
+		} catch (UnimplementedException $e) {
+		}
+		
+		$taggingColumns = $mainScreen->add(new Container(new XLayout, BLANK, 1));	
 		
 		$harmoni = Harmoni::instance();
 		SiteDispatcher::passthroughContext();
 		$harmoni->request->startNamespace('polyphony-tags');
+		
 				
-//		$tagsContainer = $mainScreen->add(new Container(new XLayout, BLOCK, 1), "50%", null, RIGHT, TOP);		
-		$this->addTagsMenu($mainScreen);
+//		$this->addTagsMenu($mainScreen);
+		$taggingColumns->add($this->getItemsMenu(), "100px", null, LEFT, TOP);
 		
 		// implemented by child classes
-//		$resultsContainer = $mainScreen->add(new Container(new XLayout, BLOCK, 1), "50%", null, LEFT, TOP);	
-		$this->getResult($mainScreen);
+		//$this->getResult($mainScreen);
+		 $taggingColumns->add($this->getResult(), null, null, LEFT, CENTER);
+		 
+ 		$taggingColumns->add($this->getTagsMenu(), "100px", null, LEFT, TOP);
+
 		
-		
-		
+				
 		$harmoni->request->endNamespace();
 		SiteDispatcher::forgetContext();
 		
@@ -68,12 +76,11 @@ abstract class SegueTagsAction
 	/**
 	 * Add the site header gui components
 	 * 
-	 * @param Component $mainScreen
-	 * @return void
+	 * @return Component
 	 * @access public
 	 * @since 4/7/08
 	 */
-	public function addSiteHeader (Component $mainScreen) {
+	public function getSiteHeader () {
 		if ($this->isAuthorizedToExecute()) {
 							
 			// :: Site ::
@@ -81,15 +88,20 @@ abstract class SegueTagsAction
 
 			$visitor = new TagModeSiteVisitor;
 			$this->siteGuiComponent = $rootSiteComponent->acceptVisitor($visitor);
-			$mainScreen->add($this->siteGuiComponent);
+			//$mainScreen->add($this->siteGuiComponent);
+			
+			return $this->siteGuiComponent;
+			
 		} else {
 			// Replace the title
 			$title = "\n\t\t<title>"._("Unauthorized")."</title>";
 			$outputHandler->setHead(
 				preg_replace("/<title>[^<]*<\/title>/", $title, $outputHandler->getHead()));			
 		
-			$mainScreen->add(new Block($this->getUnauthorizedMessage(), EMPHASIZED_BLOCK),
-				"100%", null, CENTER, TOP);
+		// 	$mainScreen->add(new Block($this->getUnauthorizedMessage(), EMPHASIZED_BLOCK),
+// 				"100%", null, CENTER, TOP);
+				
+			return new Block($this->getUnauthorizedMessage(), EMPHASIZED_BLOCK);
 		}
 	}
 	
@@ -102,6 +114,7 @@ abstract class SegueTagsAction
 	 */
 	abstract public function getResultTitle ();
 	
+	
 	/**
 	 * Answer a menu for the tagging system
 	 * 
@@ -109,7 +122,20 @@ abstract class SegueTagsAction
 	 * @access public
 	 * @since 11/8/06
 	 */
-	public function addTagsMenu (Component $mainScreen) {
+	public function getItemsMenu () {
+		ob_start();
+		
+		return new Block(ob_get_clean(), STANDARD_BLOCK);
+	}
+	
+	/**
+	 * Answer a menu for the tagging system
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 11/8/06
+	 */
+	public function getTagsMenu () {
 		$harmoni = Harmoni::instance();
 		$tagManager = Services::getService("Tagging");
 		ob_start();
@@ -324,36 +350,10 @@ abstract class SegueTagsAction
 		print "\n</table>";		
 		
 		
-		
-		// $tagManager = Services::getService("Tagging");
-// 		if ($currentUserIdString = $tagManager->getCurrentUserIdString()) {
-// 			if ($harmoni->getCurrentAction() == 'tags.user' 
-// 				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $currentUserIdString)) 
-// 			{
-// 				print ""._("your tags")." &nbsp; ";
-// 			} else {
-// 				$url = SiteDispatcher::quickURL('tags', 'user', 
-// 					array('agent_id' => $tagManager->getCurrentUserIdString()));
-// 				print "<a href='".$url."'>"._("your tags")."</a> &nbsp; ";
-// 			}
-// 		}
-// 		if ($harmoni->getCurrentAction() == 'tags.all') {
-// 			print _("all tags");
-// 		} else {
-// 			$url = SiteDispatcher::quickURL('tags', 'all');
-// 			print "<a href='".$url."'>"._("all tags")."</a> &nbsp;";
-// 		}
-		
 		if (RequestContext::value('tag')) {
-// 			if ($harmoni->getCurrentAction() != 'tags.view') {
-// 				$url = SiteDispatcher::quickURL('tags', 'view', 
-// 					array('agent_id' => $tagManager->getCurrentUserIdString(),
-// 					'tag' => RequestContext::value('tag')));
-// 				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("items tagged '%1' by everyone"))."</a> &nbsp; ";
-// 			}
-		
-			if ($harmoni->getCurrentAction() == 'tags.viewuser' 
-				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $currentUserIdString)) 
+
+			if (in_array($harmoni->request->getRequestedAction(), array('usernodetag', 'usersitetag', 'userseguetag'))
+				&& (!RequestContext::value('agent_id') || RequestContext::value('agent_id') == $tagManager->getCurrentUserIdString())) 
 			{
 				
 				print " | &nbsp; ";
@@ -370,7 +370,7 @@ abstract class SegueTagsAction
 				}
 
 				
-				print "<a onclick=\"TagRenameDialog.run(new Tag('".RequestContext::value('tag')."'), this);\">"._("rename")."</a> &nbsp; ";
+				print "<a onclick=\"TagRenameDialog.run(new Tag('".RequestContext::value('tag')."'), this, '".$harmoni->request->getRequestedAction()."');\">"._("rename")."</a> &nbsp; ";
 				
 				
 				print "<a onclick=\"";
@@ -409,7 +409,9 @@ abstract class SegueTagsAction
 // 		$tagsContainer->add($tagsMenu, "100%", null, LEFT, TOP);
 		
 		$tagsMenu = ob_get_clean();
-		$mainScreen->add(new Block($tagsMenu, STANDARD_BLOCK), "100%", null, LEFT, TOP);
+		//$mainScreen->add(new Block($tagsMenu, STANDARD_BLOCK), "100%", null, LEFT, TOP);
+		
+		return new Block($tagsMenu, STANDARD_BLOCK);
 	}	
 		
 	/**
@@ -420,10 +422,7 @@ abstract class SegueTagsAction
 	 * @access public
 	 * @since 4/7/08
 	 */
-	abstract public function getResult (Component $mainScreen);
-
-
-
+	abstract public function getResult ();
 	
 
 }

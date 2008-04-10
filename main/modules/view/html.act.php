@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.12 2008/04/09 21:12:03 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.13 2008/04/10 19:18:04 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
@@ -27,7 +27,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.12 2008/04/09 21:12:03 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.13 2008/04/10 19:18:04 achapin Exp $
  */
 
 /**
@@ -39,7 +39,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: html.act.php,v 1.12 2008/04/09 21:12:03 adamfranco Exp $
+ * @version $Id: html.act.php,v 1.13 2008/04/10 19:18:04 achapin Exp $
  */
 class htmlAction
 	extends displayAction 
@@ -92,6 +92,7 @@ class htmlAction
 		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		$allWrapper = $this->addHeaderControls($mainScreen);
+				
 		$this->addSiteContent($mainScreen);
 		$this->addFooterControls($mainScreen);
 
