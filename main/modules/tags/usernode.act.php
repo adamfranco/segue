@@ -61,7 +61,7 @@ class usernodeAction
 		
 		$visitor = new TaggableItemVisitor;
 		$items = $siteComponent->acceptVisitor($visitor);
-
+		SiteDispatcher::passthroughContext();
 		$tags = $tagManager->getTagsForItemsByAgent($items, $agentId);
 		return $tags;
 	}	
@@ -91,7 +91,7 @@ class usernodeAction
 	 * @since 11/8/06
 	 */
 	function getViewAction () {
-		return 'usernode';
+		return 'usernodetag';
 	}
 		
 

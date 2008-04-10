@@ -56,7 +56,8 @@ class sitetagAction
 
 		$visitor = new TaggableItemVisitor;
 		$items = $rootSiteComponent->acceptVisitor($visitor);	
-		return $tag->getItemsInList($items);
+		$tagIds = $tag->getItemsInList($items);
+		return $tag->getItemsWithIdsInSystem($tagIds, "segue");
 	}	
 	
 	/**

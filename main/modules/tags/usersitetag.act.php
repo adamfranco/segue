@@ -52,11 +52,15 @@ class usersitetagAction
 	 */
 	function getItems () {		
 		$tag = $this->getTag();		
-		$SiteComponent = SiteDispatcher::getCurrentNode();
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		$tagManager = Services::getService("Tagging");		
+		$agentId = $tagManager->getCurrentUserId();
 
 		$visitor = new TaggableItemVisitor;
-		$items = $SiteComponent->acceptVisitor($visitor);		
-		return $tag->getItemsInList($items);
+		$items = $rootSiteComponent->acceptVisitor($visitor);
+		
+		$tagIds = $tag->getItemsInList($items);
+		return $tag->getItemsForAgentInListinSystem($tagIds, $agentId, "segue");
 	}	
 	
 	/**

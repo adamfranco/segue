@@ -58,7 +58,7 @@ class nodeAction
 
 		$visitor = new TaggableItemVisitor;
 		$items = $SiteComponent->acceptVisitor($visitor);
-		
+		SiteDispatcher::passthroughContext();
 		$tags =$tagManager->getTagsForItems($items, TAG_SORT_ALFA, $this->getNumTags());
 
 		return $tags;
@@ -88,7 +88,7 @@ class nodeAction
 	 * @since 11/8/06
 	 */
 	function getViewAction () {
-		return 'node';
+		return 'nodetag';
 	}
 
 }

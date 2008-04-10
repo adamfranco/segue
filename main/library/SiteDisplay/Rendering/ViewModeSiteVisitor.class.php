@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.64 2008/04/08 20:09:13 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.65 2008/04/10 04:16:58 achapin Exp $
  */ 
 
 require_once(HARMONI."GUIManager/Components/Header.class.php");
@@ -37,7 +37,7 @@ require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ViewModeSiteVisitor.class.php,v 1.64 2008/04/08 20:09:13 achapin Exp $
+ * @version $Id: ViewModeSiteVisitor.class.php,v 1.65 2008/04/10 04:16:58 achapin Exp $
  */
 class ViewModeSiteVisitor 
 	implements SiteVisitor
@@ -288,13 +288,13 @@ class ViewModeSiteVisitor
 			
 		// Tags
 		print "\n\t<div style='text-align: left;'>";
-
- 	
+ 		SiteDispatcher::passthroughContext();
 		$item = TaggedItem::forId($block->getQualifierId(), 'segue');
-		print TagAction::getTagCloud($item->getTags(), 'seguetag',
+		print TagAction::getTagCloud($item->getTags(), 'sitetag',
 				array(	'font-size: 90%;',
 						'font-size: 100%;',
 				));
+		SiteDispatcher::forgetContext();
 		print "\n\t</div>";
 		return ob_get_clean();
 	}

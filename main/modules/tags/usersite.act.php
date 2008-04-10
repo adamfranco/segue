@@ -61,7 +61,7 @@ class usersiteAction
 		
 		$visitor = new TaggableItemVisitor;
 		$items = $rootSiteComponent->acceptVisitor($visitor);
-
+		SiteDispatcher::passthroughContext();
 		$tags = $tagManager->getTagsForItemsByAgent($items, $agentId);
 		return $tags;
 	}	
@@ -91,7 +91,7 @@ class usersiteAction
 	 * @since 11/8/06
 	 */
 	function getViewAction () {
-		return 'usersite';
+		return 'usersitetag';
 	}
 		
 

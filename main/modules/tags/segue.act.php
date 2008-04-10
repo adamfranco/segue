@@ -130,7 +130,7 @@ class segueAction
 	 * @since 11/8/06
 	 */
 	function getViewAction () {
-		return 'segue';
+		return 'seguetag';
 	}
 
 }

@@ -85,13 +85,19 @@ class userseguetagAction
 	 * @access public
 	 * @since 11/8/06
 	 */
-	function getItems () {		
+	function getItems () {	
+		$harmoni = Harmoni::instance();
 		$tag = $this->getTag();		
-		$SiteComponent = SiteDispatcher::getCurrentNode();
-
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		
+		$tagManager = Services::getService("Tagging");		
+		$agentId = $tagManager->getCurrentUserId();
+		
 		$visitor = new TaggableItemVisitor;
-		$items = $SiteComponent->acceptVisitor($visitor);		
-		return $tag->getItemsInList($items);
+		$items = $rootSiteComponent->acceptVisitor($visitor);
+		$tagIds = $tag->getItemsInList($items);
+		//printpre($tagIds);
+		return $tag->getItemsForAgentInListinSystem($tagIds, $agentId, "segue");
 	}
 
 	/**

@@ -40,7 +40,7 @@ class usernodetagAction
 	public function getResultTitle () {
 		$tag = RequestContext::value('tag');
 		return str_replace('%1', $tag,
-			_("items tagged with '%1' for this node and its subnodes by you (NOT IMPLEMENTED YET)"));
+			_("items tagged with '%1' for this node and its subnodes by you"));
 	}
 	
 	/**
@@ -55,13 +55,14 @@ class usernodetagAction
 		$tag = $this->getTag();		
 		$SiteComponent = SiteDispatcher::getCurrentNode();
 
-		$tagManager = Services::getService("Tagging");
-		
+		$tagManager = Services::getService("Tagging");		
 		$agentId = $tagManager->getCurrentUserId();
 		
 		$visitor = new TaggableItemVisitor;
-		$items = $SiteComponent->acceptVisitor($visitor);		
-		return $tag->getItemsForAgent($agentId);
+		$items = $SiteComponent->acceptVisitor($visitor);
+		
+		$tagIds = $tag->getItemsInList($items);
+		return $tag->getItemsForAgentInListinSystem($tagIds, $agentId, "segue");
 	}	
 	
 	/**

@@ -58,7 +58,7 @@ class siteAction
 
 		$visitor = new TaggableItemVisitor;
 		$items = $rootSiteComponent->acceptVisitor($visitor);
-		
+		SiteDispatcher::passthroughContext();
 		$tags =$tagManager->getTagsForItems($items, TAG_SORT_ALFA, $this->getNumTags());
 
 		return $tags;
@@ -88,7 +88,7 @@ class siteAction
 	 * @since 11/8/06
 	 */
 	function getViewAction () {
-		return 'segue';
+		return 'sitetag';
 	}
 
 }
