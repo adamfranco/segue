@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: index.php,v 1.16 2008/04/08 19:43:24 adamfranco Exp $
+ * @version $Id: index.php,v 1.17 2008/04/10 17:35:20 adamfranco Exp $
  */
 
 /*********************************************************
@@ -72,7 +72,7 @@ try {
 		if (isset($_SERVER['PATH_INFO']) 
                         && preg_match('/^\/sites\/([\w_-]+)\/?/', $_SERVER['PATH_INFO'], $matches))
 		{
-			$harmoni->request->set('site', $matches[1]);
+			$harmoni->request->setRequestParam('site', $matches[1]);
 			$harmoni->request->setModuleAction('view', 'html');
 		}
 
