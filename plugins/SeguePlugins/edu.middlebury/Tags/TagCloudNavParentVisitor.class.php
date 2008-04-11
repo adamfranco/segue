@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagCloudNavParentVisitor.class.php,v 1.1 2008/04/10 17:40:25 adamfranco Exp $
+ * @version $Id: TagCloudNavParentVisitor.class.php,v 1.2 2008/04/11 20:38:59 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -21,7 +21,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: TagCloudNavParentVisitor.class.php,v 1.1 2008/04/10 17:40:25 adamfranco Exp $
+ * @version $Id: TagCloudNavParentVisitor.class.php,v 1.2 2008/04/11 20:38:59 adamfranco Exp $
  */
 class TagCloudNavParentVisitor
 	implements SiteVisitor
@@ -36,7 +36,10 @@ class TagCloudNavParentVisitor
 	 * @since 8/31/07
 	 */
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
-		return $siteComponent->getParentComponent()->acceptVisitor($this);
+		$parent = $siteComponent->getParentComponent();
+		if (!$parent)
+			throw new OperationFailedException ("No parent for ".$siteComponent->getId());
+		return $parent->acceptVisitor($this);
 	}
 	
 	/**
@@ -48,7 +51,10 @@ class TagCloudNavParentVisitor
 	 * @since 8/31/07
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) {
-		return $siteComponent->getParentComponent()->acceptVisitor($this);
+		$parent = $siteComponent->getParentComponent();
+		if (!$parent)
+			throw new OperationFailedException ("No parent for ".$siteComponent->getId());
+		return $parent->acceptVisitor($this);
 	}
 	
 	/**
@@ -84,7 +90,10 @@ class TagCloudNavParentVisitor
 	 * @since 8/31/07
 	 */
 	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $siteComponent ) {
-		return $siteComponent->getParentComponent()->acceptVisitor($this);
+		$parent = $siteComponent->getParentComponent();
+		if (!$parent)
+			throw new OperationFailedException ("No parent for ".$siteComponent->getId());
+		return $parent->acceptVisitor($this);
 	}
 	
 	/**
@@ -96,7 +105,10 @@ class TagCloudNavParentVisitor
 	 * @since 8/31/07
 	 */
 	public function visitNavOrganizer ( NavOrganizerSiteComponent $siteComponent ) {
-		return $siteComponent->getParentComponent()->acceptVisitor($this);
+		$parent = $siteComponent->getParentComponent();
+		if (!$parent)
+			throw new OperationFailedException ("No parent for ".$siteComponent->getId());
+		return $parent->acceptVisitor($this);
 	}
 	
 	/**
@@ -108,7 +120,10 @@ class TagCloudNavParentVisitor
 	 * @since 8/31/07
 	 */
 	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $siteComponent ) {
-		return $siteComponent->getParentComponent()->acceptVisitor($this);
+		$parent = $siteComponent->getParentComponent();
+		if (!$parent)
+			throw new OperationFailedException ("No parent for ".$siteComponent->getId());
+		return $parent->acceptVisitor($this);
 	}
 	
 	/**
@@ -120,7 +135,10 @@ class TagCloudNavParentVisitor
 	 * @since 8/31/07
 	 */
 	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) {
-		return $siteComponent->getParentComponent()->acceptVisitor($this);
+		$parent = $siteComponent->getParentComponent();
+		if (!$parent)
+			throw new OperationFailedException ("No parent for ".$siteComponent->getId());
+		return $parent->acceptVisitor($this);
 	}
 	
 }
