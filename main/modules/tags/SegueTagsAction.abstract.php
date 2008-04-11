@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.9 2008/04/11 18:20:12 achapin Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.10 2008/04/11 19:48:27 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/html.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/modules/view/html.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.9 2008/04/11 18:20:12 achapin Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.10 2008/04/11 19:48:27 achapin Exp $
  */
  
 abstract class SegueTagsAction
@@ -234,7 +234,7 @@ abstract class SegueTagsAction
 		} else {
 			print _("everyone");
 		}	
-		print _(" within: <br/>All of Segue");		
+		print _(" within: <br/>all of Segue");		
 
 		print "</div>";
 		

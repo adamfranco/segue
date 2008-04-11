@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.27 2008/04/11 15:48:05 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2008/04/11 19:48:27 achapin Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.27 2008/04/11 15:48:05 adamfranco Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2008/04/11 19:48:27 achapin Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -135,7 +135,7 @@ END;
 		ob_start();	
 			
 		// Tags
-		print "\n\t<div style='text-align: left;'>";
+		print "\n\t<div class='tagging_tags_display'>";
 		SiteDispatcher::passthroughContext();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");

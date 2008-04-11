@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.6 2008/04/10 17:40:25 adamfranco Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.7 2008/04/11 19:48:28 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/TagCloudNavParentVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.6 2008/04/10 17:40:25 adamfranco Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.7 2008/04/11 19:48:28 achapin Exp $
  */
 class EduMiddleburyTagsPlugin 
 	extends SegueAjaxPlugin
@@ -108,13 +108,14 @@ class EduMiddleburyTagsPlugin
  			$items = $parentNavNode->acceptVisitor($visitor);
  			
  			SiteDispatcher::passthroughContext();
+
  			print TagAction::getReadOnlyTagCloudForItems($items, 'sitetag', null);				
  			SiteDispatcher::forgetContext();
  			
- 			print "\n<div class='breadcrumbs' style='height: auto; margin-top: 10px; margin-bottom: 5px;'>(";
+ 			print "\n<div class='breadcrumbs' style='height: auto; margin-top: 10px; margin-bottom: 5px;'>";
  			print str_replace('%1', $parentNavNode->acceptVisitor(new BreadCrumbsVisitor($parentNavNode)),
  				_("Tags within %1"));
- 			print ")</div>";
+ 			print "</div>";
  		}
 		
 		return ob_get_clean();

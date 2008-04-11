@@ -74,7 +74,7 @@ class userseguetagAction
 		$items = $rootSiteComponent->acceptVisitor($visitor);
 		$tagIds = $tag->getItemsInList($items);
 		//printpre($tagIds);
-		return $tag->getItemsForAgentInListinSystem($tagIds, $agentId, "segue");
+		return $tag->getItemsForAgent($agentId);
 	}
 
 	/**
