@@ -5,14 +5,27 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.272 2008/04/11 20:40:34 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.273 2008/04/11 21:34:22 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-19" date="The Future">
+	<version number="2.0-beta-19" date="2008-04-11">
 		<releaseNotes>
+			This release fixes a number of bugs and adds the ability to tag content.
 			
+			Notable user-facing changes:
+			- Tagging system.
+			- Minor speed improvements to the portal
+			- Refined Migration UI.
+			- Role-Setting now works.
+			- Migration tools now work with more sites.
+			
+			Notable back-end changes:
+			- New Harmoni_Db system allows for usage of prepared statements for
+			improved database performance.
+			
+			Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0. 
 		</releaseNotes>
 		<new author='alex, adam' date='2008-04-07' ref='1820857' reftype='fr'>
 			Tagging: Added tag cloud plugin for displaying the tags for any given node and its
