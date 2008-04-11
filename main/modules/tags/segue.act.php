@@ -40,17 +40,16 @@ class segueAction
 	public function getSiteHeader () {
 		$harmoni = Harmoni::instance();
 		ob_start();
-		print "\n<select name='".RequestContext::name('num_tags')."'";
-		print " onchange=\"";
-		print "var url='".SiteDispatcher::quickURL(null, null, array('num_tags' => 'XXXXX'))."'; ";
-		print "window.location = url.replace(/XXXXX/, this.value).urlDecodeAmpersands(); ";
-		print "\">";
+		$harmoni->request->startNamespace('polyphony-tags');
+		print "\n<form action='".SiteDispatcher::quickURL(null, null, array('tag' => RequestContext::value('tag')))."' method='post' style='display: inline;'>";
+		print "\n\t<select name='".RequestContext::name('num_tags')."'";
+		print " onchange='this.form.submit()'>";
 		$options = array(50, 100, 200, 400, 600, 1000, 0);
 		foreach ($options as $option)
-			print "\n\t<option value='".$option."' ".(($option == $this->getNumTags())?" selected='selected'":"").">".(($option)?$option:_('all'))."</option>";
-		print "\n</select>";
-		
-		
+			print "\n\t\t<option value='".$option."' ".(($option == $this->getNumTags())?" selected='selected'":"").">".(($option)?$option:_('all'))."</option>";
+		print "\n\t</select>";
+		print "\n</form>";
+		$harmoni->request->endNamespace();
 		return new Block(str_replace('%1', ob_get_clean(), _("Showing top %1 tags")), STANDARD_BLOCK);
 	}
 	
