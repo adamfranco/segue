@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.8 2008/04/11 17:09:05 adamfranco Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.9 2008/04/11 18:20:12 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/html.act.php");
@@ -20,8 +20,9 @@ require_once(MYDIR."/main/modules/view/html.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.8 2008/04/11 17:09:05 adamfranco Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.9 2008/04/11 18:20:12 achapin Exp $
  */
+ 
 abstract class SegueTagsAction
 	extends htmlAction
 {
@@ -130,23 +131,23 @@ abstract class SegueTagsAction
 		
 		ob_start();
 		$tag = RequestContext::value('tag');
-		$title = str_replace('%1', $tag, _("'%1' Tag"));
-		print "<div class='tagging_header'>".$title."</div>";
+		$tag = str_replace('%1', $tag, _("'%1'"));
+		print "<div class='tagging_header'>".$tag._(" Tag")."</div>";
 		
 		// all nodes
 		print "<div class='tagging_options'>";
 		// all nodes with tag by you
-		print _("XXXXXXX &raquo; YYYYYYYY, <br/>content tagged by:<br />");
+		print _("...added by ");
 		if (!$this->isAnonymous()) {
 			if ($harmoni->getCurrentAction() != 'tags.usernodetag') {
 				$url = SiteDispatcher::quickURL('tags', 'usernodetag', 
 					array('agent_id' => $tagManager->getCurrentUserIdString(),
 					'tag' => RequestContext::value('tag')));
-				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
+				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> / ";
 			} else if ($harmoni->getCurrentAction() == 'tags.usernodetag') {
-				print "<strong>"._("you")."</strong> | ";		
+				print "<strong>"._("you")."</strong> / ";		
 			} else {
-				print _("you | ");
+				print _("you / ");
 			}
 		}
 		
@@ -160,23 +161,29 @@ abstract class SegueTagsAction
 			print "<strong>"._("everyone")."</strong>";		
 		} else {
 			print _("everyone");
-		}	
+		}
+		$node = SiteDispatcher::getCurrentNode();
+ 		$context = str_replace('%2', 
+ 			$node->acceptVisitor(new BreadCrumbsVisitor($node)),
+ 			_("%2"));
+ 		print _(" within: ").$context;		
+
 		print "</div>";
 		
 		// all site items
 		print "<div class='tagging_options'>";	
 		// all site items with tag by you		
-		print _("Site XXXXXX, <br/>content tagged by: <br />");
+		print _("...added by ");
 		if (!$this->isAnonymous()) {
 			if ($harmoni->getCurrentAction() != 'tags.usersitetag') {
 				$url = SiteDispatcher::quickURL('tags', 'usersitetag', 
 					array('agent_id' => $tagManager->getCurrentUserIdString(),
 					'tag' => RequestContext::value('tag')));
-				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
+				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> / ";
 			} else if ($harmoni->getCurrentAction() == 'tags.usersitetag') {
-				print "<strong>"._("you")."</strong> | ";		
+				print "<strong>"._("you")."</strong> / ";		
 			} else {
-				print _("you | ");
+				print _("you / ");
 			}
 		}
 				
@@ -190,23 +197,29 @@ abstract class SegueTagsAction
 			print "<strong>"._("everyone")."</strong>";			
 		} else {
 			print _("everyone");
-		}				
+		}
+		$node = SiteDispatcher::getCurrentRootNode();
+ 		$context = str_replace('%2', 
+ 			$node->acceptVisitor(new BreadCrumbsVisitor($node)),
+ 			_("%2"));
+ 		print _(" within: ").$context;		
+
 		print "</div>";
 		
 		// all segue
 		print "<div class='tagging_options'>";		
 		// tagged with item in all segue by you
-		print _("All of Segue, <br/>content tagged by: <br />");
+		print _("...added by ");
 		if (!$this->isAnonymous()) {
 			if ($harmoni->getCurrentAction() != 'tags.userseguetag') {
 				$url = SiteDispatcher::quickURL('tags', 'userseguetag', 
 					array('agent_id' => $tagManager->getCurrentUserIdString(),
 					'tag' => RequestContext::value('tag')));
-				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
+				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> / ";
 			} else if ($harmoni->getCurrentAction() == 'tags.userseguetag') {
-				print "<strong>"._("you")."</strong> | ";		
+				print "<strong>"._("you")."</strong> / ";		
 			} else {
-				print _("you | ");
+				print _("you / ");
 			}
 		}
 
@@ -220,7 +233,9 @@ abstract class SegueTagsAction
 			print "<strong>"._("everyone")."</strong>";			
 		} else {
 			print _("everyone");
-		}		
+		}	
+		print _(" within: <br/>All of Segue");		
+
 		print "</div>";
 		
 		/*********************************************************
@@ -297,10 +312,10 @@ abstract class SegueTagsAction
 		$tagManager = Services::getService("Tagging");
 		
 		ob_start();		
-		print "<div class='tagging_header'>"._("All Tags")."</div>";
+		print "<div class='tagging_header'>"._("Other Tags")."</div>";
 		
 		print "<div class='tagging_options'>";
-		print _("All tags added by: <br />");
+		print _("...added by ");
 		// all tags on node by you 
 		if (!$this->isAnonymous()) {
 			if ($harmoni->getCurrentAction() != 'tags.usernode') {
@@ -309,7 +324,7 @@ abstract class SegueTagsAction
 					'tag' => RequestContext::value('tag')));
 				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> / ";
 			} else if ($harmoni->getCurrentAction() == 'tags.usernode') {
-				print "<strong>"._("you")."</strong> | ";		
+				print "<strong>"._("you")."</strong> / ";		
 			} else {
 				print _("you / ");
 			}
@@ -327,11 +342,17 @@ abstract class SegueTagsAction
 		} else {
 			print _("everyone");
 		}	
-		print _("<br/>within ");
+
+		$node = SiteDispatcher::getCurrentNode();
+ 		$context = str_replace('%2', 
+ 			$node->acceptVisitor(new BreadCrumbsVisitor($node)),
+ 			_("%2"));
+ 		print _(" within: ").$context;		
 		print "</div>";
+		
 		print "<div class='tagging_options'>";
 		// all tags in site by you 
-		print _("This site's tags by: <br />");
+		print _("...added by ");
 		
 		// all tags in site by you 
 		if (!$this->isAnonymous()) {
@@ -339,11 +360,11 @@ abstract class SegueTagsAction
 				$url = SiteDispatcher::quickURL('tags', 'usersite', 
 					array('agent_id' => $tagManager->getCurrentUserIdString(),
 					'tag' => RequestContext::value('tag')));
-				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
+				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> / ";
 			} else if ($harmoni->getCurrentAction() == 'tags.usersite') {
-				print "<strong>"._("you")."</strong> | ";		
+				print "<strong>"._("you")."</strong> / ";		
 			} else {
-				print _("you | ");
+				print _("you / ");
 			}
 		}
 
@@ -359,11 +380,15 @@ abstract class SegueTagsAction
 		} else {
 			print _("everyone");
 		}
-				
+		$node = SiteDispatcher::getCurrentRootNode();
+ 		$context = str_replace('%2', 
+ 			$node->acceptVisitor(new BreadCrumbsVisitor($node)),
+ 			_("%2"));
+ 		print _(" within: ").$context;		
 		print "</div>";
 
 		print "<div class='tagging_options'>";
-		print _("All tags by: <br />");
+		print _("...added by ");
 		
 		// all tags from all segue by you
 		if (!$this->isAnonymous()) {
@@ -371,11 +396,11 @@ abstract class SegueTagsAction
 				$url = SiteDispatcher::quickURL('tags', 'usersegue', 
 					array('agent_id' => $tagManager->getCurrentUserIdString(),
 					'tag' => RequestContext::value('tag')));
-				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> | ";
+				print "<a href='".$url."'>".str_replace('%1', RequestContext::value('tag'), _("you"))."</a> / ";
 			} else if ($harmoni->getCurrentAction() == 'tags.usersegue') {
-				print "<strong>"._("you")."</strong> | ";		
+				print "<strong>"._("you")."</strong> / ";		
 			} else {
-				print _("you | ");
+				print _("you / ");
 			}
 		}
 		
@@ -390,8 +415,9 @@ abstract class SegueTagsAction
 		} else {
 			print _("everyone");
 		}
+		print _(" within: <br/> all of Segue");	
+		print "</div>";	
 		
-		print "</div>";		
 		$tagsMenu = ob_get_clean();		
 		return new Block($tagsMenu, STANDARD_BLOCK);
 	}	

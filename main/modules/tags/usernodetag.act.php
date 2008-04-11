@@ -39,9 +39,15 @@ class usernodetagAction
 	 */
 	public function getResultTitle () {
 		$tag = RequestContext::value('tag');
-		$title = str_replace('%1', $tag,
-			_("items tagged with '%1' for this node and its subnodes by you"));
-		return new Block($title, STANDARD_BLOCK);
+		$title = str_replace('%1', "<strong>".$tag."</strong>",
+			_("'%1' tag added by you within %2 "));
+
+		$node = SiteDispatcher::getCurrentNode();
+ 		$title = str_replace('%2', 
+ 			$node->acceptVisitor(new BreadCrumbsVisitor($node)),
+ 			$title);
+
+		return new Heading($title, 2);
 	}
 	
 	/**

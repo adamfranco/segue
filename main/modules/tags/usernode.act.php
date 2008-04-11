@@ -33,15 +33,17 @@ class usernodeAction
 	/**
 	 * Answer the title of this result set
 	 * 
-	 * @return string
+	 * @return component
 	 * @access public
 	 * @since 4/8/08
 	 */
 	public function getResultTitle () {
-		$tag = RequestContext::value('tag');
-		$title = str_replace('%1', $tag,
-			_("All tags on this node by you"));
-		return new Block($title, STANDARD_BLOCK);
+		$node = SiteDispatcher::getCurrentNode();
+ 		$title = str_replace('%2', 
+ 			$node->acceptVisitor(new BreadCrumbsVisitor($node)),
+ 			_("All tags added by you within %2 "));
+
+		return new Heading($title, 2);
 	}
 	
 	/**

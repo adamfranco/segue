@@ -38,10 +38,13 @@ class nodeAction
 	 * @since 4/8/08
 	 */
 	public function getResultTitle () {
-		$tag = RequestContext::value('tag');
-		$title = str_replace('%1', $tag,
-			_("All tags for this node by everyone"));
-		return new Block($title, STANDARD_BLOCK);
+		$node = SiteDispatcher::getCurrentNode();
+ 		$title = str_replace('%2', 
+ 			$node->acceptVisitor(new BreadCrumbsVisitor($node)),
+ 			_("All tags added by everyone within %2 "));
+
+		return new Heading($title, 2);
+
 	}
 	
 	/**

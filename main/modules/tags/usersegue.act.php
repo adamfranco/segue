@@ -62,10 +62,8 @@ class usersegueAction
 	 * @since 4/8/08
 	 */
 	public function getResultTitle () {
-		$tag = RequestContext::value('tag');
-		$title = str_replace('%1', $tag,
-			_("All tags in Segue by you"));
-		return new Block($title, STANDARD_BLOCK);
+ 		$title = _("All tags added by you within Segue");
+		return new Heading($title, 2);
 	}
 	
 	/**
