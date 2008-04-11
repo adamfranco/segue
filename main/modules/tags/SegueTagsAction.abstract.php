@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.7 2008/04/11 17:03:07 achapin Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.8 2008/04/11 17:09:05 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/html.act.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/modules/view/html.act.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueTagsAction.abstract.php,v 1.7 2008/04/11 17:03:07 achapin Exp $
+ * @version $Id: SegueTagsAction.abstract.php,v 1.8 2008/04/11 17:09:05 adamfranco Exp $
  */
 abstract class SegueTagsAction
 	extends htmlAction
@@ -94,6 +94,8 @@ abstract class SegueTagsAction
 			
 		} else {
 			// Replace the title
+			$harmoni = Harmoni::instance();
+			$outputHandler = $harmoni->getOutputHandler();
 			$title = "\n\t\t<title>"._("Unauthorized")."</title>";
 			$outputHandler->setHead(
 				preg_replace("/<title>[^<]*<\/title>/", $title, $outputHandler->getHead()));			
