@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginChooser.js,v 1.4 2008/02/19 23:25:15 adamfranco Exp $
+ * @version $Id: PluginChooser.js,v 1.5 2008/04/11 20:07:41 adamfranco Exp $
  */
 
 PluginChooser.prototype = new CenteredPanel();
@@ -22,7 +22,7 @@ PluginChooser.superclass = CenteredPanel.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PluginChooser.js,v 1.4 2008/02/19 23:25:15 adamfranco Exp $
+ * @version $Id: PluginChooser.js,v 1.5 2008/04/11 20:07:41 adamfranco Exp $
  */
 function PluginChooser (callingElement, destUrl ) {
 	if ( arguments.length > 0 ) {
@@ -135,6 +135,20 @@ function PluginChooser (callingElement, destUrl ) {
 	}
 	
 	/**
+	 * Answer the URL for accessing the plugin list
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/11/08
+	 */
+	PluginChooser.prototype.getPluginListUrl = function () {
+		return Harmoni.quickUrl('plugin_manager', 'list_plugins', 
+// 						{'qualifier_id': this.qualifierId, 'function_id': 'edu.middlebury.authorization.view'}, 
+						null,
+						'plugin_manager');
+	}
+	
+	/**
 	 * Load a list of plugins and descriptions
 	 * 
 	 * @return void
@@ -143,10 +157,7 @@ function PluginChooser (callingElement, destUrl ) {
 	 */
 	PluginChooser.prototype.loadPlugins = function () {
 		var req = Harmoni.createRequest();
-		var url = Harmoni.quickUrl('plugin_manager', 'list_plugins', 
-// 						{'qualifier_id': this.qualifierId, 'function_id': 'edu.middlebury.authorization.view'}, 
-						null,
-						'plugin_manager');
+		var url = this.getPluginListUrl();
 // 		var newWindow = window.open(url);
 
 		if (req) {

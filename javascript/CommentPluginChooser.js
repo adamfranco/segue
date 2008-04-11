@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentPluginChooser.js,v 1.2 2007/07/13 18:17:30 adamfranco Exp $
+ * @version $Id: CommentPluginChooser.js,v 1.3 2008/04/11 20:07:41 adamfranco Exp $
  */
 
 CommentPluginChooser.prototype = new PluginChooser();
@@ -22,7 +22,7 @@ CommentPluginChooser.superclass = PluginChooser.prototype;
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentPluginChooser.js,v 1.2 2007/07/13 18:17:30 adamfranco Exp $
+ * @version $Id: CommentPluginChooser.js,v 1.3 2008/04/11 20:07:41 adamfranco Exp $
  */
 function CommentPluginChooser ( callingElement, destUrl, defaultTitle ) {
 	if ( arguments.length > 0 ) {
@@ -47,6 +47,21 @@ function CommentPluginChooser ( callingElement, destUrl, defaultTitle ) {
 		CommentPluginChooser.superclass.init.call(this, 
 								callingElement,
 								destUrl);
+	}
+	
+	
+	/**
+	 * Answer the URL for accessing the plugin list
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/11/08
+	 */
+	CommentPluginChooser.prototype.getPluginListUrl = function () {
+		return Harmoni.quickUrl('plugin_manager', 'list_comment_plugins', 
+// 						{'qualifier_id': this.qualifierId, 'function_id': 'edu.middlebury.authorization.view'}, 
+						null,
+						'plugin_manager');
 	}
 
 	/**

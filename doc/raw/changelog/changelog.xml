@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.270 2008/04/11 19:33:27 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.271 2008/04/11 20:07:41 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -87,6 +87,12 @@
 			Roles: The '?' info links for disabled roles now do not confuse group-caused
 			roles with globally set roles and now properly list the groups
 			causing the implicit role.
+		</fix>
+		<fix author='adam' date='2008-04-11' ref='' reftype='bug'>
+			Comments: Now limiting plugins to a list of appropriate plugin types.
+			Not allowing system-plugins like RSS and BreadCrumbs as these would
+			break things in their attempts to traverse up the site hierarchy from 
+			the comment.
 		</fix>
 	</version>
 	<version number="2.0-beta-18" date="2008-04-03">

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list_plugins.act.php,v 1.3 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: list_plugins.act.php,v 1.4 2008/04/11 20:07:41 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -18,7 +18,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list_plugins.act.php,v 1.3 2007/12/19 21:55:26 adamfranco Exp $
+ * @version $Id: list_plugins.act.php,v 1.4 2008/04/11 20:07:41 adamfranco Exp $
  */
 class list_pluginsAction 
 	extends XmlAction
@@ -45,12 +45,9 @@ class list_pluginsAction
 		$this->start();
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace('plugin_manager');
-		
-		
 		$pluginManager = Services::getService("Plugs");
-		$types = $pluginManager->getEnabledPlugins();
 		
-		foreach ($types as $type) {
+		foreach ($this->getTypes() as $type) {
 			print "\n\t<pluginType typeString=\"".$type->asString()."\">";
 			print "\n\t\t<domain>".$type->getDomain()."</domain>";
 			print "\n\t\t<authority>".$type->getAuthority()."</authority>";
@@ -62,6 +59,18 @@ class list_pluginsAction
 		
 		$harmoni->request->endNamespace();
 		$this->end();
+	}
+	
+	/**
+	 * Answer the types.
+	 * 
+	 * @return array
+	 * @access protected
+	 * @since 4/11/08
+	 */
+	protected function getTypes () {
+		$pluginManager = Services::getService("Plugs");
+		return $pluginManager->getEnabledPlugins();
 	}
 }
 
