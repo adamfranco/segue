@@ -49,8 +49,9 @@ class seguetagAction
 	 */
 	public function getResultTitle () {
 		$tag = RequestContext::value('tag');
-		return str_replace('%1', $tag,
+		$title = str_replace('%1', $tag,
 			_("items tagged with '%1' in all of Segue by everyone"));
+		return new Block($title, STANDARD_BLOCK);
 	}
 	
 	/**

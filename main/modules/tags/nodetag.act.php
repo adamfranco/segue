@@ -39,8 +39,15 @@ class nodetagAction
 	 */
 	public function getResultTitle () {
 		$tag = RequestContext::value('tag');
-		return str_replace('%1', $tag,
-			_("items tagged with '%1' for this node and its subnodes"));
+		$title = str_replace('%1', "<strong>".$tag."</strong>",
+			_("Content tagged with '%1' in %2 "));
+
+		$node = SiteDispatcher::getCurrentNode();
+ 		$title = str_replace('%2', 
+ 			$node->acceptVisitor(new BreadCrumbsVisitor($node)),
+ 			$title);
+ 				
+		return new Heading($title, 2);
 	}
 	
 	/**

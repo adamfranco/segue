@@ -39,8 +39,9 @@ class usersitetagAction
 	 */
 	public function getResultTitle () {
 		$tag = RequestContext::value('tag');
-		return str_replace('%1', $tag,
+		$title = str_replace('%1', $tag,
 			_("items tagged with '%1' on this site by you"));
+		return new Block($title, STANDARD_BLOCK);
 	}
 	
 	/**

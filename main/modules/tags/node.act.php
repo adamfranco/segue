@@ -39,8 +39,9 @@ class nodeAction
 	 */
 	public function getResultTitle () {
 		$tag = RequestContext::value('tag');
-		return str_replace('%1', $tag,
+		$title = str_replace('%1', $tag,
 			_("All tags for this node by everyone"));
+		return new Block($title, STANDARD_BLOCK);
 	}
 	
 	/**
