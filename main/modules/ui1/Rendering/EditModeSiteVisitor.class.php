@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2008/04/11 19:48:27 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.29 2008/04/11 20:43:33 achapin Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.28 2008/04/11 19:48:27 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.29 2008/04/11 20:43:33 achapin Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -156,6 +156,18 @@ END;
 		SiteDispatcher::forgetContext();
 		print "\n\t</div>";
 		return ob_get_clean();
+	}
+
+	/**
+	 * Answer true if the block tags should be shown.
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return boolean
+	 * @access public
+	 * @since 4/3/08
+	 */
+	function showTags ( $block ) {
+		return true;	
 	}
 	
 	/**

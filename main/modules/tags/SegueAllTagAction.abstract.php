@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAllTagAction.abstract.php,v 1.2 2008/04/10 19:18:03 achapin Exp $
+ * @version $Id: SegueAllTagAction.abstract.php,v 1.3 2008/04/11 20:43:33 achapin Exp $
  */ 
 require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
 require_once(dirname(__FILE__)."/SegueTagsAction.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/IteratorResultPrinter.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueAllTagAction.abstract.php,v 1.2 2008/04/10 19:18:03 achapin Exp $
+ * @version $Id: SegueAllTagAction.abstract.php,v 1.3 2008/04/11 20:43:33 achapin Exp $
  */
 abstract class SegueAllTagAction
 	extends SegueTagsAction
@@ -128,7 +128,7 @@ abstract class SegueAllTagAction
 				));
 		print "\n\t</p>";
 		
-		print "</p>";
+
 		print "\n\t<p><strong>"._('System').":</strong> ";
 		if ($item->getSystem() == ARBITRARY_URL)
 			print _("The Internet");

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueSingleTagAction.abstract.php,v 1.4 2008/04/11 15:14:23 adamfranco Exp $
+ * @version $Id: SegueSingleTagAction.abstract.php,v 1.5 2008/04/11 20:43:33 achapin Exp $
  */ 
 require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
 require_once(dirname(__FILE__)."/SegueTagsAction.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/IteratorResultPrinter.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueSingleTagAction.abstract.php,v 1.4 2008/04/11 15:14:23 adamfranco Exp $
+ * @version $Id: SegueSingleTagAction.abstract.php,v 1.5 2008/04/11 20:43:33 achapin Exp $
  */
 abstract class SegueSingleTagAction
 	extends SegueTagsAction
@@ -130,7 +130,7 @@ abstract class SegueSingleTagAction
 		print "\n\t<p>".$item->getDescription()."</p>";
 		
 		// Tags
-		print "\n\t<p style='text-align: justify;'>";
+	//	print "\n\t<p style='text-align: justify;'>";
 		print "\n\t<strong>"._('Tags').":</strong> ";
 		
 		$authZ = Services::getService("AuthZ");
@@ -150,9 +150,8 @@ abstract class SegueSingleTagAction
 						'font-size: 110%;',
 				));
 		}
-		print "\n\t</p>";
+	//	print "\n\t</p>";
 		
-		print "</p>";
 		print "\n\t<p><strong>"._('System').":</strong> ";
 		if ($item->getSystem() == ARBITRARY_URL)
 			print _("The Internet");

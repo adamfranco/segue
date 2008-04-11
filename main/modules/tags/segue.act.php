@@ -42,7 +42,7 @@ class segueAction
 		ob_start();
 		print "\n<select name='".RequestContext::name('num_tags')."'";
 		print " onchange=\"";
-		print "var url='".$harmoni->request->quickURL(null, null, array('num_tags' => 'XXXXX'))."'; ";
+		print "var url='".SiteDispatcher::quickURL(null, null, array('num_tags' => 'XXXXX'))."'; ";
 		print "window.location = url.replace(/XXXXX/, this.value).urlDecodeAmpersands(); ";
 		print "\">";
 		$options = array(50, 100, 200, 400, 600, 1000, 0);
