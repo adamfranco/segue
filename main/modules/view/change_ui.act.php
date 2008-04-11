@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_ui.act.php,v 1.5 2008/04/02 19:37:32 achapin Exp $
+ * @version $Id: change_ui.act.php,v 1.6 2008/04/11 21:22:41 achapin Exp $
  */ 
 
 require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
@@ -20,7 +20,7 @@ require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: change_ui.act.php,v 1.5 2008/04/02 19:37:32 achapin Exp $
+ * @version $Id: change_ui.act.php,v 1.6 2008/04/11 21:22:41 achapin Exp $
  */
 class change_uiAction
 	extends Action
@@ -55,14 +55,17 @@ class change_uiAction
 		$oldModule = $harmoni->request->getModuleFromUrl ($returnUrl);
 		$oldAction = $harmoni->request->getActionFromUrl ($returnUrl);
 		$newModule = RequestContext::value('user_interface');
-	
+		
 		if ($oldModule != $newModule && 
 			($oldModule != "view" && $oldModule != "portal")) {
 			if ($oldAction == "arrangeview" || $oldAction == "headerfooter") {
 				$returnUrl = str_replace($oldAction, "editview", $returnUrl);
-			} 
+			} else if ($oldModule == "tags") {
+				$returnUrl = str_replace($oldAction, "view", $returnUrl);
+			}
 			$returnUrl = str_replace($oldModule, $newModule, $returnUrl);			
 		}
+
 		
 		RequestContext::sendTo($returnUrl);	
 	}
