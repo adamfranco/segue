@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.7 2008/04/11 19:48:28 achapin Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.8 2008/04/11 21:38:37 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/TagCloudNavParentVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.7 2008/04/11 19:48:28 achapin Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.8 2008/04/11 21:38:37 achapin Exp $
  */
 class EduMiddleburyTagsPlugin 
 	extends SegueAjaxPlugin
@@ -96,6 +96,7 @@ class EduMiddleburyTagsPlugin
 		ob_start();
 				
 		if ($this->canView()) {
+
 			$items = array();
  			$director = SiteDispatcher::getSiteDirector();
  			$node = $director->getSiteComponentById($this->getId());
@@ -108,14 +109,16 @@ class EduMiddleburyTagsPlugin
  			$items = $parentNavNode->acceptVisitor($visitor);
  			
  			SiteDispatcher::passthroughContext();
+ 			
+ 			print "\n<div class='breadcrumbs' style='height: auto; margin-top: 1px; margin-bottom: 5px; border-bottom: 1px dotted; padding-bottom: 2px;'>";
+ 			print str_replace('%1', $parentNavNode->acceptVisitor(new BreadCrumbsVisitor($parentNavNode)),
+ 				_("Tags within: %1"));
+ 			print "</div>";
 
  			print TagAction::getReadOnlyTagCloudForItems($items, 'sitetag', null);				
  			SiteDispatcher::forgetContext();
  			
- 			print "\n<div class='breadcrumbs' style='height: auto; margin-top: 10px; margin-bottom: 5px;'>";
- 			print str_replace('%1', $parentNavNode->acceptVisitor(new BreadCrumbsVisitor($parentNavNode)),
- 				_("Tags within %1"));
- 			print "</div>";
+
  		}
 		
 		return ob_get_clean();
