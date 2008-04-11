@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDispatcher.class.php,v 1.5 2008/04/09 21:52:14 adamfranco Exp $
+ * @version $Id: SiteDispatcher.class.php,v 1.6 2008/04/11 17:11:46 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
@@ -24,7 +24,7 @@ require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/AssetSiteComponents
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SiteDispatcher.class.php,v 1.5 2008/04/09 21:52:14 adamfranco Exp $
+ * @version $Id: SiteDispatcher.class.php,v 1.6 2008/04/11 17:11:46 adamfranco Exp $
  */
 class SiteDispatcher {
 		
@@ -154,12 +154,18 @@ class SiteDispatcher {
 	 * @static
 	 */
 	public static function passthroughContext () {
-		$context = self::getContext();
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace(null);
-		foreach ($context as $key => $val)
-			$harmoni->request->passthrough($key);
+		$harmoni->request->set('node', self::getCurrentNodeId());
 		$harmoni->request->endNamespace();
+
+
+// 		$context = self::getContext();
+// 		$harmoni = Harmoni::instance();
+// 		$harmoni->request->startNamespace(null);
+// 		foreach ($context as $key => $val)
+// 			$harmoni->request->passthrough($key);
+// 		$harmoni->request->endNamespace();
 	}
 	
 	/**
@@ -171,12 +177,17 @@ class SiteDispatcher {
 	 * @static
 	 */
 	public static function forgetContext () {
-		$context = self::getContext();
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace(null);
-		foreach ($context as $key => $val)
-			$harmoni->request->forget($key);
+		$harmoni->request->forget('node');
 		$harmoni->request->endNamespace();
+		
+// 		$context = self::getContext();
+// 		$harmoni = Harmoni::instance();
+// 		$harmoni->request->startNamespace(null);
+// 		foreach ($context as $key => $val)
+// 			$harmoni->request->forget($key);
+// 		$harmoni->request->endNamespace();
 	}
 	
 	/**
