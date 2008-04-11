@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueSingleTagAction.abstract.php,v 1.3 2008/04/10 19:18:03 achapin Exp $
+ * @version $Id: SegueSingleTagAction.abstract.php,v 1.4 2008/04/11 15:14:23 adamfranco Exp $
  */ 
 require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
 require_once(dirname(__FILE__)."/SegueTagsAction.abstract.php");
@@ -21,7 +21,7 @@ require_once(POLYPHONY."/main/library/ResultPrinter/IteratorResultPrinter.class.
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueSingleTagAction.abstract.php,v 1.3 2008/04/10 19:18:03 achapin Exp $
+ * @version $Id: SegueSingleTagAction.abstract.php,v 1.4 2008/04/11 15:14:23 adamfranco Exp $
  */
 abstract class SegueSingleTagAction
 	extends SegueTagsAction
@@ -132,11 +132,24 @@ abstract class SegueSingleTagAction
 		// Tags
 		print "\n\t<p style='text-align: justify;'>";
 		print "\n\t<strong>"._('Tags').":</strong> ";
-		print TagAction::getTagCloudForItem($item, $viewAction,
+		
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), $item->getId()))
+		{
+			print TagAction::getTagCloudForItem($item, $viewAction,
 				array(	'font-size: 90%;',
 						'font-size: 100%;',
 						'font-size: 110%;',
 				));
+		} else {
+			print TagAction::getReadOnlyTagCloudForItem($item, $viewAction,
+				array(	'font-size: 90%;',
+						'font-size: 100%;',
+						'font-size: 110%;',
+				));
+		}
 		print "\n\t</p>";
 		
 		print "</p>";
@@ -155,8 +168,7 @@ abstract class SegueSingleTagAction
 		
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
-		if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.access"), $item->getId())
-			|| $authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $item->getId()))
+		if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $item->getId()))
 		{
 			return TRUE;
 		} else {
