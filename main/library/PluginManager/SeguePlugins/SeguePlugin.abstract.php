@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePlugin.abstract.php,v 1.3 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SeguePlugin.abstract.php,v 1.4 2008/04/11 20:40:34 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/SeguePluginsTemplate.abstract.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePlugin.abstract.php,v 1.3 2007/10/25 20:27:00 adamfranco Exp $
+ * @version $Id: SeguePlugin.abstract.php,v 1.4 2008/04/11 20:40:34 adamfranco Exp $
  */
 abstract class SeguePlugin
 	extends SeguePluginsTemplate
@@ -123,6 +123,21 @@ abstract class SeguePlugin
 	 */
 	final public function executeAndGetMarkup ( $showControls = false, $extended = false ) {
 		return parent::executeAndGetMarkup($showControls, $extended);
+	}
+	
+	/**
+	 * Set the update module and action. This method should not be used by plugins.
+	 * it is to be used only by plugin users to direct plugins to alternate updating
+	 * actions.
+	 * 
+	 * @param string $module
+	 * @param string $action
+	 * @return void
+	 * @access public
+	 * @since 11/8/07
+	 */
+	public function setUpdateAction ($module, $action) {
+		throw new UnimplementedException("setUpdateAction() is only used by AjaxPlugins.");
 	}
 	
 }

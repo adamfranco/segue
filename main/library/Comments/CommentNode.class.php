@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.17 2008/04/09 21:12:01 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.18 2008/04/11 20:40:34 adamfranco Exp $
  */ 
 
 /**
@@ -20,7 +20,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CommentNode.class.php,v 1.17 2008/04/09 21:12:01 adamfranco Exp $
+ * @version $Id: CommentNode.class.php,v 1.18 2008/04/11 20:40:34 adamfranco Exp $
  */
 class CommentNode {
 		
@@ -135,8 +135,10 @@ class CommentNode {
 			$owningComponent = $director->getSiteComponentFromAsset($owningAsset);
 			$plugin->setRelatedSiteComponent($owningComponent);
 			
-			
-			$plugin->setUpdateAction('comments', 'update_plugin_ajax');
+			try {
+				$plugin->setUpdateAction('comments', 'update_plugin_ajax');
+			} catch (UnimplementedException $e) {
+			}
 			
 			// We've just checked our view permission, so use true
 			$plugin->setCanViewFunction(create_function('$plugin', 'return true;'));

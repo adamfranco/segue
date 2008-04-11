@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.16 2008/03/31 21:02:11 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.17 2008/04/11 20:40:34 adamfranco Exp $
  */ 
 
 require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
@@ -30,7 +30,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SeguePluginsDriver.abstract.php,v 1.16 2008/03/31 21:02:11 adamfranco Exp $
+ * @version $Id: SeguePluginsDriver.abstract.php,v 1.17 2008/04/11 20:40:34 adamfranco Exp $
  */
 abstract class SeguePluginsDriver 
 	implements SeguePluginsDriverAPI, SeguePluginsAPI
@@ -1166,39 +1166,49 @@ abstract class SeguePluginsDriver
 	 * @since 1/13/06
 	 */
 	public function executeAndGetMarkup ( $showControls = false, $extended = false ) {
-		$this->setShowControls($showControls);
-		
-		$harmoni = Harmoni::instance();
-		$harmoni->request->startNamespace(
-			get_class($this).':'.$this->getId());
-		
-		if (isset($this->localModule) && $this->localModule && isset($this->localAction) && $this->localAction) 
-		{
-			$this->_baseUrl = $harmoni->request->mkURL($this->localModule, $this->localAction);
-		} else {
-			$this->_baseUrl = $harmoni->request->mkURL();
+		$obLevel = ob_get_level();
+		try {
+			
+			$this->setShowControls($showControls);
+			
+			$harmoni = Harmoni::instance();
+			$harmoni->request->startNamespace(
+				get_class($this).':'.$this->getId());
+			
+			if (isset($this->localModule) && $this->localModule && isset($this->localAction) && $this->localAction) 
+			{
+				$this->_baseUrl = $harmoni->request->mkURL($this->localModule, $this->localAction);
+			} else {
+				$this->_baseUrl = $harmoni->request->mkURL();
+			}
+			
+			$this->update($this->_getRequestData());
+			
+			if ($extended)
+				$markup = $this->getExtendedMarkup();
+			else
+				$markup = $this->getMarkup();
+			
+			// update the description if needed
+			$this->setShowControls(false);
+			$desc = $this->generateDescription();
+			$this->setShowControls($showControls);
+			if ($desc != $this->_asset->getDescription()) {
+				$this->_asset->updateDescription($desc);
+			}
+			
+			$this->_storeData();
+			
+			
+			$harmoni->request->endNamespace();
+		} catch (Exception $e) {
+			while (ob_get_level() > $obLevel)
+				ob_end_clean();
+			
+			HarmoniErrorHandler::logException($e);
+			$markup = _("An Error has occured in the plugin with the following message: ");
+			$markup .= $e->getMessage();
 		}
-		
-		$this->update($this->_getRequestData());
-		
-		if ($extended)
-			$markup = $this->getExtendedMarkup();
-		else
-			$markup = $this->getMarkup();
-		
-		// update the description if needed
-		$this->setShowControls(false);
-		$desc = $this->generateDescription();
-		$this->setShowControls($showControls);
-		if ($desc != $this->_asset->getDescription()) {
-			$this->_asset->updateDescription($desc);
-		}
-		
-		$this->_storeData();
-		
-		
-		$harmoni->request->endNamespace();
-		
 		return $markup;
 	}
 	
