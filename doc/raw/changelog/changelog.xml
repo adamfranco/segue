@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.268 2008/04/11 15:14:23 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.269 2008/04/11 15:48:05 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -74,9 +74,15 @@
 			SiteMap: Fixed HTML errors.
 		</fix>
 		<fix author='adam' date='2008-04-11' ref='1940237' reftype='bug'>
-			Tagging: Now cannot add tags in tag-viewing screens if no AZ to modify
-			the item.
+			Tagging: Now cannot add tags in tag-viewing screens or edit-mode
+			if no AZ to modify the item.
 		</fix>
+		<change author='adam' date='2008-04-11' ref='1940236' reftype='bug'>
+			Tagging: Added tagging controls to classic mode.
+		</change>
+		<change author='adam' date='2008-04-11' ref='1940239' reftype='bug'>
+			Tagging: Tag cloud now appears at the bottom of the content block.
+		</change>
 	</version>
 	<version number="2.0-beta-18" date="2008-04-03">
 		<releaseNotes>

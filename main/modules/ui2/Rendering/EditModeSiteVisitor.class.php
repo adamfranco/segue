@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.35 2008/04/10 04:16:58 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.36 2008/04/11 15:48:06 adamfranco Exp $
  */
 
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteVisitor.class.php,v 1.35 2008/04/10 04:16:58 achapin Exp $
+ * @version $Id: EditModeSiteVisitor.class.php,v 1.36 2008/04/11 15:48:06 adamfranco Exp $
  */
 class EditModeSiteVisitor
 	extends ViewModeSiteVisitor
@@ -196,10 +196,22 @@ END;
 		// Tags
 		print "\n\t<div style='text-align: left;'>";
 		SiteDispatcher::passthroughContext();
-		print TagAction::getTagCloudForItem(TaggedItem::forId($block->getQualifierId(), 'segue'), 'sitetag',
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$item = TaggedItem::forId($block->getQualifierId(), 'segue');
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), $block->getQualifierId()))
+		{
+			print TagAction::getTagCloudForItem($item, 'sitetag',
 				array(	'font-size: 90%;',
 						'font-size: 100%;',
 				));		
+		} else {
+			print TagAction::getTagCloud($item->getTags(), 'sitetag',
+				array(	'font-size: 90%;',
+						'font-size: 100%;',
+				));
+		}
 		SiteDispatcher::forgetContext();
 		print "\n\t</div>";
 		return ob_get_clean();
