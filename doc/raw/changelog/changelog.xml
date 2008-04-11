@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.273 2008/04/11 21:34:22 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.274 2008/04/11 21:50:56 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -110,6 +110,9 @@
 		<fix author='adam' date='2008-04-11' ref='' reftype='bug'>
 			Plugins: If exceptions occur durring plugin execution an error is displayed,
 			but the page doesn't halt.
+		</fix>
+		<fix author='adam' date='2008-04-11' ref='1940459' reftype='bug'>
+			Comments: Download plugin now works in comments.
 		</fix>
 	</version>
 	<version number="2.0-beta-18" date="2008-04-03">

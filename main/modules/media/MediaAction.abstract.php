@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.14 2008/03/26 18:23:17 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.15 2008/04/11 21:50:56 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/MediaAsset.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: MediaAction.abstract.php,v 1.14 2008/03/26 18:23:17 adamfranco Exp $
+ * @version $Id: MediaAction.abstract.php,v 1.15 2008/04/11 21:50:56 adamfranco Exp $
  */
 class MediaAction
 	extends XmlAction
@@ -178,11 +178,7 @@ class MediaAction
 				}
 			}
 			
-			if ($iterator->count())
-				return $iterator;
-			else {
-				return false;
-			}
+			return $iterator;
 		}
 	}
 	
