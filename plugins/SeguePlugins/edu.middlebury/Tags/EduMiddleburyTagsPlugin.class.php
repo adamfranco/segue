@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.8 2008/04/11 21:38:37 achapin Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.9 2008/04/11 21:51:37 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/TagCloudNavParentVisitor.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.8 2008/04/11 21:38:37 achapin Exp $
+ * @version $Id: EduMiddleburyTagsPlugin.class.php,v 1.9 2008/04/11 21:51:37 achapin Exp $
  */
 class EduMiddleburyTagsPlugin 
 	extends SegueAjaxPlugin
@@ -114,8 +114,9 @@ class EduMiddleburyTagsPlugin
  			print str_replace('%1', $parentNavNode->acceptVisitor(new BreadCrumbsVisitor($parentNavNode)),
  				_("Tags within: %1"));
  			print "</div>";
-
- 			print TagAction::getReadOnlyTagCloudForItems($items, 'sitetag', null);				
+			print "\n<div style='text-align: justify;'>";
+ 			print TagAction::getReadOnlyTagCloudForItems($items, 'sitetag', null);
+ 			print "</div>";
  			SiteDispatcher::forgetContext();
  			
 
