@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.12 2008/01/15 17:56:50 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.13 2008/04/11 19:33:29 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.ph
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: PopulateRolesVisitor.class.php,v 1.12 2008/01/15 17:56:50 adamfranco Exp $
+ * @version $Id: PopulateRolesVisitor.class.php,v 1.13 2008/04/11 19:33:29 adamfranco Exp $
  */
 class PopulateRolesVisitor
 	implements SiteVisitor
@@ -208,8 +208,13 @@ class PopulateRolesVisitor
 		// If there is an implicit role coming from above the site in the authorization
 		// hierarchy, make lesser roles disabled.
 		$roleMgr = SegueRoleManager::instance();
+		
+		$groupImplicitRole = $roleMgr->getGroupImplictRole($this->agentId, $siteComponent->getQualifierId(), true);
+		
 		$implicitRole = $roleMgr->getAgentsImplicitRole($this->agentId, $siteComponent->getQualifierId(), true);
-		if ($implicitRole->isGreaterThan($roleMgr->getRole('no_access'))) {
+		if ($implicitRole->isGreaterThan($roleMgr->getRole('no_access'))
+			&& $implicitRole->isGreaterThan($groupImplicitRole)) 
+		{
 			$this->siteImplicitRole = $implicitRole;
 			$message = _("You cannot remove the '%1' role for '%2' because it was set for all of Segue.");
 			$message = str_replace("%1", $implicitRole->getDisplayName(), $message);

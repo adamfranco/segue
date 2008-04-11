@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRole.abstract.php,v 1.5 2007/11/28 17:27:39 adamfranco Exp $
+ * @version $Id: SegueRole.abstract.php,v 1.6 2008/04/11 19:33:28 adamfranco Exp $
  */ 
 
 /**
@@ -18,7 +18,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: SegueRole.abstract.php,v 1.5 2007/11/28 17:27:39 adamfranco Exp $
+ * @version $Id: SegueRole.abstract.php,v 1.6 2008/04/11 19:33:28 adamfranco Exp $
  */
 abstract class SegueRole 
 	extends Magnitude
@@ -265,7 +265,14 @@ abstract class SegueRole
 		ArgumentValidator::validate($agentIds, ArrayValidatorRuleWithRule::getRule(
 			ExtendsValidatorRule::getRule("Id")));
 		
-		$this->agentsCausing = $agentIds;
+		$idStrings = array();
+		$this->agentsCausing = array();
+		foreach ($agentIds as $id) {
+			if (!in_array($id->getIdString(), $idStrings)) {
+				$this->agentsCausing[] = $id;
+				$idStrings[] = $id->getIdString();
+			}
+		}
 	}
 	
 	/**

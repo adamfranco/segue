@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.269 2008/04/11 15:48:05 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.270 2008/04/11 19:33:27 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -83,6 +83,11 @@
 		<change author='adam' date='2008-04-11' ref='1940239' reftype='bug'>
 			Tagging: Tag cloud now appears at the bottom of the content block.
 		</change>
+		<fix author='adam' date='2008-04-11' ref='1940261' reftype='bug'>
+			Roles: The '?' info links for disabled roles now do not confuse group-caused
+			roles with globally set roles and now properly list the groups
+			causing the implicit role.
+		</fix>
 	</version>
 	<version number="2.0-beta-18" date="2008-04-03">
 		<releaseNotes>
