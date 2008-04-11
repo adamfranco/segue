@@ -23,7 +23,84 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-18</h2>
+<h2>Version 2.0-beta-19</h2>
+<h3>2008-04-11</h3>
+<p>This release fixes a number of bugs and adds the ability to tag content.
+<br>
+<br>Notable user-facing changes: - Tagging system. - Minor speed improvements to the portal - Refined Migration UI. - Role-Setting now works. - Migration tools now work with more sites.
+<br>
+<br>Notable back-end changes: - New Harmoni_Db system allows for usage of prepared statements for improved database performance.
+<br>
+<br>Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820857&amp;group_id=&amp;atid=">
+        			#1820857</a> Tagging: Added tag cloud plugin for displaying the tags for any given node and its children. (<em>2008-04-07 - Alex Chapin, Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820853&amp;group_id=&amp;atid=">
+        			#1820853</a> Tagging: Added UI for tagging content blocks (i.e. nodes). (<em>2008-04-03 - Alex Chapin</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1814119&amp;group_id=&amp;atid=">
+        			#1814119</a> Harmoni_Db: New Harmoni_Db database access layer supports prepared statements. Harmoni_Db can be optionally used along side the existing database access layer to improve performance of some common page loads by 30% or more. (<em>2008-04-08 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1814119&amp;group_id=&amp;atid=">
+        			#1814119</a> Slots: SlotManager can now use Harmoni_Db if availible to speed loading of slots. (<em>2008-04-08 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Fixed RSS flow organizer visitor to call visitor only if child is object. (<em>2008-04-07 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1938743&amp;group_id=&amp;atid=">
+        			#1938743</a> Migration: Sites that contain the old 'archive posts by week' setting now import without errors. (<em>2008-04-09 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Migration: Refined site migration UI styles. (<em>2008-04-09 - Alex Chapin</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1934801&amp;group_id=&amp;atid=">
+        			#1934801</a> Request: Refactored how context (current node id or site id) parameters are passed around. (<em>2008-04-09 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Breadcrumbs: Now link to the view/html action if printed outside of one of the main UI modules (view, ui1, ui2), such as in the versioning or tagging modules. (<em>2008-04-10 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Breadcrumbs: now wraps breadcrumbs links in span tags with 'white-space: nowrap;' to enable more legible output in narrow columns (with each level on its own row). (<em>2008-04-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Request: Now doesn't keep 'site' parameter in urls when using the /sites/sitename form of the urls. (<em>2008-04-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Portal: now doesn't crash when an admin or with no valid 'personal-site shortname' views the portal. (<em>2008-04-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1933715&amp;group_id=&amp;atid=">
+        			#1933715</a> Portal: Slots for deleted sites cached in 'All Visible' list now don't crash portal. (<em>2008-04-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> SiteDisplay: New algorithm for determining if parts of the site are in a 'header' or 'footer' role allows for more variation in the arrangement of 'headers' and 'footers', not requiring there to be only one-cell of each. (<em>2008-04-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1938840&amp;group_id=&amp;atid=">
+        			#1938840</a> SiteMap: Fixed HTML errors. (<em>2008-04-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940237&amp;group_id=&amp;atid=">
+        			#1940237</a> Tagging: Now cannot add tags in tag-viewing screens or edit-mode if no AZ to modify the item. (<em>2008-04-11 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940236&amp;group_id=&amp;atid=">
+        			#1940236</a> Tagging: Added tagging controls to classic mode. (<em>2008-04-11 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940239&amp;group_id=&amp;atid=">
+        			#1940239</a> Tagging: Tag cloud now appears at the bottom of the content block. (<em>2008-04-11 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940261&amp;group_id=&amp;atid=">
+        			#1940261</a> Roles: The '?' info links for disabled roles now do not confuse group-caused roles with globally set roles and now properly list the groups causing the implicit role. (<em>2008-04-11 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Comments: Now limiting plugins to a list of appropriate plugin types. Not allowing system-plugins like RSS and BreadCrumbs as these would break things in their attempts to traverse up the site hierarchy from the comment. (<em>2008-04-11 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Plugins: If exceptions occur durring plugin execution an error is displayed, but the page doesn't halt. (<em>2008-04-11 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940459&amp;group_id=&amp;atid=">
+        			#1940459</a> Comments: Download plugin now works in comments. (<em>2008-04-11 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-18</h2>
 <h3>2008-04-03</h3>
 <p>This release fixes a number of bugs and adds a new Portal display.
 <br>

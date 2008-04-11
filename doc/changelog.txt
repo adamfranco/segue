@@ -4,6 +4,131 @@ Name: Segue Change Log
 
 
 
+v. 2.0-beta-19 (2008-04-11)
+----------------------------------------------------
+This release fixes a number of bugs and adds the ability to tag content.
+
+Notable user-facing changes: - Tagging system. - Minor speed improvements to the
+portal - Refined Migration UI. - Role-Setting now works. - Migration tools now work
+with more sites.
+
+Notable back-end changes: - New Harmoni_Db system allows for usage of prepared
+statements for improved database performance.
+
+Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
+		
+		
+	* New feature: #1820857 
+		Tagging: Added tag cloud plugin for displaying the tags for any given node
+		and its children.
+		(2008-04-07 - Alex Chapin, Adam Franco)
+		
+	* New feature: #1820853 
+		Tagging: Added UI for tagging content blocks (i.e. nodes).
+		(2008-04-03 - Alex Chapin)
+		
+	* New feature: #1814119 
+		Harmoni_Db: New Harmoni_Db database access layer supports prepared
+		statements. Harmoni_Db can be optionally used along side the existing
+		database access layer to improve performance of some common page loads by
+		30% or more.
+		(2008-04-08 - Adam Franco)
+		
+	* New feature: #1814119 
+		Slots: SlotManager can now use Harmoni_Db if availible to speed loading of
+		slots. 
+		(2008-04-08 - Adam Franco)
+		
+	* Bug Fix: # 
+		Fixed RSS flow organizer visitor to call visitor only if child is object.
+		(2008-04-07 - Alex Chapin)
+		
+	* Bug Fix: #1938743 
+		Migration: Sites that contain the old 'archive posts by week' setting now
+		import without errors.
+		(2008-04-09 - Adam Franco)
+		(reported by Bryan Carson of Middlebury College)
+		
+	* Change: # 
+		Migration: Refined site migration UI styles.
+		(2008-04-09 - Alex Chapin)
+		
+	* Change: #1934801 
+		Request: Refactored how context (current node id or site id) parameters are
+		passed around.
+		(2008-04-09 - Adam Franco)
+		
+	* Bug Fix: # 
+		Breadcrumbs: Now link to the view/html action if printed outside of one of
+		the main UI modules (view, ui1, ui2), such as in the versioning or tagging
+		modules. 
+		(2008-04-10 - Adam Franco)
+		
+	* Change: 
+		Breadcrumbs: now wraps breadcrumbs links in span tags with 'white-space:
+		nowrap;' to enable more legible output in narrow columns (with each level on
+		its own row).
+		(2008-04-10 - Adam Franco)
+		
+	* Bug Fix: # 
+		Request: Now doesn't keep 'site' parameter in urls when using the
+		/sites/sitename form of the urls.
+		(2008-04-10 - Adam Franco)
+		
+	* Bug Fix: # 
+		Portal: now doesn't crash when an admin or with no valid 'personal-site
+		shortname' views the portal.
+		(2008-04-10 - Adam Franco)
+		
+	* Bug Fix: #1933715 
+		Portal: Slots for deleted sites cached in 'All Visible' list now don't crash
+		portal. 
+		(2008-04-10 - Adam Franco)
+		
+	* Bug Fix: # 
+		SiteDisplay: New algorithm for determining if parts of the site are in a
+		'header' or 'footer' role allows for more variation in the arrangement of
+		'headers' and 'footers', not requiring there to be only one-cell of each.
+		(2008-04-10 - Adam Franco)
+		
+	* Bug Fix: #1938840 
+		SiteMap: Fixed HTML errors.
+		(2008-04-10 - Adam Franco)
+		
+	* Bug Fix: #1940237 
+		Tagging: Now cannot add tags in tag-viewing screens or edit-mode if no AZ to
+		modify the item.
+		(2008-04-11 - Adam Franco)
+		
+	* Change: #1940236 
+		Tagging: Added tagging controls to classic mode.
+		(2008-04-11 - Adam Franco)
+		
+	* Change: #1940239 
+		Tagging: Tag cloud now appears at the bottom of the content block.
+		(2008-04-11 - Adam Franco)
+		
+	* Bug Fix: #1940261 
+		Roles: The '?' info links for disabled roles now do not confuse group-caused
+		roles with globally set roles and now properly list the groups causing the
+		implicit role.
+		(2008-04-11 - Adam Franco)
+		
+	* Bug Fix: # 
+		Comments: Now limiting plugins to a list of appropriate plugin types. Not
+		allowing system-plugins like RSS and BreadCrumbs as these would break things
+		in their attempts to traverse up the site hierarchy from the comment.
+		(2008-04-11 - Adam Franco)
+		
+	* Bug Fix: # 
+		Plugins: If exceptions occur durring plugin execution an error is displayed,
+		but the page doesn't halt.
+		(2008-04-11 - Adam Franco)
+		
+	* Bug Fix: #1940459 
+		Comments: Download plugin now works in comments.
+		(2008-04-11 - Adam Franco)
+	
 v. 2.0-beta-18 (2008-04-03)
 ----------------------------------------------------
 This release fixes a number of bugs and adds a new Portal display.

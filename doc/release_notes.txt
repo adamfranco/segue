@@ -3,6 +3,20 @@ Name: Segue Release Notes
 (See the Segue change log for more details)
 
 
+v. 2.0-beta-19 (2008-04-11)
+----------------------------------------------------
+This release fixes a number of bugs and adds the ability to tag content.
+
+Notable user-facing changes: - Tagging system. - Minor speed improvements to the
+portal - Refined Migration UI. - Role-Setting now works. - Migration tools now work
+with more sites.
+
+Notable back-end changes: - New Harmoni_Db system allows for usage of prepared
+statements for improved database performance.
+
+Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
+
+
 v. 2.0-beta-18 (2008-04-03)
 ----------------------------------------------------
 This release fixes a number of bugs and adds a new Portal display.
