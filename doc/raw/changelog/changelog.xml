@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.275 2008/04/13 18:43:01 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.276 2008/04/13 18:48:45 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -14,6 +14,9 @@
 		<releaseNotes>
 		
 		</releaseNotes>
+		<fix author='adam' date='2008-04-13' ref='1941132' reftype='bug'>
+			Media Libary: File-browser now works from within FCKEditor dialog.
+		</fix>
 		<fix author='adam' date='2008-04-13' ref='1941460' reftype='bug'>
 			Classic-Mode: 'Edit Site Settings' wizard now doesn't crash.
 		</fix>
