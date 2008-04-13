@@ -6,11 +6,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.8 2007/11/30 20:23:20 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.9 2008/04/13 18:43:01 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__)."/SegueClassicWizard.abstract.php");
 require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/HasHeaderFooterSiteVisitor.class.php");
 
 /**
  * This action provides a wizard for editing a navigation node
@@ -21,7 +22,7 @@ require_once(dirname(__FILE__)."/Rendering/EditModeSiteVisitor.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: editSite.act.php,v 1.8 2007/11/30 20:23:20 adamfranco Exp $
+ * @version $Id: editSite.act.php,v 1.9 2008/04/13 18:43:01 adamfranco Exp $
  */
 class editSiteAction
 	extends SegueClassicWizard
@@ -117,20 +118,10 @@ class editSiteAction
 		// Create the step text
 		ob_start();
 		
-		try {
-			$visitor = new EditModeSiteVisitor;
-			try {
-				$headerId = $visitor->getHeaderId($component);
-			} 
-			// If we don't have a header, see if we have an empty header cell.
-			catch (Exception $e) {
-				$headerCellId = $visitor->getHeaderCellId($component);
-			}
-			
-			
+		if ($component->acceptVisitor(new HasHeaderFooterSiteVisitor)) {
 			$harmoni = Harmoni::instance();
 			print "<iframe src='".$harmoni->request->quickURL('ui1', 'editHeader')."' height='800px' width='100%' />";
-		} catch (Exception $e) {
+		} else {
 			print _("This site is configured in a way that does not have a site header. A header can be added using the <em>New Mode</em> user interface.");
 		}
 		

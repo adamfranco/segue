@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IsHeaderFooterSiteVisitor.class.php,v 1.1 2008/04/10 20:49:02 adamfranco Exp $
+ * @version $Id: IsHeaderFooterSiteVisitor.class.php,v 1.2 2008/04/13 18:43:01 adamfranco Exp $
  */ 
 
 require_once(dirname(__FILE__).'/HasMenuBelowSiteVisitor.class.php');
@@ -24,7 +24,7 @@ require_once(dirname(__FILE__).'/HasMenuBelowSiteVisitor.class.php');
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: IsHeaderFooterSiteVisitor.class.php,v 1.1 2008/04/10 20:49:02 adamfranco Exp $
+ * @version $Id: IsHeaderFooterSiteVisitor.class.php,v 1.2 2008/04/13 18:43:01 adamfranco Exp $
  */
 class IsHeaderFooterSiteVisitor
 	implements SiteVisitor
@@ -51,7 +51,7 @@ class IsHeaderFooterSiteVisitor
 	 */
 	private function isChildOfSiteNavOrg (SiteComponent $siteComponent) {
 		if (!isset($this->siteNavOrgId)) {
-			$siteNav = $siteComponent->getDirector()->getRootSiteComponent($siteComponent);
+			$siteNav = $siteComponent->getDirector()->getRootSiteComponent($siteComponent->getId());
 			$this->siteNavOrgId = $siteNav->getOrganizer()->getId();
 		}
 		if ($this->siteNavOrgId == $siteComponent->getParentComponent()->getId())
