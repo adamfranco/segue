@@ -4,6 +4,19 @@ Name: Segue Change Log
 
 
 
+v. 2.0-beta-19.1 (2008-04-13)
+----------------------------------------------------
+
+		
+		
+	* Bug Fix: #1941132 
+		Media Libary: File-browser now works from within FCKEditor dialog.
+		(2008-04-13 - Adam Franco)
+		
+	* Bug Fix: #1941460 
+		Classic-Mode: 'Edit Site Settings' wizard now doesn't crash.
+		(2008-04-13 - Adam Franco)
+	
 v. 2.0-beta-19 (2008-04-11)
 ----------------------------------------------------
 This release fixes a number of bugs and adds the ability to tag content.
