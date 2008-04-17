@@ -463,6 +463,7 @@ elementFormDefault="qualified">
 			</xs:choice>
 			<xs:element ref="comments"/>
 			<xs:element ref="attachedMedia"/>
+			<xs:element ref="tags"  minOccurs="0"/>
 		</xs:sequence>
 		
 		<xs:attribute ref="id" use="required"/>
@@ -671,5 +672,25 @@ elementFormDefault="qualified">
 		</xs:sequence>
 	</xs:complexType>
 </xs:element>
+
+
+<!-- Tags -->
+<xs:element name="tags">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="tag" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="tag">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9_]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:element>
+
+
 
 </xs:schema>
