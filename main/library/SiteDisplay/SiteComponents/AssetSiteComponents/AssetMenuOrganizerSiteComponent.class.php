@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.9 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.10 2008/04/17 19:39:21 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/MenuOrganizerSiteComponent.abstract.php");
@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../AbstractSiteComponents/MenuOrganizerSiteComp
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.9 2007/11/09 21:53:37 adamfranco Exp $
+ * @version $Id: AssetMenuOrganizerSiteComponent.class.php,v 1.10 2008/04/17 19:39:21 achapin Exp $
  */
 class AssetMenuOrganizerSiteComponent 
 	extends AssetFlowOrganizerSiteComponent
@@ -62,7 +62,7 @@ class AssetMenuOrganizerSiteComponent
 			return $assetId->getIdString()."----".$this->_element->getAttribute('target_id');
 		}
 
-		throwError( new Error("No target_id available ".$this->_element->toString(true), "XmlSiteComponents"));		
+		throw new Exception("No target_id available in ".$this->_element->ownerDocument->saveXML($this->_element));		
 	}
 
 	/**
@@ -74,7 +74,8 @@ class AssetMenuOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateTargetId ($id) {
-		preg_match('/^(.+----)?(.+_cell:[0-9]+)$/i', $id, $matches);
+		if(!preg_match('/^(.+----)?(.+_cell:[0-9]+)$/i', $id, $matches))
+			throw new Exception("Invalid Target Id, '$id'.");
 		$this->_element->setAttribute('target_id', $matches[2]);
 		$this->_saveXml();
 	}

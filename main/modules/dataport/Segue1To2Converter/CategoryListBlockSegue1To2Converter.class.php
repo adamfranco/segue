@@ -6,10 +6,10 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CategoryListBlockSegue1To2Converter.class.php,v 1.1 2008/03/19 17:02:03 adamfranco Exp $
+ * @version $Id: CategoryListBlockSegue1To2Converter.class.php,v 1.2 2008/04/17 19:39:21 achapin Exp $
  */ 
 
-require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
+require_once(dirname(__FILE__)."/BlockSegue1To2Converter.abstract.php");
 
 /**
  * A converter for text blocks
@@ -20,11 +20,22 @@ require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: CategoryListBlockSegue1To2Converter.class.php,v 1.1 2008/03/19 17:02:03 adamfranco Exp $
+ * @version $Id: CategoryListBlockSegue1To2Converter.class.php,v 1.2 2008/04/17 19:39:21 achapin Exp $
  */
 class CategoryListBlockSegue1To2Converter
-	extends TextBlockSegue1To2Converter
+	extends BlockSegue1To2Converter
 {
+	
+	/**
+	 * Answer a new Type DOMElement for this plugin
+	 * 
+	 * @return DOMElement
+	 * @access protected
+	 * @since 2/12/08
+	 */
+	protected function createMyPluginType () {
+		return $this->createPluginType('Tags');
+	}
 	
 	/**
 	 * Answer a description element for this Block.
@@ -35,7 +46,7 @@ class CategoryListBlockSegue1To2Converter
 	 * @since 3/19/08
 	 */
 	protected function getDescriptionElement (DOMElement $mediaElement) {
-		return $this->createCDATAElement('description', '');
+		return $this->createCDATAElement('description', 'this is a tag cloud');
 	}
 	
 	/**
@@ -46,17 +57,25 @@ class CategoryListBlockSegue1To2Converter
 	 * @since 3/19/08
 	 */
 	protected function getContentElement (DOMElement $mediaElement) {		
-		$currentVersion = $this->doc->createElement('currentVersion');
-		$version = $currentVersion->appendChild($this->doc->createElement('version'));
+		$currentContent = $this->doc->createElement('currentContent');
+		$content = $currentContent->appendChild($this->createCDATAElement('content', ''));
+		$currentContent->appendChild($this->createCDATAElement('rawDescription',  ''));
 		
-		ob_start();
-		print _("The Category List is not yet supported in Segue 2. This content block is just a placeholder and can be deleted. Add a new Category List when it becomes available.");
 		
-		$version->appendChild($this->createCDATAElement('content', 
-		ob_get_clean()));
-		$version->appendChild($this->doc->createElement('abstractLength', 0));
 		
-		return $currentVersion;
+		return $currentContent;
+	}
+	
+	/**
+	 * Answer a element that represents the history for this Block, null if not
+	 * supported
+	 * 
+	 * @return object DOMElement
+	 * @access protected
+	 * @since 2/12/08
+	 */
+	protected function getHistoryElement (DOMElement $mediaElement) {
+		// @todo Fill history support
 	}
 	
 }

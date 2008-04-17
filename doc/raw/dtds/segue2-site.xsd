@@ -117,7 +117,13 @@ elementFormDefault="qualified">
 		</xs:restriction>
 	</xs:simpleType>
 </xs:attribute>
-<xs:attribute name="target_id" type="xs:string"/>
+<xs:attribute name="target_id">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
 
 <xs:attribute name="showDisplayNames">
 	<xs:simpleType>

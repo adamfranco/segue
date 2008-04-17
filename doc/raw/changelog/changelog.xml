@@ -5,11 +5,20 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.276 2008/04/13 18:48:45 adamfranco Exp $
+ @version $Id: changelog.xml,v 1.277 2008/04/17 19:39:17 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-20" date="the future">
+		<releaseNotes>
+		
+		</releaseNotes>
+		<fix author='adam' date='2008-04-13'>
+			Migration: nav block now no longer catches exceptions from below and so
+			plugin errors now halt import.
+		</fix>
+	</version>
 	<version number="2.0-beta-19.1" date="2008-04-13">
 		<releaseNotes>
 		

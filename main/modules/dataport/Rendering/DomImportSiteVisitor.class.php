@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.17 2008/04/01 13:36:30 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.18 2008/04/17 19:39:21 achapin Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.17 2008/04/01 13:36:30 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.18 2008/04/17 19:39:21 achapin Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -324,13 +324,14 @@ class DomImportSiteVisitor
 		
 		try {
 			$nestedMenuElement = $this->getSingleChild('MenuOrganizer', $element);
-			if (!is_null($nestedMenuElement)) {
-				$menu = $this->createComponent($nestedMenuElement, $siteComponent);
-				$siteComponent->makeNested($menu);
-				$this->importComponent($nestedMenuElement, $menu);
-			}
 		} catch (MissingNodeException $e) {
 		}
+		if (isset($nestedMenuElement)) {
+			$menu = $this->createComponent($nestedMenuElement, $siteComponent);
+			$siteComponent->makeNested($menu);
+			$this->importComponent($nestedMenuElement, $menu);
+		}
+		
 		$this->setAssetAuthorship($siteComponent->getAsset(), $element);
 		$this->setAssetDates($siteComponent->getAsset(), $element);
 		
@@ -1222,7 +1223,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.17 2008/04/01 13:36:30 adamfranco Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.18 2008/04/17 19:39:21 achapin Exp $
  */
 class MissingNodeException
 	extends Exception
