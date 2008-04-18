@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.279 2008/04/18 18:14:39 achapin Exp $
+ @version $Id: changelog.xml,v 1.280 2008/04/18 20:39:15 achapin Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -15,7 +15,7 @@
 		
 		</releaseNotes>
 		<new author='alex' date='2008-04-18' ref='1940489' reftype='fr'>
-			Migration: have added support for exporting and importing tags in Segue v2 sites
+			Migration: have added support for migrating tags in Segue v2 sites
 		</new>
 		<fix author='adam' date='2008-04-13'>
 			Migration: nav block now no longer catches exceptions from below and so

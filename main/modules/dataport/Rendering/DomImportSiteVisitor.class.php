@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.19 2008/04/18 18:14:40 achapin Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.20 2008/04/18 20:39:15 achapin Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.19 2008/04/18 18:14:40 achapin Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.20 2008/04/18 20:39:15 achapin Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -970,12 +970,8 @@ class DomImportSiteVisitor
 		foreach ($tagElements as $tagElement) {			
 			$tag = new Tag ($tagElement->nodeValue);
 
-			if ($tagElement->hasAttribute('create_date')) {
-				$date = DateAndTime::fromString($tagElement->getAttribute('create_date'));
-			}					
-			if ($tagElement->hasAttribute('agent_id')) {
-				$agentId = $this->getAgentId($tagElement->getAttribute('agent_id'));
-			}
+			$date = DateAndTime::fromString($tagElement->getAttribute('create_date'));
+			$agentId = $this->getAgentId($tagElement->getAttribute('agent_id'));
 					
 			$tag->tagItemForAgent($item, $agentId, $date);	
 		}
@@ -1254,7 +1250,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.19 2008/04/18 18:14:40 achapin Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.20 2008/04/18 20:39:15 achapin Exp $
  */
 class MissingNodeException
 	extends Exception

@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.9 2008/04/18 15:01:20 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.10 2008/04/18 20:39:15 achapin Exp $
  */ 
 
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.9 2008/04/18 15:01:20 adamfranco Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.10 2008/04/18 20:39:15 achapin Exp $
  */
 class DomExportSiteVisitor
 	implements SiteVisitor
@@ -376,6 +376,7 @@ class DomExportSiteVisitor
 		$element = $this->doc->createElement('tag', $tagInfo->tag->getValue());
 		
 		$element->setAttribute('agent_id', $tagInfo->agentId->getIdString());
+		$this->recordAgent($tagInfo->agentId);
 		$element->setAttribute('create_date', $tagInfo->timestamp->asString());
 
 		return $element;
