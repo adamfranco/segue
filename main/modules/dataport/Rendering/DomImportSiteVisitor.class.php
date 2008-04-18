@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.18 2008/04/17 19:39:21 achapin Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.19 2008/04/18 18:14:40 achapin Exp $
  */ 
 
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -26,7 +26,7 @@ require_once(dirname(__FILE__)."/DomAgentImporter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.18 2008/04/17 19:39:21 achapin Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.19 2008/04/18 18:14:40 achapin Exp $
  */
 class DomImportSiteVisitor
 	implements SiteVisitor
@@ -287,7 +287,7 @@ class DomImportSiteVisitor
 		$this->applyPluginContent($siteComponent->getAsset(), $element);
 		if ($this->importComments)
 			$this->applyComments($siteComponent, $element);
-		
+		$this->applyTags($siteComponent, $element);
 		$this->setAssetAuthorship($siteComponent->getAsset(), $element);
 		$this->setAssetDates($siteComponent->getAsset(), $element);
 		
@@ -950,6 +950,37 @@ class DomImportSiteVisitor
 			$this->applyCommentData($reply, $replyElement);
 		}
 	}
+
+	/**
+	 * Apply tags to a block
+	 * 
+	 * @param BlockSiteComponent $siteComponent
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 4/18/08
+	 */
+	protected function applyTags (BlockSiteComponent $siteComponent, DOMElement $element) {
+		//$asset = $siteComponent->getAsset();
+		$tagManager = Services::getService("Tagging");
+		$idManager = Services::getService("Id");
+		$item = HarmoniNodeTaggedItem::forId($siteComponent->getId(), 'segue');
+		$tagElements = $this->xpath->query('./tags/tag', $element);
+		
+		foreach ($tagElements as $tagElement) {			
+			$tag = new Tag ($tagElement->nodeValue);
+
+			if ($tagElement->hasAttribute('create_date')) {
+				$date = DateAndTime::fromString($tagElement->getAttribute('create_date'));
+			}					
+			if ($tagElement->hasAttribute('agent_id')) {
+				$agentId = $this->getAgentId($tagElement->getAttribute('agent_id'));
+			}
+					
+			$tag->tagItemForAgent($item, $agentId, $date);	
+		}
+	}
+	
 	
 	/**
 	 * Answer an Agent Id in the receiving system that corresponds to an id in the
@@ -1223,7 +1254,7 @@ class DomImportSiteVisitor
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomImportSiteVisitor.class.php,v 1.18 2008/04/17 19:39:21 achapin Exp $
+ * @version $Id: DomImportSiteVisitor.class.php,v 1.19 2008/04/18 18:14:40 achapin Exp $
  */
 class MissingNodeException
 	extends Exception
