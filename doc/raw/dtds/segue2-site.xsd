@@ -684,13 +684,21 @@ elementFormDefault="qualified">
 </xs:element>
 
 <xs:element name="tag">
-	<xs:simpleType>
-		<xs:restriction base="xs:string">
-			<xs:pattern value="[a-zA-Z0-9_]*"/>
-		</xs:restriction>
-	</xs:simpleType>
+	<xs:complexType>
+		<xs:simpleContent>
+			<xs:extension base="tag_content">
+				<xs:attribute ref="agent_id" use="required"/>
+				<xs:attribute ref="create_date" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 </xs:element>
 
+<xs:simpleType name='tag_content'>
+	<xs:restriction base="xs:string">
+		<xs:pattern value="[a-zA-Z0-9_]+"/>
+	</xs:restriction>
+</xs:simpleType>
 
 
 </xs:schema>

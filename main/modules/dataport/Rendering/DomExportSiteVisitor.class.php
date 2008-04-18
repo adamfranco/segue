@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.8 2008/04/17 22:32:18 achapin Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.9 2008/04/18 15:01:20 adamfranco Exp $
  */ 
 
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
@@ -22,7 +22,7 @@ require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: DomExportSiteVisitor.class.php,v 1.8 2008/04/17 22:32:18 achapin Exp $
+ * @version $Id: DomExportSiteVisitor.class.php,v 1.9 2008/04/18 15:01:20 adamfranco Exp $
  */
 class DomExportSiteVisitor
 	implements SiteVisitor
@@ -357,27 +357,26 @@ class DomExportSiteVisitor
 			$tags = array();
 			$tagManager = Services::getService("Tagging");
 			$item = HarmoniNodeTaggedItem::forId($siteComponent->getId(), 'segue');
-			$tags = $tagManager->getTagsForItems($item);
-			while($tags->hasNext())
-				$element->appendChild($this->getTag($tags->next()));
+			$tagInfoIterator = $tagManager->getTagInfoForItem($item);
+			while($tagInfoIterator->hasNext())
+				$element->appendChild($this->getTagApplication($tagInfoIterator->next()));
 		}
 		return $element;
 	}
 
 	/**
-	 * Answer an element that represents a single tag for a block.
+	 * Answer an element that represents a single tag application for a block.
 	 * 
-	 * @param object Tag
+	 * @param object TagInfo $tagInfo
 	 * @return DOMElement
 	 * @access protected
 	 * @since 1/17/08
 	 */
-	protected function getTag (Tag $tag) {
-		$element = $this->doc->createElement('tag');
-		$element->setAttribute('value', $tag->getValue());
+	protected function getTagApplication (TagInfo $tagInfo) {
+		$element = $this->doc->createElement('tag', $tagInfo->tag->getValue());
 		
-// 		$element->appendChild('create_agent', $tags->get???());
-// 		$element->appendChild('create_date', $tags->get???());
+		$element->setAttribute('agent_id', $tagInfo->agentId->getIdString());
+		$element->setAttribute('create_date', $tagInfo->timestamp->asString());
 
 		return $element;
 	}

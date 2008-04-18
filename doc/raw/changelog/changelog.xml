@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.277 2008/04/17 19:39:17 achapin Exp $
+ @version $Id: changelog.xml,v 1.278 2008/04/18 15:01:19 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -18,6 +18,9 @@
 			Migration: nav block now no longer catches exceptions from below and so
 			plugin errors now halt import.
 		</fix>
+		<change author='adam' date='2008-04-18' ref='1940489' reftype='fr'>
+			Migration: SiteExport schema now allows for tags in export.
+		</change>
 	</version>
 	<version number="2.0-beta-19.1" date="2008-04-13">
 		<releaseNotes>
