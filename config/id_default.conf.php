@@ -10,12 +10,12 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: id_default.conf.php,v 1.4 2007/09/04 18:00:42 adamfranco Exp $
+ * @version $Id: id_default.conf.php,v 1.5 2008/04/21 18:07:35 adamfranco Exp $
  */
  
  	$configuration = new ConfigurationProperties;
 	$configuration->addProperty('database_index', $dbID);
 	$configuration->addProperty('database_name', $dbName);
-// 	$configuration->addProperty('id_prefix', $arg0 = 'dev_id-');
-// 	unset($arg0);
+// 	$configuration->addProperty('id_prefix', 'dev_id-');
+	$configuration->addProperty('harmoni_db_name', 'segue_db');
 	Services::startManagerAsService("IdManager", $context, $configuration);
