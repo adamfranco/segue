@@ -5,7 +5,7 @@
  @copyright Copyright &copy; 2005, Middlebury College
  @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  
- @version $Id: changelog.xml,v 1.280 2008/04/18 20:39:15 achapin Exp $
+ @version $Id: changelog.xml,v 1.281 2008/04/21 17:44:28 adamfranco Exp $
  -->
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
@@ -24,6 +24,9 @@
 		<change author='adam' date='2008-04-18' ref='1940489' reftype='fr'>
 			Migration: SiteExport schema now allows for tags in export.
 		</change>
+		<fix author='adam' date='2008-04-21'>
+			Updates: Updates are now sorted.
+		</fix>
 	</version>
 	<version number="2.0-beta-19.1" date="2008-04-13">
 		<releaseNotes>

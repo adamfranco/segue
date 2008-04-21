@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.1 2007/12/06 16:46:55 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.2 2008/04/21 17:44:27 adamfranco Exp $
  */ 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 
@@ -19,7 +19,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: list.act.php,v 1.1 2007/12/06 16:46:55 adamfranco Exp $
+ * @version $Id: list.act.php,v 1.2 2008/04/21 17:44:27 adamfranco Exp $
  */
 class listAction
 	extends MainWindowAction
@@ -117,6 +117,8 @@ class listAction
 			}
 		}
 		closedir($handle); 
+		
+		sort($this->updateClasses);
 	}
 	
 }
