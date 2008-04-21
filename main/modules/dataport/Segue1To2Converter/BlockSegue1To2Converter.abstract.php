@@ -6,7 +6,7 @@
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.12 2008/04/03 17:08:11 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.13 2008/04/21 19:53:34 achapin Exp $
  */ 
 
 require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
@@ -22,7 +22,7 @@ require_once(dirname(__FILE__)."/DownloadCommentSegue1To2Converter.class.php");
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.12 2008/04/03 17:08:11 adamfranco Exp $
+ * @version $Id: BlockSegue1To2Converter.abstract.php,v 1.13 2008/04/21 19:53:34 achapin Exp $
  */
 abstract class BlockSegue1To2Converter
 	extends Segue1To2Converter
@@ -84,10 +84,13 @@ abstract class BlockSegue1To2Converter
 		$comments = $element->appendChild($this->doc->createElement('comments'));
 		
 		$element->appendChild($media);
-		
+				
 		// Comments
 		$this->setCommentsEnabled($element);
 		$this->addComments($comments);
+		
+		//tags
+		$this->addTags($element);
 		
 		return $element;
 	}
@@ -181,6 +184,26 @@ abstract class BlockSegue1To2Converter
 			$this->addComment($comment, $commentsElement);
 		}
 	}
+
+	/**
+	 * Add tags to this block
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 2/11/08
+	 */
+	protected function addTags (DOMElement $element) {
+		$sourceTagElements = $this->sourceXPath->query('./tags/tag', $this->sourceElement);		
+		$tagsElement = $element->appendChild($this->doc->createElement('tags'));
+
+		foreach ($sourceTagElements as $sourceTagElement) {
+			$tagElement = $tagsElement->appendChild($this->doc->createElement('tag', $sourceTagElement->nodeValue));
+			$tagElement->setAttribute('agent_id', $sourceTagElement->getAttribute('agent_id'));
+			$tagElement->setAttribute('create_date', $sourceTagElement->getAttribute('time_stamp'));			
+		}
+	}
+
 	
 	/**
 	 * Add the comments enabled attribute if needed
