@@ -2390,6 +2390,17 @@ class SimpleThemeWhite extends Theme {
 	table.search_results tr.search_result_item td.action_button {
 		text-align: right;
 	}
+	
+/*********************************************************
+ * Other
+ *********************************************************/
+	.config_error {
+		margin: 5px;
+		padding: 5px;
+		border: 2px solid #F00;
+		font-weight: bold;
+		text-align: center;
+	}
 		
 ";
 	}

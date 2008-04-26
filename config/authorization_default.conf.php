@@ -18,9 +18,15 @@
 	$configuration->addProperty('database_index', $dbID);
 	$configuration->addProperty('database_name', $dbName);
 	$configuration->addProperty('harmoni_db_name', 'segue_db');
-	Services::startManagerAsService("AuthorizationManager", $context, $configuration);
+	
+	try {
+		require_once(HARMONI."/oki2/AuthZ2/authz/AuthorizationManager.class.php");
+		$azMgr = new AuthZ2_AuthorizationManager;
+		$azMgr->assignConfiguration($configuration);
+		Services::registerObjectAsService("AuthorizationManager", $azMgr);
+	} catch (ConfigurationErrorException $e) {
+		Services::startManagerAsService("AuthorizationManager", $context, $configuration);
+		
+		print "<div class='config_error'>"._("Please run the Segue Updates under Admin Tools")."</div>";
+	}
 
-// 	require_once(HARMONI."/oki2/AuthZ2/authz/AuthorizationManager.class.php");
-// 	$azMgr = new AuthZ2_AuthorizationManager;
-// 	$azMgr->assignConfiguration($configuration);
-// 	Services::registerObjectAsService("AuthorizationManager", $azMgr);

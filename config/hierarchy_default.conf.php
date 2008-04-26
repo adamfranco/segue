@@ -18,9 +18,12 @@
 	$configuration->addProperty('database_index', $dbID);
 	$configuration->addProperty('database_name', $dbName);
 	$configuration->addProperty('harmoni_db_name', 'segue_db');
-	Services::startManagerAsService("HierarchyManager", $context, $configuration);
-
-// 	require_once(HARMONI."/oki2/AuthZ2/hierarchy/HierarchyManager.class.php");
-// 	$mgr = new AuthZ2_HierarchyManager;
-// 	$mgr->assignConfiguration($configuration);
-// 	Services::registerObjectAsService("HierarchyManager", $mgr);
+	
+	try {
+		require_once(HARMONI."/oki2/AuthZ2/hierarchy/HierarchyManager.class.php");
+		$mgr = new AuthZ2_HierarchyManager;
+		$mgr->assignConfiguration($configuration);
+		Services::registerObjectAsService("HierarchyManager", $mgr);
+	} catch (ConfigurationErrorException $e) {
+		Services::startManagerAsService("HierarchyManager", $context, $configuration);
+	}
