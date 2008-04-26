@@ -17,4 +17,10 @@
 	$configuration = new ConfigurationProperties;
 	$configuration->addProperty('database_index', $dbID);
 	$configuration->addProperty('database_name', $dbName);
+	$configuration->addProperty('harmoni_db_name', 'segue_db');
 	Services::startManagerAsService("AuthorizationManager", $context, $configuration);
+
+// 	require_once(HARMONI."/oki2/AuthZ2/authz/AuthorizationManager.class.php");
+// 	$azMgr = new AuthZ2_AuthorizationManager;
+// 	$azMgr->assignConfiguration($configuration);
+// 	Services::registerObjectAsService("AuthorizationManager", $azMgr);
