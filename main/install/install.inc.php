@@ -24,7 +24,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 	 *********************************************************/
 	$dbHandler = Services::getService("DatabaseManager");
 	$tables = $dbHandler->getTableList($dbID);
-	if (count($tables)) {
+	if (count($tables) && !isset($_SESSION['installation_underway'])) {
 		$_SESSION['table_setup_complete'] = TRUE;
 // 		RequestContext::locationHeader($_SERVER['REQUEST_URI']);
 // 		
@@ -38,26 +38,38 @@ if (!isset($_SESSION['table_setup_complete'])) {
 		/*********************************************************
 		 * Create the needed database tables
 		 *********************************************************/
-		$dbHandler->beginTransaction($dbID);
-		switch ($dbHandler->getDatabaseType($dbID)) {
-			case MYSQL:
-				SQLUtils::runSQLdir(HARMONI_BASE."/SQL/MySQL", $dbID);
-				SQLUtils::runSQLdir(MYDIR."/main/SQL/MySQL", $dbID);
-				break;
-			case POSTGRESQL:
-				SQLUtils::runSQLdir(HARMONI_BASE."/SQL/PostgreSQL", $dbID);
-				SQLUtils::runSQLdir(MYDIR."/main/SQL/PostgreSQL", $dbID);
-				break;
-			case ORACLE:
-				SQLUtils::runSQLdir(HARMONI_BASE."/SQL/PostgreSQL", $dbID);
-				SQLUtils::runSQLdir(MYDIR."/main/SQL/PostgreSQL", $dbID);
-				break;
-			default:
-				throw new Exception("Database schemas are not defined for specified database type.");
+		if (!isset($_SESSION['installation_underway']) || !$_SESSION['installation_underway']) {
+			$dbHandler->beginTransaction($dbID);
+			$exceptions = array(
+				// Old AuthZ and Hierarchy tables
+				'AuthZ.sql',
+				'Hierarchy.sql'
+			);
+			switch ($dbHandler->getDatabaseType($dbID)) {
+				case MYSQL:
+					SQLUtils::runSQLdirWithExceptions(HARMONI_BASE."/SQL/MySQL", $exceptions, $dbID);
+					SQLUtils::runSQLdir(MYDIR."/main/SQL/MySQL", $dbID);
+					break;
+				case POSTGRESQL:
+					SQLUtils::runSQLdirWithExceptions(HARMONI_BASE."/SQL/PostgreSQL", $exceptions, $dbID);
+					SQLUtils::runSQLdir(MYDIR."/main/SQL/PostgreSQL", $dbID);
+					break;
+				case ORACLE:
+					SQLUtils::runSQLdirWithExceptions(HARMONI_BASE."/SQL/PostgreSQL", $exceptions, $dbID);
+					SQLUtils::runSQLdir(MYDIR."/main/SQL/PostgreSQL", $dbID);
+					break;
+				default:
+					throw new Exception("Database schemas are not defined for specified database type.");
+			}
+			$dbHandler->commitTransaction($dbID);
+			
+			// Now that we have added our tables, re-run this script and finish installation
+			$_SESSION['installation_underway'] = true;
+			RequestContext::locationHeader($_SERVER['REQUEST_URI']);
 		}
-// 		$dbHandler->commitTransaction($dbID);
-// 		
-// 		$dbHandler->beginTransaction($dbID);
+		$dbHandler->beginTransaction($dbID);
+
+
 		/*********************************************************
 		 * Script for setting up the Authorization Hierarchy
 		 *********************************************************/
@@ -321,6 +333,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 	
 // 		print "\n<br> ...done";
 		$_SESSION['table_setup_complete'] = TRUE;
+		unset($_SESSION['installation_underway']);
 		
 		$dbHandler->commitTransaction($dbID);
 		
