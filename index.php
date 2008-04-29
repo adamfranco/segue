@@ -14,7 +14,7 @@
  * Define a Constant reference to this application directory.
  *********************************************************/
 error_reporting(E_ALL);
-ini_set('display_errors', true);
+ini_set('display_errors', 'On');
 
 define("MYDIR",dirname(__FILE__));
 
