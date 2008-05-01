@@ -24,6 +24,11 @@
 		<change author='adam' date='2008-04-18' ref='1940489' reftype='fr'>
 			Migration: SiteExport schema now allows for tags in export.
 		</change>
+		<change author='adam' date='2008-05-01' ref='' reftype='fr'>
+			Installer: Removed transaction around initial data creation as this was
+			causing table-locking conflicts when a second (Harmoni_Db) database
+			connection was used in tandem with the DatabaseManager connection.
+		</change>
 	</version>
 	<version number="2.0-beta-19.1" date="2008-04-13">
 		<releaseNotes>

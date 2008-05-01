@@ -67,7 +67,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 			$_SESSION['installation_underway'] = true;
 			RequestContext::locationHeader($_SERVER['REQUEST_URI']);
 		}
-		$dbHandler->beginTransaction($dbID);
+// 		$dbHandler->beginTransaction($dbID);
 
 
 		/*********************************************************
@@ -335,7 +335,7 @@ if (!isset($_SESSION['table_setup_complete'])) {
 		$_SESSION['table_setup_complete'] = TRUE;
 		unset($_SESSION['installation_underway']);
 		
-		$dbHandler->commitTransaction($dbID);
+// 		$dbHandler->commitTransaction($dbID);
 		
 		RequestContext::locationHeader($_SERVER['REQUEST_URI']);
 	}
