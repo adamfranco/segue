@@ -21,10 +21,11 @@
  *********************************************************/
 
 	$databaseManager = Services::getService("DatabaseManager");
+	$dbHost = "localhost";
 	$dbName = "my_segue_database";
 	$dbUser = "test_user";
 	$dbPass = "test_password";
-	$dbID = $databaseManager->addDatabase( new MySQLDatabase("localhost", $dbName, $dbUser, $dbPass) );
+	$dbID = $databaseManager->addDatabase( new MySQLDatabase($dbHost, $dbName, $dbUser, $dbPass) );
 	$databaseManager->pConnect($dbID);
 	
 	define("IMPORTER_CONNECTION", $dbID);
@@ -45,7 +46,7 @@
  *********************************************************/
 
 // 	$db = Harmoni_Db::factory('Pdo_Mysql', array(
-// 		'host'     => 'localhost',
+// 		'host'     => $dbHost,
 // 		'username' => $dbUser,
 // 		'password' => $dbPass,
 // 		'dbname'   => $dbName,

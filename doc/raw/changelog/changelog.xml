@@ -29,6 +29,13 @@
 			causing table-locking conflicts when a second (Harmoni_Db) database
 			connection was used in tandem with the DatabaseManager connection.
 		</change>
+		<change author='adam' date='2008-05-01' ref='' reftype='fr'>
+			Installer: Installation is now a 2-stage process.
+    
+			This allows new installations to have their database tables
+			created in one execution cycle and then have their services configured
+			in the second cycle.
+		</change>
 	</version>
 	<version number="2.0-beta-19.1" date="2008-04-13">
 		<releaseNotes>
