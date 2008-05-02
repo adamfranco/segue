@@ -14,6 +14,23 @@
 		<releaseNotes>
 		
 		</releaseNotes>
+		<new author='adam' date='2008-04-24' ref='1951075' reftype='harmoni_fr'>
+			AuthZ2: New Authorization/Hierarchy package stores implicit authorizations
+			as rows in their own table so that they can be quickly read at the
+			expense of a small increase in writing time and storage space.
+			
+			Either AuthZ2 or the original Authorization and Hierarchy implementations
+			can be used by Harmoni applications as these implementations are independent
+			of one another. A migration script for moving hierarchy and authorization
+			information out of The original tables and into the AuthZ2 tables can be
+			found at harmoni/core/oki2/AuthZ2/migration.php
+			
+			Please note that in AuthZ2 the 'edu.middlebury.authorization.view' function
+			has the property of cascading up the hierarchy as well as down. This property
+			is needed by our Segue and Concerto applications and the lack of it in 
+			the original implimentations required the use of the isAuthorizedBelow()
+			function. All other authorization functions cascade down only.
+		</new>
 		<change author='alex' date='2008-04-18' ref='1940489' reftype='fr'>
 			Migration: have added support for migrating tags in Segue v2 sites and from Segue 1x sites
 		</change>

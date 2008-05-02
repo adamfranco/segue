@@ -33,11 +33,11 @@
 		require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/SQLDatabaseMD5UsernamePasswordAuthNTokens.class.php");
 		$dbAuthType = new Type ("Authentication", "edu.middlebury.harmoni", "Harmoni DB");
 		$dbMethodConfiguration = new ConfigurationProperties;
-		$dbMethodConfiguration->addProperty('tokens_class', ='SQLDatabaseMD5UsernamePasswordAuthNTokens');
+		$dbMethodConfiguration->addProperty('tokens_class', 'SQLDatabaseMD5UsernamePasswordAuthNTokens');
 		$dbMethodConfiguration->addProperty('database_id', $dbID);
-		$dbMethodConfiguration->addProperty('authentication_table', ='auth_db_user');
-		$dbMethodConfiguration->addProperty('username_field', ='username');
-		$dbMethodConfiguration->addProperty('password_field', ='password');
+		$dbMethodConfiguration->addProperty('authentication_table', 'auth_db_user');
+		$dbMethodConfiguration->addProperty('username_field', 'username');
+		$dbMethodConfiguration->addProperty('password_field', 'password');
 		$propertiesFields = array(
 			'username' => 'username',
 //			'name'=> 'display_name',
@@ -56,9 +56,9 @@
 // 		require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/LDAPAuthNTokens.class.php");	
 // 		$ldapAuthType = new Type ("Authentication", "edu.middlebury.harmoni", "Middlebury LDAP");
 // 		$ldapConfiguration = new ConfigurationProperties;
-// 		$ldapConfiguration->addProperty('tokens_class', ='LDAPAuthNTokens');
-// 		$ldapConfiguration->addProperty("LDAPHost", ="ad.middlebury.edu");
-// 		$ldapConfiguration->addProperty("UserBaseDN", ="cn=users,dc=middlebury,dc=edu");
+// 		$ldapConfiguration->addProperty('tokens_class', 'LDAPAuthNTokens');
+// 		$ldapConfiguration->addProperty("LDAPHost", "ad.middlebury.edu");
+// 		$ldapConfiguration->addProperty("UserBaseDN", "cn=users,dc=middlebury,dc=edu");
 // 		$ldapConfiguration->addProperty("GroupBaseDN", "ou=groups,dc=middlebury,dc=edu");
 // 		$ldapConfiguration->addProperty("ClassesBaseDN", "ou=classes,ou=groups,dc=middlebury,dc=edu");
 // 		$ldapConfiguration->addProperty("bindDN", "juser");
