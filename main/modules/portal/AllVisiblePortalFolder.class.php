@@ -161,7 +161,8 @@ class AllVisiblePortalFolder
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		
-		if ($authZ->isUserAuthorizedBelow(
+		// Since View AZs now cascade up, we don't need to check isAuthorizedBelow()
+		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"), $id))
 		{
 			return TRUE;
