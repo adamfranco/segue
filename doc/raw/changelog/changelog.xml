@@ -40,6 +40,13 @@
 			Configuration: Added ClassesDN option to default Authentication config.
 			Also removed unneeded variables before arguments.
 		</fix>
+		<change author='adam' date='2008-05-02' ref='' reftype='fr'>
+			Portal: Speed increases for 'All Visible' and 'All Editable' folders.
+			
+			'All Visible' now doesn't need to check the entire site as view AZs cascade up.
+			'All Editable' now first checks view AZ before doing the more expensive
+			check of the entire site for edit AZ.
+		</change>
 	</version>
 	<version number="2.0-beta-19.1" date="2008-04-13">
 		<releaseNotes>

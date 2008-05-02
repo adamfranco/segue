@@ -69,6 +69,10 @@ class AllEditablePortalFolder
 	 * @since 4/1/08
 	 */
 	protected function includeSite (Id $id) {
+		// If the site isn't visible, don't bother checking edit AZs
+		if (!parent::includeSite($id))
+			return false;
+		
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		
