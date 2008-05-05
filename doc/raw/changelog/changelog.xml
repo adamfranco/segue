@@ -252,7 +252,7 @@
 		<change author='adam' date='2008-04-01'>
 			Removed unused right column from the main window.
 		</change>
-		<new author='adam' date='2008-04-01' ref='1918691' reftype='fr' reporter='shell_sax'>
+		<new author='adam' date='2008-04-01' ref='1918691' reftype='fr' reporter='shel_sax'>
 			Portal: New Folder-View for portal. This speeds loading and provides for
 			easier finding of sites.
 		</new>
