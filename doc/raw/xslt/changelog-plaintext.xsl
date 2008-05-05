@@ -17,26 +17,35 @@
 // changelog
 ///////////////////////////////////////////////////////////////////////
 -->
-<xsl:template match="changelog">
-Name: <xsl:value-of select="@name" /> Change Log
+<xsl:template match="changelog"><xsl:value-of select="@name" /> Change Log
 <xsl:text>
 
 </xsl:text>
-	<xsl:for-each select="version">
-v. <xsl:value-of select="@number" /><xsl:if test="@date!=''"> (<xsl:value-of select="@date" />)</xsl:if>
+<xsl:for-each select="version">
+<xsl:text>v. </xsl:text>
+<xsl:value-of select="@number" />
+<xsl:if test="@date!=''"> (<xsl:value-of select="@date" />)</xsl:if>
+<xsl:text>
 ----------------------------------------------------
-<xsl:call-template name="addNewlines">
-	<xsl:with-param name="maxCharacters" select="84"/>
-	<xsl:with-param name="remainingString">
-		<xsl:call-template name="singleLineParagraphs">
-			<xsl:with-param name="s" select="releaseNotes"/>
-		</xsl:call-template>		
-	</xsl:with-param>
-</xsl:call-template>
-
+</xsl:text>
+<xsl:variable name='notesText'>
+	<xsl:call-template name="addNewlines">
+		<xsl:with-param name="maxCharacters" select="84"/>
+		<xsl:with-param name="remainingString">
+			<xsl:call-template name="singleLineParagraphs">
+				<xsl:with-param name="s" select="releaseNotes"/>
+			</xsl:call-template>		
+		</xsl:with-param>
+	</xsl:call-template>
+</xsl:variable>
+<xsl:value-of select='$notesText' disable-output-escaping='yes'/>
 <xsl:apply-templates />
+<xsl:text>
 
-	</xsl:for-each>
+
+
+</xsl:text>
+</xsl:for-each>
 </xsl:template>
 
 <!--
@@ -83,16 +92,18 @@ v. <xsl:value-of select="@number" /><xsl:if test="@date!=''"> (<xsl:value-of sel
 <xsl:template name="entry">
 	<xsl:if test="@ref">#<xsl:value-of select="@ref" /><xsl:text> </xsl:text></xsl:if>
 	<xsl:text>&#x0A;&#x09;&#x09;</xsl:text>
-	<xsl:call-template name="addNewlines">
-		<xsl:with-param name="maxCharacters" select="76"/>
-		<xsl:with-param name="tabs" select="'&#x09;&#x09;'"/>
-		<xsl:with-param name="remainingString">
-			<xsl:call-template name="singleLineParagraphs">
-				<xsl:with-param name="s" select="."/>
-			</xsl:call-template>		
-		</xsl:with-param>
-	</xsl:call-template>
-	
+	<xsl:variable name='entryText'>
+		<xsl:call-template name="addNewlines">
+			<xsl:with-param name="maxCharacters" select="76"/>
+			<xsl:with-param name="tabs" select="'&#x09;&#x09;'"/>
+			<xsl:with-param name="remainingString">
+				<xsl:call-template name="singleLineParagraphs">
+					<xsl:with-param name="s" select="."/>
+				</xsl:call-template>		
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:variable>
+	<xsl:value-of select='$entryText' disable-output-escaping='yes'/>
 	<xsl:if test="@author">
 		<xsl:text>&#x0A;&#x09;&#x09;</xsl:text>
 		<xsl:text>(</xsl:text>

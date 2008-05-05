@@ -14,7 +14,7 @@ Dependencies:
 	- imagemagick
 
 PHP Configuration requirements:
-	--with-mysql
+	--with-mysql or --with-postgresql depending on your database
 	--with-zlib
 	
 	(options needed for changing the language of the UI, unneeded for English-only usage)
@@ -24,9 +24,17 @@ PHP Configuration requirements:
 	--with-gd
 	--enable-gd-native-ttf Or one of the other TTF-enabling options.
 	
+	(options needed for PDO database access system and prepared-statement support)
+	--with-pdo-mysql or --with-pdo-postgresql depending on your database
+	You will also need to install the appropriate driver - installed with $ pecl install pdo; pecl install pdo_mysql if you use --with-pdo-mysql=shared. 
+	Enabling the PDO extension and driver for your database will enable Segue to 
+	make use of prepared statements, significantly enhancing performance. Segue 
+	will operate fine without PDO however, and this support can be added at a later 
+	time with no database changes needed.
+	
 
 Setting up Segue:
-	1) Create a MySQL database for Segue to use.
+	1) Create a MySQL or PostgreSQL database for Segue to use.
 		A) create the database
 		B) give a database user full permission to that database.
 
@@ -38,6 +46,9 @@ Setting up Segue:
 	
 		B) Modify your database config and change the database connection entry 
 		   in the config to reflect the database that you just created.
+		 
+		C) If you enabled PDO support in PHP you can uncomment the 'Harmoni_Db'
+		   database setup lines in the database config.
 	
 	3) Create your Image Processor config
 		A) copy 
@@ -45,7 +56,7 @@ Setting up Segue:
 			to
 				segue/config/imageprocessor.conf.php
 	
-		B) Modify the 'imagemagick_path' property in theImage Processor config 
+		B) Modify the 'imagemagick_path' property in the Image Processor config 
 			to be the location in which ImageMagick is installed
 		 
 	4) (Optional) Set up LDAP authentication

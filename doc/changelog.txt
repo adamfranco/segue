@@ -1,6 +1,79 @@
 
+Segue Change Log
 
-Name: Segue Change Log
+
+v. 2.0-beta-20 (2008-05-05)
+----------------------------------------------------
+This release of Segue 2.0 includes dramatic speed improvements over beta 19.1 due to
+a new implementation of Harmoni's Authorization and Hiearchy system. Usage of this
+new systems requires running the appropriate updater located under Admin Tools -->
+Segue Updates. This updater will take several minutes to run and will make
+irrevocable changes to your database. Please back up your database before running
+this updater.
+
+Other improvements to Segue include support for migrating tags from Segue 1 sites,
+and an improved installation process.
+
+Segue 2.0 beta 20 uses Polyphony 1.1.0 and Harmoni 1.2.0.
+		
+		
+	* New feature: #1951075 
+		AuthZ2: New Authorization/Hierarchy package stores implicit authorizations
+		as rows in their own table so that they can be quickly read at the expense
+		of a small increase in writing time and storage space.
+		
+		Usage of this new systems requires running the appropriate updater
+		located under Admin Tools --> Segue Updates. This updater will take several
+		minutes to run and will make irrevocable changes to your database. Please
+		back up your database before running this updater.
+		
+		Please note that in AuthZ2 the 'edu.middlebury.authorization.view'
+		function has the property of cascading up the hierarchy as well as down.
+		This property is needed by our Segue and Concerto applications and the lack
+		of it in the original implimentations required the use of the
+		isAuthorizedBelow() function. All other authorization functions cascade down
+		only. 
+		(2008-04-24 - Adam Franco)
+		
+	* Change: #1940489 
+		Migration: have added support for migrating tags in Segue v2 sites and from
+		Segue 1x sites
+		(2008-04-18 - Alex Chapin)
+		
+	* Bug Fix: 
+		Migration: nav block now no longer catches exceptions from below and so
+		plugin errors now halt import.
+		(2008-04-13 - Adam Franco)
+		
+	* Change: #1940489 
+		Migration: SiteExport schema now allows for tags in export.
+		(2008-04-18 - Adam Franco)
+		
+	* Change: # 
+		Installer: Removed transaction around initial data creation as this was
+		causing table-locking conflicts when a second (Harmoni_Db) database
+		connection was used in tandem with the DatabaseManager connection.
+		(2008-05-01 - Adam Franco)
+		
+	* Change: # 
+		Installer: Installation is now a 2-stage process. This allows new
+		installations to have their database tables created in one execution cycle
+		and then have their services configured in the second cycle.
+		(2008-05-01 - Adam Franco)
+		
+	* Bug Fix: # 
+		Configuration: Added ClassesDN option to default Authentication config. Also
+		removed unneeded variables before arguments.
+		(2008-05-01 - Adam Franco)
+		
+	* Change: # 
+		Portal: Speed increases for 'All Visible' and 'All Editable' folders.
+		
+		'All Visible' now doesn't need to check the entire site as view AZs
+		cascade up. 'All Editable' now first checks view AZ before doing the more
+		expensive check of the entire site for edit AZ.
+		(2008-05-02 - Adam Franco)
+	
 
 
 
@@ -17,6 +90,9 @@ v. 2.0-beta-19.1 (2008-04-13)
 		Classic-Mode: 'Edit Site Settings' wizard now doesn't crash.
 		(2008-04-13 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-19 (2008-04-11)
 ----------------------------------------------------
 This release fixes a number of bugs and adds the ability to tag content.
@@ -142,6 +218,9 @@ Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
 		Comments: Download plugin now works in comments.
 		(2008-04-11 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-18 (2008-04-03)
 ----------------------------------------------------
 This release fixes a number of bugs and adds a new Portal display.
@@ -224,6 +303,9 @@ Segue 2.0 beta 17 uses Polyphony 1.0.6 and Harmoni 1.0.6.
 		UI1: Removed unused ui1.content_rss action.
 		(2008-04-01 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-17 (2008-03-31)
 ----------------------------------------------------
 This release fixes a number of bugs to avoid errors in RSS feeds, Wiki-Text in
@@ -287,6 +369,9 @@ Segue 2.0 beta 17 uses Polyphony 1.0.5 and Harmoni 1.0.5.
 		settings. 
 		(2008-03-26 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-16 (2008-03-26)
 ----------------------------------------------------
 This release adds Media Library quotas and enables redirects from Segue 1 instances.
@@ -316,6 +401,9 @@ Segue 2.0 beta 16 uses Polyphony 1.0.5 and Harmoni 1.0.5.
 		the upload actions.
 		(2008-03-26 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-15.1 (2008-03-25)
 ----------------------------------------------------
 This release fixes a little bug introduce in beta 15.
@@ -325,12 +413,15 @@ This release fixes a little bug introduce in beta 15.
 		SiteDisplay: Fixed cascading settings.
 		(2008-03-25 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-15 (2008-03-25)
 ----------------------------------------------------
 The Segue 2.0 beta is capable of most of the site creation and editing needs of
 users. We are continually adding features to bring Segue 2 up to feature parity with
 Segue 1.x. See the Feature Request Tracker for a list of features that still need to
-be completed: https://sourceforge.net/tracker/?group_id=82171&amp;atid=565237 This
+be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237 This
 release adds a number of major improvements as well as fixes a large number of bugs.
 Notable user-facing changes: - Migration tools for importing Segue 1 sites - New
 plugins for Breadcrumbs and RSS links - Improvements to UI2, 'New Mode' editing
@@ -338,7 +429,7 @@ interface to reduce visual clutter. - New Site-Map view. - New version of FCK
 editor, now supports Safari.
 
 Upgrade Notes: For upgrades from releases prior to beta 15, please run the updates
-located under Admin Tools --&gt; Segue Updates. 
+located under Admin Tools --> Segue Updates. 
 
 Segue 2.0 beta 15 uses Polyphony 1.0.4 and Harmoni 1.0.5.
 		
@@ -485,11 +576,11 @@ Segue 2.0 beta 15 uses Polyphony 1.0.4 and Harmoni 1.0.5.
 		
 	**** IMPORTANT *** Change: 
 		Plugin data changes require execution of a Segue update -- located under
-		Admin Tools --&gt; Segue Updates.
+		Admin Tools --> Segue Updates.
 		(2008-03-24 - Adam Franco)
 		
 	* New feature: 
-		WikiText: Now supports [[fileurl:asset_id=1234&amp;record_id=5678]] syntax for
+		WikiText: Now supports [[fileurl:asset_id=1234&record_id=5678]] syntax for
 		urls to files.
 		(2008-03-17 - Adam Franco)
 		
@@ -553,6 +644,9 @@ Segue 2.0 beta 15 uses Polyphony 1.0.4 and Harmoni 1.0.5.
 		ErrorPrinter: Now doesn't try to send headers if they are already sent.
 		(2008-03-21 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-14 (2008-03-10)
 ----------------------------------------------------
 This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
@@ -591,6 +685,9 @@ work in IE - Download Plugin description now updates immediately after change.
 		(2008-03-06 - Adam Franco)
 		(reported by Alex Chapin of Middlebury College)
 	
+
+
+
 v. 2.0-beta-13 (2008-03-03)
 ----------------------------------------------------
 This release fixes a number of Javascript bugs that were preventing some site
@@ -658,6 +755,9 @@ Segue 2.0 beta 13 uses Harmoni 1.0.2 and Polyphony 1.0.1.
 		web-crawlers from filling up logs with repeated invalid requests.
 		(2008-02-26 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-12 (2008-02-21)
 ----------------------------------------------------
 This Segue beta release fixes a number of issues discovered in testing the previous
@@ -740,6 +840,9 @@ Segue 2.0 beta 12 uses Harmoni 1.0.1 and Polyphony 1.0.1.
 		error page being display during production use.
 		(2008-02-21 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-11 (2008-02-18)
 ----------------------------------------------------
 This release fixes a few bugs that were noticed in testing beta 10.
@@ -779,6 +882,9 @@ This release fixes a few bugs that were noticed in testing beta 10.
 		order can be manually set in the database now.
 		(2008-02-18 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-10 (2008-02-15)
 ----------------------------------------------------
 This release includes fixes to a large number of bugs. In addition to a few new
@@ -817,13 +923,13 @@ Segue 2.0 beta 10 uses Harmoni 1.0.0 and Polyphony 1.0.0.
 		Plugins: Now support 'tokenizing' of internal links. This translates links
 		from the form:
 		
-		http://segue.example.edu/index.php?module=ui1&amp;action=view&amp;node=12345
+		http://segue.example.edu/index.php?module=ui1&action=view&node=12345
 		
 		to
 		a wiki-style token that can be more easily found, replaced, or translated
 		when exporting/importing sites:
 		
-		[[localurl:module=ui1&amp;action=view&amp;node=12345]] 
+		[[localurl:module=ui1&action=view&node=12345]] 
 		(2008-01-25 - Adam Franco)
 		
 	* New feature: #1820777 
@@ -891,6 +997,9 @@ Segue 2.0 beta 10 uses Harmoni 1.0.0 and Polyphony 1.0.0.
 		causes an error in the MediaLibrary.
 		(2008-02-15 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-9 (2008-01-15)
 ----------------------------------------------------
 This release fixes a number of bugs in the Roles user interface. See the change-log
@@ -921,6 +1030,9 @@ for details.
 		names are not unique.
 		(2008-01-15 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-8 (2008-01-14)
 ----------------------------------------------------
 This release clarifies the role of slots/site-placeholders and brings some
@@ -938,7 +1050,7 @@ Segue 2.0 beta 8 uses Polyphony 0.10.7 and Harmoni 0.13.7.
 		
 		
 	**** IMPORTANT *** Change: 
-		Run the Updaters under Admin Tools --&gt; Segue Updates to update the table
+		Run the Updaters under Admin Tools --> Segue Updates to update the table
 		structure. 
 		(2008-01-14 - Adam Franco)
 		
@@ -997,6 +1109,9 @@ Segue 2.0 beta 8 uses Polyphony 0.10.7 and Harmoni 0.13.7.
 		Apache system-icons directory when installing Segue in the webserver root.
 		(2008-01-03 - Adam Franco)
 	
+
+
+
 v. 2.0-beta-7 (2007-12-20)
 ----------------------------------------------------
 This release fixes a large number of bugs as well as improves the validity of the
@@ -1086,7 +1201,7 @@ XHTML markup generated by Segue.
 		(2007-12-17 - Adam Franco)
 		
 	* Bug Fix: #1854960 
-		UI2: Added a notice for MSIE &lt; v7 users that New Mode won't work for them.
+		UI2: Added a notice for MSIE < v7 users that New Mode won't work for them.
 		(2007-12-20 - Adam Franco)
 		
 	* Bug Fix: #1853122 
@@ -1107,6 +1222,9 @@ XHTML markup generated by Segue.
 		WikiText: Link titles are now case-insensitive.
 		(2007-12-20 - Adam Franco)
 	
+
+
+
 v. 2.0.0-beta-6 (2007-12-12)
 ----------------------------------------------------
 This release fixes a number of bugs as well as provides new admin-tools for the
@@ -1114,7 +1232,7 @@ management of slots (site-placeholders). Additionally, security measures have be
 put in place to prevent cross-site-scripting (XSS) attacks.
 
 For upgrades from earlier releases, please run the update located under Admin Tools
---&gt; Segue Updates.
+--> Segue Updates.
 
 This release of Segue uses Harmoni 0.13.5 and Polyphony 0.10.5.
 		
@@ -1131,7 +1249,7 @@ This release of Segue uses Harmoni 0.13.5 and Polyphony 0.10.5.
 		
 	**** IMPORTANT *** Change: 
 		Existing installations need to have the Segue Update run under Admin Tools
-		--&gt; Segue Updates.
+		--> Segue Updates.
 		(2007-12-06 - Adam Franco)
 		
 	* New feature: #1844322 
@@ -1178,6 +1296,9 @@ This release of Segue uses Harmoni 0.13.5 and Polyphony 0.10.5.
 		Fixed an error in the change log that was preventing it from displaying.
 		(2007-11-30 - Adam Franco)
 	
+
+
+
 v. 2.0.0-beta-5 (2007-11-29)
 ----------------------------------------------------
 This release includes a new hierarchical authorization-setting user interface that
@@ -1205,6 +1326,9 @@ This release uses Harmoni 0.13.4 and Polyphony 0.10.4.
 		UI2: Arrange-mode no longer asks for confirmation before moving items.
 		(2007-11-13 - Adam Franco)
 	
+
+
+
 v. 2.0.0-beta-4 (2007-11-13)
 ----------------------------------------------------
 This release fixes an installer bug that was preventing fresh installs from
@@ -1236,6 +1360,9 @@ This release uses Harmoni 0.13.4 and Polyphony 0.10.3.
 		runs so that installation happens smoothly.
 		(2007-11-12 - Adam Franco)
 	
+
+
+
 v. 2.0.0-beta-3 (2007-11-09)
 ----------------------------------------------------
 This release fixes a large number of bugs and adds role-based authorization-setting
@@ -1361,6 +1488,9 @@ segue/main/harmoni/core/DBHandler/db_updater.php
 		(2007-10-25 - Adam Franco)
 		
 	
+
+
+
 v. 2.0.0-beta-2 (2007-09-25)
 ----------------------------------------------------
 
@@ -1474,6 +1604,9 @@ v. 2.0.0-beta-2 (2007-09-25)
 		UI2: Now whitespace won't prevent widths from saving.
 		(2007-09-20 - Adam Franco)
 	
+
+
+
 v. 2.0.0-beta-1 (2007-09-20)
 ----------------------------------------------------
 
@@ -1485,7 +1618,7 @@ v. 2.0.0-beta-1 (2007-09-20)
 	* Change: 
 		Removing ampersands for compatibility with other PHP5 code. The BBEdit-grep
 		string used for the find and replace was: (function
-		)&amp;|(=\s?)&amp;([^a-z#])|([^&amp;])&amp;\s?(\$) replaced with \1\2\3\4\5
+		)&|(=\s?)&([^a-z#])|([^&])&\s?(\$) replaced with \1\2\3\4\5
 		(2007-09-04 - Adam Franco)
 		
 	**** IMPORTANT *** Change: 
@@ -1556,7 +1689,7 @@ v. 2.0.0-beta-1 (2007-09-20)
 		
 	* Bug Fix: 
 		Reordering now works consistently due to a change in the
-		AssetFlowOrganizerSiteComponent-&gt;putSubcomponentInCell() algorithm.
+		AssetFlowOrganizerSiteComponent->putSubcomponentInCell() algorithm.
 		(2007-09-05 - Adam Franco)
 		
 	* Bug Fix: 
@@ -1646,3 +1779,7 @@ v. 2.0.0-beta-1 (2007-09-20)
 		Everything is new.
 		(Adam Franco)
 	
+
+
+
+

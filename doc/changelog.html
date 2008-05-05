@@ -23,7 +23,46 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-19.1</h2>
+<h2>Version 2.0-beta-20</h2>
+<h3>2008-05-05</h3>
+<p>This release of Segue 2.0 includes dramatic speed improvements over beta 19.1 due to a new implementation of Harmoni's Authorization and Hiearchy system. Usage of this new systems requires running the appropriate updater located under Admin Tools --&gt; Segue Updates. This updater will take several minutes to run and will make irrevocable changes to your database. Please back up your database before running this updater.
+<br>
+<br>Other improvements to Segue include support for migrating tags from Segue 1 sites, and an improved installation process.
+<br>
+<br>Segue 2.0 beta 20 uses Polyphony 1.1.0 and Harmoni 1.2.0.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1951075&amp;group_id=&amp;atid=">
+        			#1951075</a> AuthZ2: New Authorization/Hierarchy package stores implicit authorizations as rows in their own table so that they can be quickly read at the expense of a small increase in writing time and storage space.
+<br>
+<br>Usage of this new systems requires running the appropriate updater located under Admin Tools --&gt; Segue Updates. This updater will take several minutes to run and will make irrevocable changes to your database. Please back up your database before running this updater.
+<br>
+<br>Please note that in AuthZ2 the 'edu.middlebury.authorization.view' function has the property of cascading up the hierarchy as well as down. This property is needed by our Segue and Concerto applications and the lack of it in the original implimentations required the use of the isAuthorizedBelow() function. All other authorization functions cascade down only. (<em>2008-04-24 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940489&amp;group_id=&amp;atid=">
+        			#1940489</a> Migration: have added support for migrating tags in Segue v2 sites and from Segue 1x sites (<em>2008-04-18 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: nav block now no longer catches exceptions from below and so plugin errors now halt import. (<em>2008-04-13 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940489&amp;group_id=&amp;atid=">
+        			#1940489</a> Migration: SiteExport schema now allows for tags in export. (<em>2008-04-18 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Installer: Removed transaction around initial data creation as this was causing table-locking conflicts when a second (Harmoni_Db) database connection was used in tandem with the DatabaseManager connection. (<em>2008-05-01 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Installer: Installation is now a 2-stage process. This allows new installations to have their database tables created in one execution cycle and then have their services configured in the second cycle. (<em>2008-05-01 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Configuration: Added ClassesDN option to default Authentication config. Also removed unneeded variables before arguments. (<em>2008-05-01 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+        			#</a> Portal: Speed increases for 'All Visible' and 'All Editable' folders.
+<br>
+<br>'All Visible' now doesn't need to check the entire site as view AZs cascade up. 'All Editable' now first checks view AZ before doing the more expensive check of the entire site for edit AZ. (<em>2008-05-02 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-19.1</h2>
 <h3>2008-04-13</h3>
 <p></p>
 <ul>

@@ -10,20 +10,29 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-20" date="the future">
+	<version number="2.0-beta-20" date="2008-05-05">
 		<releaseNotes>
-		
+			This release of Segue 2.0 includes dramatic speed improvements over
+			beta 19.1 due to a new implementation of Harmoni's Authorization and Hiearchy
+			system. Usage of this new systems requires running the appropriate updater
+			located under Admin Tools --> Segue Updates. This updater will take several
+			minutes to run and will make irrevocable changes to your database. Please
+			back up your database before running this updater.
+			
+			Other improvements to Segue include support for migrating tags from Segue 1
+			sites, and an improved installation process.
+			
+			Segue 2.0 beta 20 uses Polyphony 1.1.0 and Harmoni 1.2.0. 
 		</releaseNotes>
 		<new author='adam' date='2008-04-24' ref='1951075' reftype='harmoni_fr'>
 			AuthZ2: New Authorization/Hierarchy package stores implicit authorizations
 			as rows in their own table so that they can be quickly read at the
 			expense of a small increase in writing time and storage space.
 			
-			Either AuthZ2 or the original Authorization and Hierarchy implementations
-			can be used by Harmoni applications as these implementations are independent
-			of one another. A migration script for moving hierarchy and authorization
-			information out of The original tables and into the AuthZ2 tables can be
-			found at harmoni/core/oki2/AuthZ2/migration.php
+			Usage of this new systems requires running the appropriate updater
+			located under Admin Tools --> Segue Updates. This updater will take several
+			minutes to run and will make irrevocable changes to your database. Please
+			back up your database before running this updater.
 			
 			Please note that in AuthZ2 the 'edu.middlebury.authorization.view' function
 			has the property of cascading up the hierarchy as well as down. This property
@@ -1403,6 +1412,44 @@
 			Everything is new.
 		</new>
 	</version>
+	
+	<about>
+		Segue is an open source collaborative content management system designed 
+		for e-learning that combines the ease of use of course management systems 
+		with the flexibility of weblogs for creating various types of sites 
+		including course, news, and journal.
+		
+		This Segue 2.0 beta is capable of most of the site creation and editing needs of  
+		users. We are continually adding features to bring Segue 2 up to feature parity with  
+		Segue 1.x. See the Feature Request Tracker for a list of features that still need to  
+		be completed: https://sourceforge.net/tracker/?group_id=82171&amp;atid=565237
+	</about>
+	
+	<info>
+		<title>Downloads</title>
+		<description>For the latested and archived versions, please download from SourceForge.</description>
+		<url>http://sourceforge.net/project/showfiles.php?group_id=82171&amp;package_id=246956</url>
+	</info>
+	<info>
+		<title>Documentation</title>
+		<description>
+			Segue includes contextual help for users. Additional documentation can
+			be found online at:
+		</description>
+		<url>http://sourceforge.net/project/showfiles.php?group_id=82171&amp;package_id=246956</url>
+	</info>
+	<info>
+		<title>Installation</title>
+		<description>
+			See the INSTALL.txt file in the Segue root directory for installation instructions
+			or read on the web at:
+		</description>
+		<url>http://sourceforge.net/project/showfiles.php?group_id=82171&amp;package_id=246956</url>
+	</info>
+	<info>
+		<title>Bug Tracker</title>
+		<url>http://sourceforge.net/tracker/?group_id=82171&amp;atid=565234</url>
+	</info>
 	
 	<authors>
 		<name short="adam">Adam Franco</name>
