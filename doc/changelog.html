@@ -33,31 +33,31 @@
 <ul>
 		
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1951075&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1951075&amp;group_id=82873&amp;atid=567476">
         			#1951075</a> AuthZ2: New Authorization/Hierarchy package stores implicit authorizations as rows in their own table so that they can be quickly read at the expense of a small increase in writing time and storage space.
 <br>
 <br>Usage of this new systems requires running the appropriate updater located under Admin Tools --&gt; Segue Updates. This updater will take several minutes to run and will make irrevocable changes to your database. Please back up your database before running this updater.
 <br>
 <br>Please note that in AuthZ2 the 'edu.middlebury.authorization.view' function has the property of cascading up the hierarchy as well as down. This property is needed by our Segue and Concerto applications and the lack of it in the original implimentations required the use of the isAuthorizedBelow() function. All other authorization functions cascade down only. (<em>2008-04-24 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940489&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940489&amp;group_id=82171&amp;atid=565237">
         			#1940489</a> Migration: have added support for migrating tags in Segue v2 sites and from Segue 1x sites (<em>2008-04-18 - Alex Chapin</em>)</li>
 		<li>
 <b>Bug Fix:</b> Migration: nav block now no longer catches exceptions from below and so plugin errors now halt import. (<em>2008-04-13 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940489&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940489&amp;group_id=82171&amp;atid=565237">
         			#1940489</a> Migration: SiteExport schema now allows for tags in export. (<em>2008-04-18 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
         			#</a> Installer: Removed transaction around initial data creation as this was causing table-locking conflicts when a second (Harmoni_Db) database connection was used in tandem with the DatabaseManager connection. (<em>2008-05-01 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
         			#</a> Installer: Installation is now a 2-stage process. This allows new installations to have their database tables created in one execution cycle and then have their services configured in the second cycle. (<em>2008-05-01 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
         			#</a> Configuration: Added ClassesDN option to default Authentication config. Also removed unneeded variables before arguments. (<em>2008-05-01 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
         			#</a> Portal: Speed increases for 'All Visible' and 'All Editable' folders.
 <br>
 <br>'All Visible' now doesn't need to check the entire site as view AZs cascade up. 'All Editable' now first checks view AZ before doing the more expensive check of the entire site for edit AZ. (<em>2008-05-02 - Adam Franco</em>)</li>
@@ -68,10 +68,10 @@
 <ul>
 		
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1941132&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1941132&amp;group_id=82171&amp;atid=565234">
         			#1941132</a> Media Libary: File-browser now works from within FCKEditor dialog. (<em>2008-04-13 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1941460&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1941460&amp;group_id=82171&amp;atid=565234">
         			#1941460</a> Classic-Mode: 'Edit Site Settings' wizard now doesn't crash. (<em>2008-04-13 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-19</h2>
@@ -86,69 +86,69 @@
 <ul>
 		
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820857&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820857&amp;group_id=82171&amp;atid=565237">
         			#1820857</a> Tagging: Added tag cloud plugin for displaying the tags for any given node and its children. (<em>2008-04-07 - Alex Chapin, Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820853&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820853&amp;group_id=82171&amp;atid=565237">
         			#1820853</a> Tagging: Added UI for tagging content blocks (i.e. nodes). (<em>2008-04-03 - Alex Chapin</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1814119&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1814119&amp;group_id=82873&amp;atid=567476">
         			#1814119</a> Harmoni_Db: New Harmoni_Db database access layer supports prepared statements. Harmoni_Db can be optionally used along side the existing database access layer to improve performance of some common page loads by 30% or more. (<em>2008-04-08 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1814119&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1814119&amp;group_id=82873&amp;atid=567476">
         			#1814119</a> Slots: SlotManager can now use Harmoni_Db if availible to speed loading of slots. (<em>2008-04-08 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
         			#</a> Fixed RSS flow organizer visitor to call visitor only if child is object. (<em>2008-04-07 - Alex Chapin</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1938743&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1938743&amp;group_id=82171&amp;atid=565234">
         			#1938743</a> Migration: Sites that contain the old 'archive posts by week' setting now import without errors. (<em>2008-04-09 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
         			#</a> Migration: Refined site migration UI styles. (<em>2008-04-09 - Alex Chapin</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1934801&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1934801&amp;group_id=82171&amp;atid=565234">
         			#1934801</a> Request: Refactored how context (current node id or site id) parameters are passed around. (<em>2008-04-09 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
         			#</a> Breadcrumbs: Now link to the view/html action if printed outside of one of the main UI modules (view, ui1, ui2), such as in the versioning or tagging modules. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Breadcrumbs: now wraps breadcrumbs links in span tags with 'white-space: nowrap;' to enable more legible output in narrow columns (with each level on its own row). (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
         			#</a> Request: Now doesn't keep 'site' parameter in urls when using the /sites/sitename form of the urls. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
         			#</a> Portal: now doesn't crash when an admin or with no valid 'personal-site shortname' views the portal. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1933715&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1933715&amp;group_id=82171&amp;atid=565234">
         			#1933715</a> Portal: Slots for deleted sites cached in 'All Visible' list now don't crash portal. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
         			#</a> SiteDisplay: New algorithm for determining if parts of the site are in a 'header' or 'footer' role allows for more variation in the arrangement of 'headers' and 'footers', not requiring there to be only one-cell of each. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1938840&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1938840&amp;group_id=82171&amp;atid=565234">
         			#1938840</a> SiteMap: Fixed HTML errors. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940237&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940237&amp;group_id=82171&amp;atid=565234">
         			#1940237</a> Tagging: Now cannot add tags in tag-viewing screens or edit-mode if no AZ to modify the item. (<em>2008-04-11 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940236&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940236&amp;group_id=82171&amp;atid=565234">
         			#1940236</a> Tagging: Added tagging controls to classic mode. (<em>2008-04-11 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940239&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940239&amp;group_id=82171&amp;atid=565234">
         			#1940239</a> Tagging: Tag cloud now appears at the bottom of the content block. (<em>2008-04-11 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940261&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940261&amp;group_id=82171&amp;atid=565234">
         			#1940261</a> Roles: The '?' info links for disabled roles now do not confuse group-caused roles with globally set roles and now properly list the groups causing the implicit role. (<em>2008-04-11 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
         			#</a> Comments: Now limiting plugins to a list of appropriate plugin types. Not allowing system-plugins like RSS and BreadCrumbs as these would break things in their attempts to traverse up the site hierarchy from the comment. (<em>2008-04-11 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
         			#</a> Plugins: If exceptions occur durring plugin execution an error is displayed, but the page doesn't halt. (<em>2008-04-11 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940459&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940459&amp;group_id=82171&amp;atid=565234">
         			#1940459</a> Comments: Download plugin now works in comments. (<em>2008-04-11 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-18</h2>
@@ -163,41 +163,41 @@
 		<li>
 <b>Bug Fix:</b> Migration: Local URLs are now resolved in migration or pointed at a resolver action for run-time redirection if they are external to the site. (<em>2008-04-03 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930617&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930617&amp;group_id=82171&amp;atid=565234">
         			#1930617</a> Migration: Comment authors are now preserved when migrating from Segue 1 to Segue 2. (<em>2008-04-03 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931259&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931259&amp;group_id=82171&amp;atid=565234">
         			#1931259</a> Migration: Forced migration table columns to be 50% width, so buttons shouldn't jump when clicked. (<em>2008-04-03 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1922304&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1922304&amp;group_id=82171&amp;atid=565234">
         			#1922304</a> Fixed UI switcher to include pagination from flow organizer. (<em>2008-04-02 - Alex Chapin</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931238&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931238&amp;group_id=82171&amp;atid=565234">
         			#1931238</a> Fixed change UI mode selector in portal so that it properly changes the UI without throwing an error. (<em>2008-04-02 - Alex Chapin</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1922490&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1922490&amp;group_id=82171&amp;atid=565234">
         			#1922490</a> Portal/Slots: entering an existing slot name into the 'create-slot' form now doesn't give the user an error-screen. (<em>2008-04-02 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897447&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897447&amp;group_id=82171&amp;atid=565237">
         			#1897447</a> CourseManagement/Portal: Added session-caching of user's courses, halving loading time of class-site lists. (<em>2008-04-02 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Removed unused right column from the main window. (<em>2008-04-01 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1918691&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1918691&amp;group_id=82171&amp;atid=565237">
         			#1918691</a> Portal: New Folder-View for portal. This speeds loading and provides for easier finding of sites. (<em>2008-04-01 - Adam Franco</em>)<br> (<em>reported by shell_sax</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1926683&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1926683&amp;group_id=82171&amp;atid=565237">
         			#1926683</a> Migration: Site importing is now logged. (<em>2008-04-01 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Migration: Can now get site from import. (<em>2008-04-01 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931244&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931244&amp;group_id=82171&amp;atid=565234">
         			#1931244</a> Breadcrumbs/RSS: Namespaces are now properly set when generating links. This was broken in beta 17. (<em>2008-04-01 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931223&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931223&amp;group_id=82171&amp;atid=565234">
         			#1931223</a> Versioning: fixing up action to use the new SiteDispatcher. (<em>2008-04-01 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931211&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931211&amp;group_id=82171&amp;atid=565234">
         			#1931211</a> Slots: Updated default config to reflect actual groups. (<em>2008-04-01 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> UI1: Removed unused ui1.content_rss action. (<em>2008-04-01 - Adam Franco</em>)</li>
@@ -210,30 +210,30 @@
 <ul>
 		
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930252&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930252&amp;group_id=82171&amp;atid=565234">
         			#1930252</a> Comments/WikiText: Wiki-links in comments now don't cause error. (<em>2008-03-31 - Adam Franco</em>)<br> (<em>reported by Jeff Rehbach of Middlebury College</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930252&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930252&amp;group_id=82171&amp;atid=565234">
         			#1930252</a> Plugins: Now can attach a related site component to a plugin for use in resolving wiki links. (<em>2008-03-31 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930258&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930258&amp;group_id=82171&amp;atid=565234">
         			#1930258</a> RSS: Removed header and footer blocks from RSS feeds. (<em>2008-03-31 - Alex Chapin</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930257&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930257&amp;group_id=82171&amp;atid=565234">
         			#1930257</a> WikiText: fixed wiki-text matching so that matches in the sub-menus of other navigational nodes are found. (<em>2008-03-31 - Alex Chapin</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930271&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930271&amp;group_id=82171&amp;atid=565234">
         			#1930271</a> UI1: Deleting a parent node no longer causes an error. (<em>2008-03-31 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930271&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930271&amp;group_id=82171&amp;atid=565234">
         			#1930271</a> View/UI1/UI2/Roles/RSS: Refactored access to the current node and the site director to move all access to a new SiteDispatcher class in the view module. Now use methods: SiteDispatcher::getCurrentNode(), SiteDispatcher::getCurrentNodeId(), SiteDispatcher::getCurrentRootNode(), SiteDispatcher::getDirector(). (<em>2008-03-31 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> View: Fixed site map so that header and footer items are labelled. (<em>2008-03-31 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930278&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930278&amp;group_id=82171&amp;atid=565234">
         			#1930278</a> View: Fixed site map so that sub-menu items are displayed. (<em>2008-03-31 - Alex Chapin</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930254&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930254&amp;group_id=82171&amp;atid=565234">
         			#1930254</a> Site Display: Fixed RSS feeds of navigational nodes with sub-menus so that content blocks in sub-menus are also included in the feed. (<em>2008-03-31 - Alex Chapin</em>)</li>
 		<li>
 <b>Bug Fix:</b> Short-form urls of the style '/sites/siteName' now work with site names that contain hyphens and underscores. (<em>2008-03-28 - Adam Franco</em>)</li>
@@ -250,12 +250,12 @@
 		<li>
 <b>Bug Fix:</b> View: Now doesn't throw an error when viewing restricted sites while not logged in. Included a missing class. (<em>2008-03-26 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1926129&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1926129&amp;group_id=82171&amp;atid=565237">
         			#1926129</a> Migration: New action for reporting the existence of a site to a Segue 1 instance. With Segue 1.9.1, this allows forwarding from a Segue 1 instance to the Segue 2 instance in addition to forwarding in the other direction (supported in 2.0-beta 15/1.9.0). (<em>2008-03-26 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Migration: Now can accept Segue 1-style URLs to Segue 2 sites that were created in the Segue 2 instance and not imported. (<em>2008-03-26 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820917&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820917&amp;group_id=82171&amp;atid=565237">
         			#1820917</a> MediaLibrary: Quotas are now displayed in the media library and enforced by the upload actions. (<em>2008-03-26 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-15.1</h2>
@@ -276,12 +276,12 @@
 <ul>
 		
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820861&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820861&amp;group_id=82171&amp;atid=565237">
         			#1820861</a> View: added settings for displaying block create and update timestamps, as well as names of block creators and editors (<em>2008-03-20 - Alex Chapin</em>)</li>
 		<li>
 <b>Bug Fix:</b> Versioning: Fixed history action to use new view module (<em>2008-03-20 - Alex Chapin</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820829&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820829&amp;group_id=82171&amp;atid=565237">
         			#1820829</a> Importer/Migration: Site migration tools to allow users to import Segue 1 sites. (<em>2008-03-20 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b> URLs/Migration: A URL resolver has been added that can redirect Segue 1-style urls. If the Segue 1 site has bee imported into Segue 2 then the user will be redirected to the Segue 2 version, otherwise, they will be redirected to the Segue 1 instance. 
@@ -294,14 +294,14 @@
 		<li>
 <b>New feature:</b> View: added javascript to site map link in footer so that link opens in a new sized window and site map links open in window that was the source of the link. (<em>2008-03-18 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844315&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844315&amp;group_id=82171&amp;atid=565237">
         			#1844315</a> View: Added module and action for displaying a site map. (<em>2008-03-17 - Alex Chapin</em>)</li>
 		<li>
 <b>Change:</b> Slots: Slots are now defined by a 'Slot' interface to allow for implementation from outside of this package. (<em>2008-03-13 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Slots: Slot fetching is now cached for the execution cycle to speed repeated access. (<em>2008-03-14 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820917&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820917&amp;group_id=82171&amp;atid=565237">
         			#1820917</a> Slots: Now media-upload quotas can be set for sites. (<em>2008-03-20 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> UI1/UI2: Updated FCKeditor from version 2.4.3 to 2.5.1 This version of this editor now works in Safari and Opera web browsers (<em>2008-03-25 - Alex Chapin</em>)</li>
@@ -312,7 +312,7 @@
 		<li>
 <b>Change:</b> UI2: refined the layout of UI2 settings. (<em>2008-03-24 - Alex Chapin</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1919951&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1919951&amp;group_id=82171&amp;atid=565234">
         			#1919951</a> UI2: fixed UI2 so that site options appear in arrange mode (<em>2008-03-24 - Alex Chapin</em>)</li>		
 		<li>
 <b>Bug Fix:</b> UI2: Now UI2 gives the same error as UI1 when no site exists with the placeholder name given. (<em>2008-03-14 - Adam Franco</em>)</li>
@@ -321,10 +321,10 @@
 		<li>
 <b>Bug Fix:</b> UI2: Fixed footer width in ui2. (<em>2008-03-13 - Alex Chapin</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1922512&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1922512&amp;group_id=82171&amp;atid=565234">
         			#1922512</a> UI2: Edit mode detail view now doesn't show hidden titles in header. (<em>2008-03-25 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1913755&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1913755&amp;group_id=82171&amp;atid=565234">
         			#1913755</a> UI2: Fixed issue where containers couldn't be added to the first cell of a layout organizer. (<em>2008-03-25 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
 		<li>
 <b>Bug Fix:</b> UI2: Fixed Insert form HTML syntax. (<em>2008-03-25 - Adam Franco</em>)</li>
@@ -333,17 +333,17 @@
 		<li>
 <b>New feature:</b> UI2: New action for only editing header and footer. (<em>2008-03-25 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798877&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798877&amp;group_id=82171&amp;atid=565237">
         			#1798877</a> Plugins: added a RSS links plugin (<em>2008-03-13 - Alex Chapin</em>)</li>		
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798877&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798877&amp;group_id=82171&amp;atid=565237">
         			#1798877</a> Plugins: added breadcrumbs plugin (<em>2008-03-13 - Alex Chapin</em>)</li>
 		<li>
 <b>Bug Fix:</b> Plugins: PluginManager now adds newly enabled plugins to the session cache as such. (<em>2008-03-21 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Plugins: Versions and Content now are stored in LONGBLOB fields to allow more than 64kB of data. (<em>2008-03-24 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1918452&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1918452&amp;group_id=82171&amp;atid=565234">
         			#1918452</a> Plugins: TextBlock plugin's 'Add Image' and 'Add File' buttons now work in the plain-text editor in IE. (<em>2008-03-25 - Adam Franco</em>)</li>
 		<li>
 <span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Plugin data changes require execution of a Segue update -- located under Admin Tools --&gt; Segue Updates. (<em>2008-03-24 - Adam Franco</em>)</li>
@@ -361,7 +361,7 @@
 <b>Change:</b> Comments: can now get comment body without editing controls (<em>2008-03-11 - Adam Franco</em>)</li>
 		
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799956&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799956&amp;group_id=82171&amp;atid=565237">
         			#1799956</a> Site Display: added link to RSS feeds (<em>2008-03-11 - Alex Chapin</em>)</li>
 		<li>
 <b>Bug Fix:</b> Site Display: Fixed error in FlowOrgaizer sorting when sort-keys were not unique. (<em>2008-03-19 - Adam Franco</em>)</li>
@@ -370,7 +370,7 @@
 		<li>
 <b>Bug Fix:</b> Site Display: Removed debugging lines from component saving methods. (<em>2008-03-20 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799956&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799956&amp;group_id=82171&amp;atid=565237">
         			#1799956</a> RSS: new actions for publishing RSS of content and comments. (<em>2008-03-11 - Alex Chapin</em>)</li>
 		<li>
 <b>Bug Fix:</b> Importer: Fixed notice when invalid archives are uploaded. (<em>2008-03-20 - Adam Franco</em>)</li>
@@ -395,12 +395,12 @@
 		<li>
 <b>Change:</b> Adding PHP configuration documentation to the INSTALL.txt file. (<em>2008-03-03 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1908315&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1908315&amp;group_id=82171&amp;atid=565234">
         			#1908315</a> Permissions: Modify Roles buttons now work in Firefox and Safari again. The previous fix for IE broke the buttons in Firefox and Safari. (<em>2008-03-05 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
 		<li>
 <b>Bug Fix:</b> Fixed some HTML validation errors. (<em>2008-03-05 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1909030&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1909030&amp;group_id=82171&amp;atid=565234">
         			#1909030</a> Plugins: File for Download description now updates immediately after being changed. (<em>2008-03-06 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-13</h2>
@@ -415,7 +415,7 @@
 <ul>
 		
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1899147&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1899147&amp;group_id=82171&amp;atid=565234">
         			#1899147</a> MediaLibrary: Fixed Safari Javascript error. (<em>2008-02-29 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b> Logging: Now can view graphs of usage statistics. (<em>2008-02-29 - Adam Franco</em>)</li>
@@ -424,24 +424,24 @@
 		<li>
 <b>Change:</b> Added more documentation about the license and included libraries. (<em>2008-02-28 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1899707&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1899707&amp;group_id=82171&amp;atid=565234">
         			#1899707</a> Portal: Now doesn't show 'arrange' option in classic mode. (<em>2008-02-28 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1899137&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1899137&amp;group_id=82171&amp;atid=565234">
         			#1899137</a> Editing UI: 'Edit Site Options' and 'Permissions' buttons now work in IE. (<em>2008-02-28 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1903445&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1903445&amp;group_id=82171&amp;atid=565234">
         			#1903445</a> UI: Now displays an unauthorized error if the user is not authorized to access any part of a site, hiding the site title. (<em>2008-02-28 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1903445&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1903445&amp;group_id=82171&amp;atid=565234">
         			#1903445</a> Editing UI: Now does not display menu help if the user is not authorized to add content to the menu. (<em>2008-02-28 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> UI2: Now does not display empty content organizers when the user is not authorized to view or add content to them. (<em>2008-02-28 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1904983&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1904983&amp;group_id=82171&amp;atid=565234">
         			#1904983</a> UI2: Fixed IE7 'Add Content' button error. (<em>2008-03-03 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1899753&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1899753&amp;group_id=82171&amp;atid=565234">
         			#1899753</a> SiteDisplay: If users only have access to later menu items, then the first of those will now be shown by default instead of no menu items selected at all. (<em>2008-02-27 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b> Logging: Can now filter certain UserAgent/Exception combinations to prevent web-crawlers from filling up logs with repeated invalid requests. (<em>2008-02-26 - Adam Franco</em>)</li>
@@ -458,13 +458,13 @@
 		<li>
 <b>Bug Fix:</b> DataPort: Added 'Author' role to the site schema. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871478&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871478&amp;group_id=82171&amp;atid=565234">
         			#1871478</a> UI2: Removed the ability to manually create a submenus from the arrange-mode UI. Submenus can now only be created as multi-component collections, the same as in edit-mode and classic-mode. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1896348&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1896348&amp;group_id=82171&amp;atid=565234">
         			#1896348</a> MediaLibrary: Fixed a NULL_VALUE notice in the MediaLibrary that was appearing in Safari. (<em>2008-02-19 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897396&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897396&amp;group_id=82171&amp;atid=565234">
         			#1897396</a> MediaLibrary: Now works in InternetExplorer browsers. (<em>2008-02-20 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> URLs: MYURL constant is now configurable via a config file. (<em>2008-02-19 - Adam Franco</em>)</li>
@@ -473,10 +473,10 @@
 		<li>
 <b>Bug Fix:</b> XHTML Output: Fixed a syntax error on the welcome page. (<em>2008-02-19 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871490&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871490&amp;group_id=82171&amp;atid=565234">
         			#1871490</a> UI1: Rich-Text editor (FCKEditor) now is using the custom toolbar config. (<em>2008-02-19 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854972&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854972&amp;group_id=82171&amp;atid=565237">
         			#1854972</a> UI1: Create Item links now include the option name to differentiate them. (<em>2008-02-19 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Logging: Added additional logging of user actions. (<em>2008-02-19 - Adam Franco</em>)</li>
@@ -485,12 +485,12 @@
 		<li>
 <b>Bug Fix:</b> Installation: Fixed a Harmoni issue that was preventing successful clean installation. (<em>2008-02-19 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897333&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897333&amp;group_id=82171&amp;atid=565234">
         			#1897333</a> Comments: IE users can now choose the comment type. (<em>2008-02-19 - Adam Franco</em>)<br> (<em>reported by Sarah Franco of Middlebury College</em>)</li>
 		<li>
 <b>Bug Fix:</b> Plugins: Now AJAX-updating doesn't return the user to the top of the page. (<em>2008-02-21 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897459&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1897459&amp;group_id=82171&amp;atid=565237">
         			#1897459</a> Uncaught exceptions now result in HTTP error codes being sent and a nicer error page being display during production use. (<em>2008-02-21 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-11</h2>
@@ -501,20 +501,20 @@
 		<li>
 <b>Bug Fix:</b> SiteDisplay: Fixed error in Block-In-Menu titles when no content is added. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1894687&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1894687&amp;group_id=82171&amp;atid=565234">
         			#1894687</a> SiteDisplay: Reordering and moving now works again. In Beta 10 whitespace was added to the stored XML for legibility purposes. The whitespace is now stripped out of the working document during site-modification. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> UI2: Fixed error that was causing new content blocks to be added to the top of the ContentOrganizer. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> SiteDisplay: Removed some debugging lines. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1894688&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1894688&amp;group_id=82171&amp;atid=565234">
         			#1894688</a> Portal: Now doesn't re-encode html entities in Site titles. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1894694&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1894694&amp;group_id=82171&amp;atid=565234">
         			#1894694</a> Plugins: WikiText Links generated in ajax editing response now go to the appropriate module and action. (<em>2008-02-18 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799748&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799748&amp;group_id=82171&amp;atid=565234">
         			#1799748</a> Plugins: PluginManager now respects the order of the plugin-type ids. Still need the ability to change the plugin order from the admin UI, but at least order can be manually set in the database now. (<em>2008-02-18 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-10</h2>
@@ -531,16 +531,16 @@
 		<li>
 <b>Change:</b> A number of small fixes to allow working with Harmoni 1.0.0's move to pure OSID interfaces. (<em>2008-02-06 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820781&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820781&amp;group_id=82171&amp;atid=565237">
         			#1820781</a> Export: New site-export tool that provides a downloadable XML representation of the site and its media. (<em>2008-01-18 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820781&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820781&amp;group_id=82171&amp;atid=565237">
         			#1820781</a> Import: New site-import tool that can import from an XML representation of the site and its media. (<em>2008-01-25 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820781&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820781&amp;group_id=82171&amp;atid=565237">
         			#1820781</a> Plugins: New plugin methods to support mapping of Ids as sites are imported. (<em>2008-01-25 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820777&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820777&amp;group_id=82171&amp;atid=565237">
         			#1820777</a> Plugins: Now support 'tokenizing' of internal links. This translates links from the form:
 <br>
 <br>http://segue.example.edu/index.php?module=ui1&amp;action=view&amp;node=12345
@@ -549,28 +549,28 @@
 <br>
 <br>[[localurl:module=ui1&amp;action=view&amp;node=12345]] (<em>2008-01-25 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820777&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820777&amp;group_id=82171&amp;atid=565237">
         			#1820777</a> WikiText: Now supports [[localurl:xxxxx]] for of url-tokens. (<em>2008-01-25 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> WikiText: Links to add missing pages now land on a page with a message rather than throwing an unknown action exception. (<em>2008-02-14 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> index.php: Now MYPATH constant is set to the SCRIPT_PATH instead of PHP_SELF to work better when using path info-based URLs. (<em>2008-01-25 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1893980&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1893980&amp;group_id=82171&amp;atid=565234">
         			#1893980</a> Editing UI: People with author/editor roles below the site root now get links to edit-mode. (<em>2008-02-14 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Site Display: Can now get the content type of a block. This matches the plugin type. (<em>2008-01-18 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1815898&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1815898&amp;group_id=82873&amp;atid=567476">
         			#1815898</a> Site Display: Asset-based site components now use the PHP5 DOM libraries instead of the DOMIT libraries that had been needed under PHP4. (<em>2008-01-23 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=%201873960&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=%201873960&amp;group_id=82171&amp;atid=565234">
         			# 1873960</a> A URL that requires javascript processing now isn't placed in a form action, preventing web-crawlers form accidentally going to an invalid URL. (<em>2008-01-17 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1876751&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1876751&amp;group_id=82171&amp;atid=565234">
         			#1876751</a> History: Now catches if no versions are specified. (<em>2008-02-15 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871570&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871570&amp;group_id=82171&amp;atid=565234">
         			#1871570</a> History: Links to other parts of the site Hierarchy now go back to the appropriate module and action. (<em>2008-02-15 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Comments: The CommentManager now checks the authorization of the asset the thread is attached to rather than looking at the request. (<em>2008-01-24 - Adam Franco</em>)</li>		<li>
@@ -580,7 +580,7 @@
 		<li>
 <b>Change:</b> Can now get the Segue version string during execution. (<em>2008-01-18 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854967&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854967&amp;group_id=82171&amp;atid=565234">
         			#1854967</a> MediaLibrary: Failed thumbnail generation for multi-page PDF files no longer causes an error in the MediaLibrary. (<em>2008-02-15 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-9</h2>
@@ -589,19 +589,19 @@
 <ul>
 		
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872198&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872198&amp;group_id=82171&amp;atid=565234">
         			#1872198</a> Themes: Sub-menus are now indented more to improve clarity. Indent is now 17px. (<em>2008-01-15 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872247&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872247&amp;group_id=82171&amp;atid=565234">
         			#1872247</a> Permissions: Now components without titles do not crash the Manage Roles user interface. (<em>2008-01-15 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872261&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872261&amp;group_id=82171&amp;atid=565234">
         			#1872261</a> Permissions: Now nested menus are traversed-to when populating the Roles Matrix. (<em>2008-01-15 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872249&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872249&amp;group_id=82171&amp;atid=565234">
         			#1872249</a> Permissions: Groups are now not duplicated in search results. (<em>2008-01-15 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872249&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1872249&amp;group_id=82171&amp;atid=565234">
         			#1872249</a> Permissions: Now can display more info about users and groups in case the names are not unique. (<em>2008-01-15 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-8</h2>
@@ -618,21 +618,21 @@
 		<li>
 <span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Run the Updaters under Admin Tools --&gt; Segue Updates to update the table structure. (<em>2008-01-14 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871485&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871485&amp;group_id=82171&amp;atid=565234">
         			#1871485</a> Classic Mode UI: Now 'Add Image' and 'Add File' buttons are hidden when using the FCK editor. (<em>2008-01-14 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798872&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798872&amp;group_id=82171&amp;atid=565237">
         			#1798872</a> Site Display: Can now programatically order content blocks by title, create date, or modification date, all ascending or descending. (<em>2008-01-11 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820927&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820927&amp;group_id=82171&amp;atid=565237">
         			#1820927</a> New versioning system for plugin-content. Optionally supported by individual plugins. (<em>2008-01-08 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Slots: Added documentation to Admin UI. (<em>2008-01-04 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1864130&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1864130&amp;group_id=82171&amp;atid=565234">
         			#1864130</a> Slots: Can now change the type of a slot when editing or adding. (<em>2008-01-04 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1851038&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1851038&amp;group_id=82171&amp;atid=565234">
         			#1851038</a> Portal/Slots: Have cut the load time by ~2/3. From 30 seconds to 11 seconds.
 <br>
 <br>The big overhead that is now skipped was checking the ownership status of all members of a class rather than just the current user. (<em>2008-01-04 - Adam Franco</em>)</li>
@@ -645,7 +645,7 @@
 		<li>
 <b>Change:</b> Site Creation: Can now select which slot owners are given Admin access to a new site at time of create. (<em>2008-01-14 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1863384&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1863384&amp;group_id=82171&amp;atid=565234">
         			#1863384</a> Moved the 'icons/' subdirectory to 'images/' to prevent collision with the Apache system-icons directory when installing Segue in the webserver root. (<em>2008-01-03 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-7</h2>
@@ -654,39 +654,39 @@
 <ul>
 		
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854951&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854951&amp;group_id=82171&amp;atid=565234">
         			#1854951</a> CourseInformation: Now mal-formed course codes should not prevent the portal from displaying. (<em>2007-12-20 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b> Plugins: New descriptive methods in plugins. (<em>2007-12-19 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b> Plugins: Can now determine if a plugin type is installed and/or enabled. (<em>2007-12-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844330&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844330&amp;group_id=82171&amp;atid=565234">
         			#1844330</a> Failed login now displays a message and logout now redirects properly. (<em>2007-12-17 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> General improvements to validity of XHTML markup. (<em>2007-12-18 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819569&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819569&amp;group_id=82171&amp;atid=565234">
         			#1819569</a> Portal: Now shows a generic portal to non-logged-in users with a not that they should log in to see their own portal. (<em>2007-12-14 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Portal: Empty site categories are now hidden. (<em>2007-12-14 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1849650&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1849650&amp;group_id=82171&amp;atid=565234">
         			#1849650</a> Portal: 'Create New Site' button for admins has been removed since it was an unneeded hold-over from early testing. (<em>2007-12-14 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1849657&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1849657&amp;group_id=82171&amp;atid=565234">
         			#1849657</a> Slots: 'Slots' are now named 'placeholders' in the UI. (<em>2007-12-14 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1850947&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1850947&amp;group_id=82171&amp;atid=565234">
         			#1850947</a> Slots: 'delete placeholder' link in portal now works. (<em>2007-12-14 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1851019&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1851019&amp;group_id=82171&amp;atid=565234">
         			#1851019</a> UI2: Options in 'Add Menu Item' list are now categorized. (<em>2007-12-14 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1850944&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1850944&amp;group_id=82171&amp;atid=565234">
         			#1850944</a> UI1/UI2: 'Page with Sidebar' option is now not as prominently listed. (<em>2007-12-14 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854964&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854964&amp;group_id=82171&amp;atid=565234">
         			#1854964</a> UI1/UI2: When editing a page and viewing and empty menu, instructions are now printed to the screen describing how to add a Content Page on which content can be added. (<em>2007-12-20 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> UI2: Upgraded Scriptaculous library to latest version and moved the overridden Draggables.isAffected() method to the ArrangeModeVisitor where it is used, allowing a plain vanilla Scriptaculous library to be included in the source. (<em>2007-12-17 - Adam Franco</em>)</li>
@@ -695,24 +695,24 @@
 		<li>
 <b>Change:</b> UI2: Arrange mode now only allows dragging by the controls bar. (<em>2007-12-18 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798921&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798921&amp;group_id=82171&amp;atid=565234">
         			#1798921</a> UI2: Arrange mode now renders more closely to edit mode. Re-factored Arrange mode visitor to only add its needed additions rather than replicating functions in edit mode. (<em>2007-12-17 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> UI2: Some fixes to the Javascript syntax to aid XHTML validation. (<em>2007-12-17 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854960&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854960&amp;group_id=82171&amp;atid=565234">
         			#1854960</a> UI2: Added a notice for MSIE &lt; v7 users that New Mode won't work for them. (<em>2007-12-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1853122&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1853122&amp;group_id=82171&amp;atid=565234">
         			#1853122</a> SiteDisplay: Now cannot drag nav items into their child menus, creating cycles in the hierarchy. (<em>2007-12-18 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854956&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854956&amp;group_id=82171&amp;atid=565234">
         			#1854956</a> SiteDisplay: Empty NavOrganizers now have a non-null placeholder, so if they don't get filled they won't cause other elements on the page to stretch. (<em>2007-12-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854958&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854958&amp;group_id=82171&amp;atid=565234">
         			#1854958</a> SiteDisplay: Links in text blocks are now underlined and colored. (<em>2007-12-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854969&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1854969&amp;group_id=82171&amp;atid=565234">
         			#1854969</a> WikiText: Link titles are now case-insensitive. (<em>2007-12-20 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0.0-beta-6</h2>
@@ -725,37 +725,37 @@
 <ul>
 		
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1845759&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1845759&amp;group_id=82171&amp;atid=565234">
         			#1845759</a> Security: All titles, descriptions, and other user-supplied text is now cleaned to prevent cross-site-scripting (XSS) attacks. (<em>2007-12-07 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1845757&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1845757&amp;group_id=82171&amp;atid=565234">
         			#1845757</a> Security: Plugins now strip HTML markup that might give openings for cross-site-scripting (XSS) attacks. (<em>2007-12-06 - Adam Franco</em>)</li>
 		<li>
 <span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Existing installations need to have the Segue Update run under Admin Tools --&gt; Segue Updates. (<em>2007-12-06 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844322&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844322&amp;group_id=82171&amp;atid=565237">
         			#1844322</a> Slots: New slot-editing and deleting admin interfaces. (<em>2007-12-06 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844322&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844322&amp;group_id=82171&amp;atid=565237">
         			#1844322</a> Slots: New slot-browsing admin interface. (<em>2007-12-06 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844322&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1844322&amp;group_id=82171&amp;atid=565237">
         			#1844322</a> Slots: Can now build a list of all slots. (<em>2007-12-06 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820937&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820937&amp;group_id=82171&amp;atid=565237">
         			#1820937</a> Slots: Now can specify a category for which virtual instance to display a site in main/community. (<em>2007-12-06 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b> New data updater system. (<em>2007-12-06 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799957&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799957&amp;group_id=82171&amp;atid=565237">
         			#1799957</a> Wiki-Linking: New Wiki-Linking support to use double-square-brackets links a la MediaWiki for link between parts of a site or between sites. (<em>2007-12-03 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Permissions: Titles are now are consistently tabbed using padding. (<em>2007-11-30 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1841252&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1841252&amp;group_id=82171&amp;atid=565234">
         			#1841252</a> Permissions: AZs set for all of Segue are now not changeable in the permissions UI. (<em>2007-11-30 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1831274&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1831274&amp;group_id=82171&amp;atid=565234">
         			#1831274</a> 'Show Titles' and 'Enable Comments' settings are now only 'yes' or 'no' at the root (site) level, so the default setting is clear. (<em>2007-11-30 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Fixed an error in the change log that was preventing it from displaying. (<em>2007-11-30 - Adam Franco</em>)</li>
@@ -768,16 +768,16 @@
 <ul>
 		
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828372&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828372&amp;group_id=82171&amp;atid=565237">
         			#1828372</a> Permissions: New Hierarchical role-setting UI that can set roles for any user or group across the entire site. (<em>2007-11-15 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1831176&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1831176&amp;group_id=82171&amp;atid=565234">
         			#1831176</a> UI1: Fixed an issue where Header/Footer sensing was inappropriately thinking that a cell was a footer when it contained a nav-target rather than a nav item. This was leading to an uncaught exception in Classic Mode. (<em>2007-11-14 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1831176&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1831176&amp;group_id=82171&amp;atid=565237">
         			#1831176</a> SiteRendering: Improved the debugging output to help solve an issue. (<em>2007-11-13 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1831322&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1831322&amp;group_id=82171&amp;atid=565234">
         			#1831322</a> UI2: Arrange-mode no longer asks for confirmation before moving items. (<em>2007-11-13 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0.0-beta-4</h2>
@@ -790,12 +790,12 @@
 		<li>
 <b>Bug Fix:</b> UI2: Menu Items are now filtered from being dropped on their own cells, preventing inadvertent nudges from triggering 'do you want to move' prompts. (<em>2007-11-13 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1830622&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1830622&amp;group_id=82171&amp;atid=565234">
         			#1830622</a> UI2: Menus now are not draggable to content organizers.
 <br>
 <br>The issue was an comparison between a string id and an integer id was improperly evaluating to true. (<em>2007-11-13 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819565&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819565&amp;group_id=82171&amp;atid=565234">
         			#1819565</a> Installer: Moved install script to segue/main/install/ since it isn't really end-user modifiable. (<em>2007-11-12 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Installer: Now makes authorization service available before install-process runs so that installation happens smoothly. (<em>2007-11-12 - Adam Franco</em>)</li>
@@ -812,65 +812,65 @@
 <ul>
 		
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1824417&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1824417&amp;group_id=82171&amp;atid=565234">
         			#1824417</a> Permissions: When users are assigned an 'Author' role, they are automatically given the 'Editor' role of anything that they create.
 <br>
 <br>This allows people to go back and make changes to or delete content that they have added.
 <br>
 <br>Similarly, If a user moves a piece of content from a place where they have an implicit 'Editor' role to a place where they only have an implicit 'Author' role, they are given an explicit 'Editor' role on the newly moved content. (<em>2007-11-09 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820233&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820233&amp;group_id=82171&amp;atid=565234">
         			#1820233</a> Logging: Content deleting, creation, and modification are now logged. (<em>2007-11-09 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828607&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828607&amp;group_id=82171&amp;atid=565234">
         			#1828607</a> Comments: Changes to comments are now logged. (<em>2007-11-09 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1829074&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1829074&amp;group_id=82171&amp;atid=565234">
         			#1829074</a> UI1: Classic-Mode now doesn't show controls for unimplemented 'move' and 'versions' options. (<em>2007-11-09 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1829021&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1829021&amp;group_id=82171&amp;atid=565234">
         			#1829021</a> UI1: Classic-Mode controls now are not shown if the current user does not have authorization to use them. (<em>2007-11-09 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1827777&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1827777&amp;group_id=82171&amp;atid=565234">
         			#1827777</a> Comments: Comments can now be edited by users who are not otherwise editors of the site and only have 'comment' authorization. (<em>2007-11-08 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1827779&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1827779&amp;group_id=82171&amp;atid=565234">
         			#1827779</a> Comments: Authorizations are now checked before showing 'comment' and 'reply' buttons. Authorization checks have also been added inside the comment manager to ensure that authorizations are respected. (<em>2007-11-08 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798943&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798943&amp;group_id=82171&amp;atid=565237">
         			#1798943</a> UI2: 'Controls' are now named 'Options'. (<em>2007-11-08 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798943&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798943&amp;group_id=82171&amp;atid=565237">
         			#1798943</a> UI2: 'Content Organizers' are now named 'Content Containers' (<em>2007-11-08 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798943&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798943&amp;group_id=82171&amp;atid=565237">
         			#1798943</a> UI2: 'Fixed Organizers' are now named 'Layout Containers' (<em>2007-11-08 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828414&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828414&amp;group_id=82171&amp;atid=565234">
         			#1828414</a> SiteDisplay: Fixed exception being thrown when adding menus. (<em>2007-11-08 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798922&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798922&amp;group_id=82171&amp;atid=565234">
         			#1798922</a> UI2/Permissions: UI2 editing actions now properly check authorizations before acting. (<em>2007-11-08 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799950&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799950&amp;group_id=82171&amp;atid=565237">
         			#1799950</a> Permissions: New 'Role' system to provide an abstraction over the particular combinations of authorizations. (<em>2007-11-05 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1824880&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1824880&amp;group_id=82171&amp;atid=565237">
         			#1824880</a> Permissions: New 'Institute Users' group. This group can have an number of sub-groups or individuals added to it. It represents all users that should be treated together as 'members of the institution'. (<em>2007-11-07 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799950&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799950&amp;group_id=82171&amp;atid=565237">
         			#1799950</a> Permissions: New Role-setting interface that allows setting the role of 'the world' and 'institute users' throughout the site hierarchy. This UI is part of the classic-mode editing UI. (<em>2007-11-05 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1810360&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1810360&amp;group_id=88266&amp;atid=586054">
         			#1810360</a> MediaLibrary panel now works in IE. Needed to explicitly add tbody elements to tables. (<em>2007-10-22 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819563&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819563&amp;group_id=82171&amp;atid=565234">
         			#1819563</a> Fixing a number of E_STRICT notices and improving the class and interface hierarchies. (<em>2007-10-10 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1802310&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1802310&amp;group_id=82171&amp;atid=565234">
         			#1802310</a> MediaLibrary: Can now delete files. (<em>2007-10-25 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819999&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1819999&amp;group_id=82171&amp;atid=565234">
         			#1819999</a> MediaLibrary: Thumbnails are now refreshed when uploading new files. (<em>2007-10-25 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> MediaLibrary: When uploading a replacement file, if the submitted title is the same as the original filename, the title will be updated to the new filename. (<em>2007-10-25 - Adam Franco</em>)</li>
@@ -884,12 +884,12 @@
 		<li>
 <b>Bug Fix:</b> MediaLibrary: Now extends screen after uploading files. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798905&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798905&amp;group_id=82171&amp;atid=565234">
         			#1798905</a> MediaLibrary: Now displays errors and continues rather than failing. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> MediaLibrary: Now logs exceptions. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798905&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798905&amp;group_id=82171&amp;atid=565234">
         			#1798905</a> TextBlock Plugin: Now the Media Library always receives the correct assetId And uploads to the correct Asset. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b> Changlog links and display now work. (<em>2007-09-25 - Adam Franco</em>)</li>
@@ -898,52 +898,52 @@
 		<li>
 <b>Change:</b> UI1: 'Edit Site Settings' button is now on the right side of the page. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1802062&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1802062&amp;group_id=82171&amp;atid=565237">
         			#1802062</a> UI1/UI2: 'Append New...' has been renamed to 'Add Content' or 'Add Menu Item' as appropriate. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799053&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799053&amp;group_id=82171&amp;atid=565234">
         			#1799053</a> UI1/UI2: "2-column page" is now renamed back to "Page with Sidebar". As well, the "sidebar" organizers now have their default widths set to 200px so that they look more like a sidebar. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1801625&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1801625&amp;group_id=82171&amp;atid=565234">
         			#1801625</a> SiteDisplay: Now 'Read More' links aren't shown if no text is present. (<em>2007-09-25 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> SiteCreation: Default site no longer has a footer. (<em>2007-09-24 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799049&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799049&amp;group_id=82171&amp;atid=565237">
         			#1799049</a> UI1: Editing controls for header and footer are now hidden in Classic Mode and accessible through the "Site Settings" wizard. (<em>2007-09-24 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Site visitors now use PHP5-style __construct() methods. (<em>2007-09-24 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1801241&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1801241&amp;group_id=82171&amp;atid=565234">
         			#1801241</a> SiteDisplay: Titles of content blocks set to "hide" are now hidden if they are not the target content block. (<em>2007-09-24 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Now the default main menu has a 200px width setting. (<em>2007-09-24 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> SiteDisplay: Now empty content organizers collapse cleanly. (<em>2007-09-24 - Adam Franco</em>)</li>
 		<li>
-<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798938&amp;group_id=&amp;atid=">
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798938&amp;group_id=82171&amp;atid=565234">
         			#1798938</a> UI2: Added Classic Mode-style reordering. (<em>2007-09-21 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Trimming extra slashes from the url (<em>2007-09-21 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Now using Alex's new theme as the default. (<em>2007-09-21 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799736&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799736&amp;group_id=82171&amp;atid=565234">
         			#1799736</a> Database/Setup: Fixing an uncommitted transaction that was causing transaction-lock-timeouts. (<em>2007-09-21 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798939&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798939&amp;group_id=82171&amp;atid=565234">
         			#1798939</a> UI1: Reordering forms now appear for all sibling elements. (<em>2007-09-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798903&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798903&amp;group_id=82171&amp;atid=565234">
         			#1798903</a> SiteDisplay: SubMenus with no items now don't stretch to the width of the page. (<em>2007-09-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798913&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798913&amp;group_id=82171&amp;atid=565234">
         			#1798913</a> UI2: Block settings default button is now 'Apply Changes' instead of 'Delete'. (<em>2007-09-20 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798937&amp;group_id=&amp;atid=">
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798937&amp;group_id=82171&amp;atid=565234">
         			#1798937</a> UI1: Status step placeholder not shown to user. (<em>2007-09-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798916&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798916&amp;group_id=82171&amp;atid=565234">
         			#1798916</a> UI2: Now whitespace won't prevent widths from saving. (<em>2007-09-20 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0.0-beta-1</h2>
@@ -959,7 +959,7 @@
 		<li>
 <b>Change:</b> Libraries: Moved default location of harmoni and polyphony to segue/main/. (<em>2007-09-20 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798996&amp;group_id=&amp;atid=">
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1798996&amp;group_id=82171&amp;atid=565234">
         			#1798996</a> Comments: Refreshing page after deleting a comment no longer results in an uncaught exception. (<em>2007-09-20 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> TextBlock: Now works with both editors as an AJAX Plugin. (<em>2007-09-20 - Adam Franco</em>)</li>

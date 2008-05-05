@@ -1483,6 +1483,10 @@
 		</reporter>
 	</reporters>
 	<reftypes>
+		<reftype name="bug" group="82171" tracker='565234'/>
+		<reftype name="fr" group="82171" tracker='565237'/>
+		<reftype name="patch" group="82171" tracker='565236'/>
+		
 		<reftype name="segue_bug" group="82171" tracker='565234'/>
 		<reftype name="segue_fr" group="82171" tracker='565237'/>
 		<reftype name="segue_patch" group="82171" tracker='565236'/>
