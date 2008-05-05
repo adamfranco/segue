@@ -10,6 +10,25 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-20.1" date="2008-05-05">
+		<releaseNotes>
+			This release of Segue 2.0 includes dramatic speed improvements over
+			beta 19.1 due to a new implementation of Harmoni's Authorization and Hiearchy
+			system. Usage of this new systems requires running the appropriate updater
+			located under Admin Tools --> Segue Updates. This updater will take several
+			minutes to run and will make irrevocable changes to your database. Please
+			back up your database before running this updater.
+			
+			Other improvements to Segue include support for migrating tags from Segue 1
+			sites, and an improved installation process.
+			
+			Segue 2.0 beta 20 uses Polyphony 1.1.0 and Harmoni 1.2.0. 
+		</releaseNotes>
+		<fix author='adam' date='2008-05-05' ref='1958172' reftype='bug' reporter='gregg_humphrey'>
+			Classic Mode: Edit links now do not break when using site=sitename form of
+			the url.
+		</fix>
+	</version>
 	<version number="2.0-beta-20" date="2008-05-05">
 		<releaseNotes>
 			This release of Segue 2.0 includes dramatic speed improvements over
@@ -1479,6 +1498,10 @@
 		</reporter>
 		<reporter short="shel_sax">
 			<name>Shel Sax</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="gregg_humphrey">
+			<name>Gregg Humphrey</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>

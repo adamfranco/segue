@@ -182,7 +182,7 @@ class ControlsSiteVisitor
 			$parent->getId();
 			
 			
-			$url = 	$harmoni->request->mkURLWithPassthrough('ui1', $action, array(
+			$url = 	$harmoni->request->mkURL('ui1', $action, array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action
