@@ -41,3 +41,8 @@ require_once(HARMONI.'Gui2/GuiManager.class.php');
 	$guiMgr->assignConfiguration($configuration);
 	$guiMgr->assignOsidContext($context);
 	Services::registerObjectAsService("GUIManager", $guiMgr);
+	
+	$guiMgr->setHead($guiMgr->getHead()."
+		
+		<link rel='stylesheet' type='text/css' href='".MYPATH."/images/SegueCommon.css' id='SegueCommon'/>
+");
