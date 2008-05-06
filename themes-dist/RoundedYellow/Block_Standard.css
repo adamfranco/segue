@@ -1,0 +1,82 @@
+/*********************************************************
+ * Block 2
+ *********************************************************/
+
+.block2 {
+	padding: 1px;
+	border: 0px;
+}
+.block2Content {
+	background-color: #FFFFFF;
+	color: #000;
+	border: 1px solid #979797;
+	padding: 10px;
+	text-align: left;
+	margin: 0px;
+}
+
+
+.block2TopCorners, .block2BottomCorners {
+	margin: 0px;
+	padding: 0px;
+}
+.block2Spacer {
+	margin: 0px; padding: 0px; border: 0px;
+	clear: both;
+	font-size: 1px; line-height: 1px;
+}
+
+
+.block2BorderTL, .block2BorderTR, .block2BorderBL, .block2BorderBR {
+	width: 14px; height: 14px;
+	padding: 0px; border: 0px;
+	z-index: 99;
+}
+.block2BorderTL, .block2BorderBL {
+	float: left;
+	clear: both;
+}
+.block2BorderTR, .block2BorderBR {
+	float: right;
+	clear: right;
+}
+.block2BorderTL {
+	margin: 0px 0px 0px 0px;
+}
+.block2BorderTR {
+	margin: -0px -0px 0px 0px;
+}
+.block2BorderBL {
+	margin: -14px 0px 0px 0px;
+}
+.block2BorderBR {
+	margin: -14px 0px 0px 0px;
+}
+.block2BorderTL {
+	 margin-left: -4px;
+	 margin-left: -1px;
+}
+html>body .block2BorderTL {
+	 margin-left: 0px;
+}
+.block2BorderTR {
+	 margin-right: -4px;
+	 margin-right: -1px;
+}
+html>body .block2BorderTR {
+	 margin-right: 0px;
+}
+.block2BorderBL {
+	 margin-left: -3px;
+	 margin-left: 0px;
+}
+html>body .block2BorderBL {
+	 margin-left: -0px;
+}
+.block2BorderBR {
+	 margin-left: -3px;
+	 margin-left: 0px;
+}
+html>body .block2BorderBR {
+	 margin-left: 0px;
+}
