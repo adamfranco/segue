@@ -125,7 +125,7 @@ if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
 	
 	try {
 		$db = Harmoni_Db::getDatabase('segue_db');
-		print "<p>".$db->getStats()."</p>";
+		print "<br/><div>".$db->getStats()."</div>";
 	} catch (UnknownIdException $e) {
 	}
 	
