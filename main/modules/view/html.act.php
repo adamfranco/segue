@@ -117,18 +117,24 @@ class htmlAction
 		 *********************************************************/
 		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
 		
+		$outputHandler = $harmoni->getOutputHandler();
+		
+		/*********************************************************
+		 * Theme
+		 *********************************************************/
+		$outputHandler->setCurrentTheme($rootSiteComponent->getTheme());
+		
 		
 		/*********************************************************
 		 * Other headers and footers
 		 *********************************************************/
-		$outputHandler = $harmoni->getOutputHandler();
-		
 		// Remove any existing title tags from the head text
 		print preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead());
 		
 		//Add our new title
 		print "\n\t\t<title>";
 		print strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $rootSiteComponent->getDisplayName()));
+		print " - ".$rootSiteComponent->getTheme()->getIdString();
 		print "</title>";
 		
 		// Add our common Harmoni javascript libraries

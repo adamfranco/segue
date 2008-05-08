@@ -44,6 +44,38 @@ interface SiteNavBlockSiteComponent
 	 */
 	function getSlot () ;
 	
+	/*********************************************************
+	 * Themes
+	 *********************************************************/
+	
+	/**
+	 * Answer the current theme.
+	 * 
+	 * @return object Harmoni_Gui2_ThemeInterface
+	 * @access public
+	 * @since 5/8/08
+	 */
+	public function getTheme ();
+	
+	/**
+	 * Update the Site to use the theme passed. Any options set on the theme
+	 * will be remembered.
+	 * 
+	 * @param object Harmoni_Gui2_ThemeInterface $theme
+	 * @return null
+	 * @access public
+	 * @since 5/8/08
+	 */
+	public function updateTheme (Harmoni_Gui2_ThemeInterface $theme);
+	
+	/**
+	 * Update the Site to use the default theme.
+	 * 
+	 * @return null
+	 * @access public
+	 * @since 5/8/08
+	 */
+	public function useDefaultTheme ();
 }
 
 ?>
