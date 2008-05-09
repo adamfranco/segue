@@ -59,7 +59,8 @@ class editviewAction
 	 * @since 1/18/07
 	 */
 	function execute () {
-		$mainScreen = parent::execute();
+		$allwrapper = parent::execute();
+		$mainScreen = $this->mainScreen;
 		
 		// Add permissions button
 		$authZ = Services::getService("AuthZ");
@@ -105,7 +106,7 @@ class editviewAction
 			$mainScreen->add(new UnstyledBlock(ob_get_clean()), $rootSiteComponent->getWidth(), null, CENTER, BOTTOM);
 		}
 		
-		return $mainScreen;
+		return $allwrapper;
 	}
 	
 	/**

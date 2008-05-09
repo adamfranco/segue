@@ -94,7 +94,7 @@ class htmlAction
 		$allWrapper = $this->addHeaderControls($mainScreen);
 				
 		$this->addSiteContent($mainScreen);
-		$this->addFooterControls($mainScreen);
+		$this->addFooterControls($allWrapper);
 
 		
 		$this->mainScreen = $mainScreen;
@@ -157,12 +157,8 @@ class htmlAction
 		$allWrapper = new Container(new YLayout, BLANK, 1);
 		
 		
-		
-		$allWrapper->add($mainScreen,
-			$rootSiteComponent->getWidth(), null, CENTER, TOP);
-		
 		// :: login, links and commands
-		$this->headRow = $mainScreen->add(
+		$this->headRow = $allWrapper->add(
 			new Container(new XLayout, BLANK, 1), 
 			"100%", null, CENTER, TOP);
 			
@@ -183,9 +179,7 @@ class htmlAction
 				null, null, RIGHT, TOP);
 		}
 		
-		
-		$mainScreen = new Container(new YLayout, BLANK, BACKGROUND_BLOCK);
-		
+				
 		$allWrapper->add($mainScreen,
 			$rootSiteComponent->getWidth(), null, CENTER, TOP);
 		
