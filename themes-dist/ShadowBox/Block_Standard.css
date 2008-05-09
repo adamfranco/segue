@@ -1,0 +1,16 @@
+/*********************************************************
+ * Block 2
+ *********************************************************/
+
+.Block_Standard {
+	padding: 1px;
+	border: 0px;
+}
+.Block_Standard .Content {
+	background-color: #FFFFFF;
+	color: #000;
+	/*border-bottom: 1px dotted #979797;*/
+	padding: 5px;
+	text-align: left;
+	margin: 0px;
+}
