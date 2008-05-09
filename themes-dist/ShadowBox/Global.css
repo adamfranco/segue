@@ -3,8 +3,8 @@
  *********************************************************/
 
 body {
-	background-color: #FFFFCC;
-	color: #000;
+	background-color: [[BG_COLOR]];
+	color: [[TEXT_COLOR]];
 	font-family: Verdana, sans-serif;
 	font-size:12px;
 	padding: 0px;
@@ -13,7 +13,7 @@ body {
 
 a {
 	text-decoration: none;
-	color: #990000;
+	color: [[LINK_COLOR]];
 	cursor: pointer;
 }
 

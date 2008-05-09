@@ -7,8 +7,7 @@
 		border: 0px;
 	}
 	.MenuItem_Heading .Content {
-		background-color: #FFFFFF;
-		color: #000;
+		background-color: [[FG_COLOR]];
 		border: 1px solid #979797;
 		padding: 10px;
 		text-align: left;
