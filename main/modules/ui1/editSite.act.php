@@ -59,7 +59,8 @@ class editSiteAction
 		} catch (PermissionDeniedException $e) {
 		
 		}
-		$wizard->addStep("display", $this->getDisplayOptionsStep());		
+		$wizard->addStep("theme", $this->getThemeStep());
+		$wizard->addStep("display", $this->getDisplayOptionsStep());
 		$wizard->addStep("header", $this->getHeaderStep());
 		
 		return $wizard;
@@ -92,8 +93,8 @@ class editSiteAction
 			
 			if (!$this->saveDisplayOptionsStep($properties['display']))
 				return FALSE;
-			
-			if (!$this->saveStatusStep($properties['status']))
+				
+			if (!$this->saveThemeStep($properties['theme']))
 				return FALSE;
 			
 			return TRUE;
@@ -270,6 +271,71 @@ class editSiteAction
 			}
 		} catch (PermissionDeniedException $e) {
 		
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Answer the theme step
+	 * 
+	 * @return object WizardStep
+	 * @access protected
+	 * @since 5/8/08
+	 */
+	protected function getThemeStep () {
+		$component = $this->getSiteComponent();
+		$step =  new WizardStep();
+		$step->setDisplayName(_("Theme"));
+		$property = $step->addComponent("theme", new WRadioList);
+		$property->setValue($component->getTheme()->getIdString());
+		
+		$themeMgr = Services::getService("GUIManager");
+		foreach ($themeMgr->getThemes() as $theme) {
+			ob_start();
+			try {
+				$thumb = $theme->getThumbnail();
+				$harmoni = Harmoni::instance();
+				print "\n\t<img src='".$harmoni->request->quickUrl('gui2', 'theme_thumbnail', array('theme' => $theme->getIdString()))."' style='float: left; width: 200px; margin-right: 10px;'/>";
+			} catch (UnimplementedException $e) {
+				print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
+			} catch (OperationFailedException $e) {
+				print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
+			}
+			print "\n\t<p>".$theme->getDescription()."</p>";
+			print "\n\t<div style='clear: both;'> &nbsp; </div>";
+			$property->addOption($theme->getIdString(), "<strong>".$theme->getDisplayName()."</strong>", ob_get_clean());
+		}
+		
+		ob_start();
+		print "\n<h2>"._("Theme")."</h2>";
+		print "\n<p>";
+		print _("Here you can set the theme for the site."); 
+		print "\n</p>\n";
+		print "[[theme]]";
+		
+		$step->setContent(ob_get_clean());
+		
+		return $step;
+	}
+	
+	/**
+	 * Save the theme step
+	 * 
+	 * @param array $values
+	 * @return boolean
+	 * @access protected
+	 * @since 5/8/08
+	 */
+	protected function saveThemeStep (array $values) {
+		$component = $this->getSiteComponent();
+		$currentTheme = $component->getTheme();
+		
+		$themeMgr = Services::getService("GUIManager");
+		$newTheme = $themeMgr->getTheme($values['theme']);
+		
+		if ($newTheme->getIdString() != $currentTheme->getIdString()) {
+			$component->updateTheme($newTheme);
 		}
 		
 		return true;
