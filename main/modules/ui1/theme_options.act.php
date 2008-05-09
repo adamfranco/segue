@@ -91,10 +91,10 @@ class theme_optionsAction
 	protected function getOptionsStep () {
 		$component = $this->getSiteComponent();
 		$step =  new WizardStep();
-		$step->setDisplayName(_("Theme Options"));
+		$step->setDisplayName(_("Basic Options"));
 		ob_start();
 		
-		print "\n<h2>"._("Theme Options")."</h2>";
+		print "\n<h2>"._("Basic Options")."</h2>";
 		print "\n<p>";
 		print _("Here you can set the options for the current theme."); 
 		print "\n</p>\n";
