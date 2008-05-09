@@ -82,7 +82,7 @@ class arrangeviewAction
 		{
 			ob_start();
 			$harmoni = Harmoni::instance();
-			print "\n<div style='text-align: right;'>";
+			print "\n<div style='text-align: right; margin-top: 10px;'>";
 			print "\n<a href='".$harmoni->request->quickURL("roles", "choose_agent", 
 					array("node" => SiteDispatcher::getCurrentNodeId(),
 					"returnModule" => $harmoni->request->getRequestedModule(),
@@ -90,7 +90,7 @@ class arrangeviewAction
 			print "\n\t<input type='button' value='"._("Permissions")."'/>";
 			print "\n</a>";
 			print "\n</div>";
-			$allwrapper->add(new UnstyledBlock(ob_get_clean()), SiteDispatcher::getCurrentRootNode()->getWidth(), null, CENTER, BOTTOM);
+			$mainScreen->add(new UnstyledBlock(ob_get_clean()), SiteDispatcher::getCurrentRootNode()->getWidth(), null, CENTER, BOTTOM);
 		}
 		
 		return $allwrapper;

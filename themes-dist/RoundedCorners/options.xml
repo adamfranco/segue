@@ -1,0 +1,25 @@
+<options>
+	<option id='color'>
+		<displayName lang='en_US'>Color</displayName>
+		<description lang='en_US'>The overall color-scheme of the theme.</description>
+		<description lang='es_ES'>Los colores majores del tema.</description>
+		<choice>
+			<key>white</key>
+			<label lang='en_US'>White</label>
+			<label lang='es_ES'>Blanco</label>
+			<setting marker='[[IMAGE_DIR]]'>white</setting>
+			<setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[TEXT_COLOR]]'>#000000</setting>
+			<setting marker='[[LINK_COLOR]]'>#003366</setting>
+		</choice>
+		<choice isDefault='true'>
+			<key>yellow</key>
+			<label lang='en_US'>Yellow</label>
+			<label lang='es_ES'>Amarillo</label>
+			<setting marker='[[IMAGE_DIR]]'>yellow</setting>
+			<setting marker='[[BG_COLOR]]'>#FFFFCC</setting>
+			<setting marker='[[TEXT_COLOR]]'>#000000</setting>
+			<setting marker='[[LINK_COLOR]]'>#990000</setting>
+		</choice>
+	</option>
+</options>

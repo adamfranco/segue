@@ -94,7 +94,7 @@ class htmlAction
 		$allWrapper = $this->addHeaderControls($mainScreen);
 				
 		$this->addSiteContent($mainScreen);
-		$this->addFooterControls($mainScreen);
+		$this->addFooterControls($allWrapper);
 
 		
 		$this->mainScreen = $mainScreen;
@@ -117,18 +117,24 @@ class htmlAction
 		 *********************************************************/
 		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
 		
+		$outputHandler = $harmoni->getOutputHandler();
+		
+		/*********************************************************
+		 * Theme
+		 *********************************************************/
+		$outputHandler->setCurrentTheme($rootSiteComponent->getTheme());
+		
 		
 		/*********************************************************
 		 * Other headers and footers
 		 *********************************************************/
-		$outputHandler = $harmoni->getOutputHandler();
-		
 		// Remove any existing title tags from the head text
 		print preg_replace("/<title>[^<]*<\/title>/", "", $outputHandler->getHead());
 		
 		//Add our new title
 		print "\n\t\t<title>";
 		print strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $rootSiteComponent->getDisplayName()));
+		print " - ".$rootSiteComponent->getTheme()->getIdString();
 		print "</title>";
 		
 		// Add our common Harmoni javascript libraries
@@ -151,13 +157,9 @@ class htmlAction
 		$allWrapper = new Container(new YLayout, BLANK, 1);
 		
 		
-		
-		$allWrapper->add($mainScreen,
-			$rootSiteComponent->getWidth(), null, CENTER, TOP);
-		
 		// :: login, links and commands
-		$this->headRow = $mainScreen->add(
-			new Container(new XLayout, BLOCK, 1), 
+		$this->headRow = $allWrapper->add(
+			new Container(new XLayout, BLANK, 1), 
 			"100%", null, CENTER, TOP);
 			
 		$this->leftHeadColumn = $this->headRow->add(
@@ -177,9 +179,7 @@ class htmlAction
 				null, null, RIGHT, TOP);
 		}
 		
-		
-		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
-		
+				
 		$allWrapper->add($mainScreen,
 			$rootSiteComponent->getWidth(), null, CENTER, TOP);
 		

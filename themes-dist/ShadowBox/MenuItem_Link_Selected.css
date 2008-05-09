@@ -1,0 +1,20 @@
+/*********************************************************
+ * Menu 1 selected content
+ *********************************************************/
+
+	*.MenuItem_Link_Selected  {
+		padding: 1px;
+		border: 0px;
+	}
+
+	*.MenuItem_Link_Selected .Content {
+		/*background-color: #F5F5F5;*/
+		/*border-top: 1px solid #979797;*/
+		/*border-bottom: 1px solid #979797;*/
+		padding: 1px;
+		text-align: left;
+		font-weight: bold;
+		font-size: 100%;
+		padding-left: 10px;
+		margin: 0px;
+	}

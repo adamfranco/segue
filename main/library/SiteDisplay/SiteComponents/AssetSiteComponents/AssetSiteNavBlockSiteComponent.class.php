@@ -177,6 +177,100 @@ class AssetSiteNavBlockSiteComponent
 		$slotManager = SlotManager::instance();
 		return $slotManager->getSlotForSiteId($this->getId());
 	}
+	
+	/*********************************************************
+	 * Themes
+	 *********************************************************/
+	
+	/**
+	 * Answer the current theme.
+	 * 
+	 * @return object Harmoni_Gui2_ThemeInterface
+	 * @access public
+	 * @since 5/8/08
+	 */
+	public function getTheme () {
+		$element = $this->getElement();
+		
+		$xpath = new DOMXpath($element->ownerDocument);
+		$themeElements = $xpath->query('./theme', $element);
+		
+		$themeMgr = Services::getService("GUIManager");
+		
+		// Return the default theme
+		if (!$themeElements->length)
+			return $themeMgr->getDefaultTheme();
+		
+		
+		// Set up the theme object
+		$themeElement = $themeElements->item(0);
+		try {
+			$theme = $themeMgr->getTheme($themeElement->getAttribute('id'));
+		} catch (UnknownIdException $e) {
+			return $themeMgr->getDefaultTheme();
+		}
+		
+		$options = trim($themeElement->nodeValue);
+		if ($options) {
+			try {
+				$theme->setOptionsValue($options);
+			} catch (OperationFailedException $e) {
+			}
+		}
+		
+		return $theme;
+	}
+	
+	/**
+	 * Update the Site to use the theme passed. Any options set on the theme
+	 * will be remembered.
+	 * 
+	 * @param object Harmoni_Gui2_ThemeInterface $theme
+	 * @return null
+	 * @access public
+	 * @since 5/8/08
+	 */
+	public function updateTheme (Harmoni_Gui2_ThemeInterface $theme) {
+		$element = $this->getElement();
+		$doc = $element->ownerDocument;
+		
+		// Delete any existing theme-settings
+		$this->useDefaultTheme();
+		
+		// Add our new theme
+		$themeElement = $element->appendChild($doc->createElement('theme'));
+		$themeElement->setAttribute('id', $theme->getIdString());
+		
+		// If the theme supports settings, save them.
+		if ($theme->supportsOptions()) {
+			$optionsSession = $theme->getOptionsSession();
+			// Only Store options if not using defaults
+			if (!$optionsSession->usesDefaults()) {
+				$themeElement->appendChild($doc->createCDATASection(
+					$optionsSession->getOptionsValue()));
+			}
+		}
+		
+		$this->_saveXml();
+	}
+	
+	/**
+	 * Update the Site to use the default theme.
+	 * 
+	 * @return null
+	 * @access public
+	 * @since 5/8/08
+	 */
+	public function useDefaultTheme () {
+		$element = $this->getElement();
+		$xpath = new DOMXpath($element->ownerDocument);
+		$themeElements = $xpath->query('./theme', $element);
+		foreach ($themeElements as $themeElement) {
+			$element->removeChild($themeElement);
+		}
+		
+		$this->_saveXml();
+	}
 }
 
 ?>

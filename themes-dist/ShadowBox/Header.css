@@ -1,0 +1,14 @@
+/*********************************************************
+ * Header 1
+ *********************************************************/
+
+	*.Header {
+		padding: 1px;
+		border: 0px;
+	}
+	*.Header .Content {
+		border: 1px solid #979797;
+		padding: 10px;
+		text-align: left;
+		margin: 0px;
+	}
