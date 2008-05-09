@@ -163,7 +163,7 @@ class htmlAction
 		
 		// :: login, links and commands
 		$this->headRow = $mainScreen->add(
-			new Container(new XLayout, BLOCK, 1), 
+			new Container(new XLayout, BLANK, 1), 
 			"100%", null, CENTER, TOP);
 			
 		$this->leftHeadColumn = $this->headRow->add(
@@ -184,7 +184,7 @@ class htmlAction
 		}
 		
 		
-		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
+		$mainScreen = new Container(new YLayout, BLANK, BACKGROUND_BLOCK);
 		
 		$allWrapper->add($mainScreen,
 			$rootSiteComponent->getWidth(), null, CENTER, TOP);
