@@ -135,7 +135,7 @@ class ViewModeSiteVisitor
 			return $false;
 		}
 				
-		$guiContainer = new Container (	new YLayout, BLOCK, 1);
+		$guiContainer = new Container (	new YLayout, BLANK, 1);
 	
 		
 		if ($this->showBlockTitle($block)) {
