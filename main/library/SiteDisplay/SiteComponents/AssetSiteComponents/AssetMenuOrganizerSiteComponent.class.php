@@ -199,6 +199,8 @@ class AssetMenuOrganizerSiteComponent
 		$element = $this->getElement();
 		
 		$element->setAttribute('displayType', $displayType);
+		
+		$this->_saveXml();
 	}
 }
 

@@ -72,6 +72,41 @@ class editContentAction
 	}
 	
 	/**
+	 * Answer the display-options step for this component
+	 * 
+	 * @return object WizardStep
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function getDisplayOptionsStep () {
+		$component = $this->getSiteComponent();
+		$step = parent::getDisplayOptionsStep();
+		
+		ob_start();
+		$this->printDisplayType($component, $step);
+		
+		$step->setContent($step->getContent().ob_get_clean());
+		return $step;
+	}
+	
+	/**
+	 * save the display options step
+	 * 
+	 * @param array $values
+	 * @return boolean
+	 * @access public
+	 * @since 5/12/08
+	 */
+	function saveDisplayOptionsStep ($values) {
+		if (!parent::saveDisplayOptionsStep($values)) {
+			return false;
+		}
+		$component = $this->getSiteComponent();
+		$this->saveDisplayType($component, $values);
+		return true;
+	}
+	
+	/**
 	 * Create the step for adding the title and description
 	 * 
 	 * @return object WizardStep
@@ -141,6 +176,58 @@ class editContentAction
 			$plugin->updateFromWizard($values['content']);
 		}
 		
+		return true;
+	}
+	
+	/**
+	 * Print out the displayType options
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @param object WizardStep $step
+	 * @return null
+	 * @access protected
+	 * @since 5/12/08
+	 */
+	protected function printDisplayType (SiteComponent $siteComponent, WizardStep $step) {
+		$property = $step->addComponent('displayType', new WSelectList);
+		$property->setValue($siteComponent->getDisplayType());
+		
+		$property->addOption('Block_Standard', _('Standard Block'));
+		$property->addOption('Block_Emphasized', _('Emphasized Block'));
+		$property->addOption('Block_Alert', _('Alert Block'));
+		$property->addOption('Header', _('Header'));
+		$property->addOption('Footer', _('Footer'));
+		
+		
+		print "\n\t\t\t\t<p style='white-space: nowrap; font-weight: bold;'>";
+		print "\n\t\t\t\t\t"._('Look and feel of this content block: ')."[[displayType]]";
+		print "\n\t\t\t\t</p>";
+		
+		$property = $step->addComponent('headingDisplayType', new WSelectList);
+		$property->setValue($siteComponent->getHeadingDisplayType());
+		
+		$property->addOption('Heading_1', _('Heading Level 1 (Biggest)'));
+		$property->addOption('Heading_2', _('Heading Level 2 (Big)'));
+		$property->addOption('Heading_3', _('Heading Level 3 (Normal)'));
+		$property->addOption('Heading_4', _('Heading Level 4 (Small)'));
+		
+		print "\n\t\t\t\t<p style='white-space: nowrap; font-weight: bold;'>";
+		print "\n\t\t\t\t\t"._('Look and feel of this content block\'s heading: ')."[[headingDisplayType]]";
+		print "\n\t\t\t\t</p>";
+	}
+	
+	/**
+	 * Save the displayType options
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @param array $values
+	 * @return boolean
+	 * @access protected
+	 * @since 5/12/08
+	 */
+	protected function saveDisplayType (SiteComponent $siteComponent, array $values) {
+		$siteComponent->setDisplayType($values['displayType']);
+		$siteComponent->setHeadingDisplayType($values['headingDisplayType']);
 		return true;
 	}
 	

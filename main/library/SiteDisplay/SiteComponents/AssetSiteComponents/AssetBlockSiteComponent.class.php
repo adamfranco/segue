@@ -341,6 +341,8 @@ class AssetBlockSiteComponent
 		$element = $this->getElement();
 		
 		$element->setAttribute('displayType', $displayType);
+		
+		$this->_saveXml();
 	}
 	
 	/**
@@ -376,6 +378,8 @@ class AssetBlockSiteComponent
 		$element = $this->getElement();
 		
 		$element->setAttribute('headingDisplayType', $displayType);
+		
+		$this->_saveXml();
 	}
 	
 /*********************************************************
