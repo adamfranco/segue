@@ -139,10 +139,26 @@ class ViewModeSiteVisitor
 	
 		
 		if ($this->showBlockTitle($block)) {
+			switch ($block->getHeadingDisplayType()) {
+				case 'Heading_1':
+					$headingIndex = 1;
+					break;
+				case 'Heading_2':
+					$headingIndex = 2;
+					break;
+				case 'Heading_3':
+					$headingIndex = 3;
+					break;
+				case 'Heading_4':
+					$headingIndex = 4;
+					break;
+				default:
+					throw new OperationFailedException("Unknown Heading Type, '".$block->getHeadingDisplayType()."'.");
+			}
 			$guiContainer->add(
 				new Heading(
 					$this->getBlockTitle($block),
-					2),
+					$headingIndex),
 			$block->getWidth(), null, null, TOP);
 		}
 		
@@ -151,13 +167,38 @@ class ViewModeSiteVisitor
 		} else {
 			$tagHtml = '';
 		}
-
+		
+		// Gui-component display type and index
+		switch ($block->getDisplayType()) {
+				case 'Block_Standard':
+					$class = 'Block';
+					$index = STANDARD_BLOCK;
+					break;
+				case 'Block_Emphasized':
+					$class = 'Block';
+					$index = EMPHASIZED_BLOCK;
+					break;
+				case 'Block_Alert':
+					$class = 'Block';
+					$index = ALERT_BLOCK;
+					break;
+				case 'Header':
+					$class = 'Header';
+					$index = 1;
+					break;
+				case 'Footer':
+					$class = 'Footer';
+					$index = 1;
+					break;
+				default:
+					throw new OperationFailedException("Unknown Display Type, '".$block->getDisplayType()."'.");
+			}
 		
 		// Plugin content		
 		$guiContainer->add(
-			new Block(
+			new $class(
 				$this->getPluginContent($block)."\n\n".$tagHtml,
-				STANDARD_BLOCK), 
+				$index), 
 			$block->getWidth(), null, null, TOP);
 			
 // 		printpre("width:".$block->getWidth());
@@ -624,8 +665,25 @@ class ViewModeSiteVisitor
 		
 		if ($this->_menuNestingLevel)
 			$guiContainer = new SubMenu ( $layout, $this->_menuNestingLevel);
-		else
-			$guiContainer = new Menu ( $layout, 1);
+		else {
+			switch ($organizer->getDisplayType()) {
+				case 'Menu_Left':
+					$menuIndex = MENU_LEFT;
+					break;
+				case 'Menu_Right':
+					$menuIndex = MENU_RIGHT;
+					break;
+				case 'Menu_Top':
+					$menuIndex = MENU_TOP;
+					break;
+				case 'Menu_Bottom':
+					$menuIndex = MENU_BOTTOM;
+					break;
+				default:
+					throw new OperationFailedException("Unknown Menu DisplayType, '".$organizer->getDisplayType()."'.");
+			}
+			$guiContainer = new Menu ( $layout, $menuIndex);
+		}
 		
 		$hasChildComponents = false;
 		$numCells = $organizer->getTotalNumberOfCells();
