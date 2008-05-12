@@ -14,6 +14,8 @@
  */
 
 require_once(HARMONI.'Gui2/GuiManager.class.php');
+require_once(MYDIR.'/main/library/Gui2/SiteThemeSource.class.php');
+require_once(MYDIR.'/main/modules/view/SiteDispatcher.class.php');
 
 
 // :: GUIManager setup ::
@@ -29,13 +31,17 @@ require_once(HARMONI.'Gui2/GuiManager.class.php');
 	$configuration->addProperty('xmlns', 'http://www.w3.org/1999/xhtml');
 	
 	// Theme sources
-	$configuration->addProperty('sources', array(
-		array(	'type' => 'directory',
-				'path' => MYDIR.'/themes-dist'),
-		array(	'type' => 'directory',
-				'path' => MYDIR.'/themes-local'),
+	$sources = array();
 	
-	));
+	$sources[] = new Segue_Gui2_SiteThemeSource(array('database_index' => $dbID));
+	
+	// Read-only themes
+	$sources[] = array(	'type' => 'directory',
+						'path' => MYDIR.'/themes-dist');
+	$sources[] = array(	'type' => 'directory',
+						'path' => MYDIR.'/themes-local');
+	
+	$configuration->addProperty('sources', $sources);
 	
 	$guiMgr = new Harmoni_Gui2_GuiManager;
 	$guiMgr->assignConfiguration($configuration);
