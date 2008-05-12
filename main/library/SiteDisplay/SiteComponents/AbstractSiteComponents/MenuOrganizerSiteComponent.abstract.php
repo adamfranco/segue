@@ -27,7 +27,25 @@ interface MenuOrganizerSiteComponent
 	extends FlowOrganizerSiteComponent
 {
 
-
+	/**
+	 * Answer the kind of menu Gui Component to display: Menu_Left, Menu_Right, Menu_Top, or Menu_Bottom
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function getDisplayType ();
+	
+	/**
+	 * Set the Gui Component display type for this menu, one of: 
+	 * 		Menu_Left, Menu_Right, Menu_Top, or Menu_Bottom
+	 * 
+	 * @param string $displayType
+	 * @return null
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function setDisplayType ($displayType);
 
 }
 
