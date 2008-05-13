@@ -277,6 +277,41 @@ class editSiteAction
 	}
 	
 	/**
+	 * Create the step for adding the display options.
+	 * 
+	 * @return object WizardStep
+	 * @access public
+	 * @since 5/13/08
+	 */
+	function getDisplayOptionsStep () {
+		$component = $this->getSiteComponent();
+		$step = parent::getDisplayOptionsStep();
+		
+		ob_start();
+		$this->printWidth($component, $step);
+		
+		$step->setContent($step->getContent().ob_get_clean());
+		return $step;
+	}
+	
+	/**
+	 * save the display options step
+	 * 
+	 * @param array $values
+	 * @return boolean
+	 * @access public
+	 * @since 5/13/08
+	 */
+	function saveDisplayOptionsStep ($values) {
+		if (!parent::saveDisplayOptionsStep($values)) {
+			return false;
+		}
+		$component = $this->getSiteComponent();
+		$this->saveWidth($component, $values);
+		return true;
+	}
+	
+	/**
 	 * Answer the theme step
 	 * 
 	 * @return object WizardStep
