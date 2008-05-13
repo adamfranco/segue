@@ -2,16 +2,14 @@
  * Heading 2
  *********************************************************/
 
-	.Heading_2 {
-		padding: 1px;
-		border: 0px;
-	}
-	.Heading_2 .Content {
-		background-color: #F5F5F5;
-		border: 1px solid #979797;
-		padding: 3px;
-		text-align: left;
-		font-size: 110%;
-		padding-left: 10px;
-		margin-top: 1px;
-	}
+.Heading_2 {
+	border-left: 1px dotted #979797;
+	border-right: 1px dotted #979797;		
+	padding-left: 10px;
+	text-align: left;
+	font-weight: bold;
+	font-size: 110%;
+}
+.Heading_2 .Content {
+
+}
