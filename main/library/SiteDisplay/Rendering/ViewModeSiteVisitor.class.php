@@ -178,6 +178,10 @@ class ViewModeSiteVisitor
 					$class = 'Block';
 					$index = EMPHASIZED_BLOCK;
 					break;
+				case 'Block_Sidebar':
+					$class = 'Block';
+					$index = SIDEBAR_BLOCK;
+					break;
 				case 'Block_Alert':
 					$class = 'Block';
 					$index = ALERT_BLOCK;
