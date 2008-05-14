@@ -150,6 +150,7 @@ class ViewModeSiteVisitor
 					$headingIndex = 3;
 					break;
 				case 'Heading_4':
+				case 'Heading_Sidebar':
 					$headingIndex = 4;
 					break;
 				default:

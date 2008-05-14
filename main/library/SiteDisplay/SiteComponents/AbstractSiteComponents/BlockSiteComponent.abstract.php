@@ -137,7 +137,7 @@ interface BlockSiteComponent
 	
 	/**
 	 * Answer the kind of Gui Component to display for the heading: 
-	 *		Heading_1, Heading_2, Heading_3, Heading_4
+	 *		Heading_1, Heading_2, Heading_3, Heading_Sidebar
 	 * 
 	 * @return string
 	 * @access public
@@ -147,7 +147,7 @@ interface BlockSiteComponent
 	
 	/**
 	 * Set the Gui Component display type for the heading, one of: 
-	 * 		Heading_1, Heading_2, Heading_3, Heading_4
+	 * 		Heading_1, Heading_2, Heading_3, Heading_Sidebar
 	 * 
 	 * @param string $displayType
 	 * @return null

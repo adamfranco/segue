@@ -1,12 +1,12 @@
 /*********************************************************
- * Heading 4
+ * Heading - For Sidebar
  *********************************************************/
 
-	*.Heading_4 {
+	*.Heading_Sidebar {
 		padding: 1px;
 		border: 0px;
 	}
-	*.Heading_4 .Content {
+	*.Heading_Sidebar .Content {
 		background-color: #aaa;
 		border: 1px solid #000;
 		padding: 10px;
