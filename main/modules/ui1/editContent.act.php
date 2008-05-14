@@ -193,7 +193,7 @@ class editContentAction
 		$property->setValue($siteComponent->getDisplayType());
 		
 		$property->addOption('Block_Standard', _('Standard Block'));
-		$property->addOption('Block_Emphasized', _('Emphasized Block'));
+		$property->addOption('Block_Sidebar', _('Sidebar Block'));
 		$property->addOption('Block_Alert', _('Alert Block'));
 		$property->addOption('Header', _('Header'));
 		$property->addOption('Footer', _('Footer'));

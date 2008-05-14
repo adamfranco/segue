@@ -310,7 +310,7 @@ class AssetBlockSiteComponent
 	
 	/**
 	 * Answer the kind of Gui Component to display: 
-	 *		Block_Standard, Block_Emphasized, Block_Alert, Header, Footer
+	 *		Block_Standard, Block_Sidebar, Block_Alert, Header, Footer
 	 * 
 	 * @return string
 	 * @access public
@@ -327,7 +327,7 @@ class AssetBlockSiteComponent
 	
 	/**
 	 * Set the Gui Component display type for this block, one of: 
-	 * 		Block_Standard, Block_Emphasized, Block_Alert, Header, Footer
+	 * 		Block_Standard, Block_Sidebar, Block_Alert, Header, Footer
 	 * 
 	 * @param string $displayType
 	 * @return null
@@ -335,8 +335,8 @@ class AssetBlockSiteComponent
 	 * @since 5/12/08
 	 */
 	public function setDisplayType ($displayType) {
-		if (!in_array($displayType, array('Block_Standard', 'Block_Emphasized', 'Block_Alert', 'Header', 'Footer')))
-			throw new InvalidArgumentException("'$displayType' is not one of Block_Standard, Block_Emphasized, Block_Alert, Header, Footer.");
+		if (!in_array($displayType, array('Block_Standard', 'Block_Sidebar', 'Block_Alert', 'Header', 'Footer')))
+			throw new InvalidArgumentException("'$displayType' is not one of Block_Standard, Block_Sidebar, Block_Alert, Header, Footer.");
 			
 		$element = $this->getElement();
 		

@@ -171,12 +171,9 @@ class ViewModeSiteVisitor
 		// Gui-component display type and index
 		switch ($block->getDisplayType()) {
 				case 'Block_Standard':
-					$class = 'Block';
-					$index = STANDARD_BLOCK;
-					break;
 				case 'Block_Emphasized':
 					$class = 'Block';
-					$index = EMPHASIZED_BLOCK;
+					$index = STANDARD_BLOCK;
 					break;
 				case 'Block_Sidebar':
 					$class = 'Block';

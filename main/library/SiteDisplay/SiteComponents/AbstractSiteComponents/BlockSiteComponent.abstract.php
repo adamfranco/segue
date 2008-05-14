@@ -116,7 +116,7 @@ interface BlockSiteComponent
 	
 	/**
 	 * Answer the kind of Gui Component to display: 
-	 *		Block_Standard, Block_Emphasized, Block_Alert, Header, Footer
+	 *		Block_Standard, Block_Sidebar, Block_Alert, Header, Footer
 	 * 
 	 * @return string
 	 * @access public
@@ -126,7 +126,7 @@ interface BlockSiteComponent
 	
 	/**
 	 * Set the Gui Component display type for this block, one of: 
-	 * 		Block_Standard, Block_Emphasized, Block_Alert, Header, Footer
+	 * 		Block_Standard, Block_Sidebar, Block_Alert, Header, Footer
 	 * 
 	 * @param string $displayType
 	 * @return null
