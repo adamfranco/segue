@@ -105,7 +105,7 @@ abstract class SegueSingleTagAction
 		
 		$this->printTaggedItem($item, $viewAction);
 		
-		$component =  new Block(ob_get_clean(), EMPHASIZED_BLOCK);
+		$component =  new Block(ob_get_clean(), STANDARD_BLOCK);
 		return $component;
 	}
 	
