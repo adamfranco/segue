@@ -1,8 +1,8 @@
 /*********************************************************
- * Heading 4
+ * Heading - For Sidebar
  *********************************************************/
 
-*.Heading_4 {
+*.Heading_Sidebar {
 	border-left: 1px dotted #979797;
 	border-right: 1px dotted #979797;		
 	padding-left: 10px;
@@ -10,6 +10,6 @@
 	font-weight: bold;
 	font-size: 90%;
 }
-*.Heading_4 .Content {
+*.Heading_Sidebar .Content {
 
 }
