@@ -193,7 +193,7 @@ class editContentAction
 		$property->setValue($siteComponent->getDisplayType());
 		
 		$property->addOption('Block_Standard', _('Standard Block'));
-		$property->addOption('Block_Emphasized', _('Emphasized Block'));
+		$property->addOption('Block_Sidebar', _('Sidebar Block'));
 		$property->addOption('Block_Alert', _('Alert Block'));
 		$property->addOption('Header', _('Header'));
 		$property->addOption('Footer', _('Footer'));
@@ -206,10 +206,10 @@ class editContentAction
 		$property = $step->addComponent('headingDisplayType', new WSelectList);
 		$property->setValue($siteComponent->getHeadingDisplayType());
 		
-		$property->addOption('Heading_1', _('Heading Level 1 (Biggest)'));
-		$property->addOption('Heading_2', _('Heading Level 2 (Big)'));
-		$property->addOption('Heading_3', _('Heading Level 3 (Normal)'));
-		$property->addOption('Heading_4', _('Heading Level 4 (Small)'));
+		$property->addOption('Heading_1', _('Heading - Biggest'));
+		$property->addOption('Heading_2', _('Heading - Big'));
+		$property->addOption('Heading_3', _('Heading - Normal'));
+		$property->addOption('Heading_Sidebar', _('Heading - For Sidebar'));
 		
 		print "\n\t\t\t\t<p style='white-space: nowrap; font-weight: bold;'>";
 		print "\n\t\t\t\t\t"._('Look and feel of this content block\'s heading: ')."[[headingDisplayType]]";

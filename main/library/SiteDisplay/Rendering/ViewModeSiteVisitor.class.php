@@ -150,6 +150,7 @@ class ViewModeSiteVisitor
 					$headingIndex = 3;
 					break;
 				case 'Heading_4':
+				case 'Heading_Sidebar':
 					$headingIndex = 4;
 					break;
 				default:
@@ -171,12 +172,13 @@ class ViewModeSiteVisitor
 		// Gui-component display type and index
 		switch ($block->getDisplayType()) {
 				case 'Block_Standard':
+				case 'Block_Emphasized':
 					$class = 'Block';
 					$index = STANDARD_BLOCK;
 					break;
-				case 'Block_Emphasized':
+				case 'Block_Sidebar':
 					$class = 'Block';
-					$index = EMPHASIZED_BLOCK;
+					$index = SIDEBAR_BLOCK;
 					break;
 				case 'Block_Alert':
 					$class = 'Block';

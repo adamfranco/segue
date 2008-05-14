@@ -310,7 +310,7 @@ class AssetBlockSiteComponent
 	
 	/**
 	 * Answer the kind of Gui Component to display: 
-	 *		Block_Standard, Block_Emphasized, Block_Alert, Header, Footer
+	 *		Block_Standard, Block_Sidebar, Block_Alert, Header, Footer
 	 * 
 	 * @return string
 	 * @access public
@@ -327,7 +327,7 @@ class AssetBlockSiteComponent
 	
 	/**
 	 * Set the Gui Component display type for this block, one of: 
-	 * 		Block_Standard, Block_Emphasized, Block_Alert, Header, Footer
+	 * 		Block_Standard, Block_Sidebar, Block_Alert, Header, Footer
 	 * 
 	 * @param string $displayType
 	 * @return null
@@ -335,8 +335,8 @@ class AssetBlockSiteComponent
 	 * @since 5/12/08
 	 */
 	public function setDisplayType ($displayType) {
-		if (!in_array($displayType, array('Block_Standard', 'Block_Emphasized', 'Block_Alert', 'Header', 'Footer')))
-			throw new InvalidArgumentException("'$displayType' is not one of Block_Standard, Block_Emphasized, Block_Alert, Header, Footer.");
+		if (!in_array($displayType, array('Block_Standard', 'Block_Sidebar', 'Block_Alert', 'Header', 'Footer')))
+			throw new InvalidArgumentException("'$displayType' is not one of Block_Standard, Block_Sidebar, Block_Alert, Header, Footer.");
 			
 		$element = $this->getElement();
 		
@@ -347,7 +347,7 @@ class AssetBlockSiteComponent
 	
 	/**
 	 * Answer the kind of Gui Component to display for the heading: 
-	 *		Heading_1, Heading_2, Heading_3, Heading_4
+	 *		Heading_1, Heading_2, Heading_3, Heading_Sidebar
 	 * 
 	 * @return string
 	 * @access public
@@ -364,7 +364,7 @@ class AssetBlockSiteComponent
 	
 	/**
 	 * Set the Gui Component display type for the heading, one of: 
-	 * 		Heading_1, Heading_2, Heading_3, Heading_4
+	 * 		Heading_1, Heading_2, Heading_3, Heading_Sidebar
 	 * 
 	 * @param string $displayType
 	 * @return null
@@ -372,8 +372,8 @@ class AssetBlockSiteComponent
 	 * @since 5/12/08
 	 */
 	public function setHeadingDisplayType ($displayType) {
-		if (!in_array($displayType, array('Heading_1', 'Heading_2', 'Heading_3', 'Heading_4')))
-			throw new InvalidArgumentException("'$displayType' is not one of Heading_1, Heading_2, Heading_3, Heading_4.");
+		if (!in_array($displayType, array('Heading_1', 'Heading_2', 'Heading_3', 'Heading_Sidebar')))
+			throw new InvalidArgumentException("'$displayType' is not one of Heading_1, Heading_2, Heading_3, Heading_Sidebar.");
 			
 		$element = $this->getElement();
 		

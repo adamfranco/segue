@@ -101,10 +101,10 @@ abstract class SegueTagsAction
 			$outputHandler->setHead(
 				preg_replace("/<title>[^<]*<\/title>/", $title, $outputHandler->getHead()));			
 		
-		// 	$mainScreen->add(new Block($this->getUnauthorizedMessage(), EMPHASIZED_BLOCK),
+		// 	$mainScreen->add(new Block($this->getUnauthorizedMessage(), STANDARD_BLOCK),
 // 				"100%", null, CENTER, TOP);
 				
-			return new Block($this->getUnauthorizedMessage(), EMPHASIZED_BLOCK);
+			return new Block($this->getUnauthorizedMessage(), STANDARD_BLOCK);
 		}
 	}
 	

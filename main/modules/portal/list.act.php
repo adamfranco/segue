@@ -247,7 +247,7 @@ class listAction
 		} else {
 			print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
 		}
-		return new Block(ob_get_clean(), EMPHASIZED_BLOCK);
+		return new Block(ob_get_clean(), STANDARD_BLOCK);
 	}
 	
 	/**
@@ -288,7 +288,7 @@ class listAction
 		$harmoni = Harmoni::instance();
 		$assetId = $asset->getId();
 						
-		$container = new Container(new YLayout, BLOCK, EMPHASIZED_BLOCK);
+		$container = new Container(new YLayout, BLOCK, STANDARD_BLOCK);
 		$fillContainerSC = new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
 		$fillContainerSC->addSP(new MinHeightSP("88%"));
 	// 	$fillContainerSC->addSP(new WidthSP("100%"));
