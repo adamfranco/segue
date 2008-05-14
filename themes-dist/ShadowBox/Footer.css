@@ -2,11 +2,13 @@
  * Footer 1
  *********************************************************/
 
-	*.Footer {
+*.Footer {
+	border: 1px solid #979797;
+	padding: 10px;
+	margin: 10px;
+}
 
-	}
-	*.Footer .Content {
-		border-bottom: 1px dotted #979797;
-		margin-bottom: 10px;
+*.Footer .Content {
 
-	}
+
+}
