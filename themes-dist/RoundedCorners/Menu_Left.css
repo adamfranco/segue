@@ -1,11 +1,11 @@
 /*********************************************************
- * Menu 1
+ * Menu - Left
  *********************************************************/
-	.Menu {
+	.Menu_Left {
 		padding: 1px;
 		border: 0px;
 	}
-	.Menu Content {
+	.Menu_Left Content {
 		background-color: #eeeeee;
 		color: #000;
 		border: 1px solid #979797;
