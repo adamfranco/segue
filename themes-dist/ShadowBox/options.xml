@@ -1,7 +1,7 @@
 <options>
 	<option id='bg_color'>
 		<displayName lang='en_US'>Background Color</displayName>
-		<description lang='en_US'>The color-scheme of the site border.</description>
+		<description lang='en_US'>The color of the site background.</description>
 		<choice>
 			<key>white</key>
 			<label lang='en_US'>White</label>
@@ -14,10 +14,40 @@
 			<setting marker='[[IMAGE_DIR]]'>yellow</setting>
 			<setting marker='[[BG_COLOR]]'>#FFFFCC</setting>
 		</choice>
+		<choice isDefault='true'>
+			<key>gray</key>
+			<label lang='en_US'>Gray</label>
+			<setting marker='[[IMAGE_DIR]]'>gray</setting>
+			<setting marker='[[BG_COLOR]]'>#CCCCCC</setting>
+		</choice>
+		<choice isDefault='true'>
+			<key>black</key>
+			<label lang='en_US'>Black</label>
+			<setting marker='[[IMAGE_DIR]]'>black</setting>
+			<setting marker='[[BG_COLOR]]'>#000000</setting>
+		</choice>
+		<choice isDefault='true'>
+			<key>blue</key>
+			<label lang='en_US'>Blue</label>
+			<setting marker='[[IMAGE_DIR]]'>blue</setting>
+			<setting marker='[[BG_COLOR]]'>#003366</setting>
+		</choice>
+		<choice isDefault='true'>
+			<key>green</key>
+			<label lang='en_US'>Green</label>
+			<setting marker='[[IMAGE_DIR]]'>green</setting>
+			<setting marker='[[BG_COLOR]]'>#CCFF99</setting>
+		</choice>
+		<choice isDefault='true'>
+			<key>pink</key>
+			<label lang='en_US'>Pink</label>
+			<setting marker='[[IMAGE_DIR]]'>pink</setting>
+			<setting marker='[[BG_COLOR]]'>#FFCCCC</setting>
+		</choice>
 	</option>
 	<option id='fg_color'>
 		<displayName lang='en_US'>Forground Color</displayName>
-		<description lang='en_US'>The color-scheme of the site-content area.</description>
+		<description lang='en_US'>The color of the site foreground.</description>
 		<choice isDefault='true'>
 			<key>white</key>
 			<label lang='en_US'>White</label>
@@ -28,7 +58,75 @@
 			<label lang='en_US'>Yellow</label>
 			<setting marker='[[FG_COLOR]]'>#FFFFCC</setting>
 		</choice>
+		<choice>
+			<key>black</key>
+			<label lang='en_US'>Black</label>
+			<setting marker='[[FG_COLOR]]'>#000000</setting>
+		</choice>
+		<choice>
+			<key>lightblue</key>
+			<label lang='en_US'>Light Blue</label>
+			<setting marker='[[FG_COLOR]]'>#ebeFf5</setting>
+		</choice>
+		<choice>
+			<key>olive</key>
+			<label lang='en_US'>Olive</label>
+			<setting marker='[[FG_COLOR]]'>#bcb</setting>
+		</choice>
+		<choice>
+			<key>red</key>
+			<label lang='en_US'>Red</label>
+			<setting marker='[[FG_COLOR]]'>#edd</setting>
+		</choice>
 	</option>
+	<option id='border_color'>
+		<displayName lang='en_US'>Border Color</displayName>
+		<description lang='en_US'>The color of the borders.</description>
+		<choice isDefault='true'>
+			<key>black</key>
+			<label lang='en_US'>Black</label>
+			<setting marker='[[BORDER_COLOR]]'>#000000</setting>
+		</choice>
+		<choice>
+			<key>red</key>
+			<label lang='en_US'>Red</label>
+			<setting marker='[[BORDER_COLOR]]'>#990000</setting>
+		</choice>
+		<choice>
+			<key>blue</key>
+			<label lang='en_US'>Blue</label>
+			<setting marker='[[BORDER_COLOR]]'>#003366</setting>
+		</choice>
+		<choice>
+			<key>white</key>
+			<label lang='en_US'>White</label>
+			<setting marker='[[BORDER_COLOR]]'>#FFFFFF</setting>
+		</choice>
+		<choice>
+			<key>yellow</key>
+			<label lang='en_US'>Yellow</label>
+			<setting marker='[[BORDER_COLOR]]'>#FFCC00</setting>
+		</choice>
+	</option>
+	<option id='border_style'>
+		<displayName lang='en_US'>Border Style</displayName>
+		<description lang='en_US'>The style of the borders.</description>
+		<choice isDefault='true'>
+			<key>solid</key>
+			<label lang='en_US'>Solid</label>
+			<setting marker='[[BORDER_STYLE]]'>solid</setting>
+		</choice>
+		<choice>
+			<key>yellow</key>
+			<label lang='en_US'>Dotted</label>
+			<setting marker='[[BORDER_STYLE]]'>dotted</setting>
+		</choice>
+		<choice>
+			<key>black</key>
+			<label lang='en_US'>Dashed</label>
+			<setting marker='[[BORDER_STYLE]]'>dashed</setting>
+		</choice>
+	</option>		
 	<option id='text_color'>
 		<displayName lang='en_US'>Text Color</displayName>
 		<description lang='en_US'>The color or normal text.</description>
@@ -36,6 +134,21 @@
 			<key>black</key>
 			<label lang='en_US'>Black</label>
 			<setting marker='[[TEXT_COLOR]]'>#000000</setting>
+		</choice>
+		<choice isDefault='true'>
+			<key>red</key>
+			<label lang='en_US'>Red</label>
+			<setting marker='[[TEXT_COLOR]]'>#990000</setting>
+		</choice>
+		<choice isDefault='true'>
+			<key>blue</key>
+			<label lang='en_US'>Blue</label>
+			<setting marker='[[TEXT_COLOR]]'>#003366</setting>
+		</choice>
+		<choice isDefault='true'>
+			<key>yellow</key>
+			<label lang='en_US'>Yellow</label>
+			<setting marker='[[TEXT_COLOR]]'>#FFCC00</setting>
 		</choice>
 		<choice>
 			<key>white</key>
@@ -51,15 +164,29 @@
 	<option id='link_color'>
 		<displayName lang='en_US'>Link Color</displayName>
 		<description lang='en_US'>The color of link-text.</description>
+		<choice isDefault='true'>
+			<key>red</key>
+			<label lang='en_US'>Red</label>
+			<setting marker='[[LINK_COLOR]]'>#990000</setting>
+		</choice>
 		<choice>
 			<key>blue</key>
 			<label lang='en_US'>Blue</label>
 			<setting marker='[[LINK_COLOR]]'>#003366</setting>
 		</choice>
-		<choice isDefault='true'>
-			<key>red</key>
-			<label lang='en_US'>Red</label>
-			<setting marker='[[LINK_COLOR]]'>#990000</setting>
+		<choice>
+			<key>green</key>
+			<label lang='en_US'>Green</label>
+			<setting marker='[[LINK_COLOR]]'>#009900</setting>
+		</choice>		<choice isDefault='true'>
+			<key>yellow</key>
+			<label lang='en_US'>Yellow</label>
+			<setting marker='[[LINK_COLOR]]'>#FFCC00</setting>
+		</choice>
+		<choice>
+			<key>white</key>
+			<label lang='en_US'>White</label>
+			<setting marker='[[LINK_COLOR]]'>#FFFFFF</setting>
 		</choice>
 	</option>
 </options>

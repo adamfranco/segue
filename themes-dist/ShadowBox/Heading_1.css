@@ -3,8 +3,8 @@
  *********************************************************/
 
 .Heading_1 {
-	border-left: 1px dotted #979797;
-	border-right: 1px dotted #979797;		
+	border-left: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
+	border-right: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];;		
 	padding-left: 10px;
 	text-align: left;
 	font-weight: bold;
