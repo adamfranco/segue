@@ -25,6 +25,13 @@
 		margin-right: 10px;
 		padding-bottom: 3px;
 	}
+	
+	.login {
+		text-align: right; 
+		margin-right: 25px; 
+		margin-bottom: 3px;
+		font-size: 10px;
+	}
 
 	.breadcrumbs {
 		text-align: left;

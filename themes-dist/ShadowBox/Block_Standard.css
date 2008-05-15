@@ -5,8 +5,8 @@
 .Block_Standard {
 	padding-left: 10px;
 	padding-right: 10px;
-	border-left: 1px dotted #979797;
-	border-right: 1px dotted #979797;
+	border-left: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
+	border-right: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
 	text-align: left;
 }
 .Block_Standard .Content {

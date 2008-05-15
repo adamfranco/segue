@@ -5,7 +5,9 @@
 *.Footer {
 	border: 1px solid #979797;
 	padding: 10px;
-	margin: 10px;
+	margin-right: 25px;
+	margin-left: 25px;
+	margin-top: 30px;
 }
 
 *.Footer .Content {

@@ -267,14 +267,14 @@ class displayAction
 			}
 		}
 		if ($users != '') {
-			print "\n<div style='text-align: right; margin-right: 10px; margin-bottom: 3px;'><small>";
+			print "\n<div class='login'>";
 			if (count(explode("+", $users)) == 1)
 				print $users."\t";
 			else 
 				print _("Users: ").$users."\t";
 			
 			print " | <a href='".$harmoni->request->quickURL("auth",
-				"logout")."'>"._("Log Out")."</a></small></div>";
+				"logout")."'>"._("Log Out")."</a></div>";
 		} else {
 			// set bookmarks for success and failure
 			$harmoni->history->markReturnURL("polyphony/display_login");
@@ -286,7 +286,7 @@ class displayAction
 			$passwordField = $harmoni->request->getName("password");
 			$harmoni->request->endNamespace();
 			$harmoni->request->startNamespace("polyphony");
-			print  "\n<div style='text-align: right; margin-right: 10px; margin-bottom: 3px;'>".
+			print  "\n<div style='login'>".
 				"\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
 				"' style='text-align: right' method='post'><small>".

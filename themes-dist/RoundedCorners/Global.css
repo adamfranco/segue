@@ -34,6 +34,37 @@ a:hover {
 }
 
 /*********************************************************
+ * Styles for Segue links, log in, and editing links
+ * BG_TEXT_COLOR should contrast with [[BG_COLOR]]
+ *********************************************************/
+
+.seguelinks {
+	color: [[BG_TEXT_COLOR]];
+
+}
+
+.seguelinks a {
+	color: [[BG_LINK_COLOR]];
+}
+
+.commands {
+	color: [[BG_TEXT_COLOR]];
+
+}
+
+.commands a {
+	color: [[BG_LINK_COLOR]];
+}
+
+.login {
+	color: [[BG_TEXT_COLOR]];
+}
+
+.login a {
+	color: [[BG_LINK_COLOR]];
+}
+
+/*********************************************************
  * Corners
  * In the CSS below, the numbers used are the following:
  * 1px: the width of the border
