@@ -7,43 +7,51 @@
 			<label lang='en_US'>White</label>
 			<setting marker='[[IMAGE_DIR]]'>white</setting>
 			<setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>
 		</choice>
 		<choice isDefault='true'>
 			<key>yellow</key>
 			<label lang='en_US'>Yellow</label>
 			<setting marker='[[IMAGE_DIR]]'>yellow</setting>
 			<setting marker='[[BG_COLOR]]'>#FFFFCC</setting>
-		</choice>
+			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>		</choice>
 		<choice isDefault='true'>
 			<key>gray</key>
 			<label lang='en_US'>Gray</label>
 			<setting marker='[[IMAGE_DIR]]'>gray</setting>
 			<setting marker='[[BG_COLOR]]'>#CCCCCC</setting>
-		</choice>
+			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>		</choice>
 		<choice isDefault='true'>
 			<key>black</key>
 			<label lang='en_US'>Black</label>
 			<setting marker='[[IMAGE_DIR]]'>black</setting>
 			<setting marker='[[BG_COLOR]]'>#000000</setting>
-		</choice>
+			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>		</choice>
 		<choice isDefault='true'>
 			<key>blue</key>
 			<label lang='en_US'>Blue</label>
 			<setting marker='[[IMAGE_DIR]]'>blue</setting>
 			<setting marker='[[BG_COLOR]]'>#003366</setting>
-		</choice>
+			<setting marker='[[BG_TEXT_COLOR]]'>#CCCCCC</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#FFFFFF</setting>		</choice>
 		<choice isDefault='true'>
 			<key>green</key>
 			<label lang='en_US'>Green</label>
 			<setting marker='[[IMAGE_DIR]]'>green</setting>
 			<setting marker='[[BG_COLOR]]'>#CCFF99</setting>
-		</choice>
+			<setting marker='[[BG_TEXT_COLOR]]'>#666666</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#333333</setting>		</choice>
 		<choice isDefault='true'>
 			<key>pink</key>
 			<label lang='en_US'>Pink</label>
 			<setting marker='[[IMAGE_DIR]]'>pink</setting>
 			<setting marker='[[BG_COLOR]]'>#FFCCCC</setting>
-		</choice>
+			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#707070</setting>		</choice>
 	</option>
 	<option id='fg_color'>
 		<displayName lang='en_US'>Forground Color</displayName>

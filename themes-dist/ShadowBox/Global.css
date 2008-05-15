@@ -35,34 +35,33 @@ a:hover {
 
 /*********************************************************
  * Styles for Segue links, log in, and editing links
- * 
+ * BG_TEXT_COLOR should contrast with [[BG_COLOR]]
  *********************************************************/
 
 .seguelinks {
-	color: #666666;
+	color: [[BG_TEXT_COLOR]];
 	padding-left: 15px;
 }
 
 .seguelinks a {
-	color: #666666;
+	color: [[BG_LINK_COLOR]];
 }
 
 .commands {
-	color: #666666;
+	color: [[BG_TEXT_COLOR]];
 	padding-right: 15px;
 }
 
 .commands a {
-	color: #666666;
+	color: [[BG_LINK_COLOR]];
 }
 
 .login {
-	color: #666666;
-
+	color: [[BG_TEXT_COLOR]];
 }
 
 .login a {
-	color: #666666;
+	color: [[BG_LINK_COLOR]];
 }
 
 
