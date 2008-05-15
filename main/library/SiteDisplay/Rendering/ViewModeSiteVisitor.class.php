@@ -269,7 +269,7 @@ class ViewModeSiteVisitor
 		
 		print $this->getHistoryLink($block, $plugin);
 		
-		print "\n<div class='history'></div>";
+		print "\n<div class='no_float_spacer'></div>";
 		return ob_get_clean();
 	}
 	
@@ -420,7 +420,7 @@ class ViewModeSiteVisitor
 		
 		if ($this->showBlockTitle($block)) {
 			$desc = strip_tags($block->getDescription());
-			print "<div style='font-weight: bold; font-size: large;' title=\"".$desc."\">"
+			print "<div class='heading' title=\"".$desc."\">"
 					.$this->getBlockTitle($block)
 					."</div>";
 		}
