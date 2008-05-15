@@ -494,6 +494,32 @@ class Segue_Gui2_SiteTheme
 			throw new OperationFailedException("No elements found that match '$path'.");
 	}
 	
+	/*********************************************************
+	 * Theme Modification
+	 *********************************************************/
+	
+	/**
+	 * Answer true if this theme supports modification.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function supportsModification () {
+		return false;
+	}
+	
+	/**
+	 * Answer an object that implements the ThemeModificationInterface
+	 * for this theme. This could be the same or a different object.
+	 * 
+	 * @return object Harmoni_Gui2_ThemeModificationInterface
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function getModificationSession () {
+		throw new UnimplementedException();
+	}
 	
 	/*********************************************************
 	 * internal

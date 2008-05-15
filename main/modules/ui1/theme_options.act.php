@@ -50,6 +50,7 @@ class theme_optionsAction
 		$wizard = SimpleStepWizard::withDefaultLayout();
 		
 		$wizard->addStep("options", $this->getOptionsStep());
+		$wizard->addStep("advanced", $this->getAdvancedStep());
 		
 		return $wizard;
 	}
@@ -73,6 +74,8 @@ class theme_optionsAction
 			$properties = $wizard->getAllValues();
 			
 			if (!$this->saveOptionsStep($properties['options']))
+				return FALSE;
+			if (!$this->saveAdvancedStep($properties['advanced']))
 				return FALSE;
 			
 			return TRUE;
@@ -152,6 +155,52 @@ class theme_optionsAction
 		$component->updateTheme($theme);
 		
 		return true;
+	}
+	
+	/**
+	 * Answer a wizard step for advanced theme editing.
+	 * 
+	 * @return object WizardStep
+	 * @access protected
+	 * @since 5/15/08
+	 */
+	protected function getAdvancedStep () {
+		$component = $this->getSiteComponent();
+		$step =  new WizardStep();
+		$step->setDisplayName(_("Advanced Editing"));
+		ob_start();
+		
+		print "\n<h2>"._("Advanced Theme Editing")."</h2>";
+		print "\n<p>";
+		print _(""); 
+		print "\n</p>\n";
+				
+		$theme = $component->getTheme();
+		if (!$theme->supportsModification()) {
+			print "\n<p>"._("This theme does not currently support modification. You can make a copy of it for just this site that you can then modify.")."</p>";
+			$step->setContent(ob_get_clean());
+			return $step;
+		}
+		$modificationSession = $theme->getModificationSession();
+		
+// 		foreach ($optionsSession->getOptions() as $option) {
+// 			print "\n<h3>".$option->getDisplayName()."</h3>";
+// 			print "\n<p>".$option->getDescription()."</p>";
+// 			print "[[".$option->getIdString()."]]";
+// 			$property = $step->addComponent($option->getIdString(), new WSelectList());
+// 			$property->setValue($option->getValue());
+// 			
+// 			$values = $option->getValues();
+// 			$labels = $option->getLabels();
+// 			for ($j = 0; $j < count($values); $j++) {
+// 				$property->addOption($values[$j], $labels[$j]);
+// 			}
+// 		}
+		
+				
+		$step->setContent(ob_get_clean());
+		
+		return $step;
 	}
 }
 
