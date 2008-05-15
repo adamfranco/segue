@@ -72,7 +72,7 @@ class changelogAction
 ";
 				break;
 			default:
-				$currentPackage = 'concerto';
+				$currentPackage = 'segue';
 				$file = MYDIR."/doc/changelog.html";
 				$source = file_get_contents($file);
 				break;
