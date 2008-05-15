@@ -34,6 +34,39 @@ a:hover {
 }
 
 /*********************************************************
+ * Styles for Segue links, log in, and editing links
+ * 
+ *********************************************************/
+
+.seguelinks {
+	color: #666666;
+	padding-left: 15px;
+}
+
+.seguelinks a {
+	color: #666666;
+}
+
+.commands {
+	color: #666666;
+	padding-right: 15px;
+}
+
+.commands a {
+	color: #666666;
+}
+
+.login {
+	color: #666666;
+
+}
+
+.login a {
+	color: #666666;
+}
+
+
+/*********************************************************
  * Corners
  * In the CSS below, the numbers used are the following:
  * 1px: the width of the border
