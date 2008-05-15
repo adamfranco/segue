@@ -1,18 +1,18 @@
 /*********************************************************
- * Menu 1 selected content
+ * Menu 1 Selected
  *********************************************************/
 
-	*.MenuItem_Link_Selected  {
-		text-align: left;
-		font-weight: bold;
-		font-size: 100%;
-		padding-left: 10px;
-	}
+*.MenuItem_Link_Selected  {
+	text-align: left;
+	font-weight: bold;
+	font-size: 100%;
+	padding-left: 10px;
+}
 
-	*.MenuItem_Link_Selected .Content {
+*.MenuItem_Link_Selected .Content {
 
-	}
+}
+
+*.MenuItem_Link_Selected a {
 	
-	*.MenuItem_Link_Selected a {
-		
-	}
+}

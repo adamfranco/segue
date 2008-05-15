@@ -2,9 +2,10 @@
  * Header 1
  *********************************************************/
 
-	*.Header {
+*.Header {
 
-	}
-	*.Header .Content {
+}
 
-	}
+*.Header .Content {
+
+}

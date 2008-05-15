@@ -1,24 +1,24 @@
 /*********************************************************
- * Menu 1 unselected content
+ * Menu 1 Unselected
  *********************************************************/
 
-	*.MenuItem_Link_Unselected {
-		text-align: left;
-		font-size: 100%;
-		padding-left: 10px;
-		margin: 0px;
-	}
-	
-	*.MenuItem_Link_Unselected .Content {
+*.MenuItem_Link_Unselected {
+	text-align: left;
+	font-size: 100%;
+	padding-left: 10px;
+	margin: 0px;
+}
 
-	}
-	
+*.MenuItem_Link_Unselected .Content {
+
+}
+
 /*********************************************************
- * Menu 1 hover
- *********************************************************/
+* Menu 1 hover
+*********************************************************/
 
-	*.MenuItem_Link a:hover {
-		display: block;
-		text-decoration: underline;
-	}
+*.MenuItem_Link a:hover {
+	display: block;
+	text-decoration: underline;
+}
 	

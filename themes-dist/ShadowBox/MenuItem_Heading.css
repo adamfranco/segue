@@ -1,5 +1,5 @@
 /*********************************************************
- * MenuHeading 1
+ * Heading - for Menu Content block
  *********************************************************/
 
 .MenuItem_Heading {
@@ -9,6 +9,8 @@
 	padding-bottom: 10px;
 	text-align: left;
 }
-.MenuItem_Heading .Content {
 
+.MenuItem_Heading .Content .heading {
+	font-weight: bold;
+	font-size: medium;
 }

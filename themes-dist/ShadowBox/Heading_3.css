@@ -1,5 +1,5 @@
 /*********************************************************
- * Heading 3
+ * Heading - Normal
  *********************************************************/
 
 .Heading_3 {
@@ -7,9 +7,9 @@
 	border-right: 1px dotted #979797;		
 	padding-left: 10px;
 	text-align: left;
-	font-weight: bold;
-	
+	font-weight: bold;	
 }
+
 .Heading_3 .Content {
 
 }
