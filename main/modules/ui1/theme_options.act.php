@@ -172,12 +172,16 @@ class theme_optionsAction
 		
 		print "\n<h2>"._("Advanced Theme Editing")."</h2>";
 		print "\n<p>";
-		print _(""); 
+		print _("Here you can edit the markup and CSS for the theme."); 
 		print "\n</p>\n";
 				
 		$theme = $component->getTheme();
 		if (!$theme->supportsModification()) {
 			print "\n<p>"._("This theme does not currently support modification. You can make a copy of it for just this site that you can then modify.")."</p>";
+			
+			$property = $step->addComponent('create_copy', WSaveButton::withLabel(_("Create Local Theme Copy")));
+			
+			print "[[create_copy]]";
 			$step->setContent(ob_get_clean());
 			return $step;
 		}
@@ -201,6 +205,38 @@ class theme_optionsAction
 		$step->setContent(ob_get_clean());
 		
 		return $step;
+	}
+	
+	/**
+	 * Save the advanced step
+	 * 
+	 * @param array $values
+	 * @return boolean
+	 * @access protected
+	 * @since 5/15/08
+	 */
+	protected function saveAdvancedStep (array $values) {
+		$component = $this->getSiteComponent();
+		$theme = $component->getTheme();
+		
+		if ($values['create_copy']) {
+			// Get the first source that supports admin.
+			$guiMgr = Services::getService('GUIManager');
+			foreach ($guiMgr->getThemeSources() as $source) {
+				if ($source->supportsThemeAdmin()) {
+					$adminSession = $source->getThemeAdminSession();
+					$newTheme = $adminSession->createCopy($theme);
+					
+					$component->updateTheme($newTheme);
+					
+					$this->reloadToStep = 2;
+					return true;
+				}
+			}
+			// Nowhere to copy to.
+			print "<p>"._("Error: No available source to copy this theme to.")."</p>";
+			return false;
+		}
 	}
 }
 

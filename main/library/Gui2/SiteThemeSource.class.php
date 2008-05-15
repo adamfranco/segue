@@ -52,6 +52,20 @@ class Segue_Gui2_SiteThemeSource
 	}
 	
 	/**
+	 * Answer the current site id for this source.
+	 * 
+	 * @return string $id
+	 * @access private
+	 * @since 5/15/08
+	 */
+	private function getSiteId () {
+		if (isset($this->siteId))
+			return $this->siteId;
+		else
+			return SiteDispatcher::getCurrentRootNode()->getId();
+	}
+	
+	/**
 	 * Answer an array of all of the themes known to this source
 	 * 
 	 * @return array of Harmoni_Gui2_ThemeInterface
@@ -60,13 +74,16 @@ class Segue_Gui2_SiteThemeSource
 	 */
 	public function getThemes () {
 		$themes = array();
-		$subDirs = scandir($this->path);
-		if (!$subDirs)
-			throw new OperationFailedException("Could not get themes.");
-		foreach ($subDirs as $name) {
-			$fullPath = $this->path."/".$name;
-			if ($name != '.' && $name != '..' && is_dir($fullPath))
-				$themes[] = new Harmoni_Gui2_DirectoryTheme($fullPath);
+		
+		$query = new SelectQuery;
+		$query->addTable('segue_site_theme');
+		$query->addColumn('id');
+		$query->addWhereEqual('fk_site', $this->getSiteId());
+		$dbMgr = Services::getService("DatabaseManager");
+		$result = $dbMgr->query($query, $this->databaseIndex);
+		while ($result->hasNext()) {
+			$row = $result->next();
+			$themes[] = new Segue_Gui2_SiteTheme($this->databaseIndex, $row['id']);
 		}
 		
 		return $themes;
@@ -82,10 +99,10 @@ class Segue_Gui2_SiteThemeSource
 	 */
 	public function getTheme ($idString) {
 		// check for any except the allow charachers.
-		if (preg_match('/[^a-z0-9_\.-]/i', $idString))
+		if (!preg_match('/^site_theme-([0-9]+)$/i', $idString, $matches))
 			throw new UnknownIdException("No theme exists with id, '$idString'.");
 		
-		return new Harmoni_Gui2_DirectoryTheme($this->path.'/'.$idString);
+		return new Segue_Gui2_SiteTheme($this->databaseIndex, $matches[1]);
 	}
 	
 	/**
