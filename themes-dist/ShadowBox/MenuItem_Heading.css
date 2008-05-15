@@ -1,15 +1,16 @@
 /*********************************************************
- * MenuHeading 1
+ * Heading - for Menu Content block
  *********************************************************/
 
-	.MenuItem_Heading {
-		padding: 1px;
-		border: 0px;
-	}
-	.MenuItem_Heading .Content {
-		background-color: [[FG_COLOR]];
-		border: 1px solid #979797;
-		padding: 10px;
-		text-align: left;
-		margin: 0px;
-	}
+.MenuItem_Heading {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+}
+
+.MenuItem_Heading .Content .heading {
+	font-weight: bold;
+	font-size: medium;
+}

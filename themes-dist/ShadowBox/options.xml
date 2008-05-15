@@ -54,7 +54,7 @@
 		<choice>
 			<key>blue</key>
 			<label lang='en_US'>Blue</label>
-			<setting marker='[[LINK_COLOR]]'>#000099</setting>
+			<setting marker='[[LINK_COLOR]]'>#003366</setting>
 		</choice>
 		<choice isDefault='true'>
 			<key>red</key>

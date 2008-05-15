@@ -1,16 +1,16 @@
 /*********************************************************
- * Heading 1
+ * Heading - Biggest
  *********************************************************/
 
-	.Heading_1 {
-		padding: 1px;
-		border: 0px;
-	}
-	.Heading_1 .Content {
-		background-color: #B2B2B2;
-		border: 1px solid #979797;
-		padding: 10px;
-		text-align: left;
-		font-size: 150%;
-		margin: 0px;
-	}
+.Heading_1 {
+	border-left: 1px dotted #979797;
+	border-right: 1px dotted #979797;		
+	padding-left: 10px;
+	text-align: left;
+	font-weight: bold;
+	font-size: 125%;
+}
+
+.Heading_1 .Content {
+
+}
