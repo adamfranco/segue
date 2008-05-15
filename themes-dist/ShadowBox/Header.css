@@ -3,7 +3,8 @@
  *********************************************************/
 
 *.Header {
-
+	border-bottom: 1px dotted;
+	margin-bottom: 2px;
 }
 
 *.Header .Content {
