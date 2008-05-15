@@ -265,7 +265,7 @@ class displayAction
 			}
 		}
 		if ($users != '') {
-			print "\n<div style='text-align: right; margin-right: 10px; margin-bottom: 3px;'><small>";
+			print "\n<div class='login'><small>";
 			if (count(explode("+", $users)) == 1)
 				print $users."\t";
 			else 
