@@ -78,14 +78,18 @@ class SiteDispatcher {
 				$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
 				if ($slot->siteExists())
 					$nodeId = $slot->getSiteId()->getIdString();
-				else
+				else {
+					$harmoni->request->endNamespace();
 					throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
+				}
 			} else if (RequestContext::value("node")) {
 				$nodeId = RequestContext::value("node");
 			}
 			
-			if (!isset($nodeId) || !$nodeId)
+			if (!isset($nodeId) || !$nodeId) {
+				$harmoni->request->endNamespace();
 				throw new NullArgumentException('No site node specified.');
+			}
 				
 			self::$currentNodeId = $nodeId;
 			

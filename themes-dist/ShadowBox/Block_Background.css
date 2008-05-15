@@ -3,14 +3,12 @@
  *********************************************************/
 
 .Block_Background {
-	padding: 10px;
-/*	border: 1px solid #979797;*/
-	margin-top: 10px;
-	margin-bottom: 10px;
+	
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 .Block_Background .Content {
 	background-color: [[FG_COLOR]];
-	/*border: 1px solid #979797;*/
 	padding: 10px;
 	text-align: left;
 	margin: 0px;

@@ -1,0 +1,18 @@
+/*********************************************************
+ * Heading 4
+ *********************************************************/
+
+	*.Heading_Sidebar {
+		padding: 1px;
+		border: 0px;
+	}
+	*.Heading_Sidebar .Content {
+		background-color: #F5F5F5;
+		border: 1px solid #979797;
+		padding: 6px;
+		text-align: left;
+		color: #fff;
+		font-size: 110%;
+		padding-left: 10px;
+		margin: 0px;
+	}

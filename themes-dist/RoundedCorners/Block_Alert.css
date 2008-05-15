@@ -7,7 +7,7 @@
 		border: 0px;
 	}
 	*.block4Content {
-		background-color: #eeeeee;
+		background-color: [[ALERT_COLOR]];
 		color: #000;
 		border: 1px solid #979797;
 		padding: 10px;

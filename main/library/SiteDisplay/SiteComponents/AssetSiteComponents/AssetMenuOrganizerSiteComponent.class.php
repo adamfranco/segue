@@ -166,6 +166,42 @@ class AssetMenuOrganizerSiteComponent
 		else
 			return $parent->getParentNavOrganizer();
 	}
+	
+	/**
+	 * Answer the kind of menu Gui Component to display: Menu_Left, Menu_Right, Menu_Top, or Menu_Bottom
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function getDisplayType () {
+		$element = $this->getElement();
+		
+		if (!$element->hasAttribute('displayType'))
+			return 'Menu_Left';
+		
+		return $element->getAttribute('displayType');
+	}
+	
+	/**
+	 * Set the Gui Component display type for this menu, one of: 
+	 * 		Menu_Left, Menu_Right, Menu_Top, or Menu_Bottom
+	 * 
+	 * @param string $displayType
+	 * @return null
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function setDisplayType ($displayType) {
+		if (!in_array($displayType, array('Menu_Left', 'Menu_Right', 'Menu_Top', 'Menu_Bottom')))
+			throw new InvalidArgumentException("'$displayType' is not one of Menu_Left, Menu_Right, Menu_Top, or Menu_Bottom.");
+			
+		$element = $this->getElement();
+		
+		$element->setAttribute('displayType', $displayType);
+		
+		$this->_saveXml();
+	}
 }
 
 ?>

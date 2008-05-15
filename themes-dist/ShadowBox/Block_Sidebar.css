@@ -1,0 +1,14 @@
+/*********************************************************
+ * Block 3
+ *********************************************************/
+
+*.block3 {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+}
+	*.block3Content {
+
+}

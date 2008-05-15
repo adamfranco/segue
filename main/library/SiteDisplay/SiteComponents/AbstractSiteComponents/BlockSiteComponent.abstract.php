@@ -112,7 +112,49 @@ interface BlockSiteComponent
 	 * @since 3/31/06
 	 */
 	public function updateContentMarkup ( $contentMarkup ) ;
-
+	
+	
+	/**
+	 * Answer the kind of Gui Component to display: 
+	 *		Block_Standard, Block_Sidebar, Block_Alert, Header, Footer
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function getDisplayType ();
+	
+	/**
+	 * Set the Gui Component display type for this block, one of: 
+	 * 		Block_Standard, Block_Sidebar, Block_Alert, Header, Footer
+	 * 
+	 * @param string $displayType
+	 * @return null
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function setDisplayType ($displayType);
+	
+	/**
+	 * Answer the kind of Gui Component to display for the heading: 
+	 *		Heading_1, Heading_2, Heading_3, Heading_Sidebar
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function getHeadingDisplayType ();
+	
+	/**
+	 * Set the Gui Component display type for the heading, one of: 
+	 * 		Heading_1, Heading_2, Heading_3, Heading_Sidebar
+	 * 
+	 * @param string $displayType
+	 * @return null
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function setHeadingDisplayType ($displayType);
 }
 
 ?>

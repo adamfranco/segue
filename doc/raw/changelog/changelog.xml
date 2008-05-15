@@ -10,6 +10,19 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-21" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2008-05-14' ref='1820834' reftype='fr'>
+			Themes: Users can now choose the theme for their site from
+			a list of available themes. Themes may have options for varying their
+			color scheme or other attributes.
+		</new>
+		<fix author='adam' date='2008-05-13' ref='1962686' reftype='bug'>
+			ClassicMode: Site-Settings wizard now includes the site-width option.
+		</fix>
+	</version>
 	<version number="2.0-beta-20.1" date="2008-05-05">
 		<releaseNotes>
 			This release of Segue 2.0 includes dramatic speed improvements over

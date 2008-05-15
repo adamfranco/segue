@@ -308,6 +308,80 @@ class AssetBlockSiteComponent
 		return $results;
 	}
 	
+	/**
+	 * Answer the kind of Gui Component to display: 
+	 *		Block_Standard, Block_Sidebar, Block_Alert, Header, Footer
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function getDisplayType () {
+		$element = $this->getElement();
+		
+		if (!$element->hasAttribute('displayType'))
+			return 'Block_Standard';
+		
+		return $element->getAttribute('displayType');
+	}
+	
+	/**
+	 * Set the Gui Component display type for this block, one of: 
+	 * 		Block_Standard, Block_Sidebar, Block_Alert, Header, Footer
+	 * 
+	 * @param string $displayType
+	 * @return null
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function setDisplayType ($displayType) {
+		if (!in_array($displayType, array('Block_Standard', 'Block_Sidebar', 'Block_Alert', 'Header', 'Footer')))
+			throw new InvalidArgumentException("'$displayType' is not one of Block_Standard, Block_Sidebar, Block_Alert, Header, Footer.");
+			
+		$element = $this->getElement();
+		
+		$element->setAttribute('displayType', $displayType);
+		
+		$this->_saveXml();
+	}
+	
+	/**
+	 * Answer the kind of Gui Component to display for the heading: 
+	 *		Heading_1, Heading_2, Heading_3, Heading_Sidebar
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function getHeadingDisplayType () {
+		$element = $this->getElement();
+		
+		if (!$element->hasAttribute('headingDisplayType'))
+			return 'Heading_3';
+		
+		return $element->getAttribute('headingDisplayType');
+	}
+	
+	/**
+	 * Set the Gui Component display type for the heading, one of: 
+	 * 		Heading_1, Heading_2, Heading_3, Heading_Sidebar
+	 * 
+	 * @param string $displayType
+	 * @return null
+	 * @access public
+	 * @since 5/12/08
+	 */
+	public function setHeadingDisplayType ($displayType) {
+		if (!in_array($displayType, array('Heading_1', 'Heading_2', 'Heading_3', 'Heading_Sidebar')))
+			throw new InvalidArgumentException("'$displayType' is not one of Heading_1, Heading_2, Heading_3, Heading_Sidebar.");
+			
+		$element = $this->getElement();
+		
+		$element->setAttribute('headingDisplayType', $displayType);
+		
+		$this->_saveXml();
+	}
+	
 /*********************************************************
  * Private methods
  *********************************************************/

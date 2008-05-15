@@ -160,7 +160,7 @@ class htmlAction
 		// :: login, links and commands
 		$this->headRow = $allWrapper->add(
 			new Container(new XLayout, BLANK, 1), 
-			"100%", null, CENTER, TOP);
+			$rootSiteComponent->getWidth(), null, CENTER, TOP);
 			
 		$this->leftHeadColumn = $this->headRow->add(
 			$this->getSegueLinksComponent(), 
@@ -219,7 +219,7 @@ class htmlAction
 			$outputHandler->setHead(
 				preg_replace("/<title>[^<]*<\/title>/", $title, $outputHandler->getHead()));			
 		
-			$mainScreen->add(new Block($this->getUnauthorizedMessage(), EMPHASIZED_BLOCK),
+			$mainScreen->add(new Block($this->getUnauthorizedMessage(), ALERT_BLOCK),
 				"100%", null, CENTER, TOP);
 		}
 	}
@@ -235,9 +235,11 @@ class htmlAction
 	public function addFooterControls (Component $mainScreen) {
 		// :: Footer ::
 		$harmoni = Harmoni::instance();
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		
 		$footer = $mainScreen->add(
 			new Container (new XLayout, FOOTER, 1),
-			"100%", null, RIGHT, BOTTOM);
+			$rootSiteComponent->getWidth(), null, CENTER, BOTTOM);
 		
 		
 		ob_start();

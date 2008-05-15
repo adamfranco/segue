@@ -2,16 +2,14 @@
  * Footer 1
  *********************************************************/
 
-	*.Footer {
-		padding: 1px;
-		border: 0px;
-	}
-	*.Footer .Content {
-		background-color: #D3D3D3;
-		border: 1px solid #979797;
-		padding: 10px;
-		text-align: right;
-		color: #fff;
-		font-size: 75%;
-		margin: 0px;
-	}
+*.Footer {
+	border: 1px solid #979797;
+	padding: 10px;
+	margin-right: 25px;
+	margin-left: 25px;
+	margin-top: 30px;
+}
+
+*.Footer .Content {
+
+}

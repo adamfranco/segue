@@ -711,6 +711,8 @@ class SegueClassicWizard
 	 * @since 5/15/07
 	 */
 	function saveWidth ( $component, $values ) {
+		if (!isset($values['width']))
+			$values['width'] = '';
 		$component->updateWidth($values['width']);
 		return true;
 	}
