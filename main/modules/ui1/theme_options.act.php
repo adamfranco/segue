@@ -213,21 +213,26 @@ class theme_optionsAction
 		$property->setValue($modSess->getGlobalCss());
 		print "\n<h4>"._("Global CSS")."</h4>\n[[global_css]]";
 		
-		
-// 		foreach ($optionsSession->getOptions() as $option) {
-// 			print "\n<h3>".$option->getDisplayName()."</h3>";
-// 			print "\n<p>".$option->getDescription()."</p>";
-// 			print "[[".$option->getIdString()."]]";
-// 			$property = $step->addComponent($option->getIdString(), new WSelectList());
-// 			$property->setValue($option->getValue());
-// 			
-// 			$values = $option->getValues();
-// 			$labels = $option->getLabels();
-// 			for ($j = 0; $j < count($values); $j++) {
-// 				$property->addOption($values[$j], $labels[$j]);
-// 			}
-// 		}
-		
+		print "\n<table class='theme_advanced_table'>";
+		foreach ($modSess->getComponentTypes() as $type) {
+// 			print "\n\t<tr>\n\t\t<th colspan='2'>".$type."</th>\n\t</tr>";
+			print "\n\t<tr>";
+			print "\n\t\t<th>".$type." CSS</th>";
+			print "\n\t\t<th>".$type." HTML</th>";
+			print "\n\t</tr>";
+			
+			print "\n\t<tr>";
+			print "\n\t\t<th>[[".$type."-css]]</th>";
+			print "\n\t\t<th>[[".$type."-html]]</th>";
+			print "\n\t</tr>";
+			
+			$property = $step->addComponent($type.'-css', new WTextArea);
+			$property->setValue($modSess->getCssForType($type));
+			
+			$property = $step->addComponent($type.'-html', new WTextArea);
+			$property->setValue($modSess->getTemplateForType($type));
+		}
+		print "\n</table>";
 				
 		$step->setContent(ob_get_clean());
 		
@@ -275,6 +280,12 @@ class theme_optionsAction
 			$modSess->updateThumbnail($file);
 		}
 		$modSess->updateGlobalCss($values['global_css']);
+		
+		foreach ($modSess->getComponentTypes() as $type) {
+			$modSess->updateCssForType($type, $values[$type.'-css']);
+			$modSess->updateTemplateForType($type, $values[$type.'-html']);
+		}
+		
 		return true;
 	}
 }

@@ -430,7 +430,7 @@ class Segue_Gui2_SiteTheme
 			throw new InvalidArgumentException("Invalid type, '$type'.");
 		
 		try {
-			$contents = trim ($this->getThemeDataByType($type));
+			$contents = trim ($this->getThemeDataByType($type.'.html'));
 		} catch (OperationFailedException $e) {
 			$contents = '';
 		}
@@ -684,7 +684,11 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function getCssForType ($componentType) {
-		throw new UnimplementedException();
+		try {
+			return $this->getThemeDataByType($componentType.'.css');
+		} catch (OperationFailedException $e) {
+			return '';
+		}
 	}
 	
 	/**
@@ -697,7 +701,7 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function updateCssForType ($componentType, $css) {
-		throw new UnimplementedException();
+		$this->updateThemeDataByType($componentType.'.css', $css);
 	}
 	
 	/**
@@ -709,7 +713,11 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function getTemplateForType ($componentType) {
-		throw new UnimplementedException();
+		try {
+			return $this->getThemeDataByType($componentType.'.html');
+		} catch (OperationFailedException $e) {
+			return '';
+		}
 	}
 	
 	/**
@@ -722,7 +730,7 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function updateTemplateForType ($componentType, $templateHtml) {
-		throw new UnimplementedException();
+		$this->updateThemeDataByType($componentType.'.html', $templateHtml);
 	}
 	
 	/*********************************************************
