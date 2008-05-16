@@ -190,6 +190,9 @@ class theme_optionsAction
 		
 		$modSess = $theme->getModificationSession();
 		
+		/*********************************************************
+		 * Information
+		 *********************************************************/
 		print "\n<h3>"._("Theme Information")."</h3>";
 		print "\n<table class='info_table'><tr><td>";
 		$property = $step->addComponent('display_name', new WTextField);
@@ -221,7 +224,14 @@ class theme_optionsAction
 		print "</div>";
 		print "\n</td></tr></table>";
 		
+		/*********************************************************
+		 * Global CSS
+		 *********************************************************/
+		print "\n<table class='info_table'><tr><td style='width: 350px;'>";
 		print "\n<h3>"._("Theme Data")."</h3>";
+		print "\n<p>"._("In the text areas below, add the CSS and HTML for your theme.")."</p>";
+		print "\n<p>"._("The CSS snippets will be combined together in the order listed into a single file.")."</p>";
+		print "\n<p>"._("The HTML snippets will wrap the various components on the screen and must contain <code>&#91;&#91;CONTENT&#93;&#93;</code> placeholder for the content of the component. Any classes you want to refer to in the CSS will need to be added to the HTML snippets.")."</p>";
 		
 		$property = $step->addComponent('global_css', new WTextArea);
 		$property->setRows(20);
@@ -229,6 +239,33 @@ class theme_optionsAction
 		$property->setValue($modSess->getGlobalCss());
 		print "\n<h4>"._("Global CSS")."</h4>\n[[global_css]]";
 		
+		/*********************************************************
+		 * Images
+		 *********************************************************/
+		print "\n</td><td style='width: 500px;'>";
+		
+		print "\n<h3>"._("Images")."</h3>";
+		print "\n<p>"._("You may upload images to your theme. These images must be JPG, PNG, or GIF images. To use them in your HTML or CSS, reference them with relative urls in an 'images' directory such as <code>images/background_image.jpg</code>.")."</p>";
+		print "\n[[images]]";
+		$collection = $step->addComponent('images', new WRepeatableComponentCollection);
+		$collection->setContent('./images/[[image]]');
+		
+		$property = $collection->addComponent('image', new WFileUploadField);
+		$property->setAcceptedMimetypes(array('image/png', 'image/jpeg', 'image/gif'));
+		foreach ($theme->getImages() as $image) {
+			$collection->addValueCollection(array ('image' => array(
+				'name' => $image->getBasename(), 
+				'size' => $image->getSize(),
+				'type' => $image->getMimeType(),
+				'starting_name' => $image->getBasename(), 
+				'starting_size' => $image->getSize())));
+		}
+		print "\n</td></tr></table>";
+		
+		
+		/*********************************************************
+		 * Other CSS and Templates
+		 *********************************************************/
 		print "\n<table class='theme_advanced_table'>";
 		foreach ($modSess->getComponentTypes() as $type) {
 // 			print "\n\t<tr>\n\t\t<th colspan='2'>".$type."</th>\n\t</tr>";
@@ -254,6 +291,10 @@ class theme_optionsAction
 		}
 		print "\n</table>";
 		
+		
+		/*********************************************************
+		 * Options
+		 *********************************************************/
 		$property = $step->addComponent('options', new WTextArea);
 		$property->setRows(40);
 		$property->setColumns(100);
@@ -304,7 +345,9 @@ class theme_optionsAction
 			return false;
 		}
 		
-		// Save Advanced edits
+		/*********************************************************
+		 * Info
+		 *********************************************************/
 		$modSess = $theme->getModificationSession();
 		$modSess->updateDisplayName($values['display_name']);
 		$modSess->updateDescription($values['description']);
@@ -313,6 +356,11 @@ class theme_optionsAction
 			$file->setMimeType($values['thumbnail']['type']);
 			$modSess->updateThumbnail($file);
 		}
+		
+		
+		/*********************************************************
+		 * CSS and HTML
+		 *********************************************************/
 		$modSess->updateGlobalCss($values['global_css']);
 		
 		foreach ($modSess->getComponentTypes() as $type) {
@@ -320,6 +368,32 @@ class theme_optionsAction
 			$modSess->updateTemplateForType($type, $values[$type.'-html']);
 		}
 		
+		/*********************************************************
+		 * Images
+		 *********************************************************/
+		$missingImages = $theme->getImages();
+		foreach ($values['images'] as $imageVal) {
+			// Add new images
+			if ($imageVal['image']['tmp_name']) {
+				$file = new Harmoni_Filing_FileSystemFile($imageVal['image']['tmp_name']);
+				$file->setMimeType($imageVal['image']['type']);
+				$theme->addImage($file, $imageVal['image']['name']);
+			}
+			// Mark images as existing
+			foreach ($missingImages as $key => $image) {
+				if ($image->getBasename() == $imageVal['image']['name']) {
+					unset($missingImages[$key]);
+				}
+			}
+		}
+		// Remove any images that were removed.
+		foreach ($missingImages as $image) {
+			$image->delete();
+		}
+		
+		/*********************************************************
+		 * Options
+		 *********************************************************/
 		$optionsString = trim ($values['options']);
 		$optionsDoc = new Harmoni_DOMDocument;
 		$optionsDoc->preserveWhiteSpace = false;

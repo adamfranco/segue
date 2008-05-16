@@ -18,6 +18,7 @@ require_once(HARMONI.'/Gui2/ThemeOptions.interface.php');
 require_once(HARMONI.'/Gui2/ThemeModification.interface.php');
 
 require_once(dirname(__FILE__).'/ThemeThumbnail.class.php');
+require_once(dirname(__FILE__).'/ThemeImage.class.php');
 
 /**
  * All GUI 2 themes must implement this interface
@@ -762,20 +763,58 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function getImages () {
-		throw new UnimplementedException();
+		$query = new SelectQuery();
+		$query->addTable('segue_site_theme_image');
+		$query->addColumn('path');
+		$query->addWhereEqual('fk_theme', $this->id);
+		
+		$dbMgr = Services::getService("DatabaseManager");
+		$result = $dbMgr->query($query, $this->databaseIndex);
+		$images = array();
+		while ($result->hasNext()) {
+			$row = $result->next();
+			$images[] = new Segue_Gui2_ThemeImage($this->databaseIndex, $this->id, $row['path']);
+		}
+		$result->free();
+		return $images;
 	}
 	
 	/**
 	 * Add a new image at the path specified.
 	 * 
 	 * @param object Harmoni_Filing_FileInterface $image
-	 * @param string $destinationPath
+	 * @param string $filename
+	 * @param string $prefixPath
 	 * @return null
 	 * @access public
 	 * @since 5/15/08
 	 */
-	public function addImage (Harmoni_Filing_FileInterface $image, $destinationPath) {
-		throw new UnimplementedException();
+	public function addImage (Harmoni_Filing_FileInterface $image, $filename, $prefixPath = '') {
+		ArgumentValidator::validate($filename, NonzeroLengthStringValidatorRule::getRule());
+		
+		$path = trim($prefixPath, '/');
+		if (strlen($path))
+			$path = $path.'/'.$filename;
+		else
+			$path = $filename;
+		
+		// Delete the old image
+		$query = new DeleteQuery;
+		$query->setTable('segue_site_theme_image');
+		$query->addWhereEqual('fk_theme', $this->id);
+		$query->addWhereEqual('path', $path);
+		$dbc = Services::getService('DatabaseManager');
+		$dbc->query($query);
+		
+		$query = new InsertQuery;
+		$query->setTable('segue_site_theme_image');
+		$query->addValue('fk_theme', $this->id);
+		$query->addValue('mime_type', $image->getMimeType());
+		$query->addValue('path', $path);
+		$query->addValue('size', $image->getSize());
+		$query->addValue('data', base64_encode($image->getContents()));
+		$dbc = Services::getService('DatabaseManager');
+		$dbc->query($query);
 	}
 	
 	/**
