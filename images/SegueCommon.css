@@ -513,6 +513,29 @@
 		padding-bottom: 2px;
 	}
 
+/*********************************************************
+ * Theme Editing styles
+ *********************************************************/
+table.theme_advanced_table th {
+	padding-top: 20px;
+}
+
+.theme_edit_step h3 {
+	border-top: 1px dotted;
+}
+
+.theme_edit_step table.info_table td {
+	vertical-align: top;
+	padding-right: 10px;
+}
+.theme_edit_step table.info_table h4 {
+	margin-top: 3px;
+}
+
+.theme_edit_step h4 {
+	margin-bottom: 3px;
+}
+
 
 /*********************************************************
  * Wizard Styles

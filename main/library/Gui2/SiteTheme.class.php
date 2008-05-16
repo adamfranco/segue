@@ -262,7 +262,7 @@ class Segue_Gui2_SiteTheme
 	 */
 	protected function loadOptions () {
 		try {
-			$optionsString = $this->getThemeDataByType('options');
+			$optionsString = $this->getThemeDataByType('options.xml');
 		} catch (OperationFailedException $e) {
 			$this->options = array();
 			return;
@@ -274,7 +274,7 @@ class Segue_Gui2_SiteTheme
 		
 		$options = new Harmoni_DOMDocument;
 		$options->loadXML($optionsString);
-		$options->schemaValidateWithException(dirname(__FILE__).'/theme_options.xsd');
+		$options->schemaValidateWithException(HARMONI.'/Gui2/theme_options.xsd');
 		
 		
 		$this->options = $this->buildOptionsFromDocument($options);
@@ -624,24 +624,41 @@ class Segue_Gui2_SiteTheme
 	/**
 	 * Answer an XML document for the options for this theme
 	 * 
-	 * @return object DOMDocument
+	 * @return object Harmoni_DOMDocument
 	 * @access public
 	 * @since 5/15/08
 	 */
 	public function getOptionsDocument () {
-		throw new UnimplementedException();
+		try {
+			$optionsString = $this->getThemeDataByType('options.xml');
+			$doc = new Harmoni_DOMDocument;
+			$doc->preserveWhiteSpace = false;
+			if (strlen($optionsString))
+				$doc->loadXML($optionsString);
+			return $doc;
+		} catch (OperationFailedException $e) {
+			return new Harmoni_DOMDocument;
+		}
 	}
 	
 	/**
 	 * Update the options XML with a new document
 	 * 
-	 * @param object DOMDocument $optionsDocument
+	 * @param object Harmoni_DOMDocument $optionsDocument
 	 * @return null
 	 * @access public
 	 * @since 5/15/08
 	 */
-	public function updateOptionsDocument (DOMDocument $optionsDocument) {
-		throw new UnimplementedException();
+	public function updateOptionsDocument (Harmoni_DOMDocument $optionsDocument) {
+		// Unset the options if we have an empty document.
+		if (!isset($optionsDocument->documentElement)) {
+			$this->updateThemeDataByType('options.xml', '');
+			return;
+		}
+		
+		// Validate any options document given.
+		$optionsDocument->schemaValidateWithException(HARMONI.'/Gui2/theme_options.xsd');
+		$this->updateThemeDataByType('options.xml', $optionsDocument->saveXML());
 	}
 	
 	/*********************************************************

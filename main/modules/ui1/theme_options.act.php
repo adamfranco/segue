@@ -168,8 +168,10 @@ class theme_optionsAction
 		$component = $this->getSiteComponent();
 		$step =  new WizardStep();
 		$step->setDisplayName(_("Advanced Editing"));
+		$harmoni = Harmoni::instance();
 		ob_start();
 		
+		print "\n<div class='theme_edit_step'>";
 		print "\n<h2>"._("Advanced Theme Editing")."</h2>";
 		print "\n<p>";
 		print _("Here you can edit the markup and CSS for the theme."); 
@@ -189,27 +191,41 @@ class theme_optionsAction
 		$modSess = $theme->getModificationSession();
 		
 		print "\n<h3>"._("Theme Information")."</h3>";
+		print "\n<table class='info_table'><tr><td>";
 		$property = $step->addComponent('display_name', new WTextField);
+		$property->setSize(40);
 		$property->setValue($theme->getDisplayName());
 		print "\n<h4>"._("Display Name")."</h4>\n[[display_name]]";
 		
 		$property = $step->addComponent('description', new WTextArea);
+		$property->setRows(10);
+		$property->setColumns(40);
 		$property->setValue($theme->getDescription());
-		print "\n<h4>"._("Description")."</h4>\n[[description]]";
+		print "\n<br/><h4>"._("Description")."</h4>\n[[description]]";
 		
+		print "\n</td><td>";
 		$property = $step->addComponent('thumbnail', new WFileUploadField);
+		$property->setAcceptedMimetypes(array('image/png', 'image/jpeg', 'image/gif'));
+		print "\n<h4>"._("Thumbnail")."</h4>\n[[thumbnail]]";
+		print "<div><br/>"._("Current Thumbnail: ")."<br/>";
+		
 		try {
 			$currentThumbnail = $theme->getThumbnail();
 			$property->setStartingDisplay($currentThumbnail->getBasename(), 
 				$currentThumbnail->getSize());
+			print "\n\t<img src='".$harmoni->request->quickUrl('gui2', 'theme_thumbnail',
+				array('theme' => $theme->getIdString(), 'rand' => rand(1,10000)))."' width='200px'/>";
 		} catch (UnknownIdException $e) {
+			print "<em>"._("none")."</em>";
 		}
-		$property->setAcceptedMimetypes(array('image/png', 'image/jpeg', 'image/gif'));
-		print "\n<h4>"._("Thumbnail")."</h4>\n[[thumbnail]]";
+		print "</div>";
+		print "\n</td></tr></table>";
 		
 		print "\n<h3>"._("Theme Data")."</h3>";
 		
 		$property = $step->addComponent('global_css', new WTextArea);
+		$property->setRows(20);
+		$property->setColumns(40);
 		$property->setValue($modSess->getGlobalCss());
 		print "\n<h4>"._("Global CSS")."</h4>\n[[global_css]]";
 		
@@ -222,18 +238,36 @@ class theme_optionsAction
 			print "\n\t</tr>";
 			
 			print "\n\t<tr>";
-			print "\n\t\t<th>[[".$type."-css]]</th>";
-			print "\n\t\t<th>[[".$type."-html]]</th>";
+			print "\n\t\t<td>[[".$type."-css]]</td>";
+			print "\n\t\t<td>[[".$type."-html]]</td>";
 			print "\n\t</tr>";
 			
 			$property = $step->addComponent($type.'-css', new WTextArea);
+			$property->setRows(10);
+			$property->setColumns(40);
 			$property->setValue($modSess->getCssForType($type));
 			
 			$property = $step->addComponent($type.'-html', new WTextArea);
+			$property->setRows(10);
+			$property->setColumns(60);
 			$property->setValue($modSess->getTemplateForType($type));
 		}
 		print "\n</table>";
-				
+		
+		$property = $step->addComponent('options', new WTextArea);
+		$property->setRows(40);
+		$property->setColumns(100);
+		$property->setValue($modSess->getOptionsDocument()->saveXMLWithWhiteSpace());
+		print "\n<h3>"._("Theme Options")."</h3>";
+		$help = _("In the text area below you can add an XML document that describes any options for this theme. This document must conform to the %1. (View an example %2.)");
+		$schema = "<a href='".$harmoni->request->quickURL('gui2', 'view_options_schema')."' target='_blank'>"._("options schema")."</a>";
+		$example = "<a href='".$harmoni->request->quickURL('gui2', 'view_options_example')."' target='_blank'>"._("options document")."</a>";
+		print "\n<p>".str_replace('%1', $schema, str_replace('%2', $example, $help))."</p>";
+		print "\n<p>"._("Each option defines a set of choices for the user. These choices are composed of one or more settings. When a choice is used, all occurrances of the marker in the CSS and HTML above will be replaced with the value of that setting.")."</p>";
+		print "\n[[options]]";
+		
+		
+		print "\n</div>";
 		$step->setContent(ob_get_clean());
 		
 		return $step;
@@ -284,6 +318,19 @@ class theme_optionsAction
 		foreach ($modSess->getComponentTypes() as $type) {
 			$modSess->updateCssForType($type, $values[$type.'-css']);
 			$modSess->updateTemplateForType($type, $values[$type.'-html']);
+		}
+		
+		$optionsString = trim ($values['options']);
+		$optionsDoc = new Harmoni_DOMDocument;
+		$optionsDoc->preserveWhiteSpace = false;
+		if (strlen($optionsString) && $optionsString != '<?xml version="1.0"?>')
+			$optionsDoc->loadXML($values['options']);
+		try {
+			$modSess->updateOptionsDocument($optionsDoc);
+		} catch (ValidationFailedException $e) {
+			print "<strong>"._("Error in Options Definition:")." </strong>";
+			print $e->getMessage();
+			return false;
 		}
 		
 		return true;
