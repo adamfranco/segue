@@ -1,0 +1,15 @@
+/*********************************************************
+ * Block 4
+ *********************************************************/
+
+	*.block4 {
+		border: 0px;
+	}
+	*.block4Content {
+		background-color: [[ALERT_COLOR]];
+		color: #000;
+
+		padding: 10px;
+		text-align: left;
+		margin: 0px;
+	}

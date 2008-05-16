@@ -1,0 +1,26 @@
+/*********************************************************
+ * Menu - Left
+ *********************************************************/
+
+	.Menu_Left  {
+		background-color: [[BG_COLOR]];
+
+	}
+
+	.Menu_Left .MenuItem_Link_Selected .Content {
+
+		border-bottom: 1px solid #979797;
+		border-top: 1px solid #979797;
+		text-align: right;
+
+	}
+
+	.Menu_Left .MenuItem_Link_Unselected .Content {
+		border-bottom: 1px solid #979797;
+		border-top: 1px solid #979797;
+		border-right: 1px solid #979797;
+		padding-top: 1px;
+		padding-bottom: 1px;
+		text-align: right;
+
+	}
