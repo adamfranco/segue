@@ -85,6 +85,7 @@ class Segue_Gui2_SiteThemeSource
 			$row = $result->next();
 			$themes[] = new Segue_Gui2_SiteTheme($this->databaseIndex, $row['id']);
 		}
+		$result->free();
 		
 		return $themes;
 	}

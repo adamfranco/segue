@@ -185,7 +185,34 @@ class theme_optionsAction
 			$step->setContent(ob_get_clean());
 			return $step;
 		}
-		$modificationSession = $theme->getModificationSession();
+		
+		$modSess = $theme->getModificationSession();
+		
+		print "\n<h3>"._("Theme Information")."</h3>";
+		$property = $step->addComponent('display_name', new WTextField);
+		$property->setValue($theme->getDisplayName());
+		print "\n<h4>"._("Display Name")."</h4>\n[[display_name]]";
+		
+		$property = $step->addComponent('description', new WTextArea);
+		$property->setValue($theme->getDescription());
+		print "\n<h4>"._("Description")."</h4>\n[[description]]";
+		
+		$property = $step->addComponent('thumbnail', new WFileUploadField);
+		try {
+			$currentThumbnail = $theme->getThumbnail();
+			$property->setStartingDisplay($currentThumbnail->getBasename(), 
+				$currentThumbnail->getSize());
+		} catch (UnknownIdException $e) {
+		}
+		$property->setAcceptedMimetypes(array('image/png', 'image/jpeg', 'image/gif'));
+		print "\n<h4>"._("Thumbnail")."</h4>\n[[thumbnail]]";
+		
+		print "\n<h3>"._("Theme Data")."</h3>";
+		
+		$property = $step->addComponent('global_css', new WTextArea);
+		$property->setValue($modSess->getGlobalCss());
+		print "\n<h4>"._("Global CSS")."</h4>\n[[global_css]]";
+		
 		
 // 		foreach ($optionsSession->getOptions() as $option) {
 // 			print "\n<h3>".$option->getDisplayName()."</h3>";
@@ -219,7 +246,7 @@ class theme_optionsAction
 		$component = $this->getSiteComponent();
 		$theme = $component->getTheme();
 		
-		if ($values['create_copy']) {
+		if (isset($values['create_copy']) && $values['create_copy']) {
 			// Get the first source that supports admin.
 			$guiMgr = Services::getService('GUIManager');
 			foreach ($guiMgr->getThemeSources() as $source) {
@@ -237,6 +264,18 @@ class theme_optionsAction
 			print "<p>"._("Error: No available source to copy this theme to.")."</p>";
 			return false;
 		}
+		
+		// Save Advanced edits
+		$modSess = $theme->getModificationSession();
+		$modSess->updateDisplayName($values['display_name']);
+		$modSess->updateDescription($values['description']);
+		if (!is_null($values['thumbnail']['tmp_name'])) {
+			$file = new Harmoni_Filing_FileSystemFile($values['thumbnail']['tmp_name']);
+			$file->setMimeType($values['thumbnail']['type']);
+			$modSess->updateThumbnail($file);
+		}
+		$modSess->updateGlobalCss($values['global_css']);
+		return true;
 	}
 }
 

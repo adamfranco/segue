@@ -82,9 +82,7 @@ class editviewAction
 			$theme = $rootSiteComponent->getTheme();
 			if ($authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.modify"), 
-				$siteId)
-				&& $theme->supportsOptions()
-				&& count($theme->getOptionsSession()->getOptions()))
+				$siteId))
 			{
 				$url = $harmoni->request->quickURL("ui1", "theme_options", 
 					array("node" => $siteId->getIdString(),

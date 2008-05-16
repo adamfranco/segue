@@ -14,6 +14,8 @@ require_once(HARMONI.'/Gui2/Theme.abstract.php');
 require_once(HARMONI.'/utilities/Filing/FileSystemFile.class.php');
 require_once(HARMONI.'/Gui2/HistoryEntry.class.php');
 require_once(HARMONI.'/Gui2/ThemeOption.class.php');
+require_once(HARMONI.'/Gui2/ThemeOptions.interface.php');
+require_once(HARMONI.'/Gui2/ThemeModification.interface.php');
 
 require_once(dirname(__FILE__).'/ThemeThumbnail.class.php');
 
@@ -30,7 +32,7 @@ require_once(dirname(__FILE__).'/ThemeThumbnail.class.php');
  */
 class Segue_Gui2_SiteTheme
 	extends Harmoni_Gui2_ThemeAbstract
-	implements Harmoni_Gui2_ThemeInterface 
+	implements Harmoni_Gui2_ThemeInterface, Harmoni_Gui2_ThemeOptionsInterface, Harmoni_Gui2_ThemeModificationInterface
 {
 	/**
 	 * Constructor
@@ -302,7 +304,7 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function getModificationSession () {
-		throw new UnimplementedException();
+		return $this;
 	}
 	
 	/*********************************************************
@@ -329,6 +331,7 @@ class Segue_Gui2_SiteTheme
 		if (!$result->hasNext())
 			throw new UnknownIdException("Theme with id '".$this->id."' does not exist.");
 		$row = $result->next();
+		$result->free();
 		$this->displayName = $row['display_name'];
 		$this->description = $row['description'];
 		$this->modificationDate = DateAndTime::fromString($row['modify_timestamp']);
@@ -480,8 +483,288 @@ class Segue_Gui2_SiteTheme
 			throw new OperationFailedException("Required template data, '{$type}' is missing from theme '".$this->getIdString()."'.");
 			
 		$row = $result->next();
+		$result->free();
 		return $row['data'];
 	}
+	
+	/**
+	 * Answer some theme data by type
+	 * 
+	 * @param string $type
+	 * @return string
+	 * @access protected
+	 * @since 5/15/08
+	 */
+	protected function updateThemeDataByType ($type, $data) {
+		$typeId = $this->getTypeId($type);
+		try {
+			$this->getThemeDataByType($type);
+			
+			$query = new UpdateQuery;
+			$query->addWhereEqual('fk_theme', $this->id);
+			$query->addWhereEqual('fk_type', $typeId);
+		} catch (OperationFailedException $e) {
+			$query = new InsertQuery;
+			$query->addValue('fk_theme', $this->id);
+			$query->addValue('fk_type', $typeId);
+		}
+		$query->setTable('segue_site_theme_data');
+		$query->addValue('data', $data);
+		
+		$dbMgr = Services::getService("DatabaseManager");
+		$dbMgr->query($query, $this->databaseIndex);
+	}
+	
+	/**
+	 * Answer the id of a data type
+	 * 
+	 * @param string $type
+	 * @return string
+	 * @access protected
+	 * @since 5/15/08
+	 */
+	protected function getTypeId ($type) {
+		$dbMgr = Services::getService("DatabaseManager");
+		
+		// Get the type Id
+		$query = new SelectQuery;
+		$query->addTable('segue_site_theme_data_type');
+		$query->addColumn('id');
+		$query->addWhereEqual('data_type', $type);
+		$result = $dbMgr->query($query, $this->databaseIndex);
+		
+		if ($result->hasNext()) {
+			$row = $result->next();
+			$result->free();
+			return $row['id'];
+		} else {
+			$result->free();
+			
+			$query = new InsertQuery;
+			$query->setTable('segue_site_theme_data_type');
+			$query->addValue('data_type', $type);
+			$result = $dbMgr->query($query, $this->databaseIndex);
+			return $result->getLastAutoIncrementValue();
+		}
+	}
+	
+/*********************************************************
+ * Theme Modification
+ *********************************************************/
+ 	/*********************************************************
+	 * Info
+	 *********************************************************/
+	
+	/**
+	 * Set the display name.
+	 * 
+	 * @param string $displayName
+	 * @return null
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function updateDisplayName ($displayName) {
+		$this->displayName = $displayName;
+		$query = new UpdateQuery;
+		$query->setTable('segue_site_theme');
+		$query->addValue('display_name', $displayName);
+		$query->addWhereEqual('id', $this->id);
+		$dbc = Services::getService('DatabaseManager');
+		$dbc->query($query);
+	}
+	
+	/**
+	 * Update the description
+	 * 
+	 * @param string $description
+	 * @return null
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function updateDescription ($description) {
+		$this->description = $description;
+		$query = new UpdateQuery;
+		$query->setTable('segue_site_theme');
+		$query->addValue('description', $description);
+		$query->addWhereEqual('id', $this->id);
+		$dbc = Services::getService('DatabaseManager');
+		$dbc->query($query);
+	}
+	
+	/**
+	 * Update the thumbnail
+	 * 
+	 * @param object Harmoni_Filing_FileInterface $thumbnail
+	 * @return null
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function updateThumbnail (Harmoni_Filing_FileInterface $thumbnail) {
+		// Delete the old thumbnail
+		$query = new DeleteQuery;
+		$query->setTable('segue_site_theme_thumbnail');
+		$query->addWhereEqual('fk_theme', $this->id);
+		$dbc = Services::getService('DatabaseManager');
+		$dbc->query($query);
+		
+		$query = new InsertQuery;
+		$query->setTable('segue_site_theme_thumbnail');
+		$query->addValue('fk_theme', $this->id);
+		$query->addValue('mime_type', $thumbnail->getMimeType());
+		$query->addValue('size', $thumbnail->getSize());
+		$query->addValue('data', base64_encode($thumbnail->getContents()));
+		$dbc = Services::getService('DatabaseManager');
+		$dbc->query($query);
+	}
+	
+	/*********************************************************
+	 * Options
+	 *********************************************************/
+	
+	/**
+	 * Answer an XML document for the options for this theme
+	 * 
+	 * @return object DOMDocument
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function getOptionsDocument () {
+		throw new UnimplementedException();
+	}
+	
+	/**
+	 * Update the options XML with a new document
+	 * 
+	 * @param object DOMDocument $optionsDocument
+	 * @return null
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function updateOptionsDocument (DOMDocument $optionsDocument) {
+		throw new UnimplementedException();
+	}
+	
+	/*********************************************************
+	 * CSS and HTML Templates
+	 *********************************************************/
+	
+	/**
+	 * Answer the global CSS string.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function getGlobalCss () {
+		try {
+			return $this->getThemeDataByType('Global.css');
+		} catch (OperationFailedException $e) {
+			return '';
+		}
+	}
+	
+	/**
+	 * Set the global CSS string
+	 * 
+	 * @param string $css
+	 * @return null
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function updateGlobalCss ($css) {
+		$this->updateThemeDataByType('Global.css', $css);
+	}
+	
+	/**
+	 * Get the CSS for a component Type.
+	 * 
+	 * @param string $componentType
+	 * @return string
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function getCssForType ($componentType) {
+		throw new UnimplementedException();
+	}
+	
+	/**
+	 * Set the CSS for a component Type
+	 * 
+	 * @param string $componentType
+	 * @param string $css
+	 * @return null
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function updateCssForType ($componentType, $css) {
+		throw new UnimplementedException();
+	}
+	
+	/**
+	 * Get the HTML template for a component Type.
+	 * 
+	 * @param string $componentType
+	 * @return string
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function getTemplateForType ($componentType) {
+		throw new UnimplementedException();
+	}
+	
+	/**
+	 * Set the CSS for a component Type
+	 * 
+	 * @param string $componentType
+	 * @param string $templateHtml
+	 * @return null
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function updateTemplateForType ($componentType, $templateHtml) {
+		throw new UnimplementedException();
+	}
+	
+	/*********************************************************
+	 * Images
+	 *********************************************************/
+	
+	/**
+	 * Answer the images for this theme
+	 * 
+	 * @return array of Harmoni_Filing_FileInterface objects
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function getImages () {
+		throw new UnimplementedException();
+	}
+	
+	/**
+	 * Add a new image at the path specified.
+	 * 
+	 * @param object Harmoni_Filing_FileInterface $image
+	 * @param string $destinationPath
+	 * @return null
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function addImage (Harmoni_Filing_FileInterface $image, $destinationPath) {
+		throw new UnimplementedException();
+	}
+	
+	/**
+	 * Delete an image at the path specified.
+	 * 
+	 * @param string $path
+	 * @return null
+	 * @access public
+	 * @since 5/15/08
+	 */
+	public function deleteImage ($path) {
+		throw new UnimplementedException();
+	}
+
 }
 
 ?>
