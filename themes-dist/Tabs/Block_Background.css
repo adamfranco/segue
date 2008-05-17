@@ -1,4 +1,5 @@
 .Block_Background {
-	background-color: #FFF;
+	background-color: [[FG_COLOR]];
+	border: 1px solid [[BORDER_COLOR]];
 
 }

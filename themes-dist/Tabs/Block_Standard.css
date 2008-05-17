@@ -8,7 +8,14 @@
 }
 .Block_Standard .Content {
 	background-color: [[FG_COLOR]];
-	padding: 20px;
+	background-image: url('./images/[[IMAGE_DIR]]/block_gradient.jpg');
+	background-x-position: center;
+	background-y-position: bottom;
+
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 10px;
 	text-align: left;
-	margin: 0px;
+	margin-left: 10px;
+	margin-right: 10px;
 }

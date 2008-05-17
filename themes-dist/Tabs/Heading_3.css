@@ -8,9 +8,14 @@
 		border: 0px;
 	}
 	.Heading_3 .Content {
-		background-color: #F5F5F5;
-		border-top: 1px solid #979797;
-		border-bottom: 1px solid #979797;
+		/*background-color: #F5F5F5;*/
+		background-image: url('./images/[[IMAGE_DIR]]/heading_gradient.jpg');
+		background-x-position: center;
+		background-y-position: top;
+		background-repeat: repeat-x;
+		border-bottom: 1px solid [[BORDER_COLOR]];
+		border-left: 1px solid [[BORDER_COLOR]];
+		border-right: 1px solid [[BORDER_COLOR]];
 		padding: 5px;
 		text-align: left;
 		color: #fff;

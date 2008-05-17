@@ -8,9 +8,8 @@
 	}
 	*.Footer .Content {
 		background-color: #D3D3D3;
-		border-top: 1px solid #979797;
-		border-right: 1px solid #979797;
-		border-left: 1px solid #979797;
+		border-bottom: 1px solid [[BORDER_COLOR]];
+
 		padding: 10px;
 		text-align: right;
 		color: #fff;

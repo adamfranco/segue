@@ -4,23 +4,44 @@
 
 	.Menu_Left  {
 		background-color: [[BG_COLOR]];
+		margin-left: -1px;
+		margin-top: -3px;
+		border-top: 3px solid [[BG_COLOR]];
 
+	}
+	
+	.Menu_Left .MenuItem_Heading {
+		border-left: 1px solid [[BORDER_COLOR]];
+	}
+
+	.Menu_Left .MenuItem_Link_Selected  {	
+		border-right: 1px solid [[BORDER_COLOR]];
 	}
 
 	.Menu_Left .MenuItem_Link_Selected .Content {
-
-		border-bottom: 1px solid #979797;
-		border-top: 1px solid #979797;
 		text-align: right;
-
+		border-right: 0px solid;
+		border-left: 1px solid [[BORDER_COLOR]];
+		margin-right: -1px;
+		font-size: [[LEFT_TAB_FONT]];
 	}
 
+	.Menu_Left .MenuItem_Link_Unselected  {
+		border-right: 1px solid [[BORDER_COLOR]];
+		background-color: [[BG_COLOR]];
+	}
+	
 	.Menu_Left .MenuItem_Link_Unselected .Content {
-		border-bottom: 1px solid #979797;
-		border-top: 1px solid #979797;
-		border-right: 1px solid #979797;
-		padding-top: 1px;
-		padding-bottom: 1px;
+		border-left: 1px solid [[BORDER_COLOR]];
 		text-align: right;
+		font-size: [[LEFT_TAB_FONT]];
+	}
 
+	.Menu_Right .MenuItem_Link_Unselected:hover {
+		
+	}
+
+	.Menu_Right .Menu_Sub  {
+		margin-right: 10px;
+		margin-left: 0px;
 	}

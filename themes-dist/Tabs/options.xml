@@ -1,7 +1,7 @@
 <options>
 	<option id='color'>
-		<displayName lang='en_US'>Color</displayName>
-		<description lang='en_US'>The overall color-scheme of the theme.</description>
+		<displayName lang='en_US'>Color Scheme</displayName>
+		<description lang='en_US'>The color scheme of the theme.</description>
 		<description lang='es_ES'>Los colores majores del tema.</description>
 		<choice>
 			<key>white</key>
@@ -11,6 +11,7 @@
 			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
 			<setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
 			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[BORDER_COLOR]]'>#979797</setting>
 			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>
 		</choice>
@@ -22,6 +23,11 @@
 			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
 			<setting marker='[[BG_COLOR]]'>#FFF8C6</setting>
 			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[BORDER_COLOR]]'>#979797</setting>
+<!-- 
+			<setting marker='[[TEXT_COLOR]]'>#999999</setting>
+			<setting marker='[[LINK_COLOR]]'>#999999</setting>
+ -->
 			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>		
 		</choice>
@@ -33,6 +39,7 @@
 			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
 			<setting marker='[[BG_COLOR]]'>#000000</setting>
 			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[BORDER_COLOR]]'>#979797</setting>
 			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>		
 		</choice>
@@ -44,6 +51,7 @@
 			<setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
 			<setting marker='[[BG_COLOR]]'>#82AECF</setting>
 			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[BORDER_COLOR]]'>#979797</setting>
 			<setting marker='[[BG_TEXT_COLOR]]'>#333333</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#003366</setting>		
 		</choice>
@@ -55,10 +63,51 @@
 			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
 			<setting marker='[[BG_COLOR]]'>#E6FFD3</setting>
 			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[BORDER_COLOR]]'>#979797</setting>
 			<setting marker='[[BG_TEXT_COLOR]]'>#333333</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#003366</setting>		
 		</choice>
 	</option>
+	<option id='left_tab'>
+		<displayName lang='en_US'>Left Tab Size</displayName>
+		<description lang='en_US'>The size of the left side tabs.</description>
+		<choice>
+			<key>black</key>
+			<label lang='en_US'>Small</label>
+			<setting marker='[[LEFT_TAB_FONT]]'>75%</setting>
+		</choice>
+		<choice isDefault='true'>
+			<key>red</key>
+			<label lang='en_US'>Normal</label>
+			<setting marker='[[LEFT_TAB_FONT]]'>100%</setting>
+		</choice>
+		<choice>
+			<key>blue</key>
+			<label lang='en_US'>Large</label>
+			<setting marker='[[LEFT_TAB_FONT]]'>125%</setting>
+		</choice>
+	</option>
+	<option id='right_tab'>
+		<displayName lang='en_US'>Right Tab Size</displayName>
+		<description lang='en_US'>The size of the right side tabs.</description>
+		<choice>
+			<key>black</key>
+			<label lang='en_US'>Small</label>
+			<setting marker='[[RIGHT_TAB_FONT]]'>75%</setting>
+		</choice>
+		<choice isDefault='true'>
+			<key>red</key>
+			<label lang='en_US'>Normal</label>
+			<setting marker='[[RIGHT_TAB_FONT]]'>100%</setting>
+		</choice>
+		<choice>
+			<key>blue</key>
+			<label lang='en_US'>Large</label>
+			<setting marker='[[RIGHT_TAB_FONT]]'>125%</setting>
+		</choice>
+	</option>
+	
+	
 	<option id='text_color'>
 		<displayName lang='en_US'>Text Color</displayName>
 		<description lang='en_US'>The color or normal text.</description>

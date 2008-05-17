@@ -3,13 +3,15 @@
  *********************************************************/
 
 	*.MenuItem_Link_Selected  {
-
+		background-color: [[BG_COLOR]];
 		padding-bottom: 4px;
-		border: 0px;
+		
+		
 	}
 
 	*.MenuItem_Link_Selected .Content {
-		background-color: #FFFFFF;
+		background-color: [[FG_COLOR]];
+		border-bottom: 1px solid [[BORDER_COLOR]];
 		padding: 3px;
 		text-align: left;
 		color: #000000;

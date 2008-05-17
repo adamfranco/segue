@@ -3,16 +3,21 @@
  *********************************************************/
 
 	.Heading_2 {
-
+		margin-right: 10px;
+		margin-left: 10px;
 		border: 0px;
 	}
 	.Heading_2 .Content {
-		background-color: #F5F5F5;
-		border-top: 1px solid #979797;
-		border-bottom: 1px solid #979797;
-		padding: 8px;
+		background-image: url('./images/[[IMAGE_DIR]]/heading_gradient.jpg');
+		background-x-position: center;
+		background-y-position: top;
+		background-repeat: repeat-x;
+		border-bottom: 1px solid [[BORDER_COLOR]];
+		border-left: 1px solid [[BORDER_COLOR]];
+		border-right: 1px solid [[BORDER_COLOR]];
+		padding: 5px;
 		text-align: left;
-		color: #000000;
+		color: #fff;
 		font-size: 125%;
 		padding-left: 10px;
 		margin: 0px;
