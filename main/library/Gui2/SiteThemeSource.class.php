@@ -10,6 +10,7 @@
  */ 
 
 require_once(HARMONI.'/Gui2/ThemeSource.interface.php');
+require_once(HARMONI.'/Gui2/ThemeAdmin.interface.php');
 require_once(dirname(__FILE__).'/SiteTheme.class.php');
 
 /**
@@ -24,7 +25,7 @@ require_once(dirname(__FILE__).'/SiteTheme.class.php');
  * @version $Id$
  */
 class Segue_Gui2_SiteThemeSource
-	implements Harmoni_Gui2_ThemeSourceInterface
+	implements Harmoni_Gui2_ThemeSourceInterface, Harmoni_Gui2_ThemeAdminInterface
 {
 	/**
 	 * Constructor
@@ -106,6 +107,10 @@ class Segue_Gui2_SiteThemeSource
 		return new Segue_Gui2_SiteTheme($this->databaseIndex, $matches[1]);
 	}
 	
+	/*********************************************************
+	 * Theme Administration
+	 *********************************************************/
+	
 	/**
 	 * Answer true if this source supports theme administration.
 	 * If this method returns true, getThemeAdminSession must
@@ -116,21 +121,76 @@ class Segue_Gui2_SiteThemeSource
 	 * @since 5/6/08
 	 */
 	public function supportsThemeAdmin () {
-		return false;
+		return true;
 	}
 	
 	/**
-	 * Answer an object that implements the ThemeAdminSessionInterface
+	 * Answer an object that implements the Harmoni_Gui2_ThemeAdminInterface
 	 * for this theme source. This could be the same or a different object.
 	 * 
-	 * @return object Harmoni_Gui2_ThemeAdminSessionInterface
+	 * @return object Harmoni_Gui2_ThemeAdminInterface
 	 * @access public
 	 * @since 5/6/08
 	 */
 	public function getThemeAdminSession () {
-		throw new UnimplementedException();
+		return $this;
 	}
 	
+	/*********************************************************
+	 * Theme Administration
+	 *********************************************************/
+	/**
+	 * Create a new empty theme.
+	 * 
+	 * @return object Harmoni_Gui2_ThemeInterface
+	 * @access public
+	 * @since 5/16/08
+	 */
+	public function createTheme () {
+		$query = new InsertQuery;
+		$query->setTable('segue_site_theme');
+		$query->addValue('fk_site', $this->getSiteId());
+		$query->addValue('display_name', _("Untitled"));
+		$dbc = Services::getService('DatabaseManager');
+		$result = $dbc->query($query, $this->databaseIndex);
+		return new Segue_Gui2_SiteTheme($this->databaseIndex, strval($result->getLastAutoIncrementValue()));
+	}
+	/**
+	 * Create a copy of a theme and return the new copy.
+	 * 
+	 * @param object Harmoni_Gui2_ThemeInterface $theme
+	 * @return object Harmoni_Gui2_ThemeInterface
+	 * @access public
+	 * @since 5/16/08
+	 */
+	public function createCopy (Harmoni_Gui2_ThemeInterface $theme) {
+		$newTheme = $this->createTheme();
+		$newTheme->updateDisplayName($theme->getDisplayName()." "._("copy"));
+		$newTheme->updateDescription($theme->getDescription());
+		$newTheme->updateThumbnail($theme->getThumbnail());
+		if ($theme->supportsOptions()) {
+			$optionsSession = $theme->getOptionsSession();
+			$newOptionsSession = $newTheme->getOptionsSession();
+			$newOptionsSession->updateOptionsDocument($optionsSession->getOptionsDocument());
+		}
+		$modSess = $newTheme->getModificationSession();
+		$modSess->updateGlobalCss($theme->getGlobalCss());
+		foreach ($theme->getComponentTypes() as $type) {
+			$modSess->updateCssForType($type, $theme->getCssForType($type));
+			$modSess->updateTemplateForType($type, $theme->getTemplateForType($type));
+		}
+		foreach ($theme->getImages() as $image) {
+			$path = $image->getPath();
+			$dir = dirname($path);
+			$prefixPath = '';
+			if (preg_match('/^(?:(?:.*\/)?images\/)?(.+)$/', $dir, $matches)) {
+				$prefixPath = $matches[1];
+			}
+			$modSess->addImage($image, $image->getBasename(), $prefixPath);
+		}
+		
+		return $newTheme;
+	}
 }
 
 ?>

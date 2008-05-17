@@ -198,6 +198,8 @@ class theme_optionsAction
 		$property = $step->addComponent('display_name', new WTextField);
 		$property->setSize(40);
 		$property->setValue($theme->getDisplayName());
+		$property->setErrorRule(new WECRegex('[a-zA-Z0-9]+'));
+		$property->setErrorText(_("You must specify a name."));
 		print "\n<h4>"._("Display Name")."</h4>\n[[display_name]]";
 		
 		$property = $step->addComponent('description', new WTextArea);
@@ -242,23 +244,34 @@ class theme_optionsAction
 		/*********************************************************
 		 * Images
 		 *********************************************************/
-		print "\n</td><td style='width: 500px;'>";
+		print "\n</td><td>";
 		
 		print "\n<h3>"._("Images")."</h3>";
 		print "\n<p>"._("You may upload images to your theme. These images must be JPG, PNG, or GIF images. To use them in your HTML or CSS, reference them with relative urls in an 'images' directory such as <code>images/background_image.jpg</code>.")."</p>";
 		print "\n[[images]]";
 		$collection = $step->addComponent('images', new WRepeatableComponentCollection);
-		$collection->setContent('./images/[[image]]');
+		$collection->setContent('./images/[[path_prefix]]/[[image]] [[orig_path_prefix]]');
+		
+		$property = $collection->addComponent('path_prefix', new WTextField);
+		$property->setSize('10');
+		$property->setErrorRule(new WECRegex('^([a-zA-Z0-9_-]+)?(\/[a-zA-Z0-9_-]+)*$'));
+		$property->setErrorText(_("Subdirectories can only contain letters, numbers, and underscore characters."));
+		
+		$property = $collection->addComponent('orig_path_prefix', new WHiddenField);
 		
 		$property = $collection->addComponent('image', new WFileUploadField);
 		$property->setAcceptedMimetypes(array('image/png', 'image/jpeg', 'image/gif'));
+		
 		foreach ($theme->getImages() as $image) {
-			$collection->addValueCollection(array ('image' => array(
-				'name' => $image->getBasename(), 
-				'size' => $image->getSize(),
-				'type' => $image->getMimeType(),
-				'starting_name' => $image->getBasename(), 
-				'starting_size' => $image->getSize())));
+			$collection->addValueCollection(array (
+				'path_prefix' => dirname($image->getPath()),
+				'orig_path_prefix' => dirname($image->getPath()),
+				'image' => array(
+					'name' => $image->getBasename(), 
+					'size' => $image->getSize(),
+					'type' => $image->getMimeType(),
+					'starting_name' => $image->getBasename(), 
+					'starting_size' => $image->getSize())));
 		}
 		print "\n</td></tr></table>";
 		
@@ -377,11 +390,21 @@ class theme_optionsAction
 			if ($imageVal['image']['tmp_name']) {
 				$file = new Harmoni_Filing_FileSystemFile($imageVal['image']['tmp_name']);
 				$file->setMimeType($imageVal['image']['type']);
-				$theme->addImage($file, $imageVal['image']['name']);
+				$theme->addImage($file, $imageVal['image']['name'], $imageVal['path_prefix']);
+			}
+			// Move any images with changed prefixes.
+			else if ($imageVal['path_prefix'] != $imageVal['orig_path_prefix']) {
+				$image = $modSess->getImage(
+					$imageVal['orig_path_prefix'].'/'.$imageVal['image']['name']);
+				$image->setPath($imageVal['path_prefix'].'/'.$imageVal['image']['name']);
 			}
 			// Mark images as existing
+			if ($imageVal['path_prefix'])
+				$path = $imageVal['path_prefix'].'/'.$imageVal['image']['name'];
+			else
+				$path = $imageVal['image']['name'];
 			foreach ($missingImages as $key => $image) {
-				if ($image->getBasename() == $imageVal['image']['name']) {
+				if ($image->getPath() == $path) {
 					unset($missingImages[$key]);
 				}
 			}

@@ -249,38 +249,6 @@ class Segue_Gui2_SiteTheme
 		throw new UnimplementedException();
 	}
 	
-	
-	
-	/*********************************************************
-	 * Options - Internal
-	 *********************************************************/
-	/**
-	 * Load the options.xml file if it exists
-	 * 
-	 * @return null
-	 * @access protected
-	 * @since 5/9/08
-	 */
-	protected function loadOptions () {
-		try {
-			$optionsString = $this->getThemeDataByType('options.xml');
-		} catch (OperationFailedException $e) {
-			$this->options = array();
-			return;
-		}
-		if (!strlen(trim($optionsString))) {
-			$this->options = array();
-			return;
-		}
-		
-		$options = new Harmoni_DOMDocument;
-		$options->loadXML($optionsString);
-		$options->schemaValidateWithException(HARMONI.'/Gui2/theme_options.xsd');
-		
-		
-		$this->options = $this->buildOptionsFromDocument($options);
-	}
-	
 	/*********************************************************
 	 * Theme Modification
 	 *********************************************************/
@@ -571,7 +539,7 @@ class Segue_Gui2_SiteTheme
 		$query->addValue('display_name', $displayName);
 		$query->addWhereEqual('id', $this->id);
 		$dbc = Services::getService('DatabaseManager');
-		$dbc->query($query);
+		$dbc->query($query, $this->databaseIndex);
 	}
 	
 	/**
@@ -589,7 +557,7 @@ class Segue_Gui2_SiteTheme
 		$query->addValue('description', $description);
 		$query->addWhereEqual('id', $this->id);
 		$dbc = Services::getService('DatabaseManager');
-		$dbc->query($query);
+		$dbc->query($query, $this->databaseIndex);
 	}
 	
 	/**
@@ -615,7 +583,7 @@ class Segue_Gui2_SiteTheme
 		$query->addValue('size', $thumbnail->getSize());
 		$query->addValue('data', base64_encode($thumbnail->getContents()));
 		$dbc = Services::getService('DatabaseManager');
-		$dbc->query($query);
+		$dbc->query($query, $this->databaseIndex);
 	}
 	
 	/*********************************************************
@@ -804,7 +772,7 @@ class Segue_Gui2_SiteTheme
 		$query->addWhereEqual('fk_theme', $this->id);
 		$query->addWhereEqual('path', $path);
 		$dbc = Services::getService('DatabaseManager');
-		$dbc->query($query);
+		$dbc->query($query, $this->databaseIndex);
 		
 		$query = new InsertQuery;
 		$query->setTable('segue_site_theme_image');
@@ -814,7 +782,7 @@ class Segue_Gui2_SiteTheme
 		$query->addValue('size', $image->getSize());
 		$query->addValue('data', base64_encode($image->getContents()));
 		$dbc = Services::getService('DatabaseManager');
-		$dbc->query($query);
+		$dbc->query($query, $this->databaseIndex);
 	}
 	
 	/**
