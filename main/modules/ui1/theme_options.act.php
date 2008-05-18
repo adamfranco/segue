@@ -195,18 +195,16 @@ class theme_optionsAction
 		 *********************************************************/
 		print "\n<h3>"._("Theme Information")."</h3>";
 		print "\n<table class='info_table'><tr><td>";
-		$property = $step->addComponent('display_name', new WTextField);
+		$property = $step->addComponent('display_name', new WSafeHtmlTextField);
 		$property->setSize(40);
 		$property->setValue($theme->getDisplayName());
 		$property->setErrorRule(new WECRegex('[a-zA-Z0-9]+'));
 		$property->setErrorText(_("You must specify a name."));
 		print "\n<h4>"._("Display Name")."</h4>\n[[display_name]]";
 		
-		$property = $step->addComponent('description', new WTextArea);
+		$property = $step->addComponent('description', new WSafeHtmlTextArea);
 		$property->setRows(10);
 		$property->setColumns(40);
-		$property->setErrorRule(new SafeHtmlRule);
-		$property->setErrorText(_("Must be valid XHTML without any Javascript."));
 		$property->setValue($theme->getDescription());
 		print "\n<br/><h4>"._("Description")."</h4>\n[[description]]";
 		
@@ -237,7 +235,7 @@ class theme_optionsAction
 		print "\n<p>"._("The CSS snippets will be combined together in the order listed into a single file.")."</p>";
 		print "\n<p>"._("The HTML snippets will wrap the various components on the screen and must contain <code>&#91;&#91;CONTENT&#93;&#93;</code> placeholder for the content of the component. Any classes you want to refer to in the CSS will need to be added to the HTML snippets.")."</p>";
 		
-		$property = $step->addComponent('global_css', new WTextArea);
+		$property = $step->addComponent('global_css', new WSafeCssTextArea);
 		$property->setRows(20);
 		$property->setColumns(40);
 		$property->setValue($modSess->getGlobalCss());
@@ -294,12 +292,12 @@ class theme_optionsAction
 			print "\n\t\t<td>[[".$type."-html]]</td>";
 			print "\n\t</tr>";
 			
-			$property = $step->addComponent($type.'-css', new WTextArea);
+			$property = $step->addComponent($type.'-css', new WSafeCssTextArea);
 			$property->setRows(10);
 			$property->setColumns(40);
 			$property->setValue($modSess->getCssForType($type));
 			
-			$property = $step->addComponent($type.'-html', new WTextArea);
+			$property = $step->addComponent($type.'-html', new WSafeHtmlTextArea);
 			$property->setRows(10);
 			$property->setColumns(60);
 			$property->setValue($modSess->getTemplateForType($type));
