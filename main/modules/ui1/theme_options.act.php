@@ -205,6 +205,8 @@ class theme_optionsAction
 		$property = $step->addComponent('description', new WTextArea);
 		$property->setRows(10);
 		$property->setColumns(40);
+		$property->setErrorRule(new SafeHtmlRule);
+		$property->setErrorText(_("Must be valid XHTML without any Javascript."));
 		$property->setValue($theme->getDescription());
 		print "\n<br/><h4>"._("Description")."</h4>\n[[description]]";
 		
