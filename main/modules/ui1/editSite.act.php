@@ -338,6 +338,15 @@ class editSiteAction
 				print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
 			}
 			print "\n\t<p>".$theme->getDescription()."</p>";
+			
+			// Delete Theme
+			if ($theme->supportsModification()) {
+				$modSess = $theme->getModificationSession();
+				if ($modSess->canModify()) {
+					// allow delete.
+				}
+			}
+			
 			print "\n\t<div style='clear: both;'> &nbsp; </div>";
 			$property->addOption($theme->getIdString(), "<strong>".$theme->getDisplayName()."</strong>", ob_get_clean());
 		}
