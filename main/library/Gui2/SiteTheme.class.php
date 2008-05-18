@@ -54,6 +54,31 @@ class Segue_Gui2_SiteTheme
 		$this->postHtml = array();
 	}
 	
+	/**
+	 * Answer the siteId
+	 * 
+	 * @return string
+	 * @access protected
+	 * @since 5/17/08
+	 */
+	protected function getSiteId () {
+		if (!isset($this->siteId)) {
+			$query = new SelectQuery;
+			$query->addTable('segue_site_theme');
+			$query->addColumn('fk_site');
+			$query->addWhereEqual('id', $this->id);
+			
+			$dbMgr = Services::getService("DatabaseManager");
+			$result = $dbMgr->query($query, $this->databaseIndex);
+			if (!$result->hasNext())
+				throw new UnknownIdException("Theme with id '".$this->id."' does not exist.");
+			$row = $result->next();
+			$result->free();
+			$this->siteId = $row['fk_site'];
+		}
+		return $this->siteId;
+	}
+	
 	/*********************************************************
 	 * Output
 	 *********************************************************/
@@ -520,6 +545,39 @@ class Segue_Gui2_SiteTheme
 /*********************************************************
  * Theme Modification
  *********************************************************/
+ 	/**
+	 * Answer false if it is known that all methods will result in PermissionDeniedExceptions
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 5/17/08
+	 */
+	public function canModify () {
+		$az = Services::getService("AuthZ");
+		$id = Services::getService("Id");
+		return $az->isUserAuthorized(
+			$id->getId('edu.middlebury.authorization.modify'),
+			$id->getId($this->getSiteId()));
+	}
+	
+	/**
+	 * Delete the theme for this session
+	 * 
+	 * @return null
+	 * @access public
+	 * @since 5/17/08
+	 */
+	public function delete () {
+		if (!$this->canModify())
+			throw new PermissionDeniedException();
+		
+		$query = new DeleteQuery;
+		$query->setTable('segue_site_theme');
+		$query->addWhereEqual('id', $this->id);
+		$dbc = Services::getService('DatabaseManager');
+		$dbc->query($query, $this->databaseIndex);
+	}
+	
  	/*********************************************************
 	 * Info
 	 *********************************************************/
@@ -533,6 +591,9 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function updateDisplayName ($displayName) {
+		if (!$this->canModify())
+			throw new PermissionDeniedException();
+		
 		$this->displayName = $displayName;
 		$query = new UpdateQuery;
 		$query->setTable('segue_site_theme');
@@ -551,6 +612,9 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function updateDescription ($description) {
+		if (!$this->canModify())
+			throw new PermissionDeniedException();
+		
 		$this->description = $description;
 		$query = new UpdateQuery;
 		$query->setTable('segue_site_theme');
@@ -569,6 +633,9 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function updateThumbnail (Harmoni_Filing_FileInterface $thumbnail) {
+		if (!$this->canModify())
+			throw new PermissionDeniedException();
+		
 		// Delete the old thumbnail
 		$query = new DeleteQuery;
 		$query->setTable('segue_site_theme_thumbnail');
@@ -619,6 +686,9 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function updateOptionsDocument (Harmoni_DOMDocument $optionsDocument) {
+		if (!$this->canModify())
+			throw new PermissionDeniedException();
+		
 		// Unset the options if we have an empty document.
 		if (!isset($optionsDocument->documentElement)) {
 			$this->updateThemeDataByType('options.xml', '');
@@ -658,6 +728,9 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function updateGlobalCss ($css) {
+		if (!$this->canModify())
+			throw new PermissionDeniedException();
+		
 		$this->updateThemeDataByType('Global.css', $css);
 	}
 	
@@ -687,6 +760,9 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function updateCssForType ($componentType, $css) {
+		if (!$this->canModify())
+			throw new PermissionDeniedException();
+		
 		$this->updateThemeDataByType($componentType.'.css', $css);
 	}
 	
@@ -716,6 +792,9 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function updateTemplateForType ($componentType, $templateHtml) {
+		if (!$this->canModify())
+			throw new PermissionDeniedException();
+		
 		$this->updateThemeDataByType($componentType.'.html', $templateHtml);
 	}
 	
@@ -758,6 +837,9 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/15/08
 	 */
 	public function addImage (Harmoni_Filing_FileInterface $image, $filename, $prefixPath = '') {
+		if (!$this->canModify())
+			throw new PermissionDeniedException();
+		
 		ArgumentValidator::validate($filename, NonzeroLengthStringValidatorRule::getRule());
 		
 		$path = trim($prefixPath, '/');
