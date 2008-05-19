@@ -181,9 +181,11 @@ class displayAction
 	public static function getVersionText () {
 		$harmoni = Harmoni::instance();
 		ob_start();
-		print "<a href='".$harmoni->request->quickURL('window', 'changelog')."' target='_blank'>Segue v.".self::getSegueVersion()."</a> &nbsp; &nbsp; &nbsp; ";
-		print "&copy;".self::getSegueCopyrightYear()." Middlebury College  &nbsp; &nbsp; &nbsp; <a href='http://segue.sourceforge.net'>";
-		print _("about");
+		print "<a href='".$harmoni->request->quickURL('window', 'changelog')."' target='_blank'>Segue v.".self::getSegueVersion()."</a>";
+// 		print "&nbsp; &nbsp; &nbsp; ";
+// 		print "&copy;".self::getSegueCopyrightYear()." Middlebury College";
+		print "&nbsp; &nbsp; &nbsp; <a href='http://segue.sourceforge.net'>";
+		print _("about Segue");
 		print "</a>";
 		
 		return ob_get_clean();
