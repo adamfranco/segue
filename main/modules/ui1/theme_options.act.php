@@ -258,9 +258,13 @@ class theme_optionsAction
 		print "\n<p>"._("The HTML snippets will wrap the various components on the screen and must contain <code>&#91;&#91;CONTENT&#93;&#93;</code> placeholder for the content of the component. Any classes you want to refer to in the CSS will need to be added to the HTML snippets.")."</p>";
 		
 		$property = $step->addComponent('global_css', new WSafeCssTextArea);
-		$property->setRows(20);
+		$value = $modSess->getGlobalCss();
+		$property->setValue($value);
 		$property->setColumns(40);
-		$property->setValue($modSess->getGlobalCss());
+		$property->setWrap('off');
+		$property->setRows(min(40, max(20, substr_count($value, "\n") + 1)));
+		
+		
 		print "\n<h4>"._("Global CSS")."</h4>\n[[global_css]]";
 		
 		/*********************************************************
@@ -314,17 +318,28 @@ class theme_optionsAction
 			print "\n\t\t<td>[[".$type."-html]]</td>";
 			print "\n\t</tr>";
 			
-			$property = $step->addComponent($type.'-css', new WSafeCssTextArea);
-			$property->setRows(10);
-			$property->setColumns(40);
-			$property->setValue($modSess->getCssForType($type));
+			$cssProperty = $step->addComponent($type.'-css', new WSafeCssTextArea);
+			$value = $modSess->getCssForType($type);
+			$cssLines = substr_count($value, "\n");
+			$cssProperty->setValue($value);
+			$cssProperty->setColumns(40);
+			$cssProperty->setWrap('off');
 			
-			$property = $step->addComponent($type.'-html', new WSafeHtmlTextArea);
-			$property->setRows(10);
-			$property->setColumns(60);
-			$property->setValue($modSess->getTemplateForType($type));
-			$property->setErrorRule(new WECRegex('(\[\[CONTENT\]\]|^$)'));
-			$property->setErrorText(_("Template HTML must contain a [[CONTENT]] placeholder or be blank."));
+			
+			$htmlProperty = $step->addComponent($type.'-html', new WSafeHtmlTextArea);
+			$value = $modSess->getTemplateForType($type);
+			$htmlLines = substr_count($value, "\n");
+			$htmlProperty->setValue($value);
+			$htmlProperty->setColumns(60);
+			$htmlProperty->setWrap('off');
+			$htmlProperty->setErrorRule(new WECRegex('(\[\[CONTENT\]\]|^$)'));
+			$htmlProperty->setErrorText(_("Template HTML must contain a [[CONTENT]] placeholder or be blank."));
+			
+			// Extend the text-areas to fit the content if needed.
+			$numLines = max(10, $cssLines + 1, $htmlLines + 1);
+			$numLines = min($numLines, 50);
+			$cssProperty->setRows($numLines);
+			$htmlProperty->setRows($numLines);
 		}
 		print "\n</table>";
 		
@@ -335,6 +350,7 @@ class theme_optionsAction
 		$property = $step->addComponent('options', new WTextArea);
 		$property->setRows(40);
 		$property->setColumns(100);
+		$property->setWrap('off');
 		$property->setValue($modSess->getOptionsDocument()->saveXMLWithWhiteSpace());
 		print "\n<h3>"._("Theme Options")."</h3>";
 		$help = _("In the text area below you can add an XML document that describes any options for this theme. This document must conform to the %1. (View an example %2.)");
