@@ -352,6 +352,7 @@ class theme_optionsAction
 		$property->setColumns(100);
 		$property->setWrap('off');
 		$property->setValue($modSess->getOptionsDocument()->saveXMLWithWhiteSpace());
+		$property->setErrorRule(new XmlSchemaRule(HARMONI.'/Gui2/theme_options.xsd'));
 		print "\n<h3>"._("Theme Options")."</h3>";
 		$help = _("In the text area below you can add an XML document that describes any options for this theme. This document must conform to the %1. (View an example %2.)");
 		$schema = "<a href='".$harmoni->request->quickURL('gui2', 'view_options_schema')."' target='_blank'>"._("options schema")."</a>";
