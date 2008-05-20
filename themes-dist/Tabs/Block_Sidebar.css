@@ -2,13 +2,12 @@
  * Block 3
  *********************************************************/
 
-	*.block3 {
-		border: 0px;
-	}
-	*.block3Content {
-		background-color: [[FG_COLOR]];
-		color: #000;
-		padding: 10px;
-		text-align: left;
-		margin: 0px;
-	}
+*.block3 {
+    border: 0px;
+}
+*.block3Content {
+    background-color: [[FG_COLOR]];
+    padding: 10px;
+    text-align: left;
+    margin: 0px;
+}

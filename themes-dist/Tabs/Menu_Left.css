@@ -2,46 +2,46 @@
  * Menu - Left
  *********************************************************/
 
-	.Menu_Left  {
-		background-color: [[BG_COLOR]];
-		margin-left: -1px;
-		margin-top: -3px;
-		border-top: 3px solid [[BG_COLOR]];
+.Menu_Left  {
+    background-color: [[BG_COLOR]];
+    margin-left: -1px;
+    margin-top: -3px;
+    border-top: 3px solid [[BG_COLOR]];
 
-	}
-	
-	.Menu_Left .MenuItem_Heading {
-		border-left: 1px solid [[BORDER_COLOR]];
-	}
+}
 
-	.Menu_Left .MenuItem_Link_Selected  {	
-		border-right: 1px solid [[BORDER_COLOR]];
-	}
+.Menu_Left .MenuItem_Heading {
+    border-left: 1px solid [[BORDER_COLOR_LEFT]];
+}
 
-	.Menu_Left .MenuItem_Link_Selected .Content {
-		text-align: right;
-		border-right: 0px solid;
-		border-left: 1px solid [[BORDER_COLOR]];
-		margin-right: -1px;
-		font-size: [[LEFT_TAB_FONT]];
-	}
+.Menu_Left .MenuItem_Link_Selected  {    
+    border-right: 1px solid [[BORDER_COLOR_RIGHT]];
+}
 
-	.Menu_Left .MenuItem_Link_Unselected  {
-		border-right: 1px solid [[BORDER_COLOR]];
-		background-color: [[BG_COLOR]];
-	}
-	
-	.Menu_Left .MenuItem_Link_Unselected .Content {
-		border-left: 1px solid [[BORDER_COLOR]];
-		text-align: right;
-		font-size: [[LEFT_TAB_FONT]];
-	}
+.Menu_Left .MenuItem_Link_Selected .Content {
+    text-align: right;
+    border-right: 0px solid [[BORDER_COLOR_RIGHT]];
+    border-left: 1px solid [[BORDER_COLOR_LEFT]];
+    margin-right: -1px;
+    font-size: [[LEFT_TAB_FONT]];
+}
 
-	.Menu_Right .MenuItem_Link_Unselected:hover {
-		
-	}
+.Menu_Left .MenuItem_Link_Unselected  {
+    border-right: 1px solid [[BORDER_COLOR_RIGHT]];
+    background-color: [[BG_COLOR]];
+}
 
-	.Menu_Right .Menu_Sub  {
-		margin-right: 10px;
-		margin-left: 0px;
-	}
+.Menu_Left .MenuItem_Link_Unselected .Content {
+    border-left: 1px solid [[BORDER_COLOR_LEFT]];
+    text-align: right;
+    font-size: [[LEFT_TAB_FONT]];
+}
+
+.Menu_Right .MenuItem_Link_Unselected:hover {
+    
+}
+
+.Menu_Right .Menu_Sub  {
+    margin-right: 10px;
+    margin-left: 0px;
+}

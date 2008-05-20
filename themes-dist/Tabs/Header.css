@@ -2,24 +2,24 @@
  * Header 1
  *********************************************************/
 
-	*.Header {
-		background-color: [[BG_COLOR]];
-		margin-right: -1px;
-		margin-left: -1px;
-		padding-bottom: 3px;
-	}
-	
-	*.Header .Content {
-		background-color: [[FG_COLOR]];
-		border-right: 1px solid [[BORDER_COLOR]];
-		border-left: 1px solid [[BORDER_COLOR]];
-		padding-left: 10px;
-		padding-right: 10px;
-		padding-top: 5px;
-		padding-bottom: 8px;
-		text-align: left;
-		color: #000000;
-		margin: 0px;
-		font-size: large;
-		border-bottom: 1px solid [[BORDER_COLOR]];	
-	}
+*.Header {
+    background-color: [[BG_COLOR]];
+    margin-right: -1px;
+    margin-left: -1px;
+    padding-bottom: 3px;
+}
+
+*.Header .Content {
+    background-color: [[FG_COLOR]];
+    border-bottom: 1px solid [[BORDER_COLOR]];
+    border-right: 1px solid [[BORDER_COLOR]];
+    border-left: 1px solid [[BORDER_COLOR]];
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 8px;
+    text-align: left;
+    color: #000000;
+    margin: 0px;
+    font-size: large;
+}

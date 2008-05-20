@@ -2,14 +2,13 @@
  * MenuHeading 1
  *********************************************************/
 
-	.MenuItem_Heading {
-		border: 0px;
-	}
-	.MenuItem_Heading .Content {
-		background-color: [[FG_COLOR]];
-		color: #000;
+.MenuItem_Heading {
+	border: 0px;
+}
 
-		padding: 10px;
-		text-align: left;
-		margin: 0px;
-	}
+.MenuItem_Heading .Content {
+	background-color: [[FG_COLOR]];
+	padding: 10px;
+	text-align: left;
+	margin: 0px;
+}
