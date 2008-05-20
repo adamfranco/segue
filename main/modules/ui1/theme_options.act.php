@@ -460,8 +460,15 @@ class theme_optionsAction
 		$optionsString = trim ($values['options']);
 		$optionsDoc = new Harmoni_DOMDocument;
 		$optionsDoc->preserveWhiteSpace = false;
-		if (strlen($optionsString) && $optionsString != '<?xml version="1.0"?>')
-			$optionsDoc->loadXML($values['options']);
+		if (strlen($optionsString) && $optionsString != '<?xml version="1.0"?>') {
+			try {
+				$optionsDoc->loadXML($values['options']);
+			} catch (DOMException $e) {
+				print "<strong>"._("Error in Options Definition:")." </strong>";
+				print $e->getMessage();
+				return false;
+			}
+		}
 		try {
 			$modSess->updateOptionsDocument($optionsDoc);
 		} catch (ValidationFailedException $e) {
