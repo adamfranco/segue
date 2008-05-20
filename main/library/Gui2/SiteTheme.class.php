@@ -143,8 +143,12 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/6/08
 	 */
 	public function getPreHTMLForComponentType ($type, $index) {
-		$type = $this->resolveType($type, $index);
-		return $this->getPreHtml($type);
+		try {
+			$type = $this->resolveType($type, $index);
+			return $this->getPreHtml($type);
+		} catch (OperationFailedException $e) {
+			return '';
+		}
 	}
 	
 	/**
@@ -163,8 +167,12 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/6/08
 	 */
 	public function getPostHTMLForComponentType ($type, $index) {
-		$type = $this->resolveType($type, $index);
-		return $this->getPostHtml($type);
+		try {
+			$type = $this->resolveType($type, $index);
+			return $this->getPostHtml($type);
+		} catch (OperationFailedException $e) {
+			return '';
+		}
 	}
 	
 	/**
