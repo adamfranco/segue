@@ -238,11 +238,13 @@ class htmlAction
 		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
 		
 		$footer = $mainScreen->add(
-			new Container (new XLayout, FOOTER, 1),
+			new Container (new XLayout, BLANK, 1),
 			$rootSiteComponent->getWidth(), null, CENTER, BOTTOM);
 		
 		
 		ob_start();
+		print "<div class='seguefooter_left'>";
+		// Help LInk
 		print "<a target='_blank' href='";
 		print $harmoni->request->quickURL("help", "browse_help");
 		print "'>"._("Help")."</a>";
@@ -257,6 +259,7 @@ class htmlAction
 		print "return false;";
 		print '"';
 		print ">"._("Site Map")."</a>";
+		print "</div>";
 		
 				
 		$footer->add(new UnstyledBlock(ob_get_clean()), "50%", null, LEFT, BOTTOM);
