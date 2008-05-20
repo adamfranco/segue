@@ -85,6 +85,24 @@ class theme_optionsAction
 	}
 	
 	/**
+	 * Answer the url to return to
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 5/19/08
+	 */
+	function getReturnUrl () {
+		if (isset($this->createdCopy) && $this->createdCopy) {
+			$harmoni = Harmoni::instance();
+			return $harmoni->request->quickURL(
+				'ui1', 'theme_options',
+				array('wizardSkipToStep' => "advanced"));
+		} else {
+			return parent::getReturnUrl();
+		}
+	}
+	
+	/**
 	 * Answer the theme step
 	 * 
 	 * @return object WizardStep
@@ -171,15 +189,17 @@ class theme_optionsAction
 		$harmoni = Harmoni::instance();
 		ob_start();
 		
-		print "\n<div class='theme_edit_step'>";
-		print "\n<h2>"._("Advanced Theme Editing")."</h2>";
-		print "\n<p>";
-		print _("Here you can edit the markup and CSS for the theme."); 
-		print "\n</p>\n";
-				
+		print "\n<h2>"._("Advanced Theme Editing")."</h2>";				
 		$theme = $component->getTheme();
 		if (!$theme->supportsModification()) {
-			print "\n<p>"._("This theme does not currently support modification. You can make a copy of it for just this site that you can then modify.")."</p>";
+			print "\n<p>"._("You currently are using a read-only theme. You can make a copy of this theme for just this site that you can then modify.")."</p>";
+			
+			$about = _("Modifying a theme requires knowledge of %1Cascading Style Sheets (CSS)%2 and %3Hypertext Markup Language (HTML)%4");
+			$about = str_replace('%1', "<a href='http://www.w3schools.com/Css/css_intro.asp' target='_blank'>", $about);
+			$about = str_replace('%2', "</a>", $about);
+			$about = str_replace('%3', "<a href='http://www.w3schools.com/html/html_intro.asp' target='_blank'>", $about);
+			$about = str_replace('%4', "</a>", $about);
+			print "\n<p>".$about."</p>";
 			
 			$property = $step->addComponent('create_copy', WSaveButton::withLabel(_("Create Local Theme Copy")));
 			
@@ -187,6 +207,8 @@ class theme_optionsAction
 			$step->setContent(ob_get_clean());
 			return $step;
 		}
+		
+		print "\n<div class='theme_edit_step'>";
 		
 		$modSess = $theme->getModificationSession();
 		
@@ -301,6 +323,8 @@ class theme_optionsAction
 			$property->setRows(10);
 			$property->setColumns(60);
 			$property->setValue($modSess->getTemplateForType($type));
+			$property->setErrorRule(new WECRegex('(\[\[CONTENT\]\]|^$)'));
+			$property->setErrorText(_("Template HTML must contain a [[CONTENT]] placeholder or be blank."));
 		}
 		print "\n</table>";
 		
@@ -349,7 +373,7 @@ class theme_optionsAction
 					
 					$component->updateTheme($newTheme);
 					
-					$this->reloadToStep = 2;
+					$this->createdCopy = true;
 					return true;
 				}
 			}
