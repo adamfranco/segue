@@ -1,6 +1,6 @@
 <options>
 	<option id='color'>
-		<displayName lang='en_US'>Color Scheme</displayName>
+		<displayName lang='en_US'>Foreground Color</displayName>
 		<description lang='en_US'>The color scheme of the theme.</description>
 		<description lang='es_ES'>Los colores majores del tema.</description>
 		<choice>
@@ -9,11 +9,13 @@
 			<label lang='es_ES'>Blanco</label>
 			<setting marker='[[IMAGE_DIR]]'>white</setting>
 			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
-			<setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
 			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[TAB_HOVER_COLOR]]'>#CCCCCC</setting>
 			<setting marker='[[BORDER_COLOR]]'>#979797</setting>
-			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
-			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>
+			<setting marker='[[BORDER_COLOR_LEFT]]'>#979797</setting>
+			<setting marker='[[BORDER_COLOR_RIGHT]]'>#979797</setting>
+			<setting marker='[[BORDER_COLOR_TOP]]'>#FFFFFF</setting>
+			<setting marker='[[BORDER_COLOR_BOTTOM]]'>#666666</setting>
 		</choice>
 		<choice isDefault='true'>
 			<key>yellow</key>
@@ -21,51 +23,74 @@
 			<label lang='es_ES'>Amarillo</label>
 			<setting marker='[[IMAGE_DIR]]'>yellow</setting>
 			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
-			<setting marker='[[BG_COLOR]]'>#FFF8C6</setting>
-			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[FG_COLOR]]'>#FFF8C6</setting>
+			<setting marker='[[TAB_HOVER_COLOR]]'>#FFCC66</setting>
 			<setting marker='[[BORDER_COLOR]]'>#979797</setting>
-<!-- 
-			<setting marker='[[TEXT_COLOR]]'>#999999</setting>
-			<setting marker='[[LINK_COLOR]]'>#999999</setting>
- -->
-			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
-			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>		
+			<setting marker='[[BORDER_COLOR_LEFT]]'>#979797</setting>
+			<setting marker='[[BORDER_COLOR_RIGHT]]'>#979797</setting>
+			<setting marker='[[BORDER_COLOR_TOP]]'>#FFFFFF</setting>
+			<setting marker='[[BORDER_COLOR_BOTTOM]]'>#666666</setting>		
 		</choice>
 		<choice>
 			<key>black</key>
 			<label lang='en_US'>Black</label>
 			<label lang='es_ES'>Negro</label>
 			<setting marker='[[IMAGE_DIR]]'>black</setting>
-			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
+			<setting marker='[[ALERT_COLOR]]'>#FFFF99</setting>
+			<setting marker='[[FG_COLOR]]'>#161616</setting>
+			<setting marker='[[TAB_HOVER_COLOR]]'>#161616</setting>
+			<setting marker='[[BORDER_COLOR]]'>#333333</setting>
+			<setting marker='[[BORDER_COLOR_LEFT]]'>#000000</setting>
+			<setting marker='[[BORDER_COLOR_RIGHT]]'>#000000</setting>
+			<setting marker='[[BORDER_COLOR_TOP]]'>#161616</setting>
+			<setting marker='[[BORDER_COLOR_BOTTOM]]'>#000000</setting>
+		</choice>
+	</option>
+	<option id='bg_color'>
+		<displayName lang='en_US'>Background Color</displayName>
+		<description lang='en_US'>The color of the background.</description>
+		<choice>
+			<key>black</key>
+			<label lang='en_US'>Black</label>
+			<label lang='es_ES'>Negro</label>
+			<setting marker='[[IMAGE_DIR]]'>black</setting>
 			<setting marker='[[BG_COLOR]]'>#000000</setting>
-			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
-			<setting marker='[[BORDER_COLOR]]'>#979797</setting>
 			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
-			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>		
+			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>				
 		</choice>
 		<choice>
-			<key>blue</key>
-			<label lang='en_US'>Blue</label>
-			<label lang='es_ES'>Azul</label>
-			<setting marker='[[IMAGE_DIR]]'>blue</setting>
-			<setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
-			<setting marker='[[BG_COLOR]]'>#82AECF</setting>
-			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
-			<setting marker='[[BORDER_COLOR]]'>#979797</setting>
-			<setting marker='[[BG_TEXT_COLOR]]'>#333333</setting>
-			<setting marker='[[BG_LINK_COLOR]]'>#003366</setting>		
+			<key>darkgray</key>
+			<label lang='en_US'>Dark Gray</label>
+			<label lang='es_ES'>Negro</label>
+			<setting marker='[[IMAGE_DIR]]'>black</setting>
+			<setting marker='[[BG_COLOR]]'>#333333</setting>
+			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>				
 		</choice>
 		<choice>
-			<key>green</key>
-			<label lang='en_US'>Green</label>
-			<label lang='es_ES'>Verde</label>
-			<setting marker='[[IMAGE_DIR]]'>green</setting>
-			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
-			<setting marker='[[BG_COLOR]]'>#E6FFD3</setting>
-			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
-			<setting marker='[[BORDER_COLOR]]'>#979797</setting>
-			<setting marker='[[BG_TEXT_COLOR]]'>#333333</setting>
-			<setting marker='[[BG_LINK_COLOR]]'>#003366</setting>		
+			<key>lightgray</key>
+			<label lang='en_US'>Light Gray</label>
+			<label lang='es_ES'>Negro</label>
+			<setting marker='[[IMAGE_DIR]]'>black</setting>
+			<setting marker='[[BG_COLOR]]'>#F6F6F6</setting>
+			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>				
+		</choice>
+		<choice>
+			<key>yellow</key>
+			<label lang='en_US'>Yellow</label>
+			<label lang='es_ES'>Amarillo</label>
+			<setting marker='[[BG_COLOR]]'>#FFF8C6</setting>
+			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>			
+		</choice>
+		<choice>
+			<key>white</key>
+			<label lang='en_US'>White</label>
+			<label lang='es_ES'>Blanco</label>
+			<setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>			
 		</choice>
 	</option>
 	<option id='left_tab'>
@@ -105,9 +130,7 @@
 			<label lang='en_US'>Large</label>
 			<setting marker='[[RIGHT_TAB_FONT]]'>125%</setting>
 		</choice>
-	</option>
-	
-	
+	</option>	
 	<option id='text_color'>
 		<displayName lang='en_US'>Text Color</displayName>
 		<description lang='en_US'>The color or normal text.</description>
@@ -134,7 +157,7 @@
 		<choice>
 			<key>white</key>
 			<label lang='en_US'>White</label>
-			<setting marker='[[TEXT_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[TEXT_COLOR]]'>#CCCCCC</setting>
 		</choice>
 		<choice>
 			<key>green</key>
@@ -162,12 +185,35 @@
 		</choice>		<choice isDefault='true'>
 			<key>yellow</key>
 			<label lang='en_US'>Yellow</label>
-			<setting marker='[[LINK_COLOR]]'>#FFCC00</setting>
+			<setting marker='[[LINK_COLOR]]'>#E3B52C</setting>
 		</choice>
 		<choice>
 			<key>white</key>
 			<label lang='en_US'>White</label>
 			<setting marker='[[LINK_COLOR]]'>#FFFFFF</setting>
+		</choice>
+	</option>
+	<option id='font'>
+		<displayName lang='en_US'>Font Face</displayName>
+		<description lang='en_US'>The font face used in this site.</description>
+		<choice isDefault='true'>
+			<key>vedana</key>
+			<label lang='en_US'>Vedana, Arial, Helvetica, sans-serif</label>
+			<setting marker='[[FONT_FAMILY]]'>Vedana, Arial, Helvetica, sans-serif</setting>
+		</choice>
+		<choice>
+			<key>arial</key>
+			<label lang='en_US'>Arial, Helvetica, sans-serif</label>
+			<setting marker='[[FONT_FAMILY]]'>Arial, Helvetica, sans-serif</setting>
+		</choice>
+		<choice>
+			<key>times</key>
+			<label lang='en_US'>Times New Roman, Times, serif</label>
+			<setting marker='[[FONT_FAMILY]]'>"Times New Roman", Times, serif</setting>
+		</choice>		<choice isDefault='true'>
+			<key>georgia</key>
+			<label lang='en_US'>Georgia, Times New Roman, Times, serif</label>
+			<setting marker='[[FONT_FAMILY]]'>Georgia, "Times New Roman", Times, serif</setting>
 		</choice>
 	</option>
 </options>
