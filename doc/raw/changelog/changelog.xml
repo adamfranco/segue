@@ -28,6 +28,19 @@
 			Usage of this new theming system requires running the appropriate updater
 			located under Admin Tools --> Segue Updates.
 		</releaseNotes>
+		<change author='alex' date='2008-05-15'>
+			Themes: added a number of css classes to UI elements so these could be themed.
+		</change>
+		<new author='alex' date='2008-05-15'>
+			Themes: created a new Tabs theme with options.
+		</new>		
+		<new author='alex' date='2008-05-15'>
+			Themes: created a new ShadowBox theme with similar options to those found in
+			Segue 1x.
+		</new>
+		<change author='alex' date='2008-05-15'>
+			Themes: created theme options for RoundedCorners theme using new theming system.
+		</change>
 		<new author='adam' date='2008-05-14' ref='1820834' reftype='fr'>
 			Themes: Users can now choose the theme for their site from
 			a list of available themes. Themes may have options for varying their
