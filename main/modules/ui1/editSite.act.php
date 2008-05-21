@@ -322,7 +322,7 @@ class editSiteAction
 		$component = $this->getSiteComponent();
 		$step =  new WizardStep();
 		$step->setDisplayName(_("Theme"));
-		$property = $step->addComponent("theme", new WRadioList);
+		$property = $step->addComponent("theme", new WRadioListWithDelete);
 		$property->setValue($component->getTheme()->getIdString());
 		
 		$themeMgr = Services::getService("GUIManager");
@@ -338,8 +338,21 @@ class editSiteAction
 				print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
 			}
 			print "\n\t<p>".$theme->getDescription()."</p>";
+			
+			// Delete Theme
+			if ($theme->supportsModification()) {
+				$modSess = $theme->getModificationSession();
+				if ($modSess->canModify()) {
+					$allowDelete = true;
+				} else {
+					$allowDelete = false;
+				}
+			} else {
+				$allowDelete = false;
+			}
+			
 			print "\n\t<div style='clear: both;'> &nbsp; </div>";
-			$property->addOption($theme->getIdString(), "<strong>".$theme->getDisplayName()."</strong>", ob_get_clean());
+			$property->addOption($theme->getIdString(), "<strong>".$theme->getDisplayName()."</strong>", ob_get_clean(), $allowDelete);
 		}
 		
 		ob_start();
@@ -367,7 +380,23 @@ class editSiteAction
 		$currentTheme = $component->getTheme();
 		
 		$themeMgr = Services::getService("GUIManager");
-		$newTheme = $themeMgr->getTheme($values['theme']);
+		
+		// Delete deleted themes
+		foreach ($values['theme']['deleted'] as $themeId) {
+			$theme = $themeMgr->getTheme($themeId);
+			if ($theme->supportsModification()) {
+				$modSess = $theme->getModificationSession();
+				if ($modSess->canModify()) {
+					$theme->delete();
+				}
+			}
+		}
+		
+		// Set the chosen theme.
+		if (is_null($values['theme']['selected']))
+			$newTheme = $themeMgr->getDefaultTheme();
+		else
+			$newTheme = $themeMgr->getTheme($values['theme']['selected']);
 		
 		if ($newTheme->getIdString() != $currentTheme->getIdString()) {
 			$component->updateTheme($newTheme);

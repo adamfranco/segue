@@ -118,6 +118,8 @@ class SegueClassicWizard
 		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough("node");
 		$harmoni->request->passthrough("returnNode");
+		if (RequestContext::value('returnModule'))
+			$harmoni->request->passthrough("returnModule");
 		$harmoni->request->passthrough("returnAction");
 		
 		$centerPane = $this->getActionRows();
@@ -179,9 +181,9 @@ class SegueClassicWizard
 			if (!$this->saveDisplayOptionsStep($properties['display']))
 				return FALSE;
 			
-			
-			if (!$this->saveStatusStep($properties['status']))
-				return FALSE;
+			if (isset($properties['status']))
+				if (!$this->saveStatusStep($properties['status']))
+					return FALSE;
 			
 			/*********************************************************
 			 * Log the event
@@ -222,9 +224,14 @@ class SegueClassicWizard
 	function getReturnUrl () {
 		$harmoni = Harmoni::instance();
 		$harmoni->request->forget("returnNode");
+		$harmoni->request->forget("returnModule");
 		$harmoni->request->forget("returnAction");
+		if ($harmoni->request->get("returnModule"))
+			$returnModule = $harmoni->request->get("returnModule");
+		else
+			$returnModule = 'ui1';
 		return $harmoni->request->quickURL(
-			'ui1', $harmoni->request->get("returnAction"),
+			$returnModule, $harmoni->request->get("returnAction"),
 			array('node' => $harmoni->request->get("returnNode")));
 	}
 	

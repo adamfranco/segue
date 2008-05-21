@@ -79,20 +79,6 @@ class editviewAction
 			ob_start();
 			$harmoni = Harmoni::instance();
 			print "\n<div style='text-align: right;'>";
-			$theme = $rootSiteComponent->getTheme();
-			if ($authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.modify"), 
-				$siteId)
-				&& $theme->supportsOptions()
-				&& count($theme->getOptionsSession()->getOptions()))
-			{
-				$url = $harmoni->request->quickURL("ui1", "theme_options", 
-					array("node" => $siteId->getIdString(),
-					"returnNode" => SiteDispatcher::getCurrentNodeId(),
-					"returnAction" => $harmoni->request->getRequestedAction()));
-				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
-				print _("Theme Options")."</button>";
-			}
 			if ($authZ->isUserAuthorized(
 				$idManager->getId("edu.middlebury.authorization.modify"), 
 				$siteId))
@@ -103,6 +89,18 @@ class editviewAction
 					"returnAction" => $harmoni->request->getRequestedAction()));
 				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
 				print _("Edit Site Options")."</button>";
+			}
+			$theme = $rootSiteComponent->getTheme();
+			if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.modify"), 
+				$siteId))
+			{
+				$url = $harmoni->request->quickURL("ui1", "theme_options", 
+					array("node" => $siteId->getIdString(),
+					"returnNode" => SiteDispatcher::getCurrentNodeId(),
+					"returnAction" => $harmoni->request->getRequestedAction()));
+				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
+				print _("Theme Options")."</button>";
 			}
 			if ($authZ->isUserAuthorizedBelow(
 				$idManager->getId("edu.middlebury.authorization.view_authorizations"), 

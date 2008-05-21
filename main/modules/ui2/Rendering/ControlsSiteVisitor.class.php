@@ -972,6 +972,85 @@ END;
 	}
 	
 	/**
+	 * Print theme controls
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 5/20/08
+	 */
+	function printTheme ( $siteComponent ) {
+		print "\n\t\t\t\t<tr><td class='ui2_settingborder'>";
+		print "\n\t\t\t\t<div class='ui2_settingtitle'>";
+		print "\n\t\t\t\t\t"._('Theme: ')."\n\t\t\t\t</div>";
+		
+		print "\n\t\t\t\t<div style='font-size: smaller; text-align: left;'>";
+		print _("Current Theme").": ";
+		$theme = $siteComponent->getTheme();
+		print $theme->getDisplayName();
+		print "\n\t\t\t\t</div>";
+		
+		print "\n\t\t\t\t</td><td class='ui2_settingborder' colspan='2'>";
+		print "\n\t\t\t\t\t<button class='ui2_field'  name='".RequestContext::name('theme')."'";
+		
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			print " readonly='readonly'";
+		} else {
+			$url = $harmoni->request->quickURL('ui1', 'editSite', array(
+						'node' => $siteComponent->getId(),
+						'returnNode' => SiteDispatcher::getCurrentNodeId(),
+						'returnModule' => $this->module,
+						'returnAction' => $this->action,
+						'wizardSkipToStep' => "theme"));
+			print " onclick='";
+			print 		"window.location = \"".$url."\".urlDecodeAmpersands(); return false;";
+			print "'";
+		}
+		print ">";
+		print _("Choose Theme");
+		print "</button>";
+		print "\n\t\t\t\t</td></tr>";
+		
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			print "\n\t\t\t\t<tr><td class='ui2_settingborder'>";
+			print "\n\t\t\t\t<div class='ui2_settingtitle'>";
+			print "\n\t\t\t\t\t"._('Theme Options: ')."\n\t\t\t\t</div>";
+			
+			print "\n\t\t\t\t<div style='font-size: smaller; text-align: left;'>";
+			print _("Change the colors, fonts, etcetera, for this theme.")."";
+			print "\n\t\t\t\t</div>";
+			
+			print "\n\t\t\t\t</td><td class='ui2_settingborder' colspan='2'>";
+			print "\n\t\t\t\t\t<button class='ui2_field'  name='".RequestContext::name('theme')."'";
+			
+			$authZ = Services::getService("AuthZ");
+			$idManager = Services::getService("Id");
+			$harmoni = Harmoni::instance();
+			$url = $harmoni->request->quickURL('ui1', 'theme_options', array(
+						'node' => $siteComponent->getId(),
+						'returnNode' => SiteDispatcher::getCurrentNodeId(),
+						'returnModule' => $this->module,
+						'returnAction' => $this->action));
+			print " onclick='";
+			print 		"window.location = \"".$url."\".urlDecodeAmpersands(); return false;";
+			print "'";
+			print ">";
+			print _("Change Theme Options");
+			print "</button>";
+			print "\n\t\t\t\t</td></tr>";
+		}
+	}
+	
+	/**
 	 * Answer controls for Block SiteComponents
 	 * 
 	 * @param SiteComponent $siteComponent
@@ -1045,6 +1124,9 @@ END;
 		$this->printCommentSettings($siteComponent, true);
 
 		$this->printWidth($siteComponent);
+		
+		$this->printTheme($siteComponent);
+		
 		return $this->controlsEnd($siteComponent);
 	}
 	
