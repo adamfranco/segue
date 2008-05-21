@@ -10,15 +10,38 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-21" date="The Future">
+	<version number="2.0-beta-21" date="2008-05-20">
 		<releaseNotes>
+			This release of Segue adds theming choices for sites. Site-editors
+			can now choose between a number of built-in themes, each of which 
+			supports a number of options for changing color scheme and/or fonts.
 			
+			Additionally, local copies of any theme can be created for a site.
+			These copies enable site-editors to modify the CSS and HTML templates
+			that define a theme, enabling full customization for users familiar 
+			with CSS and HTML. In a future release we will eventually add a public
+			gallery of themes that users will be able to submit their themes to
+			and choose themes for their sites from.
+			
+			New themes in this release: Rounded Corners, Shadow Box, Tabs.
+			
+			Usage of this new theming system requires running the appropriate updater
+			located under Admin Tools --> Segue Updates.
 		</releaseNotes>
 		<new author='adam' date='2008-05-14' ref='1820834' reftype='fr'>
 			Themes: Users can now choose the theme for their site from
 			a list of available themes. Themes may have options for varying their
 			color scheme or other attributes.
 		</new>
+		<new author='adam' date='2008-05-20' ref='1820835' reftype='fr'>
+			Themes: Users with CSS and HTML knowledge can now customize the theme
+			CSS and HTML templates that define the theme, enabling full control
+			over the theme. These custom copies of themes are restricted to the
+			site for which they are created.
+		</new>
+		<important author='adam' date='2008-05-20'>
+			New theming system requires updates be run under Admin Tools --> Segue Updates.
+		</important>
 		<fix author='adam' date='2008-05-13' ref='1962686' reftype='bug'>
 			ClassicMode: Site-Settings wizard now includes the site-width option.
 		</fix>

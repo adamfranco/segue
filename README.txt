@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-20.1 (2008-05-05)
+Segue v. 2.0-beta-21 (2008-05-20)
 =================================
 
 What is Segue?
@@ -17,17 +17,20 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release of Segue 2.0 includes dramatic speed improvements over beta 19.1 due to
-a new implementation of Harmoni's Authorization and Hiearchy system. Usage of this
-new systems requires running the appropriate updater located under Admin Tools -->
-Segue Updates. This updater will take several minutes to run and will make
-irrevocable changes to your database. Please back up your database before running
-this updater.
+This release of Segue adds theming choices for sites. Site-editors can now choose
+between a number of built-in themes, each of which supports a number of options for
+changing color scheme and/or fonts.
 
-Other improvements to Segue include support for migrating tags from Segue 1 sites,
-and an improved installation process.
+Additionally, local copies of any theme can be created for a site. These copies
+enable site-editors to modify the CSS and HTML templates that define a theme,
+enabling full customization for users familiar with CSS and HTML. In a future
+release we will eventually add a public gallery of themes that users will be able to
+submit their themes to and choose themes for their sites from.
 
-Segue 2.0 beta 20 uses Polyphony 1.1.0 and Harmoni 1.2.0.
+New themes in this release: Rounded Corners, Shadow Box, Tabs.
+
+Usage of this new theming system requires running the appropriate updater located
+under Admin Tools --> Segue Updates.
 
 
 Downloads
@@ -67,6 +70,25 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-21 (2008-05-20)
+----------------------------------------------------
+This release of Segue adds theming choices for sites. Site-editors can now choose
+between a number of built-in themes, each of which supports a number of options for
+changing color scheme and/or fonts.
+
+Additionally, local copies of any theme can be created for a site. These copies
+enable site-editors to modify the CSS and HTML templates that define a theme,
+enabling full customization for users familiar with CSS and HTML. In a future
+release we will eventually add a public gallery of themes that users will be able to
+submit their themes to and choose themes for their sites from.
+
+New themes in this release: Rounded Corners, Shadow Box, Tabs.
+
+Usage of this new theming system requires running the appropriate updater located
+under Admin Tools --> Segue Updates.
+
 
 
 v. 2.0-beta-20.1 (2008-05-05)
