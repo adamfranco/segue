@@ -10,6 +10,12 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-22" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		
+	</version>
 	<version number="2.0-beta-21.1" date="2008-05-20">
 		<releaseNotes>
 			This release of Segue adds theming choices for sites. Site-editors
