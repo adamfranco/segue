@@ -3,12 +3,14 @@
  *********************************************************/
 
 .Heading_2 {
-	border-left: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
-	border-right: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];		
-	padding-left: 10px;
-	text-align: left;
-	font-weight: bold;
-	font-size: 110%;
+    border-left: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
+    border-right: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];        
+    padding-left: 10px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 110%;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .Heading_2 .Content {

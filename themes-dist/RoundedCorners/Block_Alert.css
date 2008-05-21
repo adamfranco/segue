@@ -2,82 +2,82 @@
  * Block 4
  *********************************************************/
 
-	*.block4 {
-		padding: 1px;
-		border: 0px;
-	}
-	*.block4Content {
-		background-color: [[ALERT_COLOR]];
-		color: #000;
-		border: 1px solid #979797;
-		padding: 10px;
-		text-align: left;
-		margin: 0px;
-	}
-	.block4TopCorners, .block4BottomCorners {
-		margin: 0px;
-		padding: 0px;
-	}
-	.block4Spacer {
-		margin: 0px; padding: 0px; border: 0px;
-		clear: both;
-		font-size: 1px; line-height: 1px;
-	}
+*.block4 {
+    padding: 1px;
+    border: 0px;
+}
+*.block4Content {
+    background-color: [[ALERT_COLOR]];
+    color: #000;
+    border: 1px solid #979797;
+    padding: 10px;
+    text-align: left;
+    margin: 0px;
+}
+.block4TopCorners, .block4BottomCorners {
+    margin: 0px;
+    padding: 0px;
+}
+.block4Spacer {
+    margin: 0px; padding: 0px; border: 0px;
+    clear: both;
+    font-size: 1px; line-height: 1px;
+}
 
-	.block4BorderTL, .block4BorderTR, .block4BorderBL, .block4BorderBR {
-		width: 14px; height: 14px;
-		padding: 0px; border: 0px;
-		z-index: 99;
-	}
-	.block4BorderTL, .block4BorderBL {
-		float: left;
-		clear: both;
-	}
-	.block4BorderTR, .block4BorderBR {
-		float: right;
-		clear: right;
-	}
-	.block4BorderTL {
-		margin: 0px 0px 0px 0px;
-	}
-	.block4BorderTR {
-		margin: -0px -0px 0px 0px;
-	}
-	.block4BorderBL {
-		margin: -14px 0px 0px 0px;
-	}
-	.block4BorderBR {
-		margin: -14px 0px 0px 0px;
-	}
-	.block4BorderTL {
-		 margin-left: -4px;
-		 margin-left: -1px;
-	}
-	html>body .block4BorderTL {
-		 margin-left: 0px;
-	}
-	.block4BorderTR {
-		 margin-right: -4px;
-		 margin-right: -1px;
-	}
-	html>body .block4BorderTR {
-		 margin-right: 0px;
-	}
-	.block4BorderBL {
-		 margin-left: -3px;
-		 margin-left: 0px;
-	}
-	html>body .block4BorderBL {
-		 margin-left: -0px;
-	}
-	.block4BorderBR {
-		 margin-left: -3px;
-		 margin-left: 0px;
-	}
-	html>body .block4BorderBR {
-		 margin-left: 0px;
-	}
+.block4BorderTL, .block4BorderTR, .block4BorderBL, .block4BorderBR {
+    width: 14px; height: 14px;
+    padding: 0px; border: 0px;
+    z-index: 99;
+}
+.block4BorderTL, .block4BorderBL {
+    float: left;
+    clear: both;
+}
+.block4BorderTR, .block4BorderBR {
+    float: right;
+    clear: right;
+}
+.block4BorderTL {
+    margin: 0px 0px 0px 0px;
+}
+.block4BorderTR {
+    margin: -0px -0px 0px 0px;
+}
+.block4BorderBL {
+    margin: -14px 0px 0px 0px;
+}
+.block4BorderBR {
+    margin: -14px 0px 0px 0px;
+}
+.block4BorderTL {
+     margin-left: -4px;
+     margin-left: -1px;
+}
+html>body .block4BorderTL {
+     margin-left: 0px;
+}
+.block4BorderTR {
+     margin-right: -4px;
+     margin-right: -1px;
+}
+html>body .block4BorderTR {
+     margin-right: 0px;
+}
+.block4BorderBL {
+     margin-left: -3px;
+     margin-left: 0px;
+}
+html>body .block4BorderBL {
+     margin-left: -0px;
+}
+.block4BorderBR {
+     margin-left: -3px;
+     margin-left: 0px;
+}
+html>body .block4BorderBR {
+     margin-left: 0px;
+}
 
-	*.block4 a {
-		color: #000;
-	}
+*.block4 a {
+    color: #000;
+}
