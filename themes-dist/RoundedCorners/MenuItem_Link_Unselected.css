@@ -2,28 +2,23 @@
  * Menu 1 unselected content
  *********************************************************/
 
-	*.MenuItem_Link_Unselected {
-		padding: 1px;
-		border: 0px;
-	}
-	
-	*.MenuItem_Link_Unselected .Content {
-		background-color: #d3d3d3;;
-		border: 1px solid #979797;
-		padding: 3px;
-		text-align: left;
-		color: #000000;
-		font-size: 100%;
-		margin: 0px;
-	}
-	
-/*********************************************************
- * Menu 1 hover
- *********************************************************/
+*.MenuItem_Link_Unselected {
+	padding: 1px;
+	border: 0px;
+}
 
-	*.MenuItem_Link a:hover {
-		display: block;
-		background-color: #F5F5F5;
-		text-decoration: none;
-	}
-	
+*.MenuItem_Link_Unselected .Content {
+	background-color: #d3d3d3;;
+	border: 1px solid #979797;
+	padding: 3px;
+	text-align: left;
+	color: #000000;
+	font-size: 100%;
+	margin: 0px;
+}
+
+*.MenuItem_Link a:hover {
+	display: block;
+	background-color: #F5F5F5;
+	text-decoration: none;
+}

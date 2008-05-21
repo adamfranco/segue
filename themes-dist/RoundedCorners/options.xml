@@ -11,6 +11,7 @@
 			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
 			<setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
 			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[HEADER_BG_COLOR]]'>#F5F5F5</setting>
 			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>
 		</choice>
@@ -22,6 +23,7 @@
 			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
 			<setting marker='[[BG_COLOR]]'>#FFF8C6</setting>
 			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[HEADER_BG_COLOR]]'>#F5F5F5</setting>
 			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>		
 		</choice>
@@ -32,7 +34,8 @@
 			<setting marker='[[IMAGE_DIR]]'>black</setting>
 			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
 			<setting marker='[[BG_COLOR]]'>#000000</setting>
-			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[FG_COLOR]]'>#FFFFCC</setting>
+			<setting marker='[[HEADER_BG_COLOR]]'>#FFCC33</setting>
 			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>		
 		</choice>
@@ -44,6 +47,7 @@
 			<setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
 			<setting marker='[[BG_COLOR]]'>#82AECF</setting>
 			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[HEADER_BG_COLOR]]'>#F5F5F5</setting>
 			<setting marker='[[BG_TEXT_COLOR]]'>#333333</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#003366</setting>		
 		</choice>
@@ -55,6 +59,7 @@
 			<setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
 			<setting marker='[[BG_COLOR]]'>#E6FFD3</setting>
 			<setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[HEADER_BG_COLOR]]'>#F5F5F5</setting>
 			<setting marker='[[BG_TEXT_COLOR]]'>#333333</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#003366</setting>		
 		</choice>
@@ -119,6 +124,29 @@
 			<key>white</key>
 			<label lang='en_US'>White</label>
 			<setting marker='[[LINK_COLOR]]'>#FFFFFF</setting>
+		</choice>
+	</option>
+	<option id='font'>
+		<displayName lang='en_US'>Font</displayName>
+		<description lang='en_US'>The fonts used in this site.</description>
+		<choice isDefault='true'>
+			<key>vedana</key>
+			<label lang='en_US'>Vedana, Arial, Helvetica, sans-serif</label>
+			<setting marker='[[FONT_FAMILY]]'>Vedana, Arial, Helvetica, sans-serif</setting>
+		</choice>
+		<choice>
+			<key>arial</key>
+			<label lang='en_US'>Arial, Helvetica, sans-serif</label>
+			<setting marker='[[FONT_FAMILY]]'>Arial, Helvetica, sans-serif</setting>
+		</choice>
+		<choice>
+			<key>times</key>
+			<label lang='en_US'>Times New Roman, Times, serif</label>
+			<setting marker='[[FONT_FAMILY]]'>"Times New Roman", Times, serif</setting>
+		</choice>		<choice isDefault='true'>
+			<key>georgia</key>
+			<label lang='en_US'>Georgia, Times New Roman, Times, serif</label>
+			<setting marker='[[FONT_FAMILY]]'>Georgia, "Times New Roman", Times, serif</setting>
 		</choice>
 	</option>
 </options>

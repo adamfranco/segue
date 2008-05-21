@@ -152,7 +152,7 @@
 		<choice>
 			<key>yellow</key>
 			<label lang='en_US'>Yellow</label>
-			<setting marker='[[TEXT_COLOR]]'>#FFCC00</setting>
+			<setting marker='[[TEXT_COLOR]]'>#E3B52C</setting>
 		</choice>
 		<choice>
 			<key>white</key>
@@ -190,12 +190,12 @@
 		<choice>
 			<key>white</key>
 			<label lang='en_US'>White</label>
-			<setting marker='[[LINK_COLOR]]'>#FFFFFF</setting>
+			<setting marker='[[LINK_COLOR]]'>#CCCCCC</setting>
 		</choice>
 	</option>
 	<option id='font'>
-		<displayName lang='en_US'>Font Face</displayName>
-		<description lang='en_US'>The font face used in this site.</description>
+		<displayName lang='en_US'>Font</displayName>
+		<description lang='en_US'>The fonts used in this site.</description>
 		<choice isDefault='true'>
 			<key>vedana</key>
 			<label lang='en_US'>Vedana, Arial, Helvetica, sans-serif</label>

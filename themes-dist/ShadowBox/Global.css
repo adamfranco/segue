@@ -5,7 +5,7 @@
 body {
 	background-color: [[BG_COLOR]];
 	color: [[TEXT_COLOR]];
-	font-family: Verdana, sans-serif;
+	font-family: [[FONT_FAMILY]];
 	font-size:12px;
 	padding-top: 5px;
 	margin: 1px;
@@ -34,34 +34,60 @@ a:hover {
 }
 
 /*********************************************************
- * Styles for Segue links, log in, and editing links
- * BG_TEXT_COLOR should contrast with [[BG_COLOR]]
+ * Styles for Segue links, log in, and editing controls
+ * [[BG_TEXT_COLOR]] should contrast with [[BG_COLOR]]
  *********************************************************/
-
-.seguelinks {
-	color: [[BG_TEXT_COLOR]];
-	padding-left: 15px;
+.seguelinks a {
+    color: [[BG_LINK_COLOR]];
+    padding-left: 15px;
 }
 
-.seguelinks a {
-	color: [[BG_LINK_COLOR]];
+.seguelinks {
+    color: [[BG_TEXT_COLOR]];
+    padding-left: 15px;
 }
 
 .commands {
-	color: [[BG_TEXT_COLOR]];
-	padding-right: 15px;
+    color: [[BG_TEXT_COLOR]];
+	margin-right: 25px;
 }
 
 .commands a {
-	color: [[BG_LINK_COLOR]];
+    color: [[BG_LINK_COLOR]];
+
 }
 
 .login {
-	color: [[BG_TEXT_COLOR]];
+    color: [[BG_TEXT_COLOR]];
 }
 
 .login a {
-	color: [[BG_LINK_COLOR]];
+    color: [[BG_LINK_COLOR]];
+}
+
+.seguefooter_right {
+    color: [[BG_LINK_COLOR]];
+    margin-right: 25px;
+}
+
+.seguefooter_right a {
+    color: [[BG_TEXT_COLOR]];
+}
+
+seguefooter_left {
+    color: [[BG_LINK_COLOR]];
+    margin-left: 20px;
+}
+
+.seguefooter_left a {
+    color: [[BG_TEXT_COLOR]];
+    margin-left: 20px;
+}
+
+.pagination_links {
+	padding-left: 10px;
+	padding-right: 10px;
+
 }
 
 

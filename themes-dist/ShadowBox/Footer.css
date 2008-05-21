@@ -3,13 +3,11 @@
  *********************************************************/
 
 *.Footer {
-	border: 1px solid #979797;
-	padding: 10px;
-	margin-right: 25px;
-	margin-left: 25px;
-	margin-top: 30px;
+	border-top: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
+	margin-top: 2px;
 }
 
 *.Footer .Content {
+
 
 }
