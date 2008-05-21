@@ -49,7 +49,7 @@
 	<version number="2.0-beta-20.1" date="2008-05-05">
 		<releaseNotes>
 			This release of Segue 2.0 includes dramatic speed improvements over
-			beta 19.1 due to a new implementation of Harmoni's Authorization and Hiearchy
+			beta 19.1 due to a new implementation of Harmoni's Authorization and Hierarchy
 			system. Usage of this new systems requires running the appropriate updater
 			located under Admin Tools --> Segue Updates. This updater will take several
 			minutes to run and will make irrevocable changes to your database. Please
@@ -68,7 +68,7 @@
 	<version number="2.0-beta-20" date="2008-05-05">
 		<releaseNotes>
 			This release of Segue 2.0 includes dramatic speed improvements over
-			beta 19.1 due to a new implementation of Harmoni's Authorization and Hiearchy
+			beta 19.1 due to a new implementation of Harmoni's Authorization and Hierarchy
 			system. Usage of this new systems requires running the appropriate updater
 			located under Admin Tools --> Segue Updates. This updater will take several
 			minutes to run and will make irrevocable changes to your database. Please
@@ -92,7 +92,7 @@
 			Please note that in AuthZ2 the 'edu.middlebury.authorization.view' function
 			has the property of cascading up the hierarchy as well as down. This property
 			is needed by our Segue and Concerto applications and the lack of it in 
-			the original implimentations required the use of the isAuthorizedBelow()
+			the original implementations required the use of the isAuthorizedBelow()
 			function. All other authorization functions cascade down only.
 		</new>
 		<change author='alex' date='2008-04-18' ref='1940489' reftype='fr'>
@@ -134,7 +134,7 @@
 		
 		</releaseNotes>
 		<fix author='adam' date='2008-04-13' ref='1941132' reftype='bug'>
-			Media Libary: File-browser now works from within FCKEditor dialog.
+			Media Library: File-browser now works from within FCKEditor dialog.
 		</fix>
 		<fix author='adam' date='2008-04-13' ref='1941460' reftype='bug'>
 			Classic-Mode: 'Edit Site Settings' wizard now doesn't crash.
@@ -170,7 +170,7 @@
 			layer to improve performance of some common page loads by 30% or more.
 		</new>
 		<new author='adam' date='2008-04-08' ref='1814119' reftype='harmoni_fr'>
-			Slots: SlotManager can now use Harmoni_Db if availible to speed loading
+			Slots: SlotManager can now use Harmoni_Db if available to speed loading
 			of slots.
 		</new>
 		<fix author='alex' date='2008-04-07' ref='' reftype=''>
@@ -184,7 +184,7 @@
 			Migration: Refined site migration UI styles.
 		</change>
 		<change author='adam' date='2008-04-09' ref='1934801' reftype='bug'>
-			Request: Refactored how context (current node id or site id) parameters
+			Request: Re-factored how context (current node id or site id) parameters
 			are passed around.
 		</change>
 		<fix author='adam' date='2008-04-10' ref='' reftype='bug'>
@@ -238,7 +238,7 @@
 			the comment.
 		</fix>
 		<fix author='adam' date='2008-04-11' ref='' reftype='bug'>
-			Plugins: If exceptions occur durring plugin execution an error is displayed,
+			Plugins: If exceptions occur during plugin execution an error is displayed,
 			but the page doesn't halt.
 		</fix>
 		<fix author='adam' date='2008-04-11' ref='1940459' reftype='bug'>
@@ -338,7 +338,7 @@
 			UI1: Deleting a parent node no longer causes an error.
 		</fix>
 		<change author='adam' date='2008-03-31' ref='1930271' reftype='bug'>
-			View/UI1/UI2/Roles/RSS: Refactored access to the current node and the site
+			View/UI1/UI2/Roles/RSS: Re-factored access to the current node and the site
 			director to move all access to a new SiteDispatcher class in the view module.
 			Now use methods: SiteDispatcher::getCurrentNode(),
 			SiteDispatcher::getCurrentNodeId(), SiteDispatcher::getCurrentRootNode(),
@@ -420,7 +420,7 @@
 			Segue 2.0 beta 15 uses Polyphony 1.0.4 and Harmoni 1.0.5.  
 		</releaseNotes>
 		<new author='alex' date='2008-03-20' ref='1820861' reftype='fr'>
-			View: added settings for displaying block create and update timestamps, 
+			View: added settings for displaying block create and update time-stamps, 
 			as well as names of block creators and editors	
 		</new>
 		<fix author='alex' date='2008-03-20'>
@@ -949,7 +949,7 @@
 		<change author='adam' date='2008-01-03' ref='1863384' reftype='bug'>
 			Moved the 'icons/' subdirectory to 'images/' to prevent collision
 			with the Apache system-icons directory when installing Segue in the
-			webserver root.
+			web-server root.
 		</change>
 	</version>
 	<version number="2.0-beta-7" date="2007-12-20">
@@ -1267,7 +1267,7 @@
 			And uploads to the correct Asset.
 		</fix>
 		<new author='adam' date='2007-09-25'>
-			Changlog links and display now work.
+			Chang-log links and display now work.
 		</new>
 		<fix author='adam' date='2007-09-25'>
 			Footer cleaned up and now showing correct version.
@@ -1482,7 +1482,7 @@
 	
 	<info>
 		<title>Downloads</title>
-		<description>For the latested and archived versions, please download from SourceForge.</description>
+		<description>For the latest and archived versions, please download from SourceForge.</description>
 		<url>http://sourceforge.net/project/showfiles.php?group_id=82171&amp;package_id=246956</url>
 	</info>
 	<info>
