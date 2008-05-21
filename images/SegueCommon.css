@@ -77,12 +77,9 @@
 		font-size: 12px;
 	}
 	
-
-	.attribution {
-		float: right; 
-		clear: both;
+	.pagination_links {
 		margin-left: 10px;
-		font-size: 10px;
+		margin-right: 10px;
 	}
 	
 	.attribution_line {
