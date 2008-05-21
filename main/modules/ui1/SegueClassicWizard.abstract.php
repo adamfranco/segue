@@ -181,9 +181,9 @@ class SegueClassicWizard
 			if (!$this->saveDisplayOptionsStep($properties['display']))
 				return FALSE;
 			
-			
-			if (!$this->saveStatusStep($properties['status']))
-				return FALSE;
+			if (isset($properties['status']))
+				if (!$this->saveStatusStep($properties['status']))
+					return FALSE;
 			
 			/*********************************************************
 			 * Log the event
