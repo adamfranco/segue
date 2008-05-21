@@ -3,11 +3,9 @@
  *********************************************************/
  
 .Menu_Bottom  {
-    background-color: [[BG_COLOR]];
+    background-color: [[FG_COLOR]];
     margin-right: 0px;
-
-    
-    border-right: 0px solid [[BG_COLOR]];
+    border-right: 0px solid [[FG_COLOR]];
 }
 
 .Menu_Bottom .MenuItem_Heading {
@@ -15,11 +13,12 @@
 }
 
 .Menu_Bottom .MenuItem_Link_Selected  {    
+    margin-top: -6px;
 
     margin-left: 0px;
-
-    margin-right: 3px;
-    
+	margin-bottom: -6px;
+    margin-right: 2px;
+    margin-left: 2px;    
 }
 
 .Menu_Bottom .MenuItem_Link_Selected .Content {    
@@ -34,7 +33,7 @@
 .Menu_Bottom .MenuItem_Link_Unselected  {
     border-bottom: 1px solid [[BORDER_COLOR_TOP]];
     border-top: 1px solid [[BORDER_COLOR_BOTTOM]];
-    background-color: [[BG_COLOR]];
+    background-color: [[FG_COLOR]];
 
     margin-right: 3px;
 }

@@ -78,6 +78,12 @@ seguefooter_left {
     color: [[BG_TEXT_COLOR]];
 }
 
+.pagination_links {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+
 
 /*********************************************************
  * Styles attribution, tags, history

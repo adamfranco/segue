@@ -37,11 +37,7 @@
     font-size: [[LEFT_TAB_FONT]];
 }
 
-.Menu_Right .MenuItem_Link_Unselected:hover {
-    
-}
-
-.Menu_Right .Menu_Sub  {
-    margin-right: 10px;
-    margin-left: 0px;
+.Menu_Left .Menu_Sub  {
+    margin-left: 10px;
+    margin-right: 0px;
 }

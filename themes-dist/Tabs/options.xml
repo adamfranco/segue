@@ -3,7 +3,7 @@
 		<displayName lang='en_US'>Foreground Color</displayName>
 		<description lang='en_US'>The color scheme of the theme.</description>
 		<description lang='es_ES'>Los colores majores del tema.</description>
-		<choice>
+		<choice isDefault='true'>
 			<key>white</key>
 			<label lang='en_US'>White</label>
 			<label lang='es_ES'>Blanco</label>
@@ -17,7 +17,7 @@
 			<setting marker='[[BORDER_COLOR_TOP]]'>#FFFFFF</setting>
 			<setting marker='[[BORDER_COLOR_BOTTOM]]'>#666666</setting>
 		</choice>
-		<choice isDefault='true'>
+		<choice>
 			<key>yellow</key>
 			<label lang='en_US'>Yellow</label>
 			<label lang='es_ES'>Amarillo</label>
@@ -67,7 +67,7 @@
 			<setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
 			<setting marker='[[BG_LINK_COLOR]]'>#666666</setting>				
 		</choice>
-		<choice>
+		<choice isDefault='true'>
 			<key>lightgray</key>
 			<label lang='en_US'>Light Gray</label>
 			<label lang='es_ES'>Negro</label>
@@ -97,17 +97,17 @@
 		<displayName lang='en_US'>Left Tab Size</displayName>
 		<description lang='en_US'>The size of the left side tabs.</description>
 		<choice>
-			<key>black</key>
+			<key>small</key>
 			<label lang='en_US'>Small</label>
 			<setting marker='[[LEFT_TAB_FONT]]'>75%</setting>
 		</choice>
 		<choice isDefault='true'>
-			<key>red</key>
+			<key>normal</key>
 			<label lang='en_US'>Normal</label>
 			<setting marker='[[LEFT_TAB_FONT]]'>100%</setting>
 		</choice>
-		<choice>
-			<key>blue</key>
+		<choice isDefault='true'>
+			<key>large</key>
 			<label lang='en_US'>Large</label>
 			<setting marker='[[LEFT_TAB_FONT]]'>125%</setting>
 		</choice>
@@ -116,17 +116,17 @@
 		<displayName lang='en_US'>Right Tab Size</displayName>
 		<description lang='en_US'>The size of the right side tabs.</description>
 		<choice>
-			<key>black</key>
+			<key>small</key>
 			<label lang='en_US'>Small</label>
 			<setting marker='[[RIGHT_TAB_FONT]]'>75%</setting>
 		</choice>
 		<choice isDefault='true'>
-			<key>red</key>
+			<key>normal</key>
 			<label lang='en_US'>Normal</label>
 			<setting marker='[[RIGHT_TAB_FONT]]'>100%</setting>
 		</choice>
 		<choice>
-			<key>blue</key>
+			<key>large</key>
 			<label lang='en_US'>Large</label>
 			<setting marker='[[RIGHT_TAB_FONT]]'>125%</setting>
 		</choice>
@@ -139,17 +139,17 @@
 			<label lang='en_US'>Black</label>
 			<setting marker='[[TEXT_COLOR]]'>#000000</setting>
 		</choice>
-		<choice isDefault='true'>
+		<choice>
 			<key>red</key>
 			<label lang='en_US'>Red</label>
 			<setting marker='[[TEXT_COLOR]]'>#990000</setting>
 		</choice>
-		<choice isDefault='true'>
+		<choice>
 			<key>blue</key>
 			<label lang='en_US'>Blue</label>
 			<setting marker='[[TEXT_COLOR]]'>#003366</setting>
 		</choice>
-		<choice isDefault='true'>
+		<choice>
 			<key>yellow</key>
 			<label lang='en_US'>Yellow</label>
 			<setting marker='[[TEXT_COLOR]]'>#FFCC00</setting>
@@ -173,7 +173,7 @@
 			<label lang='en_US'>Red</label>
 			<setting marker='[[LINK_COLOR]]'>#990000</setting>
 		</choice>
-		<choice>
+		<choice isDefault='true'>
 			<key>blue</key>
 			<label lang='en_US'>Blue</label>
 			<setting marker='[[LINK_COLOR]]'>#003366</setting>

@@ -32,7 +32,7 @@
 }
 
 *.MenuItem_Link a:hover {
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 *.MenuItem_Link_Unselected .Content:hover {

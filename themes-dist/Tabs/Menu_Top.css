@@ -4,8 +4,6 @@
 .Menu_Top  {
     background-color: [[BG_COLOR]];
     margin-right: 0px;
-    margin-left: -1px;
-    
     border-right: 0px solid [[BG_COLOR]];
 }
 
@@ -18,7 +16,8 @@
     margin-bottom: -8px;
     margin-left: 0px;
     padding-bottom: 2px;
-    margin-right: 3px;
+    margin-right: 2px;
+    margin-left: 2px;
     
 }
 
@@ -36,7 +35,8 @@
     border-bottom: 1px solid [[BORDER_COLOR_BOTTOM]];
     background-color: [[BG_COLOR]];
     margin-bottom: -5px;
-    margin-right: 3px;
+    margin-right: 2px;
+    margin-left: 2px;
 }
 
 .Menu_Top .MenuItem_Link_Unselected .Content {
