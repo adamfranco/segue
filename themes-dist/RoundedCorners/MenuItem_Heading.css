@@ -3,14 +3,14 @@
  *********************************************************/
 
 .MenuItem_Heading {
-	padding: 1px;
-	border: 0px;
+    padding: 1px;
+    border: 0px;
 }
 .MenuItem_Heading .Content {
-	background-color: #FFFFFF;
-	color: #000;
-	border: 1px solid #979797;
-	padding: 10px;
-	text-align: left;
-	margin: 0px;
+    background-color: #FFFFFF;
+    color: #000;
+    border: 1px solid #979797;
+    padding: 10px;
+    text-align: left;
+    margin: 0px;
 }

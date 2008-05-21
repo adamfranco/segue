@@ -3,8 +3,8 @@
  *********************************************************/
 
 *.Footer {
-	border-top: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
-	margin-top: 2px;
+    border-top: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
+    margin-top: 2px;
 }
 
 *.Footer .Content {
