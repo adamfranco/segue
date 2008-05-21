@@ -35,7 +35,7 @@ under Admin Tools --> Segue Updates.
 
 Downloads
 ---------------------
-For the latested and archived versions, please download from SourceForge.
+For the latest and archived versions, please download from SourceForge.
 
 http://sourceforge.net/project/showfiles.php?group_id=82171&package_id=246956
 
@@ -94,7 +94,7 @@ under Admin Tools --> Segue Updates.
 v. 2.0-beta-20.1 (2008-05-05)
 ----------------------------------------------------
 This release of Segue 2.0 includes dramatic speed improvements over beta 19.1 due to
-a new implementation of Harmoni's Authorization and Hiearchy system. Usage of this
+a new implementation of Harmoni's Authorization and Hierarchy system. Usage of this
 new systems requires running the appropriate updater located under Admin Tools -->
 Segue Updates. This updater will take several minutes to run and will make
 irrevocable changes to your database. Please back up your database before running
@@ -110,7 +110,7 @@ Segue 2.0 beta 20 uses Polyphony 1.1.0 and Harmoni 1.2.0.
 v. 2.0-beta-20 (2008-05-05)
 ----------------------------------------------------
 This release of Segue 2.0 includes dramatic speed improvements over beta 19.1 due to
-a new implementation of Harmoni's Authorization and Hiearchy system. Usage of this
+a new implementation of Harmoni's Authorization and Hierarchy system. Usage of this
 new systems requires running the appropriate updater located under Admin Tools -->
 Segue Updates. This updater will take several minutes to run and will make
 irrevocable changes to your database. Please back up your database before running

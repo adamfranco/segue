@@ -20,6 +20,25 @@ Usage of this new theming system requires running the appropriate updater locate
 under Admin Tools --> Segue Updates.
 		
 		
+	* Change: 
+		Themes: added a number of css classes to UI elements so these could be
+		themed. 
+		(2008-05-15 - Alex Chapin)
+		
+	* New feature: 
+		Themes: created a new Tabs theme with options.
+		(2008-05-15 - Alex Chapin)		
+		
+	* New feature: 
+		Themes: created a new ShadowBox theme with similar options to those found in
+		Segue 1x.
+		(2008-05-15 - Alex Chapin)
+		
+	* Change: 
+		Themes: created theme options for RoundedCorners theme using new theming
+		system. 
+		(2008-05-15 - Alex Chapin)
+		
 	* New feature: #1820834 
 		Themes: Users can now choose the theme for their site from a list of
 		available themes. Themes may have options for varying their color scheme or
@@ -48,7 +67,7 @@ under Admin Tools --> Segue Updates.
 v. 2.0-beta-20.1 (2008-05-05)
 ----------------------------------------------------
 This release of Segue 2.0 includes dramatic speed improvements over beta 19.1 due to
-a new implementation of Harmoni's Authorization and Hiearchy system. Usage of this
+a new implementation of Harmoni's Authorization and Hierarchy system. Usage of this
 new systems requires running the appropriate updater located under Admin Tools -->
 Segue Updates. This updater will take several minutes to run and will make
 irrevocable changes to your database. Please back up your database before running
@@ -72,7 +91,7 @@ Segue 2.0 beta 20 uses Polyphony 1.1.0 and Harmoni 1.2.0.
 v. 2.0-beta-20 (2008-05-05)
 ----------------------------------------------------
 This release of Segue 2.0 includes dramatic speed improvements over beta 19.1 due to
-a new implementation of Harmoni's Authorization and Hiearchy system. Usage of this
+a new implementation of Harmoni's Authorization and Hierarchy system. Usage of this
 new systems requires running the appropriate updater located under Admin Tools -->
 Segue Updates. This updater will take several minutes to run and will make
 irrevocable changes to your database. Please back up your database before running
@@ -97,7 +116,7 @@ Segue 2.0 beta 20 uses Polyphony 1.1.0 and Harmoni 1.2.0.
 		Please note that in AuthZ2 the 'edu.middlebury.authorization.view'
 		function has the property of cascading up the hierarchy as well as down.
 		This property is needed by our Segue and Concerto applications and the lack
-		of it in the original implimentations required the use of the
+		of it in the original implementations required the use of the
 		isAuthorizedBelow() function. All other authorization functions cascade down
 		only. 
 		(2008-04-24 - Adam Franco)
@@ -150,7 +169,7 @@ v. 2.0-beta-19.1 (2008-04-13)
 		
 		
 	* Bug Fix: #1941132 
-		Media Libary: File-browser now works from within FCKEditor dialog.
+		Media Library: File-browser now works from within FCKEditor dialog.
 		(2008-04-13 - Adam Franco)
 		
 	* Bug Fix: #1941460 
@@ -191,7 +210,7 @@ Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
 		(2008-04-08 - Adam Franco)
 		
 	* New feature: #1814119 
-		Slots: SlotManager can now use Harmoni_Db if availible to speed loading of
+		Slots: SlotManager can now use Harmoni_Db if available to speed loading of
 		slots. 
 		(2008-04-08 - Adam Franco)
 		
@@ -210,7 +229,7 @@ Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
 		(2008-04-09 - Alex Chapin)
 		
 	* Change: #1934801 
-		Request: Refactored how context (current node id or site id) parameters are
+		Request: Re-factored how context (current node id or site id) parameters are
 		passed around.
 		(2008-04-09 - Adam Franco)
 		
@@ -277,7 +296,7 @@ Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
 		(2008-04-11 - Adam Franco)
 		
 	* Bug Fix: # 
-		Plugins: If exceptions occur durring plugin execution an error is displayed,
+		Plugins: If exceptions occur during plugin execution an error is displayed,
 		but the page doesn't halt.
 		(2008-04-11 - Adam Franco)
 		
@@ -406,7 +425,7 @@ Segue 2.0 beta 17 uses Polyphony 1.0.5 and Harmoni 1.0.5.
 		(2008-03-31 - Adam Franco)
 		
 	* Change: #1930271 
-		View/UI1/UI2/Roles/RSS: Refactored access to the current node and the site
+		View/UI1/UI2/Roles/RSS: Re-factored access to the current node and the site
 		director to move all access to a new SiteDispatcher class in the view
 		module. Now use methods: SiteDispatcher::getCurrentNode(),
 		SiteDispatcher::getCurrentNodeId(), SiteDispatcher::getCurrentRootNode(),
@@ -502,7 +521,7 @@ Segue 2.0 beta 15 uses Polyphony 1.0.4 and Harmoni 1.0.5.
 		
 		
 	* New feature: #1820861 
-		View: added settings for displaying block create and update timestamps, as
+		View: added settings for displaying block create and update time-stamps, as
 		well as names of block creators and editors
 		(2008-03-20 - Alex Chapin)
 		
@@ -1173,7 +1192,7 @@ Segue 2.0 beta 8 uses Polyphony 0.10.7 and Harmoni 0.13.7.
 		
 	* Change: #1863384 
 		Moved the 'icons/' subdirectory to 'images/' to prevent collision with the
-		Apache system-icons directory when installing Segue in the webserver root.
+		Apache system-icons directory when installing Segue in the web-server root.
 		(2008-01-03 - Adam Franco)
 	
 
@@ -1580,7 +1599,7 @@ v. 2.0.0-beta-2 (2007-09-25)
 		(2007-09-25 - Adam Franco)
 		
 	* New feature: 
-		Changlog links and display now work.
+		Chang-log links and display now work.
 		(2007-09-25 - Adam Franco)
 		
 	* Bug Fix: 
