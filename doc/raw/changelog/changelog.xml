@@ -28,6 +28,10 @@
 			Usage of this new theming system requires running the appropriate updater
 			located under Admin Tools --> Segue Updates.
 		</releaseNotes>
+		<fix author='alex' date='2008-05-20'>
+			Themes: updated theme thumbnail images.
+		</fix>
+
 		<fix author='adam' date='2008-05-20' ref='' reftype='bug'>
 			Portal: Heading bar is now properly styled like a heading.
 		</fix>
