@@ -148,7 +148,7 @@ class listAction
 		// controls
 		$controls = $currentFolder->getControlsHtml();
 		if (strlen($controls))
-			$siteList->add(new Block($controls, HIGHLIT_BLOCK));
+			$siteList->add(new Heading($controls, 3));
 		
 		// Sites
 		$slots = $currentFolder->getSlots();
