@@ -400,9 +400,19 @@ class theme_optionsAction
 		}
 		
 		/*********************************************************
+		 * Return if we are not editing advanced options
+		 *********************************************************/
+		if (!$theme->supportsModification())
+			return true;
+		
+		$modSess = $theme->getModificationSession();
+		if (!$modSess->canModify())
+			return true;
+		
+		
+		/*********************************************************
 		 * Info
 		 *********************************************************/
-		$modSess = $theme->getModificationSession();
 		$modSess->updateDisplayName($values['display_name']);
 		$modSess->updateDescription($values['description']);
 		if (!is_null($values['thumbnail']['tmp_name'])) {
