@@ -12,8 +12,11 @@
 <changelog name="Segue">
 	<version number="2.0-beta-21.2" date="The Future">
 		<releaseNotes>
-			
+			This release fixes a few issues in beta 21.1.
 		</releaseNotes>
+		<fix author='adam' date='2008-05-21' ref='' reftype='bug'>
+			Themes: Fixed text-color on Rounded Corner theme to be more visible.
+		</fix>
 		<fix author='adam' date='2008-05-21' ref='1968671' reftype='fr'>
 			Portal: Speed improvements
 			
