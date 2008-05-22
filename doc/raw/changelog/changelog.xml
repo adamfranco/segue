@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-05-21' ref='' reftype='bug'>
+			Themes: Fixed text-color on Rounded Corner theme to be more visible.
+		</fix>
 		<fix author='adam' date='2008-05-21' ref='1968671' reftype='fr'>
 			Portal: Speed improvements
 			
