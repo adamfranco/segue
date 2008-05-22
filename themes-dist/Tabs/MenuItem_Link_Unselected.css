@@ -34,5 +34,5 @@
 
 *.MenuItem_Link_Unselected .Content:hover {
     background-color: [[TAB_HOVER_COLOR]];    
-    background-image: url('./images/[[IMAGE_DIR]]/tab_gradient_hover.jpg');
+    background-image: url('./images/[[IMAGE_DIR]]/spacer.gif');
 }
