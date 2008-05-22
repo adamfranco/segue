@@ -10,9 +10,12 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-21.2" date="The Future">
+	<version number="2.0-beta-21.2" date="2008-05-22">
 		<releaseNotes>
-			This release fixes a few issues in beta 21.1.
+			This release fixes a few small issues found in 2.0 beta 21.1.
+			
+			In addition to portal speed improvements, thumbnail images now work
+			again.
 		</releaseNotes>
 		<fix author='adam' date='2008-05-21' ref='' reftype='bug'>
 			Themes: Fixed text-color on Rounded Corner theme to be more visible.

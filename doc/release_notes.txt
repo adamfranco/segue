@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-21.1 (2008-05-20)
+Segue v. 2.0-beta-21.2 (2008-05-22)
 =================================
 
 What is Segue?
@@ -17,20 +17,9 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release of Segue adds theming choices for sites. Site-editors can now choose
-between a number of built-in themes, each of which supports a number of options for
-changing color scheme and/or fonts.
+This release fixes a few small issues found in 2.0 beta 21.1.
 
-Additionally, local copies of any theme can be created for a site. These copies
-enable site-editors to modify the CSS and HTML templates that define a theme,
-enabling full customization for users familiar with CSS and HTML. In a future
-release we will eventually add a public gallery of themes that users will be able to
-submit their themes to and choose themes for their sites from.
-
-New themes in this release: Rounded Corners, Shadow Box, Tabs.
-
-Usage of this new theming system requires running the appropriate updater located
-under Admin Tools --> Segue Updates.
+In addition to portal speed improvements, thumbnail images now work again.
 
 
 Downloads
@@ -70,6 +59,14 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-21.2 (2008-05-22)
+----------------------------------------------------
+This release fixes a few small issues found in 2.0 beta 21.1.
+
+In addition to portal speed improvements, thumbnail images now work again.
+
 
 
 v. 2.0-beta-21.1 (2008-05-20)
