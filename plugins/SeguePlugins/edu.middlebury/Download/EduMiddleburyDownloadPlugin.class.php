@@ -232,9 +232,9 @@ class EduMiddleburyDownloadPlugin
 		if ($file) {
 			print "\n";	
 
-			print "\n\t\t<div style='float: right; margin-top: 10px;'>";
+			print "\n\t\t<div style='float: right; margin-top: 12px;'>";
 			print "\n\t\t<img src='".MYPATH."/images/downarrow.gif' align='top' width='15' height='15' alt='"._('download')."'/>";
-			print "\n\t\t\t<a href='";
+			print "\n\t\t\t<a style='text-decoration: none;' href='";
 			print $file->getUrl();
 			print "'>";
 			print "<strong>"._("Download")."</strong>";
@@ -247,7 +247,7 @@ class EduMiddleburyDownloadPlugin
 			} else {
 				$sizeString = _("unknown size");
 			}
-			print "\n\t\t(".$sizeString.")";
+			print "\n\t\t<span style='font-size: 90%;'>(".$sizeString.")</span>";
 			print "\n\t</div>";	
 
 
