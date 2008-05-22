@@ -230,23 +230,14 @@ class EduMiddleburyDownloadPlugin
 		
 		$file = $this->getMediaFile();
 		if ($file) {
-			print "\n";				
-			print "\n<div>";
-			
-			print "\n\t<a href='".$file->getUrl()."'>";
-			print "\n\t\t<img src='";
-			print $file->getThumbnailUrl();
-			print "' align='left' border='0' alt=\""._("Download '");
-			print str_replace('"', "'", strip_tags($file->getTitle()));
-			print "'\"/>";
-			print "\n\t</a>";
-			
-			
-			print "\n\t\t<p style='text-align: center;'>";
+			print "\n";	
+
+			print "\n\t\t<div style='float: right; margin-top: 10px;'>";
+			print "\n\t\t<img src='".MYPATH."/images/downarrow.gif' align='top' width='15' height='15' alt='"._('download')."'/>";
 			print "\n\t\t\t<a href='";
 			print $file->getUrl();
 			print "'>";
-			print "<strong>"._("Download this file")."</strong>";
+			print "<strong>"._("Download")."</strong>";
 			print "</a>";
 			
 			$size = $file->getSize();
@@ -256,12 +247,27 @@ class EduMiddleburyDownloadPlugin
 			} else {
 				$sizeString = _("unknown size");
 			}
-			print "\n\t\t<br/>".$sizeString."</p>";
-						
+			print "\n\t\t(".$sizeString.")";
+			print "\n\t</div>";	
+
+
+			print "\n<div style='float: left;'>";			
+			print "\n\t<a href='".$file->getUrl()."'>";
+			print "\n\t\t<img src='";
+			print $file->getThumbnailUrl();
+			print "' align='bottom' border='0' width='32' height='32' alt=\""._("Download '");
+			print str_replace('"', "'", strip_tags($file->getTitle()));
+			print "'\"/>";
+			print "\n\t</a>";
 			print "\n</div>";
-			print "\n<div style='clear: both;'>";
+			
+			print "<div style='clear: both; margin-bottom: 6px;'>";
 			print $this->getCitation($file);
-			print "</div>";
+			print "\n</div>";
+			
+			
+
+			
 		} else {
 			print "\n<div class='plugin_empty'>";
 			print _("No file has been selected yet. ");
