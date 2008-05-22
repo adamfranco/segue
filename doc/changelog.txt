@@ -2,6 +2,36 @@
 Segue Change Log
 
 
+v. 2.0-beta-21.2 (2008-05-22)
+----------------------------------------------------
+This release fixes a few small issues found in 2.0 beta 21.1.
+
+In addition to portal speed improvements, thumbnail images now work again.
+
+Upgrades from versions prior to beta 21 require running the appropriate
+updaterlocated under Admin Tools --> Segue Updates.
+		
+		
+	* Bug Fix: # 
+		Themes: Fixed text-color on Rounded Corner theme to be more visible.
+		(2008-05-21 - Adam Franco)
+		
+	* Bug Fix: #1968671 
+		Portal: Speed improvements
+		
+		Folders can now report a pre-sorted flag to indicate to the list that
+		authorization doesn't need to be checked when paginating.
+		
+		Folders can also now indicate a desire not to show edit controls. This
+		prevents authorization traversal of huge numbers of sites when viewing the
+		"All Visible" Folder.
+		
+		Also, added a note about slow first access to the "All Editable" folder.
+		(2008-05-21 - Adam Franco)
+	
+
+
+
 v. 2.0-beta-21.1 (2008-05-20)
 ----------------------------------------------------
 This release of Segue adds theming choices for sites. Site-editors can now choose
