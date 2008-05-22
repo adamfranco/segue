@@ -153,7 +153,12 @@ class listAction
 		// Sites
 		$slots = $currentFolder->getSlots();
 		$resultPrinter = new ArrayResultPrinter($slots, 1, 20, array($this, "printSlot"));
-		$resultLayout = $resultPrinter->getLayout(array($this, "canView"));
+		$this->showEditControls = $currentFolder->showEditControls();
+		if ($currentFolder->slotsAreFilteredByAuthorization())
+			$resultLayout = $resultPrinter->getLayout();
+		else
+			$resultLayout = $resultPrinter->getLayout(array($this, "canView"));
+		
 		if ($resultPrinter->getNumItemsPrinted())
 			$siteList->add($resultLayout, "100%", null, LEFT, CENTER);
 		else
@@ -287,6 +292,12 @@ class listAction
 	public function printSiteShort(Asset $asset, $action, $num) {
 		$harmoni = Harmoni::instance();
 		$assetId = $asset->getId();
+		
+		$authZ = Services::getService('AuthZ');
+		$idMgr = Services::getService('Id');
+		
+		if (!$authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId))
+			return new UnstyledBlock('', BLANK);
 						
 		$container = new Container(new YLayout, BLOCK, STANDARD_BLOCK);
 		$fillContainerSC = new StyleCollection("*.fillcontainer", "fillcontainer", "Fill Container", "Elements with this style will fill their container.");
@@ -325,25 +336,24 @@ class listAction
 		
 		print "\n\t<div class='portal_list_controls'>\n\t\t";
 		$controls = array();
-		$authZ = Services::getService('AuthZ');
-		$idMgr = Services::getService('Id');
 		
-	// 	if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId))
-			$controls[] = "<a href='".$viewUrl."'>"._("view")."</a>";
+		$controls[] = "<a href='".$viewUrl."'>"._("view")."</a>";
 		
-		if ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
-			|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId))
-			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
-		
-		if ($action->getUiModule() == 'ui2' 
-				&& ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
-			|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId)))
-		{
-			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+		if ($this->showEditControls) {
+			if ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
+				|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId))
+				$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
+			
+			if ($action->getUiModule() == 'ui2' 
+					&& ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
+				|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId)))
+			{
+				$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+			}
+			
+			if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
+				$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
 		}
-		
-		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
-			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
 		
 		print implode("\n\t\t | ", $controls);
 		print "\n\t</div>";

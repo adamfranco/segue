@@ -10,12 +10,22 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-22" date="The Future">
+	<version number="2.0-beta-21.2" date="The Future">
 		<releaseNotes>
 			
 		</releaseNotes>
-		
-		
+		<fix author='adam' date='2008-05-21' ref='1968671' reftype='fr'>
+			Portal: Speed improvements
+			
+			Folders can now report a pre-sorted flag to indicate to the list that
+			authorization doesn't need to be checked when paginating.
+			
+			Folders can also now indicate a desire not to show edit controls. This
+			prevents authorization traversal of huge numbers of sites when viewing
+			the "All Visible" Folder.
+			
+			Also, added a note about slow first access to the "All Editable" folder.
+		</fix>
 	</version>
 	<version number="2.0-beta-21.1" date="2008-05-20">
 		<releaseNotes>

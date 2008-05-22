@@ -45,7 +45,7 @@ class AllEditablePortalFolder
 	 * @since 4/1/08
 	 */
 	public function getDescription () {
-		return _("All sites that you can edit.");
+		return _("All sites that you can edit. <br/>Note: First access may take over a minute. Subsequent access will be fast.");
 	}
 	
 	/**
@@ -58,6 +58,19 @@ class AllEditablePortalFolder
 	 */
 	public function getIdString () {
 		return "all_editable";
+	}
+	
+	/**
+	 * Answer true if the edit controls should be displayed for the sites listed.
+	 * If true, this can lead to slowdowns as authorizations are checked on large
+	 * lists of large sites.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 5/21/08
+	 */
+	public function showEditControls () {
+		return true;
 	}
 		
 	/**
