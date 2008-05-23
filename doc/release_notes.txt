@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-21.2 (2008-05-22)
+Segue v. 2.0-beta-21.3 (2008-05-23)
 =================================
 
 What is Segue?
@@ -17,9 +17,14 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release fixes a few small issues found in 2.0 beta 21.1.
+This release fixes a few small issues found in 2.0 beta 21.2.
 
-In addition to portal speed improvements, thumbnail images now work again.
+This release fixes a few errors affected a few users, notably a work-around for a
+PHP/PDO bug that results in segmentation faults when escaped quotes exist in an
+SQLstring that is then prepared. This is occurring when checking authorization for
+users who are members of groups that have a quote in their LDAP DN.
+
+Missing theme images now do not fill the logs with errors.
 
 Upgrades from versions prior to beta 21 require running the appropriate
 updaterlocated under Admin Tools --> Segue Updates.
@@ -62,6 +67,22 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-21.3 (2008-05-23)
+----------------------------------------------------
+This release fixes a few small issues found in 2.0 beta 21.2.
+
+This release fixes a few errors affected a few users, notably a work-around for a
+PHP/PDO bug that results in segmentation faults when escaped quotes exist in an
+SQLstring that is then prepared. This is occurring when checking authorization for
+users who are members of groups that have a quote in their LDAP DN.
+
+Missing theme images now do not fill the logs with errors.
+
+Upgrades from versions prior to beta 21 require running the appropriate
+updaterlocated under Admin Tools --> Segue Updates.
+
 
 
 v. 2.0-beta-21.2 (2008-05-22)

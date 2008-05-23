@@ -23,7 +23,28 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-21.2</h2>
+<h2>Version 2.0-beta-21.3</h2>
+<h3>2008-05-23</h3>
+<p>This release fixes a few small issues found in 2.0 beta 21.2.
+<br>
+<br>This release fixes a few errors affected a few users, notably a work-around for a PHP/PDO bug that results in segmentation faults when escaped quotes exist in an SQLstring that is then prepared. This is occurring when checking authorization for users who are members of groups that have a quote in their LDAP DN.
+<br>
+<br>Missing theme images now do not fill the logs with errors.
+<br>
+<br>Upgrades from versions prior to beta 21 require running the appropriate updaterlocated under Admin Tools --&gt; Segue Updates.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
+        			#</a> Config: Adding path-info URL configuration to action_default.conf.php (<em>2008-05-23 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
+        			#</a> Plugins: Reformatted download plugin display to include download graphic and adjusted spacing. (<em>2008-05-23 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
+        			#</a> Themes: removed unused images from themes (<em>2008-05-23 - Alex Chapin</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-21.2</h2>
 <h3>2008-05-22</h3>
 <p>This release fixes a few small issues found in 2.0 beta 21.1.
 <br>

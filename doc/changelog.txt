@@ -2,6 +2,37 @@
 Segue Change Log
 
 
+v. 2.0-beta-21.3 (2008-05-23)
+----------------------------------------------------
+This release fixes a few small issues found in 2.0 beta 21.2.
+
+This release fixes a few errors affected a few users, notably a work-around for a
+PHP/PDO bug that results in segmentation faults when escaped quotes exist in an
+SQLstring that is then prepared. This is occurring when checking authorization for
+users who are members of groups that have a quote in their LDAP DN.
+
+Missing theme images now do not fill the logs with errors.
+
+Upgrades from versions prior to beta 21 require running the appropriate
+updaterlocated under Admin Tools --> Segue Updates.
+		
+		
+	* Bug Fix: # 
+		Config: Adding path-info URL configuration to action_default.conf.php
+		(2008-05-23 - Adam Franco)
+		
+	* Change: # 
+		Plugins: Reformatted download plugin display to include download graphic and
+		adjusted spacing.
+		(2008-05-23 - Alex Chapin)
+		
+	* Bug Fix: # 
+		Themes: removed unused images from themes
+		(2008-05-23 - Alex Chapin)
+	
+
+
+
 v. 2.0-beta-21.2 (2008-05-22)
 ----------------------------------------------------
 This release fixes a few small issues found in 2.0 beta 21.1.

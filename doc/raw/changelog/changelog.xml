@@ -10,6 +10,32 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-21.3" date="2008-05-23">
+		<releaseNotes>
+			This release fixes a few small issues found in 2.0 beta 21.2.
+			
+			This release fixes a few errors affected a few users, notably a work-around
+			for a PHP/PDO bug that results in segmentation faults when escaped quotes 
+			exist in an SQL	string that is then prepared. This is occurring when
+			checking authorization for users who are members of groups that have a 
+			quote in their LDAP DN.
+			
+			Missing theme images now do not fill the logs with errors.
+			
+			Upgrades from versions prior to beta 21 require running the appropriate 
+			updater	located under Admin Tools --> Segue Updates.
+		</releaseNotes>
+		<fix author='adam' date='2008-05-23' ref='' reftype='bug'>
+			Config: Adding path-info URL configuration to action_default.conf.php
+		</fix>
+		<change author='alex' date='2008-05-23' ref='' reftype='fr'>
+			Plugins: Reformatted download plugin display to include download graphic
+			and adjusted spacing. 
+		</change>
+		<fix author='alex' date='2008-05-23' ref='' reftype='bug'>
+			Themes: removed unused images from themes
+		</fix>
+	</version>
 	<version number="2.0-beta-21.2" date="2008-05-22">
 		<releaseNotes>
 			This release fixes a few small issues found in 2.0 beta 21.1.
@@ -20,9 +46,6 @@
 			Upgrades from versions prior to beta 21 require running the appropriate 
 			updater	located under Admin Tools --> Segue Updates.
 		</releaseNotes>
-		<fix author='adam' date='2008-05-23' ref='' reftype='bug'>
-			Config: Adding path-info URL configuration to action_default.conf.php
-		</fix>
 		<fix author='adam' date='2008-05-21' ref='' reftype='bug'>
 			Themes: Fixed text-color on Rounded Corner theme to be more visible.
 		</fix>
