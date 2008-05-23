@@ -22,6 +22,10 @@
  	require_once(HARMONI."/architecture/request/GETMethodRequestHandler.class.php");
 	$harmoni->request->assignRequestHandler( new GETMethodRequestHandler() );
 	
+	// The PathInfoRequestHandler makes nicer URLs but may not work on some servers.
+// 	require_once(HARMONI."/architecture/request/PathInfoRequestHandler.class.php");
+// 	$harmoni->request->assignRequestHandler( new PathInfoRequestHandler() );
+	
 	// Next we need to tell the ActionHandler where to find our modules/actions
 	// and what type those are (FlatFile-Actions, ClassMethod-Actions, or
 	// Class-Actions.

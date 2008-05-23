@@ -20,6 +20,9 @@
 			Upgrades from versions prior to beta 21 require running the appropriate 
 			updater	located under Admin Tools --> Segue Updates.
 		</releaseNotes>
+		<fix author='adam' date='2008-05-23' ref='' reftype='bug'>
+			Config: Adding path-info URL configuration to action_default.conf.php
+		</fix>
 		<fix author='adam' date='2008-05-21' ref='' reftype='bug'>
 			Themes: Fixed text-color on Rounded Corner theme to be more visible.
 		</fix>
