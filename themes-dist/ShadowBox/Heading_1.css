@@ -2,9 +2,7 @@
  * Heading - Biggest
  *********************************************************/
 
-.Heading_1 {
-    border-left: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
-    border-right: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];;        
+.Heading_1 {       
     padding-left: 10px;
     text-align: left;
     font-weight: bold;

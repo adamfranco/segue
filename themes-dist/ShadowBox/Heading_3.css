@@ -2,9 +2,7 @@
  * Heading - Normal
  *********************************************************/
 
-.Heading_3 {
-    border-left: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
-    border-right: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];        
+.Heading_3 {    
     padding-left: 10px;
     text-align: left;
     font-weight: bold;    
@@ -13,5 +11,7 @@
 }
 
 .Heading_3 .Content {
+    margin: 1px;
+    padding: 5px;
 
 }

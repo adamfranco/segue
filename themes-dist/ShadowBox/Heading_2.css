@@ -2,9 +2,7 @@
  * Heading - Big
  *********************************************************/
 
-.Heading_2 {
-    border-left: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
-    border-right: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];        
+.Heading_2 {    
     padding-left: 10px;
     text-align: left;
     font-weight: bold;

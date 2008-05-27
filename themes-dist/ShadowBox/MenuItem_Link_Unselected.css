@@ -4,20 +4,58 @@
 
 *.MenuItem_Link_Unselected {
     text-align: left;
+    
     font-size: 100%;
-    padding-left: 5px;
+	background-color: #FAFAFA;
+	border-bottom: 1px solid [[MENU_BORDER_BOTTOM01]];
+	border-left: 0px none [[MENU_BORDER_LEFT]];
+	border-right: 0px none [[MENU_BORDER_RIGHT]];
+
+	margin-bottom: -2px;
+    
 }
 
-*.MenuItem_Link_Unselected .Content {
+*.MenuItem_Link_Unselected .box01 {
+	border-top: 1px solid [[MENU_BORDER_TOP01]];
+	border-bottom: 1px none [[MENU_BORDER_BOTTOM01]];
+	border-left: 1px solid [[MENU_BORDER_LEFT]];
+	border-right: 1px solid [[MENU_BORDER_RIGHT]];
+
 
 }
 
-/*********************************************************
-* Menu 1 hover
-*********************************************************/
+*.MenuItem_Link_Unselected .box02 {
+	border-top: 1px none [[MENU_BORDER_TOP01]];
+	border-bottom: 1px none [[MENU_BORDER_BOTTOM01]];
+	border-left: 1px solid [[MENU_BORDER_LEFT01]];
+	border-right: 1px solid [[MENU_BORDER_RIGHT01]];
+	padding-left: 5px;
+}
 
-*.MenuItem_Link a:hover {
+
+
+*.MenuItem_Link_Unselected .Content {	
+	padding-left: 5px;
+}
+
+*.MenuItem_Link_Unselected .box02:hover {
     display: block;
-    text-decoration: underline;
+    color: #999999;
+    text-decoration: none;
+}
+
+
+*.MenuItem_Link_Unselected a {
+    display: block;
+    color: #999999;
+    text-decoration: none;
+}
+
+
+
+*.MenuItem_Link_Unselected a:hover {
+	display: block;
+	background-color: #FFFFFF;   
+	color: [[LINK_COLOR]];
 }
     
