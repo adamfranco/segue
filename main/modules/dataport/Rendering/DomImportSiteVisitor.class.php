@@ -171,6 +171,23 @@ class DomImportSiteVisitor
 		
 		$site = $this->createComponent($siteElement, null);
 		
+		// Get the theme
+		if ($siteElement->hasAttribute('theme'))
+			$this->theme = $siteElement->getAttribute('theme');
+		else
+			$this->theme = null;		
+		
+		$themeMgr = Services::getService("GUIManager");
+		$theme = $themeMgr->getTheme($this->theme);
+				
+		// Set options
+// 		$optionsSession = $theme->getOptionsSession();
+// 		$option1 = $optionsSession->getOption('background_color');
+// 		$option1->setValue('blue');
+				
+		// Set the current state of the theme to be the one for the site
+		$site->updateTheme($theme);		
+		
 		$roleMgr = SegueRoleManager::instance();
 		$adminRole = $roleMgr->getRole('admin');
 		
@@ -209,6 +226,30 @@ class DomImportSiteVisitor
 		}
 		
 		return $this->mediaQuota;
+	}
+
+	/**
+	 * Answer the theme from the import
+	 *
+	 * @return int
+	 * @access public
+	 * @since 5/28/08
+	 */
+	public function getTheme () {
+		if (!isset($this->theme)) {
+			$elements = $this->xpath->evaluate('/Segue2/SiteNavBlock');
+			if (!$elements->length === 1)
+				throw new Exception("Import source has ".$elements->length." SiteNavBlock elements. There must be one and only one for importSite().");
+			$siteElement = $elements->item(0);
+			
+			// Store the theme if it exists
+			if ($siteElement->hasAttribute('theme'))
+				$this->theme = $siteElement->getAttribute('theme');
+			else
+				$this->theme = null;
+		}
+		
+		return $this->theme;
 	}
 	
 	/**

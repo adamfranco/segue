@@ -42,13 +42,37 @@ class SiteNavBlockSegue1To2Converter
 		if ($this->sourceElement->hasAttribute('mediaQuota'))
 			$element->setAttribute('mediaQuota', $this->sourceElement->getAttribute('mediaQuota'));
 		
-		$this->setSiteWidth($element);
+		$this->setSiteWidth($element);		
+		$this->setSiteTheme($element);
 		
 		// Convert links of the form [[localurl:site=xxxx&amp;section=yyyy&amp;page=zzzz]] to [[nodeurl:xxxx]]
 		$this->updateAllLocalUrls();
-		
 		return $element;
 	}
+	
+	/**
+	 * Set the theme for a site element
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function setSiteTheme (DOMElement $element) {
+		try {
+			$nameElement = $this->getSingleSourceElement('/site/theme/name');
+			if (isset($nameElement)) {
+				if ($nameElement == "shadowbox") {
+					$newTheme = "ShadowBox";
+				} else {
+					$newTheme = "Tabs";
+				}
+				$element->setAttribute('theme', $newTheme);	
+			}
+		} catch (MissingNodeException $e) {
+		}
+	}
+
 	
 	/**
 	 * Add our Id to the output element
