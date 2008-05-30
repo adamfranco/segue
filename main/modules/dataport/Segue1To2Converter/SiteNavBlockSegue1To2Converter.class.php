@@ -60,14 +60,36 @@ class SiteNavBlockSegue1To2Converter
 	 */
 	protected function setSiteTheme (DOMElement $element) {
 		try {
-			$nameElement = $this->getSingleSourceElement('/site/theme/name');
-			if (isset($nameElement)) {
-				if ($nameElement == "shadowbox") {
-					$newTheme = "ShadowBox";
+			$themeName = $this->getStringValue($this->getSingleSourceElement('/site/theme/name'));
+			
+			if (isset($themeName)) {
+				if ($themeName == "shadowbox") {
+					$themeName = "ShadowBox";
+				} else if ($themeName == "default") {
+					$themeName = "Tabs";
 				} else {
-					$newTheme = "Tabs";
-				}
-				$element->setAttribute('theme', $newTheme);	
+					$themeName = "Tabs";
+				}				
+				$element->setAttribute('theme', $themeName);
+				
+				$colorScheme = $this->getStringValue($this->getSingleSourceElement('/site/theme/color_scheme'));
+				if (isset($colorScheme)) $element->setAttribute('fg_color', $colorScheme);
+				
+				$backgroundColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/background_color'));
+				if (isset($backgroundColor)) $element->setAttribute('bg_color', $backgroundColor);
+				
+				$borderStyle = $this->getStringValue($this->getSingleSourceElement('/site/theme/border_style'));
+				if (isset($borderStyle)) $element->setAttribute('border_style', $borderStyle);
+				
+				$borderColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/border_color'));
+				if (isset($borderColor)) $element->setAttribute('border_color', $borderColor);
+				
+				$textColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/text_color'));
+				if (isset($textColor)) $element->setAttribute('text_color', $textColor);
+				
+				$linkColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/link_color'));
+				if (isset($linkColor)) $element->setAttribute('link_color', $linkColor);				
+				
 			}
 		} catch (MissingNodeException $e) {
 		}
