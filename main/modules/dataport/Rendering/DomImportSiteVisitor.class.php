@@ -171,22 +171,21 @@ class DomImportSiteVisitor
 		
 		$site = $this->createComponent($siteElement, null);
 		
-		// Get the theme
-		if ($siteElement->hasAttribute('theme'))
-			$this->theme = $siteElement->getAttribute('theme');
-		else
-			$this->theme = null;		
+		// Get the theme specified in the source
+		$this->theme = $this->getSourceTheme();
 		
-		$themeMgr = Services::getService("GUIManager");
-		$theme = $themeMgr->getTheme($this->theme);
-				
-		// Set options
-// 		$optionsSession = $theme->getOptionsSession();
-// 		$option1 = $optionsSession->getOption('background_color');
-// 		$option1->setValue('blue');
-				
-		// Set the current state of the theme to be the one for the site
-		$site->updateTheme($theme);		
+		if ($this->theme != null) {
+			$themeMgr = Services::getService("GUIManager");
+			
+			// need to catch exception if no corresponding theme exists...
+			$theme = $themeMgr->getTheme($this->theme);
+			
+			// set theme options
+			$this->setThemeOptions($theme);
+										
+			// update theme with options from source
+			$site->updateTheme($theme);	
+		}
 		
 		$roleMgr = SegueRoleManager::instance();
 		$adminRole = $roleMgr->getRole('admin');
@@ -235,7 +234,7 @@ class DomImportSiteVisitor
 	 * @access public
 	 * @since 5/28/08
 	 */
-	public function getTheme () {
+	public function getSourceTheme () {
 		if (!isset($this->theme)) {
 			$elements = $this->xpath->evaluate('/Segue2/SiteNavBlock');
 			if (!$elements->length === 1)
@@ -247,9 +246,63 @@ class DomImportSiteVisitor
 				$this->theme = $siteElement->getAttribute('theme');
 			else
 				$this->theme = null;
+		}		
+		return $this->theme;
+	}
+	
+	/**
+	 * Answer the theme from the import
+	 * @param object Harmoni_Gui2_ThemeInterface $theme
+	 * @return null
+	 * @access public
+	 * @since 5/28/08
+	 */
+	public function setThemeOptions ($theme) {
+		$elements = $this->xpath->evaluate('/Segue2/SiteNavBlock');
+		if (!$elements->length === 1)
+			throw new Exception("Import source has ".$elements->length." SiteNavBlock elements. There must be one and only one for importSite().");
+		$siteElement = $elements->item(0);
+		
+		$optionsSession = $theme->getOptionsSession();
+
+		// get all options for the theme
+		$themeOptions = $optionsSession->getOptions();
+		$themeOptionIds = array();
+		foreach ($themeOptions as $option) {
+			$themeOptionIds[] = $option->getIdString ()	;	
 		}
 		
-		return $this->theme;
+		if ($siteElement->hasAttribute('fg_color') && in_array('fg_color', $themeOptionIds)) {
+			$value = $siteElement->getAttribute('fg_color');
+			$option = $optionsSession->getOption('fg_color');			
+			$possibleValues = $option->getValues();
+			if (in_array($value, $possibleValues)) $option->setValue($value);			
+		}
+		
+		if ($siteElement->hasAttribute('bg_color') && in_array('bg_color', $themeOptionIds)) {
+			$value = $siteElement->getAttribute('bg_color');
+			$option = $optionsSession->getOption('bg_color');			
+			$possibleValues = $option->getValues();
+			if (in_array($value, $possibleValues)) $option->setValue($value);			
+		}
+		
+		if ($siteElement->hasAttribute('text_color') && in_array('text_color', $themeOptionIds)) {
+			$value = $siteElement->getAttribute('text_color');
+			$option = $optionsSession->getOption('text_color');			
+			$possibleValues = $option->getValues();
+			if (in_array($value, $possibleValues)) $option->setValue($value);			
+		}
+		
+		if ($siteElement->hasAttribute('link_color') && in_array('link_color', $themeOptionIds)) {
+			$value = $siteElement->getAttribute('link_color');
+			$option = $optionsSession->getOption('link_color');			
+			$possibleValues = $option->getValues();
+			if (in_array($value, $possibleValues)) $option->setValue($value);			
+		}
+
+
+	
+
 	}
 	
 	/**
