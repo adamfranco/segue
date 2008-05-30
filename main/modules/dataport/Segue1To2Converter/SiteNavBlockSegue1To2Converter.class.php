@@ -67,8 +67,10 @@ class SiteNavBlockSegue1To2Converter
 					$themeName = "ShadowBox";
 				} else if ($themeName == "default") {
 					$themeName = "Tabs";
+				} else if ($themeName == "roundedcorners") {
+					$themeName = "RoundedCorners";
 				} else {
-					$themeName = "Tabs";
+					$themeName = "RoundedCorners";
 				}				
 				$element->setAttribute('theme', $themeName);
 				
