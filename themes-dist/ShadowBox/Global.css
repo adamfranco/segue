@@ -93,6 +93,11 @@ seguefooter_left {
     margin-left: 20px;
 }
 
+/*********************************************************
+ * Styles attribution, tags, history, pagination
+ *********************************************************/
+
+
 .pagination_links {
     padding-left: 10px;
     padding-right: 10px;
@@ -111,7 +116,21 @@ seguefooter_left {
     border: 1px solid [[LINK_COLOR]];
     color: [[LINK_COLOR]];
     cursor: pointer;
+}
+
+.tagging_tags_display {
 
 }
 
+.attribution_line {
+
+}    
+
+.comments {
+
+}
+
+.history {
+
+}
 
