@@ -12,7 +12,7 @@ body {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: [[LINK_DECORATION]];
     color: [[LINK_COLOR]];
     cursor: pointer;
 }
@@ -30,8 +30,13 @@ a:hover {
 }
 
 .plugin_content a {
+    text-decoration: [[LINK_DECORATION]];
+}
+
+.plugin_content a:hover {
     text-decoration: underline;
 }
+
 
 /*********************************************************
  * Styles for Segue links, log in, and editing controls

@@ -1,12 +1,14 @@
 /*********************************************************
- * Block 4
+ * Block 4 - Alert
  *********************************************************/
 
 *.block4 {
+	height: 1%;
     padding: 1px;
     border: 0px;
 }
 *.block4Content {
+	
     background-color: [[ALERT_COLOR]];
     color: #000;
     border: 1px solid #979797;
@@ -14,6 +16,12 @@
     text-align: left;
     margin: 0px;
 }
+
+*.block4 a {
+	
+    color: #000;
+}
+
 .block4TopCorners, .block4BottomCorners {
     margin: 0px;
     padding: 0px;
@@ -78,6 +86,3 @@ html>body .block4BorderBR {
      margin-left: 0px;
 }
 
-*.block4 a {
-    color: #000;
-}

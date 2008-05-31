@@ -1,12 +1,14 @@
 /*********************************************************
- * Block 2
+ * Block 2 - Standard
  *********************************************************/
 
 .Block_Standard {
+	height: 1%;
     padding: 1px;
     border: 0px;
 }
 .Block_Standard .Content {
+
     background-color: [[FG_COLOR]];
     border: 1px solid #979797;
     padding: 10px;
