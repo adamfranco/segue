@@ -193,6 +193,20 @@
             <setting marker='[[LINK_COLOR]]'>#CCCCCC</setting>
         </choice>
     </option>
+    <option id='link_decoration'>
+        <displayName lang='en_US'>Link Style</displayName>
+        <description lang='en_US'>The style of link-text.</description>
+        <choice isDefault='true'>
+            <key>none</key>
+            <label lang='en_US'>Don't Underline Links</label>
+            <setting marker='[[LINK_DECORATION]]'>none</setting>
+        </choice>
+        <choice>
+            <key>underline</key>
+            <label lang='en_US'>Underline Links</label>
+            <setting marker='[[LINK_DECORATION]]'>underline</setting>
+        </choice>
+    </option>
     <option id='font'>
         <displayName lang='en_US'>Font</displayName>
         <description lang='en_US'>The fonts used in this site.</description>

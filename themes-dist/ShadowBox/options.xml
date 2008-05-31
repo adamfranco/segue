@@ -392,7 +392,7 @@
         <description lang='en_US'>The style of link-text.</description>
         <choice isDefault='true'>
             <key>none</key>
-            <label lang='en_US'>Don't Underline</label>
+            <label lang='en_US'>Don't Underline Links</label>
             <setting marker='[[LINK_DECORATION]]'>none</setting>
         </choice>
         <choice>
