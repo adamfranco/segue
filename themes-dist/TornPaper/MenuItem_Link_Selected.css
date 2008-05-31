@@ -1,0 +1,38 @@
+/*********************************************************
+ * Menu 1 Selected
+ *********************************************************/
+
+*.MenuItem_Link_Selected  {
+    border-top: 1px dotted [[MENU_BORDER_TOP]];
+    border-bottom: 1px dotted [[MENU_BORDER_BOTTOM]];
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-top: 1px;
+    margin-bottom: 2px;
+
+}
+
+*.MenuItem_Link_Selected .box01 {
+    border-left: 1px solid [[MENU_BORDER_LEFT]];
+    border-right: 1px solid [[MENU_BORDER_RIGHT]];
+    padding-left: 1px;
+    padding-right: 1px;    
+
+}
+
+*.MenuItem_Link_Selected .box02 {
+}
+
+*.MenuItem_Link_Selected .box03 {
+
+}
+
+*.MenuItem_Link_Selected .Content {
+    text-align: left;
+    font-size: 100%;
+    padding: 0px;
+}
+
+*.MenuItem_Link_Selected a {
+  text-decoration: none;   
+}

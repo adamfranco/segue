@@ -1,0 +1,45 @@
+/*********************************************************
+ * Block - Standard
+ *********************************************************/
+
+.Block_Standard {
+    border-top: 1px solid [[STANDARD_BORDER_TOP]];
+    border-bottom: 1px dotted [[STANDARD_BORDER_BOTTOM]];
+
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+*.Block_Standard .box01 {
+    border-top: 1px solid [[STANDARD_BORDER_TOP01]];
+
+    border-left: 1px dotted [[STANDARD_BORDER_LEFT]];
+    border-right: 1px dotted [[STANDARD_BORDER_RIGHT]];
+    padding-left: 1px;
+    padding-right: 1px;    
+}
+
+
+*.Block_Standard .box02 {
+
+}
+
+*.Block_Standard .box03 {
+
+}
+
+.Block_Standard .Content {
+    height: 1%;
+    text-align: left;
+    font-size: 100%;    
+}
+
+* html .Block_Standard .Content {
+
+    text-align: left;
+    font-size: 100%;    
+}
