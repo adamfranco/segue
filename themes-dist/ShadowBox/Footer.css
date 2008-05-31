@@ -8,6 +8,7 @@
 }
 
 *.Footer .Content {
-
-
+    height: 1%;
+    padding: 0px;
+    margin: 0px;
 }

@@ -4,12 +4,17 @@
 
 *.Heading_Sidebar {
     padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 4px;
+}
+
+*.Heading_Sidebar .Content {
+    background-color: [[SIDEBAR_BG_COLOR]];
+    padding: 0px;
+    margin-bottom: 5px;
     text-align: left;
     font-weight: bold;
 }
-*.Heading_Sidebar .Content {
 
+*.Heading_Sidebar a {
+    text-decoration: none;    
 }
