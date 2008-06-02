@@ -39,6 +39,7 @@
 }
 
 *.block4 .Content {
+    height: 1%;
     background-color: [[ALERT_BG_COLOR]];    
     text-align: left;
     font-size: 100%; 

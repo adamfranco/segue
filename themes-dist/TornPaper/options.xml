@@ -81,19 +81,19 @@
         <displayName lang='en_US'>Menu Color</displayName>
         <description lang='en_US'>The color of the menu.</description>
         <choice isDefault='true'>
+            <key>gray</key>
+            <label lang='en_US'>Gray</label>            
+            <setting marker='[[MENU_BG_COLOR]]'>#ECECEC</setting>
+            <setting marker='[[MENU_UNSELECTED_COLOR]]'>#888888</setting>
+            <setting marker='[[MENU_UNSELECTED_BG_COLOR]]'>#FCFCFC</setting>
+        </choice>
+        <choice>
             <key>yellow</key>
             <label lang='en_US'>Yellow</label>
             <setting marker='[[MENU_BG_COLOR]]'>#FFFFCC</setting>
             <setting marker='[[MENU_UNSELECTED_COLOR]]'>#888888</setting>
             <setting marker='[[MENU_UNSELECTED_BG_COLOR]]'>#FCFCFC</setting>
 
-        </choice>
-        <choice>
-            <key>gray</key>
-            <label lang='en_US'>Gray</label>            
-            <setting marker='[[MENU_BG_COLOR]]'>#ECECEC</setting>
-            <setting marker='[[MENU_UNSELECTED_COLOR]]'>#888888</setting>
-            <setting marker='[[MENU_UNSELECTED_BG_COLOR]]'>#FCFCFC</setting>
         </choice>
         <choice>
             <key>white</key>
