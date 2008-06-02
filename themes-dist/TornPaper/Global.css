@@ -106,14 +106,14 @@ seguefooter_left {
 .pagination_links a {
     color: [[MENU_UNSELECTED_COLOR]];
     text-decoration: none;
-    border: 1px solid;
+    border: 1px solid [[MENU_BORDER_TOP01]];
     padding-left: 2px;
     padding-right: 2px;
 }
 
 .pagination_links a:hover {
-    display: block
-    border: 1px solid [[LINK_COLOR]];
+    background-color: [[MENU_BG_COLOR]];
+
     color: [[LINK_COLOR]];
     cursor: pointer;
 }

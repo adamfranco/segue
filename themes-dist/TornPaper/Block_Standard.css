@@ -4,32 +4,46 @@
 
 .Block_Standard {
     border-top: 1px solid [[STANDARD_BORDER_TOP]];
-    border-bottom: 1px dotted [[STANDARD_BORDER_BOTTOM]];
-
+    border-bottom: 1px solid [[STANDARD_BORDER_BOTTOM]];
+    border-left: 1px solid [[STANDARD_BORDER_LEFT]];
+    border-right: 1px solid [[STANDARD_BORDER_RIGHT]];
+    padding-top: 0px;
     padding-left: 0px;
     padding-right: 0px;
     margin-right: 10px;
     margin-left: 10px;
-    margin-top: 3px;
-    margin-bottom: 3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 *.Block_Standard .box01 {
     border-top: 1px solid [[STANDARD_BORDER_TOP01]];
-
-    border-left: 1px dotted [[STANDARD_BORDER_LEFT]];
-    border-right: 1px dotted [[STANDARD_BORDER_RIGHT]];
-    padding-left: 1px;
-    padding-right: 1px;    
+    border-bottom: 1px none [[STANDARD_BORDER_BOTTOM01]];
+    border-left: 1px none [[STANDARD_BORDER_LEFT01]];
+    border-right: 1px none [[STANDARD_BORDER_RIGHT01]];
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;  
+    margin-bottom: 0px;
 }
 
 
 *.Block_Standard .box02 {
-
+    border-top: 1px solid [[STANDARD_BORDER_TOP02]];
+    border-bottom: 1px solid [[STANDARD_BORDER_BOTTOM02]];
+    border-left: 1px solid [[STANDARD_BORDER_LEFT02]];
+    border-right: 1px solid [[STANDARD_BORDER_RIGHT02]];
+    padding-top: 0px;
+    margin-bottom: 0px;
 }
 
 *.Block_Standard .box03 {
-
+    border-top: 1px none [[STANDARD_BORDER_TOP03]];
+    border-bottom: 1px none [[STANDARD_BORDER_BOTTOM03]];
+    border-left: 1px none [[STANDARD_BORDER_LEFT03]];
+    border-right: 1px none [[STANDARD_BORDER_RIGHT03]];
+    padding-top: 0px;
+    margin-bottom: 0px;
 }
 
 .Block_Standard .Content {

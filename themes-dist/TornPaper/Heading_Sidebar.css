@@ -8,7 +8,6 @@
 }
 
 *.Heading_Sidebar .Content {
-    background-color: [[SIDEBAR_BG_COLOR]];
     padding: 0px;
     margin-bottom: 5px;
     text-align: left;
