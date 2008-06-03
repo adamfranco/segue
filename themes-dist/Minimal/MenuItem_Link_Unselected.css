@@ -1,0 +1,28 @@
+/*********************************************************
+ * Menu 1 Unselected
+ *********************************************************/
+
+*.MenuItem_Link_Unselected {    
+    padding-left: 0px;
+    margin-left: 15px;
+    margin-top: 3px;
+    margin-bottom: 0px;
+}
+
+*.MenuItem_Link_Unselected .Content {
+    padding: 0px;
+    text-align: left;    
+    font-size: 100%;
+}
+
+
+*.MenuItem_Link_Unselected a {
+    display: block;
+    text-decoration: none;
+}
+
+*.MenuItem_Link_Unselected a:hover {
+    display: block;  
+    color: [[LINK_COLOR]];
+}
+    
