@@ -2,58 +2,73 @@
  * Block - Standard
  *********************************************************/
 
-.Block_Standard {
-    border-top: 1px solid [[STANDARD_BORDER_TOP]];
-    border-bottom: 1px solid [[STANDARD_BORDER_BOTTOM]];
-    border-left: 1px solid [[STANDARD_BORDER_LEFT]];
-    border-right: 1px solid [[STANDARD_BORDER_RIGHT]];
-    padding-top: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
-    margin-right: 10px;
-    margin-left: 10px;
+
+.Block_Standard {    
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
-*.Block_Standard .box01 {
-    border-top: 1px solid [[STANDARD_BORDER_TOP01]];
-    border-bottom: 1px none [[STANDARD_BORDER_BOTTOM01]];
-    border-left: 1px none [[STANDARD_BORDER_LEFT01]];
-    border-right: 1px none [[STANDARD_BORDER_RIGHT01]];
-    padding-top: 0px;
-    padding-left: 0px;
-    padding-right: 0px;  
-    margin-bottom: 0px;
-}
-
-
-*.Block_Standard .box02 {
-    border-top: 1px solid [[STANDARD_BORDER_TOP02]];
-    border-bottom: 1px solid [[STANDARD_BORDER_BOTTOM02]];
-    border-left: 1px solid [[STANDARD_BORDER_LEFT02]];
-    border-right: 1px solid [[STANDARD_BORDER_RIGHT02]];
-    padding-top: 0px;
-    margin-bottom: 0px;
-}
-
-*.Block_Standard .box03 {
-    border-top: 1px none [[STANDARD_BORDER_TOP03]];
-    border-bottom: 1px none [[STANDARD_BORDER_BOTTOM03]];
-    border-left: 1px none [[STANDARD_BORDER_LEFT03]];
-    border-right: 1px none [[STANDARD_BORDER_RIGHT03]];
-    padding-top: 0px;
-    margin-bottom: 0px;
-}
-
 .Block_Standard .Content {
-    height: 1%;
+    background-color: [[FG_COLOR]];
+    padding: 10px;
     text-align: left;
-    font-size: 100%;    
+    margin: 0px;
 }
 
-* html .Block_Standard .Content {
 
-    text-align: left;
-    font-size: 100%;    
+.Block_Standard .topright {
+    background: white url('./images/block/topright.gif') no-repeat;
+    width: 25px;
+    height: 11px;
+}
+
+.Block_Standard .top {
+    background: white url('./images/block/top.gif') repeat-x;
+    height: 11px;
+}
+
+.Block_Standard .topleft {
+    background: white url('./images/block/topleft.gif') no-repeat;
+    width: 25px;
+    height: 11px;
+}
+
+.Block_Standard .right {
+    background: white url('./images/block/right.gif') repeat-y;
+    width: 25px;
+    vertical-align: top;
+}
+
+.Block_Standard .left {
+    background: white url('./images/block/left.gif') repeat-y;
+    width: 25px;
+    vertical-align: top;
+}
+
+.Block_Standard .bottomleft {
+    background: white url('./images/block/bottomleft.gif') no-repeat;
+    width: 25px;
+    height: 16px;
+}
+
+.Block_Standard .bottom {
+    background: white url('./images/block/bottom.gif') repeat-x;
+    height: 16px;
+}
+
+.Block_Standard .bottomright {
+    background: white url('./images/block/bottomright.gif') no-repeat;
+    width: 25px;
+    height: 16px;
+}
+
+.Block_Standard .righttop {
+    width: 25px;
+    height: 22px;
+    border: 0px solid gray;
+}
+
+.Block_Standard .lefttop {
+    width: 25px;
+    height: 22px;
+    border: 0px solid gray;
 }
