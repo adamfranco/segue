@@ -3,18 +3,31 @@
  *********************************************************/
  
 *.Menu_Sub {
-    font-size: 90%;
-    margin-right: 0px;
-    margin-bottom: 0px;    
+    font-size: 90%;    
+	margin-top: 0px; 
+	margin-bottom: 0px; 
+	margin-right: 0px;
+	padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 *.Menu_Sub .MenuItem_Link_Selected {
-    padding-left: 7px;
+	border: none;
+	margin-top: 0px; 
+	margin-bottom: 0px;
+	padding-left: 7px;
+	padding-top: 0px;
+    padding-bottom: 0px;
     text-align: left;
 }
 
 *.Menu_Sub .MenuItem_Link_Unselected {
-    padding-left: 7px;
+	border: none;
+	margin-top: 0px; 
+	margin-bottom: 0px;
+	padding-left: 7px;
+	padding-top: 0px;
+    padding-bottom: 0px;
     text-align: left;
 }
 

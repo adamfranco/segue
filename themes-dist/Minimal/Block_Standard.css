@@ -3,7 +3,7 @@
  *********************************************************/
 
 .Block_Standard {
-    border-top: 1px solid [[STANDARD_BORDER_TOP]];
+
     border-bottom: 1px solid [[STANDARD_BORDER_BOTTOM]];
     border-left: 0px none [[STANDARD_BORDER_LEFT]];
     border-right: 0px none [[STANDARD_BORDER_RIGHT]];

@@ -18,7 +18,6 @@
     padding-right: 10px;
     border-bottom: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
 	border-left: 1px none [[BORDER_COLOR]];
-	border-right: 1px none [[BORDER_COLOR]];
-	
+	border-right: 1px none [[BORDER_COLOR]];	
 	font-size: large;
 }

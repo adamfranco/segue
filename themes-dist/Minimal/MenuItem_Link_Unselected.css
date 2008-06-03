@@ -2,7 +2,9 @@
  * Menu 1 Unselected
  *********************************************************/
 
-*.MenuItem_Link_Unselected {    
+*.MenuItem_Link_Unselected { 
+	border-top: 1px solid [[STANDARD_BORDER_TOP]];
+	border-bottom: 1px solid [[STANDARD_BORDER_BOTTOM]];
     padding-left: 0px;
     margin-left: 15px;
     margin-top: 3px;
