@@ -98,7 +98,7 @@
         <choice>
             <key>yellow</key>
             <label lang='en_US'>Yellow</label>
-            <setting marker='[[MENU_BG_COLOR]]'>#FFFFCC</setting>
+            <setting marker='[[MENU_BG_COLOR]]'>#FFF8C6</setting>
             <setting marker='[[MENU_UNSELECTED_COLOR]]'>#888888</setting>
             <setting marker='[[MENU_UNSELECTED_BG_COLOR]]'>#FCFCFC</setting>
 
