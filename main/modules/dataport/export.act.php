@@ -9,7 +9,12 @@
  * @version $Id: export.act.php,v 1.8 2008/04/09 21:12:02 adamfranco Exp $
  */ 
 
-require_once("Archive/Tar.php");
+// Use a custom version of Archive/Tar if requested.
+if (defined('ARCHIVE_TAR_PATH'))
+	require_once(ARCHIVE_TAR_PATH);
+else
+	require_once("Archive/Tar.php");
+
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 require_once(dirname(__FILE__)."/Rendering/DomExportSiteVisitor.class.php");
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
