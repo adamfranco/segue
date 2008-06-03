@@ -27,6 +27,14 @@
             <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>        
         </choice>
         <choice>
+            <key>light_gray</key>
+            <label lang='en_US'>Light Gray</label>
+            <setting marker='[[IMAGE_DIR]]'>light_gray</setting>
+            <setting marker='[[BG_COLOR]]'>#EEEEEE</setting>
+            <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+            <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>        
+        </choice>
+        <choice>
             <key>blue</key>
             <label lang='en_US'>Blue</label>
             <setting marker='[[IMAGE_DIR]]'>blue</setting>
