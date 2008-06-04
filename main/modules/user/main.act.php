@@ -120,7 +120,19 @@ class mainAction
 		$actionRows->add($statusBar,null,null,RIGHT,TOP);
 		ob_end_clean();
 
-
+		
+		ob_start();
+		print "\n<ul>".
+			"\n\t<li><a href='".
+			$harmoni->request->quickURL("user", "visitor_reg")."'>".
+			_("Visitor Registration").
+			"</a></li>".
+			"\n</ul>";
+			
+		$introText = new Block(ob_get_contents(),2);
+		$actionRows->add($introText, "100%", null, CENTER, CENTER);
+		ob_end_clean();
+		
 		
 		ob_start();
 		print "\n<ul>".
