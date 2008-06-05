@@ -19,7 +19,7 @@ require_once(MYDIR.'/main/modules/view/SiteDispatcher.class.php');
 
 
 // :: GUIManager setup ::
-	define("LOGO_URL", MYPATH."/themes/SimpleThemeWhite/images/logo.gif");
+	define("LOGO_URL", MYPATH."/images/logo.gif");
 	
 	$configuration = new ConfigurationProperties;
 	$configuration->addProperty('database_index', $dbID);
