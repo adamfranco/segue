@@ -120,33 +120,42 @@ class mainAction
 		$actionRows->add($statusBar,null,null,RIGHT,TOP);
 		ob_end_clean();
 
+		// Visitor Registration Link
+		if (!$authNManager->isUserAuthenticatedWithAnyType()) {
+			ob_start();
+			print "\n<ul>".
+				"\n\t<li><a href='".
+				$harmoni->request->quickURL("user", "visitor_reg")."'>".
+				_("Visitor Registration").
+				"</a></li>".
+				"\n</ul>";
+				
+			$actionRows->add(new Block(ob_get_clean(), STANDARD_BLOCK), "100%", null, CENTER, CENTER);
+		}
 		
+		// Change Password
 		ob_start();
-		print "\n<ul>".
-			"\n\t<li><a href='".
-			$harmoni->request->quickURL("user", "visitor_reg")."'>".
-			_("Visitor Registration").
-			"</a></li>".
-			"\n</ul>";
-			
-		$introText = new Block(ob_get_contents(),2);
-		$actionRows->add($introText, "100%", null, CENTER, CENTER);
-		ob_end_clean();
-		
-		
-		ob_start();
-		print "\n<ul>".
-			"\n\t<li><a href='".
-			$harmoni->request->quickURL("user", "change_password")."'>".
-			_("Change 'Harmoni DB' Password").
-			"</a></li>".
-			"\n</ul>";
-			
-		$introText = new Block(ob_get_contents(),2);
-		$actionRows->add($introText, "100%", null, CENTER, CENTER);
-		ob_end_clean();
-		// end of authN links
-		
+		$authTypes = $authNManager->getAuthenticationTypes();
+		while($authTypes->hasNext()) {
+			$authType = $authTypes->next();
+			if ($authNManager->isUserAuthenticated($authType)) {
+				$methodMgr = Services::getService("AuthNMethodManager");
+				$method = $methodMgr->getAuthNMethodForType($authType);
+				if ($method->supportsTokenUpdates()) {
+					
+					print "\n\t<li><a href='".
+						$harmoni->request->quickURL("user", "change_password")."'>";
+					$keyword = $authType->getKeyword();
+					print str_replace('%1', $keyword, dgettext("polyphony", "Change '%1' Password"));
+					print "</a></li>";
+						
+				}
+			}
+		}
+		$passLinks = ob_get_clean();
+		if (strlen($passLinks)) {
+			$actionRows->add(new Block("\n<ul>".$passLinks."\n</ul>", STANDARD_BLOCK), "100%", null, CENTER, CENTER);
+		}
 	}
 }
 ?>
