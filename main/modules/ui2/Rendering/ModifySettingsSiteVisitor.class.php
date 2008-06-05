@@ -246,6 +246,54 @@ class ModifySettingsSiteVisitor
 			$siteComponent->updateDirection(RequestContext::value('direction'));
 		}
 	}
+
+	/**
+	 * Apply the menu location style.
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 6/4/08
+	 */
+	public function applyMenuDisplayType ( SiteComponent $siteComponent ) {
+		if(RequestContext::value('displayType') 
+			&& RequestContext::value('displayType') !== $siteComponent->getDisplayType())
+		{
+			$siteComponent->setDisplayType(RequestContext::value('displayType'));
+		}
+	}
+
+	/**
+	 * Apply the block style.
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 6/4/08
+	 */
+	public function applyBlockDisplayType ( SiteComponent $siteComponent ) {
+		if(RequestContext::value('displayType') 
+			&& RequestContext::value('displayType') !== $siteComponent->getDisplayType())
+		{
+			$siteComponent->setDisplayType(RequestContext::value('displayType'));
+		}
+	}
+
+	/**
+	 * Apply the block heading style.
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 6/45/08
+	 */
+	public function applyBlockHeadingDisplayType ( SiteComponent $siteComponent ) {
+		if(RequestContext::value('headingDisplayType') 
+			&& RequestContext::value('headingDisplayType') !== $siteComponent->getHeadingDisplayType())
+		{
+			$siteComponent->setHeadingDisplayType(RequestContext::value('headingDisplayType'));
+		}
+	}
 	
 	/**
 	 * Answer controls for Block SiteComponents
@@ -266,7 +314,8 @@ class ModifySettingsSiteVisitor
 		$this->applyShowDates($siteComponent);
 		$this->applyShowAttribution($siteComponent);
 		$this->applyWidth($siteComponent);
-		
+		$this->applyBlockDisplayType($siteComponent);
+		$this->applyBlockHeadingDisplayType($siteComponent);
 		return $this->modifyEnd($siteComponent);
 	}
 
@@ -425,6 +474,7 @@ class ModifySettingsSiteVisitor
 		$this->applyShowHistory($siteComponent);
 		$this->applyWidth($siteComponent);
 		$this->applySortMethod($siteComponent);
+		$this->applyMenuDisplayType($siteComponent);
 		
 		return $this->modifyEnd($siteComponent);
 	}
