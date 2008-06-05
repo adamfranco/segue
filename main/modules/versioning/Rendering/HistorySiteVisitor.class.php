@@ -9,7 +9,7 @@
  * @version $Id: HistorySiteVisitor.class.php,v 1.6 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/DetailViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/modules/view/DetailViewModeSiteVisitor.class.php");
 
 /**
  * Rendering visitor for the history browser.

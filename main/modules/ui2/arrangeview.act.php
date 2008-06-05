@@ -11,7 +11,7 @@
  
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/library/SiteDisplay/SiteComponents/XmlSiteComponents/XmlSiteDirector.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/modules/view/ViewModeSiteVisitor.class.php");
 require_once(dirname(__FILE__)."/Rendering/ArrangeModeSiteVisitor.class.php");
 require_once(MYDIR."/main/modules/view/html.act.php");
 require_once(dirname(__FILE__)."/Rendering/UI2.class.php");

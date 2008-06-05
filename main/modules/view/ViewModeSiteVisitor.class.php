@@ -22,8 +22,8 @@ require_once(HARMONI."GUIManager/Layouts/XLayout.class.php");
 require_once(HARMONI."GUIManager/Layouts/YLayout.class.php");
 require_once(HARMONI."GUIManager/Layouts/TableLayout.class.php");
 
-require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
-require_once(dirname(__FILE__)."/IsHeaderFooterSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsHeaderFooterSiteVisitor.class.php");
 
 require_once(MYDIR."/main/modules/view/AttributionPrinter.class.php");
 require_once(POLYPHONY."/main/modules/tags/TagAction.abstract.php");
