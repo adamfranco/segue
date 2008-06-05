@@ -69,6 +69,7 @@ $configs = array(
 					'database',
 					'id',
 					'logging',
+					'recaptcha',
 					'authentication_setup',
 					'gui',
 					'language',

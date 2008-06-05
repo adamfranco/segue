@@ -24,5 +24,5 @@
 $authenticationSources = array(
 	"db",
 // 	"ldap",
-	"visitors"
+// 	"visitors"
 );

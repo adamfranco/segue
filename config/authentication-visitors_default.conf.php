@@ -1,7 +1,15 @@
 <?php
 
 /**
- * Set up the basic Visitors DB authentication method.
+ * Set up the Visitors DB authentication method. 
+ *
+ * You probably don't need to modify this configuration file, just 
+ * add your reCAPTCHA API keys to segue/config/recaptcha.conf.php
+ * 
+ * Visitor Registration requires that you sign up for reCAPTCHA API key. 
+ * These reCAPTCHA keys are defined in recaptcha.conf.php
+ *
+ *
  *
  * USAGE: Copy this file to authentication_manager.conf.php to set custom values.
  *
@@ -10,6 +18,10 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  */
+
+if (!defined('RECAPTCHA_PUBLIC_KEY') || !defined('RECAPTCHA_PRIVATE_KEY'))
+	throw new ConfigurationErrorException("You must configure reCAPTCHA API keys in segue/config/recaptcha.conf.php to enable visitor registration.");
+
 
 require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/VisitorSQLDatabaseAuthNMethod.class.php");
 require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/SQLDatabaseMD5UsernamePasswordAuthNTokens.class.php");
@@ -48,6 +60,3 @@ require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/SQLDatabaseMD5UsernameP
 	$tokenCollectors[serialize($type)] = new FormActionNamePassTokenCollector(
 		$harmoni->request->quickURL("auth","username_password_form"));
 	
-	
-	define('RECAPTCHA_PUBLIC_KEY', '6Le3GAIAAAAAAItWg6d6N4ghVIZY2g3Cf8Y2RIpd');
-	define('RECAPTCHA_PRIVATE_KEY', '6Le3GAIAAAAAAJ2ZnFPl-0EAz-3fkpTdLNXdQzBS');
