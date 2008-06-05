@@ -267,6 +267,20 @@
             <setting marker='[[STANDARD_BORDER_RIGHT02]]'>#CCCCCC</setting>                        
         </choice>
     </option>
+    <option id='block_class'>
+        <displayName lang='en_US'>Content Borders</displayName>
+        <description lang='en_US'>Different kinds of borders around blocks.</description>
+        <choice isDefault='true'>
+            <key>drop_shadow_borders</key>
+            <label lang='en_US'>Drop-Shadow Borders</label>
+            <setting marker='[[STANDARD_BLOCK_CLASS]]'>Block_Standard</setting>
+        </choice>
+        <choice>
+            <key>no_borders</key>
+            <label lang='en_US'>No Borders</label>
+            <setting marker='[[STANDARD_BLOCK_CLASS]]'>Block_Standard_No_Borders</setting>
+        </choice>
+    </option>
     <option id='border_color'>
         <displayName lang='en_US'>Border Color</displayName>
         <description lang='en_US'>The color of the borders.</description>

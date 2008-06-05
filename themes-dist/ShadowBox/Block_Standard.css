@@ -43,3 +43,14 @@
     text-align: left;
     font-size: 100%;    
 }
+
+/*********************************************************
+ * Block - Standard - No Borders
+ *********************************************************/
+
+.Block_Standard_No_Borders .Content {
+    height: 1%;
+    text-align: left;
+    font-size: 100%; 
+    margin-bottom: 10px;
+}
