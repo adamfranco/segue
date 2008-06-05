@@ -70,6 +70,10 @@
 		font-size: 12px;
 	}
 
+	.comment_byline {
+		padding-bottom: 5px;
+	}
+
 	.history {
 		float: right; 
 		clear: both;
