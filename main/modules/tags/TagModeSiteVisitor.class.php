@@ -9,7 +9,7 @@
  * @version $Id: 
  */ 
 
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/modules/view/ViewModeSiteVisitor.class.php");
 
 /**
  * A visitor that can traverse the site hierarchy.

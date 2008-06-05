@@ -9,7 +9,7 @@
  * @version $Id: VisibilitySiteVisitor.class.php,v 1.9 2007/09/04 15:05:32 adamfranco Exp $
  */ 
  
-require_once(dirname(__FILE__)."/ViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/modules/view/ViewModeSiteVisitor.class.php");
 
 /**
  * The VisibilityVisitor traverses the site hierarchy, recording the visibility of

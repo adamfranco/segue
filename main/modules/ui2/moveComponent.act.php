@@ -8,7 +8,7 @@
  * @version $Id: moveComponent.act.php,v 1.9 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
-require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
+require_once(MYDIR."/main/modules/ui2/EditModeSiteAction.abstract.php");
 require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
 
 /**

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.11 2008/03/31 23:03:54 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.abstract.php,v 1.11 2008/03/31 23:03:54 adamfranco Exp $
  */ 
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
@@ -20,7 +20,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EditModeSiteAction.act.php,v 1.11 2008/03/31 23:03:54 adamfranco Exp $
+ * @version $Id: EditModeSiteAction.abstract.php,v 1.11 2008/03/31 23:03:54 adamfranco Exp $
  */
 abstract class EditModeSiteAction 
 	extends MainWindowAction
