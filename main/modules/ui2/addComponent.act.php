@@ -8,7 +8,7 @@
  * @version $Id: addComponent.act.php,v 1.12 2008/03/25 13:49:47 adamfranco Exp $
  */ 
 
-require_once(MYDIR."/main/modules/ui2/EditModeSiteAction.act.php");
+require_once(MYDIR."/main/modules/ui2/EditModeSiteAction.abstract.php");
 require_once(MYDIR."/main/library/Roles/SegueRoleManager.class.php");
 
 
