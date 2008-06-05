@@ -10,7 +10,7 @@
  */ 
 
 require_once(dirname(__FILE__)."/EditModeSiteVisitor.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/DetailViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/modules/view/DetailViewModeSiteVisitor.class.php");
 
 /**
  * This SiteVisitor enables editing of the header footer, but not the rest of the site.
