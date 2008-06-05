@@ -72,3 +72,73 @@
     height: 22px;
     border: 0px solid gray;
 }
+
+/*********************************************************
+ * Block - Standard - No Borders
+ *********************************************************/
+
+.Block_Standard_No_Borders .Content {
+    height: 1%;
+    text-align: left;
+    font-size: 100%; 
+    margin-bottom: 10px;
+}
+
+.Block_Standard_No_Borders .topright {
+    background: white url('./images/block/topright.gif') no-repeat;
+    width: 25px;
+    height: 11px;
+}
+
+.Block_Standard_No_Borders .top {
+    background: white url('./images/block/top.gif') repeat-x;
+    height: 11px;
+}
+
+.Block_Standard_No_Borders .topleft {
+    background: white url('./images/block/topleft.gif') no-repeat;
+    width: 25px;
+    height: 11px;
+}
+
+.Block_Standard_No_Borders .right {
+    background: white url('./images/block/spacer.gif') repeat-y;
+    width: 25px;
+    vertical-align: top;
+}
+
+.Block_Standard_No_Borders .left {
+    background: white url('./images/block/spacer.gif') repeat-y;
+    width: 25px;
+    vertical-align: top;
+}
+
+.Block_Standard_No_Borders .bottomleft {
+    background: white url('./images/block/spacer.gif') no-repeat;
+    width: 25px;
+    height: 16px;
+}
+
+.Block_Standard_No_Borders .bottom {
+    background: white url('./images/block/spacer.gif') repeat-x;
+    height: 16px;
+}
+
+.Block_Standard_No_Borders .bottomright {
+    background: white url('./images/block/spacer.gif') no-repeat;
+    width: 25px;
+    height: 16px;
+}
+
+.Block_Standard_No_Borders .righttop {
+    width: 25px;
+    height: 22px;
+    border: 0px solid gray;
+}
+
+.Block_Standard_No_Borders .lefttop {
+    width: 25px;
+    height: 22px;
+    border: 0px solid gray;
+}
+

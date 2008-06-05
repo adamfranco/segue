@@ -126,8 +126,13 @@ seguefooter_left {
 
 }    
 
-.comments {
+.comment {
+    border-top: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
+    padding-top: 3px;
+}
 
+.comment_byline {
+    color: [[ATRIBUTION_TEXT_COLOR]];
 }
 
 .history {

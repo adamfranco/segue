@@ -75,6 +75,46 @@
             <setting marker='[[STANDARD_BORDER_RIGHT02]]'>#E6E6E6</setting>                        
         </choice>
     </option>
+    <option id='block_class'>
+        <displayName lang='en_US'>Content Borders</displayName>
+        <description lang='en_US'>Different kinds of borders around content blocks.</description>
+        <choice isDefault='true'>
+            <key>drop_shadow_borders</key>
+            <label lang='en_US'>Full Borders</label>
+            <setting marker='[[STANDARD_BLOCK_CLASS]]'>Block_Standard</setting>
+        </choice>
+        <choice>
+            <key>no_borders</key>
+            <label lang='en_US'>Top Borders</label>
+            <setting marker='[[STANDARD_BLOCK_CLASS]]'>Block_Standard_No_Borders</setting>
+        </choice>
+    </option>
+   <option id='menu_color'>
+        <displayName lang='en_US'>Menu Color</displayName>
+        <description lang='en_US'>The color of the menu.</description>
+        <choice isDefault='true'>
+            <key>yellow</key>
+            <label lang='en_US'>Yellow</label>
+            <setting marker='[[MENU_BG_COLOR]]'>#FFF8C6</setting>
+            <setting marker='[[MENU_UNSELECTED_COLOR]]'>#999999</setting>
+            <setting marker='[[MENU_UNSELECTED_BG_COLOR]]'>#FCFCFC</setting>
+        </choice>
+        <choice>
+            <key>gray</key>
+            <label lang='en_US'>Gray</label>            
+            <setting marker='[[MENU_BG_COLOR]]'>#ECECEC</setting>
+            <setting marker='[[MENU_UNSELECTED_COLOR]]'>#999999</setting>
+            <setting marker='[[MENU_UNSELECTED_BG_COLOR]]'>#FCFCFC</setting>
+        </choice>
+        <choice>
+            <key>white</key>
+            <label lang='en_US'>White</label>
+            <setting marker='[[MENU_BG_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[MENU_UNSELECTED_COLOR]]'>#999999</setting>
+            <setting marker='[[MENU_UNSELECTED_BG_COLOR]]'>#FCFCFC</setting>
+        </choice>
+    </option>        
+
     <option id='border_color'>
         <displayName lang='en_US'>Border Color</displayName>
         <description lang='en_US'>The color of the borders.</description>
@@ -83,7 +123,7 @@
             <label lang='en_US'>Gray</label>
             <setting marker='[[BORDER_COLOR]]'>#666666</setting>
         </choice>
-        <choice isDefault='true'>
+        <choice>
             <key>black</key>
             <label lang='en_US'>Black</label>
             <setting marker='[[BORDER_COLOR]]'>#000000</setting>
@@ -109,43 +149,18 @@
             <setting marker='[[BORDER_COLOR]]'>#FFCC00</setting>
         </choice>
     </option>
-    <option id='menu_color'>
-        <displayName lang='en_US'>Menu Color</displayName>
-        <description lang='en_US'>The color of the menu.</description>
-        <choice isDefault='true'>
-            <key>yellow</key>
-            <label lang='en_US'>Yellow</label>
-            <setting marker='[[MENU_BG_COLOR]]'>#FFF8C6</setting>
-            <setting marker='[[MENU_UNSELECTED_COLOR]]'>#999999</setting>
-            <setting marker='[[MENU_UNSELECTED_BG_COLOR]]'>#FCFCFC</setting>
-        </choice>
-        <choice>
-            <key>gray</key>
-            <label lang='en_US'>Gray</label>            
-            <setting marker='[[MENU_BG_COLOR]]'>#ECECEC</setting>
-            <setting marker='[[MENU_UNSELECTED_COLOR]]'>#999999</setting>
-            <setting marker='[[MENU_UNSELECTED_BG_COLOR]]'>#FCFCFC</setting>
-        </choice>
-        <choice>
-            <key>white</key>
-            <label lang='en_US'>White</label>
-            <setting marker='[[MENU_BG_COLOR]]'>#FFFFFF</setting>
-            <setting marker='[[MENU_UNSELECTED_COLOR]]'>#999999</setting>
-            <setting marker='[[MENU_UNSELECTED_BG_COLOR]]'>#FCFCFC</setting>
-        </choice>
-    </option>        
-    <option id='border_style'>
+     <option id='border_style'>
         <displayName lang='en_US'>Border Style</displayName>
         <description lang='en_US'>The style of the borders.</description>
         <choice isDefault='true'>
-            <key>solid</key>
-            <label lang='en_US'>Solid</label>
-            <setting marker='[[BORDER_STYLE]]'>solid</setting>
-        </choice>
-        <choice>
             <key>dotted</key>
             <label lang='en_US'>Dotted</label>
             <setting marker='[[BORDER_STYLE]]'>dotted</setting>
+        </choice>
+        <choice>
+            <key>solid</key>
+            <label lang='en_US'>Solid</label>
+            <setting marker='[[BORDER_STYLE]]'>solid</setting>
         </choice>
         <choice>
             <key>dashed</key>

@@ -9,6 +9,7 @@
 
 *.Heading_Sidebar .Content {
     padding: 0px;
+    margin-left: 7px;
     margin-bottom: 5px;
     text-align: left;
     font-weight: bold;
