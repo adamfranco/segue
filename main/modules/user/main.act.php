@@ -121,7 +121,17 @@ class mainAction
 		ob_end_clean();
 
 		// Visitor Registration Link
-		if (!$authNManager->isUserAuthenticatedWithAnyType()) {
+		$authTypes = $authNManager->getAuthenticationTypes();
+		$hasVisitorType = false;
+		$visitorType = new Type ("Authentication", "edu.middlebury.harmoni", "Visitors");
+		while($authTypes->hasNext()) {
+			$authType = $authTypes->next();
+			if ($visitorType->isEqual($authType)) {
+				$hasVisitorType = true;
+				break;
+			}
+		}
+		if ($hasVisitorType && !$authNManager->isUserAuthenticatedWithAnyType()) {
 			ob_start();
 			print "\n<ul>".
 				"\n\t<li><a href='".
