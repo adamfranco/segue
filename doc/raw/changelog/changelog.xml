@@ -10,6 +10,34 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-22" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<important author='adam' date='2008-06-05'>
+			Configuration of authentication has changed.
+		</important>
+		<change author='adam' date='2008-06-05' ref='' reftype='fr'>
+			Config: Reorganized authentication configuration to allow more flexibility.
+
+			Authentication configuration is now broken into 5 files:
+			 * The overall setup file that usually won't be changed - authentication_setup
+			 * The list of authentication sources - authentication_sources
+			 * A file for each authentication source - authentication-XXXX
+			
+			This new setup will allow for less confusion between the default
+			configurations of basic types and custom configurations of LDAP, secondary
+			types.
+		</change>
+		<new author='adam' date='2008-06-05' ref='' reftype='fr'>
+			Visitor Registration: Visitor registration system is now in place
+			to allow visitors to register with a Segue instance. A reCAPTCHA check
+			is done at registration-time and email-address confirmation is required
+			to help prevent abuse.
+			
+			You will need to sign up for a reCAPTCHA API key.
+		</new>
+	</version>
 	<version number="2.0-beta-21.3" date="2008-05-23">
 		<releaseNotes>
 			This release fixes a few small issues found in 2.0 beta 21.2.

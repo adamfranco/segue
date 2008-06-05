@@ -69,7 +69,7 @@ $configs = array(
 					'database',
 					'id',
 					'logging',
-					'authentication',
+					'authentication_setup',
 					'gui',
 					'language',
 					'help',
