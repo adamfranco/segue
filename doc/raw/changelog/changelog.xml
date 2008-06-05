@@ -29,7 +29,7 @@
 			configurations of basic types and custom configurations of LDAP, secondary
 			types.
 		</change>
-		<new author='adam' date='2008-06-05' ref='' reftype='fr'>
+		<new author='adam' date='2008-06-05' ref='1820894' reftype='fr'>
 			Visitor Registration: Visitor registration system is now in place
 			to allow visitors to register with a Segue instance. A reCAPTCHA check
 			is done at registration-time and email-address confirmation is required
