@@ -8,7 +8,7 @@
  * @version $Id: modifyComponent.act.php,v 1.8 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
-require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
+require_once(MYDIR."/main/modules/ui2/EditModeSiteAction.act.php");
 require_once(MYDIR."/main/modules/ui2/Rendering/ModifySettingsSiteVisitor.class.php");
 
 

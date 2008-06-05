@@ -9,7 +9,7 @@
  * @version $Id: createSubMenu.act.php,v 1.6 2007/11/09 22:57:41 adamfranco Exp $
  */ 
 
-require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
+require_once(MYDIR."/main/modules/ui2/EditModeSiteAction.act.php");
 
 /**
  * <##>
