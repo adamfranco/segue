@@ -56,6 +56,3 @@ require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/SQLDatabaseAuthNMethod.
 	// Assign a token-collector for this method
 	$tokenCollectors[serialize($type)] = new FormActionNamePassTokenCollector(
 		$harmoni->request->quickURL("auth","username_password_form"));
-	
-	
-	$GLOBALS["NewUserAuthNType"] = $type;
