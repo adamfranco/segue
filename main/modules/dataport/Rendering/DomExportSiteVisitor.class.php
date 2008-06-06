@@ -806,7 +806,39 @@ class DomExportSiteVisitor
 		} catch (PermissionDeniedException $e) {
 		}
 		
+		// Add the theme info
+		$element->appendChild($this->getTheme($siteComponent));
+		
 		$element->appendChild($siteComponent->getOrganizer()->acceptVisitor($this));
+		
+		return $element;
+	}
+	
+	/**
+	 * Answer the theme element
+	 * 
+	 * @param object SiteNavBlockSiteComponent $siteComponent
+	 * @return DOMElement
+	 * @access protected
+	 * @since 6/6/08
+	 */
+	protected function getTheme ( SiteNavBlockSiteComponent $siteComponent ) {
+		$theme = $siteComponent->getTheme();
+		
+		$element = $this->doc->createElement('theme');
+		$element->setAttribute("id", $theme->getIdString());
+		
+		if ($theme->supportsOptions()) {
+			$optSession = $theme->getOptionsSession();
+			foreach ($optSession->getOptions() as $option) {
+				$value = $option->getValue();
+				if ($value != $option->getDefaultValue()) {
+					$optionElement = $this->doc->createElement('theme_option_choice', $value);
+					$optionElement->setAttribute("id", $option->getIdString());
+					$element->appendChild($optionElement);
+				}
+			}
+		}
 		
 		return $element;
 	}

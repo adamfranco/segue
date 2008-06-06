@@ -273,6 +273,7 @@ class importAction
 			
 			print "\n<div>\n\t";
 			print $importException->getMessage();
+// 			print HarmoniErrorHandler::printDebugBacktrace($importException->getTrace());
 			print "\n</div>";
 			
 			$wizard->backupFile->setValue(array('name' => null, 'size' => null, 'type' => null));

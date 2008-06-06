@@ -108,13 +108,6 @@ elementFormDefault="qualified">
 <!-- Site -->
 <xs:attribute name="slot_name" type="xs:string"/>
 <xs:attribute name="mediaQuota" type="xs:string"/>
-<xs:attribute name="theme" type="xs:string"/>
-<xs:attribute name="fg_color" type="xs:string"/>
-<xs:attribute name="bg_color" type="xs:string"/>
-<xs:attribute name="border_style" type="xs:string"/>
-<xs:attribute name="border_color" type="xs:string"/>
-<xs:attribute name="text_color" type="xs:string"/>
-<xs:attribute name="link_color" type="xs:string"/>
 
 <!-- Common -->
 <xs:attribute name="id">
@@ -281,18 +274,12 @@ elementFormDefault="qualified">
 			<xs:element ref="displayName"/>
 			<xs:element ref="description"/>
 			<xs:element ref="roles"/>
+			<xs:element ref="theme" minOccurs="0"/>
 			<xs:element ref="NavOrganizer"/>
 		</xs:sequence>
 		
 		<xs:attribute ref="slot_name"/>
 		<xs:attribute ref="mediaQuota"/>
-		<xs:attribute ref="theme"/>
-		<xs:attribute ref="fg_color"/>
-		<xs:attribute ref="bg_color"/>
-		<xs:attribute ref="border_style"/>
-		<xs:attribute ref="border_color"/>
-		<xs:attribute ref="text_color"/>
-		<xs:attribute ref="link_color"/>
 		<xs:attribute ref="id" use="required"/>
 		<xs:attribute ref="showDisplayNames"/>
 		<xs:attribute ref="showHistory"/>
@@ -714,5 +701,25 @@ elementFormDefault="qualified">
 	</xs:restriction>
 </xs:simpleType>
 
+<!-- Theme -->
+<xs:element name="theme">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="theme_option_choice" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="id" use="required"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="theme_option_choice">
+	<xs:complexType>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute ref="id" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:element>
 
 </xs:schema>

@@ -73,6 +73,7 @@ class exportAction
 			$component->acceptVisitor($visitor);
 			
 			// Validate the result
+// 			printpre(htmlentities($visitor->doc->saveXMLWithWhitespace()));
 			$visitor->doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			
 			// Write out the XML
