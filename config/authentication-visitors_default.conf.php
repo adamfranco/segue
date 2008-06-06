@@ -34,6 +34,18 @@ require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/SQLDatabaseMD5UsernameP
 	$configuration = new ConfigurationProperties;
 	$configuration->addProperty('tokens_class', 'SQLDatabaseMD5UsernamePasswordAuthNTokens');
 	$configuration->addProperty('database_id', $dbID);
+	// Visitors with emails from these domains will not be able  to register.
+	$configuration->addProperty('domain_blacklist', array(
+		'example.com', 
+		'example.org', 
+		'example.net', 
+		'example.edu'
+	));
+	// If specified, only visitors with emails from these domains will be allowed
+	// to register. Blacklist and existance checks will still apply.
+// 	$configuration->addProperty('domain_whitelist', array(
+// 		'example.edu'
+// 	));
 	
 	$authNMethod->assignConfiguration($configuration);
 
