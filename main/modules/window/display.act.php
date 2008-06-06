@@ -268,15 +268,16 @@ class displayAction
 				}
 			}
 		}
+		print "\n<div class='login'>";
 		if ($users != '') {
-			print "\n<div class='login'>";
+			
 			if (count(explode("+", $users)) == 1)
 				print $users."\t";
 			else 
 				print _("Users: ").$users."\t";
 			
 			print " | <a href='".$harmoni->request->quickURL("auth",
-				"logout")."'>"._("Log Out")."</a></div>";
+				"logout")."'>"._("Log Out")."</a>";
 		} else {
 			// set bookmarks for success and failure
 			$harmoni->history->markReturnURL("polyphony/display_login");
@@ -297,11 +298,31 @@ class displayAction
 				"\n\t"._("Password:")." <input class='small' type='password' size ='8' 
 					name='$passwordField'/>".
 				"\n\t <input class='button small' type='submit' value='Log in' />".
-				"\n</small></form></div>\n";
+				"\n</small></form>";
 			$harmoni->request->endNamespace();
 		}		
 		
+		// Visitor Registration Link
+		$authTypes = $authN->getAuthenticationTypes();
+		$hasVisitorType = false;
+		$visitorType = new Type ("Authentication", "edu.middlebury.harmoni", "Visitors");
+		while($authTypes->hasNext()) {
+			$authType = $authTypes->next();
+			if ($visitorType->isEqual($authType)) {
+				$hasVisitorType = true;
+				break;
+			}
+		}
+		if ($hasVisitorType && !$authN->isUserAuthenticatedWithAnyType()) {
+			print "\n<div class='visitor_reg_link'>".
+				"\n\t<a href='".
+				$harmoni->request->quickURL("user", "visitor_reg")."'>".
+				_("Visitor Registration").
+				"</a>".
+				"\n</div>";
+		}
 
+		print "\n</div>";
 		$loginForm = new Component(ob_get_clean(), BLANK, 2);
 		
 		return $loginForm;
