@@ -150,15 +150,17 @@ class mainAction
 			$authType = $authTypes->next();
 			if ($authNManager->isUserAuthenticated($authType)) {
 				$methodMgr = Services::getService("AuthNMethodManager");
-				$method = $methodMgr->getAuthNMethodForType($authType);
-				if ($method->supportsTokenUpdates()) {
-					
-					print "\n\t<li><a href='".
-						$harmoni->request->quickURL("user", "change_password")."'>";
-					$keyword = $authType->getKeyword();
-					print str_replace('%1', $keyword, dgettext("polyphony", "Change '%1' Password"));
-					print "</a></li>";
+				try {
+					$method = $methodMgr->getAuthNMethodForType($authType);
+					if ($method->supportsTokenUpdates()) {
 						
+						print "\n\t<li><a href='".
+							$harmoni->request->quickURL("user", "change_password")."'>";
+						$keyword = $authType->getKeyword();
+						print str_replace('%1', $keyword, dgettext("polyphony", "Change '%1' Password"));
+						print "</a></li>";	
+					}
+				} catch (Exception $e) {
 				}
 			}
 		}
