@@ -10,6 +10,7 @@
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/MenuOrganizerSiteComponent.abstract.php");
+require_once(MYDIR.'/main/library/SiteDisplay/Rendering/IsRootMenuVisitor.class.php');
 
 
 /**
@@ -201,6 +202,17 @@ class AssetMenuOrganizerSiteComponent
 		$element->setAttribute('displayType', $displayType);
 		
 		$this->_saveXml();
+	}
+	
+	/**
+	 * Answer true if this is the top-level menu.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 6/6/08
+	 */
+	public function isRootMenu () {
+		return $this->acceptVisitor(new IsRootMenuVisitor);
 	}
 }
 

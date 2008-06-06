@@ -1368,8 +1368,10 @@ END;
 		$this->printSortMethod($siteComponent);
 		$this->printDirection($siteComponent);
 		$this->printMenuStyleOptions($siteComponent);	
-		$this->printWidth($siteComponent);		
-		$this->printDelete($siteComponent);
+		$this->printWidth($siteComponent);
+		
+// 		if (!$siteComponent->isRootMenu())
+// 			$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
 	}

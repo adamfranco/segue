@@ -56,6 +56,14 @@ class deleteComponentAction
 	function processChanges ( SiteDirector $director ) {		
 		$component = $director->getSiteComponentById(SiteDispatcher::getCurrentNodeId());
 		
+		// Do not allow delete of the root menu.
+		if (method_exists($component, 'isRootMenu')) {
+			if ($component->isRootMenu()) {
+				$this->returnToCallerPage();
+				exit;
+			}
+		}
+		
 		$this->findSafeReturnNode($director, $component);
 		
 		$organizer = $component->getParentComponent();
