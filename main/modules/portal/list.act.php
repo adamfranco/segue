@@ -341,18 +341,17 @@ class listAction
 		
 		if ($this->showEditControls) {
 			if ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
-				|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId))
+				|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId)) 
+			{
 				$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
 			
-			if ($action->getUiModule() == 'ui2' 
-					&& ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
-				|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId)))
-			{
-				$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+				if ($action->getUiModule() == 'ui2') {
+					$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+				}
+				
+				if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
+					$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
 			}
-			
-			if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
-				$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
 		}
 		
 		print implode("\n\t\t | ", $controls);
