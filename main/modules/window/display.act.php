@@ -289,8 +289,7 @@ class displayAction
 			$passwordField = $harmoni->request->getName("password");
 			$harmoni->request->endNamespace();
 			$harmoni->request->startNamespace("polyphony");
-			print  "\n<div style='login'>".
-				"\n<form action='".
+			print "\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
 				"' style='text-align: right' method='post'><small>".
 				"\n\t"._("Username:")." <input class='small' type='text' size='8' 
@@ -314,9 +313,19 @@ class displayAction
 			}
 		}
 		if ($hasVisitorType && !$authN->isUserAuthenticatedWithAnyType()) {
+			$url = $harmoni->request->mkURL("user", "visitor_reg");
+			
+			// Add return info to the visitor registration url
+			$visitorReturnModules = array('view', 'ui1', 'ui2', 'versioning');
+			if (in_array($harmoni->request->getRequestedModule(), $visitorReturnModules)) {
+				$url->setValue('returnModule', $harmoni->request->getRequestedModule());
+				$url->setValue('returnAction', $harmoni->request->getRequestedAction());
+				$url->setValue('returnKey', 'node');
+				$url->setValue('returnValue', SiteDispatcher::getCurrentNodeId());
+			}
+			
 			print "\n<div class='visitor_reg_link'>".
-				"\n\t<a href='".
-				$harmoni->request->quickURL("user", "visitor_reg")."'>".
+				"\n\t<a href='".$url->write()."'>".
 				_("Visitor Registration").
 				"</a>".
 				"\n</div>";
