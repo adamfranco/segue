@@ -34,15 +34,6 @@ require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/SQLDatabaseMD5UsernameP
 	$configuration = new ConfigurationProperties;
 	$configuration->addProperty('tokens_class', 'SQLDatabaseMD5UsernamePasswordAuthNTokens');
 	$configuration->addProperty('database_id', $dbID);
-	$configuration->addProperty('authentication_table', 'auth_visitor');
-	$configuration->addProperty('username_field', 'email');
-	$configuration->addProperty('password_field', 'password');
-	$propertiesFields = array(
-			'name' => 'display_name',
-			'email' => 'email'
-	);
-	$configuration->addProperty('properties_fields', $propertiesFields);
-	$configuration->addProperty("display_name_property", "name");
 	
 	$authNMethod->assignConfiguration($configuration);
 
