@@ -77,27 +77,57 @@ class SiteNavBlockSegue1To2Converter
 					$themeName = "BevelBox";
 				} else {
 					$themeName = "BevelBox";
+				}
+				$themeElement = $this->doc->createElement('theme');
+				$themeElement->setAttribute('id', $themeName);
+				
+				$navOrgElements = $this->xpath->query("./NavOrganizer", $element);
+				$element->insertBefore($themeElement, $navOrgElements->item(0));
+				
+				try {
+					$value = $this->getStringValue($this->getSingleSourceElement('/site/theme/color_scheme'));
+					if ($value) {
+						$optionElement = $themeElement->appendChild($this->doc->createElement('theme_option_choice', $value));
+						$optionElement->setAttribute("id", 'fg_color');						
+					}
+				} catch (MissingNodeException $e) {
+				}
+				
+				try {
+					$value = $this->getStringValue($this->getSingleSourceElement('/site/theme/background_color'));
+					if ($value) {
+						$optionElement = $themeElement->appendChild($this->doc->createElement('theme_option_choice', $value));
+						$optionElement->setAttribute("id", 'bg_color');						
+					}
+				} catch (MissingNodeException $e) {
+				}
+				
+				try {
+					$value = $this->getStringValue($this->getSingleSourceElement('/site/theme/border_style'));
+					if ($value) {
+						$optionElement = $themeElement->appendChild($this->doc->createElement('theme_option_choice', $value));
+						$optionElement->setAttribute("id", 'border_style');						
+					}
+				} catch (MissingNodeException $e) {
+				}
+				
+				try {
+					$value = $this->getStringValue($this->getSingleSourceElement('/site/theme/border_color'));
+					if ($value) {
+						$optionElement = $themeElement->appendChild($this->doc->createElement('theme_option_choice', $value));
+						$optionElement->setAttribute("id", 'border_color');						
+					}
+				} catch (MissingNodeException $e) {
+				}
+				
+				try {
+					$value = $this->getStringValue($this->getSingleSourceElement('/site/theme/link_color'));
+					if ($value) {
+						$optionElement = $themeElement->appendChild($this->doc->createElement('theme_option_choice', $value));
+						$optionElement->setAttribute("id", 'link_color');						
+					}
+				} catch (MissingNodeException $e) {
 				}				
-				$element->setAttribute('theme', $themeName);
-				
-				$colorScheme = $this->getStringValue($this->getSingleSourceElement('/site/theme/color_scheme'));
-				if (isset($colorScheme)) $element->setAttribute('fg_color', $colorScheme);
-				
-				$backgroundColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/background_color'));
-				if (isset($backgroundColor)) $element->setAttribute('bg_color', $backgroundColor);
-				
-				$borderStyle = $this->getStringValue($this->getSingleSourceElement('/site/theme/border_style'));
-				if (isset($borderStyle)) $element->setAttribute('border_style', $borderStyle);
-				
-				$borderColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/border_color'));
-				if (isset($borderColor)) $element->setAttribute('border_color', $borderColor);
-				
-				$textColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/text_color'));
-				if (isset($textColor)) $element->setAttribute('text_color', $textColor);
-				
-				$linkColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/link_color'));
-				if (isset($linkColor)) $element->setAttribute('link_color', $linkColor);				
-				
 			}
 		} catch (MissingNodeException $e) {
 		}
