@@ -26,3 +26,7 @@ if (!defined('DATAPORT_TMP_DIR'))
 
 // if (!defined('DATAPORT_SEGUE1_SECRET_VALUE'))
 // 	define('DATAPORT_SEGUE1_SECRET_VALUE', '28usafnjm023jfa0235rhj2052');
+
+new Type('Authentication', 'edu.middlebury.harmoni', 'Middlebury LDAP')$GLOBALS['dataport_migration_auth_types'] = array(
+	new Type('Authentication', 'edu.middlebury.harmoni', 'LDAP')
+);

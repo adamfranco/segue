@@ -456,11 +456,13 @@ class choose_siteAction
 		$agentMgr = Services::getService('Agent');
 		$agent = $agentMgr->getAgent($authNMgr->getFirstUserId());
 		
-		$properties = $agent->getPropertiesByType(new Type('Authentication', 'edu.middlebury.harmoni', 'Middlebury LDAP'));
-		if (is_object($properties))
-			return $properties->getProperty('username');
-		else
-			throw new OperationFailedException("Could not map a Segue 1 username for ".$agent->getDisplayName().".");
+		foreach ($GLOBALS['dataport_migration_auth_types'] as $type) {
+			$properties = $agent->getPropertiesByType($type);
+			if (is_object($properties))
+				return $properties->getProperty('username');
+		}
+		
+		throw new OperationFailedException("Could not map a Segue 1 username for ".$agent->getDisplayName().".");
 	}
 	
 	/**
