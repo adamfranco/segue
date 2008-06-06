@@ -138,31 +138,43 @@
             <key>black</key>
             <label lang='en_US'>Black</label>
             <setting marker='[[TEXT_COLOR]]'>#000000</setting>
+            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
+        </choice>
+        <choice>
+            <key>gray</key>
+            <label lang='en_US'>Gray</label>
+            <setting marker='[[TEXT_COLOR]]'>#555555</setting>
+            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
         </choice>
         <choice>
             <key>red</key>
             <label lang='en_US'>Red</label>
             <setting marker='[[TEXT_COLOR]]'>#990000</setting>
+            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
         </choice>
         <choice>
             <key>blue</key>
             <label lang='en_US'>Blue</label>
             <setting marker='[[TEXT_COLOR]]'>#003366</setting>
+            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
         </choice>
         <choice>
             <key>yellow</key>
             <label lang='en_US'>Yellow</label>
             <setting marker='[[TEXT_COLOR]]'>#E3B52C</setting>
+            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
         </choice>
         <choice>
             <key>white</key>
             <label lang='en_US'>White</label>
             <setting marker='[[TEXT_COLOR]]'>#CCCCCC</setting>
+            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
         </choice>
         <choice>
             <key>green</key>
             <label lang='en_US'>Green</label>
             <setting marker='[[TEXT_COLOR]]'>#009900</setting>
+            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
         </choice>
     </option>
     <option id='link_color'>

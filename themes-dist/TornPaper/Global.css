@@ -99,8 +99,9 @@ seguefooter_left {
 
 
 .pagination_links {
-    padding-left: 10px;
-    padding-right: 10px;
+	height: 1%;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 .pagination_links a {
@@ -113,7 +114,6 @@ seguefooter_left {
 
 .pagination_links a:hover {
     background-color: [[MENU_BG_COLOR]];
-
     color: [[LINK_COLOR]];
     cursor: pointer;
 }
@@ -123,8 +123,9 @@ seguefooter_left {
 }
 
 .attribution_line {
-
+    color: [[ATRIBUTION_TEXT_COLOR]];
 }    
+
 
 .comment {
     border-top: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];

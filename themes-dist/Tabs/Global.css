@@ -93,8 +93,8 @@ seguefooter_left {
  *********************************************************/
 
 .pagination_links {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 .pagination_links a {
@@ -116,11 +116,17 @@ seguefooter_left {
 }
 
 .attribution_line {
-
+    color: [[ATRIBUTION_TEXT_COLOR]];
 }    
 
-.comments {
 
+.comment {
+    border-top: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
+    padding-top: 3px;
+}
+
+.comment_byline {
+    color: [[ATRIBUTION_TEXT_COLOR]];
 }
 
 .history {

@@ -112,7 +112,7 @@ seguefooter_left {
 }
 
 .pagination_links a:hover {
-    display: block
+    display: block;
     border: 1px solid [[LINK_COLOR]];
     color: [[LINK_COLOR]];
     cursor: pointer;
