@@ -251,7 +251,7 @@ class DomImportSiteVisitor
 	}
 	
 	/**
-	 * Answer the theme from the import
+	 * Set the theme options from the import
 	 * @param object Harmoni_Gui2_ThemeInterface $theme
 	 * @return null
 	 * @access public
@@ -299,10 +299,6 @@ class DomImportSiteVisitor
 			$possibleValues = $option->getValues();
 			if (in_array($value, $possibleValues)) $option->setValue($value);			
 		}
-
-
-	
-
 	}
 	
 	/**
