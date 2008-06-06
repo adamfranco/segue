@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-06-06' ref='1985939' reftype='bug'>
+			Comments: Fixed Javascript error that was preventing Safari users 
+			from creating comments.
+		</fix>
 		<fix author='adam' date='2008-06-06' ref='1986629' reftype='bug'>
 			UI2: Now can't accidentally delete menu containers.
 		</fix>
