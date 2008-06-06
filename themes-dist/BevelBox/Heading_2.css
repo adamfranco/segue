@@ -4,18 +4,18 @@
 
 .Heading_2 {
     border: 1px none [[BACKGROUND_BORDER]];
-	margin: 0px;
+    margin: 0px;
 }
 
 *.Heading_2 .box01 {
-	border: 1px solid [[BACKGROUND_BORDER01]];
-	margin: 0px;   
+    border: 1px solid [[BACKGROUND_BORDER01]];
+    margin: 0px;   
 }
 
 
 *.Heading_2 .box02 {
-	border: 1px solid [[BACKGROUND_BORDER02]];
-	margin: 0px;
+    border: 1px solid [[BACKGROUND_BORDER02]];
+    margin: 0px;
 }
 
 .Heading_2 .Content {

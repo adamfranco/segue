@@ -2,48 +2,41 @@
  * Block 4 - Alert
  *********************************************************/
 
-*.block4 {    
-    border-top: 1px solid [[STANDARD_BORDER_TOP]];
-    border-bottom: 1px solid [[STANDARD_BORDER_BOTTOM]];
-    border-left: 0px none [[STANDARD_BORDER_LEFT]];
-    border-right: 0px none [[STANDARD_BORDER_RIGHT]];
-    padding-left: 0px;
-    padding-right: 0px;
-    margin-right: 10px;
-    margin-left: 10px;
-    margin-top: 3px;
-    margin-bottom: 3px;
+.block4 {
+    border: 1px none [[BACKGROUND_BORDER]];
+    margin: 0px;
 }
-*.block4 .box01 {
-    border-top: 1px solid [[STANDARD_BORDER_TOP01]];
-    border-bottom: 1px solid [[STANDARD_BORDER_BOTTOM01]];
-    border-left: 1px solid [[STANDARD_BORDER_LEFT01]];
-    border-right: 1px solid [[STANDARD_BORDER_RIGHT01]];
-    padding-left: 1px;
-    padding-right: 1px;    
+
+.block4 .box01 {
+    border: 1px none [[BACKGROUND_BORDER01]];
+    margin: 0px;   
 }
 
 
-*.block4 .box02 {
-    border-top: 1px solid [[STANDARD_BORDER_TOP02]];
-    border-bottom: 1px solid [[STANDARD_BORDER_BOTTOM02]];
-    border-left: 1px solid [[STANDARD_BORDER_LEFT02]];
-    border-right: 1px solid [[STANDARD_BORDER_RIGHT02]];
-    padding-left: 1px;
-    padding-right: 1px;
+.block4 .box02 {
+    border: 1px none [[BACKGROUND_BORDER02]];
+    margin: 0px;
 }
 
-*.block4 .box03 {
-
+.block4 .box03 {
+    border: 1px none [[BACKGROUND_BORDER03]];
+    margin: 0px;
 }
 
-*.block4 .Content {
+.block4 .box04 {
+    border: 1px none [[BACKGROUND_BORDER04]];
+    margin: 0px;
+}
+
+.block4 .Content {
     height: 1%;
     background-color: [[ALERT_BG_COLOR]];    
     text-align: left;
     font-size: 100%; 
+    margin-bottom: 5px;
 }
 
-*.block4 .Content a {
+.block4 .Content a {
+
 }
 
