@@ -235,8 +235,10 @@ function PluginChooser (callingElement, destUrl ) {
 			var iconUrl = type.getElementsByTagName('icon').item(0).firstChild.data;
 			icon.src = iconUrl.urlDecodeAmpersands();
 			
-			desc.appendChild(document.createTextNode(
-				type.getElementsByTagName('description').item(0).firstChild.nodeValue));
+			if (type.getElementsByTagName('description').item(0).firstChild) {
+				desc.appendChild(document.createTextNode(
+					type.getElementsByTagName('description').item(0).firstChild.nodeValue));
+			}
 		}
 		
 		var container = this.pluginContainer.appendChild(document.createElement('div'));

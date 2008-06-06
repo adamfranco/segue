@@ -34,8 +34,8 @@ class list_comment_pluginsAction
 	protected function getTypes () {
 		$pluginManager = Services::getService("Plugs");
 		$possibleCommentTypes = array(
-			new Type ('SeguePlugins', 'edu.middlebury', 'TextBlock'),
-			new Type ('SeguePlugins', 'edu.middlebury', 'Download')
+			new Type ('SeguePlugins', 'edu.middlebury', 'TextBlock', EduMiddleburyTextBlockPlugin::getPluginDescription()),
+			new Type ('SeguePlugins', 'edu.middlebury', 'Download', EduMiddleburyDownloadPlugin::getPluginDescription())
 			);
 		
 		$types = array();
