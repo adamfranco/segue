@@ -42,13 +42,67 @@ class SiteNavBlockSegue1To2Converter
 		if ($this->sourceElement->hasAttribute('mediaQuota'))
 			$element->setAttribute('mediaQuota', $this->sourceElement->getAttribute('mediaQuota'));
 		
-		$this->setSiteWidth($element);
+		$this->setSiteWidth($element);		
+		$this->setSiteTheme($element);
 		
 		// Convert links of the form [[localurl:site=xxxx&amp;section=yyyy&amp;page=zzzz]] to [[nodeurl:xxxx]]
 		$this->updateAllLocalUrls();
-		
 		return $element;
 	}
+	
+	/**
+	 * Set the theme for a site element
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function setSiteTheme (DOMElement $element) {
+		try {
+			$themeName = $this->getStringValue($this->getSingleSourceElement('/site/theme/name'));
+			
+			if (isset($themeName)) {
+				if ($themeName == "shadowbox") {
+					$themeName = "ShadowBox";
+				} else if ($themeName == "default") {
+					$themeName = "Tabs";
+				} else if ($themeName == "roundedcorners") {
+					$themeName = "RoundedCorners";
+				} else if ($themeName == "tornpaper") {
+					$themeName = "TornPaper";
+				} else if ($themeName == "minimal") {
+					$themeName = "Minimal";
+				} else if ($themeName == "beveledge") {
+					$themeName = "BevelBox";
+				} else {
+					$themeName = "BevelBox";
+				}				
+				$element->setAttribute('theme', $themeName);
+				
+				$colorScheme = $this->getStringValue($this->getSingleSourceElement('/site/theme/color_scheme'));
+				if (isset($colorScheme)) $element->setAttribute('fg_color', $colorScheme);
+				
+				$backgroundColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/background_color'));
+				if (isset($backgroundColor)) $element->setAttribute('bg_color', $backgroundColor);
+				
+				$borderStyle = $this->getStringValue($this->getSingleSourceElement('/site/theme/border_style'));
+				if (isset($borderStyle)) $element->setAttribute('border_style', $borderStyle);
+				
+				$borderColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/border_color'));
+				if (isset($borderColor)) $element->setAttribute('border_color', $borderColor);
+				
+				$textColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/text_color'));
+				if (isset($textColor)) $element->setAttribute('text_color', $textColor);
+				
+				$linkColor = $this->getStringValue($this->getSingleSourceElement('/site/theme/link_color'));
+				if (isset($linkColor)) $element->setAttribute('link_color', $linkColor);				
+				
+			}
+		} catch (MissingNodeException $e) {
+		}
+	}
+
 	
 	/**
 	 * Add our Id to the output element

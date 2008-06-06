@@ -2,8 +2,7 @@
  * Block background
  *********************************************************/
 
-.Block_Background {
-    
+.Block_Background {    
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -60,7 +59,6 @@
     width: 25px;
     height: 6px;
 }
-
 
 .righttop, .lefttop {
     width: 25px;
