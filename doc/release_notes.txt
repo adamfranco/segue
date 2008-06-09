@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-21.3 (2008-05-23)
+Segue v. 2.0-beta-22 (2008-06-09)
 =================================
 
 What is Segue?
@@ -17,17 +17,7 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release fixes a few small issues found in 2.0 beta 21.2.
 
-This release fixes a few errors affected a few users, notably a work-around for a
-PHP/PDO bug that results in segmentation faults when escaped quotes exist in an
-SQLstring that is then prepared. This is occurring when checking authorization for
-users who are members of groups that have a quote in their LDAP DN.
-
-Missing theme images now do not fill the logs with errors.
-
-Upgrades from versions prior to beta 21 require running the appropriate
-updaterlocated under Admin Tools --> Segue Updates.
 
 
 Downloads
@@ -67,6 +57,12 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-22 (2008-06-09)
+----------------------------------------------------
+
+
 
 
 v. 2.0-beta-21.3 (2008-05-23)
@@ -176,12 +172,22 @@ v. 2.0-beta-19 (2008-04-11)
 ----------------------------------------------------
 This release fixes a number of bugs and adds the ability to tag content.
 
-Notable user-facing changes: - Tagging system. - Minor speed improvements to the
-portal - Refined Migration UI. - Role-Setting now works. - Migration tools now work
-with more sites.
+Notable user-facing changes:
 
-Notable back-end changes: - New Harmoni_Db system allows for usage of prepared
-statements for improved database performance.
+ * Tagging system.
+
+ * Minor speed improvements to the portal
+
+ * Refined Migration UI.
+
+ * Role-Setting now works.
+
+ * Migration tools now work with more sites.
+
+Notable back-end changes:
+
+ * New Harmoni_Db system allows for usage of prepared statements for improved
+database performance.
 
 Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
 
@@ -191,10 +197,15 @@ v. 2.0-beta-18 (2008-04-03)
 ----------------------------------------------------
 This release fixes a number of bugs and adds a new Portal display.
 
-Notable user-facing changes: - Portal 'Folders' to break up the lists of sites -
-Major speed improvements to the portal - Comment authors are now preserved when
-migrating from Segue 1 - URLs to elsewhere in Segue now work more reliably when
-migrating from Segue 1.
+Notable user-facing changes:
+
+ * Portal 'Folders' to break up the lists of sites
+
+ * Major speed improvements to the portal
+
+ * Comment authors are now preserved when migrating from Segue 1
+
+ * URLs to elsewhere in Segue now work more reliably when migrating from Segue 1.
 
 Segue 2.0 beta 17 uses Polyphony 1.0.6 and Harmoni 1.0.6.
 
@@ -231,10 +242,17 @@ users. We are continually adding features to bring Segue 2 up to feature parity 
 Segue 1.x. See the Feature Request Tracker for a list of features that still need to
 be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237 This
 release adds a number of major improvements as well as fixes a large number of bugs.
-Notable user-facing changes: - Migration tools for importing Segue 1 sites - New
-plugins for Breadcrumbs and RSS links - Improvements to UI2, 'New Mode' editing
-interface to reduce visual clutter. - New Site-Map view. - New version of FCK
-editor, now supports Safari.
+Notable user-facing changes: 
+
+ * Migration tools for importing Segue 1 sites
+
+ * New plugins for Breadcrumbs and RSS links
+
+ * Improvements to UI2, 'New Mode' editing interface to reduce visual clutter.
+
+ * New Site-Map view.
+
+ * New version of FCK editor, now supports Safari.
 
 Upgrade Notes: For upgrades from releases prior to beta 15, please run the updates
 located under Admin Tools --> Segue Updates. 
@@ -247,8 +265,13 @@ v. 2.0-beta-14 (2008-03-10)
 ----------------------------------------------------
 This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
 
-Notable Changes: - Permissions are more reliable cross-browser - File downloads now
-work in IE - Download Plugin description now updates immediately after change.
+Notable Changes:
+
+ * Permissions are more reliable cross-browser
+
+ * File downloads now work in IE
+
+ * Download Plugin description now updates immediately after change.
 
 
 

@@ -23,7 +23,51 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-21.3</h2>
+<h2>Version 2.0-beta-22</h2>
+<h3>2008-06-09</h3>
+<p></p>
+<ul>
+		
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
+        			#</a> Config: Reorganized authentication configuration to allow more flexibility.
+<br>
+<br>Authentication configuration is now broken into 5 files:
+<br>
+<br> * The overall setup file that usually won't be changed - authentication_setup
+<br>
+<br> * The list of authentication sources - authentication_sources
+<br>
+<br> * A file for each authentication source - authentication-XXXX
+<br>
+<br>This new setup will allow for less confusion between the default configurations of basic types and custom configurations of LDAP, secondary types. (<em>2008-06-05 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Configuration of authentication has changed. (<em>2008-06-05 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820894&amp;group_id=82171&amp;atid=565237">
+        			#1820894</a> Visitor Registration: Visitor registration system is now in place to allow visitors to register with a Segue instance. A reCAPTCHA check is done at registration-time and email-address confirmation is required to help prevent abuse.
+<br>
+<br>You will need to sign up for a reCAPTCHA API key. (<em>2008-06-05 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1985939&amp;group_id=82171&amp;atid=565234">
+        			#1985939</a> Comments: Fixed Javascript error that was preventing Safari users from creating comments. (<em>2008-06-06 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1986629&amp;group_id=82171&amp;atid=565234">
+        			#1986629</a> UI2: Now can't accidentally delete menu containers. (<em>2008-06-06 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
+        			#</a> Migration/Tagging: Empty tags in original site now don't crash migration. (<em>2008-06-09 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
+        			#</a> Migration/Import/Export: Block and menu display-styles are included in export, import, and migration operations. (<em>2008-06-09 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
+        			#</a> Migration: Removed hard-coded reference to the 'Middlbury LDAP' authentication type. (<em>2008-06-09 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1959168&amp;group_id=82171&amp;atid=565234">
+        			#1959168</a> Portal: Classes load time partially sped up for some students. (<em>2008-06-09 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-21.3</h2>
 <h3>2008-05-23</h3>
 <p>This release fixes a few small issues found in 2.0 beta 21.2.
 <br>
@@ -183,9 +227,21 @@
 <h3>2008-04-11</h3>
 <p>This release fixes a number of bugs and adds the ability to tag content.
 <br>
-<br>Notable user-facing changes: - Tagging system. - Minor speed improvements to the portal - Refined Migration UI. - Role-Setting now works. - Migration tools now work with more sites.
+<br>Notable user-facing changes:
 <br>
-<br>Notable back-end changes: - New Harmoni_Db system allows for usage of prepared statements for improved database performance.
+<br> * Tagging system.
+<br>
+<br> * Minor speed improvements to the portal
+<br>
+<br> * Refined Migration UI.
+<br>
+<br> * Role-Setting now works.
+<br>
+<br> * Migration tools now work with more sites.
+<br>
+<br>Notable back-end changes:
+<br>
+<br> * New Harmoni_Db system allows for usage of prepared statements for improved database performance.
 <br>
 <br>Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.</p>
 <ul>
@@ -260,7 +316,15 @@
 <h3>2008-04-03</h3>
 <p>This release fixes a number of bugs and adds a new Portal display.
 <br>
-<br>Notable user-facing changes: - Portal 'Folders' to break up the lists of sites - Major speed improvements to the portal - Comment authors are now preserved when migrating from Segue 1 - URLs to elsewhere in Segue now work more reliably when migrating from Segue 1.
+<br>Notable user-facing changes:
+<br>
+<br> * Portal 'Folders' to break up the lists of sites
+<br>
+<br> * Major speed improvements to the portal
+<br>
+<br> * Comment authors are now preserved when migrating from Segue 1
+<br>
+<br> * URLs to elsewhere in Segue now work more reliably when migrating from Segue 1.
 <br>
 <br>Segue 2.0 beta 17 uses Polyphony 1.0.6 and Harmoni 1.0.6.</p>
 <ul>
@@ -373,7 +437,17 @@
 	</ul>
 <br><h2>Version 2.0-beta-15</h2>
 <h3>2008-03-25</h3>
-<p>The Segue 2.0 beta is capable of most of the site creation and editing needs of users. We are continually adding features to bring Segue 2 up to feature parity with Segue 1.x. See the Feature Request Tracker for a list of features that still need to be completed: https://sourceforge.net/tracker/?group_id=82171&amp;atid=565237 This release adds a number of major improvements as well as fixes a large number of bugs. Notable user-facing changes: - Migration tools for importing Segue 1 sites - New plugins for Breadcrumbs and RSS links - Improvements to UI2, 'New Mode' editing interface to reduce visual clutter. - New Site-Map view. - New version of FCK editor, now supports Safari.
+<p>The Segue 2.0 beta is capable of most of the site creation and editing needs of users. We are continually adding features to bring Segue 2 up to feature parity with Segue 1.x. See the Feature Request Tracker for a list of features that still need to be completed: https://sourceforge.net/tracker/?group_id=82171&amp;atid=565237 This release adds a number of major improvements as well as fixes a large number of bugs. Notable user-facing changes: 
+<br>
+<br> * Migration tools for importing Segue 1 sites
+<br>
+<br> * New plugins for Breadcrumbs and RSS links
+<br>
+<br> * Improvements to UI2, 'New Mode' editing interface to reduce visual clutter.
+<br>
+<br> * New Site-Map view.
+<br>
+<br> * New version of FCK editor, now supports Safari.
 <br>
 <br>Upgrade Notes: For upgrades from releases prior to beta 15, please run the updates located under Admin Tools --&gt; Segue Updates. 
 <br>
@@ -490,7 +564,13 @@
 <h3>2008-03-10</h3>
 <p>This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
 <br>
-<br>Notable Changes: - Permissions are more reliable cross-browser - File downloads now work in IE - Download Plugin description now updates immediately after change.</p>
+<br>Notable Changes:
+<br>
+<br> * Permissions are more reliable cross-browser
+<br>
+<br> * File downloads now work in IE
+<br>
+<br> * Download Plugin description now updates immediately after change.</p>
 <ul>
 		
 		<li>

@@ -10,13 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-22" date="The Future">
+	<version number="2.0-beta-22" date="2008-06-09">
 		<releaseNotes>
 			
 		</releaseNotes>
-		<important author='adam' date='2008-06-05'>
-			Configuration of authentication has changed.
-		</important>
 		<change author='adam' date='2008-06-05' ref='' reftype='fr'>
 			Config: Reorganized authentication configuration to allow more flexibility.
 
@@ -29,6 +26,9 @@
 			configurations of basic types and custom configurations of LDAP, secondary
 			types.
 		</change>
+		<important author='adam' date='2008-06-05'>
+			Configuration of authentication has changed.
+		</important>
 		<new author='adam' date='2008-06-05' ref='1820894' reftype='fr'>
 			Visitor Registration: Visitor registration system is now in place
 			to allow visitors to register with a Segue instance. A reCAPTCHA check
@@ -51,6 +51,13 @@
 			Migration/Import/Export: Block and menu display-styles are included in export,
 			import, and migration operations.
 		</new>
+		<fix author='adam' date='2008-06-09' ref='' reftype='bug'>
+			Migration: Removed hard-coded reference to the 'Middlbury LDAP' authentication
+			type.
+		</fix>
+		<fix author='adam' date='2008-06-09' ref='1959168' reftype='bug'>
+			Portal: Classes load time partially sped up for some students.
+		</fix>
 	</version>
 	<version number="2.0-beta-21.3" date="2008-05-23">
 		<releaseNotes>
