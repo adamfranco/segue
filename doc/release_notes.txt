@@ -17,7 +17,20 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
+This release of Segue 2.0-beta adds visitor registration, theme migration, and a
+number of bug fixes. 
 
+Visitor registration (disabled in the default configuration) enables external users
+to register for visitor accounts that will all them to participate in public discussions.
+
+Theme migration has been added to allow Segue 1 sites to retain their theme
+settings when they are migrated to Segue 2.
+
+This release also includes several new themes.
+
+Upgrades from versions prior to beta 22 require running the appropriate
+updaterlocated under Admin Tools --> Segue Updates. As well, the authentication
+configuration files have change and will need to be updated.
 
 
 Downloads
@@ -61,7 +74,20 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 
 v. 2.0-beta-22 (2008-06-09)
 ----------------------------------------------------
+This release of Segue 2.0-beta adds visitor registration, theme migration, and a
+number of bug fixes. 
 
+Visitor registration (disabled in the default configuration) enables external users
+to register for visitor accounts that will all them to participate in public discussions.
+
+Theme migration has been added to allow Segue 1 sites to retain their theme
+settings when they are migrated to Segue 2.
+
+This release also includes several new themes.
+
+Upgrades from versions prior to beta 22 require running the appropriate
+updaterlocated under Admin Tools --> Segue Updates. As well, the authentication
+configuration files have change and will need to be updated.
 
 
 

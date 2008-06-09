@@ -12,7 +12,21 @@
 <changelog name="Segue">
 	<version number="2.0-beta-22" date="2008-06-09">
 		<releaseNotes>
+			This release of Segue 2.0-beta adds visitor registration, theme migration,
+			and a number of bug fixes. 
 			
+			Visitor registration (disabled in the default configuration) enables
+			external users to register for visitor accounts that will all
+			them to participate in public discussions.
+			
+			Theme migration has been added to allow Segue 1 sites to retain their
+			theme settings when they are migrated to Segue 2.
+			
+			This release also includes several new themes.
+			
+			Upgrades from versions prior to beta 22 require running the appropriate 
+			updater	located under Admin Tools --> Segue Updates. As well, the 
+			authentication configuration files have change and will need to be updated.
 		</releaseNotes>
 		<important author='adam' date='2008-06-05'>
 			Configuration of authentication has changed.

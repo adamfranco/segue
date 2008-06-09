@@ -4,8 +4,25 @@ Segue Change Log
 
 v. 2.0-beta-22 (2008-06-09)
 ----------------------------------------------------
+This release of Segue 2.0-beta adds visitor registration, theme migration, and a
+number of bug fixes. 
 
+Visitor registration (disabled in the default configuration) enables external users
+to register for visitor accounts that will all them to participate in public discussions.
+
+Theme migration has been added to allow Segue 1 sites to retain their theme
+settings when they are migrated to Segue 2.
+
+This release also includes several new themes.
+
+Upgrades from versions prior to beta 22 require running the appropriate
+updaterlocated under Admin Tools --> Segue Updates. As well, the authentication
+configuration files have change and will need to be updated.
 		
+		
+	**** IMPORTANT *** Change: 
+		Configuration of authentication has changed.
+		(2008-06-05 - Adam Franco)
 		
 	* Change: 
 		Config: Reorganized authentication configuration to allow more flexibility.
@@ -35,14 +52,31 @@ v. 2.0-beta-22 (2008-06-09)
 		You will need to sign up for a reCAPTCHA API key.
 		(2008-06-05 - Adam Franco)
 		
+	* Bug Fix: 
+		View:added Holly Hack to all themes to prevent disappearing text bug in IE.
+		(2008-05-30 - Alex Chapin)
+		
+	* New feature: 
+		Themes: added new TornPaper, Minimal and BevelBox themes
+		(2008-06-05 - Alex Chapin)
+		
 	* Bug Fix: #1985939 
 		Comments: Fixed Javascript error that was preventing Safari users from
 		creating comments.
 		(2008-06-06 - Adam Franco)
 		
+	* New feature: 
+		UI2: Added theme options selectors.
+		(2008-06-05 - Alex Chapin)
+		
 	* Bug Fix: #1986629 
 		UI2: Now can't accidentally delete menu containers.
 		(2008-06-06 - Adam Franco)
+		
+	* New feature: 
+		Migration: added support for migrating most Segue v1 themes and their
+		options into Segue v2.
+		(2008-06-06 - Alex Chapin, Adam Franco)
 		
 	* Bug Fix: 
 		Migration/Tagging: Empty tags in original site now don't crash migration.

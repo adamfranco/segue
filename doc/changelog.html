@@ -25,9 +25,19 @@
 <h1>Segue Change Log</h1>
 <h2>Version 2.0-beta-22</h2>
 <h3>2008-06-09</h3>
-<p></p>
+<p>This release of Segue 2.0-beta adds visitor registration, theme migration, and a number of bug fixes. 
+<br>
+<br>Visitor registration (disabled in the default configuration) enables external users to register for visitor accounts that will all them to participate in public discussions.
+<br>
+<br>Theme migration has been added to allow Segue 1 sites to retain their theme settings when they are migrated to Segue 2.
+<br>
+<br>This release also includes several new themes.
+<br>
+<br>Upgrades from versions prior to beta 22 require running the appropriate updaterlocated under Admin Tools --&gt; Segue Updates. As well, the authentication configuration files have change and will need to be updated.</p>
 <ul>
 		
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Configuration of authentication has changed. (<em>2008-06-05 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Config: Reorganized authentication configuration to allow more flexibility.
 <br>
@@ -48,11 +58,19 @@
 <br>
 <br>You will need to sign up for a reCAPTCHA API key. (<em>2008-06-05 - Adam Franco</em>)</li>
 		<li>
+<b>Bug Fix:</b> View: added Holly Hack to all themes to prevent disappearing text bug in IE. (<em>2008-05-30 - Alex Chapin</em>)</li>
+		<li>
+<b>New feature:</b> Themes: added new TornPaper, Minimal and BevelBox themes (<em>2008-06-05 - Alex Chapin</em>)</li>
+		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1985939&amp;group_id=82171&amp;atid=565234">
         			#1985939</a> Comments: Fixed Javascript error that was preventing Safari users from creating comments. (<em>2008-06-06 - Adam Franco</em>)</li>
 		<li>
+<b>New feature:</b> UI2: Added theme options selectors. (<em>2008-06-05 - Alex Chapin</em>)</li>
+		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1986629&amp;group_id=82171&amp;atid=565234">
         			#1986629</a> UI2: Now can't accidentally delete menu containers. (<em>2008-06-06 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Migration: added support for migrating most Segue v1 themes and their options into Segue v2. (<em>2008-06-06 - Alex Chapin, Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Migration/Tagging: Empty tags in original site now don't crash migration. (<em>2008-06-09 - Adam Franco</em>)</li>
 		<li>
