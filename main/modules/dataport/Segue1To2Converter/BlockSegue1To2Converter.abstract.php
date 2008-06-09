@@ -198,9 +198,11 @@ abstract class BlockSegue1To2Converter
 		$tagsElement = $element->appendChild($this->doc->createElement('tags'));
 
 		foreach ($sourceTagElements as $sourceTagElement) {
-			$tagElement = $tagsElement->appendChild($this->doc->createElement('tag', $sourceTagElement->nodeValue));
-			$tagElement->setAttribute('agent_id', $sourceTagElement->getAttribute('agent_id'));
-			$tagElement->setAttribute('create_date', $sourceTagElement->getAttribute('time_stamp'));			
+			if ($sourceTagElement->nodeValue) {
+				$tagElement = $tagsElement->appendChild($this->doc->createElement('tag', $sourceTagElement->nodeValue));
+				$tagElement->setAttribute('agent_id', $sourceTagElement->getAttribute('agent_id'));
+				$tagElement->setAttribute('create_date', $sourceTagElement->getAttribute('time_stamp'));
+			}
 		}
 	}
 

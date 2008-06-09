@@ -190,6 +190,39 @@ elementFormDefault="qualified">
 	</xs:simpleType>
 </xs:attribute>
 
+<!-- Display Types -->
+<xs:attribute name="headingDisplayType">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Heading_1"/>
+			<xs:enumeration value="Heading_2"/>
+			<xs:enumeration value="Heading_3"/>
+			<xs:enumeration value="Heading_Sidebar"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="blockDisplayType">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Block_Standard"/>
+			<xs:enumeration value="Block_Sidebar"/>
+			<xs:enumeration value="Block_Alert"/>
+			<xs:enumeration value="Header"/>
+			<xs:enumeration value="Footer"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="menuDisplayType">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Menu_Left"/>
+			<xs:enumeration value="Menu_Right"/>
+			<xs:enumeration value="Menu_Top"/>
+			<xs:enumeration value="Menu_Bottom"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+
 <!-- Organizers -->
 <xs:attribute name="overflowStyle">
 	<xs:simpleType>
@@ -437,6 +470,7 @@ elementFormDefault="qualified">
 		<xs:attribute ref="create_date"/>
 		<xs:attribute ref="create_agent"/>
 		<xs:attribute ref="modify_date"/>
+		<xs:attribute ref="menuDisplayType"/>
 		
 		<!-- Menus use only their directon for rows/columns determination -->
 		<xs:attribute ref="rows" use="prohibited"/>
@@ -478,6 +512,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="create_date"/>
 		<xs:attribute ref="create_agent"/>
 		<xs:attribute ref="modify_date"/>
+		<xs:attribute ref="blockDisplayType"/>
+		<xs:attribute ref="headingDisplayType"/>
 	</xs:complexType>
 </xs:element>
 
