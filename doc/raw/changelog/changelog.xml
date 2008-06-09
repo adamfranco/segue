@@ -14,6 +14,7 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+
 		<new author='alex, adam' date='2008-06-06'>
 			Migration: added support for migrating most Segue v1 themes and their option
 			into Segue v2.
