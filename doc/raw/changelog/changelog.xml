@@ -14,16 +14,6 @@
 		<releaseNotes>
 			
 		</releaseNotes>
-		<fix author='adam' date='2008-06-06' ref='1985939' reftype='bug'>
-			Comments: Fixed Javascript error that was preventing Safari users 
-			from creating comments.
-		</fix>
-		<fix author='adam' date='2008-06-06' ref='1986629' reftype='bug'>
-			UI2: Now can't accidentally delete menu containers.
-		</fix>
-		<fix author='adam' date='2008-06-09' ref='' reftype='bug'>
-			Migration/Tagging: Empty tags in original site now don't crash migration.
-		</fix>
 		<important author='adam' date='2008-06-05'>
 			Configuration of authentication has changed.
 		</important>
@@ -46,6 +36,20 @@
 			to help prevent abuse.
 			
 			You will need to sign up for a reCAPTCHA API key.
+		</new>
+		<fix author='adam' date='2008-06-06' ref='1985939' reftype='bug'>
+			Comments: Fixed Javascript error that was preventing Safari users 
+			from creating comments.
+		</fix>
+		<fix author='adam' date='2008-06-06' ref='1986629' reftype='bug'>
+			UI2: Now can't accidentally delete menu containers.
+		</fix>
+		<fix author='adam' date='2008-06-09' ref='' reftype='bug'>
+			Migration/Tagging: Empty tags in original site now don't crash migration.
+		</fix>
+		<new author='adam' date='2008-06-09' ref='' reftype='fr'>
+			Migration/Import/Export: Block and menu display-styles are included in export,
+			import, and migration operations.
 		</new>
 	</version>
 	<version number="2.0-beta-21.3" date="2008-05-23">

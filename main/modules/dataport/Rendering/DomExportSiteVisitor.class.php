@@ -654,11 +654,11 @@ class DomExportSiteVisitor
 				$roleMgr = SegueRoleManager::instance();
 				$this->agentsToCheck = $roleMgr->getAgentsWithRoleAtLeast($roleMgr->getRole('reader'), $qualifierId);
 			}
+			
+			return $this->agentsToCheck;
 		} catch (PermissionDeniedException $e) {
-		
+			return array();	
 		}
-		
-		return $this->agentsToCheck;
 	}
 	
 	/**
@@ -726,6 +726,9 @@ class DomExportSiteVisitor
 		
 		//tags
 		$element->appendChild($this->getTags($siteComponent));
+		
+		$element->setAttribute('blockDisplayType', $siteComponent->getDisplayType());
+		$element->setAttribute('headingDisplayType', $siteComponent->getHeadingDisplayType());
 		
 		return $element;
 	}
@@ -930,6 +933,8 @@ class DomExportSiteVisitor
 		$this->addFlowOrganizerOptions($siteComponent, $element);
 		$element->setAttribute('target_id', $siteComponent->getTargetId());
 		$this->addOrganizerChildren($siteComponent, $element);
+		
+		$element->setAttribute('menuDisplayType', $siteComponent->getDisplayType());
 		
 		return $element;
 	}

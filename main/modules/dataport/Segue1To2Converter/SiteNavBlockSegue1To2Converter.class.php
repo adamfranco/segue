@@ -231,8 +231,10 @@ class SiteNavBlockSegue1To2Converter
 		$org->setAttribute('rows', 0);
 		$org->setAttribute('cols', 1);
 		$cell = $org->appendChild($this->doc->createElement('cell'));
-		if (strlen(trim($html)))
-			$cell->appendChild($this->createTextBlockForHtml($html, 'header'));
+		if (strlen(trim($html))) {
+			$block = $cell->appendChild($this->createTextBlockForHtml($html, 'header'));
+			$block->setAttribute('blockDisplayType', 'Header');
+		}
 		
 		// Layout Organizer for breadcrumbs and RSS
 		$cell = $outerHeaderLayout->appendChild($this->doc->createElement('cell'));
@@ -255,7 +257,8 @@ class SiteNavBlockSegue1To2Converter
 		
 		$converter = new BreadcrumbsBlockSegue1To2Converter($this->sourceElement, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 		$cell = $org->appendChild($this->doc->createElement('cell'));
-		$cell->appendChild($converter->convert());
+		$block = $cell->appendChild($converter->convert());
+		$block->setAttribute('blockDisplayType', 'Header');
 		
 		// Add the RSS Links
 		$cell = $statusLayout->appendChild($this->doc->createElement('cell'));
@@ -272,7 +275,8 @@ class SiteNavBlockSegue1To2Converter
 		
 		$converter = new RssLinksBlockSegue1To2Converter($this->sourceElement, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 		$cell = $org->appendChild($this->doc->createElement('cell'));
-		$cell->appendChild($converter->convert());
+		$block = $cell->appendChild($converter->convert());
+		$block->setAttribute('blockDisplayType', 'Header');
 				
 		/*********************************************************
 		 * Central content area
@@ -296,8 +300,10 @@ class SiteNavBlockSegue1To2Converter
 		$org->setAttribute('cols', 1);
 		$org->setAttribute('showDisplayNames', 'false');
 		$cell = $org->appendChild($this->doc->createElement('cell'));
-		if (strlen(trim($html)))
-			$cell->appendChild($this->createTextBlockForHtml($html, 'footer'));
+		if (strlen(trim($html))) {
+			$block = $cell->appendChild($this->createTextBlockForHtml($html, 'footer'));
+			$block->setAttribute('blockDisplayType', 'Footer');
+		}
 	}
 	
 	/**

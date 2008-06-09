@@ -354,6 +354,8 @@ class DomImportSiteVisitor
 		$this->setAssetDates($siteComponent->getAsset(), $element);
 		
 		$this->applyRoles($siteComponent, $element);
+		
+		$this->applyBlockDisplayTypes($siteComponent, $element);
 	}
 	
 	/**
@@ -469,6 +471,9 @@ class DomImportSiteVisitor
 	 */
 	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) {
 		$this->visitFlowOrganizer($siteComponent);
+		
+		$element = $this->getElementForNewId($siteComponent->getId());
+		$this->applyMenuDisplayType($siteComponent, $element);
 		
 		// Queue up the menu for target updating. This must happen after the rest of the
 		// site is imported so that all new_ids are set.
@@ -1299,6 +1304,36 @@ class DomImportSiteVisitor
 			$idMap[$element->getAttribute('id')] = $element->getAttribute('new_id');
 		
 		return $idMap;
+	}
+	
+	/**
+	 * Add the block display type and heading display type to a block
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 6/9/08
+	 */
+	protected function applyBlockDisplayTypes (BlockSiteComponent $siteComponent, DOMElement $element) {
+		if ($element->hasAttribute('blockDisplayType'))
+			$siteComponent->setDisplayType($element->getAttribute('blockDisplayType'));
+		if ($element->hasAttribute('headingDisplayType'))
+			$siteComponent->setHeadingDisplayType($element->getAttribute('headingDisplayType'));
+	}
+	
+	/**
+	 * Add the menu display type to a menu
+	 * 
+	 * @param object MenuOrganizerSiteComponent $siteComponent
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 6/9/08
+	 */
+	protected function applyMenuDisplayType (MenuOrganizerSiteComponent $siteComponent, DOMElement $element) {
+		if ($element->hasAttribute('menuDisplayType'))
+			$siteComponent->setDisplayType($element->getAttribute('menuDisplayType'));
 	}
 }
 
