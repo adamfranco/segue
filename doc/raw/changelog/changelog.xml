@@ -21,6 +21,9 @@
 		<fix author='adam' date='2008-06-06' ref='1986629' reftype='bug'>
 			UI2: Now can't accidentally delete menu containers.
 		</fix>
+		<fix author='adam' date='2008-06-09' ref='' reftype='bug'>
+			Migration/Tagging: Empty tags in original site now don't crash migration.
+		</fix>
 		<important author='adam' date='2008-06-05'>
 			Configuration of authentication has changed.
 		</important>
