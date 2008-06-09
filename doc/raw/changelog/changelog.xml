@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<important author='adam' date='2008-06-05'>
+			Configuration of authentication has changed.
+		</important>
 		<change author='adam' date='2008-06-05'>
 			Config: Reorganized authentication configuration to allow more flexibility.
 
@@ -37,13 +40,26 @@
 			
 			You will need to sign up for a reCAPTCHA API key.
 		</new>
+		<fix author='alex' date='2008-05-30' >
+			View: added Holly Hack to all themes to prevent disappearing text bug in IE.
+		</fix>
+		<new author='alex' date='2008-06-05'>
+			Themes: added new TornPaper, Minimal and BevelBox themes 
+		</new>
 		<fix author='adam' date='2008-06-06' ref='1985939' reftype='bug'>
 			Comments: Fixed Javascript error that was preventing Safari users 
 			from creating comments.
 		</fix>
+		<new author='alex' date='2008-06-05'>
+			UI2: Added theme options selectors. 
+		</new>
 		<fix author='adam' date='2008-06-06' ref='1986629' reftype='bug'>
 			UI2: Now can't accidentally delete menu containers.
 		</fix>
+		<new author='alex, adam' date='2008-06-06'>
+			Migration: added support for migrating most Segue v1 themes and their options
+			into Segue v2.
+		</new>
 		<fix author='adam' date='2008-06-09'>
 			Migration/Tagging: Empty tags in original site now don't crash migration.
 		</fix>
