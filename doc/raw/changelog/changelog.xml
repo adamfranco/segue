@@ -14,8 +14,6 @@
 		<releaseNotes>
 			
 		</releaseNotes>
- HEAD:doc/raw/changelog/changelog.xml
-
 		<new author='alex, adam' date='2008-06-06'>
 			Migration: added support for migrating most Segue v1 themes and their option
 			into Segue v2.
@@ -41,7 +39,6 @@
 		<fix author='adam' date='2008-06-06' ref='1986629' reftype='bug'>
 			UI2: Now can't accidentally delete menu containers.
 		</fix>
- 3a3d937e961d6a18ce24bbaf9ce11673ae5f3c6a:doc/raw/changelog/changelog.xml
 		<important author='adam' date='2008-06-05'>
 			Configuration of authentication has changed.
 		</important>
