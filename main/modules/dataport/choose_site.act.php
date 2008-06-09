@@ -456,6 +456,12 @@ class choose_siteAction
 		$agentMgr = Services::getService('Agent');
 		$agent = $agentMgr->getAgent($authNMgr->getFirstUserId());
 		
+		if (!isset($GLOBALS['dataport_migration_auth_types'])
+			|| !is_array($GLOBALS['dataport_migration_auth_types']) 
+			|| !count($GLOBALS['dataport_migration_auth_types'])) 
+		{
+			throw new ConfigurationErrorException("\$GLOBALS['dataport_migration_auth_types'] is not configured.");
+		}
 		foreach ($GLOBALS['dataport_migration_auth_types'] as $type) {
 			$properties = $agent->getPropertiesByType($type);
 			if (is_object($properties))
