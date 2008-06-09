@@ -14,6 +14,24 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='alex, adam' date='2008-06-06'>
+			Migration: added support for migrating most Segue v1 themes and their option
+			into Segue v2.
+		</new>
+		<fix author='alex' date='2008-05-30' >
+			View: added Holly Hack to all themes to prevent disappearing text bug in IE.
+		</fix>
+		<new author='alex' date='2008-06-05'>
+			UI2: Added theme options selectors. 
+		</new>
+		<new author='alex' date='2008-06-05'>
+			Themes: added new TornPaper, Minimal and BevelBox themes 
+		</new>
+		<change author='adam, alex' date='2008-06-05'>
+	 		Reorganized various source code files (EditModeSiteAction.abstract.php
+	 		ViewModeSiteVisitor.class.php, DetailViewModeSiteVisitor.class.php) to
+	 		make them easier to find for developers.
+		</change>
 		<fix author='adam' date='2008-06-06' ref='1985939' reftype='bug'>
 			Comments: Fixed Javascript error that was preventing Safari users 
 			from creating comments.
