@@ -7,7 +7,7 @@ v. 2.0-beta-22 (2008-06-09)
 
 		
 		
-	* Change: # 
+	* Change: 
 		Config: Reorganized authentication configuration to allow more flexibility.
 		
 		Authentication configuration is now broken into 5 files:
@@ -44,16 +44,16 @@ v. 2.0-beta-22 (2008-06-09)
 		UI2: Now can't accidentally delete menu containers.
 		(2008-06-06 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Migration/Tagging: Empty tags in original site now don't crash migration.
 		(2008-06-09 - Adam Franco)
 		
-	* New feature: # 
+	* New feature: 
 		Migration/Import/Export: Block and menu display-styles are included in
 		export, import, and migration operations.
 		(2008-06-09 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Migration: Removed hard-coded reference to the 'Middlbury LDAP'
 		authentication type.
 		(2008-06-09 - Adam Franco)
@@ -80,16 +80,16 @@ Upgrades from versions prior to beta 21 require running the appropriate
 updaterlocated under Admin Tools --> Segue Updates.
 		
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Config: Adding path-info URL configuration to action_default.conf.php
 		(2008-05-23 - Adam Franco)
 		
-	* Change: # 
+	* Change: 
 		Plugins: Reformatted download plugin display to include download graphic and
 		adjusted spacing.
 		(2008-05-23 - Alex Chapin)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Themes: removed unused images from themes
 		(2008-05-23 - Alex Chapin)
 	
@@ -106,7 +106,7 @@ Upgrades from versions prior to beta 21 require running the appropriate
 updaterlocated under Admin Tools --> Segue Updates.
 		
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Themes: Fixed text-color on Rounded Corner theme to be more visible.
 		(2008-05-21 - Adam Franco)
 		
@@ -149,7 +149,7 @@ under Admin Tools --> Segue Updates.
 		(2008-05-20 - Alex Chapin)
 
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Portal: Heading bar is now properly styled like a heading.
 		(2008-05-20 - Adam Franco)
 	
@@ -289,24 +289,24 @@ Segue 2.0 beta 20 uses Polyphony 1.1.0 and Harmoni 1.2.0.
 		Migration: SiteExport schema now allows for tags in export.
 		(2008-04-18 - Adam Franco)
 		
-	* Change: # 
+	* Change: 
 		Installer: Removed transaction around initial data creation as this was
 		causing table-locking conflicts when a second (Harmoni_Db) database
 		connection was used in tandem with the DatabaseManager connection.
 		(2008-05-01 - Adam Franco)
 		
-	* Change: # 
+	* Change: 
 		Installer: Installation is now a 2-stage process. This allows new
 		installations to have their database tables created in one execution cycle
 		and then have their services configured in the second cycle.
 		(2008-05-01 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Configuration: Added ClassesDN option to default Authentication config. Also
 		removed unneeded variables before arguments.
 		(2008-05-01 - Adam Franco)
 		
-	* Change: # 
+	* Change: 
 		Portal: Speed increases for 'All Visible' and 'All Editable' folders.
 		
 		'All Visible' now doesn't need to check the entire site as view AZs
@@ -388,7 +388,7 @@ Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
 		(2008-04-09 - Adam Franco)
 		(reported by Bryan Carson of Middlebury College)
 		
-	* Change: # 
+	* Change: 
 		Migration: Refined site migration UI styles.
 		(2008-04-09 - Alex Chapin)
 		
@@ -397,7 +397,7 @@ Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
 		passed around.
 		(2008-04-09 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Breadcrumbs: Now link to the view/html action if printed outside of one of
 		the main UI modules (view, ui1, ui2), such as in the versioning or tagging
 		modules. 
@@ -409,12 +409,12 @@ Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
 		its own row).
 		(2008-04-10 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Request: Now doesn't keep 'site' parameter in urls when using the
 		/sites/sitename form of the urls.
 		(2008-04-10 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Portal: now doesn't crash when an admin or with no valid 'personal-site
 		shortname' views the portal.
 		(2008-04-10 - Adam Franco)
@@ -424,7 +424,7 @@ Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
 		portal. 
 		(2008-04-10 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		SiteDisplay: New algorithm for determining if parts of the site are in a
 		'header' or 'footer' role allows for more variation in the arrangement of
 		'headers' and 'footers', not requiring there to be only one-cell of each.
@@ -453,13 +453,13 @@ Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.
 		implicit role.
 		(2008-04-11 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Comments: Now limiting plugins to a list of appropriate plugin types. Not
 		allowing system-plugins like RSS and BreadCrumbs as these would break things
 		in their attempts to traverse up the site hierarchy from the comment.
 		(2008-04-11 - Adam Franco)
 		
-	* Bug Fix: # 
+	* Bug Fix: 
 		Plugins: If exceptions occur during plugin execution an error is displayed,
 		but the page doesn't halt.
 		(2008-04-11 - Adam Franco)
