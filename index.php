@@ -48,23 +48,24 @@ define("LOAD_GUI", true);
  * Include our libraries
  *********************************************************/
 require_once(dirname(__FILE__)."/main/include/libraries.inc.php");
-	
+
+try {
+
 /*********************************************************
  * Include our configuration and setup scripts
  *********************************************************/
-require_once(dirname(__FILE__)."/main/include/setup.inc.php");
+	require_once(dirname(__FILE__)."/main/include/setup.inc.php");
 
 /*********************************************************
  * Execute our actions
  *********************************************************/
-if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
-	require_once(HARMONI."/utilities/Timer.class.php");
-	$execTimer = new Timer;
-	$execTimer->start();
-	ob_start();
-}
+	if (defined('ENABLE_TIMERS') && ENABLE_TIMERS) {
+		require_once(HARMONI."/utilities/Timer.class.php");
+		$execTimer = new Timer;
+		$execTimer->start();
+		ob_start();
+	}
 
-try {
 	try {
 		/*********************************************************
 		 * Redirect for short form /sites/mysitename urls

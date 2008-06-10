@@ -10,6 +10,16 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-23" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<change author='adam' date='2008-06-10'>
+			Configuration: Config files are now included in the main 'try' block
+			to allow pretty-printing of configuration errors when backtrace-display
+			is off.
+		</change>
+	</version>
 	<version number="2.0-beta-22" date="2008-06-09">
 		<releaseNotes>
 			This release of Segue 2.0-beta adds visitor registration, theme migration,
