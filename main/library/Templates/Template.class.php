@@ -10,6 +10,8 @@
  */ 
 
 require_once(MYDIR.'/main/modules/dataport/Rendering/UntrustedAgentAndTimeDomImportSiteVisitor.class.php');
+require_once(dirname(__FILE__)."/ReplacePlaceholderVisitor.class.php");
+
 
 /**
  * This class is provides access template metadata.
@@ -50,6 +52,9 @@ class Segue_Templates_Template {
 			throw new ConfigurationErrorException("Template file '$path/info.xml' does not exist.");
 		
 		$this->_path = $path;
+		
+		// Admin-only templates
+		//@todo
 	}
 	
 	/**
@@ -141,6 +146,15 @@ class Segue_Templates_Template {
 		$importer->disableCommentImport();
 		
 		$site = $importer->importAtSlot($slot->getShortname());
+		
+		try {
+			// Replace #SITE_NAME# and #SITE_DESCRIPTION# placeholders
+			$site->acceptVisitor(
+				new Segue_Templates_ReplacePlaceholderVisitor($displayName, $description));
+		} catch (Exception $e) {
+			$director->deleteSiteComponent($site);
+			throw $e;
+		}
 		
 		return $site;
 	}

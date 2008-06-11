@@ -81,6 +81,9 @@ class Segue_Templates_TemplateManager {
 			$this->_getTemplates(MYDIR.'/templates-local'),
 			$this->_getTemplates(MYDIR.'/templates-dist'));
 			
+		// Order the templates
+		//@todo
+		
 		return $templates;
 	}
 	
