@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+elementFormDefault="qualified">
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- definition of data types         -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<!-- This type defines a string value in the ISO 8601 date format. -->
+<!-- The regular expression is a condensed form of the expression found in -->
+<!-- harmoni/core/Primitives/Chronology/StringParsers/ISO8601StringParser.class.php -->
+<xs:simpleType name="iso8601">
+	<xs:restriction base="xs:string">
+		<xs:pattern value="(([0-9]{4})[\-/:](((0[1-9])|(1[0-2]))[\-/:]?(((0[1-9])|((1|2)[0-9])|(3[0-1]))[\sT]?((([0-1][0-9])|(2[0-4]))(:?([0-5][0-9])?(:?([0-5][0-9](\.[0-9]+)?)?(Z|(([+\-])(([0-1][0-9])|(2[0-4])):?([0-5][0-9])?))?)?)?)?)?)?)?"/>
+	</xs:restriction>
+</xs:simpleType>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- definition of attributes         -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<xs:attribute name="date" type="iso8601"/>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Complex Elements                 -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<xs:element name="TemplateInfo">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="DisplayName"/>
+			<xs:element ref="Description"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- definition of simple elements    -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<xs:element name="DisplayName">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:element>
+
+<xs:element name="Description" type='xs:string' />
+
+</xs:schema>

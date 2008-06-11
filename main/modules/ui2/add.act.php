@@ -10,6 +10,7 @@
 
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
+require_once(MYDIR."/main/library/Templates/TemplateManager.class.php");
 
 
 /**
@@ -135,6 +136,9 @@ class addAction
 		
 		// Site Admins.
 		$this->addSiteAdminStep($wizard);
+		
+		// Template
+		$this->addTemplateStep($wizard);
 
 		
 		return $wizard;
@@ -202,6 +206,39 @@ class addAction
 				$owners[] = $ownerId;
 		}
 		return $owners;
+	}
+	
+	/**
+	 * Add the Template step to the wizard
+	 * 
+	 * @param object Wizard $wizard
+	 * @return void
+	 * @access protected
+	 * @since 6/10/08
+	 */
+	protected function addTemplateStep (Wizard $wizard) {
+		ob_start();
+		
+		$step = new WizardStep();
+		$step->setDisplayName(_("Choose Template"));	
+		
+		print "\n<h2>"._("Choose Template")."</h2>";
+		
+		$property = $step->addComponent('template', new WRadioList);
+		$templateMgr = Segue_Templates_TemplateManager::instance();
+		$templates = $templateMgr->getTemplates();
+		$property->setValue($templates[0]->getIdString());
+		foreach ($templates as $template) {
+			$property->addOption($template->getIdString(), "<strong>".$template->getDisplayName()."</strong>", "<div>".$template->getDescription()."</div>");
+		}
+		
+		print '[[template]]';
+		
+		$step->setContent(ob_get_contents());
+		ob_end_clean();
+		
+		$step = $wizard->addStep("template", $step);
+		$wizard->makeStepRequired('template');
 	}
 		
 	/**
