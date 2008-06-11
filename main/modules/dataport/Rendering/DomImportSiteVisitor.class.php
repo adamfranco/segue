@@ -173,22 +173,28 @@ class DomImportSiteVisitor
 		
 		$site = $this->createComponent($siteElement, null);
 		
-		// Apply the theme
-		$this->applyTheme($site);
-		
-		$roleMgr = SegueRoleManager::instance();
-		$adminRole = $roleMgr->getRole('admin');
-		
-		if ($this->makeUserAdmin)
-			$adminRole->applyToUser($site->getQualifierId(), true);
-		
-		// Give the admin role to others specified
-		foreach ($this->admins as $agentId)
-			$adminRole->apply($agentId, $site->getQualifierId(), true);
-		
-		$this->importComponent($siteElement, $site);
-		$this->updateMenuTargets();
-		$this->updateStoredIds();
+		try {		
+			// Apply the theme
+			$this->applyTheme($site);
+			
+			$roleMgr = SegueRoleManager::instance();
+			$adminRole = $roleMgr->getRole('admin');
+			
+			if ($this->makeUserAdmin)
+				$adminRole->applyToUser($site->getQualifierId(), true);
+			
+			// Give the admin role to others specified
+			foreach ($this->admins as $agentId)
+				$adminRole->apply($agentId, $site->getQualifierId(), true);
+			
+			$this->importComponent($siteElement, $site);
+			$this->updateMenuTargets();
+			$this->updateStoredIds();
+		} catch (Exception $e) {
+			// Ensure that we don't have a partially created site floating out there.
+			$this->director->deleteSiteComponent($site);
+			throw $e;
+		}
 		return $site;
 	}
 	
