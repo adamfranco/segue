@@ -153,6 +153,7 @@ class Segue_Templates_Template {
 				new Segue_Templates_ReplacePlaceholderVisitor($displayName, $description));
 		} catch (Exception $e) {
 			$director->deleteSiteComponent($site);
+			$slot->deleteSiteId();
 			throw $e;
 		}
 		
