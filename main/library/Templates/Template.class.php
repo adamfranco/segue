@@ -9,6 +9,8 @@
  * @version $Id$
  */ 
 
+require_once(MYDIR.'/main/modules/dataport/Rendering/UntrustedAgentAndTimeDomImportSiteVisitor.class.php');
+
 /**
  * This class is provides access template metadata.
  * 
@@ -42,6 +44,10 @@ class Segue_Templates_Template {
 			throw new ConfigurationErrorException("Template dir '$path' is not a directory.");
 		if (!is_readable($path)) 
 			throw new ConfigurationErrorException("Template dir '$path' is not readable.");
+		if (!file_exists($path.'/site.xml')) 
+			throw new ConfigurationErrorException("Template file '$path/site.xml' does not exist.");
+		if (!file_exists($path.'/info.xml')) 
+			throw new ConfigurationErrorException("Template file '$path/info.xml' does not exist.");
 		
 		$this->_path = $path;
 	}
@@ -106,6 +112,37 @@ class Segue_Templates_Template {
 			throw new OperationFailedException("Required thumbnail file, 'thumbnail.png' is not readable in template '".$this->getIdString()."'.");
 		
 		return new Harmoni_Filing_FileSystemFile($file);
+	}
+	
+	/**
+	 * Create the new site with this template at the slot specified.
+	 * 
+	 * @param object Slot $slot
+	 * @param optional string $displayName
+	 * @param optional string $description
+	 * @return object SiteNavBlockSiteComponent
+	 * @access public
+	 * @since 6/11/08
+	 */
+	public function createSite (Slot $slot, $displayName = 'Untitled', $description = '') {
+		$director = SiteDispatcher::getSiteDirector();
+		
+		$doc = new Harmoni_DOMDocument;
+		$doc->load($this->_path."/site.xml");
+		// Validate the document contents
+		$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+		
+		$mediaDir = $this->_path."/media";
+		if (!file_exists($mediaDir))
+			$mediaDir = null;
+		
+		$importer = new UntrustedAgentAndTimeDomImportSiteVisitor($doc, $mediaDir, $director);
+		
+		$importer->disableCommentImport();
+		
+		$site = $importer->importAtSlot($slot->getShortname());
+		
+		return $site;
 	}
 	
 	/**

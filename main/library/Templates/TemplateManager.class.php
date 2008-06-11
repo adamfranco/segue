@@ -52,6 +52,24 @@ class Segue_Templates_TemplateManager {
 	}
 	
 	/**
+	 * Answer a template by id string
+	 * 
+	 * @param string $id
+	 * @return object Segue_Templates_Template
+	 * @access public
+	 * @since 6/11/08
+	 */
+	public function getTemplate ($id) {
+		if (preg_match('/(\.\.|\/)/', $id))
+			throw new InvalidArgumentException("Invalid Template Id, '$id'.");
+		
+		if (file_exists(MYDIR.'/templates-local/'.$id))
+			return new Segue_Templates_Template(MYDIR.'/templates-local/'.$id);
+		
+		return new Segue_Templates_Template(MYDIR.'/templates-dist/'.$id);
+	}
+	
+	/**
 	 * Answer an array of template objects
 	 * 
 	 * @return array

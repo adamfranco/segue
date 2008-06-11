@@ -237,8 +237,8 @@ class addAction
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
 		
-		$step = $wizard->addStep("template", $step);
-		$wizard->makeStepRequired('template');
+		$step = $wizard->addStep("template_step", $step);
+		$wizard->makeStepRequired('template_step');
 	}
 		
 	/**
@@ -260,23 +260,16 @@ class addAction
 		$properties = $wizard->getAllValues();
 		
 		/*********************************************************
-		 * Create the site Asset
+		 * Create the site from the template
 		 *********************************************************/			
-		$director = SiteDispatcher::getSiteDirector();
-		$site = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'SiteNavBlock'), $null = null);
-		
-		$site->updateDisplayName($properties['namedescstep']['display_name']);
-		$site->updateDescription($properties['namedescstep']['description']);
+		$templateMgr = Segue_Templates_TemplateManager::instance();
+		$template = $templateMgr->getTemplate($properties['template_step']['template']);
+		$site = $template->createSite($this->getSlot(), 
+			$properties['namedescstep']['display_name'],
+			$properties['namedescstep']['description']);
 		
 		$this->_siteId = $site->getId();
 		$siteId = $idManager->getId($site->getId());
-		
-		/*********************************************************
-		 * Save the siteId into the slot
-		 *********************************************************/
-		$slot = $this->getSlot();
-		
-		$slot->setSiteId($siteId);
 		
 		
 		/*********************************************************
@@ -291,6 +284,7 @@ class addAction
 		/*********************************************************
 		 * Set Default "All-Access" permissions for slot owners
 		 *********************************************************/
+		$slot = $this->getSlot();
 		foreach ($slot->getOwners() as $ownerId) {
 			// If we have an 'owners' step, only make the owners chosen admins.
 			if (isset($properties['owners']) 
@@ -301,150 +295,7 @@ class addAction
 					$admin->apply($ownerId, $site->getQualifierId(), true);
 			}
 		}
-		
-		
-		
-		
-		/*********************************************************
-		 * Create our default child assets
-		 *********************************************************/
-		$siteOrganizer = $site->getOrganizer();
-		//$siteOrganizer->updateNumColumns('2');
-		
-		$siteOrganizer->updateNumRows('3');
-		$siteOrganizer->updateNumColumns('1');
-		
-		//--------------------------------------------------------
-		// Header
-		//--------------------------------------------------------
-		
-		// Outer layout organizer
-		$outerHeaderLayout = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FixedOrganizer'), $siteOrganizer);
-		$siteOrganizer->putSubcomponentInCell($outerHeaderLayout, 0);
-		$outerHeaderLayout->updateNumRows('2');
-		$outerHeaderLayout->updateNumColumns('1');
-		
-		// Header Content Organizer
-		$headerRowOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $outerHeaderLayout);
-		$outerHeaderLayout->putSubcomponentInCell($headerRowOrganizer, 0);
-		$headerRowOrganizer->updateShowDisplayNames ('false');
-		$headerRowOrganizer->updateShowHistorySetting ('false');
-		$headerRowOrganizer->updateCommentsEnabled ('false');
-		$headerRowOrganizer->updateShowDatesSetting ('none');
-		$headerRowOrganizer->updateShowAttributionSetting ('none');
-		
-		// Header Content
-		$headerRowContent = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $headerRowOrganizer);
-		$headerRowContent->updateDisplayName(_('Site Header'));
-		$headerRowContent->updateDescription(_('This is the header of this site, added by default.'));
-		$headerRowContent->updateContentMarkup("<span style='font-size: large;'>".$properties['namedescstep']['display_name']."</span>");
-		
-		// Layout Organizer for breadcrumbs and RSS
-		$statusLayout = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FixedOrganizer'), $outerHeaderLayout);
-		$outerHeaderLayout->putSubcomponentInCell($statusLayout, 1);
-		$statusLayout->updateNumRows('1');
-		$statusLayout->updateNumColumns('2');
-		
-		// Breadcrumbs Content Organizer
-		$breadcrumbsOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $statusLayout);
-		$statusLayout->putSubcomponentInCell($breadcrumbsOrganizer, 0);
-		$breadcrumbsOrganizer->updateShowDisplayNames ('false');
-		$breadcrumbsOrganizer->updateShowHistorySetting ('false');
-		$breadcrumbsOrganizer->updateCommentsEnabled ('false');
-		$breadcrumbsOrganizer->updateShowDatesSetting ('none');
-		$breadcrumbsOrganizer->updateShowAttributionSetting ('none');
-		
-		// Breadcrumbs
-		$breadcrumbs = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'Breadcrumbs'), $breadcrumbsOrganizer);
-		$breadcrumbs->updateDisplayName(_("Breadcrumbs"));
-		
-		// RSS Content Organizer
-		$rssOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $statusLayout);
-		$statusLayout->putSubcomponentInCell($rssOrganizer, 1);
-		$rssOrganizer->updateShowDisplayNames ('false');
-		$rssOrganizer->updateShowHistorySetting ('false');
-		$rssOrganizer->updateCommentsEnabled ('false');
-		$rssOrganizer->updateShowDatesSetting ('none');
-		$rssOrganizer->updateShowAttributionSetting ('none');
-		$rssOrganizer->updateWidth ('250px');
-		
-		// Breadcrumbs
-		$rss = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'Rsslinks'), $rssOrganizer);
-		$rss->updateDisplayName(_("RSS Links"));
-		
-		
-		//--------------------------------------------------------
-		// Main Menu
-		//--------------------------------------------------------
-		$MainOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FixedOrganizer'), $siteOrganizer);
-		$siteOrganizer->putSubcomponentInCell($MainOrganizer, 1);
-		$MainOrganizer->updateNumColumns('2');
-		
-		$mainMenu = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'MenuOrganizer'), $MainOrganizer);
-		$mainMenu->updateWidth("200px");
-		$MainOrganizer->putSubcomponentInCell($mainMenu, 0);
-		$menuTarget = $MainOrganizer->getId()."_cell:1";
-		$mainMenu->updateTargetId($menuTarget);
-		$mainMenu->updateDirection('Top-Bottom/Left-Right');
-		
-		
-		
-// 		$mainMenu = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'MenuOrganizer'), $siteOrganizer);
-// 		$siteOrganizer->putSubcomponentInCell($mainMenu, 0);
-// 		$menuTarget = $siteOrganizer->getId()."_cell:1";
-// 		$mainMenu->updateTargetId($menuTarget);
-// 		$mainMenu->updateDirection('Top-Bottom/Left-Right');
-		
-		//--------------------------------------------------------
-		// Page 1
-		//--------------------------------------------------------
-		$page1 = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'NavBlock'), $mainMenu);
-		$page1->updateDisplayName(_('My First Page'));
-		$page1->updateDescription(_('This is the first page in the site, added by default.'));
-		
-		$page1Org = $page1->getOrganizer();
-		$page1ContentOrg = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $page1Org);
-		$page1Org->putSubcomponentInCell($page1ContentOrg, 0);
-		
-		$page1Content = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page1ContentOrg);
-		$page1Content->updateDisplayName(_('My First Content'));
-		$page1Content->updateDescription(_('This is the first content in this page, added by default.'));
-		
-		$page1Content = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page1ContentOrg);
-		$page1Content->updateDisplayName(_('My Second Content'));
-		$page1Content->updateDescription(_('This is the second content in this page, added by default.'));
-		
-		
-		//--------------------------------------------------------
-		// Page 2
-		//--------------------------------------------------------
-		$page2 = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'NavBlock'), $mainMenu);
-		$page2->updateDisplayName(_('My Second Page'));
-		$page2->updateDescription(_('This is the second page in the site, added by default.'));
-		
-		$page2Org = $page2->getOrganizer();
-		$page2ContentOrg = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $page2Org);
-		$page2Org->putSubcomponentInCell($page2ContentOrg, 0);
-		
-		$page2Content = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page2ContentOrg);
-		$page2Content->updateDisplayName(_('My Third Content'));
-		$page2Content->updateDescription(_('This is the first content in this page, added by default.'));
-		
-		$page2Content = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $page2ContentOrg);
-		$page2Content->updateDisplayName(_('My Fourth Content'));
-		$page2Content->updateDescription(_('This is the second content in this page, added by default.'));
-		
-		//--------------------------------------------------------
-		// Footer
-		//--------------------------------------------------------
-		$footerRowOrganizer = $director->createSiteComponent(new Type('segue', 'edu.middlebury', 'FlowOrganizer'), $siteOrganizer);
-		$siteOrganizer->putSubcomponentInCell($footerRowOrganizer, 2);
-		$footerRowOrganizer->updateShowDisplayNames ('false');
-// 		$footerRowContent = $director->createSiteComponent(new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'), $footerRowOrganizer);
-// 		$footerRowContent->updateDisplayName(_('My Footer'));
-// 		$footerRowContent->updateDescription(_('This is the footer of this site, added by default.'));
-// 		$footerRowContent->updateContentMarkup(_('My Footer'));
-		
+			
 		
 		/*********************************************************
 		 * Log the success or failure
