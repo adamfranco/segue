@@ -170,7 +170,7 @@ class AssetSiteDirector
 					return $this->traverseUpToRootSiteComponent($parent);
 			}
 			
-			throwError(new Error("No valid parents found in Site Component traversal.", "SiteDisplay"));
+			throw new OperationFailedException("No valid parents found in SiteComponent traversal for Asset id: '".$id->getIdString()."' type: '".$currentAsset->getAssetType()->asString()."'. This Asset not a site component or is not properly attached to the Hierarchy.");
 		}
 	}
 	
