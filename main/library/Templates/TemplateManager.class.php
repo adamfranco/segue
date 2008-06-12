@@ -38,6 +38,13 @@ class Segue_Templates_TemplateManager {
  	 * @since 6/12/08
  	 */
  	private $order = array();
+ 	
+ 	/**
+ 	 * @var array $disabled; Disabled Templates 
+ 	 * @access private
+ 	 * @since 6/12/08
+ 	 */
+ 	private $disabled = array();
 
 	/**
 	 * This class implements the Singleton pattern. There is only ever
@@ -70,6 +77,20 @@ class Segue_Templates_TemplateManager {
 		ArgumentValidator::validate($orderedIdStrings, ArrayValidatorRuleWithRule::getRule(
 			NonzeroLengthStringValidatorRule::getRule()));
 		$this->order = $orderedIdStrings;
+	}
+	
+	/**
+	 * Set a list of disabled templates
+	 * 
+	 * @param array $orderedIdStrings
+	 * @return void
+	 * @access public
+	 * @since 6/12/08
+	 */
+	public function setDisabled (array $idStrings) {
+		ArgumentValidator::validate($idStrings, ArrayValidatorRuleWithRule::getRule(
+			NonzeroLengthStringValidatorRule::getRule()));
+		$this->disabled = $idStrings;
 	}
 	
 	/**
@@ -114,7 +135,12 @@ class Segue_Templates_TemplateManager {
 		array_multisort($templateIds, $templates);
 		
 		// Remove disabled templates
-		// @todo
+		foreach ($this->disabled as $id) {
+			$key = array_search($id, $templateIds);
+			if ($key !== false) {
+				unset($templates[$key], $templateIds[$key]);
+			}
+		}
 		
 		// Apply configured order.
 		if (count($this->order)) {
