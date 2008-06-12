@@ -9,7 +9,7 @@
  * @version $Id$
  */ 
 
-require_once(MYDIR.'/main/modules/dataport/Rendering/UntrustedAgentAndTimeDomImportSiteVisitor.class.php');
+require_once(MYDIR.'/main/modules/dataport/Rendering/StripHistoryImportSiteVisitor.class.php');
 require_once(dirname(__FILE__)."/ReplacePlaceholderVisitor.class.php");
 
 
@@ -140,7 +140,9 @@ class Segue_Templates_Template {
 		if (!file_exists($mediaDir))
 			$mediaDir = null;
 		
-		$importer = new UntrustedAgentAndTimeDomImportSiteVisitor($doc, $mediaDir, $director);
+		// @todo Strip out any history.
+		
+		$importer = new StripHistoryImportSiteVisitor($doc, $mediaDir, $director);
 		
 		$importer->disableCommentImport();
 		
