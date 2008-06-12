@@ -20,6 +20,14 @@ elementFormDefault="qualified">
 
 <xs:attribute name="date" type="iso8601"/>
 
+<xs:attribute name="id">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <!-- Complex Elements                 -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -29,7 +37,17 @@ elementFormDefault="qualified">
 		<xs:sequence>
 			<xs:element ref="DisplayName"/>
 			<xs:element ref="Description"/>
+			<xs:element ref="Authorized" minOccurs="0"/>
 		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="Authorized">
+	<xs:complexType>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element ref="Agent"/>
+			<xs:element ref="Group"/>
+		</xs:choice>
 	</xs:complexType>
 </xs:element>
 
@@ -45,5 +63,25 @@ elementFormDefault="qualified">
 </xs:element>
 
 <xs:element name="Description" type='xs:string' />
+
+<xs:element name="Agent">
+	<xs:complexType>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute ref="id" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="Group">
+	<xs:complexType>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute ref="id" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:element>
 
 </xs:schema>

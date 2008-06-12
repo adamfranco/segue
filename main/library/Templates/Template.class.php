@@ -53,8 +53,11 @@ class Segue_Templates_Template {
 		
 		$this->_path = $path;
 		
-		// Admin-only templates
-		//@todo
+		$this->loadInfo();
+		
+		// Check Authorizations as defined in the info.xml
+		if (!$this->canUse())
+			throw new PermissionDeniedException("Not authorized to use the ".$this->getIdString()." template.");
 	}
 	
 	/**
@@ -76,8 +79,6 @@ class Segue_Templates_Template {
 	 * @since6/10/08
 	 */
 	public function getDisplayName () {
-		if (!isset($this->info))
-			$this->loadInfo();
 		if (is_null($this->info))
 			return _("Untitled");
 		
@@ -93,8 +94,6 @@ class Segue_Templates_Template {
 	 * @since6/10/08
 	 */
 	public function getDescription () {
-		if (!isset($this->info))
-			$this->loadInfo();
 		if (is_null($this->info))
 			return '';
 		
@@ -175,6 +174,69 @@ class Segue_Templates_Template {
 		$this->info = new Harmoni_DOMDocument;
 		$this->info->load($path);
 		$this->info->schemaValidateWithException(dirname(__FILE__).'/template_info.xsd');
+	}
+	
+	/**
+	 * Answer true if the current agent is in the allowed groups for this template
+	 * 
+	 * @return boolean
+	 * @access protected
+	 * @since 6/12/08
+	 */
+	protected function canUse () {
+		if (is_null($this->info))
+			return true;
+			
+		// Check that Authorizations are even set. Return true if none are set.
+		$xpath = new DOMXPath($this->info);
+		$authElements = $xpath->query('/TemplateInfo/Authorized');
+		if (!$authElements->length)
+			return true;
+		
+		// Check for an explicit agent grant
+		$authNMgr = Services::getService("AuthN");
+		$agentId = $authNMgr->getFirstUserId();
+		
+		$allowedAgents = $xpath->query('/TemplateInfo/Authorized/Agent');
+		foreach ($allowedAgents as $agentElement) {
+			if ($agentElement->getAttribute('id') == $agentId->getIdString())
+				return true;
+		}
+		
+		// Check for group grants
+		$allowedGroups = $xpath->query('/TemplateInfo/Authorized/Group');
+		foreach ($allowedGroups as $groupElement) {
+			if (in_array($groupElement->getAttribute('id'), $this->getGroupIdStrings()))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Answer the group Ids that an agent is a member of
+	 * 
+	 * @return array of strings
+	 * @access protected
+	 * @since 6/12/08
+	 */
+	protected function getGroupIdStrings () {
+		if (!isset($this->groupIds)) {
+			$this->groupIds = array();
+			
+			$authNMgr = Services::getService("AuthN");
+			$agentId = $authNMgr->getFirstUserId();
+				
+			$agentManager = Services::getService("Agent");
+			$ancestorSearchType = new HarmoniType("Agent & Group Search",
+													"edu.middlebury.harmoni","AncestorGroups");
+			$containingGroups = $agentManager->getGroupsBySearch(
+										$agentId, $ancestorSearchType);
+			while ($containingGroups->hasNext()) {
+				$this->groupIds[] = $containingGroups->next()->getId()->getIdString();
+			}
+		}
+		return $this->groupIds;
 	}
 }
 

@@ -102,8 +102,12 @@ class Segue_Templates_TemplateManager {
 			throw new OperationFailedException("Could not read templates in ".basename($path).".");
 		foreach ($subDirs as $name) {
 			$fullPath = $path."/".$name;
-			if ($name != '.' && $name != '..' && is_dir($fullPath))
-				$templates[] = new Segue_Templates_Template($fullPath);
+			if ($name != '.' && $name != '..' && is_dir($fullPath)) {
+				try {
+					$templates[] = new Segue_Templates_Template($fullPath);
+				} catch (PermissionDeniedException $e) {
+				}
+			}
 		}
 		
 		return $templates;

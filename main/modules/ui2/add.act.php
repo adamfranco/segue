@@ -227,6 +227,8 @@ class addAction
 		$property = $step->addComponent('template', new WRadioList);
 		$templateMgr = Segue_Templates_TemplateManager::instance();
 		$templates = $templateMgr->getTemplates();
+		if (!count($templates))
+			throw new OperationFailedException("No templates available.");
 		$property->setValue($templates[0]->getIdString());
 		foreach ($templates as $template) {
 			$property->addOption($template->getIdString(), "<strong>".$template->getDisplayName()."</strong>", "<div>".$template->getDescription()."</div>");
