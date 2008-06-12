@@ -77,14 +77,37 @@ class Segue_Templates_TemplateManager {
 	 * @since 6/10/08
 	 */
 	public function getTemplates () {
-		$templates = array_merge(
-			$this->_getTemplates(MYDIR.'/templates-local'),
-			$this->_getTemplates(MYDIR.'/templates-dist'));
+		$localTemplates = $this->_getTemplates(MYDIR.'/templates-local');
+		$localIds = array_map(array($this, '_getTemplateId'), $localTemplates);
+		$distTemplates = $this->_getTemplates(MYDIR.'/templates-dist');
 			
-		// Order the templates
-		//@todo
+		
+		// Add dist templates that aren't duplicates.
+		$templates = $localTemplates;
+		foreach ($distTemplates as $template) {
+			if (!in_array($template->getIdString(), $localIds))
+				$templates[] = $template;
+		}
+		// Order the templates Alphabetically
+		$templateIds = array_map(array($this, '_getTemplateId'), $templates);
+		array_multisort($templateIds, $templates);
+		
+		// Apply configured order.
+		// @todo
 		
 		return $templates;
+	}
+	
+	/**
+	 * Answer the Id of a template
+	 * 
+	 * @param object Segue_Templates_Template $template
+	 * @return string
+	 * @access private
+	 * @since 6/12/08
+	 */
+	private function _getTemplateId (Segue_Templates_Template $template) {
+		return $template->getIdString();
 	}
 	
 	/**
