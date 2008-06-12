@@ -83,7 +83,7 @@ class Segue_Templates_Template {
 			return _("Untitled");
 		
 		$xpath = new DOMXPath($this->info);
-		return trim($xpath->query('/TemplateInfo/DisplayName')->item(0)->nodeValue);
+		return trim($this->getPathLangVersion($xpath, '/TemplateInfo/DisplayName'));
 	}
 	
 	/**
@@ -98,7 +98,7 @@ class Segue_Templates_Template {
 			return '';
 		
 		$xpath = new DOMXPath($this->info);
-		return trim($xpath->query('/TemplateInfo/Description')->item(0)->nodeValue);
+		return trim($this->getPathLangVersion($xpath, '/TemplateInfo/Description'));
 	}
 	
 	/**
@@ -239,6 +239,46 @@ class Segue_Templates_Template {
 			}
 		}
 		return $this->groupIds;
+	}
+	
+	/**
+	 * Get the version of an element in the best language available
+	 * 
+	 * @param object DOMXPath $xpath
+	 * @param string $path
+	 * @return string
+	 * @access protected
+	 * @since 6/12/08
+	 */
+	protected function getPathLangVersion (DOMXPath $xpath, $path) {
+			$langMgr = Services::getService("LanguageManager");
+			$lang = $langMgr->getLanguage();
+			
+			// Current language
+			if ($xpath->query($path."[@lang = '$lang']")->length) {
+				return $xpath->query($path."[@lang = '$lang']")->item(0)->nodeValue;
+			}
+			
+			// Try another country's version of the same language
+			$langOnly = substr($lang, 0, strpos($lang, '_'));
+			$regex = '/'.$langOnly.'_.+/';
+			foreach ($xpath->query($path) as $elem) {
+				if (preg_match($regex, $elem->getAttribute('lang'))) {
+					return $elem->nodeValue;
+				}
+			}
+			
+			// Default to english if available
+			if ($xpath->query($path."[@lang = 'en_US']")->length) {
+				return  $xpath->query($path."[@lang = 'en_US']")->item(0)->nodeValue;
+			}
+			
+			// Answer the first one
+			if ($xpath->query($path)->length) {
+				return  $xpath->query($path)->item(0)->nodeValue;
+			}
+			
+			throw new OperationFailedException("No elements found that match '$path'.");
 	}
 }
 

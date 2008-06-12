@@ -54,8 +54,8 @@ While the template XML can be edited by hand, the easiest way to create a templa
    7. Add an info.xml file to the new template directory with information about your template.
 
       <TemplateInfo>
-          <DisplayName>Basic</DisplayName>
-          <Description>
+          <DisplayName lang="en_US">Basic</DisplayName>
+          <Description lang="en_US">
               This template is a basic starting point with two pages already created.
           </Description>
       </TemplateInfo>
@@ -63,10 +63,15 @@ While the template XML can be edited by hand, the easiest way to create a templa
    8. You can optionally add Agent or Group restrictions to the info.xml to make the template only available to certain users.
 
       <TemplateInfo>
-          <DisplayName>Spanish School Template</DisplayName>
-          <Description>
+          <DisplayName lang="en_US">Spanish School Template</DisplayName>
+          <Description lang="en_US">
               This template is laid out for classes taught by the Spanish School and
               Spanish department.
+          </Description>
+          <DisplayName lang="es_ES">Plantilla de la Escuela Espa–ola</DisplayName>
+          <Description lang="es_ES">
+               Esta plantilla se presenta para las clases ense–adas por la escuela 
+               espa–ola y el departamento espa–ol.
           </Description>
           <Authorized>
       		<Group id="123456">Spanish School</Group>

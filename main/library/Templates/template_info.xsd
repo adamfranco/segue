@@ -14,11 +14,27 @@ elementFormDefault="qualified">
 	</xs:restriction>
 </xs:simpleType>
 
+<!-- This type defines a string value in the ISO 639 language code plus a country code -->
+<xs:simpleType name="iso639">
+	<xs:restriction base="xs:string">
+		<xs:pattern value="([a-z]{2,3})_([A-Z]{2})"/>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name='non_empty_content'>
+	<xs:restriction base="xs:string">
+		<xs:minLength value="1"/>
+	</xs:restriction>
+</xs:simpleType>
+
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <!-- definition of attributes         -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <xs:attribute name="date" type="iso8601"/>
+
+<xs:attribute name="lang" type="iso639"/>
+
 
 <xs:attribute name="id">
 	<xs:simpleType>
@@ -35,12 +51,18 @@ elementFormDefault="qualified">
 <xs:element name="TemplateInfo">
 	<xs:complexType>
 		<xs:sequence>
-			<xs:element ref="DisplayName"/>
-			<xs:element ref="Description"/>
+			<xs:group ref="lang_group" maxOccurs="unbounded"/>
 			<xs:element ref="Authorized" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:element>
+
+<xs:group name="lang_group">
+	<xs:sequence>
+		<xs:element ref="DisplayName" />
+		<xs:element ref="Description"/>
+	</xs:sequence>
+</xs:group>
 
 <xs:element name="Authorized">
 	<xs:complexType>
@@ -51,18 +73,25 @@ elementFormDefault="qualified">
 	</xs:complexType>
 </xs:element>
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!-- definition of simple elements    -->
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <xs:element name="DisplayName">
-	<xs:simpleType>
-		<xs:restriction base="xs:string">
-			<xs:minLength value="1"/>
-		</xs:restriction>
-	</xs:simpleType>
+	<xs:complexType>
+		<xs:simpleContent>
+			<xs:extension base="non_empty_content">
+				<xs:attribute ref="lang" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 </xs:element>
 
-<xs:element name="Description" type='xs:string' />
+<xs:element name="Description">
+	<xs:complexType>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute ref="lang" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:element>
 
 <xs:element name="Agent">
 	<xs:complexType>
