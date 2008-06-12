@@ -231,7 +231,26 @@ class addAction
 			throw new OperationFailedException("No templates available.");
 		$property->setValue($templates[0]->getIdString());
 		foreach ($templates as $template) {
-			$property->addOption($template->getIdString(), "<strong>".$template->getDisplayName()."</strong>", "<div>".$template->getDescription()."</div>");
+			ob_start();
+			try {
+				$thumb = $template->getThumbnail();
+				$harmoni = Harmoni::instance();
+				$url = $harmoni->request->quickUrl('templates', 'template_thumbnail', array('template' => $template->getIdString()));
+				print "\n\t<img src='".$url."' style='float: left; width: 200px; margin-right: 10px;' alt='"._('Template thumbnail')."' ";
+				print " onclick=\"";
+				print "var templatePreview = window.open('$url', 'template_preview', 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=600,height=500'); ";
+				print "templatePreview.focus();";
+				print "\" ";
+				print "/>";
+			} catch (UnimplementedException $e) {
+				print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
+			} catch (OperationFailedException $e) {
+// 				print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
+			}
+			print "\n\t<p>".$template->getDescription()."</p>";
+			
+			print "\n\t<div style='clear: both;'> &nbsp; </div>";
+			$property->addOption($template->getIdString(), "<strong>".$template->getDisplayName()."</strong>", ob_get_clean());
 		}
 		
 		print '[[template]]';
