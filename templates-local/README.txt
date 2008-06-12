@@ -60,6 +60,23 @@ While the template XML can be edited by hand, the easiest way to create a templa
           </Description>
       </TemplateInfo>
 
+   8. You can optionally add additional translations of the display name and description.
+
+      <TemplateInfo>
+      	<DisplayName lang='en_US'>Spanish School Template</DisplayName>
+      	<Description lang='en_US'>
+            This template is laid out for classes taught by the Spanish School and
+            Spanish department.
+      	</Description>
+      	<DisplayName lang='es_ES'>Plantilla de la Escuela Espa–ola</DisplayName>
+      	<Description lang='es_ES'>
+            Esta plantilla se presenta para las clases ense–adas por la escuela 
+            espa–ola y el departamento espa–ol.
+      	</Description>
+      </TemplateInfo>
+
+
+
    8. You can optionally add Agent or Group restrictions to the info.xml to make the template only available to certain users.
 
       <TemplateInfo>
