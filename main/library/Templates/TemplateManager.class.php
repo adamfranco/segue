@@ -31,6 +31,13 @@ class Segue_Templates_TemplateManager {
  	 * @static
  	 */
  	private static $instance;
+ 	
+ 	/**
+ 	 * @var array $order;  
+ 	 * @access private
+ 	 * @since 6/12/08
+ 	 */
+ 	private $order = array();
 
 	/**
 	 * This class implements the Singleton pattern. There is only ever
@@ -49,6 +56,20 @@ class Segue_Templates_TemplateManager {
 		}
 		
 		return self::$instance;
+	}
+	
+	/**
+	 * Set the order of templates
+	 * 
+	 * @param array $orderedIdStrings
+	 * @return void
+	 * @access public
+	 * @since 6/12/08
+	 */
+	public function setOrder (array $orderedIdStrings) {
+		ArgumentValidator::validate($orderedIdStrings, ArrayValidatorRuleWithRule::getRule(
+			NonzeroLengthStringValidatorRule::getRule()));
+		$this->order = $orderedIdStrings;
 	}
 	
 	/**
@@ -80,7 +101,6 @@ class Segue_Templates_TemplateManager {
 		$localTemplates = $this->_getTemplates(MYDIR.'/templates-local');
 		$localIds = array_map(array($this, '_getTemplateId'), $localTemplates);
 		$distTemplates = $this->_getTemplates(MYDIR.'/templates-dist');
-			
 		
 		// Add dist templates that aren't duplicates.
 		$templates = $localTemplates;
@@ -88,12 +108,32 @@ class Segue_Templates_TemplateManager {
 			if (!in_array($template->getIdString(), $localIds))
 				$templates[] = $template;
 		}
+		
 		// Order the templates Alphabetically
 		$templateIds = array_map(array($this, '_getTemplateId'), $templates);
 		array_multisort($templateIds, $templates);
 		
-		// Apply configured order.
+		// Remove disabled templates
 		// @todo
+		
+		// Apply configured order.
+		if (count($this->order)) {
+			$orderedTemplates = array();
+			// Add the ordered templates to the new array
+			foreach ($this->order as $id) {
+				$key = array_search($id, $templateIds);
+				if ($key !== false) {
+					$orderedTemplates[] = $templates[$key];
+					unset($templates[$key], $templateIds[$key]);
+				}
+			}
+			// Add remaining templates to the new array.
+			foreach ($templates as $template) {
+				$orderedTemplates[] = $template;
+			}
+			// Make our array the new ordered one.
+			$templates = $orderedTemplates;
+		}
 		
 		return $templates;
 	}

@@ -91,7 +91,8 @@ $configs = array(
 					'grading',
 					'coursemanagement',
 					'dataport',
-					'tagging'
+					'tagging',
+					'templates'
 				);
 
 foreach ($configs as $config) {
