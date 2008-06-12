@@ -50,6 +50,7 @@ require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
 require_once(MYDIR."/main/library/Segue1UrlResolver.class.php");
+require_once(MYDIR."/main/library/Templates/TemplateManager.class.php");
 
 
 /******************************************************************************

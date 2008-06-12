@@ -43,14 +43,16 @@ class DomImportSiteVisitor
 	 * @since 1/22/08
 	 */
 	public function __construct (DOMDocument $sourceDoc, $mediaPath, SiteDirector $director) {
-		if (!is_dir($mediaPath))
-			throw new Exception("'$mediaPath' does not exist for import.");
-		if (!is_readable($mediaPath))
-			throw new Exception("'$mediaPath' is not readable for import.");
+		if (!is_null($mediaPath)) {
+			if (!is_dir($mediaPath))
+				throw new Exception("'$mediaPath' does not exist for import.");
+			if (!is_readable($mediaPath))
+				throw new Exception("'$mediaPath' is not readable for import.");
+			$this->mediaPath = $mediaPath;
+		}
 		
 		$this->doc = $sourceDoc;
 		$this->xpath = new DOMXPath($this->doc);
-		$this->mediaPath = $mediaPath;
 		$this->director = $director;
 		$this->menusForUpdate = array();
 		$this->pluginsForUpdate = array();
@@ -836,6 +838,9 @@ class DomImportSiteVisitor
 	 * @since 1/24/08
 	 */
 	protected function addFileRecord (Asset $asset, DOMElement $element) {
+		if (!isset($this->mediaPath))
+			throw new OperationFailedException("Trying to import a file, but no media path is specified.");
+			
 		$idManager = Services::getService("Id");
 		$record = $asset->createRecord($idManager->getId("FILE"));
 		$element->setAttribute('new_id', $record->getId()->getIdString());
