@@ -14,6 +14,13 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-06-12' ref='1820782' reftype='fr'>
+			Templates: Now have a choice of templates (starting points) when creating sites.
+		</new>
+		<fix author='adam' date='2008-06-12' ref='1991431' reftype='bug'>
+			UI2: Fixed error where content containers could disappear when dragged
+			to the header.
+		</fix>
 		<change author='adam' date='2008-06-10'>
 			Configuration: Config files are now included in the main 'try' block
 			to allow pretty-printing of configuration errors when backtrace-display
