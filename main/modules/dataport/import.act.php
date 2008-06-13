@@ -150,7 +150,7 @@ class importAction
 		$property = $step->addComponent('comments', new WCheckbox());
 		$property->setValue(true);
 		print "\n<p>[[comments]] ";
-		print "\n\t"._("Import comments?");
+		print "\n\t"._("Import discussions?");
 		print "\n\t\n</p>";
 		
 		$property = $step->addComponent('roles', new WCheckbox());

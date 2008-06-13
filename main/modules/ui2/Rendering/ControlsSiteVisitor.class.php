@@ -689,7 +689,7 @@ class ControlsSiteVisitor
 	function printCommentSettings ( $siteComponent, $isSite = false ) {
 		print "\n\t\t\t\t<tr><td class='ui2_settingborder'>";
 		print "\n\t\t\t\t<div class='ui2_settingtitle'>";
-		print _('Comments: ')."\n\t\t\t\t</div>";
+		print _('Discussion: ')."\n\t\t\t\t</div>";
 		print "\n\t\t\t\t</td><td class='ui2_settingborder'>";
 		
 		$authZ = Services::getService("AuthZ");

@@ -69,6 +69,9 @@
 		<new author='adam' date='2008-06-13'>
 			Themes: Sites now have a default theme different from the 'program' theme.
 		</new>
+		<change author='adam' date='2008-06-13'>
+			Comments: Renaming 'Comments' links to 'Discuss'.
+		</change>
 	</version>
 	<version number="2.0-beta-22" date="2008-06-09">
 		<releaseNotes>
