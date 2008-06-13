@@ -142,7 +142,7 @@ class listAction
 		/*********************************************************
 		 * Sites in the current folder.
 		 *********************************************************/
-		$siteList = $portalWrapper->add(new Container(new YLayout, BLOCK, 1), null, null, CENTER, TOP);
+		$siteList = $portalWrapper->add(new Container(new YLayout, BLANK, 1), null, null, CENTER, TOP);
 		$currentFolder = $portalMgr->getFolder($this->getCurrentFolderId());
 		
 		// controls
@@ -360,9 +360,9 @@ class listAction
 		$description = HtmlString::withValue($asset->getDescription());
 		$description->trim(25);
 		print  "\n\t<div class='portal_list_site_description'>".$description->asString()."</div>";	
+		print "\n\t<div style='clear: both;'></div>";
 		
-		$component = new UnstyledBlock(ob_get_contents());
-		ob_end_clean();
+		$component = new UnstyledBlock(ob_get_clean());
 		$container->add($component, "100%", null, LEFT, TOP);
 		
 		return $container;
