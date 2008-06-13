@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-22 (2008-06-09)
+Segue v. 2.0-beta-23 (2008-06-13)
 =================================
 
 What is Segue?
@@ -17,20 +17,23 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release of Segue 2.0-beta adds visitor registration, theme migration, and a
-number of bug fixes. 
+This release add a new template system for providing site starting-points. Several
+templates are shipped with Segue and administrators may install additional custom
+templates as needed.
 
-Visitor registration (disabled in the default configuration) enables external users
-to register for visitor accounts that will all them to participate in public discussions.
+In addition to the new template system, a number of smaller improvements and bug
+fixes have been made.
 
-Theme migration has been added to allow Segue 1 sites to retain their theme
-settings when they are migrated to Segue 2.
+Segue versions beta-20 through beta-22 included a bug in which cascading
+authorizations for administrators were not created when new sites were created. This
+version adds an updater that will rebuild missing authorizations. This updater can
+be found under 'Admin Tools' --> 'Segue Updates' --> 'Rebuild Implicit AZs'.
 
-This release also includes several new themes.
+Notable changes from Harmoni and Polyphony:
 
-Upgrades from versions prior to beta 22 require running the appropriate
-updaterlocated under Admin Tools --> Segue Updates. As well, the authentication
-configuration files have change and will need to be updated.
+* Visitor registrations are now logged.
+
+* Log-Browsing now allows for category selection and manual user selection.
 
 
 Downloads
@@ -70,6 +73,28 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-23 (2008-06-13)
+----------------------------------------------------
+This release add a new template system for providing site starting-points. Several
+templates are shipped with Segue and administrators may install additional custom
+templates as needed.
+
+In addition to the new template system, a number of smaller improvements and bug
+fixes have been made.
+
+Segue versions beta-20 through beta-22 included a bug in which cascading
+authorizations for administrators were not created when new sites were created. This
+version adds an updater that will rebuild missing authorizations. This updater can
+be found under 'Admin Tools' --> 'Segue Updates' --> 'Rebuild Implicit AZs'.
+
+Notable changes from Harmoni and Polyphony:
+
+* Visitor registrations are now logged.
+
+* Log-Browsing now allows for category selection and manual user selection.
+
 
 
 v. 2.0-beta-22 (2008-06-09)

@@ -10,9 +10,26 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-23" date="The Future">
+	<version number="2.0-beta-23" date="2008-06-13">
 		<releaseNotes>
+			This release add a new template system for providing site starting-points.
+			Several templates are shipped with Segue and administrators may install
+			additional custom templates as needed.
 			
+			In addition to the new template system, a number of smaller improvements
+			and bug fixes have been made.
+			
+			Segue versions beta-20 through beta-22 included a bug in which cascading
+			authorizations for administrators were not created when new sites were
+			created. This version adds an updater that will rebuild missing authorizations.
+			This updater can be found under 'Admin Tools' --> 'Segue Updates' --> 
+			'Rebuild Implicit AZs'.
+			
+			Notable changes from Harmoni and Polyphony:
+			
+			* Visitor registrations are now logged.
+			
+			* Log-Browsing now allows for category selection and manual user selection.
 		</releaseNotes>
 		<new author='adam' date='2008-06-12' ref='1820782' reftype='fr'>
 			Templates: Now have a choice of templates (starting points) when creating sites.
@@ -46,6 +63,9 @@
 			Added a Segue-updater that will	rebuild implicit AZs for all nodes 
 			with broken permissions.
 		</fix>
+		<change author='adam' date='2008-06-13'>
+			Themes: Theme info now allows language-localization.
+		</change>
 	</version>
 	<version number="2.0-beta-22" date="2008-06-09">
 		<releaseNotes>

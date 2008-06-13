@@ -23,7 +23,48 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-22</h2>
+<h2>Version 2.0-beta-23</h2>
+<h3>2008-06-13</h3>
+<p>This release add a new template system for providing site starting-points. Several templates are shipped with Segue and administrators may install additional custom templates as needed.
+<br>
+<br>In addition to the new template system, a number of smaller improvements and bug fixes have been made.
+<br>
+<br>Segue versions beta-20 through beta-22 included a bug in which cascading authorizations for administrators were not created when new sites were created. This version adds an updater that will rebuild missing authorizations. This updater can be found under 'Admin Tools' --&gt; 'Segue Updates' --&gt; 'Rebuild Implicit AZs'.
+<br>
+<br>Notable changes from Harmoni and Polyphony:
+<br>
+<br>* Visitor registrations are now logged.
+<br>
+<br>* Log-Browsing now allows for category selection and manual user selection.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820782&amp;group_id=82171&amp;atid=565237">
+        			#1820782</a> Templates: Now have a choice of templates (starting points) when creating sites. (<em>2008-06-12 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1936837&amp;group_id=82171&amp;atid=565234">
+        			#1936837</a> UI1/UI2: When content is sorted by recent 1st or other reordering methods, the '+Content' button is at the top of the container. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1991431&amp;group_id=82171&amp;atid=565234">
+        			#1991431</a> UI2: Fixed error where content containers could disappear when dragged to the header. (<em>2008-06-12 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1992250&amp;group_id=82171&amp;atid=565234">
+        			#1992250</a> UI2: Plus-symbols in text are now not lost due to Javascript not encoding them. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Portal/Home: Now more theme-portable. Any theme will work ok as the default. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Configuration: Config files are now included in the main 'try' block to allow pretty-printing of configuration errors when backtrace-display is off. (<em>2008-06-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1991142&amp;group_id=82171&amp;atid=565234">
+        			#1991142</a> Permissions: Fixed issue where errors in the create-site process can result in inaccessible sites.
+<br>
+<br>Also fixed an issue where implicit AZs were not created on initial site creation.
+<br>
+<br>Added a Segue-updater that willrebuild implicit AZs for all nodes with broken permissions. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Themes: Theme info now allows language-localization. (<em>2008-06-13 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-22</h2>
 <h3>2008-06-09</h3>
 <p>This release of Segue 2.0-beta adds visitor registration, theme migration, and a number of bug fixes. 
 <br>
