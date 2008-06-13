@@ -3,7 +3,8 @@
  *********************************************************/
 .Block_Background {
     border: 1px none [[BACKGROUND_BORDER]];
-    margin: 0px;
+    margin-right: 20px;
+    margin-left: 20px;
 }
 
 *.Block_Background .box01 {
