@@ -28,8 +28,13 @@
 		</change>
 		<fix author='adam' date='2008-06-13' ref='1991142' reftype='bug'>
 			Permissions: Fixed issue where errors in the create-site process
-			can result in inaccessible sites. Added a Segue-updater that will
-			rebuild implicit AZs for nodes with broken permissions.
+			can result in inaccessible sites.
+			
+			Also fixed an issue where implicit AZs were not created on initial
+			site creation.
+			
+			Added a Segue-updater that will	rebuild implicit AZs for all nodes 
+			with broken permissions.
 		</fix>
 	</version>
 	<version number="2.0-beta-22" date="2008-06-09">
