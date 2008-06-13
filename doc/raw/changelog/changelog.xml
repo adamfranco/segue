@@ -69,6 +69,10 @@
 		<new author='adam' date='2008-06-13'>
 			Themes: Sites now have a default theme different from the 'program' theme.
 		</new>
+		<change author='alex' date='2008-06-13'>
+			Themes: Added margins to BevelBox headers so that the would line up
+			with menus.
+		</change>
 		<change author='adam' date='2008-06-13'>
 			Comments: Renaming 'Comments' links to 'Discuss'.
 		</change>

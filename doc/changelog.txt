@@ -65,6 +65,24 @@ Notable changes from Harmoni and Polyphony:
 	* Change: 
 		Themes: Theme info now allows language-localization.
 		(2008-06-13 - Adam Franco)
+		
+	* New feature: 
+		Themes: Sites now have a default theme different from the 'program' theme.
+		(2008-06-13 - Adam Franco)
+		
+	* Change: 
+		Themes: Added margins to BevelBox headers so that the would line up with
+		menus. 
+		(2008-06-13 - Alex Chapin)
+		
+	* Change: 
+		Comments: Renaming 'Comments' links to 'Discuss'.
+		(2008-06-13 - Adam Franco)
+		
+	* Bug Fix: 
+		DownloadPlugin: Download plugins with no file selected now do not crash
+		imports. 
+		(2008-06-13 - Adam Franco)
 	
 
 
