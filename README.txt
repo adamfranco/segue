@@ -35,6 +35,8 @@ Notable changes from Harmoni and Polyphony:
 
 * Log-Browsing now allows for category selection and manual user selection.
 
+Segue 2.0-beta-23 uses Harmoni 1.3.5 and Polyphony 1.2.5.
+
 
 Downloads
 ---------------------
@@ -94,6 +96,8 @@ Notable changes from Harmoni and Polyphony:
 * Visitor registrations are now logged.
 
 * Log-Browsing now allows for category selection and manual user selection.
+
+Segue 2.0-beta-23 uses Harmoni 1.3.5 and Polyphony 1.2.5.
 
 
 
