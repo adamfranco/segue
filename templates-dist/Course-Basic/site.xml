@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Segue2 export_date="2008-06-14T09:42:50-04:00" segue_version="2.0-beta-22" segue_export_version="2.0">
-	<SiteNavBlock slot_name="template-course01" id="382842" showDisplayNames="true" showHistory="false" sortMethod="custom" commentsEnabled="false" width="800px" create_date="2008-06-13T12:22:18-04:00" create_agent="606" modify_date="2008-06-14T09:18:36-04:00">
+	<SiteNavBlock slot_name="template-course01" id="382842" showDisplayNames="true" showHistory="false" sortMethod="custom" commentsEnabled="false" width="" create_date="2008-06-13T12:22:18-04:00" create_agent="606" modify_date="2008-06-14T09:18:36-04:00">
 		<displayName><![CDATA[#SITE_NAME#]]></displayName>
 		<description><![CDATA[#SITE_DESCRIPTION#]]></description>
 		<roles>
