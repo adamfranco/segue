@@ -34,6 +34,13 @@ class Update010_RebuildImplicitAZsAction
 	public $checkSeparate = true;
 	
 	/**
+	 * @var array $toDo;  
+	 * @access private
+	 * @since 6/13/08
+	 */
+	private $toDo = array();
+	
+	/**
 	 * Answer the date at which this updator was introduced
 	 * 
 	 * @return object DateAndTime
@@ -63,7 +70,7 @@ class Update010_RebuildImplicitAZsAction
 	 * @since 6/12/08
 	 */
 	function getDescription () {
-		return _("This update rebuild all of the Implicit Authorizations on nodes where the Administrators group does not have authorization to view. This state was caused by a bug in Segue < beta 23.");
+		return _("This update rebuild all of the Implicit Authorizations on nodes where the Administrators group does not have authorization to view. This state was caused by a bug in Segue beta 20 to beta 23.");
 	}
 	
 	/**
@@ -85,10 +92,19 @@ class Update010_RebuildImplicitAZsAction
 		$authZ = Services::getService("AuthZ");
 		
 		$nodes = $hierarchy->getAllNodes();
+		$status = new StatusStars(_("Checking Nodes"));
+		$status->initializeStatistics($nodes->count());
+		$this->toDo = array();
 		while ($nodes->hasNext()) {
 			$node = $nodes->next();
+			$status->updateStatistics();
 			if (!$authZ->isAuthorized($adminId, $view, $node->getId()))
-				return false;
+				$this->toDo[] = $node;
+		}
+		
+		if (count($this->toDo)) {
+			printpre(str_replace('%1', count($this->toDo), _("%1 nodes found with missing implicit AZs.")));
+			return false;
 		}
 		return true;
 	}
@@ -101,38 +117,24 @@ class Update010_RebuildImplicitAZsAction
 	 * @since 6/12/08
 	 */
 	function runUpdate () {
+		set_time_limit(600);
 		$status = new StatusStars(_("Initializing"));
-		$status->initializeStatistics(2);
+		$status->initializeStatistics(3);
 		
-		$hierarchyMgr = Services::getService("HierarchyManager");
 		$idMgr = Services::getService("IdManager");	
-		$hierarchyId = $idMgr->getId("edu.middlebury.authorization.hierarchy");
-		$hierarchy = $hierarchyMgr->getHierarchy($hierarchyId);
+		$status->updateStatistics();
 		
 		$view = $idMgr->getId("edu.middlebury.authorization.view");
 		$adminId = $this->getAdminId();
 		$status->updateStatistics();
 		
 		$authZ = Services::getService("AuthZ");
-		
-		$nodes = $hierarchy->getAllNodes();
 		$status->updateStatistics();
 		
-		$status = new StatusStars(_("Checking Nodes"));
-		$status->initializeStatistics($nodes->count());
-		
-		$toDo = array();
-		while ($nodes->hasNext()) {
-			$node = $nodes->next();
-			$status->updateStatistics();
-			if (!$authZ->isAuthorized($adminId, $view, $node->getId()))
-				$toDo[] = $node;
-		}
-		
-		$status = new StatusStars(str_replace('%1', count($toDo), _("Rebuilding Implicit AZs on %1 nodes.")));
-		$status->initializeStatistics(count($toDo));
+		$status = new StatusStars(str_replace('%1', count($this->toDo), _("Rebuilding Implicit AZs on %1 nodes.")));
+		$status->initializeStatistics(count($this->toDo));
 		$azCache = $authZ->getAuthorizationCache();
-		foreach ($toDo as $node) {
+		foreach ($this->toDo as $node) {
 			$azCache->createHierarchyImplictAZs($node, $node->getAncestorIds());
 			$status->updateStatistics();
 		}
