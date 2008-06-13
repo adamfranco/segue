@@ -70,7 +70,7 @@ class Update010_RebuildImplicitAZsAction
 	 * @since 6/12/08
 	 */
 	function getDescription () {
-		return _("This update rebuild all of the Implicit Authorizations on nodes where the Administrators group does not have authorization to view. This state was caused by a bug in Segue beta 20 to beta 23.");
+		return _("This update rebuild all of the Implicit Authorizations on nodes where the Administrators group does not have authorization to view. This state was caused by a bug in Segue beta 20 to beta 22 (fixed in beta 23).");
 	}
 	
 	/**
