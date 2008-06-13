@@ -13,7 +13,7 @@
 					<cell>
 						<FlowOrganizer id="377466----377495" showDisplayNames="false" showHistory="false" sortMethod="default" commentsEnabled="false" width="" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
 							<cell>
-								<Block id="377508" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" create_date="2008-06-12T06:43:43-04:00" create_agent="52" modify_date="2008-06-12T06:43:45-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+								<Block id="377508" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" create_date="2008-06-12T06:43:43-04:00" create_agent="52" modify_date="2008-06-12T06:43:45-04:00" blockDisplayType="Header" headingDisplayType="Heading_3">
 									<type>
 										<domain>SeguePlugins</domain>
 										<authority>edu.middlebury</authority>
@@ -41,7 +41,7 @@
 							<cell>
 								<FlowOrganizer id="377466----377523" showDisplayNames="false" showHistory="false" sortMethod="default" commentsEnabled="false" width="" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
 									<cell>
-										<Block id="377536" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" create_date="2008-06-12T06:43:43-04:00" create_agent="52" modify_date="2008-06-12T06:43:43-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+										<Block id="377536" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" create_date="2008-06-12T06:43:43-04:00" create_agent="52" modify_date="2008-06-12T06:43:43-04:00" blockDisplayType="Header" headingDisplayType="Heading_3">
 											<type>
 												<domain>SeguePlugins</domain>
 												<authority>edu.middlebury</authority>
@@ -64,7 +64,7 @@
 							<cell>
 								<FlowOrganizer id="377466----377542" showDisplayNames="false" showHistory="false" sortMethod="default" commentsEnabled="false" width="250px" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
 									<cell>
-										<Block id="377557" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" create_date="2008-06-12T06:43:43-04:00" create_agent="52" modify_date="2008-06-12T06:43:43-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+										<Block id="377557" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" create_date="2008-06-12T06:43:43-04:00" create_agent="52" modify_date="2008-06-12T06:43:43-04:00" blockDisplayType="Header" headingDisplayType="Heading_3">
 											<type>
 												<domain>SeguePlugins</domain>
 												<authority>edu.middlebury</authority>

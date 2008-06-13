@@ -481,7 +481,7 @@ class SegueClassicWizard
 				$property->setValue('false');
 		}
 		
-		print "\n<p><strong>"._("Enable Comments:")."</strong> ";
+		print "\n<p><strong>"._("Enable Discussions:")."</strong> ";
 		print "\n[[enable_comments]]";
 		if ($parent) {
 			print "\n<br/>".str_replace('%1', 

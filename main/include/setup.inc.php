@@ -92,7 +92,8 @@ $configs = array(
 					'coursemanagement',
 					'dataport',
 					'tagging',
-					'templates'
+					'templates',
+					'themes'
 				);
 
 foreach ($configs as $config) {

@@ -246,7 +246,7 @@ class ViewModeSiteVisitor
 			$harmoni->request->startNamespace("comments");
 			print RequestContext::name('top')."'>";
 			$harmoni->request->endNamespace();
-			print str_replace("%1", $cm->getNumComments($block->getAsset()), _("Comments (%1) &raquo;"));
+			print str_replace("%1", $cm->getNumComments($block->getAsset()), _("Discuss (%1 posts) &raquo;"));
 			print "</a>";
 			print "\n</div>";
 		}

@@ -66,6 +66,15 @@
 		<change author='adam' date='2008-06-13'>
 			Themes: Theme info now allows language-localization.
 		</change>
+		<new author='adam' date='2008-06-13'>
+			Themes: Sites now have a default theme different from the 'program' theme.
+		</new>
+		<change author='adam' date='2008-06-13'>
+			Comments: Renaming 'Comments' links to 'Discuss'.
+		</change>
+		<fix author='adam' date='2008-06-13'>
+			DownloadPlugin: Download plugins with no file selected now do not crash imports.
+		</fix>
 	</version>
 	<version number="2.0-beta-22" date="2008-06-09">
 		<releaseNotes>

@@ -316,7 +316,19 @@ class addAction
 					$admin->apply($ownerId, $site->getQualifierId(), true);
 			}
 		}
-			
+		
+		/*********************************************************
+		 * Set the default theme of the site.
+		 *********************************************************/
+		$themeMgr = Services::getService('GUIManager');
+		try {
+			if (defined('SEGUE_DEFAULT_SITE_THEME'))
+				$site->updateTheme($themeMgr->getTheme(SEGUE_DEFAULT_SITE_THEME));
+			else
+				$site->updateTheme($themeMgr->getDefaultTheme());
+		} catch (UnknownIdException $e) {
+			$site->updateTheme($themeMgr->getDefaultTheme());
+		}
 		
 		/*********************************************************
 		 * Log the success or failure

@@ -481,7 +481,7 @@ class CommentManager {
 		$harmoni->request->startNamespace('comments');
 		ob_start();
 		
-		print _("Comments:");
+		print _("Discussion:");
 		print "<a name='".RequestContext::name('top')."'></a>";
 		
 		$harmoni->request->endNamespace();
@@ -556,10 +556,10 @@ class CommentManager {
 			$url->setValue('create_new_comment', 'true');
 			print "\n\t<button ";
 			print "onclick=\"CommentPluginChooser.run(this, '".$url->write()."#".RequestContext::name('current')."', ''); return false;\">";
-			print _("New Comment")."</button>";
+			print _("New Post")."</button>";
 			print "\n<div class='comment_help'>";
-			print _("Comments can be edited or deleted until they are replied-to.");
-			print " (".Help::link('Comments').")";
+			print _("Discussion posts can be edited or deleted until they are replied-to.");
+			print " (".Help::link('Discussion').")";
 			print "</div>";
 			print "\n</div>";
 		}
@@ -610,7 +610,7 @@ class CommentManager {
 			
 			print "\n</div>";
 		} else {
-			print "\n<div>"._("You are not authorized to view comments.")."</div>";
+			print "\n<div>"._("You are not authorized to view discussion posts.")."</div>";
 		}
 		
 		$harmoni->request->endNamespace();
