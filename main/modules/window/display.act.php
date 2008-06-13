@@ -63,11 +63,11 @@ class displayAction
 		$yLayout = new YLayout();
 		
 		
-		$mainScreen = new Container($yLayout, BLOCK, 1);
+		$mainScreen = new Container($yLayout, BLANK, 1);
 
 		// :: login, links and commands
 		$this->headRow = $mainScreen->add(
-			new Container($xLayout, BLOCK, 1), 
+			new Container($xLayout, BLANK, 1), 
 			"100%", null, CENTER, TOP);
 			
 		
@@ -79,7 +79,8 @@ class displayAction
 				null, null, RIGHT, TOP);
 		
 
-		
+	// BACKGROUND
+		$backgroundContainer = $mainScreen->add(new Container($yLayout, BLOCK, BACKGROUND_BLOCK));
 	// :: Top Row ::
 		// The top row for the logo and status bar.
 		$headRow = new Container($xLayout, HEADER, 1);
@@ -120,12 +121,12 @@ class displayAction
 // 		$headRow->add($loginRow, null, null, RIGHT, TOP);
 // 		$loginRow->add($this->getLoginComponent(), null, null, RIGHT, TOP);
 				
-		//Add the headerRow to the mainScreen
-		$mainScreen->add($headRow, "100%", null, LEFT, TOP);
+		//Add the headerRow to the backgroundContainer
+		$backgroundContainer->add($headRow, "100%", null, LEFT, TOP);
 		
 	// :: Center Pane ::
-		$centerPane = new Container($xLayout, OTHER, 1);
-		$mainScreen->add($centerPane,"100%",null, LEFT, TOP);		
+		$centerPane = new Container($xLayout, BLANK, 1);
+		$backgroundContainer->add($centerPane,"100%",null, LEFT, TOP);		
 		
 		// Main menu
 		$mainMenu = SegueMenuGenerator::generateMainMenu($harmoni->getCurrentAction());
@@ -156,7 +157,7 @@ class displayAction
 // 			$rightColumn->add(AssetPrinter::getMultiEditOptionsBlock(), "100%", null, LEFT, TOP);
 		
 	// :: Footer ::
-		$footer = new Container (new XLayout, FOOTER, 1);
+		$footer = new Container (new XLayout, BLANK, 1);
 		
 		$helpText = "<a target='_blank' href='";
 		$helpText .= $harmoni->request->quickURL("help", "browse_help");
