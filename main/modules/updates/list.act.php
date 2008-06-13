@@ -101,7 +101,7 @@ class listAction
 		print "\n\t<tr>";
 		$date = $update->getDateIntroduced();
 		print "\n\t\t<td style='white-space: nowrap;'>".$date->asString()."</td>";
-		print "\n\t\t<td>".$update->getTitle()."</td>";
+		print "\n\t\t<td style='white-space: nowrap;'>".$update->getTitle()."</td>";
 		print "\n\t\t<td>".$update->getDescription()."</td>";
 		print "\n\t\t<td style='white-space: nowrap;'>";
 		if ($this->shouldCheckSeparate() && isset($update->checkSeparate) && $update->checkSeparate) {

@@ -47,7 +47,7 @@ class Update001_SlotCategoryAction
 	 * @since 7/9/07
 	 */
 	function getTitle () {
-		return _("Add a 'location_category' column to the segue_slot table.");
+		return _("segue_slot.location_category column");
 	}
 	
 	/**
