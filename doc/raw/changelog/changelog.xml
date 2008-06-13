@@ -17,6 +17,10 @@
 		<new author='adam' date='2008-06-12' ref='1820782' reftype='fr'>
 			Templates: Now have a choice of templates (starting points) when creating sites.
 		</new>
+		<fix author='adam' date='2008-06-13' ref='1936837' reftype='bug'>
+			UI1/UI2: When content is sorted by recent 1st or other reordering
+			methods, the '+Content' button is at the top of the container.
+		</fix>
 		<fix author='adam' date='2008-06-12' ref='1991431' reftype='bug'>
 			UI2: Fixed error where content containers could disappear when dragged
 			to the header.
