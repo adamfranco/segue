@@ -5,6 +5,7 @@
 .Heading_2 {
     border: 1px none [[BACKGROUND_BORDER]];
     margin: 0px;
+    margin-top: 11px;
 }
 
 *.Heading_2 .box01 {

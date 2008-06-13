@@ -3,7 +3,7 @@
  *********************************************************/
 
 *.Header {
-    border-bottom: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
+    border-bottom: 1px none [[BORDER_COLOR]];
     margin-bottom: 2px;
 }
 
