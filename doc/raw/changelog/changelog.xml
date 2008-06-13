@@ -26,6 +26,11 @@
 			to allow pretty-printing of configuration errors when backtrace-display
 			is off.
 		</change>
+		<fix author='adam' date='2008-06-13' ref='1991142' reftype='bug'>
+			Permissions: Fixed issue where errors in the create-site process
+			can result in inaccessible sites. Added a Segue-updater that will
+			rebuild implicit AZs for nodes with broken permissions.
+		</fix>
 	</version>
 	<version number="2.0-beta-22" date="2008-06-09">
 		<releaseNotes>
