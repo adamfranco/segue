@@ -72,16 +72,24 @@ class AttributionPrinter {
 	public function getAttributionMarkUp () {
 		
 		ob_start();
-		print "\n<div class='attribution_line'>";
-		print $this->getCreationLine();
-		print "</div>";
-		print "\n<div class='attribution_line'>";
-		print $this->getModificationLine();
-		print "</div>";
-		print "\n<div class='attribution_line'>";
-		print $this->getContributorsLine();
-		print "</div>";		
-		return ob_get_clean();
+		if ($this->shouldShowCreateDate()) {
+			print "\n<div class='attribution_line'>";
+			print $this->getCreationLine();
+			print "</div>";
+		}
+		
+		if ($this->shouldShowModificationDate()) {
+			print "\n<div class='attribution_line'>";
+			print $this->getModificationLine();
+			print "</div>";
+		}
+		
+		if ($this->shouldShowCreatorName()) {
+			print "\n<div class='attribution_line'>";
+			print $this->getContributorsLine();
+			print "</div>";		
+		}
+	return ob_get_clean();
 	}
 	
 	/**
