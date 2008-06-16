@@ -96,7 +96,7 @@ class DomExportSiteVisitor
 			$element = $this->agents->appendChild($this->doc->createElement('agent'));
 			$element->setAttribute('id', $agentId->getIdString());
 			$agentMgr = Services::getService('Agent');
-			$agent = $agentMgr->getAgent($agentId);
+			$agent = $agentMgr->getAgentOrGroup($agentId);
 			$element->appendChild($this->getCDATAElement('displayName', $agent->getDisplayName()));
 			
 			$propertiesIterator = $agent->getProperties();
