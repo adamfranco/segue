@@ -175,7 +175,7 @@ class DomExportSiteVisitor
 	 */
 	protected function getDisplayName (BlockSiteComponent $siteComponent) {
 		$string = String::withValue($siteComponent->getDisplayName());
-		$string->convertNonUtf8();
+		$string->makeUtf8();
 		
 		return $this->getCDATAElement('displayName', $string->asString());
 	}
@@ -190,7 +190,7 @@ class DomExportSiteVisitor
 	 */
 	protected function getDescription (BlockSiteComponent $siteComponent) {
 		$string = String::withValue($siteComponent->getDescription());
-		$string->convertNonUtf8();
+		$string->makeUtf8();
 		
 		return $this->getCDATAElement('description', $string->asString());
 	}
@@ -498,7 +498,7 @@ class DomExportSiteVisitor
 		$content->appendChild($this->doc->createCDATASection($plugin->getContent()));
 		
 		$string = String::withValue($plugin->getRawDescription());
-		$string->convertNonUtf8();
+		$string->makeUtf8();
 				
 		$desc = $current->appendChild($this->doc->createElement('rawDescription'));
 		$desc->appendChild($this->doc->createCDATASection($string->asString()));

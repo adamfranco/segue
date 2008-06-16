@@ -198,7 +198,7 @@ class SeguePluginVersion {
 			
 			$this->versionXml = new Harmoni_DOMDocument;
 			$xmlString = String::withValue($result->field('version_xml'));
-			$xmlString->convertNonUtf8();
+			$xmlString->makeUtf8();
 			$this->versionXml->loadXML($xmlString->asString());
 		}
 		
