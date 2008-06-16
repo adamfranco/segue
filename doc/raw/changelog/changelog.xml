@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-24" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2008-06-16' ref='1995141' reftype='fr'>
+			Configuration: Can now set a particular segue site as the default page
+			when users do not specify any parameters.
+		</new>
+	</version>
 	<version number="2.0-beta-23" date="2008-06-13">
 		<releaseNotes>
 			This release add a new template system for providing site starting-points.
