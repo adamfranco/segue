@@ -197,7 +197,9 @@ class SeguePluginVersion {
 			$result = $dbc->query($query, IMPORTER_CONNECTION);
 			
 			$this->versionXml = new Harmoni_DOMDocument;
-			$this->versionXml->loadXML($result->field('version_xml'));
+			$xmlString = String::withValue($result->field('version_xml'));
+			$xmlString->convertNonUtf8();
+			$this->versionXml->loadXML($xmlString->asString());
 		}
 		
 		return $this->versionXml;

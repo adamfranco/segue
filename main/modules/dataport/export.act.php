@@ -74,6 +74,9 @@ class exportAction
 			
 			// Validate the result
 // 			printpre(htmlentities($visitor->doc->saveXMLWithWhitespace()));
+// 			$tmp = new Harmoni_DomDocument;
+// 			$tmp->loadXML($visitor->doc->saveXMLWithWhitespace());
+// 			$tmp->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			$visitor->doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			
 			// Write out the XML
