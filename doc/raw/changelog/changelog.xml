@@ -18,6 +18,12 @@
 			Configuration: Can now set a particular segue site as the default page
 			when users do not specify any parameters.
 		</new>
+		<fix author='alex' date='2008-06-13'>
+			Display: fixed CSS so that Internet Explorer no longer displays extra space at the end of 
+			content blocks.
+		</fix>
+		
+		
 	</version>
 	<version number="2.0-beta-23" date="2008-06-13">
 		<releaseNotes>
