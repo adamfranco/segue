@@ -182,8 +182,30 @@ class EduMiddleburyRssFeedPlugin
  		} else if ($this->canView()) {
  			
  			if ($this->hasContent()) {
-				print "\n<div id=\"".$this->getId()."_feed\">Loading...</div>";
-				printpre(htmlentities($this->doc->saveXMLWithWhitespace()));
+ 				// Print our js libraries
+ 				print "\n<script type='text/javascript'>";
+ 				print "\n// <![CDATA[\n";
+ 				print file_get_contents(dirname(__FILE__).'/RssFeedReader.js');
+ 				print "\n// ]]>";
+ 				print "\n</script>";
+ 				
+ 				// Print our placeholder
+ 				$id = __CLASS__."_".$this->getId()."_feed";
+				print "\n<div id='$id'>Feed goes here.</div>";
+				
+				// Initialize display
+				print "\n<script type='text/javascript'>";
+ 				print "\n// <![CDATA[";
+ 				print "
+ 	var container = document.get_element_by_id('$id');
+ 	var reader = new RssFeedReader('".$this->_getFeedAccessUrl()."');
+ 	reader.displayIn(container);
+ 	
+ ";
+ 				print "\n// ]]>";
+ 				print "\n</script>";
+				
+				
 			} else {
 				print "\n<div class='plugin_empty'>";
 				print _("No feed has been chosen yet. ");
@@ -260,6 +282,23 @@ class EduMiddleburyRssFeedPlugin
  	}
  	
  	/**
+ 	 * Answer the url the JS functions should use to get the feed.
+ 	 * Due to browser restrictions on the location of documents loaded via the
+ 	 * XMLHTTPRequest, this may be different from the url returned by _getFeedUrl();
+ 	 * 
+ 	 * @return string
+ 	 * @access protected
+ 	 * @since 6/17/08
+ 	 */
+ 	protected function _getFeedAccessUrl () {
+ 		// For local-server urls, return the feed url
+ 		return $this->_getFeedUrl();
+ 		
+ 		// For remote urls, pass through a local data-fetching gateway.
+ 		// @todo
+ 	}
+ 	
+ 	/**
  	 * Answer the feed url
  	 * 
  	 * @return string or null
@@ -287,6 +326,9 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 6/17/08
  	 */
  	protected function _setFeedUrl ($url) {
+ 		// @todo Tokenize local URLs for portability when moving across servers and importing/exporting.
+ 		
+ 		// Reencode ampersands for XML
  		$url = str_replace('&', '&amp;', $url);
  		
  		$feedElements = $this->xpath->query('/RssFeedPlugin/RssFeed');
