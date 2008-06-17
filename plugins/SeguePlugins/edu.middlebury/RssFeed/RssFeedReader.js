@@ -140,7 +140,13 @@ function RssChannel ( element ) {
 	 */
 	RssChannel.prototype.init = function ( element ) {
 		this.element = element;
+		
+		// Load the items
 		this.items = new Array();
+		var itemElements = element.getElementsByTagName('item');
+		for (var i = 0; i < itemElements.length; i++) {
+			this.items.push(new RssItem(itemElements.item(i)));
+		}
 	}
 
 	/**
@@ -153,8 +159,7 @@ function RssChannel ( element ) {
 	 */
 	RssChannel.prototype.render = function () {
 		var container = document.createElement('div');
-		
-		container.style.border = '1px dotted'; // debugging
+		container.className = 'RssFeedReader_channel';
 		
 		var title = container.appendChild(document.createElement('h3'));
 		if (this.getUrl()) {
@@ -167,7 +172,7 @@ function RssChannel ( element ) {
 		
 		// Items
 		for (var i = 0; i < this.items.length; i++) {
-			this.container.appendChild(this.items[i].render());
+			container.appendChild(this.items[i].render());
 		}
 		
 		return container;
@@ -198,6 +203,95 @@ function RssChannel ( element ) {
 	 * @since 6/17/08
 	 */
 	RssChannel.prototype.getUrl = function () {
+		for (var i = 0; i < this.element.childNodes.length; i++) {
+			var child = this.element.childNodes[i];
+			if (child.nodeName == 'link' && child.firstChild.nodeValue) {
+				return child.firstChild.nodeValue;
+			}
+		}
+		return null;
+	}
+
+/**
+ * This class represents an RSS 
+ * 
+ * @since 6/17/08
+ * @package segue.plugins.Segue
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+function RssItem ( element ) {
+	if ( arguments.length > 0 ) {
+		this.init( element );
+	}
+}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param XMLElement
+	 * @return void
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssItem.prototype.init = function ( element ) {
+		this.element = element;
+	}
+	
+	/**
+	 * Render a DOM tree for this items's contents and return the DOMElement
+	 * 
+	 * @param <##>
+	 * @return DOMElement
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssItem.prototype.render = function () {
+		var container = document.createElement('div');
+		container.className = 'RssFeedReader_item';
+		
+		var title = container.appendChild(document.createElement('h4'));
+		if (this.getUrl()) {
+			var link = title.appendChild(document.createElement('a'));
+			link.setAttribute('href', this.getUrl());
+			link.innerHTML = this.getTitle();
+		} else {
+			title.innerHTML = this.getTitle();
+		}
+		
+		
+		
+		return container;
+	}
+	
+	/**
+	 * Answer a title for the item
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssItem.prototype.getTitle = function () {
+		for (var i = 0; i < this.element.childNodes.length; i++) {
+			var child = this.element.childNodes[i];
+			if (child.nodeName == 'title' && child.firstChild.nodeValue) {
+				return child.firstChild.nodeValue;
+			}
+		}
+		return 'Untitled';
+	}
+	
+	/**
+	 * Answer a url for the item
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssItem.prototype.getUrl = function () {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
 			if (child.nodeName == 'link' && child.firstChild.nodeValue) {
