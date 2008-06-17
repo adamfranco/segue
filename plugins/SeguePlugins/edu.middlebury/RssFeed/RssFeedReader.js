@@ -262,7 +262,8 @@ function RssItem ( element ) {
 			title.innerHTML = this.getTitle();
 		}
 		
-		
+		var desc = container.appendChild(document.createElement('div'));
+		desc.innerHTML = this.getDescription();
 		
 		return container;
 	}
@@ -295,6 +296,23 @@ function RssItem ( element ) {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
 			if (child.nodeName == 'link' && child.firstChild.nodeValue) {
+				return child.firstChild.nodeValue;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Answer a description for the item
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssItem.prototype.getDescription = function () {
+		for (var i = 0; i < this.element.childNodes.length; i++) {
+			var child = this.element.childNodes[i];
+			if (child.nodeName == 'description' && child.firstChild && child.firstChild.nodeValue) {
 				return child.firstChild.nodeValue;
 			}
 		}
