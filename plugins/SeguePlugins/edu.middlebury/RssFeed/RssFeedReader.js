@@ -1,6 +1,6 @@
 /**
  * @since 6/17/08
- * @package 
+ * @package segue.plugins.Segue
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
@@ -12,7 +12,7 @@
  * The RssFeedReader requests an RssFeed, then renders it inline in the location specified.`
  * 
  * @since 6/17/08
- * @package <##>
+ * @package segue.plugins.Segue
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
@@ -50,6 +50,159 @@ function RssFeedReader ( url ) {
 		this.loadMessageElement = this.container.appendChild(document.createElement('div', 'Loading...'));
 		this.feedElement = this.container.appendChild(document.createElement('div', ''));
 		
-		this.fetchData();
-		this.render();
+		this.loadFeed(this.url);
+	}
+	
+	/**
+	 * Fetch the feed XML file and create our objects based on it.
+	 * 
+	 * @param string url
+	 * @return void
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssFeedReader.prototype.loadFeed = function (url) {
+		var req = Harmoni.createRequest();
+		
+		if (req) {
+			// Define a variable to point at this object that will be in the
+			// scope of the request-processing function, since 'this' will (at that
+			// point) be that function.
+			var reader = this;
+
+			req.onreadystatechange = function () {
+				// only if req shows "loaded"
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200) {
+// 						alert(req.responseText);
+						reader.loadFeedXml(req.responseXML);
+					} else {
+						alert("There was a problem retrieving the XML data:\n" +
+							req.statusText);
+					}
+				}
+			} 
+			
+			req.open("GET", url, true);
+			req.send(null);
+			
+		} else {
+			alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
+		}
+	}
+	
+	/**
+	 * Create our object tree based on the feed xml document
+	 * 
+	 * @param object XMLDocument feedDoc
+	 * @return void
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssFeedReader.prototype.loadFeedXml = function (feedDoc) {
+		this.channels = new Array();
+		var channelElements = feedDoc.getElementsByTagName('channel');
+		for (var i = 0; i < channelElements.length; i++) {
+			this.channels.push(new RssChannel(channelElements.item(i)));
+		}
+		
+		for (var i = 0; i < this.channels.length; i++) {
+			this.container.appendChild(this.channels[i].render());
+		}
+	}
+	
+
+/**
+ * This class represents an RSS channel
+ * 
+ * @since 6/17/08
+ * @package segue.plugins.Segue
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+function RssChannel ( element ) {
+	if ( arguments.length > 0 ) {
+		this.init( element );
+	}
+}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param XMLElement
+	 * @return void
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssChannel.prototype.init = function ( element ) {
+		this.element = element;
+		this.items = new Array();
+	}
+
+	/**
+	 * Render a DOM tree for this channel's contents and return the DOMElement
+	 * 
+	 * @param <##>
+	 * @return DOMElement
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssChannel.prototype.render = function () {
+		var container = document.createElement('div');
+		
+		container.style.border = '1px dotted'; // debugging
+		
+		var title = container.appendChild(document.createElement('h3'));
+		if (this.getUrl()) {
+			var link = title.appendChild(document.createElement('a'));
+			link.setAttribute('href', this.getUrl());
+			link.innerHTML = this.getTitle();
+		} else {
+			title.innerHTML = this.getTitle();
+		}
+		
+		// Items
+		for (var i = 0; i < this.items.length; i++) {
+			this.container.appendChild(this.items[i].render());
+		}
+		
+		return container;
+	}
+	
+	/**
+	 * Answer a title for the channel
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssChannel.prototype.getTitle = function () {
+		for (var i = 0; i < this.element.childNodes.length; i++) {
+			var child = this.element.childNodes[i];
+			if (child.nodeName == 'title' && child.firstChild.nodeValue) {
+				return child.firstChild.nodeValue;
+			}
+		}
+		return 'Untitled';
+	}
+	
+	/**
+	 * Answer a url for the channel
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssChannel.prototype.getUrl = function () {
+		for (var i = 0; i < this.element.childNodes.length; i++) {
+			var child = this.element.childNodes[i];
+			if (child.nodeName == 'link' && child.firstChild.nodeValue) {
+				return child.firstChild.nodeValue;
+			}
+		}
+		return null;
 	}

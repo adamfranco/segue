@@ -191,7 +191,7 @@ class EduMiddleburyRssFeedPlugin
  				
  				// Print our placeholder
  				$id = __CLASS__."_".$this->getId()."_feed";
-				print "\n<div id='$id'>Feed goes here.</div>";
+				print "\n<div id='$id'></div>";
 				
 				// Initialize display
 				print "\n<script type='text/javascript'>";
