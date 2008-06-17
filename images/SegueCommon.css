@@ -603,6 +603,17 @@ table.theme_advanced_table th {
 	}
 	
 /*********************************************************
+ * RSS Feed Display plugin
+ *********************************************************/
+.RssFeedReader_item {
+	border-top: 1px dotted;
+	margin-bottom: 15px;
+}
+.RssFeedReader_item h4 {
+	margin-top: 3px;
+	margin-bottom: 5px;
+}
+/*********************************************************
  * Other
  *********************************************************/
 	.config_error {
