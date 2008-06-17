@@ -33,7 +33,11 @@
 			
 			- If no authorization to view roles, empty roles elements is added to
 			export rather than dying.
-		</fix>		
+		</fix>
+		<change author='adam' date='2008-06-16' ref='1993278' reftype='bug'>
+			UI2: Choosing admins step now uses a more user-friendly checkbox list
+			for choosing admins.
+		</change>
 	</version>
 	<version number="2.0-beta-23" date="2008-06-13">
 		<releaseNotes>
@@ -179,7 +183,7 @@
 			import, and migration operations.
 		</new>
 		<fix author='adam' date='2008-06-09'>
-			Migration: Removed hard-coded reference to the 'Middlbury LDAP' authentication
+			Migration: Removed hard-coded reference to the 'Middlebury LDAP' authentication
 			type.
 		</fix>
 		<fix author='adam' date='2008-06-09' ref='1959168' reftype='bug'>
@@ -283,7 +287,7 @@
 			located under Admin Tools --> Segue Updates.
 		</releaseNotes>
 		<change author='alex' date='2008-05-15'>
-			Themes: added a number of css classes to UI elements so these could be themed.
+			Themes: added a number of CSS classes to UI elements so these could be themed.
 		</change>
 		<new author='alex' date='2008-05-15'>
 			Themes: created a new Tabs theme with options.
