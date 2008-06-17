@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-25" date="The Future">
+		<releaseNotes>
+		
+		</releaseNotes>
+		<change author='adam' date='2008-06-17'>
+			Plugins: Manager now executes any script blocks when reloading the plugin
+			after AJAX update.
+		</change>
+	</version>
 	<version number="2.0-beta-24" date="2008-06-16">
 		<releaseNotes>
 			This release fixes a number of minor bugs that were affecting some

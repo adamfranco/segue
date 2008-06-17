@@ -234,6 +234,12 @@ abstract class SegueAjaxPlugin
 									// unset our temporary width
 									pluginElement.style.width = '';
 									pluginElement.style.height = '';
+									
+									// Execute any javascript in the element.
+									var scripts = pluginElement.getElementsByTagName("script"); 
+									for (var i=0; i< scripts.length; i++) {
+										eval(scripts[i].text);
+									}
 								} else {
 									alert("There was a problem retrieving the XML data:\\n" +
 										req.statusText);
