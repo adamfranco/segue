@@ -107,8 +107,23 @@ function RssFeedReader ( url ) {
 			this.channels.push(new RssChannel(channelElements.item(i)));
 		}
 		
+		this.render(this.options);
+	}
+	
+	/**
+	 * Render the feed with the options specified
+	 * 
+	 * @param object options
+	 * @return void
+	 * @access public
+	 * @since 6/17/08
+	 */
+	RssFeedReader.prototype.render = function (options) {
+		// Clear out previous renderings
+		this.container.innerHTML = '';
+		
 		for (var i = 0; i < this.channels.length; i++) {
-			this.container.appendChild(this.channels[i].render());
+			this.container.appendChild(this.channels[i].render(options));
 		}
 	}
 	
@@ -152,12 +167,12 @@ function RssChannel ( element ) {
 	/**
 	 * Render a DOM tree for this channel's contents and return the DOMElement
 	 * 
-	 * @param <##>
+	 * @param object options
 	 * @return DOMElement
 	 * @access public
 	 * @since 6/17/08
 	 */
-	RssChannel.prototype.render = function () {
+	RssChannel.prototype.render = function (options) {
 		var container = document.createElement('div');
 		container.className = 'RssFeedReader_channel';
 		
@@ -244,12 +259,12 @@ function RssItem ( element ) {
 	/**
 	 * Render a DOM tree for this items's contents and return the DOMElement
 	 * 
-	 * @param <##>
+	 * @param object options
 	 * @return DOMElement
 	 * @access public
 	 * @since 6/17/08
 	 */
-	RssItem.prototype.render = function () {
+	RssItem.prototype.render = function (options) {
 		var container = document.createElement('div');
 		container.className = 'RssFeedReader_item';
 		
