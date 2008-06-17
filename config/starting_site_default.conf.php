@@ -1,7 +1,9 @@
 <?php
 /**
- * 
+ * This configuration may be useful for installations which have one main site 
+ * that is used to direct users to other sites.
  *
+ * USAGE: Copy this file to starting_site.conf.php to set custom values.
  *
  *
  * @since 6/16/08
