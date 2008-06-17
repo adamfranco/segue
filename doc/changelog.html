@@ -23,7 +23,42 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-23</h2>
+<h2>Version 2.0-beta-24</h2>
+<h3>2008-06-16</h3>
+<p>This release fixes a number of minor bugs that were affecting some users and adds support for setting a particular Segue site as the default page when no particular action or site is specified.
+<br>
+<br>As of this release Segue requires that PHP be compiled with the
+<br>
+<br> *-enable-mbstring option. This option adds enhanced support for translation of strings between character sets and is needed for exporting sites.
+<br>
+<br>Segue 2.0-beta-23 uses Harmoni 1.4.0 and Polyphony 1.2.6.</p>
+<ul>
+		
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> As of this release Segue requires that PHP be compiled with the
+<br>
+<br> *-enable-mbstring option. (<em>2008-06-16 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1995141&amp;group_id=82171&amp;atid=565237">
+        			#1995141</a> Configuration: Can now set a particular segue site as the default page when users do not specify any parameters. (<em>2008-06-16 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Display: fixed CSS so that Internet Explorer no longer displays extra space at the end of content blocks. (<em>2008-06-13 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1993889&amp;group_id=82171&amp;atid=565234">
+        			#1993889</a> Export: The following issues have been fixed in site exporting:
+<br>
+<br>- ISO-8859-1 characters are now converted to UTF-8.
+<br>
+<br>- 'smart quotes' are now translated to basic quotes.
+<br>
+<br>- Roles for groups are now properly exported.
+<br>
+<br>- If no authorization to view roles, empty roles elements is added to export rather than dying. (<em>2008-06-16 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1993278&amp;group_id=82171&amp;atid=565234">
+        			#1993278</a> UI2: Choosing admins step now uses a more user-friendly checkbox list for choosing admins. (<em>2008-06-16 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-23</h2>
 <h3>2008-06-13</h3>
 <p>This release add a new template system for providing site starting-points. Several templates are shipped with Segue and administrators may install additional custom templates as needed.
 <br>
@@ -127,7 +162,7 @@
 		<li>
 <b>New feature:</b> Migration/Import/Export: Block and menu display-styles are included in export, import, and migration operations. (<em>2008-06-09 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b> Migration: Removed hard-coded reference to the 'Middlbury LDAP' authentication type. (<em>2008-06-09 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Migration: Removed hard-coded reference to the 'Middlebury LDAP' authentication type. (<em>2008-06-09 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1959168&amp;group_id=82171&amp;atid=565234">
         			#1959168</a> Portal: Classes load time partially sped up for some students. (<em>2008-06-09 - Adam Franco</em>)</li>
@@ -200,7 +235,7 @@
 <ul>
 		
 		<li>
-<b>Change:</b> Themes: added a number of css classes to UI elements so these could be themed. (<em>2008-05-15 - Alex Chapin</em>)</li>
+<b>Change:</b> Themes: added a number of CSS classes to UI elements so these could be themed. (<em>2008-05-15 - Alex Chapin</em>)</li>
 		<li>
 <b>New feature:</b> Themes: created a new Tabs theme with options. (<em>2008-05-15 - Alex Chapin</em>)</li>		
 		<li>

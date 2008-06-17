@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-23 (2008-06-13)
+Segue v. 2.0-beta-24 (2008-06-16)
 =================================
 
 What is Segue?
@@ -17,25 +17,16 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release add a new template system for providing site starting-points. Several
-templates are shipped with Segue and administrators may install additional custom
-templates as needed.
+This release fixes a number of minor bugs that were affecting some users and adds
+support for setting a particular Segue site as the default page when no particular
+action or site is specified.
 
-In addition to the new template system, a number of smaller improvements and bug
-fixes have been made.
+As of this release Segue requires that PHP be compiled with the
 
-Segue versions beta-20 through beta-22 included a bug in which cascading
-authorizations for administrators were not created when new sites were created. This
-version adds an updater that will rebuild missing authorizations. This updater can
-be found under 'Admin Tools' --> 'Segue Updates' --> 'Rebuild Implicit AZs'.
+ *-enable-mbstring option. This option adds enhanced support for translation of
+strings between character sets and is needed for exporting sites.
 
-Notable changes from Harmoni and Polyphony:
-
-* Visitor registrations are now logged.
-
-* Log-Browsing now allows for category selection and manual user selection.
-
-Segue 2.0-beta-23 uses Harmoni 1.3.5 and Polyphony 1.2.5.
+Segue 2.0-beta-23 uses Harmoni 1.4.0 and Polyphony 1.2.6.
 
 
 Downloads
@@ -75,6 +66,21 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-24 (2008-06-16)
+----------------------------------------------------
+This release fixes a number of minor bugs that were affecting some users and adds
+support for setting a particular Segue site as the default page when no particular
+action or site is specified.
+
+As of this release Segue requires that PHP be compiled with the
+
+ *-enable-mbstring option. This option adds enhanced support for translation of
+strings between character sets and is needed for exporting sites.
+
+Segue 2.0-beta-23 uses Harmoni 1.4.0 and Polyphony 1.2.6.
+
 
 
 v. 2.0-beta-23 (2008-06-13)

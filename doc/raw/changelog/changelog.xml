@@ -10,10 +10,22 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-24" date="The Future">
+	<version number="2.0-beta-24" date="2008-06-16">
 		<releaseNotes>
+			This release fixes a number of minor bugs that were affecting some
+			users and adds support for setting a particular Segue site as the default
+			page when no particular action or site is specified.
 			
+			As of this release Segue requires that PHP be compiled with the
+			--enable-mbstring option. This option adds enhanced support for translation
+			of strings between character sets and is needed for exporting sites.
+			
+			Segue 2.0-beta-23 uses Harmoni 1.4.0 and Polyphony 1.2.6.
 		</releaseNotes>
+		<important author='adam' date='2008-06-16'>
+			As of this release Segue requires that PHP be compiled with the
+			--enable-mbstring option.
+		</important>
 		<new author='adam' date='2008-06-16' ref='1995141' reftype='fr'>
 			Configuration: Can now set a particular segue site as the default page
 			when users do not specify any parameters.
