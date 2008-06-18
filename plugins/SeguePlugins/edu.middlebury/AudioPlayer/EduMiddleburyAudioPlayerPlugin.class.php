@@ -9,6 +9,10 @@
  * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
  */
 
+
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
+
+
 /**
  * A Simple Plugin for making editable blocks of text
  * 
@@ -20,7 +24,7 @@
  *
  * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
  */
-class EduMiddleburyDownloadPlugin
+class EduMiddleburyAudioPlayerPlugin
 	extends SegueAjaxPlugin
 // 	extends SeguePlugin
 {
@@ -34,7 +38,7 @@ class EduMiddleburyDownloadPlugin
  	 * @static
  	 */
  	static function getPluginDescription () {
- 		return _("The Download plugin allows you to chose a file-for-download and have a link to it displayed in a bar with a citation and a custom description. Use this plugin with audio files for creating podcasts.");
+ 		return _("The audio player plugin allows you to upload a clip that can be played in a user's browser.");
  	}
  	
  	/**
@@ -47,7 +51,7 @@ class EduMiddleburyDownloadPlugin
  	 * @static
  	 */
  	public static function getPluginDisplayName () {
- 		return _("File For Download");
+ 		return _("Audio Clip");
  	}
  	
  	/**
@@ -60,7 +64,7 @@ class EduMiddleburyDownloadPlugin
  	 * @static
  	 */
  	public static function getPluginCreators () {
- 		return array("Adam Franco");
+ 		return array("David Fouhey");
  	}
  	
  	/**
@@ -72,7 +76,7 @@ class EduMiddleburyDownloadPlugin
  	 * @static
  	 */
  	public static function getPluginVersion () {
- 		return '1.0';
+ 		return '0.1';
  	}
  	
  	/**
@@ -230,6 +234,53 @@ class EduMiddleburyDownloadPlugin
 		
 		$file = $this->getMediaFile();
 		if ($file) {
+			$url = html_entity_decode($file->getUrl());
+			$id = $this->getId();
+			$playerUrl = MYPATH."/images/player2.swf";
+		
+			print "\n\t<script type='text/javaScript' src='https://segue.middlebury.edu/audio-player/audio-player/audio-player.js'></script>";
+			print "<p>";
+			print $this->getCitation($file);
+			print "</p>";
+
+			$siteComponent = SiteDispatcher::getCurrentNode();
+//			print "<pre>";
+//			print $siteComponent->getTheme()->getCss();
+//			print "</pre>";
+//			print_r($siteComponent->getTheme()->getStylesForComponentType(BLOCK,1));
+			$th = $siteComponent->getTheme();
+			print $th->getDisplayName();
+			print "<pre>";
+			print_r(get_class_methods($th));
+			echo $th->supportsOptions();
+			print_r($th->getStylesForComponentType('Block_Background',1));
+			print "</pre>";
+			print "\n\t<object width='290' height='24' id='audioplayer{$id}' data='{$playerUrl}' type='application/x-shockwave-flash'>";
+			print "\n\t<param value='{$playerUrl}' name='movie' />";
+			print "<param value='high' name='quality' /><param value='false' name='menu' /><param value='transparent' name='wmode' />\n";		
+			print "<param value='soundFile={$url}' name='FlashVars' />\n";
+			print "</object>\n";
+
+
+	
+			print "\n<div style='float: right; margin-top: 12px;'>";
+			print "<a style='text-decoration: none; font-weight: bold;' href='{$url}'>";
+			print "<img style='width: 15px; height: 15px; border: 0px;' align='top' border='0' ";
+			print "width='15px' height='15px' src='".MYPATH."/images/downarrow.gif' alt='download'>";
+			print "&nbsp;Download</a>";
+			$size = $file->getSize();
+			if($size->value()) {
+				$sizeString = $size->asString();
+			}
+			else {
+				$sizeString = "Unknown Size";
+			}
+			print "\n\t\t<span style='font-size: 90%;'>({$sizeString})</span>";
+			print "\n\t\t</div>";
+			print "<div style='float: left;'>";
+			print "qwerty {$id}";	
+			print "</div>";
+			/*
 			print "\n";	
 
 			print "\n\t\t<div style='float: right; margin-top: 12px;'>";
@@ -264,6 +315,7 @@ class EduMiddleburyDownloadPlugin
 			print "<div style='clear: both; margin-bottom: 6px;'>";
 			print $this->getCitation($file);
 			print "\n</div>";
+			*/
 			
 			
 

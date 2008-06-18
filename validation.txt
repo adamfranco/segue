@@ -1,0 +1,25 @@
+config/validation_default.conf.php: * Argument Validation configuration. 
+config/validation_default.conf.php: * - Disable argument validation to speed execution. 
+config/validation_default.conf.php: * for "DISABLE_VALIDATION" in 
+config/validation_default.conf.php: * USAGE: Copy this file to validation.conf.php to set custom values.
+config/validation_default.conf.php: * @version $Id: validation_default.conf.php,v 1.2 2006/01/13 18:51:17 adamfranco Exp $
+config/validation_default.conf.php: * Argument Validation configuration. 
+config/validation_default.conf.php: * - Disable argument validation to speed execution. 
+config/validation_default.conf.php: * for "DISABLE_VALIDATION" in 
+config/validation_default.conf.php:define('DISABLE_VALIDATION', false);
+doc/changelog.html:<b>Bug Fix:</b> Comments: added argument validation (<em>2008-03-11 - Adam Franco</em>)</li>
+doc/changelog.html:<p>This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
+doc/changelog.html:<b>Bug Fix:</b> Fixed some HTML validation errors. (<em>2008-03-05 - Adam Franco</em>)</li>
+doc/changelog.html:<b>Bug Fix:</b> UI2: Some fixes to the Javascript syntax to aid XHTML validation. (<em>2007-12-17 - Adam Franco</em>)</li>
+doc/changelog.txt:		Comments: added argument validation
+doc/changelog.txt:This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
+doc/changelog.txt:		Fixed some HTML validation errors.
+doc/changelog.txt:		UI2: Some fixes to the Javascript syntax to aid XHTML validation.
+doc/raw/changelog/changelog.xml:			Comments: added argument validation
+doc/raw/changelog/changelog.xml:			validation errors.
+doc/raw/changelog/changelog.xml:			Fixed some HTML validation errors.
+doc/raw/changelog/changelog.xml:			UI2: Some fixes to the Javascript syntax to aid XHTML validation.
+doc/release_notes.txt:This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
+main/include/setup.inc.php:					'validation',
+main/modules/ui1/theme_options.act.php:		} catch (ValidationFailedException $e) {
+README.txt:This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
