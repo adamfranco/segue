@@ -10,6 +10,198 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-24" date="2008-06-16">
+		<releaseNotes>
+			This release fixes a number of minor bugs that were affecting some
+			users and adds support for setting a particular Segue site as the default
+			page when no particular action or site is specified.
+			
+			As of this release Segue requires that PHP be compiled with the
+			--enable-mbstring option. This option adds enhanced support for translation
+			of strings between character sets and is needed for exporting sites.
+			
+			Segue 2.0-beta-23 uses Harmoni 1.4.0 and Polyphony 1.2.6.
+		</releaseNotes>
+		<important author='adam' date='2008-06-16'>
+			As of this release Segue requires that PHP be compiled with the
+			--enable-mbstring option.
+		</important>
+		<new author='adam' date='2008-06-16' ref='1995141' reftype='fr'>
+			Configuration: Can now set a particular segue site as the default page
+			when users do not specify any parameters.
+		</new>
+		<fix author='alex' date='2008-06-13'>
+			Display: fixed CSS so that Internet Explorer no longer displays extra space at the end of 
+			content blocks.
+		</fix>
+		<fix author='adam' date='2008-06-16' ref='1993889' reftype='bug'>
+			Export: The following issues have been fixed in site exporting:
+			
+			- ISO-8859-1 characters are now converted to UTF-8.
+			
+			- 'smart quotes' are now translated to basic quotes.
+			
+			- Roles for groups are now properly exported.
+			
+			- If no authorization to view roles, empty roles elements is added to
+			export rather than dying.
+		</fix>
+		<change author='adam' date='2008-06-16' ref='1993278' reftype='bug'>
+			UI2: Choosing admins step now uses a more user-friendly checkbox list
+			for choosing admins.
+		</change>
+	</version>
+	<version number="2.0-beta-23" date="2008-06-13">
+		<releaseNotes>
+			This release add a new template system for providing site starting-points.
+			Several templates are shipped with Segue and administrators may install
+			additional custom templates as needed.
+			
+			In addition to the new template system, a number of smaller improvements
+			and bug fixes have been made.
+			
+			Segue versions beta-20 through beta-22 included a bug in which cascading
+			authorizations for administrators were not created when new sites were
+			created. This version adds an updater that will rebuild missing authorizations.
+			This updater can be found under 'Admin Tools' --> 'Segue Updates' --> 
+			'Rebuild Implicit AZs'.
+			
+			Notable changes from Harmoni and Polyphony:
+			
+			* Visitor registrations are now logged.
+			
+			* Log-Browsing now allows for category selection and manual user selection.
+			
+			Segue 2.0-beta-23 uses Harmoni 1.3.5 and Polyphony 1.2.5.
+		</releaseNotes>
+		<new author='adam' date='2008-06-12' ref='1820782' reftype='fr'>
+			Templates: Now have a choice of templates (starting points) when creating sites.
+		</new>
+		<fix author='adam' date='2008-06-13' ref='1936837' reftype='bug'>
+			UI1/UI2: When content is sorted by recent 1st or other reordering
+			methods, the '+Content' button is at the top of the container.
+		</fix>
+		<fix author='adam' date='2008-06-12' ref='1991431' reftype='bug'>
+			UI2: Fixed error where content containers could disappear when dragged
+			to the header.
+		</fix>
+		<fix author='adam' date='2008-06-13' ref='1992250' reftype='bug'>
+			UI2: Plus-symbols in text are now not lost due to Javascript not encoding them.
+		</fix>
+		<fix author='adam' date='2008-06-13'>
+			Portal/Home: Now more theme-portable. Any theme will work ok as the default.
+		</fix>
+		<change author='adam' date='2008-06-10'>
+			Configuration: Config files are now included in the main 'try' block
+			to allow pretty-printing of configuration errors when backtrace-display
+			is off.
+		</change>
+		<fix author='adam' date='2008-06-13' ref='1991142' reftype='bug'>
+			Permissions: Fixed issue where errors in the create-site process
+			can result in inaccessible sites.
+			
+			Also fixed an issue where implicit AZs were not created on initial
+			site creation.
+			
+			Added a Segue-updater that will	rebuild implicit AZs for all nodes 
+			with broken permissions.
+		</fix>
+		<change author='adam' date='2008-06-13'>
+			Themes: Theme info now allows language-localization.
+		</change>
+		<new author='adam' date='2008-06-13'>
+			Themes: Sites now have a default theme different from the 'program' theme.
+		</new>
+		<change author='alex' date='2008-06-13'>
+			Themes: Added margins to BevelBox headers so that the would line up
+			with menus.
+		</change>
+		<change author='adam' date='2008-06-13'>
+			Comments: Renaming 'Comments' links to 'Discuss'.
+		</change>
+		<fix author='adam' date='2008-06-13'>
+			DownloadPlugin: Download plugins with no file selected now do not crash imports.
+		</fix>
+	</version>
+	<version number="2.0-beta-22" date="2008-06-09">
+		<releaseNotes>
+			This release of Segue 2.0-beta adds visitor registration, theme migration,
+			and a number of bug fixes. 
+			
+			Visitor registration (disabled in the default configuration) enables
+			external users to register for visitor accounts that will all
+			them to participate in public discussions.
+			
+			Theme migration has been added to allow Segue 1 sites to retain their
+			theme settings when they are migrated to Segue 2.
+			
+			This release also includes several new themes.
+			
+			Upgrades from versions prior to beta 22 require running the appropriate 
+			updater	located under Admin Tools --> Segue Updates. As well, the 
+			authentication configuration files have change and will need to be updated.
+		</releaseNotes>
+		<important author='adam' date='2008-06-05'>
+			Configuration of authentication has changed.
+		</important>
+		<change author='adam' date='2008-06-05'>
+			Config: Reorganized authentication configuration to allow more flexibility.
+
+			Authentication configuration is now broken into 5 files:
+			 * The overall setup file that usually won't be changed - authentication_setup
+			 * The list of authentication sources - authentication_sources
+			 * A file for each authentication source - authentication-XXXX
+			
+			This new setup will allow for less confusion between the default
+			configurations of basic types and custom configurations of LDAP, secondary
+			types.
+		</change>
+		<important author='adam' date='2008-06-05'>
+			Configuration of authentication has changed.
+		</important>
+		<new author='adam' date='2008-06-05' ref='1820894' reftype='fr'>
+			Visitor Registration: Visitor registration system is now in place
+			to allow visitors to register with a Segue instance. A reCAPTCHA check
+			is done at registration-time and email-address confirmation is required
+			to help prevent abuse.
+			
+			You will need to sign up for a reCAPTCHA API key.
+		</new>
+		<fix author='alex' date='2008-05-30' >
+			View: added Holly Hack to all themes to prevent disappearing text bug in IE.
+		</fix>
+		<new author='alex' date='2008-06-05'>
+			Themes: added new TornPaper, Minimal and BevelBox themes 
+		</new>
+		<fix author='adam' date='2008-06-06' ref='1985939' reftype='bug'>
+			Comments: Fixed Javascript error that was preventing Safari users 
+			from creating comments.
+		</fix>
+		<new author='alex' date='2008-06-05'>
+			UI2: Added theme options selectors. 
+		</new>
+		<fix author='adam' date='2008-06-06' ref='1986629' reftype='bug'>
+			UI2: Now can't accidentally delete menu containers.
+		</fix>
+		<new author='alex, adam' date='2008-06-06'>
+			Migration: added support for migrating most Segue v1 themes and their options
+			into Segue v2.
+		</new>
+		<fix author='adam' date='2008-06-09'>
+			Migration/Tagging: Empty tags in original site now don't crash migration.
+		</fix>
+		<new author='adam' date='2008-06-09'>
+			Migration/Import/Export: Block and menu display-styles are included in export,
+			import, and migration operations.
+		</new>
+		<fix author='adam' date='2008-06-09'>
+			Migration: Removed hard-coded reference to the 'Middlebury LDAP' authentication
+			type.
+		</fix>
+		<fix author='adam' date='2008-06-09' ref='1959168' reftype='bug'>
+			Portal: Classes load time partially sped up for some students.
+		</fix>
+	</version>
 	<version number="2.0-beta-21.3" date="2008-05-23">
 		<releaseNotes>
 			This release fixes a few small issues found in 2.0 beta 21.2.
@@ -25,14 +217,14 @@
 			Upgrades from versions prior to beta 21 require running the appropriate 
 			updater	located under Admin Tools --> Segue Updates.
 		</releaseNotes>
-		<fix author='adam' date='2008-05-23' ref='' reftype='bug'>
+		<fix author='adam' date='2008-05-23'>
 			Config: Adding path-info URL configuration to action_default.conf.php
 		</fix>
-		<change author='alex' date='2008-05-23' ref='' reftype='fr'>
+		<change author='alex' date='2008-05-23'>
 			Plugins: Reformatted download plugin display to include download graphic
 			and adjusted spacing. 
 		</change>
-		<fix author='alex' date='2008-05-23' ref='' reftype='bug'>
+		<fix author='alex' date='2008-05-23'>
 			Themes: removed unused images from themes
 		</fix>
 	</version>
@@ -46,7 +238,7 @@
 			Upgrades from versions prior to beta 21 require running the appropriate 
 			updater	located under Admin Tools --> Segue Updates.
 		</releaseNotes>
-		<fix author='adam' date='2008-05-21' ref='' reftype='bug'>
+		<fix author='adam' date='2008-05-21'>
 			Themes: Fixed text-color on Rounded Corner theme to be more visible.
 		</fix>
 		<fix author='adam' date='2008-05-21' ref='1968671' reftype='fr'>
@@ -84,7 +276,7 @@
 			Themes: updated theme thumbnail images.
 		</fix>
 
-		<fix author='adam' date='2008-05-20' ref='' reftype='bug'>
+		<fix author='adam' date='2008-05-20'>
 			Portal: Heading bar is now properly styled like a heading.
 		</fix>
 	</version>
@@ -107,7 +299,7 @@
 			located under Admin Tools --> Segue Updates.
 		</releaseNotes>
 		<change author='alex' date='2008-05-15'>
-			Themes: added a number of css classes to UI elements so these could be themed.
+			Themes: added a number of CSS classes to UI elements so these could be themed.
 		</change>
 		<new author='alex' date='2008-05-15'>
 			Themes: created a new Tabs theme with options.
@@ -196,23 +388,23 @@
 		<change author='adam' date='2008-04-18' ref='1940489' reftype='fr'>
 			Migration: SiteExport schema now allows for tags in export.
 		</change>
-		<change author='adam' date='2008-05-01' ref='' reftype='fr'>
+		<change author='adam' date='2008-05-01'>
 			Installer: Removed transaction around initial data creation as this was
 			causing table-locking conflicts when a second (Harmoni_Db) database
 			connection was used in tandem with the DatabaseManager connection.
 		</change>
-		<change author='adam' date='2008-05-01' ref='' reftype='fr'>
+		<change author='adam' date='2008-05-01'>
 			Installer: Installation is now a 2-stage process.
     
 			This allows new installations to have their database tables
 			created in one execution cycle and then have their services configured
 			in the second cycle.
 		</change>
-		<fix author='adam' date='2008-05-01' ref='' reftype='bug'>
+		<fix author='adam' date='2008-05-01'>
 			Configuration: Added ClassesDN option to default Authentication config.
 			Also removed unneeded variables before arguments.
 		</fix>
-		<change author='adam' date='2008-05-02' ref='' reftype='fr'>
+		<change author='adam' date='2008-05-02'>
 			Portal: Speed increases for 'All Visible' and 'All Editable' folders.
 			
 			'All Visible' now doesn't need to check the entire site as view AZs cascade up.
@@ -271,14 +463,14 @@
 			Migration: Sites that contain the old 'archive posts by week' setting
 			now import without errors.
 		</fix>
-		<change author='alex' date='2008-04-09' ref='' reftype='fr'>
+		<change author='alex' date='2008-04-09'>
 			Migration: Refined site migration UI styles.
 		</change>
 		<change author='adam' date='2008-04-09' ref='1934801' reftype='bug'>
 			Request: Re-factored how context (current node id or site id) parameters
 			are passed around.
 		</change>
-		<fix author='adam' date='2008-04-10' ref='' reftype='bug'>
+		<fix author='adam' date='2008-04-10'>
 			Breadcrumbs: Now link to the view/html action if printed outside of 
 			one of the main UI modules (view, ui1, ui2), such as in the
 			versioning or tagging modules.
@@ -287,11 +479,11 @@
 			Breadcrumbs: now wraps breadcrumbs links in span tags with 'white-space: nowrap;'
 			to enable more legible output in narrow columns (with each level on its own row).
 		</change>
-		<fix author='adam' date='2008-04-10' ref='' reftype='bug'>
+		<fix author='adam' date='2008-04-10'>
 			Request: Now doesn't keep 'site' parameter in urls when using the
 			/sites/sitename form of the urls.
 		</fix>
-		<fix author='adam' date='2008-04-10' ref='' reftype='bug'>
+		<fix author='adam' date='2008-04-10'>
 			Portal: now doesn't crash when an admin or with no valid 'personal-site shortname'
 			views the portal.
 		</fix>
@@ -299,7 +491,7 @@
 			Portal: Slots for deleted sites cached in 'All Visible' list now
 			don't crash portal.
 		</fix>
-		<fix author='adam' date='2008-04-10' ref='' reftype='bug'>
+		<fix author='adam' date='2008-04-10'>
 			SiteDisplay: New algorithm for determining if parts of the site are in a
 			'header' or 'footer' role allows for more variation in the arrangement of
 			'headers' and 'footers', not requiring there to be only one-cell of each.
@@ -322,13 +514,13 @@
 			roles with globally set roles and now properly list the groups
 			causing the implicit role.
 		</fix>
-		<fix author='adam' date='2008-04-11' ref='' reftype='bug'>
+		<fix author='adam' date='2008-04-11'>
 			Comments: Now limiting plugins to a list of appropriate plugin types.
 			Not allowing system-plugins like RSS and BreadCrumbs as these would
 			break things in their attempts to traverse up the site hierarchy from 
 			the comment.
 		</fix>
-		<fix author='adam' date='2008-04-11' ref='' reftype='bug'>
+		<fix author='adam' date='2008-04-11'>
 			Plugins: If exceptions occur during plugin execution an error is displayed,
 			but the page doesn't halt.
 		</fix>

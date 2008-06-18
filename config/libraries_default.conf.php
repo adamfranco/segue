@@ -29,5 +29,12 @@ define("POLYPHONY_PATH", trim(MYPATH, '/')."/main/polyphony/");
 
 /*********************************************************
  * JPGraph location
+ * 
+ * If you are running in safe mode, you may have safe-mode
+ * restrictions preventing PHP from reading files in the 
+ * system font directories. Copy the system's truetype font
+ * directory and make it owned by your webserver user, then
+ * define the TTF_DIR constant below
  *********************************************************/
-define("JPGRAPH_DIR", MYDIR."/main/jpgraph");
+define("JPGRAPH_DIR", MYDIR."/../jpgraph");
+// define("TTF_DIR", MYDIR."/../ttf/");

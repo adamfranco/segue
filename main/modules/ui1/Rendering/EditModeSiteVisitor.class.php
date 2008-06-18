@@ -276,7 +276,17 @@ END;
 			$idManager->getId("edu.middlebury.authorization.add_children"), 
 			$organizer->getQualifierId()))
 		{
-			$childGuiComponents[] = new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null));
+			$form = new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null));
+			
+			// Add the form to the beginning of the list for custom ordering or recent last
+			if (in_array($organizer->sortMethod(), array('custom', 'create_date_asc', 'mod_date_asc')))
+			{
+				$childGuiComponents[] = $form;
+			} 
+			// For sorting modes, put it at the front of the list.
+			else {
+				array_unshift($childGuiComponents, $form);
+			}
 		}
 		
 		$resultPrinter = new ArrayResultPrinter($childGuiComponents,

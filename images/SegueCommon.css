@@ -33,6 +33,10 @@
 		font-size: 10px;
 	}
 	
+	.login .visitor_reg_link {
+		
+	}
+	
 	.seguefooter_left {
 		text-align: left;
 		font-size: 10px;
@@ -70,6 +74,10 @@
 		font-size: 12px;
 	}
 
+	.comment_byline {
+		padding-bottom: 5px;
+	}
+
 	.history {
 		float: right; 
 		clear: both;
@@ -80,6 +88,12 @@
 	.pagination_links {
 		margin-left: 10px;
 		margin-right: 10px;
+		font-size: 10px;
+	}
+	
+	.pagination_links select {
+		border: 1px solid #666666;
+		font-size: 10px;
 	}
 	
 	.attribution_line {

@@ -112,7 +112,6 @@ class ContentRssSiteVisitor
 	 */
 	function visitFlowOrganizer( FlowOrganizerSiteComponent $organizer ) {
 		$numCells = $organizer->getTotalNumberOfCells();
-		
 		for ($i = 0; $i < $numCells; $i++) {
 			$child = $organizer->getSubcomponentForCell($i);
 			$child->acceptVisitor($this);

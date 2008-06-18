@@ -109,8 +109,8 @@ class RssLinkPrinter {
 						"rss",
 						"comments",
 						array('node' => $siteComponent->getId())),
-			'label' => _('Comments RSS'),
-			'title' => _("Comments RSS for")." ".$siteComponent->getDisplayName()
+			'label' => _('Discussion RSS'),
+			'title' => _("Discussion RSS for")." ".$siteComponent->getDisplayName()
 		);
 		
 		$harmoni->request->endNamespace();

@@ -42,13 +42,97 @@ class SiteNavBlockSegue1To2Converter
 		if ($this->sourceElement->hasAttribute('mediaQuota'))
 			$element->setAttribute('mediaQuota', $this->sourceElement->getAttribute('mediaQuota'));
 		
-		$this->setSiteWidth($element);
+		$this->setSiteWidth($element);		
+		$this->setSiteTheme($element);
 		
 		// Convert links of the form [[localurl:site=xxxx&amp;section=yyyy&amp;page=zzzz]] to [[nodeurl:xxxx]]
 		$this->updateAllLocalUrls();
-		
 		return $element;
 	}
+	
+	/**
+	 * Set the theme for a site element
+	 * 
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 3/19/08
+	 */
+	protected function setSiteTheme (DOMElement $element) {
+		try {
+			$themeName = $this->getStringValue($this->getSingleSourceElement('/site/theme/name'));
+			
+			if (isset($themeName)) {
+				if ($themeName == "shadowbox") {
+					$themeName = "ShadowBox";
+				} else if ($themeName == "default") {
+					$themeName = "Tabs";
+				} else if ($themeName == "roundedcorners") {
+					$themeName = "RoundedCorners";
+				} else if ($themeName == "tornpaper") {
+					$themeName = "TornPaper";
+				} else if ($themeName == "minimal") {
+					$themeName = "Minimal";
+				} else if ($themeName == "beveledge") {
+					$themeName = "BevelBox";
+				} else {
+					$themeName = "BevelBox";
+				}
+				$themeElement = $this->doc->createElement('theme');
+				$themeElement->setAttribute('id', $themeName);
+				
+				$navOrgElements = $this->xpath->query("./NavOrganizer", $element);
+				$element->insertBefore($themeElement, $navOrgElements->item(0));
+				
+				try {
+					$value = $this->getStringValue($this->getSingleSourceElement('/site/theme/color_scheme'));
+					if ($value) {
+						$optionElement = $themeElement->appendChild($this->doc->createElement('theme_option_choice', $value));
+						$optionElement->setAttribute("id", 'fg_color');						
+					}
+				} catch (MissingNodeException $e) {
+				}
+				
+				try {
+					$value = $this->getStringValue($this->getSingleSourceElement('/site/theme/background_color'));
+					if ($value) {
+						$optionElement = $themeElement->appendChild($this->doc->createElement('theme_option_choice', $value));
+						$optionElement->setAttribute("id", 'bg_color');						
+					}
+				} catch (MissingNodeException $e) {
+				}
+				
+				try {
+					$value = $this->getStringValue($this->getSingleSourceElement('/site/theme/border_style'));
+					if ($value) {
+						$optionElement = $themeElement->appendChild($this->doc->createElement('theme_option_choice', $value));
+						$optionElement->setAttribute("id", 'border_style');						
+					}
+				} catch (MissingNodeException $e) {
+				}
+				
+				try {
+					$value = $this->getStringValue($this->getSingleSourceElement('/site/theme/border_color'));
+					if ($value) {
+						$optionElement = $themeElement->appendChild($this->doc->createElement('theme_option_choice', $value));
+						$optionElement->setAttribute("id", 'border_color');						
+					}
+				} catch (MissingNodeException $e) {
+				}
+				
+				try {
+					$value = $this->getStringValue($this->getSingleSourceElement('/site/theme/link_color'));
+					if ($value) {
+						$optionElement = $themeElement->appendChild($this->doc->createElement('theme_option_choice', $value));
+						$optionElement->setAttribute("id", 'link_color');						
+					}
+				} catch (MissingNodeException $e) {
+				}				
+			}
+		} catch (MissingNodeException $e) {
+		}
+	}
+
 	
 	/**
 	 * Add our Id to the output element
@@ -147,8 +231,10 @@ class SiteNavBlockSegue1To2Converter
 		$org->setAttribute('rows', 0);
 		$org->setAttribute('cols', 1);
 		$cell = $org->appendChild($this->doc->createElement('cell'));
-		if (strlen(trim($html)))
-			$cell->appendChild($this->createTextBlockForHtml($html, 'header'));
+		if (strlen(trim($html))) {
+			$block = $cell->appendChild($this->createTextBlockForHtml($html, 'header'));
+			$block->setAttribute('blockDisplayType', 'Header');
+		}
 		
 		// Layout Organizer for breadcrumbs and RSS
 		$cell = $outerHeaderLayout->appendChild($this->doc->createElement('cell'));
@@ -171,7 +257,8 @@ class SiteNavBlockSegue1To2Converter
 		
 		$converter = new BreadcrumbsBlockSegue1To2Converter($this->sourceElement, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 		$cell = $org->appendChild($this->doc->createElement('cell'));
-		$cell->appendChild($converter->convert());
+		$block = $cell->appendChild($converter->convert());
+		$block->setAttribute('blockDisplayType', 'Header');
 		
 		// Add the RSS Links
 		$cell = $statusLayout->appendChild($this->doc->createElement('cell'));
@@ -188,7 +275,8 @@ class SiteNavBlockSegue1To2Converter
 		
 		$converter = new RssLinksBlockSegue1To2Converter($this->sourceElement, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 		$cell = $org->appendChild($this->doc->createElement('cell'));
-		$cell->appendChild($converter->convert());
+		$block = $cell->appendChild($converter->convert());
+		$block->setAttribute('blockDisplayType', 'Header');
 				
 		/*********************************************************
 		 * Central content area
@@ -212,8 +300,10 @@ class SiteNavBlockSegue1To2Converter
 		$org->setAttribute('cols', 1);
 		$org->setAttribute('showDisplayNames', 'false');
 		$cell = $org->appendChild($this->doc->createElement('cell'));
-		if (strlen(trim($html)))
-			$cell->appendChild($this->createTextBlockForHtml($html, 'footer'));
+		if (strlen(trim($html))) {
+			$block = $cell->appendChild($this->createTextBlockForHtml($html, 'footer'));
+			$block->setAttribute('blockDisplayType', 'Footer');
+		}
 	}
 	
 	/**

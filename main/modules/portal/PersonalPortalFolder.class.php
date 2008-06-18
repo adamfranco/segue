@@ -104,6 +104,7 @@ class PersonalPortalFolder
 			if (strlen($message))
 				print "\n\t<div class='error'>".$message."</div>";
 			print "\n</form>\n";
+			print "\n\t<div style='clear: both;'></div>";
 			$harmoni->request->endNamespace();
 			return ob_get_clean();
 		}

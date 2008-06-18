@@ -43,14 +43,16 @@ class DomImportSiteVisitor
 	 * @since 1/22/08
 	 */
 	public function __construct (DOMDocument $sourceDoc, $mediaPath, SiteDirector $director) {
-		if (!is_dir($mediaPath))
-			throw new Exception("'$mediaPath' does not exist for import.");
-		if (!is_readable($mediaPath))
-			throw new Exception("'$mediaPath' is not readable for import.");
+		if (!is_null($mediaPath)) {
+			if (!is_dir($mediaPath))
+				throw new Exception("'$mediaPath' does not exist for import.");
+			if (!is_readable($mediaPath))
+				throw new Exception("'$mediaPath' is not readable for import.");
+			$this->mediaPath = $mediaPath;
+		}
 		
 		$this->doc = $sourceDoc;
 		$this->xpath = new DOMXPath($this->doc);
-		$this->mediaPath = $mediaPath;
 		$this->director = $director;
 		$this->menusForUpdate = array();
 		$this->pluginsForUpdate = array();
@@ -171,19 +173,28 @@ class DomImportSiteVisitor
 		
 		$site = $this->createComponent($siteElement, null);
 		
-		$roleMgr = SegueRoleManager::instance();
-		$adminRole = $roleMgr->getRole('admin');
-		
-		if ($this->makeUserAdmin)
-			$adminRole->applyToUser($site->getQualifierId(), true);
-		
-		// Give the admin role to others specified
-		foreach ($this->admins as $agentId)
-			$adminRole->apply($agentId, $site->getQualifierId());
-		
-		$this->importComponent($siteElement, $site);
-		$this->updateMenuTargets();
-		$this->updateStoredIds();
+		try {		
+			// Apply the theme
+			$this->applyTheme($site);
+			
+			$roleMgr = SegueRoleManager::instance();
+			$adminRole = $roleMgr->getRole('admin');
+			
+			if ($this->makeUserAdmin)
+				$adminRole->applyToUser($site->getQualifierId(), true);
+			
+			// Give the admin role to others specified
+			foreach ($this->admins as $agentId)
+				$adminRole->apply($agentId, $site->getQualifierId(), true);
+			
+			$this->importComponent($siteElement, $site);
+			$this->updateMenuTargets();
+			$this->updateStoredIds();
+		} catch (Exception $e) {
+			// Ensure that we don't have a partially created site floating out there.
+			$this->director->deleteSiteComponent($site);
+			throw $e;
+		}
 		return $site;
 	}
 	
@@ -209,6 +220,65 @@ class DomImportSiteVisitor
 		}
 		
 		return $this->mediaQuota;
+	}
+	
+	/**
+	 * Apply the theme if one is defined.
+	 * 
+	 * @param object SiteNavBlockSiteComponent $site
+	 * @return void
+	 * @access protected
+	 * @since 6/6/08
+	 */
+	protected function applyTheme (SiteNavBlockSiteComponent $site) {
+		// Get the theme specified in the source
+		$themeElements = $this->xpath->evaluate('/Segue2/SiteNavBlock/theme');
+		if ($themeElements->length) {
+			$themeElement = $themeElements->item(0);
+			
+			$themeMgr = Services::getService("GUIManager");
+				
+			try {
+				$theme = $themeMgr->getTheme($themeElement->getAttribute("id"));
+			} catch (UnknownIdException $e) {
+				return null; // Give up and use default theme.
+			}
+			
+			if ($theme->supportsOptions()) {
+				$optSession = $theme->getOptionsSession();
+				
+				$optionChoices = $this->xpath->evaluate('./theme_option_choice', $themeElement);
+				foreach ($optionChoices as $choiceElement) {
+					$this->applyThemeOption($optSession, $choiceElement); 
+				}
+			}
+											
+			// update theme with options from source
+			$site->updateTheme($theme);	
+		}
+	}
+	
+	/**
+	 * Apply a theme option to an option Session
+	 * 
+	 * @param object Harmoni_Gui2_ThemeOptionsInterface $optSession
+	 * @param DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 6/6/08
+	 */
+	protected function applyThemeOption (Harmoni_Gui2_ThemeOptionsInterface $optSession, DOMElement $element) {
+		try {
+			$option = $optSession->getOption($element->getAttribute("id"));
+		} catch (UnknownIdException $e) {
+			return; // just skip
+		}
+		
+// 		try {
+			$option->setValue($element->nodeValue);
+// 		} catch (OperationFailedException $e) {
+// 			return; // just skip
+// 		}
 	}
 	
 	/**
@@ -292,6 +362,8 @@ class DomImportSiteVisitor
 		$this->setAssetDates($siteComponent->getAsset(), $element);
 		
 		$this->applyRoles($siteComponent, $element);
+		
+		$this->applyBlockDisplayTypes($siteComponent, $element);
 	}
 	
 	/**
@@ -407,6 +479,9 @@ class DomImportSiteVisitor
 	 */
 	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) {
 		$this->visitFlowOrganizer($siteComponent);
+		
+		$element = $this->getElementForNewId($siteComponent->getId());
+		$this->applyMenuDisplayType($siteComponent, $element);
 		
 		// Queue up the menu for target updating. This must happen after the rest of the
 		// site is imported so that all new_ids are set.
@@ -763,6 +838,9 @@ class DomImportSiteVisitor
 	 * @since 1/24/08
 	 */
 	protected function addFileRecord (Asset $asset, DOMElement $element) {
+		if (!isset($this->mediaPath))
+			throw new OperationFailedException("Trying to import a file, but no media path is specified.");
+			
 		$idManager = Services::getService("Id");
 		$record = $asset->createRecord($idManager->getId("FILE"));
 		$element->setAttribute('new_id', $record->getId()->getIdString());
@@ -1237,6 +1315,36 @@ class DomImportSiteVisitor
 			$idMap[$element->getAttribute('id')] = $element->getAttribute('new_id');
 		
 		return $idMap;
+	}
+	
+	/**
+	 * Add the block display type and heading display type to a block
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 6/9/08
+	 */
+	protected function applyBlockDisplayTypes (BlockSiteComponent $siteComponent, DOMElement $element) {
+		if ($element->hasAttribute('blockDisplayType'))
+			$siteComponent->setDisplayType($element->getAttribute('blockDisplayType'));
+		if ($element->hasAttribute('headingDisplayType'))
+			$siteComponent->setHeadingDisplayType($element->getAttribute('headingDisplayType'));
+	}
+	
+	/**
+	 * Add the menu display type to a menu
+	 * 
+	 * @param object MenuOrganizerSiteComponent $siteComponent
+	 * @param object DOMElement $element
+	 * @return void
+	 * @access protected
+	 * @since 6/9/08
+	 */
+	protected function applyMenuDisplayType (MenuOrganizerSiteComponent $siteComponent, DOMElement $element) {
+		if ($element->hasAttribute('menuDisplayType'))
+			$siteComponent->setDisplayType($element->getAttribute('menuDisplayType'));
 	}
 }
 

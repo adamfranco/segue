@@ -64,12 +64,14 @@ require_once(OKI2."/osid/OsidContext.php");
 $configs = array(	
 					'validation',
 					'debug',
+					'starting_site',
 					'harmoni',
 					'action',
 					'database',
 					'id',
 					'logging',
-					'authentication',
+					'recaptcha',
+					'authentication_setup',
 					'gui',
 					'language',
 					'help',
@@ -90,7 +92,9 @@ $configs = array(
 					'grading',
 					'coursemanagement',
 					'dataport',
-					'tagging'
+					'tagging',
+					'templates',
+					'themes'
 				);
 
 foreach ($configs as $config) {
@@ -98,4 +102,13 @@ foreach ($configs as $config) {
 		require_once (MYDIR.'/config/'.$config.'.conf.php');
 	else
 		require_once (MYDIR.'/config/'.$config.'_default.conf.php');
+}
+
+/*********************************************************
+ * Set our starting site if needed.
+ *********************************************************/
+if (defined('SEGUE_STARTING_SITE') && SEGUE_STARTING_SITE) {
+	$harmoni->config->set("defaultModule","view");
+	$harmoni->config->set("defaultAction","html");
+	$harmoni->config->set("defaultParams",array("site" => SEGUE_STARTING_SITE));
 }

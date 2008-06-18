@@ -1,14 +1,17 @@
 /*********************************************************
- * Block 3
+ * Block - Sidebar
  *********************************************************/
 
 *.block3 {
+    margin-right: 10px;
+    margin-left: 10px;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 10px;
     padding-bottom: 10px;
     text-align: left;
 }
-    *.block3Content {
 
+*.block3 .Content {
+    height: 1%;
+    padding: 0px;
 }

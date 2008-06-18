@@ -150,7 +150,7 @@ class PluginManager {
 				$this->_loadPluginFiles($type);
 				$class = $this->getPluginClass($type);
 				
-				eval('$description = '.$class.'::getPluginDescription();');
+				$description = call_user_func(array($class, 'getPluginDescription'));
 				$array[$key] = new Type(
 					$type->getDomain(),
 					$type->getAuthority(),
@@ -756,6 +756,15 @@ class PluginManager {
 			$pluginType = new Type($result['type_domain'],
 						 $result['type_authority'],
 						 $result['type_keyword']);
+			
+			$class = $this->getPluginClass($pluginType);
+			if (class_exists($class)) {
+				$pluginType = new Type(
+					$pluginType->getDomain(),
+					$pluginType->getAuthority(),
+					$pluginType->getKeyword(),
+					call_user_func(array($class, 'getPluginDescription')));
+			}
 			
 			if ($result['type_enabled'] == 1)
 				$this->_enabledPlugins[HarmoniType::typeToString($pluginType)] = $pluginType;

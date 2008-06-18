@@ -14,8 +14,10 @@
  */
 
 // :: set up the $harmoni object :: 
+	// These parameters may be automatically overridden by setting a starting site in starting_site.conf.php
 	$harmoni->config->set("defaultModule","home");
 	$harmoni->config->set("defaultAction","welcome");
+	
 	$harmoni->config->set("programTitle","Segue");
 	$harmoni->config->set("sessionName","SEGUE_SESSID");
 	$harmoni->config->set("sessionUseCookies",true);

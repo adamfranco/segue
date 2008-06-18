@@ -46,6 +46,15 @@ interface MenuOrganizerSiteComponent
 	 * @since 5/12/08
 	 */
 	public function setDisplayType ($displayType);
+	
+	/**
+	 * Answer true if this is the top-level menu.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 6/6/08
+	 */
+	public function isRootMenu ();
 
 }
 

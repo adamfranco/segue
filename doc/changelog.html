@@ -23,7 +23,151 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-21.3</h2>
+<h2>Version 2.0-beta-24</h2>
+<h3>2008-06-16</h3>
+<p>This release fixes a number of minor bugs that were affecting some users and adds support for setting a particular Segue site as the default page when no particular action or site is specified.
+<br>
+<br>As of this release Segue requires that PHP be compiled with the
+<br>
+<br> *-enable-mbstring option. This option adds enhanced support for translation of strings between character sets and is needed for exporting sites.
+<br>
+<br>Segue 2.0-beta-23 uses Harmoni 1.4.0 and Polyphony 1.2.6.</p>
+<ul>
+		
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> As of this release Segue requires that PHP be compiled with the
+<br>
+<br> *-enable-mbstring option. (<em>2008-06-16 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1995141&amp;group_id=82171&amp;atid=565237">
+        			#1995141</a> Configuration: Can now set a particular segue site as the default page when users do not specify any parameters. (<em>2008-06-16 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Display: fixed CSS so that Internet Explorer no longer displays extra space at the end of content blocks. (<em>2008-06-13 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1993889&amp;group_id=82171&amp;atid=565234">
+        			#1993889</a> Export: The following issues have been fixed in site exporting:
+<br>
+<br>- ISO-8859-1 characters are now converted to UTF-8.
+<br>
+<br>- 'smart quotes' are now translated to basic quotes.
+<br>
+<br>- Roles for groups are now properly exported.
+<br>
+<br>- If no authorization to view roles, empty roles elements is added to export rather than dying. (<em>2008-06-16 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1993278&amp;group_id=82171&amp;atid=565234">
+        			#1993278</a> UI2: Choosing admins step now uses a more user-friendly checkbox list for choosing admins. (<em>2008-06-16 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-23</h2>
+<h3>2008-06-13</h3>
+<p>This release add a new template system for providing site starting-points. Several templates are shipped with Segue and administrators may install additional custom templates as needed.
+<br>
+<br>In addition to the new template system, a number of smaller improvements and bug fixes have been made.
+<br>
+<br>Segue versions beta-20 through beta-22 included a bug in which cascading authorizations for administrators were not created when new sites were created. This version adds an updater that will rebuild missing authorizations. This updater can be found under 'Admin Tools' --&gt; 'Segue Updates' --&gt; 'Rebuild Implicit AZs'.
+<br>
+<br>Notable changes from Harmoni and Polyphony:
+<br>
+<br>* Visitor registrations are now logged.
+<br>
+<br>* Log-Browsing now allows for category selection and manual user selection.
+<br>
+<br>Segue 2.0-beta-23 uses Harmoni 1.3.5 and Polyphony 1.2.5.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820782&amp;group_id=82171&amp;atid=565237">
+        			#1820782</a> Templates: Now have a choice of templates (starting points) when creating sites. (<em>2008-06-12 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1936837&amp;group_id=82171&amp;atid=565234">
+        			#1936837</a> UI1/UI2: When content is sorted by recent 1st or other reordering methods, the '+Content' button is at the top of the container. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1991431&amp;group_id=82171&amp;atid=565234">
+        			#1991431</a> UI2: Fixed error where content containers could disappear when dragged to the header. (<em>2008-06-12 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1992250&amp;group_id=82171&amp;atid=565234">
+        			#1992250</a> UI2: Plus-symbols in text are now not lost due to Javascript not encoding them. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Portal/Home: Now more theme-portable. Any theme will work ok as the default. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Configuration: Config files are now included in the main 'try' block to allow pretty-printing of configuration errors when backtrace-display is off. (<em>2008-06-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1991142&amp;group_id=82171&amp;atid=565234">
+        			#1991142</a> Permissions: Fixed issue where errors in the create-site process can result in inaccessible sites.
+<br>
+<br>Also fixed an issue where implicit AZs were not created on initial site creation.
+<br>
+<br>Added a Segue-updater that willrebuild implicit AZs for all nodes with broken permissions. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Themes: Theme info now allows language-localization. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Themes: Sites now have a default theme different from the 'program' theme. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Themes: Added margins to BevelBox headers so that the would line up with menus. (<em>2008-06-13 - Alex Chapin</em>)</li>
+		<li>
+<b>Change:</b> Comments: Renaming 'Comments' links to 'Discuss'. (<em>2008-06-13 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> DownloadPlugin: Download plugins with no file selected now do not crash imports. (<em>2008-06-13 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-22</h2>
+<h3>2008-06-09</h3>
+<p>This release of Segue 2.0-beta adds visitor registration, theme migration, and a number of bug fixes. 
+<br>
+<br>Visitor registration (disabled in the default configuration) enables external users to register for visitor accounts that will all them to participate in public discussions.
+<br>
+<br>Theme migration has been added to allow Segue 1 sites to retain their theme settings when they are migrated to Segue 2.
+<br>
+<br>This release also includes several new themes.
+<br>
+<br>Upgrades from versions prior to beta 22 require running the appropriate updaterlocated under Admin Tools --&gt; Segue Updates. As well, the authentication configuration files have change and will need to be updated.</p>
+<ul>
+		
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Configuration of authentication has changed. (<em>2008-06-05 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Config: Reorganized authentication configuration to allow more flexibility.
+<br>
+<br>Authentication configuration is now broken into 5 files:
+<br>
+<br> * The overall setup file that usually won't be changed - authentication_setup
+<br>
+<br> * The list of authentication sources - authentication_sources
+<br>
+<br> * A file for each authentication source - authentication-XXXX
+<br>
+<br>This new setup will allow for less confusion between the default configurations of basic types and custom configurations of LDAP, secondary types. (<em>2008-06-05 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Configuration of authentication has changed. (<em>2008-06-05 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820894&amp;group_id=82171&amp;atid=565237">
+        			#1820894</a> Visitor Registration: Visitor registration system is now in place to allow visitors to register with a Segue instance. A reCAPTCHA check is done at registration-time and email-address confirmation is required to help prevent abuse.
+<br>
+<br>You will need to sign up for a reCAPTCHA API key. (<em>2008-06-05 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> View: added Holly Hack to all themes to prevent disappearing text bug in IE. (<em>2008-05-30 - Alex Chapin</em>)</li>
+		<li>
+<b>New feature:</b> Themes: added new TornPaper, Minimal and BevelBox themes (<em>2008-06-05 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1985939&amp;group_id=82171&amp;atid=565234">
+        			#1985939</a> Comments: Fixed Javascript error that was preventing Safari users from creating comments. (<em>2008-06-06 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> UI2: Added theme options selectors. (<em>2008-06-05 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1986629&amp;group_id=82171&amp;atid=565234">
+        			#1986629</a> UI2: Now can't accidentally delete menu containers. (<em>2008-06-06 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Migration: added support for migrating most Segue v1 themes and their options into Segue v2. (<em>2008-06-06 - Alex Chapin, Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration/Tagging: Empty tags in original site now don't crash migration. (<em>2008-06-09 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Migration/Import/Export: Block and menu display-styles are included in export, import, and migration operations. (<em>2008-06-09 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Removed hard-coded reference to the 'Middlebury LDAP' authentication type. (<em>2008-06-09 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1959168&amp;group_id=82171&amp;atid=565234">
+        			#1959168</a> Portal: Classes load time partially sped up for some students. (<em>2008-06-09 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-21.3</h2>
 <h3>2008-05-23</h3>
 <p>This release fixes a few small issues found in 2.0 beta 21.2.
 <br>
@@ -35,14 +179,11 @@
 <ul>
 		
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> Config: Adding path-info URL configuration to action_default.conf.php (<em>2008-05-23 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Config: Adding path-info URL configuration to action_default.conf.php (<em>2008-05-23 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
-        			#</a> Plugins: Reformatted download plugin display to include download graphic and adjusted spacing. (<em>2008-05-23 - Alex Chapin</em>)</li>
+<b>Change:</b> Plugins: Reformatted download plugin display to include download graphic and adjusted spacing. (<em>2008-05-23 - Alex Chapin</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> Themes: removed unused images from themes (<em>2008-05-23 - Alex Chapin</em>)</li>
+<b>Bug Fix:</b> Themes: removed unused images from themes (<em>2008-05-23 - Alex Chapin</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-21.2</h2>
 <h3>2008-05-22</h3>
@@ -54,8 +195,7 @@
 <ul>
 		
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> Themes: Fixed text-color on Rounded Corner theme to be more visible. (<em>2008-05-21 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Themes: Fixed text-color on Rounded Corner theme to be more visible. (<em>2008-05-21 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1968671&amp;group_id=82171&amp;atid=565237">
         			#1968671</a> Portal: Speed improvements
@@ -81,8 +221,7 @@
 <b>Bug Fix:</b> Themes: updated theme thumbnail images. (<em>2008-05-20 - Alex Chapin</em>)</li>
 
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> Portal: Heading bar is now properly styled like a heading. (<em>2008-05-20 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Portal: Heading bar is now properly styled like a heading. (<em>2008-05-20 - Adam Franco</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-21</h2>
 <h3>2008-05-20</h3>
@@ -96,7 +235,7 @@
 <ul>
 		
 		<li>
-<b>Change:</b> Themes: added a number of css classes to UI elements so these could be themed. (<em>2008-05-15 - Alex Chapin</em>)</li>
+<b>Change:</b> Themes: added a number of CSS classes to UI elements so these could be themed. (<em>2008-05-15 - Alex Chapin</em>)</li>
 		<li>
 <b>New feature:</b> Themes: created a new Tabs theme with options. (<em>2008-05-15 - Alex Chapin</em>)</li>		
 		<li>
@@ -153,17 +292,13 @@
 <b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940489&amp;group_id=82171&amp;atid=565237">
         			#1940489</a> Migration: SiteExport schema now allows for tags in export. (<em>2008-04-18 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
-        			#</a> Installer: Removed transaction around initial data creation as this was causing table-locking conflicts when a second (Harmoni_Db) database connection was used in tandem with the DatabaseManager connection. (<em>2008-05-01 - Adam Franco</em>)</li>
+<b>Change:</b> Installer: Removed transaction around initial data creation as this was causing table-locking conflicts when a second (Harmoni_Db) database connection was used in tandem with the DatabaseManager connection. (<em>2008-05-01 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
-        			#</a> Installer: Installation is now a 2-stage process. This allows new installations to have their database tables created in one execution cycle and then have their services configured in the second cycle. (<em>2008-05-01 - Adam Franco</em>)</li>
+<b>Change:</b> Installer: Installation is now a 2-stage process. This allows new installations to have their database tables created in one execution cycle and then have their services configured in the second cycle. (<em>2008-05-01 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> Configuration: Added ClassesDN option to default Authentication config. Also removed unneeded variables before arguments. (<em>2008-05-01 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Configuration: Added ClassesDN option to default Authentication config. Also removed unneeded variables before arguments. (<em>2008-05-01 - Adam Franco</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
-        			#</a> Portal: Speed increases for 'All Visible' and 'All Editable' folders.
+<b>Change:</b> Portal: Speed increases for 'All Visible' and 'All Editable' folders.
 <br>
 <br>'All Visible' now doesn't need to check the entire site as view AZs cascade up. 'All Editable' now first checks view AZ before doing the more expensive check of the entire site for edit AZ. (<em>2008-05-02 - Adam Franco</em>)</li>
 	</ul>
@@ -183,9 +318,21 @@
 <h3>2008-04-11</h3>
 <p>This release fixes a number of bugs and adds the ability to tag content.
 <br>
-<br>Notable user-facing changes: - Tagging system. - Minor speed improvements to the portal - Refined Migration UI. - Role-Setting now works. - Migration tools now work with more sites.
+<br>Notable user-facing changes:
 <br>
-<br>Notable back-end changes: - New Harmoni_Db system allows for usage of prepared statements for improved database performance.
+<br> * Tagging system.
+<br>
+<br> * Minor speed improvements to the portal
+<br>
+<br> * Refined Migration UI.
+<br>
+<br> * Role-Setting now works.
+<br>
+<br> * Migration tools now work with more sites.
+<br>
+<br>Notable back-end changes:
+<br>
+<br> * New Harmoni_Db system allows for usage of prepared statements for improved database performance.
 <br>
 <br>Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0.</p>
 <ul>
@@ -209,28 +356,23 @@
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1938743&amp;group_id=82171&amp;atid=565234">
         			#1938743</a> Migration: Sites that contain the old 'archive posts by week' setting now import without errors. (<em>2008-04-09 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
 		<li>
-<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565237">
-        			#</a> Migration: Refined site migration UI styles. (<em>2008-04-09 - Alex Chapin</em>)</li>
+<b>Change:</b> Migration: Refined site migration UI styles. (<em>2008-04-09 - Alex Chapin</em>)</li>
 		<li>
 <b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1934801&amp;group_id=82171&amp;atid=565234">
         			#1934801</a> Request: Re-factored how context (current node id or site id) parameters are passed around. (<em>2008-04-09 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> Breadcrumbs: Now link to the view/html action if printed outside of one of the main UI modules (view, ui1, ui2), such as in the versioning or tagging modules. (<em>2008-04-10 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Breadcrumbs: Now link to the view/html action if printed outside of one of the main UI modules (view, ui1, ui2), such as in the versioning or tagging modules. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Breadcrumbs: now wraps breadcrumbs links in span tags with 'white-space: nowrap;' to enable more legible output in narrow columns (with each level on its own row). (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> Request: Now doesn't keep 'site' parameter in urls when using the /sites/sitename form of the urls. (<em>2008-04-10 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Request: Now doesn't keep 'site' parameter in urls when using the /sites/sitename form of the urls. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> Portal: now doesn't crash when an admin or with no valid 'personal-site shortname' views the portal. (<em>2008-04-10 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Portal: now doesn't crash when an admin or with no valid 'personal-site shortname' views the portal. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1933715&amp;group_id=82171&amp;atid=565234">
         			#1933715</a> Portal: Slots for deleted sites cached in 'All Visible' list now don't crash portal. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> SiteDisplay: New algorithm for determining if parts of the site are in a 'header' or 'footer' role allows for more variation in the arrangement of 'headers' and 'footers', not requiring there to be only one-cell of each. (<em>2008-04-10 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> SiteDisplay: New algorithm for determining if parts of the site are in a 'header' or 'footer' role allows for more variation in the arrangement of 'headers' and 'footers', not requiring there to be only one-cell of each. (<em>2008-04-10 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1938840&amp;group_id=82171&amp;atid=565234">
         			#1938840</a> SiteMap: Fixed HTML errors. (<em>2008-04-10 - Adam Franco</em>)</li>
@@ -247,11 +389,9 @@
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940261&amp;group_id=82171&amp;atid=565234">
         			#1940261</a> Roles: The '?' info links for disabled roles now do not confuse group-caused roles with globally set roles and now properly list the groups causing the implicit role. (<em>2008-04-11 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> Comments: Now limiting plugins to a list of appropriate plugin types. Not allowing system-plugins like RSS and BreadCrumbs as these would break things in their attempts to traverse up the site hierarchy from the comment. (<em>2008-04-11 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Comments: Now limiting plugins to a list of appropriate plugin types. Not allowing system-plugins like RSS and BreadCrumbs as these would break things in their attempts to traverse up the site hierarchy from the comment. (<em>2008-04-11 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=&amp;group_id=82171&amp;atid=565234">
-        			#</a> Plugins: If exceptions occur during plugin execution an error is displayed, but the page doesn't halt. (<em>2008-04-11 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> Plugins: If exceptions occur during plugin execution an error is displayed, but the page doesn't halt. (<em>2008-04-11 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1940459&amp;group_id=82171&amp;atid=565234">
         			#1940459</a> Comments: Download plugin now works in comments. (<em>2008-04-11 - Adam Franco</em>)</li>
@@ -260,7 +400,15 @@
 <h3>2008-04-03</h3>
 <p>This release fixes a number of bugs and adds a new Portal display.
 <br>
-<br>Notable user-facing changes: - Portal 'Folders' to break up the lists of sites - Major speed improvements to the portal - Comment authors are now preserved when migrating from Segue 1 - URLs to elsewhere in Segue now work more reliably when migrating from Segue 1.
+<br>Notable user-facing changes:
+<br>
+<br> * Portal 'Folders' to break up the lists of sites
+<br>
+<br> * Major speed improvements to the portal
+<br>
+<br> * Comment authors are now preserved when migrating from Segue 1
+<br>
+<br> * URLs to elsewhere in Segue now work more reliably when migrating from Segue 1.
 <br>
 <br>Segue 2.0 beta 17 uses Polyphony 1.0.6 and Harmoni 1.0.6.</p>
 <ul>
@@ -373,7 +521,17 @@
 	</ul>
 <br><h2>Version 2.0-beta-15</h2>
 <h3>2008-03-25</h3>
-<p>The Segue 2.0 beta is capable of most of the site creation and editing needs of users. We are continually adding features to bring Segue 2 up to feature parity with Segue 1.x. See the Feature Request Tracker for a list of features that still need to be completed: https://sourceforge.net/tracker/?group_id=82171&amp;atid=565237 This release adds a number of major improvements as well as fixes a large number of bugs. Notable user-facing changes: - Migration tools for importing Segue 1 sites - New plugins for Breadcrumbs and RSS links - Improvements to UI2, 'New Mode' editing interface to reduce visual clutter. - New Site-Map view. - New version of FCK editor, now supports Safari.
+<p>The Segue 2.0 beta is capable of most of the site creation and editing needs of users. We are continually adding features to bring Segue 2 up to feature parity with Segue 1.x. See the Feature Request Tracker for a list of features that still need to be completed: https://sourceforge.net/tracker/?group_id=82171&amp;atid=565237 This release adds a number of major improvements as well as fixes a large number of bugs. Notable user-facing changes: 
+<br>
+<br> * Migration tools for importing Segue 1 sites
+<br>
+<br> * New plugins for Breadcrumbs and RSS links
+<br>
+<br> * Improvements to UI2, 'New Mode' editing interface to reduce visual clutter.
+<br>
+<br> * New Site-Map view.
+<br>
+<br> * New version of FCK editor, now supports Safari.
 <br>
 <br>Upgrade Notes: For upgrades from releases prior to beta 15, please run the updates located under Admin Tools --&gt; Segue Updates. 
 <br>
@@ -490,7 +648,13 @@
 <h3>2008-03-10</h3>
 <p>This release fixes a few bugs in the permissions UI and fixes some HTML validation errors.
 <br>
-<br>Notable Changes: - Permissions are more reliable cross-browser - File downloads now work in IE - Download Plugin description now updates immediately after change.</p>
+<br>Notable Changes:
+<br>
+<br> * Permissions are more reliable cross-browser
+<br>
+<br> * File downloads now work in IE
+<br>
+<br> * Download Plugin description now updates immediately after change.</p>
 <ul>
 		
 		<li>

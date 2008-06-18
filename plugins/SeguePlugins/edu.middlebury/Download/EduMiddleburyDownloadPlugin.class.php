@@ -386,8 +386,10 @@ class EduMiddleburyDownloadPlugin
  	 */
  	public function replaceIds (array $idMap) {
  		// Update the media-file mapping
- 		$this->setContent(MediaFile::getMappedIdString($idMap, $this->getContent()));
- 		unset($this->_mediaFile);
+ 		if (strlen(trim($this->getContent()))) {
+	 		$this->setContent(MediaFile::getMappedIdString($idMap, $this->getContent()));
+ 			unset($this->_mediaFile);
+ 		}
  		
  		// Update any ids in the description HTML.
  		$this->setRawDescription($this->replaceIdsInHtml($idMap, $this->getRawDescription()));

@@ -10,7 +10,7 @@ elementFormDefault="qualified">
 <!-- harmoni/core/Primitives/Chronology/StringParsers/ISO8601StringParser.class.php -->
 <xs:simpleType name="iso8601">
 	<xs:restriction base="xs:string">
-		<xs:pattern value="(([0-9]{4})[\-/:](((0[1-9])|(1[0-2]))[\-/:]?(((0[1-9])|((1|2)[0-9])|(3[0-1]))[\sT]?((([0-1][0-9])|(2[0-4]))(:?([0-5][0-9])?(:?([0-5][0-9](\.[0-9]+)?)?(Z|(([+\-])(([0-1][0-9])|(2[0-4])):?([0-5][0-9])?))?)?)?)?)?)?)?"/>
+		<xs:pattern value="((-?[0-9]{4})[\-/:](((0[1-9])|(1[0-2]))[\-/:]?(((0[1-9])|((1|2)[0-9])|(3[0-1]))[\sT]?((([0-1][0-9])|(2[0-4]))(:?([0-5][0-9])?(:?([0-5][0-9](\.[0-9]+)?)?(Z|(([+\-])(([0-1][0-9])|(2[0-4])):?([0-5][0-9])?))?)?)?)?)?)?)?"/>
 	</xs:restriction>
 </xs:simpleType>
 
@@ -107,7 +107,7 @@ elementFormDefault="qualified">
 
 <!-- Site -->
 <xs:attribute name="slot_name" type="xs:string"/>
-<xs:attribute name="mediaQuota" type="xs:integer"/>
+<xs:attribute name="mediaQuota" type="xs:string"/>
 
 <!-- Common -->
 <xs:attribute name="id">
@@ -186,6 +186,39 @@ elementFormDefault="qualified">
 			<xs:enumeration value="default"/>
 			<xs:enumeration value="true"/>
 			<xs:enumeration value="false"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+
+<!-- Display Types -->
+<xs:attribute name="headingDisplayType">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Heading_1"/>
+			<xs:enumeration value="Heading_2"/>
+			<xs:enumeration value="Heading_3"/>
+			<xs:enumeration value="Heading_Sidebar"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="blockDisplayType">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Block_Standard"/>
+			<xs:enumeration value="Block_Sidebar"/>
+			<xs:enumeration value="Block_Alert"/>
+			<xs:enumeration value="Header"/>
+			<xs:enumeration value="Footer"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="menuDisplayType">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Menu_Left"/>
+			<xs:enumeration value="Menu_Right"/>
+			<xs:enumeration value="Menu_Top"/>
+			<xs:enumeration value="Menu_Bottom"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:attribute>
@@ -274,6 +307,7 @@ elementFormDefault="qualified">
 			<xs:element ref="displayName"/>
 			<xs:element ref="description"/>
 			<xs:element ref="roles"/>
+			<xs:element ref="theme" minOccurs="0"/>
 			<xs:element ref="NavOrganizer"/>
 		</xs:sequence>
 		
@@ -436,6 +470,7 @@ elementFormDefault="qualified">
 		<xs:attribute ref="create_date"/>
 		<xs:attribute ref="create_agent"/>
 		<xs:attribute ref="modify_date"/>
+		<xs:attribute ref="menuDisplayType"/>
 		
 		<!-- Menus use only their directon for rows/columns determination -->
 		<xs:attribute ref="rows" use="prohibited"/>
@@ -477,6 +512,8 @@ elementFormDefault="qualified">
 		<xs:attribute ref="create_date"/>
 		<xs:attribute ref="create_agent"/>
 		<xs:attribute ref="modify_date"/>
+		<xs:attribute ref="blockDisplayType"/>
+		<xs:attribute ref="headingDisplayType"/>
 	</xs:complexType>
 </xs:element>
 
@@ -700,5 +737,25 @@ elementFormDefault="qualified">
 	</xs:restriction>
 </xs:simpleType>
 
+<!-- Theme -->
+<xs:element name="theme">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="theme_option_choice" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		
+		<xs:attribute ref="id" use="required"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="theme_option_choice">
+	<xs:complexType>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute ref="id" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:element>
 
 </xs:schema>

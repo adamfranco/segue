@@ -9,7 +9,12 @@
  * @version $Id: export.act.php,v 1.8 2008/04/09 21:12:02 adamfranco Exp $
  */ 
 
-require_once("Archive/Tar.php");
+// Use a custom version of Archive/Tar if requested.
+if (defined('ARCHIVE_TAR_PATH'))
+	require_once(ARCHIVE_TAR_PATH);
+else
+	require_once("Archive/Tar.php");
+
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 require_once(dirname(__FILE__)."/Rendering/DomExportSiteVisitor.class.php");
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
@@ -68,6 +73,10 @@ class exportAction
 			$component->acceptVisitor($visitor);
 			
 			// Validate the result
+// 			printpre(htmlentities($visitor->doc->saveXMLWithWhitespace()));
+// 			$tmp = new Harmoni_DomDocument;
+// 			$tmp->loadXML($visitor->doc->saveXMLWithWhitespace());
+// 			$tmp->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			$visitor->doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			
 			// Write out the XML

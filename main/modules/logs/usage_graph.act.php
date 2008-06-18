@@ -99,7 +99,7 @@ class usage_graphAction
 		$b2->SetFillColor('#FFCB3F');
 		
 		$b3 = new BarPlot($this->getComments());
-		$b3->SetLegend(_("Comments"));
+		$b3->SetLegend(_("Discussion Posts"));
 		$b3->SetFillColor('#89DF6D');
 		
 		$accbar = new AccBarPlot(array($b1, $b2, $b3));

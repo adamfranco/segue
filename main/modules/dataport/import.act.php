@@ -10,6 +10,12 @@
  */ 
 require_once(MYDIR."/main/modules/ui1/add.act.php");
 
+// Use a custom version of Archive/Tar if requested.
+if (defined('ARCHIVE_TAR_PATH'))
+	require_once(ARCHIVE_TAR_PATH);
+else
+	require_once("Archive/Tar.php");
+
 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
@@ -144,7 +150,7 @@ class importAction
 		$property = $step->addComponent('comments', new WCheckbox());
 		$property->setValue(true);
 		print "\n<p>[[comments]] ";
-		print "\n\t"._("Import comments?");
+		print "\n\t"._("Import discussions?");
 		print "\n\t\n</p>";
 		
 		$property = $step->addComponent('roles', new WCheckbox());
@@ -267,6 +273,7 @@ class importAction
 			
 			print "\n<div>\n\t";
 			print $importException->getMessage();
+// 			print HarmoniErrorHandler::printDebugBacktrace($importException->getTrace());
 			print "\n</div>";
 			
 			$wizard->backupFile->setValue(array('name' => null, 'size' => null, 'type' => null));

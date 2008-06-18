@@ -1,0 +1,11 @@
+<TemplateInfo>
+    <DisplayName lang="en_US">Basic</DisplayName>
+    <Description lang="en_US">
+        This template is a basic starting point with two pages already created.
+    </Description>
+<!-- 
+    <Authorized>
+		<Group id="edu.middlebury.agents.everyone">Everyone</Group>
+    </Authorized>
+ -->
+</TemplateInfo>

@@ -301,6 +301,59 @@ class ControlsSiteVisitor
 
 		print "\n\t\t\t\t</td></tr>";
 	}
+
+	/**
+	 * Print block heading display options
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 6/05/08
+	 */
+
+	function printBlockHeadingStyleOptions ( SiteComponent $siteComponent ) {
+	
+		print "\n\t\t\t\t<tr><td class='ui2_settingborder'>";
+		print "\n\t\t\t\t<div class='ui2_settingtitle'>";
+		print _('Title Style: ')."\n\t\t\t\t</div>";
+		print "\n\t\t\t\t</td><td class='ui2_settingborder'>";
+			
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$canEdit = true;
+		} else {
+			$canEdit = false;
+		}
+
+		$methods = array(
+			'Heading_1' => _('Heading - Biggest'), 
+			'Heading_2' => _('Heading - Big'), 
+			'Heading_3' => _('Heading - Normal'),
+			'Heading_Sidebar' => _('Heading - For Sidebar')
+			);
+			
+		print "\n\t\t\t\t\t<select class='ui2_field'";
+		print (($canEdit)?"":" disabled='disabled'");
+		print " name='".RequestContext::name('headingDisplayType')."'>";
+			
+		foreach ($methods as $method => $display) {	
+			print "\n\t\t\t\t\t\t<option value='".$method."'";
+			if ($siteComponent->getHeadingDisplayType() === $method) 
+				print " selected='selected'";		
+			print ">";
+			print $display;
+			print "</option>";		
+		
+		}
+		print "\n\t\t\t\t\t</select><br/> ";
+		print "\n\t\t\t\t</td></tr>";
+
+	}
+
 	
 	/**
 	 * Print the history link in view-mode
@@ -636,7 +689,7 @@ class ControlsSiteVisitor
 	function printCommentSettings ( $siteComponent, $isSite = false ) {
 		print "\n\t\t\t\t<tr><td class='ui2_settingborder'>";
 		print "\n\t\t\t\t<div class='ui2_settingtitle'>";
-		print _('Comments: ')."\n\t\t\t\t</div>";
+		print _('Discussion: ')."\n\t\t\t\t</div>";
 		print "\n\t\t\t\t</td><td class='ui2_settingborder'>";
 		
 		$authZ = Services::getService("AuthZ");
@@ -1049,6 +1102,110 @@ END;
 			print "\n\t\t\t\t</td></tr>";
 		}
 	}
+
+	/**
+	 * Print menu style options
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 6/04/08
+	 */
+
+	function printMenuStyleOptions ( SiteComponent $siteComponent ) {
+	
+		print "\n\t\t\t\t<tr><td class='ui2_settingborder'>";
+		print "\n\t\t\t\t<div class='ui2_settingtitle'>";
+		print _('Menu Style: ')."\n\t\t\t\t</div>";
+		print "\n\t\t\t\t</td><td class='ui2_settingborder'>";
+			
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$canEdit = true;
+		} else {
+			$canEdit = false;
+		}
+
+		$methods = array(
+			'Menu_Left' => _('Left side menu'), 
+			'Menu_Right' => _('Right side menu'), 
+			'Menu_Top' => _('Top menu'),
+			'Menu_Bottom' => _('Bottom menu'));
+			
+		print "\n\t\t\t\t\t<select class='ui2_field'";
+		print (($canEdit)?"":" disabled='disabled'");
+		print " name='".RequestContext::name('displayType')."'>";
+
+		foreach ($methods as $method => $display) {	
+			print "\n\t\t\t\t\t\t<option value='".$method."'";
+			if ($siteComponent->getDisplayType() === $method) 
+				print " selected='selected'";		
+			print ">";
+			print $display;
+			print "</option>";		
+		
+		}
+		print "\n\t\t\t\t\t</select><br/> ";
+		print "\n\t\t\t\t</td></tr>";
+
+	}
+	
+	/**
+	 * Print block style options
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 6/04/08
+	 */
+
+	function printBlockStyleOptions ( SiteComponent $siteComponent ) {
+	
+		print "\n\t\t\t\t<tr><td class='ui2_settingborder'>";
+		print "\n\t\t\t\t<div class='ui2_settingtitle'>";
+		print _('Block Style: ')."\n\t\t\t\t</div>";
+		print "\n\t\t\t\t</td><td class='ui2_settingborder'>";
+			
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			$canEdit = true;
+		} else {
+			$canEdit = false;
+		}
+
+		$methods = array(
+			'Block_Standard' => _('Standard Block'), 
+			'Block_Sidebar' => _('Sidebar Block'), 
+			'Block_Alert' => _('Alert Block'),
+			'Header' => _('Header'),
+			'Footer' => _('Footer')
+			);
+			
+		print "\n\t\t\t\t\t<select class='ui2_field'";
+		print (($canEdit)?"":" disabled='disabled'");
+		print " name='".RequestContext::name('displayType')."'>";
+			
+		foreach ($methods as $method => $display) {	
+			print "\n\t\t\t\t\t\t<option value='".$method."'";
+			if ($siteComponent->getDisplayType() === $method) 
+				print " selected='selected'";		
+			print ">";
+			print $display;
+			print "</option>";		
+		
+		}
+		print "\n\t\t\t\t\t</select><br/> ";
+		print "\n\t\t\t\t</td></tr>";
+
+	}
 	
 	/**
 	 * Answer controls for Block SiteComponents
@@ -1062,13 +1219,15 @@ END;
 		$this->controlsStart($siteComponent);
 		$this->printDisplayName($siteComponent);
 		$this->printShowDisplayNames($siteComponent);
+		$this->printBlockHeadingStyleOptions($siteComponent);
+		$this->printBlockStyleOptions($siteComponent);
 		$this->printShowHistory($siteComponent);
 		$this->printCommentSettings($siteComponent);		
 		$this->printShowDates($siteComponent);
 		$this->printShowAttribution($siteComponent);
 // 		$this->printDescription($siteComponent);
 // 		$this->printWidth($siteComponent);
-
+		
 
 		$this->printDelete($siteComponent);
 		
@@ -1208,8 +1367,11 @@ END;
 		$this->printShowAttribution($siteComponent);
 		$this->printSortMethod($siteComponent);
 		$this->printDirection($siteComponent);
+		$this->printMenuStyleOptions($siteComponent);	
 		$this->printWidth($siteComponent);
-		$this->printDelete($siteComponent);
+		
+// 		if (!$siteComponent->isRootMenu())
+// 			$this->printDelete($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
 	}

@@ -69,7 +69,19 @@ class AssetFixedOrganizerSiteComponent
 			// is the cell we want, is empty
 			if ($i == $cellIndex) {
 				if (!$child->hasChildNodes()) {
-					$child->appendChild($siteComponent->getElement());
+					try {
+						$child->appendChild($siteComponent->getElement());
+					} catch (DOMException $e) {
+						// Wrong Document Error
+						if ($e->getCode() == 4) {
+							$oldElement = $siteComponent->getElement();
+							$newElement = $child->ownerDocument->importNode($oldElement, true);
+							$siteComponent->_element = $newElement;
+							$child->appendChild($newElement);
+						} else {
+							throw $e;
+						}
+					}
 					$success = true;
 				} else {
 					throwError( new Error("Cell Not Empty", "SiteComponents"));

@@ -12,7 +12,7 @@ body {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: [[LINK_DECORATION]];
     color: [[LINK_COLOR]];
     cursor: pointer;
 }
@@ -30,8 +30,17 @@ a:hover {
 }
 
 .plugin_content a {
+    text-decoration: [[LINK_DECORATION]];
+}
+
+.plugin_content a:hover {
     text-decoration: underline;
 }
+
+/*********************************************************
+ * IE hack to fix disappearing text
+ *********************************************************/
+
 
 /*********************************************************
  * Styles for Segue links, log in, and editing controls
@@ -84,84 +93,48 @@ seguefooter_left {
     margin-left: 20px;
 }
 
-.pagination_links {
-    padding-left: 10px;
-    padding-right: 10px;
-
-}
-
-
 /*********************************************************
- * Corners
- * In the CSS below, the numbers used are the following:
- * 1px: the width of the border
- *  3px: a fudge factor needed for IE5/win (see below)
- *  4px: the width of the border (1px) plus the 3px IE5/win fudge factor
- * 14px: the width or height of the border image
+ * Styles attribution, tags, history, pagination
  *********************************************************/
-.TopCorners, .BottomCorners {
-    margin: 0px;
-    padding: 0px;
-}
-.Spacer {
-    margin: 0px; padding: 0px; border: 0px;
-    clear: both;
-    font-size: 1px; line-height: 1px;
-}
 
 
-.BorderTL, .BorderTR, .BorderBL, .BorderBR {
-    width: 14px;
-    height: 14px;
-    padding: 0px;
-    border: 0px;
-    z-index: 99;
+.pagination_links {
+    padding-left: 0px;
+    padding-right: 0px;
 }
-.BorderTL, .BorderBL {
-    float: left;
-    clear: both;
+
+.pagination_links a {
+    color: [[MENU_UNSELECTED_COLOR]];
+    text-decoration: none;
+    border: 1px solid;
+    padding-left: 2px;
+    padding-right: 2px;
 }
-.BorderTR, .BorderBR {
-    float: right;
-    clear: right;
+
+.pagination_links a:hover {
+    display: block
+    border: 1px solid [[LINK_COLOR]];
+    color: [[LINK_COLOR]];
+    cursor: pointer;
 }
-.BorderTL {
-    margin: 0px 0px 0px 0px;
+
+.tagging_tags_display {
+
 }
-.BorderTR {
-    margin: -0px -0px 0px 0px;
+
+.attribution_line {
+    color: [[ATRIBUTION_TEXT_COLOR]];
+}    
+
+.comment {
+    border-top: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
 }
-.BorderBL {
-    margin: -14px 0px 0px 0px;
+
+.comment_byline {
+    color: [[ATRIBUTION_TEXT_COLOR]];
 }
-.BorderBR {
-    margin: -14px 0px 0px 0px;
+
+.history {
+
 }
-.BorderTL {
-     margin-left: -4px;
-     margin-left: -1px;
-}
-html>body .BorderTL {
-     margin-left: 0px;
-}
-.BorderTR {
-     margin-right: -4px;
-     margin-right: -1px;
-}
-html>body .BorderTR {
-     margin-right: 0px;
-}
-.BorderBL {
-     margin-left: -3px;
-     margin-left: 0px;
-}
-html>body .BorderBL {
-     margin-left: -0px;
-}
-.BorderBR {
-     margin-left: -3px;
-     margin-left: 0px;
-}
-html>body .BorderBR {
-     margin-left: 0px;
-}
+

@@ -63,11 +63,11 @@ class displayAction
 		$yLayout = new YLayout();
 		
 		
-		$mainScreen = new Container($yLayout, BLOCK, 1);
+		$mainScreen = new Container($yLayout, BLANK, 1);
 
 		// :: login, links and commands
 		$this->headRow = $mainScreen->add(
-			new Container($xLayout, BLOCK, 1), 
+			new Container($xLayout, BLANK, 1), 
 			"100%", null, CENTER, TOP);
 			
 		
@@ -79,7 +79,8 @@ class displayAction
 				null, null, RIGHT, TOP);
 		
 
-		
+	// BACKGROUND
+		$backgroundContainer = $mainScreen->add(new Container($yLayout, BLOCK, BACKGROUND_BLOCK));
 	// :: Top Row ::
 		// The top row for the logo and status bar.
 		$headRow = new Container($xLayout, HEADER, 1);
@@ -120,12 +121,12 @@ class displayAction
 // 		$headRow->add($loginRow, null, null, RIGHT, TOP);
 // 		$loginRow->add($this->getLoginComponent(), null, null, RIGHT, TOP);
 				
-		//Add the headerRow to the mainScreen
-		$mainScreen->add($headRow, "100%", null, LEFT, TOP);
+		//Add the headerRow to the backgroundContainer
+		$backgroundContainer->add($headRow, "100%", null, LEFT, TOP);
 		
 	// :: Center Pane ::
-		$centerPane = new Container($xLayout, OTHER, 1);
-		$mainScreen->add($centerPane,"100%",null, LEFT, TOP);		
+		$centerPane = new Container($xLayout, BLANK, 1);
+		$backgroundContainer->add($centerPane,"100%",null, LEFT, TOP);		
 		
 		// Main menu
 		$mainMenu = SegueMenuGenerator::generateMainMenu($harmoni->getCurrentAction());
@@ -156,7 +157,7 @@ class displayAction
 // 			$rightColumn->add(AssetPrinter::getMultiEditOptionsBlock(), "100%", null, LEFT, TOP);
 		
 	// :: Footer ::
-		$footer = new Container (new XLayout, FOOTER, 1);
+		$footer = new Container (new XLayout, BLANK, 1);
 		
 		$helpText = "<a target='_blank' href='";
 		$helpText .= $harmoni->request->quickURL("help", "browse_help");
@@ -268,15 +269,16 @@ class displayAction
 				}
 			}
 		}
+		print "\n<div class='login'>";
 		if ($users != '') {
-			print "\n<div class='login'>";
+			
 			if (count(explode("+", $users)) == 1)
 				print $users."\t";
 			else 
 				print _("Users: ").$users."\t";
 			
 			print " | <a href='".$harmoni->request->quickURL("auth",
-				"logout")."'>"._("Log Out")."</a></div>";
+				"logout")."'>"._("Log Out")."</a>";
 		} else {
 			// set bookmarks for success and failure
 			$harmoni->history->markReturnURL("polyphony/display_login");
@@ -288,8 +290,7 @@ class displayAction
 			$passwordField = $harmoni->request->getName("password");
 			$harmoni->request->endNamespace();
 			$harmoni->request->startNamespace("polyphony");
-			print  "\n<div style='login'>".
-				"\n<form action='".
+			print "\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
 				"' style='text-align: right' method='post'><small>".
 				"\n\t"._("Username:")." <input class='small' type='text' size='8' 
@@ -297,11 +298,41 @@ class displayAction
 				"\n\t"._("Password:")." <input class='small' type='password' size ='8' 
 					name='$passwordField'/>".
 				"\n\t <input class='button small' type='submit' value='Log in' />".
-				"\n</small></form></div>\n";
+				"\n</small></form>";
 			$harmoni->request->endNamespace();
 		}		
 		
+		// Visitor Registration Link
+		$authTypes = $authN->getAuthenticationTypes();
+		$hasVisitorType = false;
+		$visitorType = new Type ("Authentication", "edu.middlebury.harmoni", "Visitors");
+		while($authTypes->hasNext()) {
+			$authType = $authTypes->next();
+			if ($visitorType->isEqual($authType)) {
+				$hasVisitorType = true;
+				break;
+			}
+		}
+		if ($hasVisitorType && !$authN->isUserAuthenticatedWithAnyType()) {
+			$url = $harmoni->request->mkURL("user", "visitor_reg");
+			
+			// Add return info to the visitor registration url
+			$visitorReturnModules = array('view', 'ui1', 'ui2', 'versioning');
+			if (in_array($harmoni->request->getRequestedModule(), $visitorReturnModules)) {
+				$url->setValue('returnModule', $harmoni->request->getRequestedModule());
+				$url->setValue('returnAction', $harmoni->request->getRequestedAction());
+				$url->setValue('returnKey', 'node');
+				$url->setValue('returnValue', SiteDispatcher::getCurrentNodeId());
+			}
+			
+			print "\n<div class='visitor_reg_link'>".
+				"\n\t<a href='".$url->write()."'>".
+				_("Visitor Registration").
+				"</a>".
+				"\n</div>";
+		}
 
+		print "\n</div>";
 		$loginForm = new Component(ob_get_clean(), BLANK, 2);
 		
 		return $loginForm;

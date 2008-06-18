@@ -47,7 +47,7 @@ class Update002_SlotUniqueKeyAction
 	 * @since 7/9/07
 	 */
 	function getTitle () {
-		return _("Add a unique key to the segue_slot_owner table.");
+		return _("segue_slot_owner unique key");
 	}
 	
 	/**

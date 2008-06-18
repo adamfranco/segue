@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TemplateInfo>
+    <DisplayName lang="en_US">Blog</DisplayName>
+    <Description lang="en_US">
+        This template set up for a basic blog. Posts have comments enabled and are sorted in recent-first order, 10 to a page.
+    </Description>
+    <DisplayName lang="es_ES">Un Blog</DisplayName>
+    <Description lang="es_ES">
+    	Esta plantilla fijó para un blog básico. Los postes tienen comentarios permitidos y se clasifican en la reciente-primera orden, 10 a una página.
+	</Description>
+</TemplateInfo>

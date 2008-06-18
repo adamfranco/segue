@@ -17,6 +17,13 @@
     margin: 0px;
 }
 
+
+*.MenuItem_Link_Unselected a {
+    display: block;
+    color: F5F5F5;
+    text-decoration: none;
+}
+
 *.MenuItem_Link a:hover {
     display: block;
     background-color: #F5F5F5;

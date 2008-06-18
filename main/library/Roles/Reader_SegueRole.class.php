@@ -70,7 +70,7 @@ class Reader_SegueRole
 	 * @since 11/5/07
 	 */
 	public function getDescription () {
-		return _("This role allows the viewing of items, but not the making of any changes or comments. Readers cannot see comments.");
+		return _("This role allows the viewing of items, but not the making of any changes or discussion posts. Readers cannot see discussion posts.");
 	}
 }
 

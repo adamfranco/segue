@@ -8,7 +8,7 @@
  * @version $Id: deleteComponent.act.php,v 1.12 2008/04/09 21:12:03 adamfranco Exp $
  */ 
 
-require_once(MYDIR."/main/library/SiteDisplay/EditModeSiteAction.act.php");
+require_once(MYDIR."/main/modules/ui2/EditModeSiteAction.abstract.php");
 
 
 /**
@@ -55,6 +55,14 @@ class deleteComponentAction
 	 */
 	function processChanges ( SiteDirector $director ) {		
 		$component = $director->getSiteComponentById(SiteDispatcher::getCurrentNodeId());
+		
+		// Do not allow delete of the root menu.
+		if (method_exists($component, 'isRootMenu')) {
+			if ($component->isRootMenu()) {
+				$this->returnToCallerPage();
+				exit;
+			}
+		}
 		
 		$this->findSafeReturnNode($director, $component);
 		

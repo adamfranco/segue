@@ -12,8 +12,8 @@
 require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/ViewModeSiteVisitor.class.php");
-require_once(MYDIR."/main/library/SiteDisplay/Rendering/DetailViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/modules/view/ViewModeSiteVisitor.class.php");
+require_once(MYDIR."/main/modules/view/DetailViewModeSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php");
 // require_once(MYDIR."/main/modules/ui1/Rendering/EditModeSiteVisitor.class.php");
 //require_once(MYDIR."/main/modules/ui2/Rendering/EditModeSiteVisitor.class.php");

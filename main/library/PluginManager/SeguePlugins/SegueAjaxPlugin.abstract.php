@@ -155,8 +155,14 @@ abstract class SegueAjaxPlugin
 				
 				// Build a "name1=val1&name2=val2..." string
 				var fields = new Array();
-				for (var i = 0; i < form.elements.length; i++)
-					fields.push(escape(form.elements[i].name) + '=' + escape(form.elements[i].value));
+				for (var i = 0; i < form.elements.length; i++) {
+					var value = escape(form.elements[i].value);
+					
+					// Javascript doesn't escape plus symbols, so manually encode them
+					value = value.replace(/\\+/, '%2B');
+					
+					fields.push(escape(form.elements[i].name) + '=' + value);
+				}
 				var data = fields.join('&');
 				
 				

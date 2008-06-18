@@ -12,7 +12,7 @@ body {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: [[LINK_DECORATION]];
     color: [[LINK_COLOR]];
     cursor: pointer;
 }
@@ -30,8 +30,18 @@ a:hover {
 }
 
 .plugin_content a {
+    text-decoration: [[LINK_DECORATION]];
+}
+
+.plugin_content a:hover {
     text-decoration: underline;
 }
+
+
+/*********************************************************
+ * IE hack to fix disappearing text
+ *********************************************************/
+
 
 /*********************************************************
  * Styles for Segue links, log in, and editing controls
@@ -78,27 +88,45 @@ seguefooter_left {
     color: [[BG_TEXT_COLOR]];
 }
 
+/*********************************************************
+ * Styles attribution, tags, history, pagination
+ *********************************************************/
+
 .pagination_links {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
+.pagination_links a {
+    color: [[TEXT_COLOR]];
+    text-decoration: none;
+    border: 1px solid;
+    padding-left: 2px;
+    padding-right: 2px;
+}
 
-
-/*********************************************************
- * Styles attribution, tags, history
- *********************************************************/
+.pagination_links a:hover {
+    display: block
+    border: 1px solid [[LINK_COLOR]];
+    color: [[LINK_COLOR]];
+}
 
 .tagging_tags_display {
 
 }
 
 .attribution_line {
-
+    color: [[ATRIBUTION_TEXT_COLOR]];
 }    
 
-.comments {
 
+.comment {
+    border-top: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
+    padding-top: 3px;
+}
+
+.comment_byline {
+    color: [[ATRIBUTION_TEXT_COLOR]];
 }
 
 .history {
