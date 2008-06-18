@@ -76,6 +76,8 @@ function RssFeedReader ( url ) {
 					// only if we get a good load should we continue.
 					if (req.status == 200) {
 // 						alert(req.responseText);
+						if (!req.responseXML)
+							alert("Error: Invalid feed data, not XML.");
 						reader.loadFeedXml(req.responseXML);
 					} else {
 						alert("There was a problem retrieving the XML data:\n" +
@@ -103,6 +105,8 @@ function RssFeedReader ( url ) {
 	RssFeedReader.prototype.loadFeedXml = function (feedDoc) {
 		this.channels = new Array();
 		var channelElements = feedDoc.getElementsByTagName('channel');
+		if (!channelElements.length) 
+			alert("Error: Invalid RSS feed, no channels in feed or errors exist in feed XML.");
 		for (var i = 0; i < channelElements.length; i++) {
 			this.channels.push(new RssChannel(channelElements.item(i)));
 		}
