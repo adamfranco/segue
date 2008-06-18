@@ -585,22 +585,31 @@ abstract class SeguePluginsDriver
 
 		return $dir;
 	}
-
+	
 	/**
-	 * Answer the url filepath for the plugin?
+	 * This method will give you a url to access files in a 'public'
+	 * subdirectory of your plugin. 
+	 *
+	 * Example, status_image.gif in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *	
+	 * Usage: print $this->getPublicFileUrl('status_image.gif');
 	 * 
-	 * @return string the url path to this plugin directory
+	 * @param string $filename.
+	 * @return string
 	 * @access public
-	 * @since 1/19/06
+	 * @since 6/18/08
 	 */
-	final public function getPluginPath () {
-		$path = $this->_configuration->getProperty('plugin_path')."/";
-		$type = $this->_asset->getAssetType();
-		$path .= $type->getDomain()."/";
-		$path .= $type->getAuthority()."/";
-		$path .= $type->getKeyword()."/";
-
-		return $path;
+	final public function getPublicFileUrl ($filename) {
+		$harmoni = Harmoni::instance();
+		return $harmoni->request->quickURL('plugin_manager', 'public_file', 
+			array('plugin' => HarmoniType::toString($asset->getAssetType()),'file' => $filename));
 	}
 
 /*********************************************************

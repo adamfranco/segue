@@ -666,15 +666,28 @@ interface SeguePluginsAPI {
 	 * @since 1/19/06
 	 */
 	public function getPluginDir ();
-
+	
 	/**
-	 * Answer the url filepath for the plugin?
+	 * This method will give you a url to access files in a 'public'
+	 * subdirectory of your plugin. 
+	 *
+	 * Example, status_image.gif in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *	
+	 * Usage: print $this->getPublicFileUrl('status_image.gif');
 	 * 
-	 * @return string the url path to this plugin directory
+	 * @param string $filename.
+	 * @return string
 	 * @access public
-	 * @since 1/19/06
+	 * @since 6/18/08
 	 */
-	public function getPluginPath ();
+	public function getPublicFileUrl ($filename);
 
 /*********************************************************
  * Files
