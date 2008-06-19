@@ -161,6 +161,15 @@ abstract class SegueAjaxPlugin
 					// Javascript doesn't escape plus symbols, so manually encode them
 					value = value.replace(/\\+/, '%2B');
 					
+					// Ignore unchecked check-boxes
+					if (form.elements[i].nodeName == 'INPUT' && form.elements[i].type == 'checkbox'
+						&& (!form.elements[i].checked || form.elements[i].checked == 'false'))
+					{
+						// ignore
+						continue;
+					}
+					
+					
 					fields.push(escape(form.elements[i].name) + '=' + value);
 				}
 				var data = fields.join('&');
