@@ -169,6 +169,23 @@ class EduMiddleburyRssFeedPlugin
 	 		else
 	 			$this->_setShowItemDivider(false);
 	 		
+	 		if ($this->getFieldValue('show_attribution') == 'true')
+	 			$this->_setShowAttribution(true);
+	 		else
+	 			$this->_setShowAttribution(false);
+	 		
+	 		if ($this->getFieldValue('show_dates') == 'true')
+	 			$this->_setShowDates(true);
+	 		else
+	 			$this->_setShowDates(false);
+	 		
+	 		if ($this->getFieldValue('show_comment_links') == 'true')
+	 			$this->_setShowCommentLinks(true);
+	 		else
+	 			$this->_setShowCommentLinks(false);
+	 		
+	 		$this->_setMaxItems(intval($this->getFieldValue('max_items')));
+	 		
  		}
  	}
  	
@@ -190,26 +207,51 @@ class EduMiddleburyRssFeedPlugin
  			print "http://";
  		print "\"/>";
  		
- 		print "\n\t<br/>";
+ 		print "\n\t<table width='100%' border='0'><tr><td>";
  		
  		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_channel_titles')."' value='true' ".(($this->_showChannelTitles())?'checked="checked"':'')."/> ";
  		print _("Show Channel Titles?");
  		
+ 		print "\n\t<br/>";
  		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_channel_descriptions')."' value='true' ".(($this->_showChannelDescriptions())?'checked="checked"':'')."/> ";
  		print _("Show Channel Descriptions?");
  		
+ 		print "\n\t<br/>";
 		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_channel_divider')."' value='true' ".(($this->_showChannelDivider())?'checked="checked"':'')."/> ";
  		print _("Show Channel Divider?");
  		
- 		print "\n\t<br/>";
+ 		print "\n\t</td><td>";
  		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_item_titles')."' value='true' ".(($this->_showItemTitles())?'checked="checked"':'')."/> ";
  		print _("Show Item Titles?");
  		
+ 		print "\n\t<br/>";
  		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_item_descriptions')."' value='true' ".(($this->_showItemDescriptions())?'checked="checked"':'')."/> ";
  		print _("Show Item Descriptions?");
  		
+ 		print "\n\t<br/>";
  		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_item_divider')."' value='true' ".(($this->_showItemDivider())?'checked="checked"':'')."/> ";
  		print _("Show Item Divider?");
+ 		
+ 		print "\n\t</td><td>";
+ 		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_attribution')."' value='true' ".(($this->_showAttribution())?'checked="checked"':'')."/> ";
+ 		print _("Show Attribution?");
+ 		
+ 		print "\n\t<br/>";
+ 		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_dates')."' value='true' ".(($this->_showDates())?'checked="checked"':'')."/> ";
+ 		print _("Show Dates?");
+ 		
+ 		print "\n\t<br/>";
+ 		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_comment_links')."' value='true' ".(($this->_showCommentLinks())?'checked="checked"':'')."/> ";
+ 		print _("Show Comment Links?");
+ 		
+ 		print "\n\t</td></tr></table>\n";
+ 		print _("Maximum number Items to show:")." ";
+ 		print "\n\t<input type='text' name='".$this->getFieldName('max_items')."' value='";
+ 		if ($this->_getMaxItems())
+ 			print $this->_getMaxItems();
+ 		print "' size='4' /> ";
+ 		print " <em>("._('clear to show all').")</em>";
+ 		
  		
  		print "\n\t<br/>";
  		print "\n\t<input type='submit' name='".$this->getFieldName('submit_pressed')."' value='"._("Submit")."'/>";
@@ -266,6 +308,14 @@ class EduMiddleburyRssFeedPlugin
  					print ",\n\t\t\t\tshowItemDescriptions: true";
  				if ($this->_showItemDivider())
  					print ",\n\t\t\t\tshowItemDivider: true";
+ 				if ($this->_showAttribution())
+ 					print ",\n\t\t\t\tshowAttribution: true";
+ 				if ($this->_showDates())
+ 					print ",\n\t\t\t\tshowDates: true";
+ 				if ($this->_showCommentLinks())
+ 					print ",\n\t\t\t\tshowCommentLinks: true";
+ 				
+ 				print ",\n\t\t\t\tmaxItems: ".$this->_getMaxItems();
  				print "});
  	reader.displayIn(container);
  	
@@ -556,6 +606,98 @@ class EduMiddleburyRssFeedPlugin
  	}
  	
  	/**
+ 	 * Answer true if the author should be shown for Items in the feed.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _showAttribution () {
+ 		return $this->_getBoolean('showAttribution', false);
+ 	}
+ 	
+ 	/**
+ 	 * Set true if the author should be shown for Items in the feed.
+ 	 * 
+ 	 * @param boolean $showAttribution
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _setShowAttribution ($showAttribution) {
+ 		$this->_setBoolean('showAttribution', $showAttribution);
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the dates should be shown for Items in the feed.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _showDates () {
+ 		return $this->_getBoolean('showDates', false);
+ 	}
+ 	
+ 	/**
+ 	 * Set true if the dates should be shown for Items in the feed.
+ 	 * 
+ 	 * @param boolean $showDates
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _setShowDates ($showDates) {
+ 		$this->_setBoolean('showDates', $showDates);
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the comment links should be shown for Items in the feed.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _showCommentLinks () {
+ 		return $this->_getBoolean('showCommentLinks', false);
+ 	}
+ 	
+ 	/**
+ 	 * Set true if the comment links should be shown for Items in the feed.
+ 	 * 
+ 	 * @param boolean $showCommentLinks
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _setShowCommentLinks ($showCommentLinks) {
+ 		$this->_setBoolean('showCommentLinks', $showCommentLinks);
+ 	}
+ 	
+ 	/**
+ 	 * Answer the maximum number of Items in the feed.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _getMaxItems () {
+ 		return $this->_getInt('maxItems', 0);
+ 	}
+ 	
+ 	/**
+ 	 * Set the maximum number of Items in the feed. Set 0 for unlimited.
+ 	 * 
+ 	 * @param boolean $maxItems
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _setMaxItems ($maxItems) {
+ 		$this->_setInt('maxItems', $maxItems);
+ 	}
+ 	
+ 	/**
  	 * Answer a boolean option
  	 * 
  	 * @param string $name
@@ -570,7 +712,10 @@ class EduMiddleburyRssFeedPlugin
  			return $default;
  		
  		$elem = $elements->item(0);
- 		if ($elem->hasAttribute($name) && $elem->getAttribute($name) == 'false')
+ 		if (!$elem->hasAttribute($name))
+ 			return $default;
+ 			
+ 		if ($elem->getAttribute($name) == 'false')
  			return false;
  		
  		return true;
@@ -594,6 +739,49 @@ class EduMiddleburyRssFeedPlugin
  				$this->doc->createElement('RssFeed'));
  		
  		$feedElement->setAttribute($name, (($value)?'true':'false'));
+ 		
+ 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 	}
+ 	
+ 	/**
+ 	 * Answer a integer option
+ 	 * 
+ 	 * @param string $name
+ 	 * @param optional $default
+ 	 * @return int
+ 	 * @access protected
+ 	 * @since 6/19/08
+ 	 */
+ 	protected function _getInt ($name, $default = 0) {
+ 		$elements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if (!$elements->length)
+ 			return $default;
+ 		
+ 		$elem = $elements->item(0);
+ 		if (!$elem->hasAttribute($name))
+ 			return $default;
+ 			
+ 		return intval($elem->getAttribute($name));
+ 	}
+ 	
+ 	/**
+ 	 * Set an integer option
+ 	 * 
+ 	 * @param string $name
+ 	 * @param int $value
+ 	 * @return void
+ 	 * @access protected
+ 	 * @since 6/19/08
+ 	 */
+ 	protected function _setInt ($name, $value) {
+ 		$feedElements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if ($feedElements->length)
+ 			$feedElement = $feedElements->item(0);
+ 		else
+ 			$feedElement = $this->doc->documentElement->appendChild(
+ 				$this->doc->createElement('RssFeed'));
+ 		
+ 		$feedElement->setAttribute($name, strval(intval($value)));
  		
  		$this->setContent($this->doc->saveXMLWithWhitespace());
  	}

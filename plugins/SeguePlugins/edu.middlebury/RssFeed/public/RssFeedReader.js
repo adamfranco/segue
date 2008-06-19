@@ -209,7 +209,12 @@ function RssChannel ( element ) {
 		}
 		
 		// Items
-		for (var i = 0; i < this.items.length; i++) {
+		if (options.maxItems)
+			var max = Math.min(this.items.length, options.maxItems);
+		else
+			var max = this.items.length;
+		
+		for (var i = 0; i < max; i++) {
 			container.appendChild(this.items[i].render(options));
 		}
 		
@@ -324,8 +329,37 @@ function RssItem ( element ) {
 			}
 		}
 		
+		if (options.showAttribution) {
+			if (this.getAuthor().length) {
+				var div = container.appendChild(document.createElement('div'));
+				div.className = 'RssFeedReader_meta';
+				div.innerHTML = this.getAuthor();
+			}
+		}
+		
+		if (options.showDates) {
+			if (this.getPubDate()) {
+				var div = container.appendChild(document.createElement('div'));
+				div.className = 'RssFeedReader_meta';
+				div.innerHTML = this.getPubDate().toFormatedString('yyyy-MM-dd') 
+					+ " at "
+					+ this.getPubDate().toFormatedString('h:mm a');
+			}
+		}
+		
+		if (options.showCommentLinks) {
+			if (this.getCommentUrl()) {
+				var div = container.appendChild(document.createElement('div'));
+				div.className = 'RssFeedReader_meta';
+				var link = div.appendChild(document.createElement('a'));
+				link.setAttribute('href', this.getCommentUrl());
+				link.innerHTML = 'Comments &raquo;';
+			}
+		}
+		
 		if (options.showItemDescriptions) {
 			var desc = container.appendChild(document.createElement('div'));
+			desc.className = 'RssFeedReader_item_description';
 			desc.innerHTML = this.getDescription();
 		}
 		
@@ -377,6 +411,57 @@ function RssItem ( element ) {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
 			if (child.nodeName == 'description' && child.firstChild && child.firstChild.nodeValue) {
+				return child.firstChild.nodeValue;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Answer an author for the item
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/18/08
+	 */
+	RssItem.prototype.getAuthor = function () {
+		for (var i = 0; i < this.element.childNodes.length; i++) {
+			var child = this.element.childNodes[i];
+			if (child.nodeName == 'author' && child.firstChild.nodeValue) {
+				return child.firstChild.nodeValue;
+			}
+		}
+		return '';
+	}
+	
+	/**
+	 * Answer an publication date for the item
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/18/08
+	 */
+	RssItem.prototype.getPubDate = function () {
+		for (var i = 0; i < this.element.childNodes.length; i++) {
+			var child = this.element.childNodes[i];
+			if (child.nodeName == 'pubDate' && child.firstChild.nodeValue) {
+				return new Date(Date.parse(child.firstChild.nodeValue));
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Answer a comments url for the item
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/18/08
+	 */
+	RssItem.prototype.getCommentUrl = function () {
+		for (var i = 0; i < this.element.childNodes.length; i++) {
+			var child = this.element.childNodes[i];
+			if (child.nodeName == 'comments' && child.firstChild.nodeValue) {
 				return child.firstChild.nodeValue;
 			}
 		}

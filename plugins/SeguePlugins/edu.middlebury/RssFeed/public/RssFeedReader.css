@@ -11,7 +11,7 @@
 }
 
 .RssFeedReader_item {
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 	clear: both;
 }
 
@@ -21,6 +21,19 @@
 
 .RssFeedReader_item h4 {
 	margin-top: 3px;
+	margin-bottom: 5px;
+}
+
+.RssFeedReader_item_description {
+	margin-bottom: 5px;
+	clear: both;
+}
+
+.RssFeedReader_meta {
+	font-size: smaller;
+	white-space: nowrap;
+	float: left;
+	margin-right: 15px;
 	margin-bottom: 5px;
 }
 
