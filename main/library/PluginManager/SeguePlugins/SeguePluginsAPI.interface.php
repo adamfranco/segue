@@ -679,6 +679,8 @@ interface SeguePluginsAPI {
 	 *			icon.png
 	 *			public/
 	 *				status_image.gif
+	 *				assignment_styles.css
+	 *				assignment_functions.js
 	 *	
 	 * Usage: print $this->getPublicFileUrl('status_image.gif');
 	 * 
@@ -688,6 +690,56 @@ interface SeguePluginsAPI {
 	 * @since 6/18/08
 	 */
 	public function getPublicFileUrl ($filename);
+	
+	/**
+	 * This method will add the CSS contained in a file in the plugin's
+	 * 'public' subdirectory to the <head> of the page the plugin
+	 * is displayed on.
+	 *
+	 * Example, assignment_styles.css in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *				assignment_styles.css
+	 *				assignment_functions.js
+	 *	
+	 * Usage: $this->addHeadCss('assignment_styles.css');
+	 * 
+	 * @param string $filename
+	 * @return void
+	 * @access public
+	 * @since 6/18/08
+	 */
+	public function addHeadCss ($filename);
+	
+	/**
+	 * This method will add the Javascript contained in a file in the plugin's
+	 * 'public' subdirectory to the <head> of the page the plugin
+	 * is displayed on.
+	 *
+	 * Example, assignment_functions.js in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *				assignment_styles.css
+	 *				assignment_functions.js
+	 *	
+	 * Usage: $this->addHeadJavascript('assignment_functions.js');
+	 * 
+	 * @param string $filename
+	 * @return void
+	 * @access public
+	 * @since 6/18/08
+	 */
+	public function addHeadJavascript ($filename);
 
 /*********************************************************
  * Files

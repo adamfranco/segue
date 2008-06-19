@@ -615,6 +615,118 @@ abstract class SeguePluginsDriver
 		$harmoni->request->endNamespace();
 		return $url;
 	}
+	
+	/**
+	 * A static array that holds a list of the css added to the head to 
+	 * prevent duplication. 
+	 *
+	 * @var array $headCss; 
+	 * @access private
+	 * @since 6/18/08
+	 * @statis
+	 */
+	private static $headCss = array();
+	
+	/**
+	 * This method will add the CSS contained in a file in the plugin's
+	 * 'public' subdirectory to the <head> of the page the plugin
+	 * is displayed on.
+	 *
+	 * Example, assignment_styles.css in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *				assignment_styles.css
+	 *				assignment_functions.js
+	 *	
+	 * Usage: $this->addHeadCss('assignment_styles.css');
+	 * 
+	 * @param string $filename
+	 * @return void
+	 * @access public
+	 * @since 6/18/08
+	 */
+	final public function addHeadCss ($filename) {
+		$harmoni = Harmoni::instance();
+		
+		// Get the file url
+		$harmoni->request->startNamespace(null);
+		$url = $harmoni->request->quickURL('plugin_manager', 'public_file', 
+			array('plugin' => HarmoniType::typeToString($this->_asset->getAssetType()),
+				'file' => $filename));
+		$harmoni->request->endNamespace();
+		
+		// If this file has been added already, don't add it again.
+		if (in_array($url, self::$headCss))
+			return;
+		else
+			self::$headCss[] = $url;
+		
+		// Add the style sheet to the head
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead($outputHandler->getHead()
+			."\n\t\t<link rel='stylesheet' type='text/css' href='$url'/>");
+	}
+	
+	/**
+	 * A static array that holds a list of the javascript added to the head to 
+	 * prevent duplication. 
+	 *
+	 * @var array $headJs; 
+	 * @access private
+	 * @since 6/18/08
+	 * @statis
+	 */
+	private static $headJs = array();
+	
+	/**
+	 * This method will add the Javascript contained in a file in the plugin's
+	 * 'public' subdirectory to the <head> of the page the plugin
+	 * is displayed on.
+	 *
+	 * Example, assignment_functions.js in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *				assignment_styles.css
+	 *				assignment_functions.js
+	 *	
+	 * Usage: $this->addHeadJavascript('assignment_functions.js');
+	 * 
+	 * @param string $filename
+	 * @return void
+	 * @access public
+	 * @since 6/18/08
+	 */
+	final public function addHeadJavascript ($filename) {
+		$harmoni = Harmoni::instance();
+		
+		// Get the file url
+		$harmoni->request->startNamespace(null);
+		$url = $harmoni->request->quickURL('plugin_manager', 'public_file', 
+			array('plugin' => HarmoniType::typeToString($this->_asset->getAssetType()),
+				'file' => $filename));
+		$harmoni->request->endNamespace();
+		
+		// If this file has been added already, don't add it again.
+		if (in_array($url, self::$headJs))
+			return;
+		else
+			self::$headJs[] = $url;
+		
+		// Add the js to the head
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead($outputHandler->getHead()
+			."\n\t\t<script type='text/javascript' src='$url'></script>");
+	}
 
 /*********************************************************
  * Files

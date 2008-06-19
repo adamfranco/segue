@@ -182,12 +182,9 @@ class EduMiddleburyRssFeedPlugin
  		} else if ($this->canView()) {
  			
  			if ($this->hasContent()) {
- 				// Print our js libraries
- 				print "\n<script type='text/javascript'>";
- 				print "\n// <![CDATA[\n";
- 				print file_get_contents(dirname(__FILE__).'/RssFeedReader.js');
- 				print "\n// ]]>";
- 				print "\n</script>";
+ 				// Add our js libraries to the document <head>
+ 				$this->addHeadJavascript('RssFeedReader.js');
+ 				$this->addHeadCss('RssFeedReader.css');
  				
  				// Print our placeholder
  				$id = __CLASS__."_".$this->getId()."_feed";
