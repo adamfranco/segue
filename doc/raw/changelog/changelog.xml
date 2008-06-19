@@ -12,11 +12,15 @@
 <changelog name="Segue">
 	<version number="2.0-beta-25" date="The Future">
 		<releaseNotes>
-		
+			
 		</releaseNotes>
 		<change author='adam' date='2008-06-17'>
 			Plugins: Manager now executes any script blocks when reloading the plugin
 			after AJAX update.
+		</releaseNotes>
+		<change author='adam' date='2008-06-18'>
+			Themes: Theme CSS now configured to be loaded from a separate file
+			to cut down on document size.
 		</change>
 	</version>
 	<version number="2.0-beta-24" date="2008-06-16">
