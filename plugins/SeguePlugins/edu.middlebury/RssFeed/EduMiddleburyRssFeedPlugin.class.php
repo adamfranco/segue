@@ -198,7 +198,8 @@ class EduMiddleburyRssFeedPlugin
  				print "\n// <![CDATA[";
  				print "
  	var container = document.get_element_by_id('$id');
- 	var reader = new RssFeedReader('".$this->_getFeedAccessUrl()."');
+ 	var reader = new RssFeedReader('".$this->_getFeedAccessUrl()."',
+ 						{loadingImage: '".$this->getPublicFileUrl('loading.gif')."'});
  	reader.displayIn(container);
  	
  ";

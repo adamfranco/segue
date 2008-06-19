@@ -610,7 +610,8 @@ abstract class SeguePluginsDriver
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace(null);
 		$url = $harmoni->request->quickURL('plugin_manager', 'public_file', 
-			array('plugin' => HarmoniType::toString($asset->getAssetType()),'file' => $filename));
+			array('plugin' => HarmoniType::typeToString($this->_asset->getAssetType()),
+				'file' => $filename));
 		$harmoni->request->endNamespace();
 		return $url;
 	}

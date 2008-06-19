@@ -608,10 +608,17 @@ table.theme_advanced_table th {
 .RssFeedReader_item {
 	border-top: 1px dotted;
 	margin-bottom: 15px;
+	clear: both;
 }
 .RssFeedReader_item h4 {
 	margin-top: 3px;
 	margin-bottom: 5px;
+}
+
+.RssFeedReader_loading {
+/*	text-decoration: blink;*/
+	text-align: center;
+	font-weight: bold;
 }
 /*********************************************************
  * Other

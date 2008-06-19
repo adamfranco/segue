@@ -19,9 +19,9 @@
  *
  * @version $Id$
  */
-function RssFeedReader ( url ) {
+function RssFeedReader ( url, options ) {
 	if ( arguments.length > 0 ) {
-		this.init( url );
+		this.init( url, options );
 	}
 }
 
@@ -29,12 +29,14 @@ function RssFeedReader ( url ) {
 	 * Constructor
 	 * 
 	 * @param string url
+	 * @param object options
 	 * @return void
 	 * @access public
 	 * @since 6/17/08
 	 */
-	RssFeedReader.prototype.init = function ( url ) {
+	RssFeedReader.prototype.init = function ( url, options ) {
 		this.url = url;
+		this.options = options;
 	}
 
 	/**
@@ -47,8 +49,14 @@ function RssFeedReader ( url ) {
 	 */
 	RssFeedReader.prototype.displayIn = function (container) {
 		this.container = container;
-		this.loadMessageElement = this.container.appendChild(document.createElement('div', 'Loading...'));
-		this.feedElement = this.container.appendChild(document.createElement('div', ''));
+		
+		var loadMessage = this.container.appendChild(document.createElement('div'));
+		loadMessage.className = 'RssFeedReader_loading';
+		var message = '<img src="' + this.options.loadingImage + '" align="center" alt="Loading..."/>';
+		
+		message += '<br/>Loading...';
+		
+		loadMessage.innerHTML = message;
 		
 		this.loadFeed(this.url);
 	}
