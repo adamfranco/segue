@@ -14,10 +14,21 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-06-18' ref='1820785' reftype='fr'>
+			Plugins: New RSS feed-display plugin to allow in-line display of RSS feeds.
+		</new>
 		<change author='adam' date='2008-06-17'>
 			Plugins: Manager now executes any script blocks when reloading the plugin
 			after AJAX update.
 		</releaseNotes>
+		<new author='adam' date='2008-06-18' ref='1820785' reftype='fr'>
+			Plugins: Plugins can now get URLs for static files in their own
+			'public' directories. Enables serving of custom javascrip/images/css.
+		</new>
+		<new author='adam' date='2008-06-18' ref='1820785' reftype='fr'>
+			Plugins: Plugins can now specify CSS and Javascript files to be linked
+			from the document head.
+		</new>
 		<change author='adam' date='2008-06-18'>
 			Themes: Theme CSS now configured to be loaded from a separate file
 			to cut down on document size.
