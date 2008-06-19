@@ -138,6 +138,27 @@ class EduMiddleburyRssFeedPlugin
  				$url = '';
  			
  			$this->_setFeedUrl($url);
+ 			
+ 			if ($this->getFieldValue('show_channel_titles') == 'true')
+	 			$this->_setShowChannelTitles(true);
+	 		else
+	 			$this->_setShowChannelTitles(false);
+	 			
+	 		if ($this->getFieldValue('show_channel_descriptions') == 'true')
+	 			$this->_setShowChannelDescriptions(true);
+	 		else
+	 			$this->_setShowChannelDescriptions(false);
+	 			
+	 		if ($this->getFieldValue('show_item_titles') == 'true')
+	 			$this->_setShowItemTitles(true);
+	 		else
+	 			$this->_setShowItemTitles(false);
+	 			
+	 		if ($this->getFieldValue('show_item_descriptions') == 'true')
+	 			$this->_setShowItemDescriptions(true);
+	 		else
+	 			$this->_setShowItemDescriptions(false);
+	 		
  		}
  	}
  	
@@ -158,6 +179,21 @@ class EduMiddleburyRssFeedPlugin
  		else
  			print "http://";
  		print "\"/>";
+ 		
+ 		print "\n\t<br/>";
+ 		
+ 		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_channel_titles')."' value='true' ".(($this->_showChannelTitles())?'checked="checked"':'')."/> ";
+ 		print _("Show Channel Titles?");
+ 		
+ 		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_channel_descriptions')."' value='true' ".(($this->_showChannelDescriptions())?'checked="checked"':'')."/> ";
+ 		print _("Show Channel Descriptions?");
+ 		
+ 		print "\n\t<br/>";
+ 		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_item_titles')."' value='true' ".(($this->_showItemTitles())?'checked="checked"':'')."/> ";
+ 		print _("Show Item Titles?");
+ 		
+ 		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_item_descriptions')."' value='true' ".(($this->_showItemDescriptions())?'checked="checked"':'')."/> ";
+ 		print _("Show Item Descriptions?");
  		
  		print "\n\t<br/>";
  		print "\n\t<input type='submit' name='".$this->getFieldName('submit_pressed')."' value='"._("Submit")."'/>";
@@ -222,6 +258,7 @@ class EduMiddleburyRssFeedPlugin
 				
  		}
  		
+//  		printpre(htmlentities($this->getContent()));
  		return ob_get_clean();
  	}
  	
@@ -342,6 +379,166 @@ class EduMiddleburyRssFeedPlugin
  			$urlElement->nodeValue = $url;
  		} else
  			$feedElement->appendChild($this->doc->createElement('Url', $url));
+ 		
+ 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the titles of channels in the feed should be shown.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/17/08
+ 	 */
+ 	protected function _showChannelTitles () {
+ 		$elements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if (!$elements->length)
+ 			return true;
+ 		
+ 		$elem = $elements->item(0);
+ 		if ($elem->hasAttribute('showChannelTitles') && $elem->getAttribute('showChannelTitles') == 'false')
+ 			return false;
+ 		
+ 		return true;
+ 	}
+ 	
+ 	/**
+ 	 * Set the feed url
+ 	 * 
+ 	 * @param boolean $showTitles
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 6/17/08
+ 	 */
+ 	protected function _setShowChannelTitles ($showTitles) {
+ 		$feedElements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if ($feedElements->length)
+ 			$feedElement = $feedElements->item(0);
+ 		else
+ 			$feedElement = $this->doc->documentElement->appendChild(
+ 				$this->doc->createElement('RssFeed'));
+ 		
+ 		$feedElement->setAttribute('showChannelTitles', (($showTitles)?'true':'false'));
+ 		
+ 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the Descriptions of channels in the feed should be shown.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/17/08
+ 	 */
+ 	protected function _showChannelDescriptions () {
+ 		$elements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if (!$elements->length)
+ 			return true;
+ 		
+ 		$elem = $elements->item(0);
+ 		if ($elem->hasAttribute('showChannelDescriptions') && $elem->getAttribute('showChannelDescriptions') == 'false')
+ 			return false;
+ 		
+ 		return true;
+ 	}
+ 	
+ 	/**
+ 	 * Set the feed url
+ 	 * 
+ 	 * @param boolean $showDescriptions
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 6/17/08
+ 	 */
+ 	protected function _setShowChannelDescriptions ($showDescriptions) {
+ 		$feedElements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if ($feedElements->length)
+ 			$feedElement = $feedElements->item(0);
+ 		else
+ 			$feedElement = $this->doc->documentElement->appendChild(
+ 				$this->doc->createElement('RssFeed'));
+ 		
+ 		$feedElement->setAttribute('showChannelDescriptions', (($showDescriptions)?'true':'false'));
+ 		
+ 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the titles of Items in the feed should be shown.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/17/08
+ 	 */
+ 	protected function _showItemTitles () {
+ 		$elements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if (!$elements->length)
+ 			return true;
+ 		
+ 		$elem = $elements->item(0);
+ 		if ($elem->hasAttribute('showItemTitles') && $elem->getAttribute('showItemTitles') == 'false')
+ 			return false;
+ 		
+ 		return true;
+ 	}
+ 	
+ 	/**
+ 	 * Set the feed url
+ 	 * 
+ 	 * @param boolean $showTitles
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 6/17/08
+ 	 */
+ 	protected function _setShowItemTitles ($showTitles) {
+ 		$feedElements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if ($feedElements->length)
+ 			$feedElement = $feedElements->item(0);
+ 		else
+ 			$feedElement = $this->doc->documentElement->appendChild(
+ 				$this->doc->createElement('RssFeed'));
+ 		
+ 		$feedElement->setAttribute('showItemTitles', (($showTitles)?'true':'false'));
+ 		
+ 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the Descriptions of Items in the feed should be shown.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/17/08
+ 	 */
+ 	protected function _showItemDescriptions () {
+ 		$elements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if (!$elements->length)
+ 			return true;
+ 		
+ 		$elem = $elements->item(0);
+ 		if ($elem->hasAttribute('showItemDescriptions') && $elem->getAttribute('showItemDescriptions') == 'false')
+ 			return false;
+ 		
+ 		return true;
+ 	}
+ 	
+ 	/**
+ 	 * Set the feed url
+ 	 * 
+ 	 * @param boolean $showDescriptions
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 6/17/08
+ 	 */
+ 	protected function _setShowItemDescriptions ($showDescriptions) {
+ 		$feedElements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if ($feedElements->length)
+ 			$feedElement = $feedElements->item(0);
+ 		else
+ 			$feedElement = $this->doc->documentElement->appendChild(
+ 				$this->doc->createElement('RssFeed'));
+ 		
+ 		$feedElement->setAttribute('showItemDescriptions', (($showDescriptions)?'true':'false'));
  		
  		$this->setContent($this->doc->saveXMLWithWhitespace());
  	}
