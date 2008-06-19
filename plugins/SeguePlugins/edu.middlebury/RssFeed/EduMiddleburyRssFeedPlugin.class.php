@@ -148,6 +148,11 @@ class EduMiddleburyRssFeedPlugin
 	 			$this->_setShowChannelDescriptions(true);
 	 		else
 	 			$this->_setShowChannelDescriptions(false);
+	 		
+	 		if ($this->getFieldValue('show_channel_divider') == 'true')
+	 			$this->_setShowChannelDivider(true);
+	 		else
+	 			$this->_setShowChannelDivider(false);
 	 			
 	 		if ($this->getFieldValue('show_item_titles') == 'true')
 	 			$this->_setShowItemTitles(true);
@@ -158,6 +163,11 @@ class EduMiddleburyRssFeedPlugin
 	 			$this->_setShowItemDescriptions(true);
 	 		else
 	 			$this->_setShowItemDescriptions(false);
+	 		
+	 		if ($this->getFieldValue('show_item_divider') == 'true')
+	 			$this->_setShowItemDivider(true);
+	 		else
+	 			$this->_setShowItemDivider(false);
 	 		
  		}
  	}
@@ -188,12 +198,18 @@ class EduMiddleburyRssFeedPlugin
  		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_channel_descriptions')."' value='true' ".(($this->_showChannelDescriptions())?'checked="checked"':'')."/> ";
  		print _("Show Channel Descriptions?");
  		
+		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_channel_divider')."' value='true' ".(($this->_showChannelDivider())?'checked="checked"':'')."/> ";
+ 		print _("Show Channel Divider?");
+ 		
  		print "\n\t<br/>";
  		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_item_titles')."' value='true' ".(($this->_showItemTitles())?'checked="checked"':'')."/> ";
  		print _("Show Item Titles?");
  		
  		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_item_descriptions')."' value='true' ".(($this->_showItemDescriptions())?'checked="checked"':'')."/> ";
  		print _("Show Item Descriptions?");
+ 		
+ 		print "\n\t<input type='checkbox' name='".$this->getFieldName('show_item_divider')."' value='true' ".(($this->_showItemDivider())?'checked="checked"':'')."/> ";
+ 		print _("Show Item Divider?");
  		
  		print "\n\t<br/>";
  		print "\n\t<input type='submit' name='".$this->getFieldName('submit_pressed')."' value='"._("Submit")."'/>";
@@ -216,6 +232,11 @@ class EduMiddleburyRssFeedPlugin
  		if ($this->editing && $this->canModify()) {
 			$this->printEditForm();
  		} else if ($this->canView()) {
+ 			if ($this->shouldShowControls()) {
+				print "\n<div style='text-align: right; white-space: nowrap; float: right;'>";
+				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._("edit")."</a>";
+				print "\n</div>";
+			}
  			
  			if ($this->hasContent()) {
  				// Add our js libraries to the document <head>
@@ -232,7 +253,20 @@ class EduMiddleburyRssFeedPlugin
  				print "
  	var container = document.get_element_by_id('$id');
  	var reader = new RssFeedReader('".$this->_getFeedAccessUrl()."',
- 						{loadingImage: '".$this->getPublicFileUrl('loading.gif')."'});
+ 				{loadingImage: '".$this->getPublicFileUrl('loading.gif')."'";
+ 				if ($this->_showChannelTitles())
+ 					print ",\n\t\t\t\tshowChannelTitles: true";
+ 				if ($this->_showChannelDescriptions())
+ 					print ",\n\t\t\t\tshowChannelDescriptions: true";
+ 				if ($this->_showChannelDivider())
+ 					print ",\n\t\t\t\tshowChannelDivider: true";
+ 				if ($this->_showItemTitles())
+ 					print ",\n\t\t\t\tshowItemTitles: true";
+				if ($this->_showItemDescriptions())
+ 					print ",\n\t\t\t\tshowItemDescriptions: true";
+ 				if ($this->_showItemDivider())
+ 					print ",\n\t\t\t\tshowItemDivider: true";
+ 				print "});
  	reader.displayIn(container);
  	
  ";
@@ -391,15 +425,7 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 6/17/08
  	 */
  	protected function _showChannelTitles () {
- 		$elements = $this->xpath->query('/RssFeedPlugin/RssFeed');
- 		if (!$elements->length)
- 			return true;
- 		
- 		$elem = $elements->item(0);
- 		if ($elem->hasAttribute('showChannelTitles') && $elem->getAttribute('showChannelTitles') == 'false')
- 			return false;
- 		
- 		return true;
+ 		return $this->_getBoolean('showChannelTitles');
  	}
  	
  	/**
@@ -411,16 +437,7 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 6/17/08
  	 */
  	protected function _setShowChannelTitles ($showTitles) {
- 		$feedElements = $this->xpath->query('/RssFeedPlugin/RssFeed');
- 		if ($feedElements->length)
- 			$feedElement = $feedElements->item(0);
- 		else
- 			$feedElement = $this->doc->documentElement->appendChild(
- 				$this->doc->createElement('RssFeed'));
- 		
- 		$feedElement->setAttribute('showChannelTitles', (($showTitles)?'true':'false'));
- 		
- 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 		$this->_setBoolean('showChannelTitles', $showTitles);
  	}
  	
  	/**
@@ -431,15 +448,7 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 6/17/08
  	 */
  	protected function _showChannelDescriptions () {
- 		$elements = $this->xpath->query('/RssFeedPlugin/RssFeed');
- 		if (!$elements->length)
- 			return true;
- 		
- 		$elem = $elements->item(0);
- 		if ($elem->hasAttribute('showChannelDescriptions') && $elem->getAttribute('showChannelDescriptions') == 'false')
- 			return false;
- 		
- 		return true;
+ 		return $this->_getBoolean('showChannelDescriptions');
  	}
  	
  	/**
@@ -451,16 +460,30 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 6/17/08
  	 */
  	protected function _setShowChannelDescriptions ($showDescriptions) {
- 		$feedElements = $this->xpath->query('/RssFeedPlugin/RssFeed');
- 		if ($feedElements->length)
- 			$feedElement = $feedElements->item(0);
- 		else
- 			$feedElement = $this->doc->documentElement->appendChild(
- 				$this->doc->createElement('RssFeed'));
- 		
- 		$feedElement->setAttribute('showChannelDescriptions', (($showDescriptions)?'true':'false'));
- 		
- 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 		$this->_setBoolean('showChannelDescriptions', $showDescriptions);
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the Channels in the feed should have a diver between them
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _showChannelDivider () {
+ 		return $this->_getBoolean('showChannelDivider', false);
+ 	}
+ 	
+ 	/**
+ 	 * Set the value of the option to show Channel dividers
+ 	 * 
+ 	 * @param boolean $showChannelDivider
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _setShowChannelDivider ($showChannelDivider) {
+ 		$this->_setBoolean('showChannelDivider', $showChannelDivider);
  	}
  	
  	/**
@@ -471,15 +494,7 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 6/17/08
  	 */
  	protected function _showItemTitles () {
- 		$elements = $this->xpath->query('/RssFeedPlugin/RssFeed');
- 		if (!$elements->length)
- 			return true;
- 		
- 		$elem = $elements->item(0);
- 		if ($elem->hasAttribute('showItemTitles') && $elem->getAttribute('showItemTitles') == 'false')
- 			return false;
- 		
- 		return true;
+ 		return $this->_getBoolean('showItemTitles');
  	}
  	
  	/**
@@ -491,16 +506,7 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 6/17/08
  	 */
  	protected function _setShowItemTitles ($showTitles) {
- 		$feedElements = $this->xpath->query('/RssFeedPlugin/RssFeed');
- 		if ($feedElements->length)
- 			$feedElement = $feedElements->item(0);
- 		else
- 			$feedElement = $this->doc->documentElement->appendChild(
- 				$this->doc->createElement('RssFeed'));
- 		
- 		$feedElement->setAttribute('showItemTitles', (($showTitles)?'true':'false'));
- 		
- 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 		$this->_setBoolean('showItemTitles', $showTitles);
  	}
  	
  	/**
@@ -511,15 +517,7 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 6/17/08
  	 */
  	protected function _showItemDescriptions () {
- 		$elements = $this->xpath->query('/RssFeedPlugin/RssFeed');
- 		if (!$elements->length)
- 			return true;
- 		
- 		$elem = $elements->item(0);
- 		if ($elem->hasAttribute('showItemDescriptions') && $elem->getAttribute('showItemDescriptions') == 'false')
- 			return false;
- 		
- 		return true;
+ 		return $this->_getBoolean('showItemDescriptions');
  	}
  	
  	/**
@@ -531,6 +529,63 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 6/17/08
  	 */
  	protected function _setShowItemDescriptions ($showDescriptions) {
+ 		$this->_setBoolean('showItemDescriptions', $showDescriptions);
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the Items in the feed should have a diver between them
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _showItemDivider () {
+ 		return $this->_getBoolean('showItemDivider');
+ 	}
+ 	
+ 	/**
+ 	 * Set the value of the option to show item dividers
+ 	 * 
+ 	 * @param boolean $showItemDivider
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 6/18/08
+ 	 */
+ 	protected function _setShowItemDivider ($showItemDivider) {
+ 		$this->_setBoolean('showItemDivider', $showItemDivider);
+ 	}
+ 	
+ 	/**
+ 	 * Answer a boolean option
+ 	 * 
+ 	 * @param string $name
+ 	 * @param optional $default
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/19/08
+ 	 */
+ 	protected function _getBoolean ($name, $default = true) {
+ 		$elements = $this->xpath->query('/RssFeedPlugin/RssFeed');
+ 		if (!$elements->length)
+ 			return $default;
+ 		
+ 		$elem = $elements->item(0);
+ 		if ($elem->hasAttribute($name) && $elem->getAttribute($name) == 'false')
+ 			return false;
+ 		
+ 		return true;
+ 	}
+ 	
+ 	/**
+ 	 * Set a boolean option
+ 	 * 
+ 	 * @param string $name
+ 	 * @param boolean $value
+ 	 * @return void
+ 	 * @access protected
+ 	 * @since 6/19/08
+ 	 */
+ 	protected function _setBoolean ($name, $value) {
  		$feedElements = $this->xpath->query('/RssFeedPlugin/RssFeed');
  		if ($feedElements->length)
  			$feedElement = $feedElements->item(0);
@@ -538,7 +593,7 @@ class EduMiddleburyRssFeedPlugin
  			$feedElement = $this->doc->documentElement->appendChild(
  				$this->doc->createElement('RssFeed'));
  		
- 		$feedElement->setAttribute('showItemDescriptions', (($showDescriptions)?'true':'false'));
+ 		$feedElement->setAttribute($name, (($value)?'true':'false'));
  		
  		$this->setContent($this->doc->saveXMLWithWhitespace());
  	}

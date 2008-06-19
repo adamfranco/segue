@@ -186,20 +186,31 @@ function RssChannel ( element ) {
 	 */
 	RssChannel.prototype.render = function (options) {
 		var container = document.createElement('div');
-		container.className = 'RssFeedReader_channel';
+		if (options.showChannelDivider)
+			container.className = 'RssFeedReader_channel RssFeedReader_divider';
+		else
+			container.className = 'RssFeedReader_channel';
 		
-		var title = container.appendChild(document.createElement('h3'));
-		if (this.getUrl()) {
-			var link = title.appendChild(document.createElement('a'));
-			link.setAttribute('href', this.getUrl());
-			link.innerHTML = this.getTitle();
-		} else {
-			title.innerHTML = this.getTitle();
+		if (options.showChannelTitles) {
+			var title = container.appendChild(document.createElement('h3'));
+			if (this.getUrl()) {
+				var link = title.appendChild(document.createElement('a'));
+				link.setAttribute('href', this.getUrl());
+				link.innerHTML = this.getTitle();
+			} else {
+				title.innerHTML = this.getTitle();
+			}
+		}
+		
+		if (options.showChannelDescriptions && this.getDescription().length) {
+			var desc = container.appendChild(document.createElement('div'));
+			desc.className = 'RssFeedReader_channel_description';
+			desc.innerHTML = this.getDescription();
 		}
 		
 		// Items
 		for (var i = 0; i < this.items.length; i++) {
-			container.appendChild(this.items[i].render());
+			container.appendChild(this.items[i].render(options));
 		}
 		
 		return container;
@@ -220,6 +231,25 @@ function RssChannel ( element ) {
 			}
 		}
 		return 'Untitled';
+	}
+	
+	/**
+	 * Answer a description for the channel
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/18/08
+	 */
+	RssChannel.prototype.getDescription = function () {
+		for (var i = 0; i < this.element.childNodes.length; i++) {
+			var child = this.element.childNodes[i];
+			if (child.nodeName == 'description' && child.firstChild.nodeValue
+				&& child.firstChild.nodeValue.length) 
+			{
+				return child.firstChild.nodeValue;
+			}
+		}
+		return '';
 	}
 	
 	/**
@@ -278,19 +308,26 @@ function RssItem ( element ) {
 	 */
 	RssItem.prototype.render = function (options) {
 		var container = document.createElement('div');
-		container.className = 'RssFeedReader_item';
+		if (options.showItemDivider)
+			container.className = 'RssFeedReader_item RssFeedReader_divider';
+		else
+			container.className = 'RssFeedReader_item';
 		
-		var title = container.appendChild(document.createElement('h4'));
-		if (this.getUrl()) {
-			var link = title.appendChild(document.createElement('a'));
-			link.setAttribute('href', this.getUrl());
-			link.innerHTML = this.getTitle();
-		} else {
-			title.innerHTML = this.getTitle();
+		if (options.showItemTitles) {
+			var title = container.appendChild(document.createElement('h4'));
+			if (this.getUrl()) {
+				var link = title.appendChild(document.createElement('a'));
+				link.setAttribute('href', this.getUrl());
+				link.innerHTML = this.getTitle();
+			} else {
+				title.innerHTML = this.getTitle();
+			}
 		}
 		
-		var desc = container.appendChild(document.createElement('div'));
-		desc.innerHTML = this.getDescription();
+		if (options.showItemDescriptions) {
+			var desc = container.appendChild(document.createElement('div'));
+			desc.innerHTML = this.getDescription();
+		}
 		
 		return container;
 	}

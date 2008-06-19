@@ -1,11 +1,24 @@
 /*********************************************************
  * RSS Feed Display plugin
  *********************************************************/
+.RssFeedReader_channel h3 {
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+
+.RssFeedReader_channel_description {
+	margin-bottom: 5px;
+}
+
 .RssFeedReader_item {
-	border-top: 1px dotted;
 	margin-bottom: 15px;
 	clear: both;
 }
+
+.RssFeedReader_divider {
+	border-top: 1px dotted;
+}
+
 .RssFeedReader_item h4 {
 	margin-top: 3px;
 	margin-bottom: 5px;
