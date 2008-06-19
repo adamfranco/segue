@@ -269,6 +269,9 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 1/12/06
  	 */
  	public function getMarkup () {
+ 		// Add our js libraries to the document <head>
+		$this->addHeadJavascript('RssFeedReader.js');
+		$this->addHeadCss('RssFeedReader.css');
  		ob_start();
  		
  		if ($this->editing && $this->canModify()) {
@@ -281,9 +284,6 @@ class EduMiddleburyRssFeedPlugin
 			}
  			
  			if ($this->hasContent()) {
- 				// Add our js libraries to the document <head>
- 				$this->addHeadJavascript('RssFeedReader.js');
- 				$this->addHeadCss('RssFeedReader.css');
  				
  				// Print our placeholder
  				$id = __CLASS__."_".$this->getId()."_feed";
