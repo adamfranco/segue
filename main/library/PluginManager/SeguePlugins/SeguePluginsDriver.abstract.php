@@ -634,7 +634,7 @@ abstract class SeguePluginsDriver
 		$allParams = array(
 				'plugin' => HarmoniType::typeToString($this->_asset->getAssetType()),
 				'paction' => $actionName);
-		$restricted = array('module', 'action', 'plugin', 'paction');
+		$restricted = array('module', 'action', 'plugin', 'paction', 'plugin_id');
 		foreach ($params as $key => $val) {
 			if (in_array($key, $restricted))
 				throw new InvalidArgumentException("Parameter $key is not allowed.");

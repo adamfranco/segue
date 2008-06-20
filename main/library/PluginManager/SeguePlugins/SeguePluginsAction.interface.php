@@ -38,15 +38,6 @@ interface SeguePluginsAction {
 	public static function isPerInstance ();
 	
 	/**
-	 * Execute this action. 
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 6/19/08
-	 */
-	public function execute ();
-	
-	/**
 	 * If this action is per-instance this method will be called to give the action
 	 * its instance
 	 * 
@@ -56,6 +47,28 @@ interface SeguePluginsAction {
 	 * @since 6/19/08
 	 */
 	public function setPluginInstance (SeguePluginsAPI $pluginInstance);
+	
+	/**
+	 * This method will be called on the action to provide it with request params.
+	 * Actions should not look at $_REQUEST, $_GET, or $_POST as alternate methods
+	 * of passing or encoding parameters may be used.
+	 * 
+	 * @param array $requestParams
+	 * @return void
+	 * @access public
+	 * @since 6/19/08
+	 */
+	public function setRequestParams (array $requestParams);
+	
+	/**
+	 * Execute this action. The setX methods will be called before execute to
+	 * initialize this action.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 6/19/08
+	 */
+	public function execute ();
 }
 
 ?>

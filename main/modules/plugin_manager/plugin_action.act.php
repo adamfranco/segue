@@ -71,6 +71,15 @@ class plugin_actionAction
 			if (!$action instanceof SeguePluginsAction)
 				throw new UnknownActionException("'".$class."' is not a valid plugin action. Does not implement interface: SeguePluginsAction.");
 			
+			$harmoni = Harmoni::instance();
+			$restricted = array('module', 'action', 'plugin', 'paction', 'plugin_id');
+			$params = array();
+			foreach ($harmoni->request->getKeys() as $key) {
+				if (!in_array($key, $restricted))
+					$params[$key] = RequestContext::value($key);
+			}
+			$action->setRequestParams($params);
+			
 			if (call_user_func(array($this->getActionClassName(), 'isPerInstance')))
 				$action->setPluginInstance($this->getPluginInstance());
 			

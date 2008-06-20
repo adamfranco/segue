@@ -42,17 +42,6 @@ class remote_feed
 	}
 	
 	/**
-	 * Execute this action. 
-	 * 
-	 * @return void
-	 * @access public
-	 * @since 6/19/08
-	 */
-	public function execute () {
-		print "Hello world";
-	}
-	
-	/**
 	 * If this action is per-instance this method will be called to give the action
 	 * its instance
 	 * 
@@ -65,6 +54,58 @@ class remote_feed
 		throw new UnimplementedException();
 	}
 	
+	/**
+	 * This method will be called on the action to provide it with request params.
+	 * Actions should not look at $_REQUEST, $_GET, or $_POST as alternate methods
+	 * of passing or encoding parameters may be used.
+	 * 
+	 * @param array $requestParams
+	 * @return void
+	 * @access public
+	 * @since 6/19/08
+	 */
+	public function setRequestParams (array $requestParams) {
+		$this->request = $requestParams;
+		if (!preg_match(
+				'/^(http|https):\/\/[a-zA-Z0-9_.-]+(:[0-9]+)?(\/[a-zA-Z0-9_.,?%+=\/-]*)/i', 
+				$this->request['url']))
+			throw new InvalidArgumentException("Not a valid feed URL: ".$this->request['url']);
+	}
+	
+	/**
+	 * Execute this action. The setX methods will be called before execute to
+	 * initialize this action.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 6/19/08
+	 */
+	public function execute () {
+		$feedData = @file_get_contents($this->request['url']);
+		if (!strlen($feedData))
+			throw new OperationFailedException("Could not access feed, '".$this->request['url']."'.");
+		
+		// Convert any non-UTF-8 characters
+		$string = String::withValue($feedData);
+		$string->makeUtf8();
+		$feedData = $string->asString();
+		
+		// Validate Feed.
+		// @todo
+		
+		// Convert Atom/RSS 1 to RSS2
+		// @todo
+		
+		// Cache the feed data
+		// @todo
+		
+		
+		// Output the feed data
+		header('Content-Type: text/xml');
+		header('Content-Length: '.strlen($feedData));
+		print $feedData;
+		exit;
+	}
 }
 
 ?>

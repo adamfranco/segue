@@ -134,7 +134,7 @@ class EduMiddleburyRssFeedPlugin
 	 	
  		if ($this->getFieldValue('submit_pressed')) {
  			$url = $this->getFieldValue('feed_url');
- 			if (!preg_match('/^(http|https):\/\/[a-zA-Z0-9_.-]+(\/[a-zA-Z0-9_.,?%+=\/-]*)/i', $url))
+ 			if (!preg_match('/^(http|https):\/\/[a-zA-Z0-9_.-]+(:[0-9]+)?(\/[a-zA-Z0-9_.,?%+=\/-]*)/i', $url))
  				$url = '';
  			
  			$this->_setFeedUrl($url);
