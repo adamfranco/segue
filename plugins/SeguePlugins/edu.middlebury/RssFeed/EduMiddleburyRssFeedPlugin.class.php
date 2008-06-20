@@ -134,7 +134,7 @@ class EduMiddleburyRssFeedPlugin
 	 	
  		if ($this->getFieldValue('submit_pressed')) {
  			$url = $this->getFieldValue('feed_url');
- 			if (!preg_match('/^https?:\/\/[a-z0-9]+/i', $url))
+ 			if (!preg_match('/^(http|https):\/\/[a-zA-Z0-9_.-]+(\/[a-zA-Z0-9_.,?%+=\/-]*)/i', $url))
  				$url = '';
  			
  			$this->_setFeedUrl($url);
@@ -205,7 +205,7 @@ class EduMiddleburyRssFeedPlugin
  			print $this->_getFeedUrl();
  		else
  			print "http://";
- 		print "\"/>";
+ 		print "\" onchange='if(!RssFeedReader.validateUrl(this.value)) {alert(\"Feed URL is not valid.\"); this.focus()}'/>";
  		
  		print "\n\t<table width='100%' border='0'><tr><td>";
  		

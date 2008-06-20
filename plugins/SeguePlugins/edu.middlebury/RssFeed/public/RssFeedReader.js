@@ -24,6 +24,18 @@ function RssFeedReader ( url, options ) {
 		this.init( url, options );
 	}
 }
+	/**
+	 * Validate a url
+	 * 
+	 * @param string url
+	 * @return boolean
+	 * @access public
+	 * @since 6/19/08
+	 * @static
+	 */
+	RssFeedReader.validateUrl = function (url) {
+		return url.match(/^(http|https):\/\/[a-zA-Z0-9_.-]+(\/[a-zA-Z0-9_.,?%+=\/-]*)/);
+	}
 
 	/**
 	 * Constructor
@@ -57,8 +69,11 @@ function RssFeedReader ( url, options ) {
 		message += '<br/>Loading...';
 		
 		loadMessage.innerHTML = message;
-		
-		this.loadFeed(this.url);
+		try {
+			this.loadFeed(this.url);
+		} catch (e) {
+			this.displayError(e);
+		}
 	}
 	
 	/**
@@ -79,18 +94,22 @@ function RssFeedReader ( url, options ) {
 			var reader = this;
 
 			req.onreadystatechange = function () {
-				// only if req shows "loaded"
-				if (req.readyState == 4) {
-					// only if we get a good load should we continue.
-					if (req.status == 200) {
-// 						alert(req.responseText);
-						if (!req.responseXML)
-							alert("Error: Invalid feed data, not XML.");
-						reader.loadFeedXml(req.responseXML);
-					} else {
-						alert("There was a problem retrieving the XML data:\n" +
-							req.statusText);
+				try {
+					// only if req shows "loaded"
+					if (req.readyState == 4) {
+						// only if we get a good load should we continue.
+						if (req.status == 200) {
+	// 						alert(req.responseText);
+							if (!req.responseXML)
+								throw new Error("Invalid feed data, not XML.");
+							reader.loadFeedXml(req.responseXML);
+						} else {
+							throw new Error("There was a problem retrieving the XML data:\n" +
+								req.statusText);
+						}
 					}
+				} catch (e) {
+					reader.displayError(e);
 				}
 			} 
 			
@@ -98,8 +117,29 @@ function RssFeedReader ( url, options ) {
 			req.send(null);
 			
 		} else {
-			alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
+			throw new Error("Unable to execute AJAX request. \nPlease upgrade your browser.");
 		}
+	}
+	
+	/**
+	 * Display an error message
+	 * 
+	 * @param Error e
+	 * @return void
+	 * @access public
+	 * @since 6/19/08
+	 */
+	RssFeedReader.prototype.displayError = function (e) {
+		this.container.innerHTML = '';
+		var div = this.container.appendChild(document.createElement('div'));
+		div.className = 'RssFeedReader_loading';
+		if (this.options.errorImage)
+			var message = '<img src="' + this.options.loadingImage + '" align="center" alt="An error has occurred"/><br/>';
+		else
+			var message = '';
+		
+		message += e;
+		div.innerHTML = message;
 	}
 	
 	/**
@@ -114,7 +154,7 @@ function RssFeedReader ( url, options ) {
 		this.channels = new Array();
 		var channelElements = feedDoc.getElementsByTagName('channel');
 		if (!channelElements.length) 
-			alert("Error: Invalid RSS feed, no channels in feed or errors exist in feed XML.");
+			throw new Error("Invalid RSS feed, no channels in feed or errors exist in feed XML.");
 		for (var i = 0; i < channelElements.length; i++) {
 			this.channels.push(new RssChannel(channelElements.item(i)));
 		}
