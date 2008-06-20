@@ -46,6 +46,16 @@ interface SeguePluginsAction {
 	 */
 	public function execute ();
 	
+	/**
+	 * If this action is per-instance this method will be called to give the action
+	 * its instance
+	 * 
+	 * @param object SeguePluginsAPI $pluginInstance
+	 * @return void
+	 * @access public
+	 * @since 6/19/08
+	 */
+	public function setPluginInstance (SeguePluginsAPI $pluginInstance);
 }
 
 ?>
