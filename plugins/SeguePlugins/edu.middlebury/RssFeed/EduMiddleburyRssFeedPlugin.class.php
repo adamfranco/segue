@@ -411,10 +411,32 @@ class EduMiddleburyRssFeedPlugin
  	 */
  	protected function _getFeedAccessUrl () {
  		// For local-server urls, return the feed url
- 		return $this->_getFeedUrl();
+ 		if ($this->isLocal($this->_getFeedUrl()))
+	 		return $this->_getFeedUrl();
  		
  		// For remote urls, pass through a local data-fetching gateway.
- 		// @todo
+ 		else
+	 		return $this->getPluginActionUrl('remote_feed', 
+ 				array('url' => $this->_getFeedUrl()));
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the feed is local to this server and can be accessed via
+ 	 * XMLHTTPRequest.
+ 	 * 
+ 	 * @param string $url
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/19/08
+ 	 */
+ 	protected function isLocal ($url) {
+ 		if (!preg_match('/^[a-z]{3,6}:\/\/([a-zA-Z0-9_.-]+)(:\/)?/i', $url, $matches))
+ 			throw new Exception("Invalid URL syntax: $url");
+ 		$host = $matches[1];
+ 		if (strtolower($host) == strtolower($_SERVER['HTTP_HOST'])) 
+	 		return true;
+	 	else
+	 		return false;
  	}
  	
  	/**

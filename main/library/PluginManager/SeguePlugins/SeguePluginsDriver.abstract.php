@@ -617,6 +617,36 @@ abstract class SeguePluginsDriver
 	}
 	
 	/**
+	 * This method will give you a url to access an action script in your plugin.
+	 * Action script files must me named with the action name followed by '.act.php'.
+	 * Action scripts must contain a class with the same name as the action name.
+	 * The action script's class must implement the 'SeguePluginsAction' interface.
+	 * 
+	 * @param string $actionName
+	 * @param optional array $params
+	 * @return string
+	 * @access public
+	 * @since 6/19/08
+	 */
+	final public function getPluginActionUrl ($actionName, $params = array()) {
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
+		$allParams = array(
+				'plugin' => HarmoniType::typeToString($this->_asset->getAssetType()),
+				'paction' => $actionName);
+		$restricted = array('module', 'action', 'plugin', 'paction');
+		foreach ($params as $key => $val) {
+			if (in_array($key, $restricted))
+				throw new InvalidArgumentException("Parameter $key is not allowed.");
+			
+			$allParams[$key] = $val;
+		}
+		$url = $harmoni->request->quickURL('plugin_manager', 'plugin_action', $allParams);
+		$harmoni->request->endNamespace();
+		return $url;
+	}
+	
+	/**
 	 * A static array that holds a list of the css added to the head to 
 	 * prevent duplication. 
 	 *

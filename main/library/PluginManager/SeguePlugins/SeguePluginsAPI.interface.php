@@ -692,6 +692,20 @@ interface SeguePluginsAPI {
 	public function getPublicFileUrl ($filename);
 	
 	/**
+	 * This method will give you a url to access an action script in your plugin.
+	 * Action script files must me named with the action name followed by '.act.php'.
+	 * Action scripts must contain a class with the same name as the action name.
+	 * The action script's class must implement the 'SeguePluginsAction' interface.
+	 * 
+	 * @param string $actionName
+	 * @param optional array $params
+	 * @return string
+	 * @access public
+	 * @since 6/19/08
+	 */
+	public function getPluginActionUrl ($actionName, $params = array());
+	
+	/**
 	 * This method will add the CSS contained in a file in the plugin's
 	 * 'public' subdirectory to the <head> of the page the plugin
 	 * is displayed on.
