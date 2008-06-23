@@ -57,7 +57,7 @@ class EduMiddleburyTagsPlugin
  	public static function getPluginDisplayName () {
  		return _("Tags");
  	}
- 	
+ 
  	/**
  	 * Answer an array of the creators of the plugin (not the instance) to provide to 
  	 * users when choosing between what plugin to create.
@@ -82,7 +82,27 @@ class EduMiddleburyTagsPlugin
  	public static function getPluginVersion () {
  		return '1.0';
  	}
- 	
+
+	/**
+	 * Update plugin data from requests
+ 	 * In our situation, update the options used
+	 * by this particular instance of the plugin
+	 * 
+	 * @param array $request
+	 * @return void
+	 * @access public
+	 * @since 6/17/08
+	 */
+
+	public function update( $request ) {
+		if($this->getFieldValue('submit')){	
+			$order = $this->getFieldValue('order');
+			$this->setContent($order);
+		}	
+
+
+	}
+
  	/**
  	 * Return the markup that represents the plugin.
  	 * Plugin writers should override this method with their own functionality
@@ -94,34 +114,53 @@ class EduMiddleburyTagsPlugin
  	 */
  	public function getMarkup () {
 		ob_start();
-				
-		if ($this->canView()) {
+	
 
+		if($this->getFieldValue('edit') && $this->canModify()){
+			print "\n".$this->formStartTagWithAction();
+			print "Order tags by:\n";
+			print "<select name='".$this->getFieldName('order')."'>\n";
+			print "<option value='alpha'>Alphabetic Order</option>\n";
+			print "<option value='freq'>Frequency</option>\n";
+			print "</select>\n";
+			print "<input type='submit' value='Submit' name='".$this->getFieldName('submit')."'>\n";
+			print "</form>";
+		} else if ($this->canView()) {
 			$items = array();
- 			$director = SiteDispatcher::getSiteDirector();
- 			$node = $director->getSiteComponentById($this->getId());
+			if(!$this->getFieldValue('submit')){
+				print $this->getContent();
+	 			$director = SiteDispatcher::getSiteDirector();
+ 				$node = $director->getSiteComponentById($this->getId());
+ 				
+ 				// Determine the navigational node above this tag cloud.
+	 			$visitor = new TagCloudNavParentVisitor;
+ 				$parentNavNode = $node->acceptVisitor($visitor);
+ 				 			
+ 				$visitor = new TaggableItemVisitor;
+	 			$items = $parentNavNode->acceptVisitor($visitor);
  			
- 			// Determine the navigational node above this tag cloud.
- 			$visitor = new TagCloudNavParentVisitor;
- 			$parentNavNode = $node->acceptVisitor($visitor);
- 			 			
- 			$visitor = new TaggableItemVisitor;
- 			$items = $parentNavNode->acceptVisitor($visitor);
- 			
- 			SiteDispatcher::passthroughContext();
- 			
- 			print "\n<div class='breadcrumbs' style='height: auto; margin-top: 1px; margin-bottom: 5px; border-bottom: 1px dotted; padding-bottom: 2px;'>";
- 			print str_replace('%1', $parentNavNode->acceptVisitor(new BreadCrumbsVisitor($parentNavNode)),
+ 				SiteDispatcher::passthroughContext();
+ 		
+
+ 				print "\n<div class='breadcrumbs' style='height: auto; margin-top: 1px; margin-bottom: 5px; border-bottom: 1px dotted; padding-bottom: 2px;'>";
+ 				print str_replace('%1', $parentNavNode->acceptVisitor(new BreadCrumbsVisitor($parentNavNode)),
  				_("Tags within: %1"));
- 			print "</div>";
-			print "\n<div style='text-align: justify;'>";
- 			print TagAction::getReadOnlyTagCloudForItems($items, 'sitetag', null);
- 			print "</div>";
- 			SiteDispatcher::forgetContext();
- 			
+	 			print "</div>";
+				print "\n<div style='text-align: justify;'>";
+// 				print TagAction::getReadOnlyTagCloudForItems($items, 'sitetag', null);
+				$tags = TagAction::getTagsFromItems($items);
+				print TagAction::getTagCloudDiv($tags, 'sitetag', null);
+				print "</div>";
+				if($this->shouldShowControls()){
+					print "\n<div style='text-align: right; white-space: nowrap;'>";
+					print "\n\t<a ".$this->href(array('edit' => 'true')).">".("Configure Tag Cloud")."</a>";
+					print "\n</div>";
+				}
+ 				SiteDispatcher::forgetContext();
+			}
 
  		}
-		
+				
 		return ob_get_clean();
  	} 
 }

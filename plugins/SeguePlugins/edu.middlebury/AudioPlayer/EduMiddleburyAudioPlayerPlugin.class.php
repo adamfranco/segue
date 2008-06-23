@@ -20,7 +20,7 @@
  *
  * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
  */
-class EduMiddleburyDownloadPlugin
+class EduMiddleburyAudioPlayerPlugin
 	extends SegueAjaxPlugin
 // 	extends SeguePlugin
 {
