@@ -28,6 +28,10 @@
 	$harmoni->config->set("sessionCookiePath","/");
 	$harmoni->config->set("sessionCookieDomain","");
 	
+	// An array of actions for which the SESSION ID *can* be passed in the url
+	$harmoni->config->set("sessionInUrlActions", array(
+		'repository.viewfile_flash', 'repository.viewthumbnail_flash'));
+	
 	// tell harmoni to post-process all actions with this specified action.
 	// the action takes the result from previous actions and builds a display
 	// screen from it.

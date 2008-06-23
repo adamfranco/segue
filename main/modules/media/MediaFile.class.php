@@ -254,6 +254,38 @@ class MediaFile {
 	}
 	
 	/**
+	 * Answer the url to the file that can be used by flash objects with limited
+	 * cookie-sending abilities.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/20/08
+	 */
+	public function getUrlForFlash () {
+		$harmoni = Harmoni::instance();
+		
+		$harmoni->request->startNamespace(null);
+		$harmoni->request->set(session_name(), session_id());
+		$harmoni->request->endNamespace();
+		
+		$harmoni->request->startNamespace('polyphony-repository');
+		$url = $harmoni->request->mkURL("repository", "viewfile_flash", 
+				array(
+					"repository_id" => $this->_getRepositoryIdString(),
+					"asset_id" => $this->_getAssetIdString(),
+					"record_id" => $this->_getRecordIdString()));
+		$harmoni->request->endNamespace();
+		
+		$url = $url->write();
+		
+		$harmoni->request->startNamespace(null);
+		$harmoni->request->forget(session_name());
+		$harmoni->request->endNamespace();
+		
+		return $url;
+	}
+	
+	/**
 	 * Answer the thumbnail url
 	 * 
 	 * @return string
@@ -268,6 +300,38 @@ class MediaFile {
 					"repository_id" => $this->_getRepositoryIdString(),
 					"asset_id" => $this->_getAssetIdString(),
 					"record_id" => $this->_getRecordIdString()));
+		$harmoni->request->endNamespace();
+		
+		return $url;
+	}
+	
+	/**
+	 * Answer the url to the thumbnail that can be used by flash objects with limited
+	 * cookie-sending abilities.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 6/20/08
+	 */
+	public function getThumbnailUrlForFlash () {
+		$harmoni = Harmoni::instance();
+		
+		$harmoni->request->startNamespace(null);
+		$harmoni->request->set(session_name(), session_id());
+		$harmoni->request->endNamespace();
+		
+		$harmoni->request->startNamespace('polyphony-repository');
+		$url = $harmoni->request->mkURL("repository", "viewthumbnail_flash", 
+				array(
+					"repository_id" => $this->_getRepositoryIdString(),
+					"asset_id" => $this->_getAssetIdString(),
+					"record_id" => $this->_getRecordIdString()));
+		$harmoni->request->endNamespace();
+		
+		$url = $url->write();
+		
+		$harmoni->request->startNamespace(null);
+		$harmoni->request->forget(session_name());
 		$harmoni->request->endNamespace();
 		
 		return $url;

@@ -36,5 +36,5 @@ define("POLYPHONY_PATH", trim(MYPATH, '/')."/main/polyphony/");
  * directory and make it owned by your webserver user, then
  * define the TTF_DIR constant below
  *********************************************************/
-define("JPGRAPH_DIR", MYDIR."/../jpgraph");
+define("JPGRAPH_DIR", MYDIR."/main/jpgraph");
 // define("TTF_DIR", MYDIR."/../ttf/");
