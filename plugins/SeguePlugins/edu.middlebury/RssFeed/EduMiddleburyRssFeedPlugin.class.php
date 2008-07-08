@@ -414,7 +414,8 @@ class EduMiddleburyRssFeedPlugin
  	 */
  	protected function _getFeedAccessUrl () {
  		// For local-server urls, return the feed url
- 		if ($this->isLocal($this->_getFeedUrl()))
+ 		if ($this->isLocal($this->_getFeedUrl()) 
+ 				&& $this->isContentTrusted($this->_getFeedUrl()))
 	 		return $this->_getFeedUrl();
  		
  		// For remote urls, pass through a local data-fetching gateway.
@@ -453,6 +454,37 @@ class EduMiddleburyRssFeedPlugin
 	 		return true;
 	 	else
 	 		return false;
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the feed source is trusted to provide safe content. Generally
+ 	 * this will only be Segue-Generated feeds.
+ 	 * 
+ 	 * @param string $url
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 7/7/08
+ 	 */
+ 	protected function isContentTrusted ($url) {
+ 		$trustedActions = array(
+ 			array('module' => 'rss', 'action' => 'comments'),
+ 			array('module' => 'rss', 'action' => 'content'),
+ 			array('module' => 'logs', 'action' => 'browse_rss')
+ 		);
+ 		$trustedUrls = array();
+ 		
+ 		// Check allowed list.
+ 		if (in_array($url, $trustedUrls))
+ 			return true;
+ 		
+ 		// Build allowed urls and check against them.
+ 		$harmoni = Harmoni::instance();
+ 		foreach ($trustedActions as $pair) {
+ 			if (strpos($url, $harmoni->request->quickURL($pair['module'], $pair['action'])) === 0)
+ 				return true;
+ 		}
+ 		
+ 		return false;
  	}
  	
  	/**

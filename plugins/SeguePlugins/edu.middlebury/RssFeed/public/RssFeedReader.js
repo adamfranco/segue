@@ -140,7 +140,8 @@ function RssFeedReader ( url, options, altUrl ) {
 		else
 			var message = '';
 		
-		message += e;
+		e = String(e);
+		message += e.stripTags();
 		div.innerHTML = message;
 	}
 	
@@ -163,7 +164,11 @@ function RssFeedReader ( url, options, altUrl ) {
 				this.loadFeed(this.altUrl);
 				return;
 			}
-			throw new Error("Invalid RSS feed, no channels in feed or errors exist in feed XML.");
+			
+			if (feedDoc.documentElement.nodeName == 'error')
+				throw new Error("Invalid RSS feed: \n" + feedDoc.documentElement.firstChild.nodeValue);
+			else
+				throw new Error("Invalid RSS feed, no channels in feed or errors exist in feed XML.");
 		}
 		for (var i = 0; i < channelElements.length; i++) {
 			this.channels.push(new RssChannel(channelElements.item(i)));

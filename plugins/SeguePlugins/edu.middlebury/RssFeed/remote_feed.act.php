@@ -81,71 +81,97 @@ class remote_feed
 	 * @since 6/19/08
 	 */
 	public function execute () {
-		$feedData = @file_get_contents($this->request['url']);
-		if (!strlen($feedData))
-			throw new OperationFailedException("Could not access feed, '".$this->request['url']."'.");
-		
-		$feed = new DOMDocument();
-		
-		// Convert any non-UTF-8 characters
-		$string = String::withValue($feedData);
-		$string->makeUtf8();
-		$feed->loadXML($string->asString());
-		
-		// Handle any format conversions
-		switch ($feed->documentElement->nodeName) {
-			// Convert Atom to RSS 2.0
-			case 'feed':
-				switch ($feed->documentElement->getAttribute('xmlns')) {
-					// Convert Atom 0.3 to Atom 1.0
-					case 'http://purl.org/atom/ns#':
-						$sheet = new DOMDocument();
-						$sheet->load(dirname(__FILE__).'/atom2atom.xsl');
-						$processor = new XSLTProcessor();
-						$processor->importStylesheet($sheet);
-						$feed = $processor->transformToDoc($feed);
-					
-					// Convert Atom 1.0 to RSS2
-					case 'http://www.w3.org/2005/Atom':
-						$sheet = new DOMDocument();
-						$sheet->load(dirname(__FILE__).'/atom2rss.xsl');
-						$processor = new XSLTProcessor();
-						$processor->registerPHPFunctions();
-						$processor->importStylesheet($sheet);
-						$feed = $processor->transformToDoc($feed);
-						break;
-					default:
-						throw new OperationFailedException("Unsupported feed format.");
-				}
-				break;
-			case 'rss':
-				// Convert RSS 0.9x to RSS 2.0
-				// @todo
-				break;
-			default:
-				throw new OperationFailedException("Unsupported feed format.");
+		try {
+			$feedData = @file_get_contents($this->request['url']);
+			if (!strlen($feedData))
+				throw new OperationFailedException("Could not access feed, '".$this->request['url']."'.");
+			
+			$feed = new DOMDocument();
+			
+			// Convert any non-UTF-8 characters
+			$string = String::withValue($feedData);
+			$string->makeUtf8();
+			$feed->loadXML($string->asString());
+			
+			// Handle any format conversions
+			switch ($feed->documentElement->nodeName) {
+				// Convert Atom to RSS 2.0
+				case 'feed':
+					switch ($feed->documentElement->getAttribute('xmlns')) {
+						// Convert Atom 0.3 to Atom 1.0
+						case 'http://purl.org/atom/ns#':
+							$sheet = new DOMDocument();
+							$sheet->load(dirname(__FILE__).'/atom2atom.xsl');
+							$processor = new XSLTProcessor();
+							$processor->importStylesheet($sheet);
+							$feed = $processor->transformToDoc($feed);
+						
+						// Convert Atom 1.0 to RSS2
+						case 'http://www.w3.org/2005/Atom':
+							$sheet = new DOMDocument();
+							$sheet->load(dirname(__FILE__).'/atom2rss.xsl');
+							$processor = new XSLTProcessor();
+							$processor->registerPHPFunctions();
+							$processor->importStylesheet($sheet);
+							$feed = $processor->transformToDoc($feed);
+							break;
+						default:
+							throw new OperationFailedException("Unsupported feed format.");
+					}
+					break;
+				case 'rss':
+					// Convert RSS 0.9x to RSS 2.0
+					// @todo
+					break;
+				default:
+					throw new OperationFailedException("Unsupported feed format.");
+			}
+			
+			
+			// Validate Feed.
+			$tmpFeed = $feed;
+			$feed = new Harmoni_DOMDocument;
+			$feed->loadXML($tmpFeed->saveXML());
+			unset($tmpFeed);
+			$feed->schemaValidateWithException(dirname(__FILE__).'/rss-2_0-lax.xsd');
+			
+			// Run through the titles, authors, and descriptions and clean out any unsafe HTML
+			foreach ($feed->getElementsByTagName('title') as $title)
+				$title->nodeValue = strip_tags(htmlspecialchars_decode($title->nodeValue));
+			
+			foreach ($feed->getElementsByTagName('author') as $author)
+				$author->nodeValue = strip_tags(htmlspecialchars_decode($author->nodeValue));
+				
+			foreach ($feed->getElementsByTagName('description') as $description) {				
+				$html = HtmlString::fromString(htmlspecialchars_decode($description->nodeValue));
+				$html->cleanXSS();
+				$description->nodeValue = htmlspecialchars($html->asString());
+			}
+			
+			// Validate the feed again
+			$tmpFeed = $feed;
+			$feed = new Harmoni_DOMDocument;
+			$feed->loadXML($tmpFeed->saveXML());
+			unset($tmpFeed);
+			$feed->schemaValidateWithException(dirname(__FILE__).'/rss-2_0-lax.xsd');
+			
+			// Cache the feed data
+			// @todo			
+			
+			
+			// Output the feed data
+			$feedData = $feed->saveXMLWithWhitespace();
+			header('Content-Type: text/xml');
+			header('Content-Length: '.strlen($feedData));
+			print $feedData;
+			exit;
+		} catch (Exception $e) {
+			header('Content-Type: text/xml');
+			print "<error><![CDATA[";
+			print $e->getMessage();
+			print "]]></error>";
+			exit;
 		}
-		
-		
-		// Validate Feed.
-		$tmpFeed = $feed;
-		$feed = new Harmoni_DOMDocument;
-		$feed->loadXML($tmpFeed->saveXML());
-		unset($tmpFeed);
-		$feed->schemaValidateWithException(dirname(__FILE__).'/rss-2_0.xsd');
-		
-		
-		// Cache the feed data
-		// @todo
-		
-		
-		
-		// Output the feed data
-		$feedData = $feed->saveXMLWithWhitespace();
-		header('Content-Type: text/xml');
-		header('Content-Length: '.strlen($feedData));
-		print $feedData;
-		exit;
 	}
 }
 
