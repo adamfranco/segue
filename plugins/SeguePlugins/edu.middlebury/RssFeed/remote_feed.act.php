@@ -90,10 +90,26 @@ class remote_feed
 		$string->makeUtf8();
 		$feedData = $string->asString();
 		
+		$feed = new DOMDocument();
+		$feed->loadXML($feedData);
+		
 		// Validate Feed.
 		// @todo
 		
-		// Convert Atom/RSS 1 to RSS2
+		// Convert Atom 0.3 to Atom 1.0
+		// @todo
+		
+		// Convert Atom 1.0 to RSS2
+		if ($feed->documentElement->getAttribute('xmlns') == 'http://www.w3.org/2005/Atom') {
+			$sheet = new DOMDocument();
+			$sheet->load(dirname(__FILE__).'/atom2rss.xsl');
+			$processor = new XSLTProcessor();
+			$processor->registerPHPFunctions();
+			$processor->importStylesheet($sheet);
+			$feedData = $processor->transformToXML($feed);
+		}
+		
+		// Convert RSS 1.x to RSS 2.0
 		// @todo
 		
 		// Cache the feed data

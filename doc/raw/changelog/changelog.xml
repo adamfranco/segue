@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<important author='adam' date='2008-07-07'>
+			As of this release, Segue requires PHP to be compiled with XSL support.
+			See the following for installation: http://www.php.net/manual/en/xsl.installation.php
+		</important>
 		<new author='adam' date='2008-06-18' ref='1820785' reftype='fr'>
 			Plugins: New RSS feed-display plugin to allow in-line display of RSS feeds.
 		</new>

@@ -316,7 +316,10 @@ class EduMiddleburyRssFeedPlugin
  					print ",\n\t\t\t\tshowCommentLinks: true";
  				
  				print ",\n\t\t\t\tmaxItems: ".$this->_getMaxItems();
- 				print "});
+ 				print "}";
+ 				if ($this->_getFeedAlternateUrl())
+ 					print ",\n\t\t\t\t'".$this->_getFeedAlternateUrl()."'";
+ 				print ");
  	reader.displayIn(container);
  	
  ";
@@ -420,6 +423,19 @@ class EduMiddleburyRssFeedPlugin
  				array('url' => $this->_getFeedUrl()));
  	}
  	
+ 	/**
+ 	 * Answer an alternate url for accessing the feed that pipes it through
+ 	 * our remote-access scripts to handle conversion of Atom feeds on the local
+ 	 * server.
+ 	 * 
+ 	 * @return string
+ 	 * @access protected
+ 	 * @since 7/7/08
+ 	 */
+ 	protected function _getFeedAlternateUrl () {
+ 		return $this->getPluginActionUrl('remote_feed', 
+ 				array('url' => $this->_getFeedUrl()));
+ 	}
  	/**
  	 * Answer true if the feed is local to this server and can be accessed via
  	 * XMLHTTPRequest.

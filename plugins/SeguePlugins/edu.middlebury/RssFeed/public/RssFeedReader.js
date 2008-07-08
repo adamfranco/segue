@@ -19,9 +19,9 @@
  *
  * @version $Id$
  */
-function RssFeedReader ( url, options ) {
+function RssFeedReader ( url, options, altUrl ) {
 	if ( arguments.length > 0 ) {
-		this.init( url, options );
+		this.init( url, options, altUrl );
 	}
 }
 	/**
@@ -42,13 +42,15 @@ function RssFeedReader ( url, options ) {
 	 * 
 	 * @param string url
 	 * @param object options
+	 * @param string altUrl
 	 * @return void
 	 * @access public
 	 * @since 6/17/08
 	 */
-	RssFeedReader.prototype.init = function ( url, options ) {
+	RssFeedReader.prototype.init = function ( url, options, altUrl ) {
 		this.url = url;
 		this.options = options;
+		this.altUrl = altUrl;
 	}
 
 	/**
@@ -102,7 +104,7 @@ function RssFeedReader ( url, options ) {
 	// 						alert(req.responseText);
 							if (!req.responseXML)
 								throw new Error("Invalid feed data, not XML.");
-							reader.loadFeedXml(req.responseXML);
+							reader.loadFeedXml(req.responseXML, url);
 						} else {
 							throw new Error("There was a problem retrieving the XML data:\n" +
 								req.statusText);
@@ -146,15 +148,23 @@ function RssFeedReader ( url, options ) {
 	 * Create our object tree based on the feed xml document
 	 * 
 	 * @param object XMLDocument feedDoc
+	 * @param string url The url used to load the document
 	 * @return void
 	 * @access public
 	 * @since 6/17/08
 	 */
-	RssFeedReader.prototype.loadFeedXml = function (feedDoc) {
+	RssFeedReader.prototype.loadFeedXml = function (feedDoc, url) {
 		this.channels = new Array();
 		var channelElements = feedDoc.getElementsByTagName('channel');
-		if (!channelElements.length) 
+		if (!channelElements.length) {
+			// If we have an Atom feed or other non-rss feed, try the alternate
+			// url.
+			if (this.altUrl && url != this.altUrl && feedDoc.documentElement.nodeName != 'rss') {
+				this.loadFeed(this.altUrl);
+				return;
+			}
 			throw new Error("Invalid RSS feed, no channels in feed or errors exist in feed XML.");
+		}
 		for (var i = 0; i < channelElements.length; i++) {
 			this.channels.push(new RssChannel(channelElements.item(i)));
 		}
