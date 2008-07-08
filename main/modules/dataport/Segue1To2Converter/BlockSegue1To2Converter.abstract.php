@@ -154,7 +154,10 @@ abstract class BlockSegue1To2Converter
 		$element = $this->doc->appendChild($this->doc->createElement('entry'));
 		$element->setAttribute('number', $versionElement->getAttribute('number'));
 // 		$element->setAttribute('id', $versionElement->getAttribute('id'));
-		$element->setAttribute('agent_id', $versionElement->getAttribute('agent_id'));
+		if ($versionElement->getAttribute('agent_id'))
+			$element->setAttribute('agent_id', $this->addAgent($versionElement->getAttribute('agent_id')));
+		else
+			$element->setAttribute('agent_id', $this->addAgent('unknown'));
 		
 		$timeStamp = DateAndTime::fromString($versionElement->getAttribute('time_stamp'));
 		$element->setAttribute('time_stamp', $timeStamp->asString());
@@ -200,7 +203,10 @@ abstract class BlockSegue1To2Converter
 		foreach ($sourceTagElements as $sourceTagElement) {
 			if ($sourceTagElement->nodeValue) {
 				$tagElement = $tagsElement->appendChild($this->doc->createElement('tag', $sourceTagElement->nodeValue));
-				$tagElement->setAttribute('agent_id', $sourceTagElement->getAttribute('agent_id'));
+				if ($sourceTagElement->getAttribute('agent_id'))
+					$tagElement->setAttribute('agent_id', $this->addAgent($sourceTagElement->getAttribute('agent_id')));
+				else
+					$tagElement->setAttribute('agent_id', $this->addAgent('unknown'));
 				$tagElement->setAttribute('create_date', $sourceTagElement->getAttribute('time_stamp'));
 			}
 		}
