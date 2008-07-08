@@ -208,8 +208,11 @@ abstract class Segue1To2Converter {
 				$value = null;
 			}
 		}
-		if ($value)
+		if ($value) {
+			if ($value == "0000-00-00 00:00:00") $value = date("o-m-d h:i:s");
+			
 			$destElement->setAttribute('create_agent', $this->addAgent($value));
+		}
 		
 		try {
 			$value = $this->getStringValue($this->getSingleSourceElement('./history/created_time', $this->sourceElement));
@@ -220,8 +223,11 @@ abstract class Segue1To2Converter {
 				$value = null;
 			}
 		}
-		if ($value)
+		if ($value) {		
+			if ($value == "0000-00-00 00:00:00") $value = date("o-m-d h:i:s");
+
 			$destElement->setAttribute('create_date', $value);
+		}
 		
 		try {
 			$value = $this->getStringValue($this->getSingleSourceElement('./history/last_edited_time', $this->sourceElement));
@@ -233,6 +239,8 @@ abstract class Segue1To2Converter {
 			}
 		}
 		if ($value)
+			if ($value == "0000-00-00 00:00:00") $value = date("o-m-d h:i:s");
+						
 			$destElement->setAttribute('modify_date', $value);
 	}
 	
