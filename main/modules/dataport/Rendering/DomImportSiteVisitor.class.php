@@ -1108,8 +1108,10 @@ class DomImportSiteVisitor
 			$asset->forceSetCreationDate($date);
 		}
 		
-		if ($element->hasAttribute('modify_date')) {
+		if ($element->hasAttribute('modify_date') && $element->getAttribute('modify_date')) {
 			$date = DateAndTime::fromString($element->getAttribute('modify_date'));
+			if (is_null($date))
+				throw new InvalidArgumentException("Cannot use '".$element->getAttribute('modify_date')."' to create a date.");
 			$asset->forceSetModificationDate($date);
 		}
 	}
