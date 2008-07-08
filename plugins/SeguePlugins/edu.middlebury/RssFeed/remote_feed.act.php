@@ -119,7 +119,7 @@ class remote_feed
 				}
 				break;
 			case 'rss':
-				// Convert RSS 1.x to RSS 2.0
+				// Convert RSS 0.9x to RSS 2.0
 				// @todo
 				break;
 			default:
@@ -128,7 +128,11 @@ class remote_feed
 		
 		
 		// Validate Feed.
-		// @todo
+		$tmpFeed = $feed;
+		$feed = new Harmoni_DOMDocument;
+		$feed->loadXML($tmpFeed->saveXML());
+		unset($tmpFeed);
+		$feed->schemaValidateWithException(dirname(__FILE__).'/rss-2_0.xsd');
 		
 		
 		// Cache the feed data
@@ -137,7 +141,7 @@ class remote_feed
 		
 		
 		// Output the feed data
-		$feedData = $feed->saveXML();
+		$feedData = $feed->saveXMLWithWhitespace();
 		header('Content-Type: text/xml');
 		header('Content-Length: '.strlen($feedData));
 		print $feedData;

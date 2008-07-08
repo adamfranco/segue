@@ -33,8 +33,9 @@
 				<x:when test="atom:icon"><image><x:apply-templates select="atom:icon" mode="image"/></image></x:when>
 			</x:choose>
 			
-			<x:apply-templates/>
 			<generator><x:if test="atom:generator"><x:apply-templates select="atom:generator" mode="gen"/> + </x:if>Atom 1.0 XSLT Transform v1 (http://atom.geekhood.net)</generator>
+			
+			<x:apply-templates/>
 		</channel>
 	</rss>
 </x:template>
