@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='alex' date='2008-07-07' ref='2009104' reftype='bug'>
+			Migration: migrating theme options from Segue v1 that do not exist in
+			Segue v2 no longer throws an error
+		</fix>
 		<change author='adam' date='2008-06-18'>
 			Themes: Theme CSS now configured to be loaded from a separate file
 			to cut down on document size.
