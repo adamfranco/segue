@@ -96,7 +96,7 @@ class DomExportSiteVisitor
 			$element = $this->agents->appendChild($this->doc->createElement('agent'));
 			$element->setAttribute('id', $agentId->getIdString());
 			$agentMgr = Services::getService('Agent');
-			$agent = $agentMgr->getAgent($agentId);
+			$agent = $agentMgr->getAgentOrGroup($agentId);
 			$element->appendChild($this->getCDATAElement('displayName', $agent->getDisplayName()));
 			
 			$propertiesIterator = $agent->getProperties();
@@ -174,7 +174,10 @@ class DomExportSiteVisitor
 	 * @since 1/17/08
 	 */
 	protected function getDisplayName (BlockSiteComponent $siteComponent) {
-		return $this->getCDATAElement('displayName', $siteComponent->getDisplayName());
+		$string = String::withValue($siteComponent->getDisplayName());
+		$string->makeUtf8();
+		
+		return $this->getCDATAElement('displayName', $string->asString());
 	}
 	
 	/**
@@ -186,7 +189,10 @@ class DomExportSiteVisitor
 	 * @since 1/17/08
 	 */
 	protected function getDescription (BlockSiteComponent $siteComponent) {
-		return $this->getCDATAElement('description', $siteComponent->getDescription());
+		$string = String::withValue($siteComponent->getDescription());
+		$string->makeUtf8();
+		
+		return $this->getCDATAElement('description', $string->asString());
 	}
 	
 	/**
@@ -490,8 +496,12 @@ class DomExportSiteVisitor
 		$current = $this->doc->createElement('currentContent');
 		$content = $current->appendChild($this->doc->createElement('content'));
 		$content->appendChild($this->doc->createCDATASection($plugin->getContent()));
+		
+		$string = String::withValue($plugin->getRawDescription());
+		$string->makeUtf8();
+				
 		$desc = $current->appendChild($this->doc->createElement('rawDescription'));
-		$desc->appendChild($this->doc->createCDATASection($plugin->getRawDescription()));
+		$desc->appendChild($this->doc->createCDATASection($string->asString()));
 		return $current;
 	}
 	
@@ -626,16 +636,20 @@ class DomExportSiteVisitor
 	 */
 	protected function getRoles (BlockSiteComponent $siteComponent) {		
 		$element = $this->doc->createElement('roles');
-		$roleMgr = SegueRoleManager::instance();
-		$noAccess = $roleMgr->getRole('no_access');
-		foreach ($this->getAgentsToCheck($siteComponent->getQualifierId()) as $agentId) {
-			$role = $roleMgr->getAgentsExplicitRole($agentId, $siteComponent->getQualifierId());
-			if ($role->isGreaterThan($noAccess)) {
-				$entry = $element->appendChild($this->doc->createElement('entry'));
-				$entry->setAttribute('role', $role->getIdString());
-				$entry->setAttribute('agent_id', $agentId->getIdString());
-				$this->recordAgent($agentId);
+		
+		try {
+			$roleMgr = SegueRoleManager::instance();
+			$noAccess = $roleMgr->getRole('no_access');
+			foreach ($this->getAgentsToCheck($siteComponent->getQualifierId()) as $agentId) {
+				$role = $roleMgr->getAgentsExplicitRole($agentId, $siteComponent->getQualifierId());
+				if ($role->isGreaterThan($noAccess)) {
+					$entry = $element->appendChild($this->doc->createElement('entry'));
+					$entry->setAttribute('role', $role->getIdString());
+					$entry->setAttribute('agent_id', $agentId->getIdString());
+					$this->recordAgent($agentId);
+				}
 			}
+		} catch (PermissionDeniedException $e) {
 		}
 		return $element;
 	}
@@ -710,10 +724,7 @@ class DomExportSiteVisitor
 		$this->addCommonOptions($siteComponent, $element);
 		$this->addCreateAndModify($siteComponent, $element);
 		
-		try {
-			$element->appendChild($this->getRoles($siteComponent));
-		} catch (PermissionDeniedException $e) {
-		}
+		$element->appendChild($this->getRoles($siteComponent));
 		
 		// Plugin Content
 		$this->addPluginContent($siteComponent, $element);
@@ -765,10 +776,7 @@ class DomExportSiteVisitor
 		$this->addCommonOptions($siteComponent, $element);
 		$this->addCreateAndModify($siteComponent, $element);
 		
-		try {
-			$element->appendChild($this->getRoles($siteComponent));
-		} catch (PermissionDeniedException $e) {
-		}
+		$element->appendChild($this->getRoles($siteComponent));
 		
 		$element->appendChild($siteComponent->getOrganizer()->acceptVisitor($this));
 		
@@ -804,10 +812,7 @@ class DomExportSiteVisitor
 		$this->addCommonOptions($siteComponent, $element);
 		$this->addCreateAndModify($siteComponent, $element);
 		
-		try {
-			$element->appendChild($this->getRoles($siteComponent));
-		} catch (PermissionDeniedException $e) {
-		}
+		$element->appendChild($this->getRoles($siteComponent));
 		
 		// Add the theme info
 		$element->appendChild($this->getTheme($siteComponent));

@@ -2,6 +2,57 @@
 Segue Change Log
 
 
+v. 2.0-beta-24 (2008-06-16)
+----------------------------------------------------
+This release fixes a number of minor bugs that were affecting some users and adds
+support for setting a particular Segue site as the default page when no particular
+action or site is specified.
+
+As of this release Segue requires that PHP be compiled with the
+
+ *-enable-mbstring option. This option adds enhanced support for translation of
+strings between character sets and is needed for exporting sites.
+
+Segue 2.0-beta-23 uses Harmoni 1.4.0 and Polyphony 1.2.6.
+		
+		
+	**** IMPORTANT *** Change: 
+		As of this release Segue requires that PHP be compiled with the
+		
+		 *-enable-mbstring option.
+		(2008-06-16 - Adam Franco)
+		
+	* New feature: #1995141 
+		Configuration: Can now set a particular segue site as the default page when
+		users do not specify any parameters.
+		(2008-06-16 - Adam Franco)
+		
+	* Bug Fix: 
+		Display: fixed CSS so that Internet Explorer no longer displays extra space
+		at the end of content blocks.
+		(2008-06-13 - Alex Chapin)
+		
+	* Bug Fix: #1993889 
+		Export: The following issues have been fixed in site exporting:
+		
+		- ISO-8859-1 characters are now converted to UTF-8.
+		
+		- 'smart quotes' are now translated to basic quotes.
+		
+		- Roles for groups are now properly exported.
+		
+		- If no authorization to view roles, empty roles elements is added to
+		export rather than dying.
+		(2008-06-16 - Adam Franco)
+		
+	* Change: #1993278 
+		UI2: Choosing admins step now uses a more user-friendly checkbox list for
+		choosing admins.
+		(2008-06-16 - Adam Franco)
+	
+
+
+
 v. 2.0-beta-23 (2008-06-13)
 ----------------------------------------------------
 This release add a new template system for providing site starting-points. Several
@@ -175,7 +226,7 @@ configuration files have change and will need to be updated.
 		(2008-06-09 - Adam Franco)
 		
 	* Bug Fix: 
-		Migration: Removed hard-coded reference to the 'Middlbury LDAP'
+		Migration: Removed hard-coded reference to the 'Middlebury LDAP'
 		authentication type.
 		(2008-06-09 - Adam Franco)
 		
@@ -296,7 +347,7 @@ under Admin Tools --> Segue Updates.
 		
 		
 	* Change: 
-		Themes: added a number of css classes to UI elements so these could be
+		Themes: added a number of CSS classes to UI elements so these could be
 		themed. 
 		(2008-05-15 - Alex Chapin)
 		

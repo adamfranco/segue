@@ -274,11 +274,11 @@ class DomImportSiteVisitor
 			return; // just skip
 		}
 		
-// 		try {
+		try {
 			$option->setValue($element->nodeValue);
-// 		} catch (OperationFailedException $e) {
-// 			return; // just skip
-// 		}
+		} catch (OperationFailedException $e) {
+			return; // just skip
+ 		}
 	}
 	
 	/**

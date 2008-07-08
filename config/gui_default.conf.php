@@ -30,6 +30,10 @@ require_once(MYDIR.'/main/modules/view/SiteDispatcher.class.php');
 	$configuration->addProperty('document_type_definition', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">');
 	$configuration->addProperty('xmlns', 'http://www.w3.org/1999/xhtml');
 	
+	// Enable linked theme CSS
+	$configuration->addProperty('css_url', $harmoni->request->mkURL('gui2', 'theme_css'));
+	$configuration->addProperty('css_url_theme_property', 'theme');
+	
 	// Theme sources
 	$sources = array();
 	
