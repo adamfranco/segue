@@ -23,7 +23,7 @@
 					<x:when test="atom:subtitle"><x:apply-templates select="atom:subtitle" mode="asHTML"/></x:when>
 					<x:otherwise>
 						<!-- this sucks -->
-						<x:apply-templates select="atom:title" mode="asHTML"/> (converted from Atom 1.0)
+						<x:apply-templates select="atom:title" mode="asHTML"/>
 					</x:otherwise>
 				</x:choose>
 			</description>
