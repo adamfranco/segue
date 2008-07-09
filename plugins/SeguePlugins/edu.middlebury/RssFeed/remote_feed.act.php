@@ -120,8 +120,8 @@ class remote_feed
 					}
 					break;
 				case 'rss':
-					// Convert RSS 0.9x to RSS 2.0
-					// @todo
+					// Convert RSS 0.9x to RSS 2.0 -- shouldn't need to do this as
+					// they should be compatible
 					break;
 				default:
 					throw new OperationFailedException("Unsupported feed format.");
@@ -156,7 +156,7 @@ class remote_feed
 			$feed->schemaValidateWithException(dirname(__FILE__).'/rss-2_0-lax.xsd');
 			
 			// Cache the feed data
-			// @todo			
+			// @todo
 			
 			
 			// Output the feed data
