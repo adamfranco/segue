@@ -239,7 +239,7 @@ abstract class Segue1To2Converter {
 			}
 		}
 		if ($value) {		
-			if ($value == "0000-00-00 00:00:00") {
+			if ($value == "0000-00-00 00:00:00")
 				if (isset($modify_date)) 
 					$value = $modify_date;
 				else 
