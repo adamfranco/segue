@@ -239,8 +239,11 @@ abstract class Segue1To2Converter {
 			}
 		}
 		if ($value) {		
-			if ($value == "0000-00-00 00:00:00") 
-				$value = $modify_date;
+			if ($value == "0000-00-00 00:00:00") {
+				if (isset($modify_date)) 
+					$value = $modify_date;
+				else 
+					$value = date("Y-m-d H:i:s");
 
 			$destElement->setAttribute('create_date', $value);
 		}
