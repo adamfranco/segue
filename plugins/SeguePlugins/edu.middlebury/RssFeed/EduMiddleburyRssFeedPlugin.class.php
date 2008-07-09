@@ -525,9 +525,9 @@ class EduMiddleburyRssFeedPlugin
  			return null;
  		
  		$url = $elements->item(0)->nodeValue;
- 		if (strlen($url))
- 			return $url;
- 			
+ 		if (strlen($url)) {
+ 			return $this->untokenizeLocalUrls($url);
+ 		}
  		return null;
  	}
  	
@@ -540,7 +540,8 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 6/17/08
  	 */
  	protected function _setFeedUrl ($url) {
- 		// @todo Tokenize local URLs for portability when moving across servers and importing/exporting.
+ 		// Tokenize local URLs for portability when moving across servers and importing/exporting.
+ 		$url = $this->tokenizeLocalUrls($url);
  		
  		// Reencode ampersands for XML
  		$url = str_replace('&', '&amp;', $url);
@@ -943,7 +944,38 @@ class EduMiddleburyRssFeedPlugin
 //  	 */
 //  	public function updateFromWizard ( $values );
  	
+ 	/*********************************************************
+ 	 * The following methods are needed to support restoring
+ 	 * from backups and importing/exporting plugin data.
+ 	 *********************************************************/
  	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings,
+ 	 * update any of the old Ids that this plugin instance recognizes to their
+ 	 * new value.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+ 	public function replaceIds (array $idMap) {
+ 		$this->_setFeedUrl($this->replaceIdsInHtml($idMap, $this->_getFeedUrl()));
+ 	}
+ 	
+ 	/**
+ 	 * Given an associative array of old Id strings and new Id strings,
+ 	 * update any of the old Ids in the version XML to their new value.
+ 	 * The version DOMDocument should have its content updated in place.
+ 	 * This method is only needed if versioning is supported.
+ 	 * 
+ 	 * @param array $idMap An associative array of old id-strings to new id-strings.
+ 	 * @param object DOMDocument $version
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 1/24/08
+ 	 */
+//  	public function replaceIdsInVersion (array $idMap, DOMDocument $version);
 	
 }
 
