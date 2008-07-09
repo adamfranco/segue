@@ -12,8 +12,24 @@
 <changelog name="Segue">
 	<version number="2.0-beta-25" date="The Future">
 		<releaseNotes>
+			This release adds the cabability to display RSS feeds inline in a site.
 			
+			Upgrades from versions prior to beta 25 require running the RSS Feed
+			updater	located under Admin Tools --> Segue Updates.
+			
+			Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.
 		</releaseNotes>
+		<new author='adam' date='2008-06-18' ref='1820785' reftype='fr'>
+			Plugins: New RSS feed-display plugin to allow in-line display of RSS feeds.
+		</new>
+		<important author='adam' date='2008-07-07'>
+			As of this release, Segue requires PHP to be compiled with XSL support.
+			See the following for installation: http://www.php.net/manual/en/xsl.installation.php
+		</important>
+		<important author='adam' date='2008-07-08'>
+			Run the Rss display updater under Admin Tools -&gt; Segue Updates to 
+			enable the RssFeed plugin.
+		</important>
 		<fix author='alex' date='2008-07-08' ref='2009092' reftype='bug'>
 			Migration: Segue v1 sites with null creation dates no longer halts site migration.
 		</fix>
@@ -25,13 +41,6 @@
 			Migration: migrating theme options from Segue v1 that do not exist in
 			Segue v2 no longer throws an error
 		</fix>
-		<important author='adam' date='2008-07-07'>
-			As of this release, Segue requires PHP to be compiled with XSL support.
-			See the following for installation: http://www.php.net/manual/en/xsl.installation.php
-		</important>
-		<new author='adam' date='2008-06-18' ref='1820785' reftype='fr'>
-			Plugins: New RSS feed-display plugin to allow in-line display of RSS feeds.
-		</new>
 		<change author='adam' date='2008-06-17'>
 			Plugins: Manager now executes any script blocks when reloading the plugin
 			after AJAX update.
