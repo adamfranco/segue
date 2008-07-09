@@ -34,7 +34,7 @@ class Update011_RssPluginAction
 	 * @since 7/8/08
 	 */
 	function getDateIntroduced () {
-		$date = Date::withYearMonthDay(2008, 3, 21);
+		$date = Date::withYearMonthDay(2008, 7, 8);
 		return $date;
 	}
 		
