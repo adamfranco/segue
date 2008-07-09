@@ -14,6 +14,13 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='alex' date='2008-07-08' ref='2009092' reftype='bug'>
+			Migration: Segue v1 sites with null creation dates no longer halts site migration.
+		</fix>
+		<fix author='alex' date='2008-07-08' ref='2009095' reftype='bug'>
+			Migration: Segue v1 null agent information now replaced with unknown agent and no longer
+			halts site migration
+		</fix>
 		<fix author='alex' date='2008-07-07' ref='2009104' reftype='bug'>
 			Migration: migrating theme options from Segue v1 that do not exist in
 			Segue v2 no longer throws an error

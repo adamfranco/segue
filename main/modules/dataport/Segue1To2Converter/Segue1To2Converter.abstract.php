@@ -209,10 +209,25 @@ abstract class Segue1To2Converter {
 			}
 		}
 		if ($value) {
-			if ($value == "0000-00-00 00:00:00") $value = date("o-m-d h:i:s");
-			
 			$destElement->setAttribute('create_agent', $this->addAgent($value));
 		}
+				
+		try {
+			$value = $this->getStringValue($this->getSingleSourceElement('./history/last_edited_time', $this->sourceElement));
+		} catch (MissingNodeException $e) {
+			try {
+				$value = $this->getStringValue($this->getSingleSourceElement('./last_edited_time', $this->sourceElement));
+			} catch (MissingNodeException $e) {
+				$value = null;
+			}
+		}
+		if ($value)
+			if ($value == "0000-00-00 00:00:00") 
+				$modify_date = date("Y-m-d H:i:s");
+			else
+				$modify_date = $value;
+						
+			$destElement->setAttribute('modify_date', $modify_date);
 		
 		try {
 			$value = $this->getStringValue($this->getSingleSourceElement('./history/created_time', $this->sourceElement));
@@ -224,24 +239,12 @@ abstract class Segue1To2Converter {
 			}
 		}
 		if ($value) {		
-			if ($value == "0000-00-00 00:00:00") $value = date("o-m-d h:i:s");
+			if ($value == "0000-00-00 00:00:00") 
+				$value = $modify_date;
 
 			$destElement->setAttribute('create_date', $value);
 		}
-		
-		try {
-			$value = $this->getStringValue($this->getSingleSourceElement('./history/last_edited_time', $this->sourceElement));
-		} catch (MissingNodeException $e) {
-			try {
-				$value = $this->getStringValue($this->getSingleSourceElement('./last_edited_time', $this->sourceElement));
-			} catch (MissingNodeException $e) {
-				$value = null;
-			}
-		}
-		if ($value)
-			if ($value == "0000-00-00 00:00:00") $value = date("o-m-d h:i:s");
-						
-			$destElement->setAttribute('modify_date', $value);
+
 	}
 	
 /*********************************************************
