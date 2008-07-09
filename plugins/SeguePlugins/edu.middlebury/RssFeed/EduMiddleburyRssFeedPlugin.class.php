@@ -406,7 +406,9 @@ class EduMiddleburyRssFeedPlugin
  	 * @access public
  	 * @since 5/22/07
  	 */
-//  	public function generateDescription ();
+ 	public function generateDescription () {
+ 		return str_replace('%1', $this->_getFeedUrl(), _("A display of an RSS feed: %1"));
+ 	}
  	
  	/**
  	 * Answer true if this instance of a plugin 'has content'. This method is called
