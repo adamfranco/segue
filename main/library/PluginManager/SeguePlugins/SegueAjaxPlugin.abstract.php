@@ -161,6 +161,15 @@ abstract class SegueAjaxPlugin
 					// Javascript doesn't escape plus symbols, so manually encode them
 					value = value.replace(/\\+/, '%2B');
 					
+					// Ignore unchecked check-boxes
+					if (form.elements[i].nodeName == 'INPUT' && form.elements[i].type == 'checkbox'
+						&& (!form.elements[i].checked || form.elements[i].checked == 'false'))
+					{
+						// ignore
+						continue;
+					}
+					
+					
 					fields.push(escape(form.elements[i].name) + '=' + value);
 				}
 				var data = fields.join('&');
@@ -234,6 +243,12 @@ abstract class SegueAjaxPlugin
 									// unset our temporary width
 									pluginElement.style.width = '';
 									pluginElement.style.height = '';
+									
+									// Execute any javascript in the element.
+									var scripts = pluginElement.getElementsByTagName("script"); 
+									for (var i=0; i< scripts.length; i++) {
+										eval(scripts[i].text);
+									}
 								} else {
 									alert("There was a problem retrieving the XML data:\\n" +
 										req.statusText);

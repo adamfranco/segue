@@ -53,6 +53,7 @@ abstract class GeneralControlsSiteVisitor {
 	public function printReorderJS () {
 		if (!$this->reorderJsPrinted) {
 			$js = <<<END
+
 		<script type='text/javascript'>
 		// <![CDATA[
 		
@@ -105,7 +106,7 @@ END;
 			$harmoni = Harmoni::instance();
 			$output = $harmoni->getOutputHandler();
 			$output->setHead($output->getHead().$js);
-		
+			$this->reorderJsPrinted = true;
 		}
 	}
 	
