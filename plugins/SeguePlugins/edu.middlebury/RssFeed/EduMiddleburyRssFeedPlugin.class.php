@@ -185,6 +185,7 @@ class EduMiddleburyRssFeedPlugin
 	 			$this->_setShowCommentLinks(false);
 	 		
 	 		$this->_setMaxItems(intval($this->getFieldValue('max_items')));
+	 		$this->_setExtendedMaxItems(intval($this->getFieldValue('extended_max_items')));
 	 		
  		}
  	}
@@ -252,6 +253,14 @@ class EduMiddleburyRssFeedPlugin
  		print "' size='4' /> ";
  		print " <em>("._('clear to show all').")</em>";
  		
+ 		print "\n\t<br/>";
+ 		print _("Maximum number Items to show in detail view:")." ";
+ 		print "\n\t<input type='text' name='".$this->getFieldName('extended_max_items')."' value='";
+ 		if ($this->_getExtendedMaxItems())
+ 			print $this->_getExtendedMaxItems();
+ 		print "' size='4' /> ";
+ 		print " <em>("._('clear to show all').")</em>";
+ 		
  		
  		print "\n\t<br/>";
  		print "\n\t<input type='submit' name='".$this->getFieldName('submit_pressed')."' value='"._("Submit")."'/>";
@@ -269,6 +278,18 @@ class EduMiddleburyRssFeedPlugin
  	 * @since 1/12/06
  	 */
  	public function getMarkup () {
+ 		return $this->_getMarkup($this->_getMaxItems());
+ 	}
+ 	
+ 	/**
+ 	 * Answer the markup for a number of items
+ 	 * 
+ 	 * @param int $numItems
+ 	 * @return string
+ 	 * @access protected
+ 	 * @since 7/8/08
+ 	 */
+ 	protected function _getMarkup ($numItems) {
  		// Add our js libraries to the document <head>
 		$this->addHeadJavascript('RssFeedReader.js');
 		$this->addHeadCss('RssFeedReader.css');
@@ -315,7 +336,7 @@ class EduMiddleburyRssFeedPlugin
  				if ($this->_showCommentLinks())
  					print ",\n\t\t\t\tshowCommentLinks: true";
  				
- 				print ",\n\t\t\t\tmaxItems: ".$this->_getMaxItems();
+ 				print ",\n\t\t\t\tmaxItems: ".$numItems;
  				print "}";
  				if ($this->_getFeedAlternateUrl())
  					print ",\n\t\t\t\t'".$this->_getFeedAlternateUrl()."'";
@@ -360,7 +381,9 @@ class EduMiddleburyRssFeedPlugin
  	 * @access public
  	 * @since 5/23/07
  	 */
-//  	public function getExtendedMarkup ();
+ 	public function getExtendedMarkup () {
+ 		return $this->_getMarkup($this->_getExtendedMaxItems());
+ 	}
  	
  	/**
  	 * Answer the label to use when linking to the plugin's extented markup.
@@ -765,6 +788,29 @@ class EduMiddleburyRssFeedPlugin
  	 */
  	protected function _setMaxItems ($maxItems) {
  		$this->_setInt('maxItems', $maxItems);
+ 	}
+ 	
+ 	/**
+ 	 * Answer the maximum number of Items in the feed in detail view.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 7/8/08
+ 	 */
+ 	protected function _getExtendedMaxItems () {
+ 		return $this->_getInt('extendedMaxItems', 0);
+ 	}
+ 	
+ 	/**
+ 	 * Set the maximum number of Items in the feed in detail view. Set 0 for unlimited.
+ 	 * 
+ 	 * @param boolean $maxItems
+ 	 * @return null
+ 	 * @access protected
+ 	 * @since 7/8/08
+ 	 */
+ 	protected function _setExtendedMaxItems ($maxItems) {
+ 		$this->_setInt('extendedMaxItems', $maxItems);
  	}
  	
  	/**
