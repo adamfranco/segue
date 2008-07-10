@@ -221,13 +221,14 @@ abstract class Segue1To2Converter {
 				$value = null;
 			}
 		}
-		if ($value)
+		if ($value) {
 			if ($value == "0000-00-00 00:00:00") 
 				$modify_date = date("Y-m-d H:i:s");
 			else
 				$modify_date = $value;
 						
 			$destElement->setAttribute('modify_date', $modify_date);
+		}
 		
 		try {
 			$value = $this->getStringValue($this->getSingleSourceElement('./history/created_time', $this->sourceElement));
