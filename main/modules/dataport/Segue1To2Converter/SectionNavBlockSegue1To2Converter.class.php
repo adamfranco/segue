@@ -18,6 +18,7 @@ require_once(dirname(__FILE__)."/HeadingBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/DividerBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/ParticipantListBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/CategoryListBlockSegue1To2Converter.class.php");
+require_once(dirname(__FILE__)."/PageRssBlockSegue1To2Converter.class.php");
 
 /**
  * A converter for Section-level NavBlock
@@ -249,7 +250,7 @@ class SectionNavBlockSegue1To2Converter
 					$converter = new DividerBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 					break;
 				case 'pageRSS':
-					$converter = new RssBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					$converter = new PageRssBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 					break;
 				case 'participantList':
 					$converter = new ParticipantListBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
@@ -289,9 +290,9 @@ class SectionNavBlockSegue1To2Converter
 		
 		// Note: Ignoring dividers for now.
 		if ($side == 'all_items')
-			$pages = $this->sourceXPath->query('./pageContent | ./navlink | ./heading | ./divider | ./participantList | ./categoryList', $this->sourceElement);
+			$pages = $this->sourceXPath->query('./pageContent | ./navlink | ./heading | ./divider | ./pageRSS | ./participantList | ./categoryList', $this->sourceElement);
 		else
-			$pages = $this->sourceXPath->query("./pageContent[@location = '$side'] | ./navlink[@location = '$side'] | ./heading[@location = '$side'] | ./divider[@location = '$side'] | ./participantList[@location = '$side'] | ./categoryList[@location = '$side']", $this->sourceElement);
+			$pages = $this->sourceXPath->query("./pageContent[@location = '$side'] | ./navlink[@location = '$side'] | ./heading[@location = '$side'] | ./divider[@location = '$side'] | ./pageRSS[@location = '$side']  | ./participantList[@location = '$side'] | ./categoryList[@location = '$side']", $this->sourceElement);
 		
 		foreach ($pages as $page) {
 			$cell = $org->appendChild($this->doc->createElement('cell'));
@@ -309,7 +310,7 @@ class SectionNavBlockSegue1To2Converter
 					$converter = new DividerBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 					break;
 				case 'pageRSS':
-					$converter = new RssBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
+					$converter = new PageRssBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);
 					break;
 				case 'participantList':
 					$converter = new ParticipantListBlockSegue1To2Converter($page, $this->sourceXPath, $this->doc, $this->xpath, $this->director);

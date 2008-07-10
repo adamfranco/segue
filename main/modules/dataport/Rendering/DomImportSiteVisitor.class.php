@@ -678,6 +678,9 @@ class DomImportSiteVisitor
 		$plugin->setRawDescription(
 				$this->getStringValue(
 					$this->getSingleElement('./currentContent/rawDescription', $element)));
+		
+		// Reinitialize the plugin with its new content.
+		$plugin->initialize();
 	}
 	
 	/**

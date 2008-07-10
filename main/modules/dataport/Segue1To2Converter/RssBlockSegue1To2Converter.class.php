@@ -34,7 +34,7 @@ class RssBlockSegue1To2Converter
 	 * @since 2/12/08
 	 */
 	protected function createMyPluginType () {
-		return $this->createPluginType('TextBlock');
+		return $this->createPluginType('RssFeed');
 	}
 	
 	/**
@@ -79,13 +79,64 @@ class RssBlockSegue1To2Converter
 			$this->getStringValue($this->getSingleSourceElement('./url', $this->sourceElement)));
 		
 		// Content
-		$currentVersion = $this->doc->createElement('currentVersion');
-		$version = $currentVersion->appendChild($this->doc->createElement('version'));
-		$version->appendChild($this->createCDATAElement('content', 
-			"<h4><a href='".$url."'>RSS Feed: ".$title."</a></h4>\n".$descHtml));
-		$version->appendChild($this->doc->createElement('abstractLength', '0'));
+		$dataDoc = new Harmoni_DOMDocument();
+		$root = $dataDoc->appendChild($dataDoc->createElement('RssFeedPlugin'));
+		$feed = $root->appendChild($dataDoc->createElement('RssFeed'));
+		$urlElement = $feed->appendChild($dataDoc->createElement('Url', str_replace('&', '&amp;', $url)));
 		
-		return $currentVersion;
+		$sourceUrlElement = $this->getSingleSourceElement('./url', $this->sourceElement);
+		$this->setAttributes($sourceUrlElement, $feed);
+		
+		$currentContent = $this->doc->createElement('currentContent');
+		$currentContent->appendChild($this->createCDATAElement('content', $dataDoc->saveXMLWithWhitespace()));
+		$currentContent->appendChild($this->doc->createElement('rawDescription', ''));
+		
+		return $currentContent;
+	}
+	
+	/**
+	 * Set the attributes for the feed
+	 * 
+	 * @param object DOMElement $sourceUrlElement
+	 * @param object DOMElement $feed
+	 * @return void
+	 * @access protected
+	 * @since 7/9/08
+	 */
+	protected function setAttributes (DOMElement $sourceUrlElement, DOMElement $feed) {
+		if ($sourceUrlElement->hasAttribute('maxItems') 
+			&& $sourceUrlElement->getAttribute('maxItems'))
+		{
+			$feed->setAttribute('maxItems', $sourceUrlElement->getAttribute('maxItems'));
+		}
+		
+		if ($sourceUrlElement->hasAttribute('extendedMaxItems') 
+			&& $sourceUrlElement->getAttribute('extendedMaxItems'))
+		{
+			$feed->setAttribute('extendedMaxItems', $sourceUrlElement->getAttribute('extendedMaxItems'));
+		}
+		
+		$feed->setAttribute('showChannelTitles', 'true');
+		$feed->setAttribute('showChannelDescriptions', 'true');
+		$feed->setAttribute('showChannelDivider', 'false');
+		$feed->setAttribute('showItemTitles', 'true');
+		$feed->setAttribute('showItemDescriptions', 'true');
+		$feed->setAttribute('showItemDivider', 'true');
+		$feed->setAttribute('showAttribution', 'true');
+		$feed->setAttribute('showDates', 'true');
+		$feed->setAttribute('showCommentLinks', 'true');
+	}
+	
+	/**
+	 * Answer a element that represents the history for this Block, null if not
+	 * supported
+	 * 
+	 * @return object DOMElement
+	 * @access protected
+	 * @since 2/12/08
+	 */
+	protected function getHistoryElement (DOMElement $mediaElement) {
+		// @todo Fill history support
 	}
 	
 }
