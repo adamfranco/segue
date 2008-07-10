@@ -269,8 +269,23 @@ function RssChannel ( element ) {
 		else
 			var max = this.items.length;
 		
+		// If the title or description of the channel is shown, but the item
+		// dividers are not shown, give the first item a divider top boarder
+		// to separete it from the channel info.
+		if ((options.showChannelTitles || (options.showChannelDescriptions && this.getDescription().length))
+			&& !options.showItemDividers) 
+		{
+			var addFirstDivider = true;
+		} else {
+			var addFirstDivider = false;
+		}
+		
+		// Render the items
 		for (var i = 0; i < max; i++) {
-			container.appendChild(this.items[i].render(options));
+			var itemContainer = container.appendChild(this.items[i].render(options));
+			
+			if (addFirstDivider && i == 0)
+				itemContainer.className = itemContainer.classname + " RssFeedReader_divider";
 		}
 		
 		return container;
