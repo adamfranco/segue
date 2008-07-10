@@ -27,7 +27,7 @@
 			See the following for installation: http://www.php.net/manual/en/xsl.installation.php
 		</important>
 		<important author='adam' date='2008-07-08'>
-			Run the Rss display updater under Admin Tools -&gt; Segue Updates to 
+			Run the RSS display updater under Admin Tools -&gt; Segue Updates to 
 			enable the RssFeed plugin.
 		</important>
 		<fix author='alex' date='2008-07-08' ref='2009092' reftype='bug'>
