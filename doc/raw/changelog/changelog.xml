@@ -19,6 +19,9 @@
 			
 			Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.
 		</releaseNotes>
+		<change author='alex' date='2008-07-10' ref='2009035' reftype='fr'>
+			UI: New Mode now the default editing UI.
+		</change>
 		<new author='adam' date='2008-06-18' ref='1820785' reftype='fr'>
 			Plugins: New RSS feed-display plugin to allow in-line display of RSS feeds.
 		</new>

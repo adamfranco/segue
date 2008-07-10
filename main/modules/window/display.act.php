@@ -349,7 +349,7 @@ class displayAction
 	 */
 	function getUiModule () {
 		if (!isset($_SESSION['UI_MODULE']))
-			$this->setUiModule('ui1');
+			$this->setUiModule('ui2');
 			
 		return $_SESSION['UI_MODULE'];
 	}
