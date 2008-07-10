@@ -324,12 +324,28 @@ class htmlAction
 		$harmoni = Harmoni::instance();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
+		$authN = Services::getService("AuthN");
+		$userId = $authN->getFirstUserId();
 		
 		ob_start();
-		if ($authZ->isUserAuthorizedBelow(
-				$idManager->getId("edu.middlebury.authorization.modify"),
-				SiteDispatcher::getCurrentRootNode()->getQualifierId())
-			|| $authZ->isUserAuthorizedBelow(
+		if (
+			// Since users should be logged in to edit, do not bother checking AZs
+			// if the user isn't logged in. This cuts the number of authorization 
+			// checks to a minimum if the user isn't logged in.
+			// While it may be true that the anonymous user has authorization to edit,
+			// we don't want to generally support this case to force at least a visitor
+			// registration to prevent spamming.
+			!$userId->isEqual($idManager->getId('edu.middlebury.agents.anonymous')) &&
+			
+			// While it is more correct to check modify permission as well, people with
+			// the editor role (and hence modify permission) should also be able to 
+			// add_children. Only checking one of these currently cuts the number of 
+			// AZ queries in half.
+// 			$authZ->isUserAuthorizedBelow(
+// 				$idManager->getId("edu.middlebury.authorization.modify"),
+// 				SiteDispatcher::getCurrentRootNode()->getQualifierId())
+// 			|| 
+			$authZ->isUserAuthorizedBelow(
 				$idManager->getId("edu.middlebury.authorization.add_children"),
 				SiteDispatcher::getCurrentRootNode()->getQualifierId()))
 		{

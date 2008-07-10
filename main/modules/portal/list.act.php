@@ -340,8 +340,13 @@ class listAction
 		$controls[] = "<a href='".$viewUrl."'>"._("view")."</a>";
 		
 		if ($this->showEditControls) {
-			if ($authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)
-				|| $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId)) 
+			if (
+			// While it is more correct to check modify permission as well, people with
+			// the editor role (and hence modify permission) should also be able to 
+			// add_children. Only checking one of these currently cuts the number of 
+			// AZ queries in half.
+			// 	$authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.modify'), $assetId) ||
+				$authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.add_children'), $assetId)) 
 			{
 				$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
 			

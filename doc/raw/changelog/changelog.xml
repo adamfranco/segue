@@ -30,6 +30,14 @@
 			Run the RSS display updater under Admin Tools -&gt; Segue Updates to 
 			enable the RssFeed plugin.
 		</important>
+		<change author='adam' date='2008-07-10'>
+			View/Portal: Major speed improvements for non-editor and non-logged in users.
+			Now only checking 'add_children' authorization for determining when to 
+			show mode-switching links, saving dramatically on the number of authorization
+			queries when all such queries return false. As well, mode-switching-link checks will
+			simply be bypassed if the user is not authenticated to prevent even more
+			authorization queries.
+		</change>
 		<fix author='adam' date='2008-07-09' ref='2014319' reftype='bug' reporter='jeff_merriman'>
 			Starting Site: Now doesn't require a second click to access other parts
 			of the site when using a custom starting site.
