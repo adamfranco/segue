@@ -173,7 +173,7 @@ abstract class Segue1To2Converter {
 			case 'image':
 				$class = 'ImageBlockSegue1To2Converter';
 				break;
-			case 'link':
+			case 'rss':
 				$class = 'RssBlockSegue1To2Converter';
 				break;
 			default:
