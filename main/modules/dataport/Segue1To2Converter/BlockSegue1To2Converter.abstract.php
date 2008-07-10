@@ -371,14 +371,30 @@ abstract class BlockSegue1To2Converter
 			$link = $matches[0][$i];
 			$params = array();
 			
+			$module = 'view';
+			$action = 'html';
+			
 			// GET URLs
 			if ($matches[1][$i]) {
 				preg_match_all($paramPattern, $matches[1][$i], $paramMatches);
 				for ($j = 0; $j < count($paramMatches[0]); $j++) {
-					if (!in_array($paramMatches[1][$j], $paramsToIgnore)
-						&& !in_array($paramMatches[2][$j], $valuesToIgnore))
-					{
-						$params[$paramMatches[1][$j]] = $paramMatches[2][$j];
+					$params[$paramMatches[1][$j]] = $paramMatches[2][$j];
+				}
+				
+				// Check for RSS-urls
+				if (isset($params['action']) && $params['action'] == 'rss') {
+					$module = 'rss';
+					if (isset($params['scope']) && $params['scope'] == 'alldiscuss') {
+						$action = 'comments';
+					} else {
+						$action = 'content';
+					}
+				}
+				
+				// Filter out unneeded params
+				foreach ($params as $key => $val) {
+					if (in_array($key, $paramsToIgnore) ||in_array($val, $valuesToIgnore)) {
+						unset($params[$key]);
 					}
 				}
 			}
@@ -391,7 +407,7 @@ abstract class BlockSegue1To2Converter
 				// do nothing, allow an empty local url.
 			}
 			
-			$newLink = $this->convertParamsToNewLink($params);
+			$newLink = $this->convertParamsToNewLink($params, $module, $action);
 			
 			
 // 			print "<hr/>";
@@ -418,16 +434,16 @@ abstract class BlockSegue1To2Converter
 	 * @access protected
 	 * @since 4/3/08
 	 */
-	protected function convertParamsToNewLink (array $params) {
+	protected function convertParamsToNewLink (array $params, $module = 'view', $action = 'html') {
 		// If there is no site specified, then the site is the current one.
 		// In that case, we can do a [[node:smallest_node_id]] style url.
 		if (!isset($params['site'])) {
 			$segue1Identifiers = array('story', 'page', 'section');
 			foreach ($segue1Identifiers as $key) {
 				if (isset($params[$key]))
-					return "[[localurl:module=view&amp;action=html&amp;node=".$key."_".$params[$key]."]]";
+					return "[[localurl:module=".$module."&amp;action=".$action."&amp;node=".$key."_".$params[$key]."]]";
 			}
-			return "[[localurl:module=view&amp;action=html&amp;site=".$this->getSlotName()."]]";
+			return "[[localurl:module=".$module."&amp;action=".$action."&amp;site=".$this->getSlotName()."]]";
 		} 
 		// If there is a site specified, then it may or may not have been imported
 		// yet.
@@ -439,7 +455,7 @@ abstract class BlockSegue1To2Converter
 			foreach ($segue1Identifiers as $identifier) {
 				if (isset($get[$identifier]) && $get[$identifier]) {
 					try {
-						return "[[localurl:module=view&amp;action=html&amp;node=".$resolver->getSegue2IdForOld($identifier, $get[$identifier])."]]";
+						return "[[localurl:module=".$module."&amp;action=".$action."&amp;node=".$resolver->getSegue2IdForOld($identifier, $get[$identifier])."]]";
 					} catch (UnknownIdException $e) {
 					}
 				}
