@@ -73,7 +73,9 @@ class SiteDispatcher {
 			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace(null);
 			
-			if (RequestContext::value("site")) {
+			if (RequestContext::value("node")) {
+				$nodeId = RequestContext::value("node");
+			} else if (RequestContext::value("site")) {
 				$slotManager = SlotManager::instance();
 				$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
 				if ($slot->siteExists())
@@ -82,8 +84,6 @@ class SiteDispatcher {
 					$harmoni->request->endNamespace();
 					throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
 				}
-			} else if (RequestContext::value("node")) {
-				$nodeId = RequestContext::value("node");
 			}
 			
 			if (!isset($nodeId) || !$nodeId) {

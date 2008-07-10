@@ -30,7 +30,11 @@
 			Run the RSS display updater under Admin Tools -&gt; Segue Updates to 
 			enable the RssFeed plugin.
 		</important>
-		<fix author='adam' date='2008-07-09' ref='2013156' reftype='bug'>
+		<fix author='adam' date='2008-07-09' ref='2014319' reftype='bug' reporter='jeff_merriman'>
+			Starting Site: Now doesn't require a second click to access other parts
+			of the site when using a custom starting site.
+		</fix>
+		<fix author='adam' date='2008-07-09' ref='2013156' reftype='bug' reporter='gabe'>
 			Authentication: Failed login followed by successful login now doesn't 
 			retain the 'login failed' message.
 		</fix>
@@ -1860,6 +1864,10 @@
 			<name>Adam Franco</name>
 			<institution>Middlebury College</institution>
 		</reporter>
+		<reporter short="gabe">
+			<name>Gabe Schine</name>
+			<!-- <institution></institution> -->
+		</reporter>
 		<reporter short="sarah_franco">
 			<name>Sarah Franco</name>
 			<institution>Middlebury College</institution>
@@ -1879,6 +1887,10 @@
 		<reporter short="gregg_humphrey">
 			<name>Gregg Humphrey</name>
 			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="jeff_merriman">
+			<name>Jeff Merriman</name>
+			<institution>MIT</institution>
 		</reporter>
 	</reporters>
 	<reftypes>
