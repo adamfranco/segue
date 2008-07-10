@@ -30,6 +30,11 @@
 			Run the RSS display updater under Admin Tools -&gt; Segue Updates to 
 			enable the RssFeed plugin.
 		</important>
+		<fix author='adam' date='2008-07-09' ref='2009077' reftype='bug'>
+			View: Fixed issue where theme name was printed in the site title. This
+			was initially added in commit b633fb846d9addf2f8f7ef44a1f13e5db00c21d7
+			as a debugging aid. The site title now includes the full breadcrumb trail.
+		</fix>
 		<fix author='alex' date='2008-07-08' ref='2009092' reftype='bug'>
 			Migration: Segue v1 sites with null creation dates no longer halts site migration.
 		</fix>

@@ -133,8 +133,7 @@ class htmlAction
 		
 		//Add our new title
 		print "\n\t\t<title>";
-		print strip_tags(preg_replace("/<(\/)?(em|i|b|strong)>/", "*", $rootSiteComponent->getDisplayName()));
-		print " - ".$rootSiteComponent->getTheme()->getIdString();
+		print strip_tags(SiteDispatcher::getCurrentNode()->acceptVisitor(new BreadCrumbsVisitor(SiteDispatcher::getCurrentNode())));
 		print "</title>";
 		
 		// Add our common Harmoni javascript libraries
