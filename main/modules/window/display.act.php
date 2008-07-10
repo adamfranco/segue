@@ -281,7 +281,9 @@ class displayAction
 				"logout")."'>"._("Log Out")."</a>";
 		} else {
 			// set bookmarks for success and failure
-			$harmoni->history->markReturnURL("polyphony/display_login");
+			$current = $harmoni->request->mkURLWithPassthrough();
+			$current->setValue('login_failed', null);
+			$harmoni->history->markReturnURL("polyphony/display_login", $current);
 			$harmoni->history->markReturnURL("polyphony/login_fail",
 				$harmoni->request->quickURL("user", "main", array('login_failed' => 'true')));
 
