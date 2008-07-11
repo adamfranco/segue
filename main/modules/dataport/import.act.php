@@ -206,6 +206,8 @@ class importAction
 			$archiveName = basename($archivePath);
 			$decompressDir = DATAPORT_TMP_DIR.'/'.$archiveName.'_source';
 			
+			if (!$values['mode']['backup_file']['size'])
+				throw new Exception("File upload error - archive was not successfully uploaded and has no size.");
 			$this->decompressArchive($archivePath, $decompressDir);
 			
 			
@@ -242,6 +244,7 @@ class importAction
 					$importer->addSiteAdministrator($idMgr->getId($adminIdString));
 			}
 			
+			$importer->enableStatusOutput();
 			$site = $importer->importAtSlot($values['mode']['slotname']);
 			
 			// Delete the uploaded file
@@ -289,7 +292,9 @@ class importAction
 				$priorityType = new Type("logging", "edu.middlebury", "Error",
 								"Recoverable errors.");
 				
-				$item = new AgentNodeEntryItem("Create Site", "Failure in importing site for placeholder, '".$values['mode']['slotname']."'.");
+				$item = new AgentNodeEntryItem("Create Site", "Failure in importing site for placeholder, '".$values['mode']['slotname']."'. ".$importException->getMessage());
+				$item->setBacktrace($importException->getTrace());
+				$item->addTextToBactrace("Archive Upload: ".printpre($values['mode']['backup_file'], true));
 				
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);
 			}
@@ -327,6 +332,11 @@ class importAction
 	 * @since 3/14/08
 	 */
 	public function decompressArchive ($archivePath, $decompressDir) {
+		if (!file_exists($archivePath))
+			throw new Exception("Archive, '".basename($archivePath)."' does not exist.");
+		if (!is_readable($archivePath))
+			throw new Exception("Archive, '".basename($archivePath)."' is not readable.");
+		
 		// Decompress the archive into our temp-dir
 		$archive = new Archive_Tar($archivePath);
 		
