@@ -10,9 +10,22 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-26" date="The Future">
+	<version number="2.0-beta-26" date="2008-07-11">
 		<releaseNotes>
+			This release fixes a major bug in the permissions/role-setting system
+			that was preventing modifications of roles for some groups. Also improved
+			are the RSS feed-display plugin's support for slightly non-conforming
+			feeds and a few other minor issues.
 			
+			As of this beta 25, Segue requires PHP to be compiled with XSL support.
+			On unix systems this can be added by configuring PHP using the --with-xsl
+			option. See the following for installation instructions:
+			http://www.php.net/manual/en/xsl.installation.php
+			
+			Upgrades from versions prior to beta 26 require running the RSS Feed
+			updaters located under Admin Tools --> Segue Updates.
+			
+			Segue 2.0-beta-25 uses Harmoni 1.4.2 and Polyphony 1.2.7.
 		</releaseNotes>
 		<fix author='adam' date='2008-07-11' ref='2014548' reftype='bug' reporter='laurel_taylor'>
 			Roles: Fixed Roles issue with 'invalid default state'.
@@ -50,7 +63,7 @@
 	</version>
 	<version number="2.0-beta-25" date="2008-07-10">
 		<releaseNotes>
-			This release adds the cabability to display RSS feeds inline in a site
+			This release adds the capability to display RSS feeds inline in a site
 			and fixes a wide range of bugs.
 			
 			Notable User-facing changes:
@@ -138,7 +151,7 @@
 		</change>
 		<new author='adam' date='2008-06-18' ref='1820785' reftype='fr'>
 			Plugins: Plugins can now get URLs for static files in their own
-			'public' directories. Enables serving of custom javascrip/images/css.
+			'public' directories. Enables serving of custom javascript/images/css.
 		</new>
 		<new author='adam' date='2008-06-18' ref='1820785' reftype='fr'>
 			Plugins: Plugins can now specify CSS and Javascript files to be linked
