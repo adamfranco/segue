@@ -36,7 +36,7 @@
 			Run the RSS display updater under Admin Tools -&gt; Segue Updates to 
 			enable the RssFeed plugin.
 		</important>
-		<change author='adam' date='2008-07-10' reporter='jeff_merriman'>
+		<change author='adam' date='2008-07-10' ref='1959168' reftype='bug' reporter='jeff_merriman'>
 			View/Portal: Major speed improvements for non-editor and non-logged in users.
 			Now only checking 'add_children' authorization for determining when to 
 			show mode-switching links, saving dramatically on the number of authorization
@@ -103,6 +103,9 @@
 			Themes: Theme CSS now configured to be loaded from a separate file
 			to cut down on document size.
 		</change>
+		<fix author='adam' date='2008-07-10'>
+			Updates: Updates now check for authorization.
+		</fix>
 	</version>
 	<version number="2.0-beta-24" date="2008-06-16">
 		<releaseNotes>
