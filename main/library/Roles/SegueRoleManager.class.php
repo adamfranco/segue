@@ -147,6 +147,22 @@ class SegueRoleManager
 	public function clearRoleAzs (Id $agentId, Id $qualifierId) {
 		// Apply the NoAccess role
 		$this->roles[0]->apply($agentId, $qualifierId);
+		
+		/*********************************************************
+		 * If the agent specified is 'everyone', also clear roles for 'users'
+		 *
+		 * Search for the string 'only-logged-in-can-edit' to find other code that
+		 * makes this effect happen.
+		 *********************************************************/
+		$idMgr = Services::getService("Id");
+		$everyoneId = $idMgr->getId('edu.middlebury.agents.everyone');
+		if ($agentId->isEqual($everyoneId)) {
+			$usersId = $idMgr->getId('edu.middlebury.agents.users');
+			$this->roles[0]->apply($usersId, $qualifierId);
+		}
+		/*********************************************************
+		 * End only-logged-in-can-edit
+		 *********************************************************/
 	}
 	
 	/**
@@ -187,6 +203,28 @@ class SegueRoleManager
 	
 		// Load the functions explicitly set for this agent at this qualifier
 		$authorizations = $authZ->getAllAZs($agentId, null, $qualifierId, true);
+		
+		/*********************************************************
+		 * For the 'everyone' group will will also add in AZs from the 'users'
+		 * group to make it look like AZs are being set for 'everyone' while
+		 * allowing only logged-in users to make changes.
+		 *
+		 * Search for the string 'only-logged-in-can-edit' to find other code that
+		 * makes this effect happen.
+		 *********************************************************/
+		$idMgr = Services::getService("Id");
+		$everyoneId = $idMgr->getId('edu.middlebury.agents.everyone');
+		if ($agentId->isEqual($everyoneId)) {
+			$usersId = $idMgr->getId('edu.middlebury.agents.users');
+			$everyoneAZs = $authorizations;
+			$authorizations = new MultiIteratorIterator;
+			$authorizations->addIterator($everyoneAZs);
+			$authorizations->addIterator($authZ->getAllAZs($usersId, null, $qualifierId, true));
+		}
+		/*********************************************************
+		 * End only-logged-in-can-edit
+		 *********************************************************/
+		
 		$functions = array();
 		while ($authorizations->hasNext()) {
 			$authorization = $authorizations->next();
@@ -227,6 +265,28 @@ class SegueRoleManager
 		// Load the functions explicitly set for this agent at this qualifier
 		$authZ = Services::getService("AuthZ");
 		$authorizations = $authZ->getExplicitAZs($agentId, null, $qualifierId, true);
+		
+		/*********************************************************
+		 * For the 'everyone' group will will also add in AZs from the 'users'
+		 * group to make it look like AZs are being set for 'everyone' while
+		 * allowing only logged-in users to make changes.
+		 *
+		 * Search for the string 'only-logged-in-can-edit' to find other code that
+		 * makes this effect happen.
+		 *********************************************************/
+		$idMgr = Services::getService("Id");
+		$everyoneId = $idMgr->getId('edu.middlebury.agents.everyone');
+		if ($agentId->isEqual($everyoneId)) {
+			$usersId = $idMgr->getId('edu.middlebury.agents.users');
+			$everyoneAZs = $authorizations;
+			$authorizations = new MultiIteratorIterator;
+			$authorizations->addIterator($everyoneAZs);
+			$authorizations->addIterator($authZ->getExplicitAZs($usersId, null, $qualifierId, true));
+		}
+		/*********************************************************
+		 * End only-logged-in-can-edit
+		 *********************************************************/
+		
 		$functions = array();
 		while ($authorizations->hasNext()) {
 			$authorization = $authorizations->next();

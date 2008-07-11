@@ -143,6 +143,37 @@ abstract class SegueRole
 				throw new PermissionDeniedException("Cannot modify authorizations here.");
 		}
 		
+		/*********************************************************
+		 * Split apart Everyone roles into 'reader' for everyone and the higher role
+		 * for Users who are logged in (everyone except anonymous).
+		 *
+		 * Search for the string 'only-logged-in-can-edit' to find other code that
+		 * makes this effect happen.
+		 *********************************************************/
+		$everyoneId = $idMgr->getId('edu.middlebury.agents.everyone');
+		$usersId = $idMgr->getId('edu.middlebury.agents.users');
+		if ($agentId->isEqual($everyoneId)) {
+			$commenterRole = new Commenter_SegueRole;
+			// if the role is more than just viewing, give everyone view and
+			// users the rest.
+			if ($this->isGreaterThan($commenterRole)) {
+				$commenterRole->apply($everyoneId, $qualifierId, $overrideAzCheck);
+				$this->apply($usersId, $qualifierId, $overrideAzCheck);
+				return;
+			}
+			// If the role is view or less revoke roles from users and continue on
+			// to set this role for everyone.
+			else {
+				$noAccessRole = new NoAccess_SegueRole;
+				$noAccessRole->apply($usersId, $qualifierId, $overrideAzCheck);
+				// Continue on to set the role for everyone.
+			}
+		}
+		/*********************************************************
+		 * End only-logged-in-can-edit
+		 *********************************************************/
+		
+		
 		$authorizations = $authZ->getExplicitAZs($agentId, null, $qualifierId, true);
 		
 		// Delete Conflicting functions. We leave functions that the roles don't know about.
@@ -335,10 +366,10 @@ abstract class SegueRole
 	 * @param object Id $qualifierId
 	 * @param array $appliedFunctions An array of function ids
 	 * @return void
-	 * @access private
+	 * @access protected
 	 * @since 11/5/07
 	 */
-	private function addAuthorizationForFunction (Id $agentId, Id $functionId, Id $qualifierId, array $appliedFunctions = array()) {
+	protected function addAuthorizationForFunction (Id $agentId, Id $functionId, Id $qualifierId, array $appliedFunctions = array()) {
 		foreach ($appliedFunctions as $func) {
 			if ($functionId->isEqual($func))
 				return;

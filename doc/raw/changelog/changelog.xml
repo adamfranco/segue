@@ -36,7 +36,7 @@
 			Run the RSS display updater under Admin Tools -&gt; Segue Updates to 
 			enable the RssFeed plugin.
 		</important>
-		<change author='adam' date='2008-07-10'>
+		<change author='adam' date='2008-07-10' reporter='jeff_merriman'>
 			View/Portal: Major speed improvements for non-editor and non-logged in users.
 			Now only checking 'add_children' authorization for determining when to 
 			show mode-switching links, saving dramatically on the number of authorization
@@ -52,6 +52,25 @@
 			Authentication: Failed login followed by successful login now doesn't 
 			retain the 'login failed' message.
 		</fix>
+		<change author='adam' date='2008-07-10'>
+			Roles: With 'Editor' role set for 'everyone' log-in is required to edit.
+
+			To accomplish this, the role-system now merges authorizations for the
+			'edu.middlebury.agents.everyone' group and the 
+			'edu.middlebury.agents.users' group when viewing or setting roles for 
+			'Everyone'.
+			
+			The 'edu.middlebury.agents.everyone' group (which includes the anonymous
+			user) is only ever given the 'reader' role (view authorization) and the
+			view_comments authorization (part of the 'commenter' role) while the
+			'edu.middlebury.agents.users' group	(which includes all authenticated 
+			users, even visitors) is given the additional authorizations.
+			
+			As far as the UI is concerned site admins are just setting roles for
+			'Everyone', but now anonymous users aren't being given grants to make
+			changes. This should prevent spam and make modifications at least
+			nominally traceable.
+		</change>
 		<fix author='adam' date='2008-07-09' ref='2009077' reftype='bug'>
 			View: Fixed issue where theme name was printed in the site title. This
 			was initially added in commit b633fb846d9addf2f8f7ef44a1f13e5db00c21d7
