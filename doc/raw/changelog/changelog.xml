@@ -10,9 +10,16 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-25" date="The Future">
+	<version number="2.0-beta-25" date="2008-07-10">
 		<releaseNotes>
-			This release adds the cabability to display RSS feeds inline in a site.
+			This release adds the cabability to display RSS feeds inline in a site
+			and fixes a wide range of bugs.
+			
+			Notable User-facing changes:
+			- Can now display RSS feeds in a site.
+			- 'New Mode' is now the default user interface.
+			- Migration fixes enable more sites to be successfully migrated.
+			- Major speed improvements for users viewing sites without editing access.
 			
 			Upgrades from versions prior to beta 25 require running the RSS Feed
 			updater	located under Admin Tools --> Segue Updates.
