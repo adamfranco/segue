@@ -29,6 +29,14 @@
 			authorizations that cascade down when determining what role to display
 			for a user.
 		</fix>
+		<change author='adam' date='2008-07-11'>
+			RSS remote access script now validates and cleans RSS doc instead of 
+			using XSD validation.
+
+			The schema was too strict and failing on too many feeds. Since the
+			reader only uses a few elements in the feed, these are verified and
+			cleaned.
+		</change>
 	</version>
 	<version number="2.0-beta-25" date="2008-07-10">
 		<releaseNotes>

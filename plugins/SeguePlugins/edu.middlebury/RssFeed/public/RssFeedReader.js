@@ -301,7 +301,7 @@ function RssChannel ( element ) {
 	RssChannel.prototype.getTitle = function () {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
-			if (child.nodeName == 'title' && child.firstChild.nodeValue) {
+			if (child.nodeName == 'title' && child.firstChild && child.firstChild.nodeValue) {
 				return child.firstChild.nodeValue;
 			}
 		}
@@ -318,7 +318,7 @@ function RssChannel ( element ) {
 	RssChannel.prototype.getDescription = function () {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
-			if (child.nodeName == 'description' && child.firstChild.nodeValue
+			if (child.nodeName == 'description' && child.firstChild && child.firstChild.nodeValue
 				&& child.firstChild.nodeValue.length) 
 			{
 				return child.firstChild.nodeValue;
@@ -337,7 +337,7 @@ function RssChannel ( element ) {
 	RssChannel.prototype.getUrl = function () {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
-			if (child.nodeName == 'link' && child.firstChild.nodeValue) {
+			if (child.nodeName == 'link' && child.firstChild && child.firstChild.nodeValue) {
 				return child.firstChild.nodeValue;
 			}
 		}
@@ -446,7 +446,7 @@ function RssItem ( element ) {
 	RssItem.prototype.getTitle = function () {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
-			if (child.nodeName == 'title' && child.firstChild.nodeValue) {
+			if (child.nodeName == 'title' && child.firstChild && child.firstChild.nodeValue) {
 				return child.firstChild.nodeValue;
 			}
 		}
@@ -463,7 +463,7 @@ function RssItem ( element ) {
 	RssItem.prototype.getUrl = function () {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
-			if (child.nodeName == 'link' && child.firstChild.nodeValue) {
+			if (child.nodeName == 'link' && child.firstChild && child.firstChild.nodeValue) {
 				return child.firstChild.nodeValue;
 			}
 		}
@@ -480,7 +480,7 @@ function RssItem ( element ) {
 	RssItem.prototype.getDescription = function () {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
-			if (child.nodeName == 'description' && child.firstChild && child.firstChild.nodeValue) {
+			if (child.nodeName == 'description' && child.firstChild && child.firstChild && child.firstChild.nodeValue) {
 				return child.firstChild.nodeValue;
 			}
 		}
@@ -497,7 +497,7 @@ function RssItem ( element ) {
 	RssItem.prototype.getAuthor = function () {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
-			if (child.nodeName == 'author' && child.firstChild.nodeValue) {
+			if (child.nodeName == 'author' && child.firstChild && child.firstChild.nodeValue) {
 				return child.firstChild.nodeValue;
 			}
 		}
@@ -514,7 +514,7 @@ function RssItem ( element ) {
 	RssItem.prototype.getPubDate = function () {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
-			if (child.nodeName == 'pubDate' && child.firstChild.nodeValue) {
+			if (child.nodeName == 'pubDate' && child.firstChild && child.firstChild.nodeValue) {
 				return new Date(Date.parse(child.firstChild.nodeValue));
 			}
 		}
@@ -531,7 +531,7 @@ function RssItem ( element ) {
 	RssItem.prototype.getCommentUrl = function () {
 		for (var i = 0; i < this.element.childNodes.length; i++) {
 			var child = this.element.childNodes[i];
-			if (child.nodeName == 'comments' && child.firstChild.nodeValue) {
+			if (child.nodeName == 'comments' && child.firstChild && child.firstChild.nodeValue) {
 				return child.firstChild.nodeValue;
 			}
 		}

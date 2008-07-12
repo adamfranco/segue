@@ -86,7 +86,7 @@ class remote_feed
 			
 			// Output the feed data
 			header('Content-Type: text/xml');
-			header('Content-Length: '.strlen($feedData));
+// 			header('Content-Length: '.strlen($feedData));
 			print $feedData;
 			exit;
 		} catch (Exception $e) {
@@ -147,11 +147,17 @@ class remote_feed
 // 		$feed->schemaValidateWithException(dirname(__FILE__).'/rss-2_0-lax.xsd');
 		
 		// Run through the titles, authors, and descriptions and clean out any unsafe HTML
-		foreach ($feed->getElementsByTagName('title') as $title)
-			$title->nodeValue = strip_tags(htmlspecialchars_decode($title->nodeValue));
+		foreach ($feed->getElementsByTagName('title') as $element)
+			$element->nodeValue = strip_tags(htmlspecialchars_decode($element->nodeValue));
 		
-		foreach ($feed->getElementsByTagName('author') as $author)
-			$author->nodeValue = strip_tags(htmlspecialchars_decode($author->nodeValue));
+		foreach ($feed->getElementsByTagName('author') as $element)
+			$element->nodeValue = strip_tags(htmlspecialchars_decode($element->nodeValue));
+		
+		foreach ($feed->getElementsByTagName('comments') as $element)
+			$element->nodeValue = htmlentities(strip_tags(html_entity_decode($element->nodeValue)));
+		
+		foreach ($feed->getElementsByTagName('link') as $element)
+			$element->nodeValue = htmlentities(strip_tags(html_entity_decode($element->nodeValue)));
 			
 		foreach ($feed->getElementsByTagName('description') as $description) {				
 			$html = HtmlString::fromString(htmlspecialchars_decode($description->nodeValue));
@@ -159,12 +165,29 @@ class remote_feed
 			$description->nodeValue = htmlspecialchars($html->asString());
 		}
 		
-		// Validate the feed again
+		// Move the feed into a dom document.
 		$tmpFeed = $feed;
 		$feed = new Harmoni_DOMDocument;
 		$feed->loadXML($tmpFeed->saveXML());
 		unset($tmpFeed);
-		$feed->schemaValidateWithException(dirname(__FILE__).'/rss-2_0-lax.xsd');
+		
+		// Validate the feed again
+// 		$feed->schemaValidateWithException(dirname(__FILE__).'/rss-2_0-lax.xsd');
+		
+		// Just ensure a few basic things:
+		if (!$feed->documentElement->nodeName == 'rss')
+			throw new DOMDocumentException("Feed root must be an rss element");
+		// Check for channels
+		foreach ($feed->documentElement->childNodes as $element) {
+			if ($element->nodeType == 1 && $element->nodeName != 'channel')
+				throw new DOMDocumentException("'".$node->nodeName."' is not expected, expecting 'channel'.");
+		}
+		// Check dates
+		foreach ($feed->getElementsByTagName('pubdate') as $element) {
+			if (!preg_match('/(((Mon)|(Tue)|(Wed)|(Thu)|(Fri)|(Sat)|(Sun)), *)?\d\d? +((Jan)|(Feb)|(Mar)|(Apr)|(May)|(Jun)|(Jul)|(Aug)|(Sep)|(Oct)|(Nov)|(Dec)) +\d\d(\d\d)? +\d\d:\d\d(:\d\d)? +(([+\-]?\d\d\d\d)|(UT)|(GMT)|(EST)|(EDT)|(CST)|(CDT)|(MST)|(MDT)|(PST)|(PDT)|\w)/', $element->nodeValue))
+				throw new DOMDocumentException("'".$element->nodeValue."' is not a valid date.");
+		}
+		
 		
 		return $feed->saveXMLWithWhitespace();
 	}
