@@ -280,6 +280,9 @@ class remote_feed
 		$query = new DeleteQuery;
 		$query->setTable('segue_plugins_rssfeed_cache');
 		$query->addWhereEqual('url', $url);
+		$query->addWhereRawLessThan('cache_time', 
+			$dbc->toDBDate(DateAndTime::now()->minus(Duration::withSeconds(600)), IMPORTER_CONNECTION),
+			_OR);
 		
 		try {
 			$result = $dbc->query($query, IMPORTER_CONNECTION);
