@@ -10,6 +10,26 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-26" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-07-11' ref='2014548' reftype='bug' reporter='laurel_taylor'>
+			Fixed Roles issue with 'invalid default state'.
+
+			It appears that since the transition to the new AuthZ2 implementation,
+			the roles system has not been working correctly when setting complex
+			authorization. This issue stems from the 'new' property of 
+			view authorizations cascading up as well as down. This cascading up
+			was confusing the roles system. When there was no site-wide view 
+			authorization the roles system thought that there was due to a view 
+			authorization cascading up from a story or page.
+			
+			This has now been sorted out and the roles system only looks at implicit
+			authorizations that cascade down when determining what role to display
+			for a user.
+		</fix>
+	</version>
 	<version number="2.0-beta-25" date="The Future">
 		<releaseNotes>
 			This release adds the cabability to display RSS feeds inline in a site.
@@ -1922,6 +1942,10 @@
 		</reporter>
 		<reporter short="gregg_humphrey">
 			<name>Gregg Humphrey</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="laurel_taylor">
+			<name>Laurel Taylor</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 		<reporter short="jeff_merriman">
