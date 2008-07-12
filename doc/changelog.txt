@@ -2,6 +2,140 @@
 Segue Change Log
 
 
+v. 2.0-beta-25 (2008-07-10)
+----------------------------------------------------
+This release adds the cabability to display RSS feeds inline in a site and fixes a
+wide range of bugs.
+
+Notable User-facing changes:
+
+ * Can now display RSS feeds in a site.
+
+ * 'New Mode' is now the default user interface.
+
+ * Migration fixes enable more sites to be successfully migrated.
+
+ * Major speed improvements for users viewing sites without editing access.
+
+Upgrades from versions prior to beta 25 require running the RSS Feed updaterlocated
+under Admin Tools --> Segue Updates.
+
+Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.
+		
+		
+	* Change: 
+		Dataport: Added more error checking during import process to help debug
+		import problems.
+		(2008-07-10 - Adam Franco)
+		
+	* Change: #2009035 
+		UI: New Mode now the default editing UI.
+		(2008-07-10 - Alex Chapin)
+		
+	* New feature: #1820785 
+		Plugins: New RSS feed-display plugin to allow in-line display of RSS feeds.
+		(2008-06-18 - Adam Franco)
+		
+	**** IMPORTANT *** Change: 
+		As of this release, Segue requires PHP to be compiled with XSL support. See
+		the following for installation:
+		http://www.php.net/manual/en/xsl.installation.php 
+		(2008-07-07 - Adam Franco)
+		
+	**** IMPORTANT *** Change: 
+		Run the RSS display updater under Admin Tools -> Segue Updates to enable the
+		RssFeed plugin.
+		(2008-07-08 - Adam Franco)
+		
+	* Change: #1959168 
+		View/Portal: Major speed improvements for non-editor and non-logged in
+		users. Now only checking 'add_children' authorization for determining when
+		to show mode-switching links, saving dramatically on the number of
+		authorization queries when all such queries return false. As well,
+		mode-switching-link checks will simply be bypassed if the user is not
+		authenticated to prevent even more authorization queries.
+		(2008-07-10 - Adam Franco)
+		(reported by Jeff Merriman of MIT)
+		
+	* Bug Fix: #2014319 
+		Starting Site: Now doesn't require a second click to access other parts of
+		the site when using a custom starting site.
+		(2008-07-09 - Adam Franco)
+		(reported by Jeff Merriman of MIT)
+		
+	* Bug Fix: #2013156 
+		Authentication: Failed login followed by successful login now doesn't retain
+		the 'login failed' message.
+		(2008-07-09 - Adam Franco)
+		(reported by Gabe Schine)
+		
+	* Change: 
+		Roles: With 'Editor' role set for 'everyone' log-in is required to edit.
+		
+		To accomplish this, the role-system now merges authorizations for the
+		'edu.middlebury.agents.everyone' group and the 'edu.middlebury.agents.users'
+		group when viewing or setting roles for 'Everyone'.
+		
+		The 'edu.middlebury.agents.everyone' group (which includes the anonymous
+		user) is only ever given the 'reader' role (view authorization) and the
+		view_comments authorization (part of the 'commenter' role) while the
+		'edu.middlebury.agents.users' group(which includes all authenticated users,
+		even visitors) is given the additional authorizations.
+		
+		As far as the UI is concerned site admins are just setting roles for
+		'Everyone', but now anonymous users aren't being given grants to make
+		changes. This should prevent spam and make modifications at least nominally
+		traceable. 
+		(2008-07-10 - Adam Franco)
+		
+	* Bug Fix: #2009077 
+		View: Fixed issue where theme name was printed in the site title. This was
+		initially added in commit b633fb846d9addf2f8f7ef44a1f13e5db00c21d7 as a
+		debugging aid. The site title now includes the full breadcrumb trail.
+		(2008-07-09 - Adam Franco)
+		
+	* Bug Fix: #2009092 
+		Migration: Segue v1 sites with null creation dates no longer halts site
+		migration. 
+		(2008-07-08 - Alex Chapin)
+		
+	* Bug Fix: #2009095 
+		Migration: Segue v1 null agent information now replaced with unknown agent
+		and no longer halts site migration
+		(2008-07-08 - Alex Chapin)
+		
+	* Bug Fix: #2009104 
+		Migration: migrating theme options from Segue v1 that do not exist in Segue
+		v2 no longer throws an error
+		(2008-07-07 - Alex Chapin)
+		
+	* Change: 
+		Plugins: Manager now executes any script blocks when reloading the plugin
+		after AJAX update.
+		(2008-06-17 - Adam Franco)
+		
+	* New feature: #1820785 
+		Plugins: Plugins can now get URLs for static files in their own 'public'
+		directories. Enables serving of custom javascrip/images/css.
+		(2008-06-18 - Adam Franco)
+		
+	* New feature: #1820785 
+		Plugins: Plugins can now specify CSS and Javascript files to be linked from
+		the document head.
+		(2008-06-18 - Adam Franco)
+		
+	* Change: 
+		Themes: Theme CSS now configured to be loaded from a separate file to cut
+		down on document size.
+		(2008-06-18 - Adam Franco)
+		
+	* Bug Fix: 
+		Updates: Updates now check for authorization.
+		(2008-07-10 - Adam Franco)
+	
+
+
+
 v. 2.0-beta-24 (2008-06-16)
 ----------------------------------------------------
 This release fixes a number of minor bugs that were affecting some users and adds

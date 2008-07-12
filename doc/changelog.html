@@ -23,7 +23,80 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-24</h2>
+<h2>Version 2.0-beta-25</h2>
+<h3>2008-07-10</h3>
+<p>This release adds the cabability to display RSS feeds inline in a site and fixes a wide range of bugs.
+<br>
+<br>Notable User-facing changes:
+<br>
+<br> * Can now display RSS feeds in a site.
+<br>
+<br> * 'New Mode' is now the default user interface.
+<br>
+<br> * Migration fixes enable more sites to be successfully migrated.
+<br>
+<br> * Major speed improvements for users viewing sites without editing access.
+<br>
+<br>Upgrades from versions prior to beta 25 require running the RSS Feed updaterlocated under Admin Tools --&gt; Segue Updates.
+<br>
+<br>Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.</p>
+<ul>
+		
+		<li>
+<b>Change:</b> Dataport: Added more error checking during import process to help debug import problems. (<em>2008-07-10 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009035&amp;group_id=82171&amp;atid=565237">
+        			#2009035</a> UI: New Mode now the default editing UI. (<em>2008-07-10 - Alex Chapin</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820785&amp;group_id=82171&amp;atid=565237">
+        			#1820785</a> Plugins: New RSS feed-display plugin to allow in-line display of RSS feeds. (<em>2008-06-18 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> As of this release, Segue requires PHP to be compiled with XSL support. See the following for installation: http://www.php.net/manual/en/xsl.installation.php (<em>2008-07-07 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Run the RSS display updater under Admin Tools -&gt; Segue Updates to enable the RssFeed plugin. (<em>2008-07-08 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1959168&amp;group_id=82171&amp;atid=565234">
+        			#1959168</a> View/Portal: Major speed improvements for non-editor and non-logged in users. Now only checking 'add_children' authorization for determining when to show mode-switching links, saving dramatically on the number of authorization queries when all such queries return false. As well, mode-switching-link checks will simply be bypassed if the user is not authenticated to prevent even more authorization queries. (<em>2008-07-10 - Adam Franco</em>)<br> (<em>reported by Jeff Merriman of MIT</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2014319&amp;group_id=82171&amp;atid=565234">
+        			#2014319</a> Starting Site: Now doesn't require a second click to access other parts of the site when using a custom starting site. (<em>2008-07-09 - Adam Franco</em>)<br> (<em>reported by Jeff Merriman of MIT</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2013156&amp;group_id=82171&amp;atid=565234">
+        			#2013156</a> Authentication: Failed login followed by successful login now doesn't retain the 'login failed' message. (<em>2008-07-09 - Adam Franco</em>)<br> (<em>reported by Gabe Schine</em>)</li>
+		<li>
+<b>Change:</b> Roles: With 'Editor' role set for 'everyone' log-in is required to edit.
+<br>
+<br>To accomplish this, the role-system now merges authorizations for the 'edu.middlebury.agents.everyone' group and the 'edu.middlebury.agents.users' group when viewing or setting roles for 'Everyone'.
+<br>
+<br>The 'edu.middlebury.agents.everyone' group (which includes the anonymous user) is only ever given the 'reader' role (view authorization) and the view_comments authorization (part of the 'commenter' role) while the 'edu.middlebury.agents.users' group(which includes all authenticated users, even visitors) is given the additional authorizations.
+<br>
+<br>As far as the UI is concerned site admins are just setting roles for 'Everyone', but now anonymous users aren't being given grants to make changes. This should prevent spam and make modifications at least nominally traceable. (<em>2008-07-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009077&amp;group_id=82171&amp;atid=565234">
+        			#2009077</a> View: Fixed issue where theme name was printed in the site title. This was initially added in commit b633fb846d9addf2f8f7ef44a1f13e5db00c21d7 as a debugging aid. The site title now includes the full breadcrumb trail. (<em>2008-07-09 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009092&amp;group_id=82171&amp;atid=565234">
+        			#2009092</a> Migration: Segue v1 sites with null creation dates no longer halts site migration. (<em>2008-07-08 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009095&amp;group_id=82171&amp;atid=565234">
+        			#2009095</a> Migration: Segue v1 null agent information now replaced with unknown agent and no longer halts site migration (<em>2008-07-08 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009104&amp;group_id=82171&amp;atid=565234">
+        			#2009104</a> Migration: migrating theme options from Segue v1 that do not exist in Segue v2 no longer throws an error (<em>2008-07-07 - Alex Chapin</em>)</li>
+		<li>
+<b>Change:</b> Plugins: Manager now executes any script blocks when reloading the plugin after AJAX update. (<em>2008-06-17 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820785&amp;group_id=82171&amp;atid=565237">
+        			#1820785</a> Plugins: Plugins can now get URLs for static files in their own 'public' directories. Enables serving of custom javascrip/images/css. (<em>2008-06-18 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820785&amp;group_id=82171&amp;atid=565237">
+        			#1820785</a> Plugins: Plugins can now specify CSS and Javascript files to be linked from the document head. (<em>2008-06-18 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Themes: Theme CSS now configured to be loaded from a separate file to cut down on document size. (<em>2008-06-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Updates: Updates now check for authorization. (<em>2008-07-10 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-24</h2>
 <h3>2008-06-16</h3>
 <p>This release fixes a number of minor bugs that were affecting some users and adds support for setting a particular Segue site as the default page when no particular action or site is specified.
 <br>

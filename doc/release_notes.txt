@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-24 (2008-06-16)
+Segue v. 2.0-beta-25 (2008-07-10)
 =================================
 
 What is Segue?
@@ -17,16 +17,23 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release fixes a number of minor bugs that were affecting some users and adds
-support for setting a particular Segue site as the default page when no particular
-action or site is specified.
+This release adds the cabability to display RSS feeds inline in a site and fixes a
+wide range of bugs.
 
-As of this release Segue requires that PHP be compiled with the
+Notable User-facing changes:
 
- *-enable-mbstring option. This option adds enhanced support for translation of
-strings between character sets and is needed for exporting sites.
+ * Can now display RSS feeds in a site.
 
-Segue 2.0-beta-23 uses Harmoni 1.4.0 and Polyphony 1.2.6.
+ * 'New Mode' is now the default user interface.
+
+ * Migration fixes enable more sites to be successfully migrated.
+
+ * Major speed improvements for users viewing sites without editing access.
+
+Upgrades from versions prior to beta 25 require running the RSS Feed updaterlocated
+under Admin Tools --> Segue Updates.
+
+Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.
 
 
 Downloads
@@ -66,6 +73,28 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-25 (2008-07-10)
+----------------------------------------------------
+This release adds the cabability to display RSS feeds inline in a site and fixes a
+wide range of bugs.
+
+Notable User-facing changes:
+
+ * Can now display RSS feeds in a site.
+
+ * 'New Mode' is now the default user interface.
+
+ * Migration fixes enable more sites to be successfully migrated.
+
+ * Major speed improvements for users viewing sites without editing access.
+
+Upgrades from versions prior to beta 25 require running the RSS Feed updaterlocated
+under Admin Tools --> Segue Updates.
+
+Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.
+
 
 
 v. 2.0-beta-24 (2008-06-16)

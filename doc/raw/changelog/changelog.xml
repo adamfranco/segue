@@ -10,9 +10,16 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-25" date="The Future">
+	<version number="2.0-beta-25" date="2008-07-10">
 		<releaseNotes>
-			This release adds the cabability to display RSS feeds inline in a site.
+			This release adds the cabability to display RSS feeds inline in a site
+			and fixes a wide range of bugs.
+			
+			Notable User-facing changes:
+			- Can now display RSS feeds in a site.
+			- 'New Mode' is now the default user interface.
+			- Migration fixes enable more sites to be successfully migrated.
+			- Major speed improvements for users viewing sites without editing access.
 			
 			Upgrades from versions prior to beta 25 require running the RSS Feed
 			updater	located under Admin Tools --> Segue Updates.
@@ -38,7 +45,7 @@
 			Run the RSS display updater under Admin Tools -&gt; Segue Updates to 
 			enable the RssFeed plugin.
 		</important>
-		<change author='adam' date='2008-07-10' reporter='jeff_merriman'>
+		<change author='adam' date='2008-07-10' ref='1959168' reftype='bug' reporter='jeff_merriman'>
 			View/Portal: Major speed improvements for non-editor and non-logged in users.
 			Now only checking 'add_children' authorization for determining when to 
 			show mode-switching links, saving dramatically on the number of authorization
@@ -105,6 +112,9 @@
 			Themes: Theme CSS now configured to be loaded from a separate file
 			to cut down on document size.
 		</change>
+		<fix author='adam' date='2008-07-10'>
+			Updates: Updates now check for authorization.
+		</fix>
 	</version>
 	<version number="2.0-beta-24" date="2008-06-16">
 		<releaseNotes>
