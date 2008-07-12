@@ -15,7 +15,7 @@
 			
 		</releaseNotes>
 		<fix author='adam' date='2008-07-11' ref='2014548' reftype='bug' reporter='laurel_taylor'>
-			Fixed Roles issue with 'invalid default state'.
+			Roles: Fixed Roles issue with 'invalid default state'.
 
 			It appears that since the transition to the new AuthZ2 implementation,
 			the roles system has not been working correctly when setting complex
@@ -30,12 +30,22 @@
 			for a user.
 		</fix>
 		<change author='adam' date='2008-07-11'>
-			RSS remote access script now validates and cleans RSS doc instead of 
+			Plugins: RSS remote access script now validates and cleans RSS doc instead of 
 			using XSD validation.
 
 			The schema was too strict and failing on too many feeds. Since the
 			reader only uses a few elements in the feed, these are verified and
 			cleaned.
+		</change>
+		<fix author='adam' date='2008-07-11'>
+			Plugins: Extended cached size of RSS data.
+		</fix>
+		<fix author='adam' date='2008-07-11'>
+			Plugins: Cached RSS data is now deleted after expiration time on any
+			cache addition, not just its own.
+		</fix>
+		<change author='adam' date='2008-07-11' ref='2009044' reftype='fr'>
+			UI2: New menu items are selected after creation.
 		</change>
 	</version>
 	<version number="2.0-beta-25" date="2008-07-10">
