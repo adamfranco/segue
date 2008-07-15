@@ -10,6 +10,7 @@
  */ 
 
 require_once(dirname(__FILE__)."/TitleSearcher.class.php");
+require_once(dirname(__FILE__)."/TemplateResolver.class.php");
 
 /**
  * The WikiResolver
@@ -94,6 +95,7 @@ class WikiResolver {
 	 */
 	private function __construct () {
 		$this->titleSearcher = new TitleSearcher;
+		$this->templateResolver = new Segue_Wiki_TemplateResolver;
 	}
 	
 	/**
@@ -142,8 +144,51 @@ class WikiResolver {
 	public function parseText ($text, SiteComponent $siteComponent) {
 		$text = $this->replaceInternalLinks($text, $siteComponent);
 		$text = $this->replaceExternalLinks($text);		
+		$text = $this->templateResolver->applyTemplates($text);
 		return $text;
 	}
+	
+	/**
+	 * Answer a template
+	 * 
+	 * @param string $name
+	 * @return object Segue_Wiki_Template
+	 * @access public
+	 * @since 7/14/08
+	 */
+	public function getTemplate ($name) {
+		return $this->templateResolver->getTemplate($name);
+	}
+	
+	/**
+	 * Apply only two-way templates, those that can pull wiki markup out from
+	 * HTML.
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 7/14/08
+	 */
+	public function applyTwoWayTemplates ($text) {
+		return $this->templateResolver->applyTemplates($text, true);
+	}
+	
+	/**
+	 * Convert HTML markup back into wiki-style template markup
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 7/14/08
+	 */
+	public function unapplyTemplates ($text) {
+		return $this->templateResolver->unapplyTemplates($text);
+	}
+	
+	
+	/*********************************************************
+	 * Internal methods
+	 *********************************************************/
 	
 	/**
 	 * Return a string in which all double-bracket wiki links are replaced with
