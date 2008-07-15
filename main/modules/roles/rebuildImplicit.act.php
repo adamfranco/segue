@@ -71,10 +71,31 @@ class rebuildImplicitAction
 		while ($infoList->hasNext()) {
 			$info = $infoList->next();
 			$node = $hierarchy->getNode($info->getNodeId());
-			printpre("Rebuilding implicit AZs for ".$node->getId()." '".$node->getDisplayName()."'. Ancestors:");
-			printpre($node->getAncestorIds());
+// 			printpre("Rebuilding implicit AZs for ".$node->getId()." '".$node->getDisplayName()."'. Ancestors:");
+// 			printpre($node->getAncestorIds());
 			$azCache->createHierarchyImplictAZs($node, $node->getAncestorIds());
 			$status->updateStatistics();
+		}
+		
+		printpre("Done.");
+		
+		/*********************************************************
+		 * Log the event
+		 *********************************************************/
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Error",
+							"Errors that did not halt execution");
+			
+			
+			$item = new AgentNodeEntryItem("Rebuilt Implict AZs", "Hierarchy-Implicit AZs for site '".$site->getDisplayName()."' were rebuilt manually.");
+			
+			$item->addNodeId($site->getQualifierId());
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
 		}
 	}
 	

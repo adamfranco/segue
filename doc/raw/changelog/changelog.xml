@@ -10,6 +10,23 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-26.1" date="2008-07-14">
+		<releaseNotes>
+			<##>
+		</releaseNotes>
+		<fix author='adam' date='2008-07-14' ref='2014548' reftype='bug'>
+			Roles: Additional fix for 'invalid default state' issues.
+			
+			The roles UI now rebuilds implicit AZs if an 'invalid default state'
+			exception is raised, and then re-attempts to load the roles UI.
+			
+			Also added an admin-only action for manually rebuilding implicit AZs.
+			
+			It seems that some sites have been created with invalid or missing
+			implicit AZs. Rebuilding the Hierarchy-caused Implicit AZs for the site 
+			fixes this issue. This should not be necessary for newly created sites.
+		</fix>
+	</version>
 	<version number="2.0-beta-26" date="2008-07-11">
 		<releaseNotes>
 			This release fixes a major bug in the permissions/role-setting system
