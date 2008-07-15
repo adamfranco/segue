@@ -2,9 +2,67 @@
 Segue Change Log
 
 
+v. 2.0-beta-26 (2008-07-11)
+----------------------------------------------------
+This release fixes a major bug in the permissions/role-setting system that was
+preventing modifications of roles for some groups. Also improved are the RSS
+feed-display plugin's support for slightly non-conforming feeds and a few other
+minor issues.
+
+As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix
+systems this can be added by configuring PHP using the --with-xsl option. See the
+following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 26 require running the RSS Feed updaters
+located under Admin Tools --> Segue Updates.
+
+Segue 2.0-beta-25 uses Harmoni 1.4.2 and Polyphony 1.2.7.
+		
+		
+	* Bug Fix: #2014548 
+		Roles: Fixed Roles issue with 'invalid default state'.
+		
+		It appears that since the transition to the new AuthZ2 implementation,
+		the roles system has not been working correctly when setting complex
+		authorization. This issue stems from the 'new' property of view
+		authorizations cascading up as well as down. This cascading up was confusing
+		the roles system. When there was no site-wide view authorization the roles
+		system thought that there was due to a view authorization cascading up from
+		a story or page.
+		
+		This has now been sorted out and the roles system only looks at implicit
+		authorizations that cascade down when determining what role to display for a
+		user. 
+		(2008-07-11 - Adam Franco)
+		(reported by Laurel Taylor of Middlebury College)
+		
+	* Change: 
+		Plugins: RSS remote access script now validates and cleans RSS doc instead
+		of using XSD validation.
+		
+		The schema was too strict and failing on too many feeds. Since the reader
+		only uses a few elements in the feed, these are verified and cleaned.
+		(2008-07-11 - Adam Franco)
+		
+	* Bug Fix: 
+		Plugins: Extended cached size of RSS data.
+		(2008-07-11 - Adam Franco)
+		
+	* Bug Fix: 
+		Plugins: Cached RSS data is now deleted after expiration time on any cache
+		addition, not just its own.
+		(2008-07-11 - Adam Franco)
+		
+	* Change: #2009044 
+		UI2: New menu items are selected after creation.
+		(2008-07-11 - Adam Franco)
+	
+
+
+
 v. 2.0-beta-25 (2008-07-10)
 ----------------------------------------------------
-This release adds the cabability to display RSS feeds inline in a site and fixes a
+This release adds the capability to display RSS feeds inline in a site and fixes a
 wide range of bugs.
 
 Notable User-facing changes:
@@ -116,7 +174,7 @@ Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.
 		
 	* New feature: #1820785 
 		Plugins: Plugins can now get URLs for static files in their own 'public'
-		directories. Enables serving of custom javascrip/images/css.
+		directories. Enables serving of custom javascript/images/css.
 		(2008-06-18 - Adam Franco)
 		
 	* New feature: #1820785 

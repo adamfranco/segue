@@ -23,9 +23,39 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-25</h2>
+<h2>Version 2.0-beta-26</h2>
+<h3>2008-07-11</h3>
+<p>This release fixes a major bug in the permissions/role-setting system that was preventing modifications of roles for some groups. Also improved are the RSS feed-display plugin's support for slightly non-conforming feeds and a few other minor issues.
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br>Segue 2.0-beta-25 uses Harmoni 1.4.2 and Polyphony 1.2.7.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2014548&amp;group_id=82171&amp;atid=565234">
+        			#2014548</a> Roles: Fixed Roles issue with 'invalid default state'.
+<br>
+<br>It appears that since the transition to the new AuthZ2 implementation, the roles system has not been working correctly when setting complex authorization. This issue stems from the 'new' property of view authorizations cascading up as well as down. This cascading up was confusing the roles system. When there was no site-wide view authorization the roles system thought that there was due to a view authorization cascading up from a story or page.
+<br>
+<br>This has now been sorted out and the roles system only looks at implicit authorizations that cascade down when determining what role to display for a user. (<em>2008-07-11 - Adam Franco</em>)<br> (<em>reported by Laurel Taylor of Middlebury College</em>)</li>
+		<li>
+<b>Change:</b> Plugins: RSS remote access script now validates and cleans RSS doc instead of using XSD validation.
+<br>
+<br>The schema was too strict and failing on too many feeds. Since the reader only uses a few elements in the feed, these are verified and cleaned. (<em>2008-07-11 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Plugins: Extended cached size of RSS data. (<em>2008-07-11 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Plugins: Cached RSS data is now deleted after expiration time on any cache addition, not just its own. (<em>2008-07-11 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009044&amp;group_id=82171&amp;atid=565237">
+        			#2009044</a> UI2: New menu items are selected after creation. (<em>2008-07-11 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-25</h2>
 <h3>2008-07-10</h3>
-<p>This release adds the cabability to display RSS feeds inline in a site and fixes a wide range of bugs.
+<p>This release adds the capability to display RSS feeds inline in a site and fixes a wide range of bugs.
 <br>
 <br>Notable User-facing changes:
 <br>
@@ -87,7 +117,7 @@
 <b>Change:</b> Plugins: Manager now executes any script blocks when reloading the plugin after AJAX update. (<em>2008-06-17 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820785&amp;group_id=82171&amp;atid=565237">
-        			#1820785</a> Plugins: Plugins can now get URLs for static files in their own 'public' directories. Enables serving of custom javascrip/images/css. (<em>2008-06-18 - Adam Franco</em>)</li>
+        			#1820785</a> Plugins: Plugins can now get URLs for static files in their own 'public' directories. Enables serving of custom javascript/images/css. (<em>2008-06-18 - Adam Franco</em>)</li>
 		<li>
 <b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820785&amp;group_id=82171&amp;atid=565237">
         			#1820785</a> Plugins: Plugins can now specify CSS and Javascript files to be linked from the document head. (<em>2008-06-18 - Adam Franco</em>)</li>
