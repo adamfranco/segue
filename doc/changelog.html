@@ -23,7 +23,39 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-26</h2>
+<h2>Version 2.0-beta-26.1</h2>
+<h3>2008-07-14</h3>
+<p>This release fixes a few bugs that were not fixed in beta 26.
+<br>
+<br>---------------------
+<br>
+<br>From Beta 26:
+<br>
+<br>This release fixes a major bug in the permissions/role-setting system that was preventing modifications of roles for some groups. Also improved are the RSS feed-display plugin's support for slightly non-conforming feeds and a few other minor issues.
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br>-----------------------
+<br>
+<br>Segue 2.0-beta-26.1 uses Harmoni 1.4.2 and Polyphony 1.2.8.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2017290&amp;group_id=82171&amp;atid=565234">
+        			#2017290</a> Themes: Added missing method getModificationDate() that was preventing custom theme CSS from loading. (<em>2008-07-14 - Adam Franco</em>)<br> (<em>reported by Laurel Taylor of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2014548&amp;group_id=82171&amp;atid=565234">
+        			#2014548</a> Roles: Additional fix for 'invalid default state' issues.
+<br>
+<br>The roles UI now rebuilds implicit AZs if an 'invalid default state' exception is raised, and then re-attempts to load the roles UI.
+<br>
+<br>Also added an admin-only action for manually rebuilding implicit AZs.
+<br>
+<br>It seems that some sites have been created with invalid or missing implicit AZs. Rebuilding the Hierarchy-caused Implicit AZs for the site fixes this issue. This should not be necessary for newly created sites. (<em>2008-07-14 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-26</h2>
 <h3>2008-07-11</h3>
 <p>This release fixes a major bug in the permissions/role-setting system that was preventing modifications of roles for some groups. Also improved are the RSS feed-display plugin's support for slightly non-conforming feeds and a few other minor issues.
 <br>
