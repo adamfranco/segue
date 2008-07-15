@@ -121,7 +121,8 @@
 		</releaseNotes>
 		<change author='adam' date='2008-07-10'ref='1998213' reftype='fr'>
 			Dataport: Added status display during site import. 
-		</change>		<change author='adam' date='2008-07-10'>
+		</change>
+		<change author='adam' date='2008-07-10'>
 			Dataport: Added more error checking during import process to help debug import problems. 
 		</change>
 		<change author='alex' date='2008-07-10' ref='2009035' reftype='fr'>
