@@ -228,7 +228,11 @@ class SegueRoleManager
 		$functions = array();
 		while ($authorizations->hasNext()) {
 			$authorization = $authorizations->next();
-			$functions[] = $authorization->getFunction()->getId();
+			
+			// if the authorization is a view AZ cascading up from a descendent,
+			// it should not be used in determining the role
+			if (!$this->isCascadingUpView($authorization))
+				$functions[] = $authorization->getFunction()->getId();
 		}
 		
 		// Match those authorizations against our roles.
@@ -329,8 +333,12 @@ class SegueRoleManager
 		$functions = array();
 		while ($authorizations->hasNext()) {
 			$authorization = $authorizations->next();
-			if (!$authorization->isExplicit())
-				$functions[] = $authorization->getFunction()->getId();
+			if (!$authorization->isExplicit()) {
+				// if the authorization is a view AZ cascading up from a descendent,
+				// it should not be used in determining the role
+				if (!$this->isCascadingUpView($authorization))
+					$functions[] = $authorization->getFunction()->getId();
+			}
 		}
 		
 		// Match those authorizations against our roles.
@@ -375,16 +383,20 @@ class SegueRoleManager
 		while ($authorizations->hasNext()) {
 			$authorization = $authorizations->next();
 			if (!$authorization->isExplicit()) {
-				// Go through the explicit AZs that gave rize to the implicit AZ 
-				// and record their function if the Agent Id is not the agent we're looking
-				// for and therefor a group the agent is a member of.
-				$explicitAZs = $authZ->getExplicitUserAZsForImplicitAZ($authorization);
-				while ($explicitAZs->hasNext()) {
-					$explicitAZ = $explicitAZs->next();
-					if (!$agentId->isEqual($explicitAZ->getAgentId())) {
-						$functions[] = $authorization->getFunction()->getId();
-						$groupIds[] = $explicitAZ->getAgentId();
-						break;	
+				// if the authorization is a view AZ cascading up from a descendent,
+				// it should not be used in determining the role
+				if (!$this->isCascadingUpView($authorization)) {
+					// Go through the explicit AZs that gave rize to the implicit AZ 
+					// and record their function if the Agent Id is not the agent we're looking
+					// for and therefor a group the agent is a member of.
+					$explicitAZs = $authZ->getExplicitUserAZsForImplicitAZ($authorization);
+					while ($explicitAZs->hasNext()) {
+						$explicitAZ = $explicitAZs->next();
+						if (!$agentId->isEqual($explicitAZ->getAgentId())) {
+							$functions[] = $authorization->getFunction()->getId();
+							$groupIds[] = $explicitAZ->getAgentId();
+							break;	
+						}
 					}
 				}
 			}
@@ -469,6 +481,54 @@ class SegueRoleManager
 		}
 		
 		return $agentIds;
+	}
+	
+	/**
+	 * Answer true if the authorization is an implicit view AZ cascading up from
+	 * a descendent and should hence be ignored when determining roles.
+	 * 
+	 * @param object Authorization $az
+	 * @return boolean
+	 * @access protected
+	 * @since 7/11/08
+	 */
+	protected function isCascadingUpView (Authorization $az) {
+		// We are only interested in implicit AZs
+		if ($az->isExplicit())
+			return false;
+		
+		// Return false if not a view AZ
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		$viewId = $idMgr->getId('edu.middlebury.authorization.view');
+		if (!$az->getFunction()->getId()->isEqual($viewId))
+			return false;
+		
+		// Load a list of descendents
+		$qualifierId = $az->getQualifier()->getId();
+		if (!isset($this->descendentIds))
+			$this->descendentIds = array();
+		if (!isset($this->descendentIds[$qualifierId->getIdString()])) {
+			$descendents = array();
+			$descendents = $authZ->getQualifierDescendants($qualifierId);
+			$descendentIds = array();
+			while($descendents->hasNext()) {
+				$descendentIds[] = $descendents->next()->getId();
+			}
+			
+			$this->descendentIds[$qualifierId->getIdString()] = $descendentIds;
+		}
+		
+		// Check the explicit AZ's qualifier against our list of descendents.
+		$explicitAZ = $az->getExplicitAZ();
+		$explicitQualifierId = $explicitAZ->getQualifier()->getId();
+		foreach ($this->descendentIds[$qualifierId->getIdString()] as $id) {
+			if ($id->isEqual($explicitQualifierId)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
 
