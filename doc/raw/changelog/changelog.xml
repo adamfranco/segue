@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 
  @package segue.docs
  
@@ -39,7 +39,7 @@
 			Themes: Added missing method getModificationDate() that was preventing
 			custom theme CSS from loading.
 		</fix>
-		<fix author='adam' date='2008-07-14' ref='2014548' reftype='bug'>
+		<fix author='adam' date='2008-07-14' ref='2014548' reftype='bug' reporter='thierry_leterre'>
 			Roles: Additional fix for 'invalid default state' issues.
 			
 			The roles UI now rebuilds implicit AZs if an 'invalid default state'
@@ -2027,6 +2027,10 @@
 		<reporter short="laurel_taylor">
 			<name>Laurel Taylor</name>
 			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="thierry_leterre">
+			<name>Thierry Leterre</name>
+			<institution>Middlebury College/Université de Versailles-Saint-Quentin-en-Yvelines</institution>
 		</reporter>
 		<reporter short="jeff_merriman">
 			<name>Jeff Merriman</name>
