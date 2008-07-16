@@ -21,6 +21,7 @@ $service = $video->addService(new Segue_TextPlugins_Video_Service(
 ));
 $service->setDefaultValue('width', '425');
 $service->setDefaultValue('height', '344');
+$service->setHtmlPlayerRegex('/http:\/\/www.youtube.com\/v\/');
 $service->setHtmlIdRegex('/http:\/\/www.youtube.com\/v\/([a-z0-9_-]+)/i');
 
 
@@ -30,4 +31,5 @@ $service = $video->addService(new Segue_TextPlugins_Video_Service(
 ));
 $service->setDefaultValue('width', '400');
 $service->setDefaultValue('height', '326');
-$service->setHtmlIdRegex('/http:\/\/video.google.com\/googleplayer.swf\?docid=([0-9-]+)/');
+$service->setHtmlPlayerRegex('/http:\/\/video.google.com\/googleplayer.swf/');
+$service->setHtmlIdRegex('/docid=([0-9-]+)/');

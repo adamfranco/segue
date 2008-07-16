@@ -290,7 +290,30 @@ class Segue_TextPlugins_Video_Service {
 	
 	/**
 	 * Set a regular expression that will match against a url in the embed code
-	 * and select the id of the video as its first subpattern
+	 * and to validate the flash video player application being accessed
+	 *
+	 * This expression will only be run against <object></object>, <embed></embed>, and/or
+	 * <object><embed></embed></object> blocks where the type is
+	 * application/x-shockwave-flash, so there is no need to match the surrounding tags.
+	 *
+	 * 
+	 * @param string $regex
+	 * @return void
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function setHtmlPlayerRegex ($regex) {
+		if (!preg_match('/^\/.+\/[a-z]*$/sm', $regex))
+			throw new InvalidArgumentException("$regex is not a valid preg_match regular expression.");
+		
+		$this->htmlPlayerRegex = $regex;
+	}
+	
+	/**
+	 * Set a regular expression that will match against a url in the embed code
+	 * and select the id of the video as its first subpattern. This regex will only be
+	 * run on embed blocks that match the player regular expression set with 
+	 * setHtmlPlayerRegex.
 	 *
 	 * This expression will only be run against <object></object>, <embed></embed>, and/or
 	 * <object><embed></embed></object> blocks where the type is
@@ -356,10 +379,7 @@ class Segue_TextPlugins_Video_Service {
 	 * @access public
 	 * @since 7/15/08
 	 */
-	public function generate (array $params) {
-		if (!isset($this->htmlIdRegex))
-			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.". Set an Id-matching regular expression with setHtmlIdRegex(\$regex)");
-		
+	public function generate (array $params) {		
 		// Strip out any invalid parameters
 		foreach ($params as $name => $val) {
 			try {
@@ -404,8 +424,11 @@ class Segue_TextPlugins_Video_Service {
 	 * @since 7/14/08
 	 */
 	public function getHtmlMatches ($text) {
+		if (!isset($this->htmlPlayerRegex))
+			throw new ConfigurationErrorException("No player-matching regular expression set for service, ".$this->name.". Set a player-matching regular expression with setHtmlPlayerRegex(\$regex)");
+		
 		if (!isset($this->htmlIdRegex))
-			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.". Set a Url-matching regular expression with setHtmlIdRegex(\$regex)");
+			throw new ConfigurationErrorException("No Id-matching regular expression set for service, ".$this->name.". Set an Id-matching regular expression with setHtmlIdRegex(\$regex)");
 		
 		$regex = '/
 
@@ -453,11 +476,17 @@ class Segue_TextPlugins_Video_Service {
 	 * @since 7/15/08
 	 */
 	protected function getIdFromHtml ($embedHtml) {
-		if (!isset($this->htmlIdRegex))
-			throw new ConfigurationErrorException("No url-matching regular expression set for service, ".$this->name.". Use setHtmlIdRegex() to set this value.");
+		if (!isset($this->htmlPlayerRegex))
+			throw new ConfigurationErrorException("No player-matching regular expression set for service, ".$this->name.". Set a player-matching regular expression with setHtmlPlayerRegex(\$regex)");
 		
+		if (!isset($this->htmlIdRegex))
+			throw new ConfigurationErrorException("No Id-matching regular expression set for service, ".$this->name.". Set an Id-matching regular expression with setHtmlIdRegex(\$regex)");
+		
+		if (!preg_match($this->htmlPlayerRegex, $embedHtml))
+			throw new OperationFailedException("Did not match embed code against ".$this->htmlPlayerRegex." for service ".$this->name.".");
+			
 		if (!preg_match($this->htmlIdRegex, $embedHtml, $matches))
-			throw new OperationFailedException("Could not match url against ".$this->htmlIdRegex." for service ".$this->name.".");
+			throw new OperationFailedException("Did not match the embed code against ".$this->htmlIdRegex." for service ".$this->name.".");
 		
 		if (!isset($matches[1]))
 			throw new ConfigurationErrorException("Url-matching regular expression for service, ".$this->name." does not contain any subpatterns. The ID match must be in the first subpattern contained in parentheses.");
