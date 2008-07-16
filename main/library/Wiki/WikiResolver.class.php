@@ -161,19 +161,6 @@ class WikiResolver {
 	}
 	
 	/**
-	 * Apply only two-way text-plugins, those that can pull wiki markup out from
-	 * HTML.
-	 * 
-	 * @param string $text
-	 * @return string
-	 * @access public
-	 * @since 7/14/08
-	 */
-	public function applyTwoWayTextPlugins ($text) {
-		return $this->textPluginResolver->applyTextPlugins($text, true);
-	}
-	
-	/**
 	 * Convert HTML markup back into wiki-style text-plugins markup
 	 * 
 	 * @param string $text

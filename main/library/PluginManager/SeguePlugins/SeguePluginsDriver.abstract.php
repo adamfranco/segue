@@ -332,28 +332,6 @@ abstract class SeguePluginsDriver
 	}
 	
 	/**
-	 * Parse and replace any two-way text-plugins with their output HTML. 
-	 * These are text-plugins that can convert themselves to and from HTML markup.
-	 * 
-	 * @param string $text
-	 * @return string
-	 * @access public
-	 * @since 7/15/08
-	 */
-	final public function applyTwoWayTextPlugins ($text) {
-		$wikiResolver = WikiResolver::instance();
-		
-		$wikiResolver->setViewAction($this->_baseUrl->getModule(), $this->_baseUrl->getAction());
-		
-		try {
-			$text = $wikiResolver->applyTwoWayTextPlugins($text);
-		} catch (OperationFailedException $e) {
-		}
-		
-		return $text;
-	}
-	
-	/**
 	 * Parse and replace any output HTML that matches two-way text-plugins with their markup. 
 	 * These are text-plugins that can convert themselves to and from HTML markup.
 	 * 

@@ -87,13 +87,11 @@ class Segue_Wiki_TextPluginResolver {
 	 * Parse the wiki-text and replace wiki markup with HTML markup.
 	 * 
 	 * @param string $text
-	 * @param optional boolean $onlyTwoWay If true, only text-pluginss that can find their
-	 *		content in HTML markup and convert it back to wiki markup will be converted.
 	 * @return string
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function applyTextPlugins ($text, $onlyTwoWay = false) {
+	public function applyTextPlugins ($text) {
 		$regexp = "/
 
 {{	# The opening template tags
@@ -133,21 +131,19 @@ class Segue_Wiki_TextPluginResolver {
 			try {
 				$plugin = $this->getTextPlugin($matches[1][$index]);
 				
-				if (!$onlyTwoWay || $plugin->supportsHtmlMatching()) {
-					// Build the parameter array
-					$params = array();
-					$paramString = trim($matches[2][$index]);
-					preg_match_all($paramRegexp, $paramString, $paramMatches);
-					foreach ($paramMatches[1] as $j => $paramName) {
-						$params[$paramName] = $paramMatches[2][$j];
-					}
+				// Build the parameter array
+				$params = array();
+				$paramString = trim($matches[2][$index]);
+				preg_match_all($paramRegexp, $paramString, $paramMatches);
+				foreach ($paramMatches[1] as $j => $paramName) {
+					$params[$paramName] = $paramMatches[2][$j];
+				}
+				
+				// Execute the plugin
+				try {
+					$text = str_replace($wikiText, $plugin->generate($params), $text);
+				} catch (Exception $e) {
 					
-					// Execute the plugin
-					try {
-						$text = str_replace($wikiText, $plugin->generate($params, $onlyTwoWay), $text);
-					} catch (Exception $e) {
-						
-					}
 				}
 			} catch (UnknownIdException $e) {
 				if ($e->getCode() != 34563)

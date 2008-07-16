@@ -40,13 +40,11 @@ class Segue_TextPlugins_Video
 	 * Generate HTML given a set of parameters.
 	 * 
 	 * @param array $paramList
-	 * @param boolean $onlyTwoWay 	If true, only generate changes that can be searched
-	 *								for and reverted.
 	 * @return string The HTML markup
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function generate (array $paramList, $onlyTwoWay = false) {
+	public function generate (array $paramList) {
 		if (!isset($paramList['service']))
 			throw new OperationFailedException('No service specified in param list.');
 		
@@ -61,7 +59,7 @@ class Segue_TextPlugins_Video
 // 		}
 // 		return ob_get_clean();
 		
-		return $service->generate($paramList, $onlyTwoWay);
+		return $service->generate($paramList);
 	}
 	
 	/**
@@ -354,14 +352,12 @@ class Segue_TextPlugins_Video_Service {
 	 * Generate the target HTML with a given set of parameters
 	 * 
 	 * @param array $params
-	 * @param boolean $onlyTwoWay 	If true, only generate changes that can be searched
-	 *								for and reverted.
 	 * @return string
 	 * @access public
 	 * @since 7/15/08
 	 */
-	public function generate (array $params, $onlyTwoWay = false) {
-		if ($onlyTwoWay && !isset($this->htmlUrlRegex))
+	public function generate (array $params) {
+		if (!isset($this->htmlUrlRegex))
 			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.". Set a Url-matching regular expression with setHtmlUrlRegex(\$regex)");
 		
 		// Strip out any invalid parameters

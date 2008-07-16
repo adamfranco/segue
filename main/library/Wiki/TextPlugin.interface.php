@@ -27,13 +27,11 @@ interface Segue_Wiki_TextPlugin {
 	 * Generate HTML given a set of parameters.
 	 * 
 	 * @param array $paramList
-	 * @param boolean $onlyTwoWay 	If true, only generate changes that can be searched
-	 *								for and reverted.
 	 * @return string The HTML markup
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function generate (array $paramList, $onlyTwoWay = false);
+	public function generate (array $paramList);
 	
 	/**
 	 * Answer true if this content template supports HTML matching and the getHtmlMatches()
