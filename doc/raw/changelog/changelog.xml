@@ -119,7 +119,7 @@
 			
 			Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.
 		</releaseNotes>
-		<change author='adam' date='2008-07-10'ref='1998213' reftype='fr'>
+		<change author='adam' date='2008-07-10' ref='1998213' reftype='fr'>
 			Dataport: Added status display during site import. 
 		</change>
 		<change author='adam' date='2008-07-10'>
