@@ -36,10 +36,39 @@ class Segue_Wiki_TextPluginResolver {
 		$this->textPlugins = array ();
 		
 		foreach (scandir(MYDIR.'/text_plugins-dist') as $file) {
-			// Add each plugin found.
+			if (!preg_match('/^[a-z0-9_-]+\.class\.php$/i', $file))
+				continue;
+				
+			// If we have a local version of the text-plugin, skip the
+			// default one.
+			if (!file_exists(MYDIR.'/text_plugins-local/'.$file)) 
+				$this->addTextPlugin(MYDIR.'/text_plugins-dist/'.$file);
+		}
+		
+		foreach (scandir(MYDIR.'/text_plugins-local') as $file) {
+			if (!preg_match('/^[a-z0-9_-]+\.class\.php$/i', $file))
+				continue;
+			$this->addTextPlugin(MYDIR.'/text_plugins-local/'.$file);
 		}
 	}
 	
+	/**
+	 * Add a Text plugin to our array
+	 * 
+	 * @param string $filePath
+	 * @return void
+	 * @access protected
+	 * @since 7/15/08
+	 */
+	protected function addTextPlugin ($filePath) {
+		require_once($filePath);
+		$name = basename($filePath, '.class.php');
+		$class = 'Segue_TextPlugins_'.$name;
+		$plugin = new $class;
+		if (!$plugin instanceof Segue_Wiki_TextPlugin)
+			throw new Exception("$name must implement the Segue_Wiki_TextPlugin interface.");
+		$this->textPlugins[strtolower($name)] = $plugin;
+	}
 	/**
 	 * Answer a text-plugin
 	 * 
@@ -110,7 +139,7 @@ class Segue_Wiki_TextPluginResolver {
 					$paramString = trim($matches[2][$index]);
 					preg_match_all($paramRegexp, $paramString, $paramMatches);
 					foreach ($paramMatches[1] as $j => $paramName) {
-						$params[$paramName] = $paramMatches[2];
+						$params[$paramName] = $paramMatches[2][$j];
 					}
 					
 					// Execute the plugin

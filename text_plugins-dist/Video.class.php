@@ -21,8 +21,8 @@
  *
  * @version $Id$
  */
-class Segue_ContentTemplates_Video
-	implements Segue_Wiki_ContentTemplate 
+class Segue_TextPlugins_Video
+	implements Segue_Wiki_TextPlugin 
 {
 	
 	/**
@@ -33,8 +33,27 @@ class Segue_ContentTemplates_Video
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function generate (array $paramList) {
-		throw new UnimplementedException();
+	public function generate (array $paramList) {				
+		// Set defaults
+		$defaults = array(	'width' 	=> '425',
+							'height'	=> '344'
+						);
+		foreach ($defaults as $param => $val) {
+			if (!isset($paramList[$param]))
+				$paramList[$param] = $val;
+		}
+		
+		// Filter params
+		// @todo
+		
+		
+		$output = "<object type=\"application/x-shockwave-flash\" data=\"http://www.youtube.com/v/###ID###\" width=\"###WIDTH###\" height=\"###HEIGHT###\" wmode=\"transparent\"><param name=\"movie\" value=\"http://www.youtube.com/v/###ID###\" /></object>";
+		
+		foreach ($paramList as $param => $val) {
+			$output = str_replace('###'.strtoupper($param).'###', $val, $output);
+		}
+		
+		return $output;
 	}
 	
 	/**
@@ -69,6 +88,35 @@ class Segue_ContentTemplates_Video
 	public function getHtmlMatches ($text) {
 		throw new UnimplementedException();
 	}
+	
+}
+
+/**
+ * Service objects contain a configuration of a service and its output.
+ * 
+ * @since 7/15/08
+ * @package segue.wiki
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+class Segue_TextPlugins_Video_Service {
+		
+	/**
+	 * Constuctor
+	 * 
+	 * @param string $name The name of the service. All lowercase, letters, numbers, and underscores.
+	 * @return voi
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function __construct ($name) {
+		$this->name = $name;
+	}
+	
+	
 	
 }
 

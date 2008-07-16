@@ -170,9 +170,9 @@ class EduMiddleburyTextBlockPlugin
  			if ($this->hasContent()) {
 				$abstractLength = intval($this->getRawDescription());
 				if ($abstractLength) {
-					print "\n".$this->trimHTML($this->parseWikiText($this->getContent()), $abstractLength);
+					print "\n".$this->parseWikiText($this->trimHTML($this->getContent(), $abstractLength));
 				} else {
-					print "\n".$this->cleanHTML($this->parseWikiText($this->getContent()));
+					print "\n".$this->parseWikiText($this->cleanHTML($this->getContent()));
 				}
 			} else {
 				print "\n<div class='plugin_empty'>";
