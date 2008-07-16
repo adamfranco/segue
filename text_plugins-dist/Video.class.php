@@ -97,11 +97,11 @@ class Segue_TextPlugins_Video
 			try {
 				$serviceMatches = $service->getHtmlMatches($text);
 				foreach ($serviceMatches as $string => $params) {
-					$newParams = array('service' => $service->getName());
-					$serviceMatches[$string] = array_merge($newParams, $params);
+					if (!isset($matches[$string])) {
+						$newParams = array('service' => $service->getName());
+						$matches[$string] = array_merge($newParams, $params);
+					}
 				}
-				
-				$matches = array_merge($matches, $serviceMatches);
 			} catch (Exception $e) {
 			}
 		}
