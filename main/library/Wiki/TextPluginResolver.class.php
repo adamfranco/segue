@@ -9,10 +9,10 @@
  * @version $Id$
  */ 
 
-require_once(dirname(__FILE__)."/ContentTemplate.interface.php");
+require_once(dirname(__FILE__)."/TextPlugin.interface.php");
 
 /**
- * The template resolver handles the parsing and conversion of template markup
+ * The TextPlugin resolver handles the parsing and conversion of template markup
  * for the Segue wiki system. It handles only 'template' markup, not links.
  * 
  * @since 7/14/08
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/ContentTemplate.interface.php");
  *
  * @version $Id$
  */
-class Segue_Wiki_TemplateResolver {
+class Segue_Wiki_TextPluginResolver {
 		
 	/**
 	 * Constructor
@@ -33,38 +33,38 @@ class Segue_Wiki_TemplateResolver {
 	 * @since 7/14/08
 	 */
 	public function __construct () {
-		$this->templates = array ();
+		$this->textPlugins = array ();
 		
-		foreach (scandir(MYDIR.'/content_templates-dist') as $file) {
-			// Add each template found.
+		foreach (scandir(MYDIR.'/text_plugins-dist') as $file) {
+			// Add each plugin found.
 		}
 	}
 	
 	/**
-	 * Answer a template
+	 * Answer a text-plugin
 	 * 
 	 * @param string $name
-	 * @return object Segue_Wiki_Template
+	 * @return object Segue_Wiki_TextPlugin
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function getTemplate ($name) {
-		if (!isset($this->templates[$name]))
-			throw new UnknownIdException('No Wiki template named \''.$name.'\' found.', 34563);
-		return $this->templates[$name];
+	public function getTextPlugin ($name) {
+		if (!isset($this->textPlugins[$name]))
+			throw new UnknownIdException('No Wiki text-plugin named \''.$name.'\' found.', 34563);
+		return $this->textPlugins[$name];
 	}
 	
 	/**
 	 * Parse the wiki-text and replace wiki markup with HTML markup.
 	 * 
 	 * @param string $text
-	 * @param optional boolean $onlyTwoWay If true, only templates that can find their
+	 * @param optional boolean $onlyTwoWay If true, only text-pluginss that can find their
 	 *		content in HTML markup and convert it back to wiki markup will be converted.
 	 * @return string
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function applyTemplates ($text, $onlyTwoWay = false) {
+	public function applyTextPlugins ($text, $onlyTwoWay = false) {
 		$regexp = "/
 
 {{	# The opening template tags
@@ -102,9 +102,9 @@ class Segue_Wiki_TemplateResolver {
 		// for each wiki template replace it with the HTML version
 		foreach ($matches[0] as $index => $wikiText) {
 			try {
-				$template = $this->getTemplate($matches[1][$index]);
+				$plugin = $this->getTextPlugin($matches[1][$index]);
 				
-				if (!$onlyTwoWay || $template->supportsHtmlMatching()) {
+				if (!$onlyTwoWay || $plugin->supportsHtmlMatching()) {
 					// Build the parameter array
 					$params = array();
 					$paramString = trim($matches[2][$index]);
@@ -113,9 +113,9 @@ class Segue_Wiki_TemplateResolver {
 						$params[$paramName] = $paramMatches[2];
 					}
 					
-					// Execute the template
+					// Execute the plugin
 		// 			try {
-						$text = str_replace($wikiText, $template->generate($params), $text);
+						$text = str_replace($wikiText, $plugin->generate($params), $text);
 		// 			} catch (Exception $e) {
 		// 				
 		// 			}
@@ -130,19 +130,19 @@ class Segue_Wiki_TemplateResolver {
 	}
 	
 	/**
-	 * Go through the text passed and for each template, try to replace appropriate
-	 * HTML with template markup for any templates which support this.
+	 * Go through the text passed and for each text-plugin, try to replace appropriate
+	 * HTML with text-plugin markup for any text-plugins which support this.
 	 * 
 	 * @param string $text
 	 * @return string
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function unapplyTemplates ($text) {
-		foreach ($this->templates as $name => $template) {
-			if ($template->supportsHtmlMatching()) {
+	public function unapplyTextPlugins ($text) {
+		foreach ($this->textPlugins as $name => $plugin) {
+			if ($plugin->supportsHtmlMatching()) {
 				try {
-					$replacements = $template->getHtmlMatches($text);
+					$replacements = $plugin->getHtmlMatches($text);
 					foreach ($replacements as $html => $params) {
 						$markup = '{{'.$name;
 						foreach ($params as $key => $val) {

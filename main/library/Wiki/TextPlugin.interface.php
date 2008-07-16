@@ -10,8 +10,8 @@
  */ 
 
 /**
- * This inteface defines methods needed for 'content templates', Segue's way of 
- * supporting pluggable strings in HTML.
+ * This inteface defines methods needed for 'text plugins', Segue's way of 
+ * supporting pluggable strings in HTML. 
  * 
  * @since 7/14/08
  * @package segue.wiki
@@ -21,7 +21,7 @@
  *
  * @version $Id$
  */
-interface Segue_Wiki_ContentTemplate {
+interface Segue_Wiki_TextPlugin {
 	
 	/**
 	 * Generate HTML given a set of parameters.
