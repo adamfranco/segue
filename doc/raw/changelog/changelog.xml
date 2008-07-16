@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-27" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-07-15'>
+			UI2: Accessing edit-mode when not logged in now doesn't cause a fatal error
+			of a class not found.
+		</fix>
+	</version>
 	<version number="2.0-beta-26.1" date="2008-07-14">
 		<releaseNotes>
 			This release fixes a few bugs that were not fixed in beta 26.
