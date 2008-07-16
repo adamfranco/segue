@@ -302,11 +302,11 @@ class Segue_TextPlugins_Video_Service {
 	 * @access public
 	 * @since 7/15/08
 	 */
-	public function setHtmlUrlRegex ($regex) {
+	public function setHtmlIdRegex ($regex) {
 		if (!preg_match('/^\/.+\/[a-z]*$/sm', $regex))
 			throw new InvalidArgumentException("$regex is not a valid preg_match regular expression.");
 		
-		$this->htmlUrlRegex = $regex;
+		$this->htmlIdRegex = $regex;
 	}
 	
 // 	/**
@@ -319,7 +319,7 @@ class Segue_TextPlugins_Video_Service {
 // 	 * application/x-shockwave-flash, so there is no need to match the surrounding tags.
 // 	 *
 // 	 * These parameters are to be in addition to the URL matching -- specified with the
-// 	 * setHtmlUrlRegex() method -- and the width and height parameters which are
+// 	 * setHtmlIdRegex() method -- and the width and height parameters which are
 // 	 * automatically searched for.
 // 	 * 
 // 	 * @param string $regex
@@ -357,8 +357,8 @@ class Segue_TextPlugins_Video_Service {
 	 * @since 7/15/08
 	 */
 	public function generate (array $params) {
-		if (!isset($this->htmlUrlRegex))
-			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.". Set a Url-matching regular expression with setHtmlUrlRegex(\$regex)");
+		if (!isset($this->htmlIdRegex))
+			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.". Set an Id-matching regular expression with setHtmlIdRegex(\$regex)");
 		
 		// Strip out any invalid parameters
 		foreach ($params as $name => $val) {
@@ -404,8 +404,8 @@ class Segue_TextPlugins_Video_Service {
 	 * @since 7/14/08
 	 */
 	public function getHtmlMatches ($text) {
-		if (!isset($this->htmlUrlRegex))
-			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.". Set a Url-matching regular expression with setHtmlUrlRegex(\$regex)");
+		if (!isset($this->htmlIdRegex))
+			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.". Set a Url-matching regular expression with setHtmlIdRegex(\$regex)");
 		
 		$regex = '/
 
@@ -453,11 +453,11 @@ class Segue_TextPlugins_Video_Service {
 	 * @since 7/15/08
 	 */
 	protected function getIdFromHtml ($embedHtml) {
-		if (!isset($this->htmlUrlRegex))
-			throw new ConfigurationErrorException("No url-matching regular expression set for service, ".$this->name.". Use setHtmlUrlRegex() to set this value.");
+		if (!isset($this->htmlIdRegex))
+			throw new ConfigurationErrorException("No url-matching regular expression set for service, ".$this->name.". Use setHtmlIdRegex() to set this value.");
 		
-		if (!preg_match($this->htmlUrlRegex, $embedHtml, $matches))
-			throw new OperationFailedException("Could not match url against ".$this->htmlUrlRegex." for service ".$this->name.".");
+		if (!preg_match($this->htmlIdRegex, $embedHtml, $matches))
+			throw new OperationFailedException("Could not match url against ".$this->htmlIdRegex." for service ".$this->name.".");
 		
 		if (!isset($matches[1]))
 			throw new ConfigurationErrorException("Url-matching regular expression for service, ".$this->name." does not contain any subpatterns. The ID match must be in the first subpattern contained in parentheses.");
