@@ -17,6 +17,7 @@ require_once(MYDIR."/main/modules/view/DetailViewModeSiteVisitor.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsBlockVisitor.class.php");
 // require_once(MYDIR."/main/modules/ui1/Rendering/EditModeSiteVisitor.class.php");
 //require_once(MYDIR."/main/modules/ui2/Rendering/EditModeSiteVisitor.class.php");
+require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class.php");
 
 /**
  * action for viewing Segue sites in a standard web browser
