@@ -60,7 +60,7 @@ class Segue_TextPlugins_Video
 	 * @since 7/14/08
 	 */
 	public function supportsHtmlMatching () {
-		return false;
+		return true;
 	}
 	
 	/**
@@ -80,7 +80,14 @@ class Segue_TextPlugins_Video
 	 * @since 7/14/08
 	 */
 	public function getHtmlMatches ($text) {
-		throw new UnimplementedException();
+		$matches = array();
+		foreach ($this->services as $service) {
+			try {
+				$matches = array_merge($matches, $service->getHtmlMatches($text));
+			} catch (Exception $e) {
+			}
+		}
+		return $matches;
 	}
 	
 	/**
@@ -263,8 +270,35 @@ class Segue_TextPlugins_Video_Service {
 		$this->defaults[$paramName] = $defaultValue;
 	}
 	
+	/**
+	 * Set a regular expression that will match against the output embed code
+	 * and return an array of matching strings and the parameters that the string
+	 * indicates.
+	 * 
+	 * @param string $regex
+	 * @param array $matchParams This array should be a list of 'regex match num' => 'param name'
+	 * @return void
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function setHtmlRegex ($regex, array $matchParams) {
+		if (!preg_match('/^\/.+\/[a-z]*$/sm', $regex))
+			throw new InvalidArgumentException("$regex is not a valid preg_match regular expression.");
+		foreach ($matchParams as $key => $name) {
+			if (!is_int($key))
+				throw new InvalidArgumentException("$key must be an integer.");
+			if (!preg_match('/^[a-z0-9_-]+$/', $name))
+				throw new InvalidArgumentException("$name is not a valid param name.");
+		}
+		
+		if (!count($matchParams))
+			throw new InvalidArgumentException("At least one match parameter must be specified.");
+		$this->htmlMatchRegex = $regex;
+		$this->htmlMatchParams = $matchParams;
+	}
+	
 	/*********************************************************
-	 * Output method
+	 * Output methods
 	 *********************************************************/
 	
 	/**
@@ -302,6 +336,43 @@ class Segue_TextPlugins_Video_Service {
 		
 		return $output;
 	}
+	
+	/**
+	 * Answer an array of strings in the HTML that look like this template's output
+	 * and list of parameters that the HTML corresponds to. e.g:
+	 * 	array(
+	 *		"<img src='http://www.example.net/test.jpg' width='350px'/>" 
+	 *				=> array (	'server'	=> 'www.example.net',
+	 *							'file'		=> 'test.jp',
+	 * 							'width'		=> '350px'))
+	 * 
+	 * This method may throw an UnimplementedException if this is not supported.
+	 *
+	 * @param string $text
+	 * @return array
+	 * @access public
+	 * @since 7/14/08
+	 */
+	public function getHtmlMatches ($text) {
+		if (!isset($this->htmlMatchRegex))
+			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.".");
+		
+		$results = array();
+		preg_match_all($this->htmlMatchRegex, $text, $matches);
+		foreach ($matches[0] as $i => $match) {
+			$matchParams = array();
+			foreach ($this->htmlMatchParams as $ref => $paramName) {
+				if ($matches[$ref][$i])
+					$matchParams[$paramName] = $matches[$ref][$i];
+			}
+			$results[$match] = $matchParams;
+		}
+		return $results;
+	}
+	
+	/*********************************************************
+	 * Private methods
+	 *********************************************************/
 	
 	/**
 	 * Validate an array of parameters

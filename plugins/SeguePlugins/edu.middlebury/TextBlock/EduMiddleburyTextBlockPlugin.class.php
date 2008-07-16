@@ -126,7 +126,7 @@ class EduMiddleburyTextBlockPlugin
 	 		$this->editing = true;
 	 	
  		if ($this->getFieldValue('submit_pressed')) {	
- 			$this->setContent($this->tokenizeLocalUrls($this->cleanHTML($this->getFieldValue('content'))));
+ 			$this->setContent($this->tokenizeLocalUrls($this->cleanHTML($this->unapplyTextPlugins($this->getFieldValue('content')))));
  			$this->setRawDescription(intval($this->getFieldValue('abstractLength')));
  			$this->logEvent('Modify Content', 'TextBlock content updated');
  			
@@ -217,7 +217,7 @@ class EduMiddleburyTextBlockPlugin
 				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
  			}
  			if ($this->hasContent()) {
-		 		print "\n".$this->cleanHTML($this->parseWikiText($this->getContent()));
+		 		print "\n".$this->parseWikiText($this->cleanHTML($this->getContent()));
 	 		} else {
 				print "\n<div class='plugin_empty'>";
 				print _("No text has been added yet. ");
@@ -427,7 +427,7 @@ class EduMiddleburyTextBlockPlugin
 
 		
 		if (is_null($this->workingContent))
-	 		$oFCKeditor->Value = $this->cleanHTML($this->untokenizeLocalUrls($this->getContent()));
+	 		$oFCKeditor->Value = $this->applyTwoWayTextPlugins($this->cleanHTML($this->untokenizeLocalUrls($this->getContent())));
 	 	else
 	 		$oFCKeditor->Value = $this->workingContent;
 	 	
