@@ -40,14 +40,28 @@ class Segue_TextPlugins_Video
 	 * Generate HTML given a set of parameters.
 	 * 
 	 * @param array $paramList
+	 * @param boolean $onlyTwoWay 	If true, only generate changes that can be searched
+	 *								for and reverted.
 	 * @return string The HTML markup
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function generate (array $paramList) {				
+	public function generate (array $paramList, $onlyTwoWay = false) {
+		if (!isset($paramList['service']))
+			throw new OperationFailedException('No service specified in param list.');
+		
 		$service = $this->getService($paramList['service']);
 		unset($paramList['service']);
-		return $service->generate($paramList);
+		
+// 		ob_start();
+// 		print $service->generate($paramList);
+// 		print "<hr/>";
+// 		foreach ($this->getHtmlMatches($service->generate($paramList)) as $string => $params) {
+// 			printpre(htmlentities($string)); printpre($params); printpre("\n\n");
+// 		}
+// 		return ob_get_clean();
+		
+		return $service->generate($paramList, $onlyTwoWay);
 	}
 	
 	/**
@@ -83,7 +97,13 @@ class Segue_TextPlugins_Video
 		$matches = array();
 		foreach ($this->services as $service) {
 			try {
-				$matches = array_merge($matches, $service->getHtmlMatches($text));
+				$serviceMatches = $service->getHtmlMatches($text);
+				foreach ($serviceMatches as $string => $params) {
+					$newParams = array('service' => $service->getName());
+					$serviceMatches[$string] = array_merge($newParams, $params);
+				}
+				
+				$matches = array_merge($matches, $serviceMatches);
 			} catch (Exception $e) {
 			}
 		}
@@ -271,31 +291,60 @@ class Segue_TextPlugins_Video_Service {
 	}
 	
 	/**
-	 * Set a regular expression that will match against the output embed code
-	 * and return an array of matching strings and the parameters that the string
-	 * indicates.
+	 * Set a regular expression that will match against a url in the embed code
+	 * and select the id of the video as its first subpattern
+	 *
+	 * This expression will only be run against <object></object>, <embed></embed>, and/or
+	 * <object><embed></embed></object> blocks where the type is
+	 * application/x-shockwave-flash, so there is no need to match the surrounding tags.
+	 *
 	 * 
 	 * @param string $regex
-	 * @param array $matchParams This array should be a list of 'regex match num' => 'param name'
 	 * @return void
 	 * @access public
 	 * @since 7/15/08
 	 */
-	public function setHtmlRegex ($regex, array $matchParams) {
+	public function setHtmlUrlRegex ($regex) {
 		if (!preg_match('/^\/.+\/[a-z]*$/sm', $regex))
 			throw new InvalidArgumentException("$regex is not a valid preg_match regular expression.");
-		foreach ($matchParams as $key => $name) {
-			if (!is_int($key))
-				throw new InvalidArgumentException("$key must be an integer.");
-			if (!preg_match('/^[a-z0-9_-]+$/', $name))
-				throw new InvalidArgumentException("$name is not a valid param name.");
-		}
 		
-		if (!count($matchParams))
-			throw new InvalidArgumentException("At least one match parameter must be specified.");
-		$this->htmlMatchRegex = $regex;
-		$this->htmlMatchParams = $matchParams;
+		$this->htmlUrlRegex = $regex;
 	}
+	
+// 	/**
+// 	 * Set a regular expression that will match against the output embed code
+// 	 * and return an array of matching strings and the parameters that the string
+// 	 * indicates.
+// 	 *
+// 	 * This expression will only be run against <object></object>, <embed></embed>, and/or
+// 	 * <object><embed></embed></object> blocks where the type is
+// 	 * application/x-shockwave-flash, so there is no need to match the surrounding tags.
+// 	 *
+// 	 * These parameters are to be in addition to the URL matching -- specified with the
+// 	 * setHtmlUrlRegex() method -- and the width and height parameters which are
+// 	 * automatically searched for.
+// 	 * 
+// 	 * @param string $regex
+// 	 * @param array $matchParams This array should be a list of 'regex match num' => 'param name'
+// 	 * @return void
+// 	 * @access public
+// 	 * @since 7/15/08
+// 	 */
+// 	public function setHtmlParamsRegex ($regex, array $matchParams) {
+// 		if (!preg_match('/^\/.+\/[a-z]*$/sm', $regex))
+// 			throw new InvalidArgumentException("$regex is not a valid preg_match regular expression.");
+// 		foreach ($matchParams as $key => $name) {
+// 			if (!is_int($key))
+// 				throw new InvalidArgumentException("$key must be an integer.");
+// 			if (!preg_match('/^[a-z0-9_-]+$/', $name))
+// 				throw new InvalidArgumentException("$name is not a valid param name.");
+// 		}
+// 		
+// 		if (!count($matchParams))
+// 			throw new InvalidArgumentException("At least one match parameter must be specified.");
+// 		$this->htmlParamsRegex = $regex;
+// 		$this->htmlParamsParams = $matchParams;
+// 	}
 	
 	/*********************************************************
 	 * Output methods
@@ -305,11 +354,16 @@ class Segue_TextPlugins_Video_Service {
 	 * Generate the target HTML with a given set of parameters
 	 * 
 	 * @param array $params
+	 * @param boolean $onlyTwoWay 	If true, only generate changes that can be searched
+	 *								for and reverted.
 	 * @return string
 	 * @access public
 	 * @since 7/15/08
 	 */
-	public function generate (array $params) {
+	public function generate (array $params, $onlyTwoWay = false) {
+		if ($onlyTwoWay && !isset($this->htmlUrlRegex))
+			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.". Set a Url-matching regular expression with setHtmlUrlRegex(\$regex)");
+		
 		// Strip out any invalid parameters
 		foreach ($params as $name => $val) {
 			try {
@@ -354,18 +408,37 @@ class Segue_TextPlugins_Video_Service {
 	 * @since 7/14/08
 	 */
 	public function getHtmlMatches ($text) {
-		if (!isset($this->htmlMatchRegex))
-			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.".");
+		if (!isset($this->htmlUrlRegex))
+			throw new ConfigurationErrorException("No matching regular expression set for service, ".$this->name.". Set a Url-matching regular expression with setHtmlUrlRegex(\$regex)");
 		
+		$regex = '/
+
+<object .* type=[\'"]application\/x-shockwave-flash[\'"] .* <\/object>
+| <embed .* type=[\'"]application\/x-shockwave-flash[\'"] .* <\/embed>
+		
+		/ix';
+		
+		// Go through each flash object or embed tag and try to match the url
+		// against ours.
 		$results = array();
-		preg_match_all($this->htmlMatchRegex, $text, $matches);
+		preg_match_all($regex, $text, $matches);
 		foreach ($matches[0] as $i => $match) {
-			$matchParams = array();
-			foreach ($this->htmlMatchParams as $ref => $paramName) {
-				if ($matches[$ref][$i])
-					$matchParams[$paramName] = $matches[$ref][$i];
+// 			printpre("working on: ".htmlentities($match));
+			try {
+				$matchParams = array();
+				$matchParams['id'] = $this->getIdFromHtml($match);
+
+				// If the url/id is valid, try searching for the rest of our params
+				try {
+					$matchParams['width'] = $this->getWidthFromHtml($match);
+				} catch (Exception $e) {}
+				try {
+					$matchParams['height'] = $this->getHeightFromHtml($match);
+				} catch (Exception $e) {}
+				
+				$results[$match] = $matchParams;
+			} catch (Exception $e) {
 			}
-			$results[$match] = $matchParams;
 		}
 		return $results;
 	}
@@ -373,6 +446,100 @@ class Segue_TextPlugins_Video_Service {
 	/*********************************************************
 	 * Private methods
 	 *********************************************************/
+	
+	/**
+	 * Answer a video id from an object or embed block of HTML. 
+	 * Throw an OperationFailedException if not matched.
+	 * 
+	 * @param string $embedHtml
+	 * @return string The id
+	 * @access protected
+	 * @since 7/15/08
+	 */
+	protected function getIdFromHtml ($embedHtml) {
+		if (!isset($this->htmlUrlRegex))
+			throw new ConfigurationErrorException("No url-matching regular expression set for service, ".$this->name.". Use setHtmlUrlRegex() to set this value.");
+		
+		if (!preg_match($this->htmlUrlRegex, $embedHtml, $matches))
+			throw new OperationFailedException("Could not match url against ".$this->htmlUrlRegex." for service ".$this->name.".");
+		
+		if (!isset($matches[1]))
+			throw new ConfigurationErrorException("Url-matching regular expression for service, ".$this->name." does not contain any subpatterns. The ID match must be in the first subpattern contained in parentheses.");
+		
+		return $matches[1];
+	}
+	
+	/**
+	 * Answer a width from an object or embed block of HTML. 
+	 * Throw an OperationFailedException if not matched.
+	 * 
+	 * @param string $embedHtml
+	 * @return string The id
+	 * @access protected
+	 * @since 7/15/08
+	 */
+	protected function getWidthFromHtml ($embedHtml) {
+		$regex = '/
+
+# Width Attributes
+width=[\'"]([0-9]+)(?: px)?[\'"]
+
+# style-based width
+| 
+style=[\'"]		# Attribute start
+	[^\'"]*		# other style properties
+	width:\s?([0-9]+)(?: px)?
+	[^\'"]*		# other style properties
+[\'"]			# Attribute end
+		
+		/ix';
+		
+		if (!preg_match($regex, $embedHtml, $matches))
+			throw new OperationFailedException("Could not match width against ".$regex." for service ".$this->name.".");
+		
+		if ($matches[1])
+			return $matches[1];
+		else if ($matches[2])
+			return $matches[2];
+		
+		throw new OperationFailedException("Could not match width against ".$regex." for service ".$this->name.".");
+	}
+	
+	/**
+	 * Answer a height from an object or embed block of HTML. 
+	 * Throw an OperationFailedException if not matched.
+	 * 
+	 * @param string $embedHtml
+	 * @return string The id
+	 * @access protected
+	 * @since 7/15/08
+	 */
+	protected function getHeightFromHtml ($embedHtml) {
+		$regex = '/
+
+# Height Attributes
+height=[\'"]([0-9]+)(?: px)?[\'"]
+
+# style-based height
+| 
+style=[\'"]		# Attribute start
+	[^\'"]*		# other style properties
+	height:\s?([0-9]+)(?: px)?
+	[^\'"]*		# other style properties
+[\'"]			# Attribute end
+		
+		/ix';
+		
+		if (!preg_match($regex, $embedHtml, $matches))
+			throw new OperationFailedException("Could not match height against ".$regex." for service ".$this->name.".");
+		
+		if ($matches[1])
+			return $matches[1];
+		else if ($matches[2])
+			return $matches[2];
+		
+		throw new OperationFailedException("Could not match height against ".$regex." for service ".$this->name.".");
+	}
 	
 	/**
 	 * Validate an array of parameters

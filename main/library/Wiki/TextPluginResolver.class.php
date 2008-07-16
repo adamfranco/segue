@@ -144,7 +144,7 @@ class Segue_Wiki_TextPluginResolver {
 					
 					// Execute the plugin
 					try {
-						$text = str_replace($wikiText, $plugin->generate($params), $text);
+						$text = str_replace($wikiText, $plugin->generate($params, $onlyTwoWay), $text);
 					} catch (Exception $e) {
 						
 					}

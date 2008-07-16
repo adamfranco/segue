@@ -427,7 +427,7 @@ class EduMiddleburyTextBlockPlugin
 
 		
 		if (is_null($this->workingContent))
-	 		$oFCKeditor->Value = $this->applyTwoWayTextPlugins($this->cleanHTML($this->untokenizeLocalUrls($this->getContent())));
+	 		$oFCKeditor->Value = $this->cleanHTML($this->untokenizeLocalUrls($this->getContent()));
 	 	else
 	 		$oFCKeditor->Value = $this->workingContent;
 	 	
