@@ -143,11 +143,11 @@ class Segue_Wiki_TextPluginResolver {
 					}
 					
 					// Execute the plugin
-		// 			try {
+					try {
 						$text = str_replace($wikiText, $plugin->generate($params), $text);
-		// 			} catch (Exception $e) {
-		// 				
-		// 			}
+					} catch (Exception $e) {
+						
+					}
 				}
 			} catch (UnknownIdException $e) {
 				if ($e->getCode() != 34563)

@@ -24,6 +24,17 @@
 class Segue_TextPlugins_Video
 	implements Segue_Wiki_TextPlugin 
 {
+
+	/**
+	 * Constructor
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function __construct () {
+		$this->services = array();
+	}
 	
 	/**
 	 * Generate HTML given a set of parameters.
@@ -34,26 +45,9 @@ class Segue_TextPlugins_Video
 	 * @since 7/14/08
 	 */
 	public function generate (array $paramList) {				
-		// Set defaults
-		$defaults = array(	'width' 	=> '425',
-							'height'	=> '344'
-						);
-		foreach ($defaults as $param => $val) {
-			if (!isset($paramList[$param]))
-				$paramList[$param] = $val;
-		}
-		
-		// Filter params
-		// @todo
-		
-		
-		$output = "<object type=\"application/x-shockwave-flash\" data=\"http://www.youtube.com/v/###ID###\" width=\"###WIDTH###\" height=\"###HEIGHT###\" wmode=\"transparent\"><param name=\"movie\" value=\"http://www.youtube.com/v/###ID###\" /></object>";
-		
-		foreach ($paramList as $param => $val) {
-			$output = str_replace('###'.strtoupper($param).'###', $val, $output);
-		}
-		
-		return $output;
+		$service = $this->getService($paramList['service']);
+		unset($paramList['service']);
+		return $service->generate($paramList);
 	}
 	
 	/**
@@ -89,6 +83,36 @@ class Segue_TextPlugins_Video
 		throw new UnimplementedException();
 	}
 	
+	/**
+	 * Add a new service to those supported and return it.
+	 * 
+	 * @param object Segue_TextPlugins_Video_Service $service
+	 * @return object Segue_TextPlugins_Video_Service 
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function addService (Segue_TextPlugins_Video_Service $service) {
+		if (isset($this->services[$service->getName()]))
+			throw new InvalidArgumentException("Service '".$service->getName()."' already exists.");
+		
+		$this->services[$service->getName()] = $service;
+		return $service;
+	}
+	
+	/**
+	 * Add a new service to those supported and return it.
+	 * 
+	 * @param string $name
+	 * @return object Segue_TextPlugins_Video_Service 
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function getService ($name) {
+		if (!isset($this->services[$name]))
+			throw new InvalidArgumentException("Service '".$name."' does not exist.");
+		
+		return $this->services[$name];
+	}
 }
 
 /**
@@ -103,7 +127,35 @@ class Segue_TextPlugins_Video
  * @version $Id$
  */
 class Segue_TextPlugins_Video_Service {
-		
+	
+	/**
+	 * @var string $name;  
+	 * @access private
+	 * @since 7/15/08
+	 */
+	private $name;
+	
+	/**
+	 * @var array $defaults;  
+	 * @access private
+	 * @since 7/15/08
+	 */
+	private $defaults;
+	
+	/**
+	 * @var array $paramRegexes;  
+	 * @access private
+	 * @since 7/15/08
+	 */
+	private $paramRegexes;
+	
+	/**
+	 * @var string $targetHtml;  
+	 * @access private
+	 * @since 7/15/08
+	 */
+	private $targetHtml;
+	
 	/**
 	 * Constuctor
 	 * 
@@ -112,12 +164,180 @@ class Segue_TextPlugins_Video_Service {
 	 * @access public
 	 * @since 7/15/08
 	 */
-	public function __construct ($name) {
+	public function __construct ($name, $targetHtml) {
+		if (!preg_match('/^[a-z0-9_-]+$/', $name))
+			throw new InvalidArgumentException("$name is not a valid service name.");
 		$this->name = $name;
+		
+		$this->defaults = array(
+				'width' => '300',
+				'height' => '300',
+			);
+		
+		$this->paramRegexes = array(
+				'id'		=> '/^[a-z0-9_-]+$/i',
+				'width'		=> '/^[0-9]+$/',
+				'height'	=> '/^[0-9]+$/'
+			);
+		
+		if (!preg_match('/###ID###/', $targetHtml))
+			throw new InvalidArgumentException('targetHtml is missing the required ###ID### placeholder');
+		$this->targetHtml = $targetHtml;
 	}
 	
+	/**
+	 * Answer the service name
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function getName () {
+		return $this->name;
+	}
 	
+	/**
+	 * Add a new parameter that can be replaced in the target Html
+	 * Uses preg_match syntax
+	 * 
+	 * @param string $paramName
+	 * @param string $regex
+	 * @param string $defaultValue
+	 * @return void
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function addParam ($paramName, $regex, $defaultValue) {
+		if (!preg_match('/^\/.+\/[a-z]*$/', $regex))
+			throw new InvalidArgumentException("$regex is not a valid preg_match regular expression.");
+		if (!preg_match('/^[a-z0-9_-]+$/', $paramName))
+			throw new InvalidArgumentException("$paramName is not a valid param name.");
+		if (isset($this->paramRegexes[$paramName]))
+			throw new Exception("Param '$paramName' already exists.");
+		
+		$this->paramRegexes[$paramName] = $regex;
+		
+		$this->setDefaultValue($paramName, $defaultValue);
+	}
 	
+	/**
+	 * Set the regular expression to use when validating parameters.
+	 * Uses preg_match syntax
+	 * 
+	 * @param string $paramName
+	 * @param string $regex
+	 * @return void
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function setParamRegex ($paramName, $regex) {
+		if (!preg_match('/^\/.+\/[a-z]*$/', $regex))
+			throw new InvalidArgumentException("$regex is not a valid preg_match regular expression.");
+		if (!preg_match('/^[a-z0-9_-]+$/', $paramName))
+			throw new InvalidArgumentException("$paramName is not a valid param name.");
+		
+		if (!isset($this->paramRegexes[$paramName]))
+			throw new Exception("Unknown param name '$paramName'.");
+		
+		$this->paramRegexes[$paramName] = $regex;
+	}
+	
+	/**
+	 * Set the default value for a param
+	 * 
+	 * @param string $paramName
+	 * @param string $defaultValue
+	 * @return void
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function setDefaultValue ($paramName, $defaultValue) {
+		if (!preg_match('/^[a-z0-9_-]+$/', $paramName))
+			throw new InvalidArgumentException("$paramName is not a valid param name.");
+		
+		if (!isset($this->paramRegexes[$paramName]))
+			throw new Exception("Unknown param name '$paramName'.");
+		
+		$this->validateParam($paramName, $defaultValue);
+		
+		$this->defaults[$paramName] = $defaultValue;
+	}
+	
+	/*********************************************************
+	 * Output method
+	 *********************************************************/
+	
+	/**
+	 * Generate the target HTML with a given set of parameters
+	 * 
+	 * @param array $params
+	 * @return string
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function generate (array $params) {
+		// Strip out any invalid parameters
+		foreach ($params as $name => $val) {
+			try {
+				$this->validateParam($name, $val);
+			} catch (InvalidArgumentException $e) {
+				unset($params[$name]);
+			}
+		}
+		
+		// Add in any missing defaults
+		foreach ($this->defaults as $name => $val) {
+			if (!isset($params[$name]))
+				$params[$name] = $val;
+		}
+		
+		// Validate the whole array, should validate always.
+		$this->validateParams($params);
+		
+		// Replace placeholders with our params
+		$output = $this->targetHtml;
+		foreach ($params as $param => $val) {
+			$output = str_replace('###'.strtoupper($param).'###', $val, $output);
+		}
+		
+		return $output;
+	}
+	
+	/**
+	 * Validate an array of parameters
+	 * 
+	 * @param array $params
+	 * @return void
+	 * @access protected
+	 * @since 7/15/08
+	 */
+	protected function validateParams (array $params) {
+		foreach ($params as $name => $val)
+			$this->validateParam($name, $val);
+		foreach ($this->paramRegexes as $name => $val) {
+			if (!isset($params[$name]))
+				throw new InvalidArgumentException("Missing param name '$name'.");
+		}
+		return true;
+	}
+	
+	/**
+	 * Validiate a parameter
+	 * 
+	 * @param string $paramName
+	 * @param string $value
+	 * @return void
+	 * @access protected
+	 * @since 7/15/08
+	 */
+	protected function validateParam ($paramName, $value) {
+		if (!isset($this->paramRegexes[$paramName]))
+			throw new InvalidArgumentException("Unknown param name '$paramName'.");
+		if (!preg_match($this->paramRegexes[$paramName], $value))
+			throw new InvalidArgumentException("Param value '$value' doesn't match regex ".$this->paramRegexes[$paramName]);
+		
+		return true;
+	}
 }
 
 ?>
