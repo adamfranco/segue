@@ -202,7 +202,8 @@ abstract class BlockSegue1To2Converter
 
 		foreach ($sourceTagElements as $sourceTagElement) {
 			if ($sourceTagElement->nodeValue) {
-				$tagElement = $tagsElement->appendChild($this->doc->createElement('tag', $sourceTagElement->nodeValue));
+				$sourceTag = preg_replace("/[^a-z0-9_]/i", "_", urldecode($sourceTagElement->nodeValue));				
+				$tagElement = $tagsElement->appendChild($this->doc->createElement('tag', $sourceTag));
 				if ($sourceTagElement->getAttribute('agent_id'))
 					$tagElement->setAttribute('agent_id', $this->addAgent($sourceTagElement->getAttribute('agent_id')));
 				else
