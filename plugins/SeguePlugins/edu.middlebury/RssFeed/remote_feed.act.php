@@ -131,10 +131,20 @@ class remote_feed
 		
 		$feed = new DOMDocument();
 		
+		// If the encoding is not UTF-8, convert the document
+		if (preg_match('/^<\?xml .*encoding=[\'"]([a-zA-Z0-9-]+)[\'"].*\?>/m', $feedData, $matches)) {
+			$encoding = $matches[1];
+			if (strtoupper($encoding) != 'UTF8' && strtoupper($encoding) != 'UTF-8') {
+				$feedData = mb_convert_encoding($feedData, 'UTF-8', strtoupper($encoding));
+				$feedData = preg_replace('/^(<\?xml .*encoding=[\'"])([a-zA-Z0-9-]+)([\'"].*\?>)/m', '\1UTF-8\3', $feedData);
+			}
+		}
+		
 		// Convert any non-UTF-8 characters
 		$string = String::withValue($feedData);
 		$string->makeUtf8();
-		$feed->loadXML($string->asString());
+		$feedData = $string->asString();		
+		$feed->loadXML($feedData);
 		
 		// Handle any format conversions
 		$feed = $this->convertToRss($feed);

@@ -46,6 +46,9 @@
 			Harmoni (commit de26816ffa93753366584861cb798380eb8ef09a) and
 			Polyphony (commit 717117f3e9f05e63e9a1e4f79fc9efed34f2ebb9).
 		</fix>
+		<fix author='adam' date='2008-07-17' ref='2018218' reftype='bug'>
+			RSS: Feeds in alternate encodings are now converted to UTF-8.
+		</fix>
 	</version>
 	<version number="2.0-beta-26.1" date="2008-07-14">
 		<releaseNotes>
