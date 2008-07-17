@@ -2,7 +2,7 @@
 Segue Change Log
 
 
-v. 2.0-beta-27 (The Future)
+v. 2.0-beta-27 (2008-07-17)
 ----------------------------------------------------
 This release adds support for embedded Flash videos, text-templates, and fixes
 several bugs.
@@ -77,6 +77,12 @@ located under Admin Tools --> Segue Updates.
 	* Bug Fix: #2018218 
 		RSS: Feeds in alternate encodings are now converted to UTF-8.
 		(2008-07-17 - Adam Franco)
+		
+	* Change: #2018160 
+		Migration: All characters in Segue v1 tags other than alphanumeric and
+		underscores are converted to underscore in order to comply with Segue v2 tag
+		validation. 
+		(2008-07-17 - Alex Chapin)
 	
 
 

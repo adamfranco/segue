@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-27 (The Future)
+Segue v. 2.0-beta-27 (2008-07-17)
 =================================
 
 What is Segue?
@@ -88,7 +88,7 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 ===================================================================
 
 
-v. 2.0-beta-27 (The Future)
+v. 2.0-beta-27 (2008-07-17)
 ----------------------------------------------------
 This release adds support for embedded Flash videos, text-templates, and fixes
 several bugs.

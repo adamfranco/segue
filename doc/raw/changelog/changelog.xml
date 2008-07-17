@@ -10,7 +10,7 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-27" date="The Future">
+	<version number="2.0-beta-27" date="2008-07-17">
 		<releaseNotes>
 			This release adds support for embedded Flash videos, text-templates,
 			and fixes several bugs.
@@ -81,6 +81,10 @@
 		<fix author='adam' date='2008-07-17' ref='2018218' reftype='bug'>
 			RSS: Feeds in alternate encodings are now converted to UTF-8.
 		</fix>
+		<change author='alex' date='2008-07-17' ref='2018160' reftype='bug'>
+			Migration: All characters in Segue v1 tags other than alphanumeric and underscores 
+			are converted to underscore in order to comply with Segue v2 tag validation.
+		</change>
 	</version>
 	<version number="2.0-beta-26.1" date="2008-07-14">
 		<releaseNotes>
