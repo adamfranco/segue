@@ -340,13 +340,10 @@ abstract class SeguePluginsDriver
 	 * @access public
 	 * @since 7/15/08
 	 */
-	final public function unapplyTextPlugins ($text) {
-		$wikiResolver = WikiResolver::instance();
-		
-		$wikiResolver->setViewAction($this->_baseUrl->getModule(), $this->_baseUrl->getAction());
-		
+	final public function unapplyTextTemplates ($text) {
+		$wikiResolver = WikiResolver::instance();		
 		try {
-			$text = $wikiResolver->unapplyTextPlugins($text);
+			$text = $wikiResolver->unapplyTextTemplates($text);
 		} catch (OperationFailedException $e) {
 		}
 		

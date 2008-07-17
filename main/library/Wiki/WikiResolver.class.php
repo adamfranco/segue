@@ -10,7 +10,7 @@
  */ 
 
 require_once(dirname(__FILE__)."/TitleSearcher.class.php");
-require_once(dirname(__FILE__)."/TextPluginResolver.class.php");
+require_once(dirname(__FILE__)."/TextTemplateResolver.class.php");
 
 /**
  * The WikiResolver
@@ -87,11 +87,11 @@ class WikiResolver {
 	private $addAction = 'add_wiki_component';
 	
 	/**
-	 * @var object TextPluginResolver $textPluginResolver;  
+	 * @var object TextTemplateResolver $textTemplateResolver;  
 	 * @access private
 	 * @since 7/16/08
 	 */
-	private $textPluginResolver;
+	private $textTemplateResolver;
 	
 	/**
 	 * Constructor
@@ -102,7 +102,7 @@ class WikiResolver {
 	 */
 	private function __construct () {
 		$this->titleSearcher = new TitleSearcher;
-		$this->textPluginResolver = new Segue_Wiki_TextPluginResolver;
+		$this->textTemplateResolver = new Segue_Wiki_TextTemplateResolver;
 	}
 	
 	/**
@@ -151,7 +151,7 @@ class WikiResolver {
 	public function parseText ($text, SiteComponent $siteComponent) {
 		$text = $this->replaceInternalLinks($text, $siteComponent);
 		$text = $this->replaceExternalLinks($text);		
-		$text = $this->textPluginResolver->applyTextPlugins($text);
+		$text = $this->textTemplateResolver->applyTextTemplates($text);
 		return $text;
 	}
 	
@@ -159,24 +159,24 @@ class WikiResolver {
 	 * Answer a template
 	 * 
 	 * @param string $name
-	 * @return object Segue_Wiki_TextPlugin
+	 * @return object Segue_Wiki_TextTemplate
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function getTextPlugin ($name) {
-		return $this->textPluginResolver->getTextPlugin($name);
+	public function getTextTemplate ($name) {
+		return $this->textTemplateResolver->getTextTemplate($name);
 	}
 	
 	/**
-	 * Convert HTML markup back into wiki-style text-plugins markup
+	 * Convert HTML markup back into wiki-style text-templates markup
 	 * 
 	 * @param string $text
 	 * @return string
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function unapplyTextPlugins ($text) {
-		return $this->textPluginResolver->unapplyTextPlugins($text);
+	public function unapplyTextTemplates ($text) {
+		return $this->textTemplateResolver->unapplyTextTemplates($text);
 	}
 	
 	

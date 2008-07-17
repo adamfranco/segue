@@ -12,13 +12,13 @@
  *
  */
 
-$video = WikiResolver::instance()->getTextPlugin('video');
+$video = WikiResolver::instance()->getTextTemplate('video');
 
 
 /*********************************************************
  * YouTube
  *********************************************************/
-$service = $video->addService(new Segue_TextPlugins_Video_Service(
+$service = $video->addService(new Segue_TextTemplates_Video_Service(
 	'youtube', 
 	'<object width="###WIDTH###" height="###HEIGHT###"><param name="movie" value="http://www.youtube.com/v/###ID###&amp;hl=en&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><embed src="http://www.youtube.com/v/###ID###&amp;hl=en&amp;fs=1" type="application/x-shockwave-flash" allowfullscreen="true" width="###WIDTH###" height="###HEIGHT###"></embed></object>'
 ));
@@ -28,7 +28,7 @@ $service->setHtmlPlayerRegex('/http:\/\/www\.youtube\.com\/v\//');
 $service->setHtmlIdRegex('/http:\/\/www\.youtube\.com\/v\/([a-z0-9_-]+)/i');
 
 // Playlists
-$service = $video->addService(new Segue_TextPlugins_Video_Service(
+$service = $video->addService(new Segue_TextTemplates_Video_Service(
 	'youtube_playlist', 
 	'<object width="###WIDTH###" height="###HEIGHT###"><param name="movie" value="http://www.youtube.com/p/###ID###&amp;hl=en&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><embed src="http://www.youtube.com/p/###ID###&amp;hl=en&amp;fs=1" type="application/x-shockwave-flash" allowfullscreen="true" width="###WIDTH###" height="###HEIGHT###"></embed></object>'
 ));
@@ -41,7 +41,7 @@ $service->setHtmlIdRegex('/http:\/\/www\.youtube\.com\/p\/([a-z0-9_-]+)/i');
 /*********************************************************
  * Google Video
  *********************************************************/
-$service = $video->addService(new Segue_TextPlugins_Video_Service(
+$service = $video->addService(new Segue_TextTemplates_Video_Service(
 	'google', 
 	'<embed id="VideoPlayback" style="width:###WIDTH###px;height:###HEIGHT###px" allowFullScreen="true" src="http://video.google.com/googleplayer.swf?docid=###ID###&amp;hl=en&amp;fs=true" type="application/x-shockwave-flash"> </embed>'
 ));
@@ -54,7 +54,7 @@ $service->setHtmlIdRegex('/docid=([0-9-]+)/');
 /*********************************************************
  * Vimeo
  *********************************************************/
-$service = $video->addService(new Segue_TextPlugins_Video_Service(
+$service = $video->addService(new Segue_TextTemplates_Video_Service(
 	'vimeo', 
 	'<object width="###WIDTH###" height="###HEIGHT###">	<param name="allowfullscreen" value="true" />	<param name="allowscriptaccess" value="always" />	<param name="movie" value="http://www.vimeo.com/moogaloop.swf?clip_id=###ID###&amp;server=www.vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" />	<embed src="http://www.vimeo.com/moogaloop.swf?clip_id=###ID###&amp;server=www.vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="###WIDTH###" height="###HEIGHT###"></embed></object>'
 ));
@@ -67,7 +67,7 @@ $service->setHtmlIdRegex('/clip_id=([0-9]+)/');
 /*********************************************************
  * Hulu
  *********************************************************/
-$service = $video->addService(new Segue_TextPlugins_Video_Service(
+$service = $video->addService(new Segue_TextTemplates_Video_Service(
 	'hulu', 
 	'<object width="###WIDTH###" height="###HEIGHT###"><param name="movie" value="http://www.hulu.com/embed/###ID###"></param><embed src="http://www.hulu.com/embed/###ID###" type="application/x-shockwave-flash"  width="###WIDTH###" height="###HEIGHT###"></embed></object>'
 ));
@@ -80,7 +80,7 @@ $service->setHtmlIdRegex('/http:\/\/www\.hulu\.com\/embed\/([a-zA-Z0-9_-]+)/');
 /*********************************************************
  * TeacherTube
  *********************************************************/
-$service = $video->addService(new Segue_TextPlugins_Video_Service(
+$service = $video->addService(new Segue_TextTemplates_Video_Service(
 	'teachertube', 	
 	'<embed src="http://www.teachertube.com/skin-p/mediaplayer.swf" width="###WIDTH###" height="###HEIGHT###" type="application/x-shockwave-flash" allowfullscreen="true" menu="false" flashvars="height=###HEIGHT###&width=###WIDTH###&file=http://www.teachertube.com/flvideo/###ID###.flv&image=http://www.teachertube.com/thumb/###ID###.jpg&location=http://www.teachertube.com/skin-p/mediaplayer.swf&logo=http://www.teachertube.com/images/greylogo.swf&searchlink=http://teachertube.com/search_result.php%3Fsearch_id%3D&frontcolor=0xffffff&backcolor=0x000000&lightcolor=0xFF0000&screencolor=0xffffff&autostart=false&volume=80&overstretch=fit"></embed>'
 ));
@@ -93,7 +93,7 @@ $service->setHtmlIdRegex('/flvideo\/([a-z0-9_-]+)\.flv/i');
  * Unknown Sources
  *********************************************************/
 // This will match all other embedded flash and replace with with a notice.
-$service = $video->addService(new Segue_TextPlugins_Video_Service(
+$service = $video->addService(new Segue_TextTemplates_Video_Service(
 	'unknown', 
 	'<div>'._('Your video (from an untrusted source: ###ID###) was stripped for security purposes. Please contact the Segue administrator to enable video from this source.').'</div>'
 ));

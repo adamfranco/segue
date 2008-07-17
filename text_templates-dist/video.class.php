@@ -21,8 +21,8 @@
  *
  * @version $Id$
  */
-class Segue_TextPlugins_video
-	implements Segue_Wiki_TextPlugin 
+class Segue_TextTemplates_video
+	implements Segue_Wiki_TextTemplate 
 {
 
 	/**
@@ -98,12 +98,12 @@ class Segue_TextPlugins_video
 	/**
 	 * Add a new service to those supported and return it.
 	 * 
-	 * @param object Segue_TextPlugins_Video_Service $service
-	 * @return object Segue_TextPlugins_Video_Service 
+	 * @param object Segue_TextTemplates_Video_Service $service
+	 * @return object Segue_TextTemplates_Video_Service 
 	 * @access public
 	 * @since 7/15/08
 	 */
-	public function addService (Segue_TextPlugins_Video_Service $service) {
+	public function addService (Segue_TextTemplates_Video_Service $service) {
 		if (isset($this->services[$service->getName()]))
 			throw new InvalidArgumentException("Service '".$service->getName()."' already exists.");
 		
@@ -115,7 +115,7 @@ class Segue_TextPlugins_video
 	 * Add a new service to those supported and return it.
 	 * 
 	 * @param string $name
-	 * @return object Segue_TextPlugins_Video_Service 
+	 * @return object Segue_TextTemplates_Video_Service 
 	 * @access public
 	 * @since 7/15/08
 	 */
@@ -138,7 +138,7 @@ class Segue_TextPlugins_video
  *
  * @version $Id$
  */
-class Segue_TextPlugins_Video_Service {
+class Segue_TextTemplates_Video_Service {
 	
 	/**
 	 * @var string $name;  

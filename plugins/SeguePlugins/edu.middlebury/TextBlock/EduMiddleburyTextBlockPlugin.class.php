@@ -126,7 +126,7 @@ class EduMiddleburyTextBlockPlugin
 	 		$this->editing = true;
 	 	
  		if ($this->getFieldValue('submit_pressed')) {	
- 			$this->setContent($this->tokenizeLocalUrls($this->cleanHTML($this->unapplyTextPlugins($this->getFieldValue('content')))));
+ 			$this->setContent($this->tokenizeLocalUrls($this->cleanHTML($this->unapplyTextTemplates($this->getFieldValue('content')))));
  			$this->setRawDescription(intval($this->getFieldValue('abstractLength')));
  			$this->logEvent('Modify Content', 'TextBlock content updated');
  			
@@ -570,7 +570,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 5/8/07
  	 */
  	function updateFromWizard ( $values ) {
- 		$this->setContent($this->tokenizeLocalUrls($values['content']));
+ 		$this->setContent($this->unapplyTextTemplates($this->tokenizeLocalUrls($values['content'])));
  		$this->setRawDescription(intval($values['abstractLength']));
  		$this->logEvent('Modify Content', 'TextBlock content updated');
  		$this->markVersion($values['comment']);

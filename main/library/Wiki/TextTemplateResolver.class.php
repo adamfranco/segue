@@ -9,10 +9,10 @@
  * @version $Id$
  */ 
 
-require_once(dirname(__FILE__)."/TextPlugin.interface.php");
+require_once(dirname(__FILE__)."/TextTemplate.interface.php");
 
 /**
- * The TextPlugin resolver handles the parsing and conversion of template markup
+ * The TextTemplate resolver handles the parsing and conversion of template markup
  * for the Segue wiki system. It handles only 'template' markup, not links.
  * 
  * @since 7/14/08
@@ -23,95 +23,95 @@ require_once(dirname(__FILE__)."/TextPlugin.interface.php");
  *
  * @version $Id$
  */
-class Segue_Wiki_TextPluginResolver {
+class Segue_Wiki_TextTemplateResolver {
 		
 	/**
-	 * @var array $textPlugins;  
+	 * @var array $textTemplates;  
 	 * @access private
 	 * @since 7/16/08
 	 */
-	private $textPlugins;
+	private $textTemplates;
 	
 	/**
-	 * Load the text plugins
+	 * Load the text templates
 	 * 
 	 * @return void
 	 * @access protected
 	 * @since 7/16/08
 	 */
-	protected function loadTextPlugins () {
-		$this->textPlugins = array();
-		foreach (scandir(MYDIR.'/text_plugins-dist') as $file) {
+	protected function loadTextTemplates () {
+		$this->textTemplates = array();
+		foreach (scandir(MYDIR.'/text_templates-dist') as $file) {
 			if (!preg_match('/^[a-z0-9_-]+\.class\.php$/i', $file))
 				continue;
 				
-			// If we have a local version of the text-plugin, skip the
+			// If we have a local version of the text-template, skip the
 			// default one.
-			if (!file_exists(MYDIR.'/text_plugins-local/'.$file)) 
-				$this->addTextPlugin(MYDIR.'/text_plugins-dist/'.$file);
+			if (!file_exists(MYDIR.'/text_templates-local/'.$file)) 
+				$this->addTextTemplate(MYDIR.'/text_templates-dist/'.$file);
 		}
 		
-		foreach (scandir(MYDIR.'/text_plugins-local') as $file) {
+		foreach (scandir(MYDIR.'/text_templates-local') as $file) {
 			if (!preg_match('/^[a-z0-9_-]+\.class\.php$/i', $file))
 				continue;
-			$this->addTextPlugin(MYDIR.'/text_plugins-local/'.$file);
+			$this->addTextTemplate(MYDIR.'/text_templates-local/'.$file);
 		}
 	}
 	
 	/**
-	 * Add a Text plugin to our array
+	 * Add a Text template to our array
 	 * 
 	 * @param string $filePath
 	 * @return void
 	 * @access protected
 	 * @since 7/15/08
 	 */
-	protected function addTextPlugin ($filePath) {
+	protected function addTextTemplate ($filePath) {
 		require_once($filePath);
 		$name = strtolower(basename($filePath, '.class.php'));
-		$class = 'Segue_TextPlugins_'.$name;
-		$plugin = new $class;
+		$class = 'Segue_TextTemplates_'.$name;
+		$template = new $class;
 		
-		if (!$plugin instanceof Segue_Wiki_TextPlugin)
-			throw new Exception("$name must implement the Segue_Wiki_TextPlugin interface.");
+		if (!$template instanceof Segue_Wiki_TextTemplate)
+			throw new Exception("$name must implement the Segue_Wiki_TextTemplate interface.");
 		
-		$this->textPlugins[$name] = $plugin;
+		$this->textTemplates[$name] = $template;
 		
-		$this->configureTextPlugin($name);
+		$this->configureTextTemplate($name);
 	}
 	
 	/**
-	 * Load any configuration files for the text-plugin
+	 * Load any configuration files for the text-template
 	 * 
 	 * @param string $name
 	 * @return void
 	 * @access protected
 	 * @since 7/16/08
 	 */
-	protected function configureTextPlugin ($name) {
+	protected function configureTextTemplate ($name) {
 		$name = strtolower($name);
 		
-		// Configure the plugin
-		if (file_exists(MYDIR.'/config/text_plugin-'.$name.'.conf.php'))
-			require_once (MYDIR.'/config/text_plugin-'.$name.'.conf.php');
-		else if (file_exists(MYDIR.'/config/text_plugin-'.$name.'_default.conf.php'))
-			require_once (MYDIR.'/config/text_plugin-'.$name.'_default.conf.php');
+		// Configure the template
+		if (file_exists(MYDIR.'/config/text_template-'.$name.'.conf.php'))
+			require_once (MYDIR.'/config/text_template-'.$name.'.conf.php');
+		else if (file_exists(MYDIR.'/config/text_template-'.$name.'_default.conf.php'))
+			require_once (MYDIR.'/config/text_template-'.$name.'_default.conf.php');
 	}
 	
 	/**
-	 * Answer a text-plugin
+	 * Answer a text-template
 	 * 
 	 * @param string $name
-	 * @return object Segue_Wiki_TextPlugin
+	 * @return object Segue_Wiki_TextTemplate
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function getTextPlugin ($name) {
-		if (!isset($this->textPlugins))
-			$this->loadTextPlugins();
-		if (!isset($this->textPlugins[strtolower($name)]))
-			throw new UnknownIdException('No Wiki text-plugin named \''.$name.'\' found.', 34563);
-		return $this->textPlugins[strtolower($name)];
+	public function getTextTemplate ($name) {
+		if (!isset($this->textTemplates))
+			$this->loadTextTemplates();
+		if (!isset($this->textTemplates[strtolower($name)]))
+			throw new UnknownIdException('No Wiki text-template named \''.$name.'\' found.', 34563);
+		return $this->textTemplates[strtolower($name)];
 	}
 	
 	/**
@@ -122,7 +122,7 @@ class Segue_Wiki_TextPluginResolver {
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function applyTextPlugins ($text) {
+	public function applyTextTemplates ($text) {
 		$regexp = "/
 
 {{	# The opening template tags
@@ -160,7 +160,7 @@ class Segue_Wiki_TextPluginResolver {
 		// for each wiki template replace it with the HTML version
 		foreach ($matches[0] as $index => $wikiText) {
 			try {
-				$plugin = $this->getTextPlugin(strtolower($matches[1][$index]));
+				$template = $this->getTextTemplate(strtolower($matches[1][$index]));
 				
 				// Build the parameter array
 				$params = array();
@@ -170,9 +170,9 @@ class Segue_Wiki_TextPluginResolver {
 					$params[$paramName] = $paramMatches[2][$j];
 				}
 				
-				// Execute the plugin
+				// Execute the template
 				try {
-					$text = str_replace($wikiText, $plugin->generate($params), $text);
+					$text = str_replace($wikiText, $template->generate($params), $text);
 				} catch (Exception $e) {
 					
 				}
@@ -186,21 +186,21 @@ class Segue_Wiki_TextPluginResolver {
 	}
 	
 	/**
-	 * Go through the text passed and for each text-plugin, try to replace appropriate
-	 * HTML with text-plugin markup for any text-plugins which support this.
+	 * Go through the text passed and for each text-template, try to replace appropriate
+	 * HTML with text-template markup for any text-templates which support this.
 	 * 
 	 * @param string $text
 	 * @return string
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function unapplyTextPlugins ($text) {
-		if (!isset($this->textPlugins))
-			$this->loadTextPlugins();
+	public function unapplyTextTemplates ($text) {
+		if (!isset($this->textTemplates))
+			$this->loadTextTemplates();
 		
-		foreach ($this->textPlugins as $name => $plugin) {
+		foreach ($this->textTemplates as $name => $template) {
 			try {
-				$replacements = $plugin->getHtmlMatches($text);
+				$replacements = $template->getHtmlMatches($text);
 				foreach ($replacements as $html => $params) {
 					$markup = '{{'.$name;
 					foreach ($params as $key => $val) {

@@ -10,7 +10,7 @@
  */ 
 
 /**
- * This inteface defines methods needed for 'text plugins', Segue's way of 
+ * This inteface defines methods needed for 'text templates', Segue's way of 
  * supporting pluggable strings in HTML. 
  * 
  * @since 7/14/08
@@ -21,7 +21,7 @@
  *
  * @version $Id$
  */
-interface Segue_Wiki_TextPlugin {
+interface Segue_Wiki_TextTemplate {
 	
 	/**
 	 * Generate HTML given a set of parameters.
