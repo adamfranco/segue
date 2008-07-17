@@ -77,6 +77,17 @@ $service->setHtmlPlayerRegex('/http:\/\/www\.hulu\.com\/embed\//');
 $service->setHtmlIdRegex('/http:\/\/www\.hulu\.com\/embed\/([a-zA-Z0-9_-]+)/');
 
 
+/*********************************************************
+ * TeacherTube
+ *********************************************************/
+$service = $video->addService(new Segue_TextPlugins_Video_Service(
+	'teachertube', 	
+	'<embed src="http://www.teachertube.com/skin-p/mediaplayer.swf" width="###WIDTH###" height="###HEIGHT###" type="application/x-shockwave-flash" allowfullscreen="true" menu="false" flashvars="height=###HEIGHT###&width=###WIDTH###&file=http://www.teachertube.com/flvideo/###ID###.flv&image=http://www.teachertube.com/thumb/###ID###.jpg&location=http://www.teachertube.com/skin-p/mediaplayer.swf&logo=http://www.teachertube.com/images/greylogo.swf&searchlink=http://teachertube.com/search_result.php%3Fsearch_id%3D&frontcolor=0xffffff&backcolor=0x000000&lightcolor=0xFF0000&screencolor=0xffffff&autostart=false&volume=80&overstretch=fit"></embed>'
+));
+$service->setDefaultValue('width', '425');
+$service->setDefaultValue('height', '350');
+$service->setHtmlPlayerRegex('/http:\/\/www\.teachertube\.com\/(?:player\/)?[a-z0-9_-]+\/mediaplayer\.swf/');
+$service->setHtmlIdRegex('/flvideo\/([a-z0-9_-]+)\.flv/i');
 
 /*********************************************************
  * Unknown Sources
