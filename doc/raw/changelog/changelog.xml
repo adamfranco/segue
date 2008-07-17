@@ -14,6 +14,25 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-07-16'>
+			Text-Templates: New 'text-templates' extension system uses markup like
+			MediaWiki's templates to enable output of HTML blocks given a template
+			and set of parameters. A 'video' template to enabled white-listed 
+			embedded video and a 'search' template to insert a search form are the
+			first uses of this new system.
+		</new>
+		<new author='adam' date='2008-07-16' ref='2013487' reftype='fr' requester='joe_antonioli'>
+			Text-Templates: New 'video' template inserts embed code for videos from
+			a variety of providers defined in a white-list to prevent XSS attacks.
+			This template will also search an HTML block and replace any embed or
+			object elements with appropriate template markup.
+			Example: {{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}}
+		</new>
+		<new author='adam' date='2008-07-16'>
+			Text-Templates: New 'search' template inserts a search form for a variety
+			of providers or custom seach end-points. Insert {{search}} into a text-content
+			block to use.
+		</new>
 		<fix author='adam' date='2008-07-15'>
 			UI2: Accessing edit-mode when not logged in now doesn't cause a fatal error
 			of a class not found.
@@ -2022,6 +2041,10 @@
 		</reporter>
 		<reporter short="bryan_carson">
 			<name>Bryan Carson</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="joe_antonioli">
+			<name>Joe Antonioli</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 		<reporter short="jeff_rehbach">
