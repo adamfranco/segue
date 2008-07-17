@@ -12,7 +12,7 @@
 /**
  * This search template is a basic example of the usage of text-templates.
  * It provides a search-box that can be configured to search different locations
- * by specifying a search string.
+ * by specifying a search string. This template does not have any configuration files.
  * 
  * @since 7/16/08
  * @package segue.text_templates
