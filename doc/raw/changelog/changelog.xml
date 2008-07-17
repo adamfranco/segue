@@ -30,12 +30,15 @@
 		</new>
 		<new author='adam' date='2008-07-16'>
 			Text-Templates: New 'search' template inserts a search form for a variety
-			of providers or custom seach end-points. Insert {{search}} into a text-content
+			of providers or custom search end-points. Insert {{search}} into a text-content
 			block to use.
 		</new>
 		<fix author='adam' date='2008-07-15'>
 			UI2: Accessing edit-mode when not logged in now doesn't cause a fatal error
 			of a class not found.
+		</fix>
+		<fix author='adam' date='2008-07-16' ref='2018685' reftype='bug'>
+			UI2: Quotes in titles no longer break XHTML validity.
 		</fix>
 	</version>
 	<version number="2.0-beta-26.1" date="2008-07-14">

@@ -216,7 +216,7 @@ class ControlsSiteVisitor
 			print " readonly='readonly'";
 		}
 		
-		print " value='".$siteComponent->getDisplayName()."'/>";
+		print " value=\"".htmlentities($siteComponent->getDisplayName())."\"/>";
 	//	print "</div>";
 
 		print "\n\t\t\t\t</td></tr>";

@@ -71,7 +71,7 @@ class RssLinkPrinter {
 		ob_start();
 		
 		foreach (self::getLinks($siteComponent) as $link) {
-			print "\n\t\t<link rel='alternate' type='application/rss+xml' title=\"".$link['title']."\" href='".$link['url']."' />";
+			print "\n\t\t<link rel='alternate' type='application/rss+xml' title=\"".htmlentities(strip_tags($link['title']))."\" href='".$link['url']."' />";
 		}
 		
 		$outputHandler->setHead(
@@ -100,7 +100,7 @@ class RssLinkPrinter {
 						"content",
 						array('node' => $siteComponent->getId())),
 			'label' => _('Content RSS'),
-			'title' => _("Content RSS for")." ".$siteComponent->getDisplayName()
+			'title' => _("Content RSS for")." ".htmlentities(strip_tags($siteComponent->getDisplayName()))
 		);
 		
 		// Comments RSS
@@ -110,7 +110,7 @@ class RssLinkPrinter {
 						"comments",
 						array('node' => $siteComponent->getId())),
 			'label' => _('Discussion RSS'),
-			'title' => _("Discussion RSS for")." ".$siteComponent->getDisplayName()
+			'title' => _("Discussion RSS for")." ".htmlentities(strip_tags($siteComponent->getDisplayName()))
 		);
 		
 		$harmoni->request->endNamespace();
