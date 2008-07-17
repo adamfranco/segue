@@ -375,40 +375,40 @@ class Segue_TextTemplates_Video_Service {
 		$this->htmlIdRegex = $regex;
 	}
 	
-// 	/**
-// 	 * Set a regular expression that will match against the output embed code
-// 	 * and return an array of matching strings and the parameters that the string
-// 	 * indicates.
-// 	 *
-// 	 * This expression will only be run against <object></object>, <embed></embed>, and/or
-// 	 * <object><embed></embed></object> blocks where the type is
-// 	 * application/x-shockwave-flash, so there is no need to match the surrounding tags.
-// 	 *
-// 	 * These parameters are to be in addition to the URL matching -- specified with the
-// 	 * setHtmlIdRegex() method -- and the width and height parameters which are
-// 	 * automatically searched for.
-// 	 * 
-// 	 * @param string $regex
-// 	 * @param array $matchParams This array should be a list of 'regex match num' => 'param name'
-// 	 * @return void
-// 	 * @access public
-// 	 * @since 7/15/08
-// 	 */
-// 	public function setHtmlParamsRegex ($regex, array $matchParams) {
-// 		if (!preg_match('/^\/.+\/[a-z]*$/sm', $regex))
-// 			throw new InvalidArgumentException("$regex is not a valid preg_match regular expression.");
-// 		foreach ($matchParams as $key => $name) {
-// 			if (!is_int($key))
-// 				throw new InvalidArgumentException("$key must be an integer.");
-// 			if (!preg_match('/^[a-z0-9_-]+$/', $name))
-// 				throw new InvalidArgumentException("$name is not a valid param name.");
-// 		}
-// 		
-// 		if (!count($matchParams))
-// 			throw new InvalidArgumentException("At least one match parameter must be specified.");
-// 		$this->htmlParamsRegex = $regex;
-// 		$this->htmlParamsParams = $matchParams;
-// 	}
+	/**
+	 * Set a regular expression that will match against the output embed code
+	 * and return an array of matching strings and the parameters that the string
+	 * indicates.
+	 *
+	 * This expression will only be run against <object></object>, <embed></embed>, and/or
+	 * <object><embed></embed></object> blocks where the type is
+	 * application/x-shockwave-flash, so there is no need to match the surrounding tags.
+	 *
+	 * These parameters are to be in addition to the URL matching -- specified with the
+	 * setHtmlIdRegex() method -- and the width and height parameters which are
+	 * automatically searched for.
+	 * 
+	 * @param string $regex
+	 * @param array $matchParams This array should be a list of 'regex match num' => 'param name'
+	 * @return void
+	 * @access public
+	 * @since 7/15/08
+	 */
+	public function setHtmlParamsRegex ($regex, array $matchParams) {
+		if (!preg_match('/^\/.+\/[a-z]*$/sm', $regex))
+			throw new InvalidArgumentException("$regex is not a valid preg_match regular expression.");
+		foreach ($matchParams as $key => $name) {
+			if (!is_int($key))
+				throw new InvalidArgumentException("$key must be an integer.");
+			if (!preg_match('/^[a-z0-9_-]+$/', $name))
+				throw new InvalidArgumentException("$name is not a valid param name.");
+		}
+		
+		if (!count($matchParams))
+			throw new InvalidArgumentException("At least one match parameter must be specified.");
+		$this->htmlParamsRegex = $regex;
+		$this->htmlParamsParams = $matchParams;
+	}
 	
 	/*********************************************************
 	 * Output methods
@@ -496,6 +496,12 @@ class Segue_TextTemplates_Video_Service {
 				} catch (Exception $e) {}
 				try {
 					$matchParams['height'] = $this->getHeightFromHtml($match);
+				} catch (Exception $e) {}
+				
+				try {
+					$additionalParams = $this->getAdditionalParamsFromHtml($match);
+					if (count($additionalParams))
+						$matchParams = array_merge($matchParams, $additionalParams);
 				} catch (Exception $e) {}
 				
 				$results[$match] = $matchParams;
@@ -607,6 +613,29 @@ style=[\'"]		# Attribute start
 			return $matches[2];
 		
 		throw new OperationFailedException("Could not match height against ".$regex." for service ".$this->name.".");
+	}
+	
+	/**
+	 * Answer an array of additional params found in the HTML
+	 * 
+	 * @param string $embedHtml
+	 * @return array
+	 * @access protected
+	 * @since 7/17/08
+	 */
+	protected function getAdditionalParamsFromHtml ($embedHtml) {
+		if (!isset($this->htmlParamsRegex))
+			throw new OperationFailedException('No additional params regex supplied');
+		
+		if (!preg_match($this->htmlParamsRegex, $embedHtml, $matches))
+			throw new OperationFailedException("Could not match additional params against ".$this->htmlParamsRegex." for service ".$this->name.".");
+		
+		$params = array();
+		foreach ($this->htmlParamsParams as $i => $name) {
+			if (strlen($matches[$i]))
+				$params[$name] = $matches[$i];
+		}
+		return $params;
 	}
 	
 	/**
