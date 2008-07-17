@@ -24,6 +24,44 @@
 interface Segue_Wiki_TextTemplate {
 	
 	/**
+	 * Answer a block of HTML text that describes this template and its parameters.
+	 * Use an h4 tag for the template name.
+	 * Use a definition list for parameters. 
+	 *
+	 * Example:
+	 *
+	 * <div>
+	 *		<h4>video</h4>
+	 *		<p>This template will allow the embedding of Flash Video from a variety
+	 *		of sources. These sources must be configured by the Segue administrator
+	 *		if they are not included in the default configuration.</p>
+	 *		<dl>
+	 *			<dt>service<dt>
+	 *			<dd>The service at which this video is hosted -- all lowercase.
+	 *			Examples: youtube, youtube_playlist, google, vimeo, hulu</dd>
+	 *			<dt>id</dt>
+	 *			<dd>The Id of the video, the specific form of this dependent on the
+	 *			service, but generally this can be found in the URL for flash-video
+	 *			file. Example for YouTube: s13dLaTIHSg</dd>
+	 *			<dt>width</dt>
+	 *			<dd>The integer width of the player in pixels. Example: 325</dd>
+	 *			<dt>height</dt>
+	 *			<dd>The integer height of the player in pixels. Example: 250</dd>
+	 *		</dl>
+	 *		<p>Example Usage: {{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}}</p>
+	 *		<p>Note: If you paste the embed code from a supported service into
+	 *		a text block, it will automatically be converted into the template markup
+	 *		when saved</p>
+	 * </div>
+	 * 
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 7/16/08
+	 */
+	public function getDescriptionHtml ();
+	
+	/**
 	 * Generate HTML given a set of parameters.
 	 * 
 	 * @param array $paramList
