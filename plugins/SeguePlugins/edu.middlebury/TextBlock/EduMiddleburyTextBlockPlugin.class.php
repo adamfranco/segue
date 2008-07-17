@@ -683,13 +683,13 @@ class EduMiddleburyTextBlockPlugin
  		$abstractLength = $this->getAbstractLengthFromVersion($version);
  		if ($abstractLength) {
  			print "\n<div>";
- 			print $this->trimHTML($this->parseWikiText($content), $abstractLength);
+ 			print $this->parseWikiText($this->trimHTML($content, $abstractLength));
  			print "\n</div>";
  			print "\n<hr/>";
  		}
  		
  		print "\n<div>";
-		print $this->cleanHTML($this->parseWikiText($content));
+		print $this->parseWikiText($this->cleanHTML($content));
 		print "\n</div>";
 		
 		return ob_get_clean();
