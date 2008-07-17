@@ -87,6 +87,13 @@ class WikiResolver {
 	private $addAction = 'add_wiki_component';
 	
 	/**
+	 * @var object TextPluginResolver $textPluginResolver;  
+	 * @access private
+	 * @since 7/16/08
+	 */
+	private $textPluginResolver;
+	
+	/**
 	 * Constructor
 	 * 
 	 * @return void

@@ -94,8 +94,7 @@ $configs = array(
 					'dataport',
 					'tagging',
 					'templates',
-					'themes',
-					'video'
+					'themes'
 				);
 
 foreach ($configs as $config) {

@@ -34,17 +34,6 @@ interface Segue_Wiki_TextPlugin {
 	public function generate (array $paramList);
 	
 	/**
-	 * Answer true if this content template supports HTML matching and the getHtmlMatches()
-	 * method. If this method returns true, getHtmlMatches() should not throw
-	 * an UnimplementedException
-	 * 
-	 * @return boolean
-	 * @access public
-	 * @since 7/14/08
-	 */
-	public function supportsHtmlMatching ();
-	
-	/**
 	 * Answer an array of strings in the HTML that look like this template's output
 	 * and list of parameters that the HTML corresponds to. e.g:
 	 * 	array(

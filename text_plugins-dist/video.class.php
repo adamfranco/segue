@@ -21,7 +21,7 @@
  *
  * @version $Id$
  */
-class Segue_TextPlugins_Video
+class Segue_TextPlugins_video
 	implements Segue_Wiki_TextPlugin 
 {
 
@@ -60,19 +60,6 @@ class Segue_TextPlugins_Video
 // 		return ob_get_clean();
 		
 		return $service->generate($paramList);
-	}
-	
-	/**
-	 * Answer true if this content template supports HTML matching and the getHtmlMatches()
-	 * method. If this method returns true, getHtmlMatches() should not throw
-	 * an UnimplementedException
-	 * 
-	 * @return boolean
-	 * @access public
-	 * @since 7/14/08
-	 */
-	public function supportsHtmlMatching () {
-		return true;
 	}
 	
 	/**

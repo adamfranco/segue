@@ -26,15 +26,21 @@ require_once(dirname(__FILE__)."/TextPlugin.interface.php");
 class Segue_Wiki_TextPluginResolver {
 		
 	/**
-	 * Constructor
+	 * @var array $textPlugins;  
+	 * @access private
+	 * @since 7/16/08
+	 */
+	private $textPlugins;
+	
+	/**
+	 * Load the text plugins
 	 * 
 	 * @return void
-	 * @access public
-	 * @since 7/14/08
+	 * @access protected
+	 * @since 7/16/08
 	 */
-	public function __construct () {
-		$this->textPlugins = array ();
-		
+	protected function loadTextPlugins () {
+		$this->textPlugins = array();
 		foreach (scandir(MYDIR.'/text_plugins-dist') as $file) {
 			if (!preg_match('/^[a-z0-9_-]+\.class\.php$/i', $file))
 				continue;
@@ -62,13 +68,36 @@ class Segue_Wiki_TextPluginResolver {
 	 */
 	protected function addTextPlugin ($filePath) {
 		require_once($filePath);
-		$name = basename($filePath, '.class.php');
+		$name = strtolower(basename($filePath, '.class.php'));
 		$class = 'Segue_TextPlugins_'.$name;
 		$plugin = new $class;
+		
 		if (!$plugin instanceof Segue_Wiki_TextPlugin)
 			throw new Exception("$name must implement the Segue_Wiki_TextPlugin interface.");
-		$this->textPlugins[strtolower($name)] = $plugin;
+		
+		$this->textPlugins[$name] = $plugin;
+		
+		$this->configureTextPlugin($name);
 	}
+	
+	/**
+	 * Load any configuration files for the text-plugin
+	 * 
+	 * @param string $name
+	 * @return void
+	 * @access protected
+	 * @since 7/16/08
+	 */
+	protected function configureTextPlugin ($name) {
+		$name = strtolower($name);
+		
+		// Configure the plugin
+		if (file_exists(MYDIR.'/config/text_plugin-'.$name.'.conf.php'))
+			require_once (MYDIR.'/config/text_plugin-'.$name.'.conf.php');
+		else if (file_exists(MYDIR.'/config/text_plugin-'.$name.'_default.conf.php'))
+			require_once (MYDIR.'/config/text_plugin-'.$name.'_default.conf.php');
+	}
+	
 	/**
 	 * Answer a text-plugin
 	 * 
@@ -78,9 +107,11 @@ class Segue_Wiki_TextPluginResolver {
 	 * @since 7/14/08
 	 */
 	public function getTextPlugin ($name) {
-		if (!isset($this->textPlugins[$name]))
+		if (!isset($this->textPlugins))
+			$this->loadTextPlugins();
+		if (!isset($this->textPlugins[strtolower($name)]))
 			throw new UnknownIdException('No Wiki text-plugin named \''.$name.'\' found.', 34563);
-		return $this->textPlugins[$name];
+		return $this->textPlugins[strtolower($name)];
 	}
 	
 	/**
@@ -129,7 +160,7 @@ class Segue_Wiki_TextPluginResolver {
 		// for each wiki template replace it with the HTML version
 		foreach ($matches[0] as $index => $wikiText) {
 			try {
-				$plugin = $this->getTextPlugin($matches[1][$index]);
+				$plugin = $this->getTextPlugin(strtolower($matches[1][$index]));
 				
 				// Build the parameter array
 				$params = array();
@@ -164,20 +195,21 @@ class Segue_Wiki_TextPluginResolver {
 	 * @since 7/14/08
 	 */
 	public function unapplyTextPlugins ($text) {
+		if (!isset($this->textPlugins))
+			$this->loadTextPlugins();
+		
 		foreach ($this->textPlugins as $name => $plugin) {
-			if ($plugin->supportsHtmlMatching()) {
-				try {
-					$replacements = $plugin->getHtmlMatches($text);
-					foreach ($replacements as $html => $params) {
-						$markup = '{{'.$name;
-						foreach ($params as $key => $val) {
-							$markup .= '|'.$key.'='.$val;
-						}
-						$markup .= '}}';
-						$text = str_replace($html, $markup, $text);
+			try {
+				$replacements = $plugin->getHtmlMatches($text);
+				foreach ($replacements as $html => $params) {
+					$markup = '{{'.$name;
+					foreach ($params as $key => $val) {
+						$markup .= '|'.$key.'='.$val;
 					}
-				} catch (UnimplementedException $e) {
+					$markup .= '}}';
+					$text = str_replace($html, $markup, $text);
 				}
+			} catch (UnimplementedException $e) {
 			}
 		}
 		
