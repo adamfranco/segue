@@ -89,6 +89,20 @@ $service->setDefaultValue('height', '350');
 $service->setHtmlPlayerRegex('/http:\/\/www\.teachertube\.com\/(?:player\/)?[a-z0-9_-]+\/mediaplayer\.swf/');
 $service->setHtmlIdRegex('/flvideo\/([a-z0-9_-]+)\.flv/i');
 
+
+/*********************************************************
+ * Blip TV
+ *********************************************************/
+$service = $video->addService(new Segue_TextTemplates_Video_Service(
+	'bliptv', 	
+	'<embed src="http://blip.tv/play/###ID###" type="application/x-shockwave-flash" width="###WIDTH###" height="###HEIGHT###" allowscriptaccess="always" allowfullscreen="true"></embed>'
+));
+$service->setDefaultValue('width', '425');
+$service->setDefaultValue('height', '350');
+$service->setHtmlPlayerRegex('/http:\/\/blip\.tv\/play\//');
+$service->setHtmlIdRegex('/http:\/\/blip\.tv\/play\/([a-zA-Z0-9_-]+)/i');
+
+
 /*********************************************************
  * Unknown Sources
  *********************************************************/
