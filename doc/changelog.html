@@ -23,15 +23,55 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-26.1</h2>
+<h2>Version 2.0-beta-27</h2>
+<h3>The Future</h3>
+<p>This release adds support for embedded Flash videos, text-templates, and fixes several bugs.
+<br>
+<br>Text-templates are a new extension system that use the same markup as MediaWiki's templates to enable output of custom HTML blocks customized with a set of named parameters. 
+<br>
+<br>For example, a new 'video' template inserts embed code for videos from a variety of providers defined in a white-list (to prevent XSS attacks). Example of usage: {{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}} This video template will also search through the HTML source in a text-block and replace any embed orobject elements with appropriate template markup.
+<br>
+<br>Also included is a 'search' template that can insert a customized search field into a text-block. Example of usage: {{search}} Example of usage: {{search|base_url=http://youtube.com/results|search_param_name=search_query}}
+<br>
+<br>See the change-log for additional details on fixes.
+<br>
+<br>Segue 2.0-beta-27 uses Harmoni 1.4.3 and Polyphony 1.2.10.
+<br>
+<br>---------------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b> Text-Templates: New 'text-templates' extension system uses markup like MediaWiki's templates to enable output of HTML blocks given a template and set of parameters. A 'video' template to enabled white-listed embedded video and a 'search' template to insert a search form are the first uses of this new system. (<em>2008-07-16 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2013487&amp;group_id=82171&amp;atid=565237">
+        			#2013487</a> Text-Templates: New 'video' template inserts embed code for videos from a variety of providers defined in a white-list to prevent XSS attacks. This template will also search an HTML block and replace any embed or object elements with appropriate template markup. Example: {{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}} (<em>2008-07-16 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Text-Templates: New 'search' template inserts a search form for a variety of providers or custom search end-points. Insert {{search}} into a text-content block to use. (<em>2008-07-16 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: Accessing edit-mode when not logged in now doesn't cause a fatal error of a class not found. (<em>2008-07-15 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2018685&amp;group_id=82171&amp;atid=565234">
+        			#2018685</a> UI2: Quotes in titles no longer break XHTML validity. (<em>2008-07-16 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2018232&amp;group_id=82171&amp;atid=565234">
+        			#2018232</a> Themes: Themes with non-default options set now load CSS files with the option choices. Fixes for this are in Harmoni (commit de26816ffa93753366584861cb798380eb8ef09a) and Polyphony (commit 717117f3e9f05e63e9a1e4f79fc9efed34f2ebb9). (<em>2008-07-17 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2018218&amp;group_id=82171&amp;atid=565234">
+        			#2018218</a> RSS: Feeds in alternate encodings are now converted to UTF-8. (<em>2008-07-17 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-26.1</h2>
 <h3>2008-07-14</h3>
 <p>This release fixes a few bugs that were not fixed in beta 26.
 <br>
 <br>---------------------
 <br>
 <br>From Beta 26:
-<br>
-<br>This release fixes a major bug in the permissions/role-setting system that was preventing modifications of roles for some groups. Also improved are the RSS feed-display plugin's support for slightly non-conforming feeds and a few other minor issues.
 <br>
 <br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
 <br>
@@ -53,7 +93,7 @@
 <br>
 <br>Also added an admin-only action for manually rebuilding implicit AZs.
 <br>
-<br>It seems that some sites have been created with invalid or missing implicit AZs. Rebuilding the Hierarchy-caused Implicit AZs for the site fixes this issue. This should not be necessary for newly created sites. (<em>2008-07-14 - Adam Franco</em>)</li>
+<br>It seems that some sites have been created with invalid or missing implicit AZs. Rebuilding the Hierarchy-caused Implicit AZs for the site fixes this issue. This should not be necessary for newly created sites. (<em>2008-07-14 - Adam Franco</em>)<br> (<em>reported by Thierry Leterre of Middlebury College/Université de Versailles-Saint-Quentin-en-Yvelines</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-26</h2>
 <h3>2008-07-11</h3>
@@ -104,6 +144,9 @@
 <br>Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.</p>
 <ul>
 		
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1998213&amp;group_id=82171&amp;atid=565237">
+        			#1998213</a> Dataport: Added status display during site import. (<em>2008-07-10 - Adam Franco</em>)</li>
 		<li>
 <b>Change:</b> Dataport: Added more error checking during import process to help debug import problems. (<em>2008-07-10 - Adam Franco</em>)</li>
 		<li>
