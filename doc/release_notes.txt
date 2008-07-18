@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-27 (2008-07-17)
+Segue v. 2.0-beta-27.1 (2008-07-18)
 =================================
 
 What is Segue?
@@ -17,36 +17,8 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release adds support for embedded Flash videos, text-templates, and fixes
-several bugs.
-
-Text-templates are a new extension system that use the same markup as MediaWiki's
-templates to enable output of custom HTML blocks customized with a set of named
-parameters. 
-
-For example, a new 'video' template inserts embed code for videos from a variety of
-providers defined in a white-list (to prevent XSS attacks). Example of usage:
-{{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}} This video template
-will also search through the HTML source in a text-block and replace any embed
-orobject elements with appropriate template markup.
-
-Also included is a 'search' template that can insert a customized search field into
-a text-block. Example of usage: {{search}} Example of usage: {{search|base_url=http://youtube.com/results|search_param_name=search_query}}
-
-See the change-log for additional details on fixes.
-
-Segue 2.0-beta-27 uses Harmoni 1.4.3 and Polyphony 1.2.10.
-
----------------------
-
-Upgrades:
-
-As of this beta 25, Segue requires PHP to be
-compiled with XSL support. On unix systems this can be added by configuring PHP
-using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
-
-Upgrades from versions prior to beta 26 require running the RSS Feed updaters
-located under Admin Tools --> Segue Updates.
+This release fixes an issue that preventing inline images from appearing in text
+blocks. 
 
 
 Downloads
@@ -86,6 +58,13 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-27.1 (2008-07-18)
+----------------------------------------------------
+This release fixes an issue that preventing inline images from appearing in text
+blocks. 
+
 
 
 v. 2.0-beta-27 (2008-07-17)

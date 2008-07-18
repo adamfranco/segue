@@ -12,7 +12,8 @@
 <changelog name="Segue">
 	<version number="2.0-beta-27.1" date="2008-07-18">
 		<releaseNotes>
-			
+			This release fixes an issue that preventing inline images from appearing
+			in text blocks.
 		</releaseNotes>
 		<fix author='adam' date='2008-07-18' ref='this' reftype='bug'>
 			Plugins: File-url and local-url markup is now not stripped from HTML

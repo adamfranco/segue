@@ -2,6 +2,21 @@
 Segue Change Log
 
 
+v. 2.0-beta-27.1 (2008-07-18)
+----------------------------------------------------
+This release fixes an issue that preventing inline images from appearing in text
+blocks. 
+		
+		
+	* Bug Fix: #this 
+		Plugins: File-url and local-url markup is now not stripped from HTML output
+		by the Safe-HTML system when displaying plugins. Inline images will now
+		display properly.
+		(2008-07-18 - Adam Franco)
+	
+
+
+
 v. 2.0-beta-27 (2008-07-17)
 ----------------------------------------------------
 This release adds support for embedded Flash videos, text-templates, and fixes
