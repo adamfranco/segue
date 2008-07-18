@@ -22,8 +22,6 @@ FCKConfig.FlashUpload = false ;
 FCKConfig.LinkBrowser = false ;
 FCKConfig.FlashBrowser = false ;
 
-FCKConfig.FirefoxSpellChecker	= true ;
-
 FCKConfig.ToolbarSets["ContentBlock"] = [
 	['Source','-','Preview','-','Templates'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-'],
