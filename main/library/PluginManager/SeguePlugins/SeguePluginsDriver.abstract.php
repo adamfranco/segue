@@ -269,7 +269,13 @@ abstract class SeguePluginsDriver
 	 * @since 1/26/06
 	 */
 	final public function cleanHTML ($htmlString) {
-		return HtmlString::getSafeHtml($htmlString);
+		$htmlStringObj = HtmlString::fromString($htmlString);
+		// SafeHTML looks for the first colon to determine if something is a
+		// a protocal.
+		$htmlStringObj->addSafeProtocal('[[fileurl');
+		$htmlStringObj->addSafeProtocal('[[localurl');
+		$htmlStringObj->cleanXSS();
+		return $htmlStringObj->asString();
 	}
 	
 	/**
@@ -285,6 +291,10 @@ abstract class SeguePluginsDriver
 	 */
 	final public function trimHTML ($htmlString, $maxWords, $addElipses = true) {
 		$htmlStringObj = HtmlString::withValue($htmlString);
+		// SafeHTML looks for the first colon to determine if something is a
+		// a protocal.
+		$htmlStringObj->addSafeProtocal('[[fileurl');
+		$htmlStringObj->addSafeProtocal('[[localurl');
 		$htmlStringObj->cleanXSS();
  		$htmlStringObj->trim($maxWords, $addElipses);
  		return $htmlStringObj->asString();

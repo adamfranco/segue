@@ -10,6 +10,16 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-27.1" date="2008-07-18">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-07-18' ref='this' reftype='bug'>
+			Plugins: File-url and local-url markup is now not stripped from HTML
+			output by the Safe-HTML system when displaying plugins. Inline images
+			will now display properly.
+		</fix>
+	</version>
 	<version number="2.0-beta-27" date="2008-07-17">
 		<releaseNotes>
 			This release adds support for embedded Flash videos, text-templates,
