@@ -16,6 +16,14 @@
 /* ] ; */
 
 
+FCKConfig.LinkUpload = false ;
+FCKConfig.ImageUpload = false ;
+FCKConfig.FlashUpload = false ;
+FCKConfig.LinkBrowser = false ;
+FCKConfig.FlashBrowser = false ;
+
+FCKConfig.FirefoxSpellChecker	= true ;
+
 FCKConfig.ToolbarSets["ContentBlock"] = [
 	['Source','-','Preview','-','Templates'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-'],
@@ -23,7 +31,7 @@ FCKConfig.ToolbarSets["ContentBlock"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	'/',
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink','Anchor','Find','Replace'],
 	['Image','Flash','Table','Rule','SpecialChar'],['TextColor','BGColor'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['Style','FontFormat','FontName','FontSize','FitWindow','About']
