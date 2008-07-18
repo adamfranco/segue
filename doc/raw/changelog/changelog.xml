@@ -40,6 +40,12 @@
 		<fix author='adam' date='2008-07-16' ref='2018685' reftype='bug'>
 			UI2: Quotes in titles no longer break XHTML validity.
 		</fix>
+		<fix author='adam' date='2008-07-17' ref='2018232' reftype='bug'>
+			Themes: Themes with non-default options set now load CSS files with
+			the option choices. Fixes for this are in 
+			Harmoni (commit de26816ffa93753366584861cb798380eb8ef09a) and
+			Polyphony (commit 717117f3e9f05e63e9a1e4f79fc9efed34f2ebb9).
+		</fix>
 	</version>
 	<version number="2.0-beta-26.1" date="2008-07-14">
 		<releaseNotes>
