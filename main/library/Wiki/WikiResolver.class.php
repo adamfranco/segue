@@ -487,6 +487,11 @@ $		# Anchor for the end of the line
 					$args[$key] = $value;
 			}
 			
+			// If no params are specified, return our base url
+			if (!count($args) && !isset($module) && !isset($action)) {
+				return MYURL;
+			}
+			
 			if (!isset($module))
 				$module = 'ui1';
 			if (!isset($action))

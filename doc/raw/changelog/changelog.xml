@@ -22,6 +22,10 @@
 		<fix author='adam' date='2008-07-21'>
 			WikiText: Wiki-links to page names with diacritics now work properly.
 		</fix>
+		<fix author='adam' date='2008-07-21' ref='2021588' reftype='bug'>
+			WikiText: Links to Segue root now do not get converted into invalid
+			page links.
+		</fix>
 	</version>
 	<version number="2.0-beta-27.1" date="2008-07-18">
 		<releaseNotes>
