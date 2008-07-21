@@ -10,9 +10,28 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-28" date="The Future">
+	<version number="2.0-beta-27.2" date="2008-07-21">
 		<releaseNotes>
+			This release fixes a number of bugs in migration and with wiki-text.
 			
+			An additional bug fix in Harmoni 1.4.4 fixes an issue with permissions
+			settings for members of groups the ids of which contain quotes.
+			
+			See the change-log for additional details on fixes.
+			
+			Segue 2.0-beta-27 uses Harmoni 1.4.4 and Polyphony 1.2.11.
+			
+			---------------------
+			
+			Upgrades:
+			
+			As of this beta 25, Segue requires PHP to be compiled with XSL support.
+			On unix systems this can be added by configuring PHP using the --with-xsl
+			option. See the following for installation instructions:
+			http://www.php.net/manual/en/xsl.installation.php
+			
+			Upgrades from versions prior to beta 26 require running the RSS Feed
+			updaters located under Admin Tools --> Segue Updates.
 		</releaseNotes>
 		<new author='adam' date='2008-07-21' ref='2021759' reftype='fr'>
 			WikiText: Wrapping wiki-links and text-template markup in &lt;nowiki&gt; 

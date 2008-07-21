@@ -2,6 +2,64 @@
 Segue Change Log
 
 
+v. 2.0-beta-27.2 (2008-07-21)
+----------------------------------------------------
+This release fixes a number of bugs in migration and with wiki-text.
+
+An additional bug fix in Harmoni 1.4.4 fixes an issue with permissions settings for
+members of groups the ids of which contain quotes.
+
+See the change-log for additional details on fixes.
+
+Segue 2.0-beta-27 uses Harmoni 1.4.4 and Polyphony 1.2.11.
+
+---------------------
+
+Upgrades:
+
+As of this beta 25, Segue requires PHP to be
+compiled with XSL support. On unix systems this can be added by configuring PHP
+using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 26 require running the RSS Feed updaters
+located under Admin Tools --> Segue Updates.
+		
+		
+	* New feature: #2021759 
+		WikiText: Wrapping wiki-links and text-template markup in <nowiki> tags now
+		prevents parsing of the wiki-text. This is useful for documenting how to use
+		wiki-markup. 
+		(2008-07-21 - Adam Franco)
+		
+	* Bug Fix: 
+		WikiText: Wiki-links to page names with diacritics now work properly.
+		(2008-07-21 - Adam Franco)
+		
+	* Bug Fix: #2021588 
+		WikiText: Links to Segue root now do not get converted into invalid page
+		links. 
+		(2008-07-21 - Adam Franco)
+		
+	* Bug Fix: 
+		Wizard/Dataport: File upload temporary directory is now configurable using
+		the POLYPHONY_TMP_DIR constant located in a new uploads.conf.php
+		configuration file.
+		(2008-07-21 - Adam Franco)
+		
+	* Bug Fix: #2021570 
+		Migration: User doing migration now always gets the Admin Role. Certain
+		permissions settings in the origin site sometimes caused a revocation of
+		admin privlidges mid-way through the migration process.
+		(2008-07-21 - Adam Franco)
+		
+	* Bug Fix: #2021564 
+		Migration: For sites with complex permissions, header view perms are now
+		properly set.
+		(2008-07-21 - Adam Franco)
+	
+
+
+
 v. 2.0-beta-27.1 (2008-07-18)
 ----------------------------------------------------
 This release fixes an issue that preventing inline images from appearing in text

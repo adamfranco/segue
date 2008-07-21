@@ -23,7 +23,43 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-27.1</h2>
+<h2>Version 2.0-beta-27.2</h2>
+<h3>2008-07-21</h3>
+<p>This release fixes a number of bugs in migration and with wiki-text.
+<br>
+<br>An additional bug fix in Harmoni 1.4.4 fixes an issue with permissions settings for members of groups the ids of which contain quotes.
+<br>
+<br>See the change-log for additional details on fixes.
+<br>
+<br>Segue 2.0-beta-27 uses Harmoni 1.4.4 and Polyphony 1.2.11.
+<br>
+<br>---------------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021759&amp;group_id=82171&amp;atid=565237">
+        			#2021759</a> WikiText: Wrapping wiki-links and text-template markup in &lt;nowiki&gt; tags now prevents parsing of the wiki-text. This is useful for documenting how to use wiki-markup. (<em>2008-07-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> WikiText: Wiki-links to page names with diacritics now work properly. (<em>2008-07-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021588&amp;group_id=82171&amp;atid=565234">
+        			#2021588</a> WikiText: Links to Segue root now do not get converted into invalid page links. (<em>2008-07-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Wizard/Dataport: File upload temporary directory is now configurable using the POLYPHONY_TMP_DIR constant located in a new uploads.conf.php configuration file. (<em>2008-07-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021570&amp;group_id=82171&amp;atid=565234">
+        			#2021570</a> Migration: User doing migration now always gets the Admin Role. Certain permissions settings in the origin site sometimes caused a revocation of admin privlidges mid-way through the migration process. (<em>2008-07-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021564&amp;group_id=82171&amp;atid=565234">
+        			#2021564</a> Migration: For sites with complex permissions, header view perms are now properly set. (<em>2008-07-21 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-27.1</h2>
 <h3>2008-07-18</h3>
 <p>This release fixes an issue that preventing inline images from appearing in text blocks.</p>
 <ul>
