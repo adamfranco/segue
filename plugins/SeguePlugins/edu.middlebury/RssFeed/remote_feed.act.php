@@ -146,6 +146,10 @@ class remote_feed
 		$feedData = $string->asString();		
 		$feed->loadXML($feedData);
 		
+		// Check for valid XML data
+		if (!$feed->documentElement->nodeName)
+			throw new OperationFailedException("Invalid feed data: \"".$feedData."\" for URL: ".$url);
+		
 		// Handle any format conversions
 		$feed = $this->convertToRss($feed);
 		
