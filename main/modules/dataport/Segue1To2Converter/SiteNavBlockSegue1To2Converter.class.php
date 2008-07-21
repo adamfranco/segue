@@ -207,6 +207,15 @@ class SiteNavBlockSegue1To2Converter
 		/*********************************************************
 		 * Add the header
 		 *********************************************************/
+		// Load a list of every agent that can view anywhere on the site.
+		// These will all be given view access to the header and footer.
+		$viewerIds = array();
+		$viewers = $this->sourceXPath->query('//permissions/view_permission/agent');
+		foreach ($viewers as $viewer) {
+			if (!in_array($viewer->nodeValue, $viewerIds))
+				$viewerIds[] = $viewer->nodeValue;
+		}
+		
 		// Outer layout organizer
 		$cell = $navOrgElement->appendChild($this->doc->createElement('cell'));
 		$outerHeaderLayout = $cell->appendChild($this->doc->createElement("FixedOrganizer"));
@@ -234,6 +243,10 @@ class SiteNavBlockSegue1To2Converter
 		if (strlen(trim($html))) {
 			$block = $cell->appendChild($this->createTextBlockForHtml($html, 'header'));
 			$block->setAttribute('blockDisplayType', 'Header');
+			
+			// Give view access to everyone who can view the site.
+			foreach ($viewerIds as $viewerId)
+				$this->addRoleForAgent($viewerId, 'reader', $block);
 		}
 		
 		// Layout Organizer for breadcrumbs and RSS
@@ -259,6 +272,9 @@ class SiteNavBlockSegue1To2Converter
 		$cell = $org->appendChild($this->doc->createElement('cell'));
 		$block = $cell->appendChild($converter->convert());
 		$block->setAttribute('blockDisplayType', 'Header');
+		// Give view access to everyone who can view the site.
+		foreach ($viewerIds as $viewerId)
+			$this->addRoleForAgent($viewerId, 'reader', $block);
 		
 		// Add the RSS Links
 		$cell = $statusLayout->appendChild($this->doc->createElement('cell'));
@@ -277,6 +293,10 @@ class SiteNavBlockSegue1To2Converter
 		$cell = $org->appendChild($this->doc->createElement('cell'));
 		$block = $cell->appendChild($converter->convert());
 		$block->setAttribute('blockDisplayType', 'Header');
+		// Give view access to everyone who can view the site.
+		foreach ($viewerIds as $viewerId)
+			$this->addRoleForAgent($viewerId, 'reader', $block);
+
 				
 		/*********************************************************
 		 * Central content area

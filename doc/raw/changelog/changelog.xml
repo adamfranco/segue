@@ -36,6 +36,10 @@
 			Certain permissions settings in the origin site sometimes caused
 			a revocation of admin privlidges mid-way through the migration process.
 		</fix>
+		<fix author='adam' date='2008-07-21' ref='2021564' reftype='bug'>
+			Migration: For sites with complex permissions, header view perms are
+			now properly set.
+		</fix>
 	</version>
 	<version number="2.0-beta-27.1" date="2008-07-18">
 		<releaseNotes>
