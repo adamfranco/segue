@@ -31,6 +31,11 @@
 			using the POLYPHONY_TMP_DIR constant located in a new uploads.conf.php
 			configuration file.
 		</fix>
+		<fix author='adam' date='2008-07-21' ref='2021570' reftype='bug'>
+			Migration: User doing migration now always gets the Admin Role.
+			Certain permissions settings in the origin site sometimes caused
+			a revocation of admin privlidges mid-way through the migration process.
+		</fix>
 	</version>
 	<version number="2.0-beta-27.1" date="2008-07-18">
 		<releaseNotes>

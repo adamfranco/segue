@@ -190,6 +190,10 @@ class DomImportSiteVisitor
 			$this->importComponent($siteElement, $site);
 			$this->updateMenuTargets();
 			$this->updateStoredIds();
+			
+			// In case the admin role got removed from the user, apply it again.
+			if ($this->makeUserAdmin)
+				$adminRole->applyToUser($site->getQualifierId(), true);
 		} catch (Exception $e) {
 			// Ensure that we don't have a partially created site floating out there.
 			$this->director->deleteSiteComponent($site);
@@ -679,7 +683,7 @@ class DomImportSiteVisitor
 				$this->getStringValue(
 					$this->getSingleElement('./currentContent/rawDescription', $element)));
 		
-		// Reinitialize the plugin with its new content.
+		// Reinitialize the plugin with its new content. 
 		$plugin->initialize();
 	}
 	
