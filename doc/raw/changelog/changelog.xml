@@ -26,6 +26,11 @@
 			WikiText: Links to Segue root now do not get converted into invalid
 			page links.
 		</fix>
+		<fix author='adam' date='2008-07-21'>
+			Wizard/Dataport: File upload temporary directory is now configurable
+			using the POLYPHONY_TMP_DIR constant located in a new uploads.conf.php
+			configuration file.
+		</fix>
 	</version>
 	<version number="2.0-beta-27.1" date="2008-07-18">
 		<releaseNotes>
