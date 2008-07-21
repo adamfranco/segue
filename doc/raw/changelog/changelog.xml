@@ -19,6 +19,9 @@
 			tags now prevents parsing of the wiki-text. This is useful for documenting
 			how to use wiki-markup.
 		</new>
+		<fix author='adam' date='2008-07-21'>
+			WikiText: Wiki-links to page names with diacritics now work properly.
+		</fix>
 	</version>
 	<version number="2.0-beta-27.1" date="2008-07-18">
 		<releaseNotes>

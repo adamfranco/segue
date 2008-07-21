@@ -47,7 +47,10 @@ class TitleSearcher
 		ArgumentValidator::validate($title, NonZeroLengthStringValidatorRule::getRule());
 		
 		$this->visited = array();
-		$this->title = trim($title);
+		$this->title = html_entity_decode($title);
+		$this->title = mb_convert_encoding($this->title, 'UTF-8', mb_detect_encoding($this->title, "ASCII,JIS,UTF-8,EUC-JP,SJIS, ISO-8859-1"));
+		$this->title = mb_strtolower($this->title, 'UTF-8');
+		$this->title = trim($this->title);
 		
 		$result = $this->searchDown($startingComponent);
 		if (is_null($result))
@@ -105,7 +108,12 @@ class TitleSearcher
 			return null;
 		$this->visited[] = $siteComponent->getId();
 		
-		if (strtolower($this->title) == strtolower(($siteComponent->getDisplayName())))
+		$name = html_entity_decode($siteComponent->getDisplayName());
+		$name = mb_convert_encoding($name, 'UTF-8', mb_detect_encoding($name, "ASCII,JIS,UTF-8,EUC-JP,SJIS, ISO-8859-1"));
+		$name = mb_strtolower($name, 'UTF-8');
+		$name = trim($name);
+		
+		if ($name == $this->title)
 			return $siteComponent->getId();
 		
 		return null;
