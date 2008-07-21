@@ -196,16 +196,27 @@ class WikiResolver {
 	 */
 	private function replaceInternalLinks ($text, SiteComponent $startingSiteComponent) {
 		// loop through the text and look for wiki markup.
-		$this->mb_preg_match_all('/(<nowiki>)?(\[\[[^\]]+\]\])(<\/nowiki>)?/', $text, $matches,  PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+		self::mb_preg_match_all('/(<nowiki>)?(\[\[[^\]]+\]\])(<\/nowiki>)?/', $text, $matches,  PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
 		
+		$offsetDiff = 0;
 		// for each wiki link replace it with the HTML link text
-		foreach ($matches as $match) {			
+		foreach ($matches as $match) {
+			$offset = $match[0][1] + $offsetDiff;
+			$wikiText = $match[0][0];
+			
 			// Ignore markup surrounded by nowiki tags
 			if (!strlen($match[1][0]) && (!isset($match[3]) || !strlen($match[3][0]))) {
-				$offset = $match[0][1];
-				$wikiText = $match[0][0];
-				$htmlLink = $this->makeHtmlLink($wikiText, $startingSiteComponent);
-				$text = substr_replace($text, $htmlLink, $offset, strlen($wikiText));
+				$output = $this->makeHtmlLink($wikiText, $startingSiteComponent);
+				
+				$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+				$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
+			}
+			// Remove the nowiki tag from the markup.
+			else {
+				$output = $match[2][0];
+				
+				$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+				$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
 			}
 		}
 		
@@ -224,7 +235,8 @@ class WikiResolver {
 	private function replaceExternalLinks ($text) {
 		// loop through the text and look for wiki external link markup.
 		$regexp = "/
-(<nowiki>)?	# optional nowiki tag to prevent parsing.
+(<nowiki>)?		# optional nowiki tag to prevent parsing.
+
 \[		# starting bracket
 
 \s*		# optional whitespace
@@ -240,13 +252,19 @@ class WikiResolver {
 \s*		# optional whitespace
 
 \]		# closing bracket
+
 (<\/nowiki>)?	# optional closing nowiki tag to prevent parsing.
 /xi";
-		preg_match_all($regexp, $text, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+		self::mb_preg_match_all($regexp, $text, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
 // 		printpre($matches);
 		
 		// for each wiki link replace it with the HTML link text
+		$offsetDiff = 0;
 		foreach ($matches as $match) {
+			$offset = $match[0][1] + $offsetDiff;
+			$wikiText = $match[0][0];
+			$url = $match[2][0];
+				
 			// Ignore markup surrounded by nowiki tags
 			if (!strlen($match[1][0]) && (!isset($match[4]) || !strlen($match[4][0]))) {
 				$offset = $match[0][1];
@@ -256,9 +274,22 @@ class WikiResolver {
 					$name = $match[3][0];
 				else
 					$name = $url;
-				$htmlLink = "<a href='".$url."'>".$name."</a>";
+				$output = "<a href='".$url."'>".$name."</a>";
 				
-				$text = substr_replace($text, $htmlLink, $offset, strlen($wikiText));
+				$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+				$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
+			}
+			// Remove the nowiki tag from the markup.
+			else {
+				ob_start();
+				print '['.$url;
+				if (isset($match[3][0]) && $match[3][0])
+					print " ".$match[3][0];
+				print ']';
+				$output = ob_get_clean();
+				
+				$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+				$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
 			}
 		}
 		
@@ -671,10 +702,11 @@ $		# Anchor for the end of the line
 	 * @param int $pn_offset
 	 * @param string $ps_encoding
 	 * @return mixed int or false
-	 * @access protected
+	 * @access public
+	 * @static
 	 * @since 7/18/08
 	 */
-	protected function mb_preg_match_all($ps_pattern, $ps_subject, &$pa_matches, $pn_flags = PREG_PATTERN_ORDER, $pn_offset = 0, $ps_encoding = NULL) {
+	public static function mb_preg_match_all($ps_pattern, $ps_subject, &$pa_matches, $pn_flags = PREG_PATTERN_ORDER, $pn_offset = 0, $ps_encoding = NULL) {
 		// WARNING! - All this function does is to correct offsets, nothing else:
 		//
 		if (is_null($ps_encoding))
