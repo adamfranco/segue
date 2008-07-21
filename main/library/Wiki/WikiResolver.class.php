@@ -196,12 +196,17 @@ class WikiResolver {
 	 */
 	private function replaceInternalLinks ($text, SiteComponent $startingSiteComponent) {
 		// loop through the text and look for wiki markup.
-		preg_match_all('/(\[\[[^\]]+\]\])/', $text, $matches);
+		$this->mb_preg_match_all('/(<nowiki>)?(\[\[[^\]]+\]\])(<\/nowiki>)?/', $text, $matches,  PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
 		
 		// for each wiki link replace it with the HTML link text
-		foreach ($matches[1] as $wikiLink) {
-			$htmlLink = $this->makeHtmlLink($wikiLink, $startingSiteComponent);
-			$text = str_replace($wikiLink, $htmlLink, $text);
+		foreach ($matches as $match) {			
+			// Ignore markup surrounded by nowiki tags
+			if (!strlen($match[1][0]) && (!isset($match[3]) || !strlen($match[3][0]))) {
+				$offset = $match[0][1];
+				$wikiLink = $match[0][0];
+				$htmlLink = $this->makeHtmlLink($wikiLink, $startingSiteComponent);
+				$text = substr_replace($text, $htmlLink, $offset, strlen($wikiLink));
+			}
 		}
 		
 		return $text;
@@ -646,6 +651,43 @@ $		# Anchor for the end of the line
 			return _("untitled");
 	}
 	
+	
+	/**
+	 * This is a function to convert byte offsets into (UTF-8) character offsets 
+	 * (this is reagardless of whether you use /u modifier:
+	 *
+	 * Posted by chuckie to php.net on 2006-12-06.
+	 * 
+	 * @param string $ps_pattern
+	 * @param string $ps_subject
+	 * @param array $pa_matches
+	 * @param int $pn_flags
+	 * @param int $pn_offset
+	 * @param string $ps_encoding
+	 * @return mixed int or false
+	 * @access protected
+	 * @since 7/18/08
+	 */
+	protected function mb_preg_match_all($ps_pattern, $ps_subject, &$pa_matches, $pn_flags = PREG_PATTERN_ORDER, $pn_offset = 0, $ps_encoding = NULL) {
+		// WARNING! - All this function does is to correct offsets, nothing else:
+		//
+		if (is_null($ps_encoding))
+			$ps_encoding = mb_internal_encoding();
+		
+		$pn_offset = strlen(mb_substr($ps_subject, 0, $pn_offset, $ps_encoding));
+		$ret = preg_match_all($ps_pattern, $ps_subject, $pa_matches, $pn_flags, $pn_offset);
+		if ($ret && ($pn_flags & PREG_OFFSET_CAPTURE))
+			foreach($pa_matches as &$ha_match)
+				foreach($ha_match as &$ha_match) {
+					if (is_array($ha_match) && !(strlen($ha_match[0]) == 0 && $ha_match[1] == -1)) {
+						$ha_match[1] = mb_strlen(substr($ps_subject, 0, $ha_match[1]), $ps_encoding);
+					}
+				}
+		
+		// (code is independent of PREG_PATTER_ORDER / PREG_SET_ORDER)
+		
+		return $ret;
+	}
 }
 
 ?>
