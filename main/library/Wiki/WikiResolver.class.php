@@ -243,7 +243,7 @@ class WikiResolver {
 (<\/nowiki>)?	# optional closing nowiki tag to prevent parsing.
 /xi";
 		preg_match_all($regexp, $text, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
-		printpre($matches);
+// 		printpre($matches);
 		
 		// for each wiki link replace it with the HTML link text
 		foreach ($matches as $match) {
