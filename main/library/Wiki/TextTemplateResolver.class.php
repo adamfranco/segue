@@ -125,6 +125,8 @@ class Segue_Wiki_TextTemplateResolver {
 	public function applyTextTemplates ($text) {
 		$regexp = "/
 
+(<nowiki>)?		# optional nowiki tag to prevent parsing.
+
 {{	# The opening template tags
 
 	\s*		# optional whitespace
@@ -136,6 +138,8 @@ class Segue_Wiki_TextTemplateResolver {
 	(?: |([^}]+) )?		# A parameter list
 
 }}	# The closing template tags
+
+(<\/nowiki>)?	# optional closing nowiki tag to prevent parsing.
 
 /xi";
 
@@ -155,30 +159,49 @@ class Segue_Wiki_TextTemplateResolver {
 
 /xi";
 
-		preg_match_all($regexp, $text, $matches);
+		WikiResolver::mb_preg_match_all($regexp, $text, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+// 		printpre($matches);
 		
 		// for each wiki template replace it with the HTML version
-		foreach ($matches[0] as $index => $wikiText) {
-			try {
-				$template = $this->getTextTemplate(strtolower($matches[1][$index]));
-				
-				// Build the parameter array
-				$params = array();
-				$paramString = trim($matches[2][$index]);
-				preg_match_all($paramRegexp, $paramString, $paramMatches);
-				foreach ($paramMatches[1] as $j => $paramName) {
-					$params[$paramName] = $paramMatches[2][$j];
-				}
-				
-				// Execute the template
+		$offsetDiff = 0;
+		foreach ($matches as $match) {
+			$offset = $match[0][1] + $offsetDiff;
+			$wikiText = $match[0][0];
+			$templateName = strtolower($match[2][0]);
+			$paramString = trim($match[3][0]);
+			
+			// Ignore markup surrounded by nowiki tags
+			if (!strlen($match[1][0]) && (!isset($match[4]) || !strlen($match[4][0]))) {
 				try {
-					$text = str_replace($wikiText, $template->generate($params), $text);
-				} catch (Exception $e) {
+					$template = $this->getTextTemplate($templateName);
 					
+					// Build the parameter array
+					$params = array();
+					preg_match_all($paramRegexp, $paramString, $paramMatches);
+					foreach ($paramMatches[1] as $j => $paramName) {
+						$params[$paramName] = $paramMatches[2][$j];
+					}
+					
+					// Execute the template
+					try {
+						$output = $template->generate($params);
+						
+						$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+						$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
+					} catch (Exception $e) {
+						
+					}
+				} catch (UnknownIdException $e) {
+					if ($e->getCode() != 34563)
+						throw $e;
 				}
-			} catch (UnknownIdException $e) {
-				if ($e->getCode() != 34563)
-					throw $e;
+			} 
+			// Remove the nowiki tag from the markup.
+			else {
+				$output = '{{'.$templateName.$paramString.'}}';
+				
+				$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+				$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
 			}
 		}
 		

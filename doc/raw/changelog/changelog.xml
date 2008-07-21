@@ -10,6 +10,16 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-28" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2008-07-21' ref='2021759' reftype='fr'>
+			WikiText: Wrapping wiki-links and text-template markup in &lt;nowiki&gt; 
+			tags now prevents parsing of the wiki-text. This is useful for documenting
+			how to use wiki-markup.
+		</new>
+	</version>
 	<version number="2.0-beta-27.1" date="2008-07-18">
 		<releaseNotes>
 			This release fixes an issue that preventing inline images from appearing
