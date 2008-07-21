@@ -203,9 +203,9 @@ class WikiResolver {
 			// Ignore markup surrounded by nowiki tags
 			if (!strlen($match[1][0]) && (!isset($match[3]) || !strlen($match[3][0]))) {
 				$offset = $match[0][1];
-				$wikiLink = $match[0][0];
-				$htmlLink = $this->makeHtmlLink($wikiLink, $startingSiteComponent);
-				$text = substr_replace($text, $htmlLink, $offset, strlen($wikiLink));
+				$wikiText = $match[0][0];
+				$htmlLink = $this->makeHtmlLink($wikiText, $startingSiteComponent);
+				$text = substr_replace($text, $htmlLink, $offset, strlen($wikiText));
 			}
 		}
 		
@@ -224,6 +224,7 @@ class WikiResolver {
 	private function replaceExternalLinks ($text) {
 		// loop through the text and look for wiki external link markup.
 		$regexp = "/
+(<nowiki>)?	# optional nowiki tag to prevent parsing.
 \[		# starting bracket
 
 \s*		# optional whitespace
@@ -239,21 +240,26 @@ class WikiResolver {
 \s*		# optional whitespace
 
 \]		# closing bracket
+(<\/nowiki>)?	# optional closing nowiki tag to prevent parsing.
 /xi";
-		preg_match_all($regexp, $text, $matches);
-// 		printpre($matches);
+		preg_match_all($regexp, $text, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+		printpre($matches);
 		
 		// for each wiki link replace it with the HTML link text
-		foreach ($matches[0] as $index => $wikiText) {
-			ob_start();
-			print "<a href='".$matches[1][$index]."'>";
-			if (isset($matches[2][$index]) && $matches[2][$index])
-				print $matches[2][$index];
-			else
-				print $matches[1][$index];
-			print "</a>";
-			
-			$text = str_replace($wikiText, ob_get_clean(), $text);
+		foreach ($matches as $match) {
+			// Ignore markup surrounded by nowiki tags
+			if (!strlen($match[1][0]) && (!isset($match[4]) || !strlen($match[4][0]))) {
+				$offset = $match[0][1];
+				$wikiText = $match[0][0];
+				$url = $match[2][0];
+				if (isset($match[3][0]) && $match[3][0])
+					$name = $match[3][0];
+				else
+					$name = $url;
+				$htmlLink = "<a href='".$url."'>".$name."</a>";
+				
+				$text = substr_replace($text, $htmlLink, $offset, strlen($wikiText));
+			}
 		}
 		
 		return $text;
