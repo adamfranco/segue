@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-27.3" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-07-22' ref='2023876' reftype='bug'>
+			Placeholders: Admin placeholder management screens now keep pagination state.
+		</fix>
+	</version>
 	<version number="2.0-beta-27.2" date="2008-07-21">
 		<releaseNotes>
 			This release fixes a number of bugs in migration and with wiki-text.

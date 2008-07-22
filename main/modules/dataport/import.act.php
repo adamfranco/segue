@@ -108,6 +108,7 @@ class importAction
 	 */
 	public function buildContent () {
 		$harmoni = Harmoni::instance();
+		$harmoni->request->passthrough('starting_number');
 		$harmoni->request->passthrough("site");
 		
 		$centerPane = $this->getActionRows();
