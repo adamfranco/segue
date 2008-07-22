@@ -144,10 +144,7 @@ class remote_feed
 		$string = String::withValue($feedData);
 		$string->makeUtf8();
 		$feedData = $string->asString();		
-		$feed->loadXML($feedData);
-		
-		// Check for valid XML data
-		if (!$feed->documentElement->nodeName)
+		if (!@$feed->loadXML($feedData))
 			throw new OperationFailedException("Invalid feed data: \"".$feedData."\" for URL: ".$url);
 		
 		// Handle any format conversions
