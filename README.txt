@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-27.2 (2008-07-21)
+Segue v. 2.0-beta-28 (2008-07-24)
 =================================
 
 What is Segue?
@@ -17,14 +17,12 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release fixes a number of bugs in migration and with wiki-text.
-
-An additional bug fix in Harmoni 1.4.4 fixes an issue with permissions settings for
-members of groups the ids of which contain quotes.
+This release fixes a number of minor bugs, improves theme-support for MS Internet
+Explorer, and adds support for embedding GoogleMaps. 
 
 See the change-log for additional details on fixes.
 
-Segue 2.0-beta-27 uses Harmoni 1.4.4 and Polyphony 1.2.11.
+Segue 2.0-beta-28 uses Harmoni 1.4.5 and Polyphony 1.3.0.
 
 ---------------------
 
@@ -75,6 +73,28 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-28 (2008-07-24)
+----------------------------------------------------
+This release fixes a number of minor bugs, improves theme-support for MS Internet
+Explorer, and adds support for embedding GoogleMaps. 
+
+See the change-log for additional details on fixes.
+
+Segue 2.0-beta-28 uses Harmoni 1.4.5 and Polyphony 1.3.0.
+
+---------------------
+
+Upgrades:
+
+As of this beta 25, Segue requires PHP to be
+compiled with XSL support. On unix systems this can be added by configuring PHP
+using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 26 require running the RSS Feed updaters
+located under Admin Tools --> Segue Updates.
+
 
 
 v. 2.0-beta-27.2 (2008-07-21)

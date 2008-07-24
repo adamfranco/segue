@@ -23,7 +23,46 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-27.2</h2>
+<h2>Version 2.0-beta-28</h2>
+<h3>2008-07-24</h3>
+<p>This release fixes a number of minor bugs, improves theme-support for MS Internet Explorer, and adds support for embedding GoogleMaps. 
+<br>
+<br>See the change-log for additional details on fixes.
+<br>
+<br>Segue 2.0-beta-28 uses Harmoni 1.4.5 and Polyphony 1.3.0.
+<br>
+<br>---------------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b> TextTemplates: New Text-Template for embedding Google Maps. For details See: https://segue2.middlebury.edu/view/html/node/481328 (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2026991&amp;group_id=82171&amp;atid=565234">
+        			#2026991</a> UI2: Content display name fields now doen't get extra entity encoding. (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021654&amp;group_id=82171&amp;atid=565234">
+        			#2021654</a> Plugins: Text-Plugin now prompts with confirmation before unloading the page (back, refresh, link-click, etc) when the plugin is open for editing. The Classic-Mode wizard similarly prompts the user. (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2023876&amp;group_id=82171&amp;atid=565234">
+        			#2023876</a> Placeholders: Admin placeholder management screens now keep pagination state. (<em>2008-07-22 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Themes: updated the RoundedCorners theme to be more compatible with other themes and to display more consistently across browsers. (<em>2008-07-23 - Alex Chapin</em>)</li>
+		<li>
+<b>Change:</b> UI2: removed the Nav block display of settings for titles, history, comments dates, attribution and sort method unless these are other than the default settings. These settings are being removed from the nav block because they can be set in the content containers within that nav block. (<em>2008-07-22 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021654&amp;group_id=82171&amp;atid=565234">
+        			#2021654</a> Plugins: Text-Plugin now prompts with confirmation before unloading the page (back, refresh, link-click, etc) when the plugin is open for editing in UI2. (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2023876&amp;group_id=82171&amp;atid=565234">
+        			#2023876</a> Placeholders: Admin placeholder management screens now keep pagination state. (<em>2008-07-22 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-27.2</h2>
 <h3>2008-07-21</h3>
 <p>This release fixes a number of bugs in migration and with wiki-text.
 <br>
