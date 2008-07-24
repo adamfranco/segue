@@ -3,16 +3,13 @@
  *********************************************************/
 
 *.MenuItem_Link_Unselected {
-    padding: 1px;
+     padding: 1px;
     border: 0px;
 }
 
 *.MenuItem_Link_Unselected .Content {
-    background-color: #d3d3d3;;
-    border: 1px solid #979797;
-    padding: 3px;
-    text-align: left;
-    color: #000000;
+    background-color: [[MENU_COLOR]];
+    text-align: left;  
     font-size: 100%;
     margin: 0px;
 }
@@ -20,12 +17,66 @@
 
 *.MenuItem_Link_Unselected a {
     display: block;
-    color: F5F5F5;
     text-decoration: none;
+    color: [[MENU_LINK_COLOR]];
 }
 
 *.MenuItem_Link a:hover {
     display: block;
-    background-color: #F5F5F5;
+    background-color: [[HEADER_BG_COLOR]];
     text-decoration: none;
+    color: [[MENU_LINK_COLOR]];
+}
+
+.MenuItem_Link_Unselected .Content:hover {
+    background-color: [[HEADER_BG_COLOR]];
+}
+
+.MenuItem_Link_Unselected .BorderTL {
+    background: url('./images/[[IMAGE_DIR]]/corner_TL.gif') no-repeat;
+    background-color: [[MENU_COLOR]];
+    width: 5px;
+    height: 5px;
+}
+
+.MenuItem_Link_Unselected .Top {
+    border-top: 1px solid [[BORDER_COLOR]];
+    background-color: [[MENU_COLOR]];
+}
+
+.MenuItem_Link_Unselected .BorderTR {
+    background: url('./images/[[IMAGE_DIR]]/corner_TR.gif') no-repeat;
+    background-color: [[MENU_COLOR]];
+    width: 5px;
+    height: 5px;
+}
+
+.MenuItem_Link_Unselected .Right {
+    background-color: [[MENU_COLOR]];
+    border-right: 1px solid [[BORDER_COLOR]];
+
+}
+
+.MenuItem_Link_Unselected .Left {
+    background-color: [[MENU_COLOR]];
+    border-left: 1px solid [[BORDER_COLOR]];
+}
+
+.MenuItem_Link_Unselected .BorderBL {
+    background: url('./images/[[IMAGE_DIR]]/corner_BL.gif') no-repeat;
+    background-color: [[MENU_COLOR]];
+    width: 5px;
+    height: 5px;
+}
+
+.MenuItem_Link_Unselected .Bottom {
+    border-bottom: 1px solid [[BORDER_COLOR]];
+    background-color: [[MENU_COLOR]];
+}
+
+.MenuItem_Link_Unselected .BorderBR {
+    background: url('./images/[[IMAGE_DIR]]/corner_BR.gif') no-repeat;
+    background-color: [[MENU_COLOR]];
+    width: 5px;
+    height: 5px;
 }

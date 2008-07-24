@@ -1259,12 +1259,18 @@ END;
 		$this->controlsStart($siteComponent);		
 		$this->printDisplayName($siteComponent);
 		$this->printDescription($siteComponent);
-		$this->printShowDisplayNames($siteComponent);		
-		$this->printShowHistory($siteComponent);
-		$this->printCommentSettings($siteComponent);
-		$this->printShowDates($siteComponent);
-		$this->printShowAttribution($siteComponent);
-		$this->printSortMethod($siteComponent);
+		if ($siteComponent->showDisplayNames() !== 'default')
+			$this->printShowDisplayNames($siteComponent);
+		if ($siteComponent->showHistorySetting() !== 'default')
+			$this->printShowHistory($siteComponent);
+		if ($siteComponent->commentsEnabled() !== 'default') 
+			$this->printCommentSettings($siteComponent);
+		if ($siteComponent->showDatesSetting() !== 'default')
+			$this->printShowDates($siteComponent);
+		if ($siteComponent->showAttributionSetting() !== 'default')
+			$this->printShowAttribution($siteComponent);
+		if ($siteComponent->sortMethodSetting() !== 'default')
+			$this->printSortMethod($siteComponent);
 // 		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
 		

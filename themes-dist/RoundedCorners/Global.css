@@ -29,6 +29,10 @@ a:hover {
     border: 0px solid #000;
 }
 
+.plugin_content {
+    color: [[TEXT_COLOR]];
+}
+
 .plugin_content a {
     text-decoration: [[LINK_DECORATION]];
 }
@@ -36,7 +40,6 @@ a:hover {
 .plugin_content a:hover {
     text-decoration: underline;
 }
-
 
 /*********************************************************
  * Styles for Segue links, log in, and editing controls
@@ -84,82 +87,48 @@ seguefooter_left {
 }
 
 .pagination_links {
-    margin-left: 10px;
-    margin-right: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
+    color: [[BG_TEXT_COLOR]];
 }
 
-
-/*********************************************************
- * Corners
- * In the CSS below, the numbers used are the following:
- * 1px: the width of the border
- *  3px: a fudge factor needed for IE5/win (see below)
- *  4px: the width of the border (1px) plus the 3px IE5/win fudge factor
- * 14px: the width or height of the border image
- *********************************************************/
-.TopCorners, .BottomCorners {
-    margin: 0px;
-    padding: 0px;
+.pagination_links a {
+    color: [[BORDER_COLOR]];
+    text-decoration: none;
+    border: 1px solid [[BORDER_COLOR]];
+    padding-left: 2px;
+    padding-right: 2px;
 }
+
+.pagination_links a:hover {
+    display: block
+    border: 1px solid;
+    color: [[MENU_LINK_COLOR]];
+    cursor: pointer;
+}
+
+.attribution_line {
+    color: [[ATRIBUTION_TEXT_COLOR]];
+}    
+
+.comment {
+    border-top: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
+}
+
+.comment_byline {
+    color: [[ATRIBUTION_TEXT_COLOR]];
+}
+
+.history {
+
+}
+
 .Spacer {
     margin: 0px; padding: 0px; border: 0px;
     clear: both;
     font-size: 1px; line-height: 1px;
 }
 
-
-.BorderTL, .BorderTR, .BorderBL, .BorderBR {
-    width: 14px;
-    height: 14px;
-    padding: 0px;
-    border: 0px;
-    z-index: 99;
-}
-.BorderTL, .BorderBL {
-    float: left;
-    clear: both;
-}
-.BorderTR, .BorderBR {
-    float: right;
-    clear: right;
-}
-.BorderTL {
-    margin: 0px 0px 0px 0px;
-}
-.BorderTR {
-    margin: -0px -0px 0px 0px;
-}
-.BorderBL {
-    margin: -14px 0px 0px 0px;
-}
-.BorderBR {
-    margin: -14px 0px 0px 0px;
-}
-.BorderTL {
-     margin-left: -4px;
-     margin-left: -1px;
-}
-html>body .BorderTL {
-     margin-left: 0px;
-}
-.BorderTR {
-     margin-right: -4px;
-     margin-right: -1px;
-}
-html>body .BorderTR {
-     margin-right: 0px;
-}
-.BorderBL {
-     margin-left: -3px;
-     margin-left: 0px;
-}
-html>body .BorderBL {
-     margin-left: -0px;
-}
-.BorderBR {
-     margin-left: -3px;
-     margin-left: 0px;
-}
-html>body .BorderBR {
-     margin-left: 0px;
+.zeroheight {
+    height: 0px;
 }

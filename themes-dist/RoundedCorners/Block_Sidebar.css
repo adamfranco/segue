@@ -6,74 +6,76 @@
     padding: 1px;
     border: 0px;
 }
-*.block3Content {
-    background-color: #fff;
+
+*.block3 .Content {
+    background-color: [[FG_COLOR]];
     color: #000;
-    border: 1px solid #979797;
     padding: 10px;
     text-align: left;
     margin: 0px;
 }
-.block3TopCorners, .block3BottomCorners {
-    margin: 0px;
-    padding: 0px;
-}
-.block3Spacer {
-    margin: 0px; padding: 0px; border: 0px;
-    clear: both;
-    font-size: 1px; line-height: 1px;
+
+.block3 .BorderTL {
+    background: url('./images/[[IMAGE_DIR]]/corner_TL.gif') no-repeat;
+    background-color: [[FG_COLOR]];
+    width: 5px;
+    height: 5px;
 }
 
-.block3BorderTL, .block3BorderTR, .block3BorderBL, .block3BorderBR {
-    width: 14px; height: 14px;
-    padding: 0px; border: 0px;
-    z-index: 99;
+.block3 .Top {
+    border-top: 1px solid #979797;
+    background-color: [[FG_COLOR]];
 }
-.block3BorderTL, .block3BorderBL {
-    float: left;
-    clear: both;
+
+
+.block3  .BorderTL {
+    background: url('./images/[[IMAGE_DIR]]/corner_TL.gif') no-repeat;
+    background-color: [[FG_COLOR]];
+    width: 5px;
+    height: 5px;
 }
-.block3BorderTR, .block3BorderBR {
-    float: right;
-    clear: right;
+
+.block3  .Top {
+    border-top: 1px solid [[BORDER_COLOR]];
+    background-color: [[FG_COLOR]];
 }
-.block3BorderTL {
-    margin: 0px 0px 0px 0px;
+
+
+.block3  .BorderTR {
+    background: url('./images/[[IMAGE_DIR]]/corner_TR.gif') no-repeat;
+    background-color: [[FG_COLOR]];
+    width: 5px;
+    height: 5px;
 }
-.block3BorderTR {
-    margin: -0px -0px 0px 0px;
+
+
+.block3  .Right {
+    background-color: [[FG_COLOR]];
+    border-right: 1px solid [[BORDER_COLOR]];
+
 }
-.block3BorderBL {
-    margin: -14px 0px 0px 0px;
+
+.block3  .Left {
+    background-color: [[FG_COLOR]];
+    border-left: 1px solid [[BORDER_COLOR]];
 }
-.block3BorderBR {
-    margin: -14px 0px 0px 0px;
+
+
+.block3  .BorderBL {
+    background: url('./images/[[IMAGE_DIR]]/corner_BL.gif') no-repeat;
+    background-color: [[FG_COLOR]];
+    width: 5px;
+    height: 5px;
 }
-.block3BorderTL {
-     margin-left: -4px;
-     margin-left: -1px;
+
+.block3  .Bottom {
+    border-bottom: 1px solid [[BORDER_COLOR]];
+    background-color: [[FG_COLOR]];
 }
-html>body .block3BorderTL {
-     margin-left: 0px;
-}
-.block3BorderTR {
-     margin-right: -4px;
-     margin-right: -1px;
-}
-html>body .block3BorderTR {
-     margin-right: 0px;
-}
-.block3BorderBL {
-     margin-left: -3px;
-     margin-left: 0px;
-}
-html>body .block3BorderBL {
-     margin-left: -0px;
-}
-.block3BorderBR {
-     margin-left: -3px;
-     margin-left: 0px;
-}
-html>body .block3BorderBR {
-     margin-left: 0px;
+
+.block3  .BorderBR {
+    background: url('./images/[[IMAGE_DIR]]/corner_BR.gif') no-repeat;
+    background-color: [[FG_COLOR]];
+    width: 5px;
+    height: 5px;
 }

@@ -22,6 +22,16 @@
 		<fix author='adam' date='2008-07-22' ref='2023876' reftype='bug'>
 			Placeholders: Admin placeholder management screens now keep pagination state.
 		</fix>
+		<change author='alex' date='2008-07-23' >
+			Themes: updated the RoundedCorners theme to be more compatible with other themes
+			and to display more consistently across browsers.
+		</change>
+		<change author='alex' date='2008-07-22' >
+			UI2: removed the Nav block display of settings for titles, history, comments
+			dates, attribution and sort method unless these are other than the default
+			settings.  These settings are being removed from the nav block because they
+		    can be set in the content containers within that nav block.		
+		</change>
 	</version>
 	<version number="2.0-beta-27.2" date="2008-07-21">
 		<releaseNotes>
