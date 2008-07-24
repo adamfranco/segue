@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-07-24' ref='2026991' reftype='bug'>
+			UI2: Content display name fields now doen't get extra entity encoding.
+		</fix>
 		<fix author='adam' date='2008-07-24' ref='2021654' reftype='bug'>
 			Plugins: Text-Plugin now prompts with confirmation before unloading the 
 			page (back, refresh, link-click, etc) when the plugin is open for editing.
