@@ -112,7 +112,6 @@ class deleteAction
 	 */
 	public function getReturnUrl () {
 		$harmoni = Harmoni::instance();
-		$harmoni->request->passthrough('starting_number');
 		$harmoni->request->forget("name");
 		$harmoni->request->startNamespace("slots");
 		$module = RequestContext::value("returnModule");

@@ -95,7 +95,6 @@ class browseAction
 	public function getCreateForm () {
 		ob_start();
 		$harmoni = Harmoni::instance();
-		$harmoni->request->passthrough('starting_number');
 		$harmoni->request->startNamespace("slots");
 		print "\n\t<form action='".$harmoni->request->quickURL('slots', 'edit')."' method='post'>";
 		print "\n\t\t<div><strong>"._("Create/Edit a Placholder").": </strong></div>";
@@ -106,7 +105,6 @@ class browseAction
 		print "\n\t\t</div>";
 		print "\n\t</form>";
 		$harmoni->request->endNamespace();
-		$harmoni->request->forget('starting_number');
 		return new Block(ob_get_clean(), STANDARD_BLOCK);
 	}
 	
@@ -195,7 +193,6 @@ class browseAction
 		print implode("; ", $ownerStrings);
 		print "</td>";
 		
-		$harmoni->request->passthrough('starting_number');
 		$harmoni->request->startNamespace("slots");
 		print "\n\t\t<td style='white-space: nowrap;'>";
 		print "\n\t\t\t<a href='";
@@ -222,7 +219,6 @@ class browseAction
 		}
 		print "\n\t\t</td>";
 		$harmoni->request->endNamespace();
-		$harmoni->request->forget('starting_number');
 
 		print "\n\t</tr>";
 		return ob_get_clean();

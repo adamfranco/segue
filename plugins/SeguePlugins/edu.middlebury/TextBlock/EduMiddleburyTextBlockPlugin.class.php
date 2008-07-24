@@ -332,20 +332,6 @@ class EduMiddleburyTextBlockPlugin
 		} else {
 			throw new Exception("Supplied editor, '".$this->textEditor."', is not valid.");
 		}
-		
-		// Add an event check on back button to confirm that the user wants to
-		// leave with their editor open.
-		$fieldName = $this->getFieldName('content');
-		$string = _("You have edits open. Any changes will be lost.");
-		print "
-<script type='text/javascript'>
-// <![CDATA[ 
-
-		window.addUnloadConfirmationForElement(\"$fieldName\", \"$string\");
-	
-// ]]>
-</script>
-";
  	}
  	
  	 	/**
@@ -356,7 +342,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 8/27/07
  	 */
  	function printTextField () {
- 		print "\n\t<textarea id='".$this->getFieldName('content')."' name='".$this->getFieldName('content')."' rows='20' style='width: 100%;'>";
+ 		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' style='width: 100%;'>";
  		if (is_null($this->workingContent))
 	 		print $this->cleanHTML($this->untokenizeLocalUrls($this->getContent()));
 	 	else

@@ -39,6 +39,14 @@
 			settings.  These settings are being removed from the nav block because they
 		    can be set in the content containers within that nav block.		
 		</change>
+		<fix author='adam' date='2008-07-24' ref='2021654' reftype='bug'>
+			Plugins: Text-Plugin now prompts with confirmation before unloading the 
+			page (back, refresh, link-click, etc) when the plugin is open for editing
+			in UI2.
+		</fix>
+		<fix author='adam' date='2008-07-22' ref='2023876' reftype='bug'>
+			Placeholders: Admin placeholder management screens now keep pagination state.
+		</fix>
 	</version>
 	<version number="2.0-beta-27.2" date="2008-07-21">
 		<releaseNotes>
