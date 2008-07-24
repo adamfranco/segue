@@ -10,10 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-27.3" date="The Future">
+	<version number="2.0-beta-28" date="2008-07-24">
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-07-24'>
+			TextTemplates: New Text-Template for embedding Google Maps.
+			For details See: https://segue2.middlebury.edu/view/html/node/481328 
+		</new>
 		<fix author='adam' date='2008-07-24' ref='2026991' reftype='bug'>
 			UI2: Content display name fields now doen't get extra entity encoding.
 		</fix>
