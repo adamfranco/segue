@@ -16,8 +16,8 @@
 		</releaseNotes>
 		<fix author='adam' date='2008-07-24' ref='2021654' reftype='bug'>
 			Plugins: Text-Plugin now prompts with confirmation before unloading the 
-			page (back, refresh, link-click, etc) when the plugin is open for editing
-			in UI2.
+			page (back, refresh, link-click, etc) when the plugin is open for editing.
+			The Classic-Mode wizard similarly prompts the user.
 		</fix>
 		<fix author='adam' date='2008-07-22' ref='2023876' reftype='bug'>
 			Placeholders: Admin placeholder management screens now keep pagination state.
