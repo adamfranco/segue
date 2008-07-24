@@ -270,7 +270,7 @@ class EduMiddleburyTextBlockPlugin
 		print ' if (this.form.onsubmit) {this.form.onsubmit(); this.form.submit();} else {this.form.submit();} ';
 		print "'>";
 		print "\n\t<option value='fck'".(($this->textEditor=='fck')?" selected='selected'":"").">Rich-Text Editor</option>";
-		print "\n\t<option value='none'".(($this->textEditor=='none')?" selected='selected'":"").">None</option>";
+		print "\n\t<option value='none'".(($this->textEditor=='none')?" selected='selected'":"").">Plain-Text</option>";
 		print "\n\t</select></div>";
 
  		// replace with editor code

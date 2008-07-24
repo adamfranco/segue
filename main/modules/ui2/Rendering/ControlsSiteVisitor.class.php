@@ -216,7 +216,7 @@ class ControlsSiteVisitor
 			print " readonly='readonly'";
 		}
 		
-		print " value=\"".htmlentities($siteComponent->getDisplayName())."\"/>";
+		print " value=\"".str_replace('"', '&quot;', htmlspecialchars($siteComponent->getDisplayName()))."\"/>";
 	//	print "</div>";
 
 		print "\n\t\t\t\t</td></tr>";
@@ -788,7 +788,7 @@ class ControlsSiteVisitor
 			print " readonly='readonly'";
 		}
 		
-		print ">".$siteComponent->getDescription();
+		print ">".htmlspecialchars($siteComponent->getDescription());
 		print "</textarea>";
 	//	print "\n\t\t\t\t</td></tr></table>";
 		print "\n\t\t\t\t</td></tr>";

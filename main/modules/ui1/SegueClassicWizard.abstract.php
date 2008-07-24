@@ -150,6 +150,8 @@ class SegueClassicWizard
 		$wizard->addStep("display", $this->getDisplayOptionsStep());
 // 		$wizard->addStep("status", $this->getStatusStep());
 		
+		
+		$wizard->addConfimLeavingMessage(_("Click 'Save' or 'Cancel' to leave this wizard and 'Next' or 'Previous' to move around in it. Otherwise, unsubmitted changes may be lost."));
 		return $wizard;
 	}
 	

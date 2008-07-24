@@ -10,13 +10,21 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-<<<<<<< HEAD:doc/raw/changelog/changelog.xml
-
-=======
 	<version number="2.0-beta-27.3" date="The Future">
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-07-24' ref='2026991' reftype='bug'>
+			UI2: Content display name fields now doen't get extra entity encoding.
+		</fix>
+		<fix author='adam' date='2008-07-24' ref='2021654' reftype='bug'>
+			Plugins: Text-Plugin now prompts with confirmation before unloading the 
+			page (back, refresh, link-click, etc) when the plugin is open for editing.
+			The Classic-Mode wizard similarly prompts the user.
+		</fix>
+		<fix author='adam' date='2008-07-22' ref='2023876' reftype='bug'>
+			Placeholders: Admin placeholder management screens now keep pagination state.
+		</fix>
 		<change author='alex' date='2008-07-23' >
 			Themes: updated the RoundedCorners theme to be more compatible with other themes
 			and to display more consistently across browsers.
@@ -35,7 +43,6 @@
 		<fix author='adam' date='2008-07-22' ref='2023876' reftype='bug'>
 			Placeholders: Admin placeholder management screens now keep pagination state.
 		</fix>
->>>>>>> dfd9877e70e6ec61e147fb18507f92a56c8f677f:doc/raw/changelog/changelog.xml
 	</version>
 	<version number="2.0-beta-27.2" date="2008-07-21">
 		<releaseNotes>
