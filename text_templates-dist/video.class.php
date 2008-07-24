@@ -48,6 +48,7 @@ class Segue_TextTemplates_video
 	 *		<p>This template will allow the embedding of Flash Video from a variety
 	 *		of sources. These sources must be configured by the Segue administrator
 	 *		if they are not included in the default configuration.</p>
+	 * 		<h4>Parameters:</h4>
 	 *		<dl>
 	 *			<dt>service<dt>
 	 *			<dd>The service at which this video is hosted -- all lowercase.
@@ -61,7 +62,8 @@ class Segue_TextTemplates_video
 	 *			<dt>height</dt>
 	 *			<dd>The integer height of the player in pixels. Example: 250</dd>
 	 *		</dl>
-	 *		<p>Example Usage: {{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}}</p>
+	 *		<h4>Example Usage:</h4>
+	 *		<p>{{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}}</p>
 	 *		<p>Note: If you paste the embed code from a supported service into
 	 *		a text block, it will automatically be converted into the template markup
 	 *		when saved</p>
@@ -77,6 +79,7 @@ class Segue_TextTemplates_video
 "<div>
 	<h4>video</h4>
 	<p>This template will allow the embedding of Flash Video from a variety of sources. These sources must be configured by the Segue administrator if they are not included in the default configuration.</p>
+	<h4>Parameters:</h4>
 	<dl>
 		<dt>service<dt>
 		<dd>The service at which this video is hosted -- all lowercase. Examples: youtube, youtube_playlist, google, vimeo, hulu</dd>
@@ -87,7 +90,8 @@ class Segue_TextTemplates_video
 		<dt>height</dt>
 		<dd>The integer height of the player in pixels. Example: 250</dd>
 	</dl>
-	<p>Example Usage: {{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}}</p>
+	<h4>Example Usage:</h4>
+	<p>{{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}}</p>
 	<p>Note: If you paste the embed code from a supported service into a text block, it will automatically be converted into the template markup when saved</p>
 </div>");
 	}

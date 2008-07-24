@@ -185,6 +185,7 @@ class Segue_Wiki_TextTemplateResolver {
 					// Execute the template
 					try {
 						$output = $template->generate($params);
+// 						$output .= printpre(htmlentities(print_r($template->getHtmlMatches($output), true)), true);
 						
 						$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
 						$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
