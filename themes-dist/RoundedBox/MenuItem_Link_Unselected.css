@@ -3,7 +3,8 @@
  *********************************************************/
 
 *.MenuItem_Link_Unselected {
-     padding: 1px;
+    padding: 1px;
+    margin: 1px;
     border: 0px;
 }
 
@@ -19,11 +20,13 @@
     display: block;
     text-decoration: none;
     color: [[MENU_LINK_COLOR]];
+    font-size: [[MENU_FONT_SIZE]];
 }
 
 *.MenuItem_Link a:hover {
     display: block;
     background-color: [[HEADER_BG_COLOR]];
+    /*border: 1px solid [[BORDER_COLOR]];*/
     text-decoration: none;
     color: [[MENU_LINK_COLOR]];
 }
