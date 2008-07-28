@@ -193,11 +193,19 @@ class listAction
 		try {
 			$selectedSlot = $this->getSelectedSlot();
 			$selectedSlotname = $selectedSlot->getShortname();
+			$siteAsset = $selectedSlot->getSiteAsset();
+			$selectedSiteId = $siteAsset->getId()->getIdString();
+			$selectedSiteTitle = addslashes(HtmlString::getSafeHtml($siteAsset->getDisplayName()));
 		} catch (OperationFailedException $e) {
 			$selectedSlotname = '';
+			$selectedSiteId = '';
+			$selectedSiteTitle = '';
 		}
 		
 		print "\n
+		
+		<script type='text/javascript' src='".MYPATH."/javascript/SiteCopyPanel.js'></script>
+		
 		<script type='text/javascript'>
 		// <![CDATA[
 		
@@ -208,8 +216,11 @@ class listAction
 		 * @since 7/25/08
 		 */
 		function Portal () {
-			var selectedSlotname = '".$selectedSlotname."';
 		}
+		
+		Portal.selectedSlotname = '".$selectedSlotname."';
+		Portal.selectedSiteId = '".$selectedSiteId."';
+		Portal.selectedSiteTitle = '".$selectedSiteTitle."';
 		
 		/**
 		 * Set the selected slotname and sent an asynchronous request to set
@@ -222,8 +233,10 @@ class listAction
 		 * @access public
 		 * @since 7/25/08
 		 */
-		Portal.setSelectedSlotname = function (slotName, siteTitle, link) {
+		Portal.setSelectedSlotname = function (slotName, siteId, siteTitle, link) {
 			Portal.selectedSlotname = slotName;
+			Portal.selectedSiteId = siteId;
+			Portal.selectedSiteTitle = siteTitle;
 			
 			// Send off an asynchronous request to record the selected slotname
 			// for future page-loads
@@ -271,6 +284,8 @@ class listAction
 		 */
 		Portal.unsetSelectedSlotname = function () {
 			delete Portal.selectedSlotname;
+			delete Portal.selectedSiteId;
+			delete Portal.selectedSiteTitle;
 			
 			// Send off an asynchronous request to record the selected slotname
 			// for future page-loads
@@ -313,16 +328,17 @@ class listAction
 		 * will have the site selected.
 		 * 
 		 * @param string slotName	The slot name to copy
+		 * @param string siteId		The site id selected
 		 * @param string siteTitle	The title of the site selected
 		 * @param DOMElement link	The link clicked
 		 * @return void
 		 * @access public
 		 * @since 7/25/08
 		 */
-		Portal.selectForCopy = function (slotName, siteTitle, link) {
+		Portal.selectForCopy = function (slotName, siteId, siteTitle, link) {
 			// Set the selected slotname property, then send off an asynchronous 
 			// request to record the selected slotname for future page-loads
-			Portal.setSelectedSlotname(slotName, siteTitle, link);
+			Portal.setSelectedSlotname(slotName, siteId, siteTitle, link);
 			
 			
 			// Cancel all other selections
@@ -350,7 +366,7 @@ class listAction
 			// Change the link to a cancel select link
 			link.innerHTML = '"._('cancel copy')."';
 			link.onclick = function () {
-				Portal.deselectForCopy(slotName, siteTitle, link);
+				Portal.deselectForCopy(slotName, siteId, siteTitle, link);
 			}
 		}
 		
@@ -360,12 +376,13 @@ class listAction
 		 * 
 		 * 
 		 * @param string slotName	The slot name to copy
+		 * @param string siteId		The site id selected
 		 * @param string siteTitle	The title of the site selected
 		 * @param DOMElement link	The link clicked
 		 * @access public
 		 * @since 7/25/08
 		 */
-		Portal.deselectForCopy = function (slotName, siteTitle, link) {
+		Portal.deselectForCopy = function (slotName, siteId, siteTitle, link) {
 			// Remove 'paste' links to all of the placeholders 
 			var copyAreas = document.getElementsByClassName('portal_slot_copy_area');
 			for (var i = 0; i < copyAreas.length; i++) {
@@ -381,8 +398,29 @@ class listAction
 			// Change the link to a select select link
 			link.innerHTML = '"._('select for copy')."';
 			link.onclick = function () {
-				Portal.selectForCopy(slotName, siteTitle, link);
+				Portal.selectForCopy(slotName, siteId, siteTitle, link);
 			}
+		}
+		
+		/**
+		 * Copy the selected site into a slot
+		 * 
+		 * @param string slotName	The slot name to copy
+		 * @param string srcSiteId
+		 * @param string srcTitle
+		 * @param DOMElement link	The link clicked
+		 * @return void
+		 * @access public
+		 * @since 7/28/08
+		 */
+		Portal.copyToSlot = function (slotName, link) {
+			if (!Portal.selectedSiteId)
+				throw 'Portal.selectedSiteId has no value';
+			
+			if (!Portal.selectedSiteTitle)
+				throw 'Portal.selectedSiteTitle has no value';
+				
+			SiteCopyPanel.run(slotName, Portal.selectedSiteId, Portal.selectedSiteTitle, link);
 		}
 		
 		// ]]>
@@ -515,11 +553,13 @@ class listAction
 			}
 			
 			try {
-				$slot = $this->getSelectedSlot();
-				$selectedTitle = HtmlString::getSafeHtml($this->getSelectedSiteTitle());
+				$selectedSlot = $this->getSelectedSlot();
+				$selectedTitle = str_replace('"', '&quot;', HtmlString::getSafeHtml($this->getSelectedSiteTitle()));
+				$siteId = $selectedSlot->getSiteAsset()->getId()->getIdString();
 				$display = 'inline';
 			} catch (OperationFailedException $e) {
 				$selectedTitle = '';
+				$siteId = '';
 				$display = 'none';
 			}
 			print "<span class='portal_slot_copy_area' style='display: ".$display."'> | <a href='#' class='portal_slot_copy_link' onclick=\"Portal.copyToSlot('".$slot->getShortname()."', this)\">".str_replace('%1', $selectedTitle, _("copy '%1' here..."))."</a></span>";
@@ -637,9 +677,9 @@ class listAction
 				if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)) 
 				{
 					if (isset($slot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $slot->getShortname()) {
-						$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
+						$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
 					} else if (isset($slot)) {
-						$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("select for copy")."</a>";
+						$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("select for copy")."</a>";
 					}
 				}
 			}
