@@ -141,7 +141,7 @@ class DomExportSiteVisitor
 		$part = $parts->next();
 		$fileName = preg_replace('/[^a-z0-9._-]/i', '_', $part->getValue());
 		if (!strlen(trim($fileName, '._')))
-			$fileName = $recordIdString();
+			$fileName = $recordIdString;
 		
 		$parts = $fileRecord->getPartsByPartStructure($idMgr->getId("FILE_DATA"));
 		$part = $parts->next();
