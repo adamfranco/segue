@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+
+
+	<version number="2.0-beta-29" date="the future">
+		<releaseNotes>
+		</releaseNotes>
+		<fix author='adam' date='2008-07-25'>
+			UI2: fixed improper width setting in div enclosing permissions button that was causing site options box to not properly surround the background block
+		</fix>		
 	<version number="2.0-beta-28" date="2008-07-24">
 		<releaseNotes>
 			This release fixes a number of minor bugs, improves theme-support for

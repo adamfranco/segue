@@ -101,7 +101,7 @@ class editviewAction
 			print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
 			print _("Permissions")."</button>";
 			print "\n</div>";
-			$mainScreen->add(new UnstyledBlock(ob_get_clean()), SiteDispatcher::getCurrentRootNode()->getWidth(), null, CENTER, BOTTOM);
+			$mainScreen->add(new UnstyledBlock(ob_get_clean()), '100%', null, CENTER, BOTTOM);
 		}
 		
 		return $allwrapper;

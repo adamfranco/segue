@@ -1,0 +1,33 @@
+/*********************************************************
+ * Menu 1 unselected content
+ *********************************************************/
+
+*.MenuItem_Link_Unselected {
+     padding: 1px;
+    border: 0px;
+}
+
+*.MenuItem_Link_Unselected .Content {
+    background-color: [[MENU_COLOR]];
+    text-align: left;  
+    font-size: 100%;
+    margin: 0px;
+}
+
+
+*.MenuItem_Link_Unselected a {
+    display: block;
+    text-decoration: none;
+    color: [[MENU_LINK_COLOR]];
+}
+
+*.MenuItem_Link a:hover {
+    display: block;
+    background-color: [[HEADER_BG_COLOR]];
+    text-decoration: none;
+    color: [[MENU_LINK_COLOR]];
+}
+
+.MenuItem_Link_Unselected .Content:hover {
+    background-color: [[HEADER_BG_COLOR]];
+}

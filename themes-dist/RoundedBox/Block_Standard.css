@@ -1,0 +1,17 @@
+/*********************************************************
+ * Block 2 - Standard
+ *********************************************************/
+
+.Block_Standard {
+    padding: 1px;
+    border: 0px;
+    text-align: left;
+}
+
+.Block_Standard .Content {
+    background-color: [[FG_COLOR]];
+    padding: 7px;
+    text-align: left;
+    margin: 0px;
+    height: 1%;
+}
