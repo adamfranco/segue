@@ -91,6 +91,8 @@ class copy_siteAction
 			
 			$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			
+// 			printpre($this->listDir($exportDir));
+// 			throw new Exception('test');
 			
 			/*********************************************************
 			 * Import the site
@@ -109,6 +111,7 @@ class copy_siteAction
 // 			}
 			
 			$importer->enableStatusOutput();
+			$importer->makeUserSiteAdministrator();			
 			$site = $importer->importAtSlot($destSlot->getShortname());
 			
 			// Delete the decompressed Archive
@@ -146,6 +149,34 @@ class copy_siteAction
 		} else {
 			unlink($path);
 		}
+	}
+	
+	/**
+	 * Recursively list a directory
+	 * 
+	 * @param string $path
+	 * @return void
+	 * @access protected
+	 * @since 7/28/08
+	 */
+	protected function listDir ($path, $tabs = "") {
+		ob_start();
+		if (is_dir($path))
+			print "\n\t";
+		else
+			print "\n".ByteSize::withValue(filesize($path))->asString();
+		
+		print $tabs.basename($path);
+		
+		if (is_dir($path)) {
+			$entries = scandir($path);
+			foreach ($entries as $entry) {
+				if ($entry != '.' && $entry != '..') {
+					print $this->listDir($path.DIRECTORY_SEPARATOR.$entry, $tabs."\t");
+				}
+			}
+		}
+		return ob_get_clean();
 	}
 	
 	/**
