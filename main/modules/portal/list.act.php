@@ -634,11 +634,14 @@ class listAction
 				
 				// Add a control to select this site for copying. This should probably
 				// have its own authorization, but we'll use add_children/modify for now.
-				if (isset($slot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $slot->getShortname()) {
-					$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
-				} else if (isset($slot)) {
-					$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("select for copy")."</a>";
-				}			
+				if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)) 
+				{
+					if (isset($slot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $slot->getShortname()) {
+						$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
+					} else if (isset($slot)) {
+						$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("select for copy")."</a>";
+					}
+				}
 			}
 		}
 		
