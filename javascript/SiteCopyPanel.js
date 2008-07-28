@@ -28,7 +28,26 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		this.init( destSlot, srcSiteId, srcTitle, positionElement );
 	}
 }
-
+	
+	/**
+	 * Initialize and run the SiteCopyPanel
+	 * 
+	 * @param string destSlot
+	 * @param string srcSiteId
+	 * @param string srcTitle
+	 * @param string positionElement
+	 * @return void
+	 * @access public
+	 * @since 11/27/06
+	 */
+	SiteCopyPanel.run = function (destSlot, srcSiteId, srcTitle, positionElement ) {
+		if (positionElement.panel && positionElement.panel.srcSiteId == srcSiteId) {
+			positionElement.panel.open();
+		} else {
+			var tmp = new SiteCopyPanel(destSlot, srcSiteId, srcTitle, positionElement );
+		}
+	}
+	
 	/**
 	 * Initialize the object
 	 * 
@@ -56,11 +75,11 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		form.action = Harmoni.quickUrl('portal', 'copy_site');
 		form.method = 'post';
 		
-		var siteCopyPanel = this;
-		form.onsubmit = function() {
-			siteCopyPanel.submitForm(this);
-			return false;
-		}
+// 		var siteCopyPanel = this;
+// 		form.onsubmit = function() {
+// 			siteCopyPanel.submitForm(this);
+// 			return false;
+// 		}
 		
 		var input = document.createElement('input');
 		input.name = 'destSlot';
@@ -105,20 +124,13 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 	}
 	
 	/**
-	 * Initialize and run the SiteCopyPanel
+	 * Submit the copy form.
 	 * 
-	 * @param string destSlot
-	 * @param string srcSiteId
-	 * @param string srcTitle
-	 * @param string positionElement
+	 * @param DOMElement form
 	 * @return void
 	 * @access public
-	 * @since 11/27/06
+	 * @since 7/28/08
 	 */
-	SiteCopyPanel.run = function (destSlot, srcSiteId, srcTitle, positionElement ) {
-		if (positionElement.panel && positionElement.panel.srcSiteId == srcSiteId) {
-			positionElement.panel.open();
-		} else {
-			var tmp = new SiteCopyPanel(destSlot, srcSiteId, srcTitle, positionElement );
-		}
+	SiteCopyPanel.prototype.submitForm = function (form) {
+		
 	}
