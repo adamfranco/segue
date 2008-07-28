@@ -216,11 +216,13 @@ class listAction
 		 * the slotname in the session.
 		 * 
 		 * @param string slotName
+		 * @param string siteTitle	The title of the site selected
+		 * @param DOMElement link	The link clicked
 		 * @return void
 		 * @access public
 		 * @since 7/25/08
 		 */
-		Portal.setSelectedSlotname = function (slotName) {
+		Portal.setSelectedSlotname = function (slotName, siteTitle, link) {
 			Portal.selectedSlotname = slotName;
 			
 			// Send off an asynchronous request to record the selected slotname
@@ -238,8 +240,11 @@ class listAction
 	// 						alert(req.responseText);
 							var errors = req.responseXML.getElementsByTagName('error');
 							if (errors.length) {
+								Portal.deselectForCopy(slotName, siteTitle, link);
+								
 								var error = errors[0];
 								alert(error.getAttribute('type') + ': ' + error.firstChild.nodeValue);
+								
 							}
 						} else {
 							alert(\"There was a problem retrieving the XML data:\\n\" +
@@ -315,6 +320,11 @@ class listAction
 		 * @since 7/25/08
 		 */
 		Portal.selectForCopy = function (slotName, siteTitle, link) {
+			// Set the selected slotname property, then send off an asynchronous 
+			// request to record the selected slotname for future page-loads
+			Portal.setSelectedSlotname(slotName, siteTitle, link);
+			
+			
 			// Cancel all other selections
 			var selectLinks = document.getElementsByClassName('portal_slot_select_link');
 			for (var i = 0; i < selectLinks.length; i++) {
@@ -335,9 +345,7 @@ class listAction
 				copyLink.innerHTML = message.replace(/%1/, siteTitle);
 			}
 			
-			// Set the selected slotname property, then send off an asynchronous 
-			// request to record the selected slotname for future page-loads
-			Portal.setSelectedSlotname(slotName);
+			
 			
 			// Change the link to a cancel select link
 			link.innerHTML = '"._('cancel copy')."';
@@ -367,7 +375,8 @@ class listAction
 			
 			// Send off an asynchronous request to record the deselection of the slotname
 			// for future page-loads
-			Portal.unsetSelectedSlotname();
+			if (Portal.selectedSlotname && Portal.selectedSlotname == slotName)
+				Portal.unsetSelectedSlotname();
 			
 			// Change the link to a select select link
 			link.innerHTML = '"._('select for copy')."';
