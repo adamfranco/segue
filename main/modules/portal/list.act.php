@@ -192,7 +192,7 @@ class listAction
 		
 		try {
 			$selectedSlot = $this->getSelectedSlot();
-			$selectedSlotName = $selectedSlot->getShortname();
+			$selectedSlotname = $selectedSlot->getShortname();
 		} catch (OperationFailedException $e) {
 			$selectedSlotname = '';
 		}
@@ -208,7 +208,7 @@ class listAction
 		 * @since 7/25/08
 		 */
 		function Portal () {
-			var selectedSlotname = '$selectedSlotname';
+			var selectedSlotname = '".$selectedSlotname."';
 		}
 		
 		/**
@@ -225,7 +225,78 @@ class listAction
 			
 			// Send off an asynchronous request to record the selected slotname
 			// for future page-loads
-			// @todo
+			var url = Harmoni.quickUrl('portal', 'select_for_copy', {'slot': slotName});
+			var req = Harmoni.createRequest();
+			if (req) {
+				
+				// Set a callback for displaying errors.
+				req.onreadystatechange = function () {
+					// only if req shows 'loaded'
+					if (req.readyState == 4) {
+						// only if we get a good load should we continue.
+						if (req.status == 200 && req.responseXML) {
+	// 						alert(req.responseText);
+							var errors = req.responseXML.getElementsByTagName('error');
+							if (errors.length) {
+								var error = errors[0];
+								alert(error.getAttribute('type') + ': ' + error.firstChild.nodeValue);
+							}
+						} else {
+							alert(\"There was a problem retrieving the XML data:\\n\" +
+								req.statusText);
+						}
+					}
+				} 
+			
+				req.open('GET', url, true);
+				req.send(null);
+			} else {
+				alert(\"Error: Unable to execute AJAX request. \\nPlease upgrade your browser.\");
+			}	
+			
+		}
+		
+		/**
+		 * Unset the selected slotname and sent an asynchronous request to unset
+		 * the slotname in the session.
+		 * 
+		 * @return void
+		 * @access public
+		 * @since 7/25/08
+		 */
+		Portal.unsetSelectedSlotname = function () {
+			delete Portal.selectedSlotname;
+			
+			// Send off an asynchronous request to record the selected slotname
+			// for future page-loads
+			var url = Harmoni.quickUrl('portal', 'deselect_for_copy');
+			var req = Harmoni.createRequest();
+			if (req) {
+			
+				// Set a callback for displaying errors.
+				req.onreadystatechange = function () {
+					// only if req shows 'loaded'
+					if (req.readyState == 4) {
+						// only if we get a good load should we continue.
+						if (req.status == 200 && req.responseXML) {
+	// 						alert(req.responseText);
+							var errors = req.responseXML.getElementsByTagName('error');
+							if (errors.length) {
+								var error = errors[0];
+								alert(error.getAttribute('type') + ': ' + error.firstChild.nodeValue);
+							}
+						} else {
+							alert(\"There was a problem retrieving the XML data:\\n\" +
+								req.statusText);
+						}
+					}
+				} 
+			
+				req.open('GET', url, true);
+				req.send(null);
+			} else {
+				alert(\"Error: Unable to execute AJAX request. \\nPlease upgrade your browser.\");
+			}	
 		}
 		
 		/**
@@ -296,7 +367,7 @@ class listAction
 			
 			// Send off an asynchronous request to record the deselection of the slotname
 			// for future page-loads
-			
+			Portal.unsetSelectedSlotname();
 			
 			// Change the link to a select select link
 			link.innerHTML = '"._('select for copy')."';
@@ -336,7 +407,7 @@ class listAction
 	 */
 	protected function getSelectedSlot () {
 		if (!isset($this->selectedSlot)) {
-			if (!isset($_SESSION['portal_slot_selection']) || $_SESSION['portal_slot_selection'])
+			if (!isset($_SESSION['portal_slot_selection']) || !$_SESSION['portal_slot_selection'])
 				throw new OperationFailedException("No placeholder selected.");
 			
 			$slotMgr = SlotManager::instance();
@@ -435,11 +506,14 @@ class listAction
 			}
 			
 			try {
+				$slot = $this->getSelectedSlot();
 				$selectedTitle = HtmlString::getSafeHtml($this->getSelectedSiteTitle());
+				$display = 'inline';
 			} catch (OperationFailedException $e) {
 				$selectedTitle = '';
+				$display = 'none';
 			}
-			print "<span class='portal_slot_copy_area' style='display: none'> | <a href='#' class='portal_slot_copy_link' onclick=\"Portal.copyToSlot('".$slot->getShortname()."', this)\">".$selectedTitle."</a></span>";
+			print "<span class='portal_slot_copy_area' style='display: ".$display."'> | <a href='#' class='portal_slot_copy_link' onclick=\"Portal.copyToSlot('".$slot->getShortname()."', this)\">".str_replace('%1', $selectedTitle, _("copy '%1' here..."))."</a></span>";
 		} else {
 			print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
 		}
@@ -551,10 +625,10 @@ class listAction
 				
 				// Add a control to select this site for copying. This should probably
 				// have its own authorization, but we'll use add_children/modify for now.
-				if (isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection']) {
-					$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
-				} else {
-					$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("select for copy")."</a>";
+				if (isset($slot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $slot->getShortname()) {
+					$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
+				} else if (isset($slot)) {
+					$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("select for copy")."</a>";
 				}			
 			}
 		}
