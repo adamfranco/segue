@@ -9,7 +9,6 @@
 }
 
 *.Header .Content {
-    background-color: [[FG_COLOR]];
     padding: 5px;
     margin: 0px;
     font-size: large;

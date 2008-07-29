@@ -5,12 +5,27 @@
 .Block_Background {  
     margin-top: 5px;
     margin-bottom: 5px;
+    position: relative;
+     background-color: [[FG_COLOR]];
 }
-.Block_Background .Content {
-    background-color: [[FG_COLOR]];
+.Block_Background .Block_Background_Content {
+    background: url('./images/[[IMAGE_DIR]]/midd_seal.png') no-repeat;
+    padding: 5px;
+    text-align: left;
+    height: 1%;
+}
+
+.Block_Background .Content {   
     padding: 0px;
     text-align: left;
     height: 1%;
+}
+
+
+.Block_Background #midd_logo {
+	position: absolute;
+	right: 10px;
+	top: 10px;
 }
 
 .Block_Background .BorderTL {
