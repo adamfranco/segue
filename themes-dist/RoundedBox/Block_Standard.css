@@ -1,4 +1,4 @@
-/*********************************************************
+ /*********************************************************
  * Block 2 - Standard
  *********************************************************/
 
@@ -12,10 +12,11 @@
 
 .Block_Standard .Content {
     background-color: [[FG_COLOR]];
-    background: url('./images/[[IMAGE_DIR]]/blockgrad_center.jpg') no-repeat;
+    background: url('./images/[[IMAGE_DIR]]/blockgrad_center.jpg') repeat-x;
     padding: 7px;
     text-align: left;
     margin-bottom: 20px;
+    margin-top: 0px;
     height: 1%;
 }
 
