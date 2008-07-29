@@ -75,6 +75,8 @@ class SiteNavBlockSegue1To2Converter
 					$themeName = "Minimal";
 				} else if ($themeName == "beveledge") {
 					$themeName = "BevelBox";
+				} else if ($themeName == "bevelbox") {
+					$themeName = "MiddTheme";
 				} else {
 					$themeName = "BevelBox";
 				}
