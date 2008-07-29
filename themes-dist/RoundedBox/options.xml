@@ -73,9 +73,9 @@
             <label lang='es_ES'>Amarillo</label>
             <setting marker='[[IMAGE_DIR]]'>yellow</setting>
             <setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
-            <setting marker='[[FG_COLOR]]'>#FFFFCC</setting>
+            <setting marker='[[FG_COLOR]]'>#FFF8C6</setting>
             <setting marker='[[BORDER_COLOR]]'>#979797</setting>
-            <setting marker='[[HEADER_BG_COLOR]]'>#F5F5F5</setting>
+            <setting marker='[[HEADER_BG_COLOR]]'>#FFFFFF</setting>
             <setting marker='[[MENU_COLOR]]'>#d3d3d3</setting>
             <setting marker='[[MENU_LINK_COLOR]]'>[[LINK_COLOR]]</setting>
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
@@ -86,10 +86,10 @@
             <label lang='en_US'>Black</label>
             <label lang='es_ES'>Negro</label>
             <setting marker='[[IMAGE_DIR]]'>black</setting>
-            <setting marker='[[FG_COLOR]]'>#0B0B0B</setting>
+            <setting marker='[[FG_COLOR]]'>#000000</setting>
             <setting marker='[[ALERT_COLOR]]'>#FFFF99</setting>
-            <setting marker='[[BORDER_COLOR]]'>#666666</setting>
-            <setting marker='[[HEADER_BG_COLOR]]'>#333333</setting>
+            <setting marker='[[BORDER_COLOR]]'>#333333</setting>
+            <setting marker='[[HEADER_BG_COLOR]]'>#181818</setting>
             <setting marker='[[MENU_COLOR]]'>#161616</setting>
             <setting marker='[[MENU_LINK_COLOR]]'>#CCCCCC</setting>
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
@@ -101,27 +101,13 @@
             <label lang='es_ES'>Azul</label>
             <setting marker='[[IMAGE_DIR]]'>blue</setting>
             <setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
-            <setting marker='[[FG_COLOR]]'>#FDFDFD</setting>
-            <setting marker='[[BORDER_COLOR]]'>#000000</setting>
-            <setting marker='[[HEADER_BG_COLOR]]'>#90A8C5</setting>
+            <setting marker='[[FG_COLOR]]'>#003366</setting>
+            <setting marker='[[BORDER_COLOR]]'>#666666</setting>
+            <setting marker='[[HEADER_BG_COLOR]]'>#FFFFFF</setting>
             <setting marker='[[MENU_COLOR]]'>#466E9F</setting>
-            <setting marker='[[MENU_LINK_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[MENU_LINK_COLOR]]'>#000000</setting>
             <setting marker='[[BG_TEXT_COLOR]]'>#000000</setting>
             <setting marker='[[BG_LINK_COLOR]]'>#999999</setting>        
-        </choice>
-        <choice>
-            <key>green</key>
-            <label lang='en_US'>Green</label>
-            <label lang='es_ES'>Verde</label>
-            <setting marker='[[IMAGE_DIR]]'>green</setting>
-            <setting marker='[[ALERT_COLOR]]'>#FFFF99</setting>
-            <setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
-            <setting marker='[[BORDER_COLOR]]'>#999999</setting>
-            <setting marker='[[HEADER_BG_COLOR]]'>#CCE3BB</setting>
-            <setting marker='[[MENU_COLOR]]'>#ABBD9D</setting>
-            <setting marker='[[MENU_LINK_COLOR]]'>#666666</setting>
-            <setting marker='[[BG_TEXT_COLOR]]'>#333333</setting>
-            <setting marker='[[BG_LINK_COLOR]]'>#003366</setting>        
         </choice>
     </option>
     <option id='menu_size'>
