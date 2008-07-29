@@ -124,6 +124,25 @@
             <setting marker='[[BG_LINK_COLOR]]'>#003366</setting>        
         </choice>
     </option>
+    <option id='menu_size'>
+        <displayName lang='en_US'>Menu Size</displayName>
+        <description lang='en_US'>The size of page links.</description>
+        <choice isDefault='true'>
+            <key>normal</key>
+            <label lang='en_US'>Normal</label>
+            <setting marker='[[MENU_FONT_SIZE]]'>100%</setting>
+        </choice>
+        <choice>
+            <key>small</key>
+            <label lang='en_US'>Small</label>
+            <setting marker='[[MENU_FONT_SIZE]]'>90%</setting>
+        </choice>
+        <choice>
+            <key>larger</key>
+            <label lang='en_US'>Large</label>
+            <setting marker='[[MENU_FONT_SIZE]]'>110%</setting>
+        </choice>
+    </option>
     <option id='text_color'>
         <displayName lang='en_US'>Text Color</displayName>
         <description lang='en_US'>The color or normal text.</description>
