@@ -31,6 +31,9 @@
 			Upgrades from versions prior to beta 26 require running the RSS Feed
 			updaters located under Admin Tools --> Segue Updates.
 		</releaseNotes>
+		<new author='adam' date='2008-07-29' ref='1799954' reftype='fr'>
+			Portal: Can now copy sites into empty placeholders.
+		</new>
 		<fix author='adam' date='2008-07-25'>
 			UI2: fixed improper width setting in div enclosing permissions button that was causing site options box to not properly surround the background block
 		</fix>

@@ -12,6 +12,7 @@
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(HARMONI."/utilities/Harmoni_DOMDocument.class.php");
+require_once(dirname(__FILE__).'/NumComponentsVisitor.class.php');
 
 /**
  * This vistor will return an XML version of a site.
@@ -80,6 +81,20 @@ class DomExportSiteVisitor
 			$this->doc->documentElement->insertBefore($element, $this->agents);
 			$this->rootAdded = true;
 		}
+	}
+	
+	/**
+	 * Enable usage of a status indicator.
+	 * 
+	 * @param optional $message
+	 * @return void
+	 * @access public
+	 * @since 3/24/08
+	 */
+	public function enableStatusOutput ($message = null) {
+		if (is_null($message))
+			$message = _("Exporting Site");
+		$this->status = new StatusStars($message);
 	}
 	
 	/**
@@ -741,6 +756,8 @@ class DomExportSiteVisitor
 		$element->setAttribute('blockDisplayType', $siteComponent->getDisplayType());
 		$element->setAttribute('headingDisplayType', $siteComponent->getHeadingDisplayType());
 		
+		$this->updateStatus($siteComponent);
+		
 		return $element;
 	}
 	
@@ -777,6 +794,8 @@ class DomExportSiteVisitor
 		$this->addCreateAndModify($siteComponent, $element);
 		
 		$element->appendChild($this->getRoles($siteComponent));
+		
+		$this->updateStatus($siteComponent);
 		
 		$element->appendChild($siteComponent->getOrganizer()->acceptVisitor($this));
 		
@@ -816,6 +835,8 @@ class DomExportSiteVisitor
 		
 		// Add the theme info
 		$element->appendChild($this->getTheme($siteComponent));
+		
+		$this->updateStatus($siteComponent);
 		
 		$element->appendChild($siteComponent->getOrganizer()->acceptVisitor($this));
 		
@@ -868,6 +889,9 @@ class DomExportSiteVisitor
 		
 		$this->addCommonOptions($siteComponent, $element);
 		$this->addOrganizerOptions($siteComponent, $element);
+		
+		$this->updateStatus($siteComponent);
+		
 		$this->addOrganizerChildren($siteComponent, $element);
 		
 		return $element;
@@ -890,6 +914,9 @@ class DomExportSiteVisitor
 		
 		$this->addCommonOptions($siteComponent, $element);
 		$this->addOrganizerOptions($siteComponent, $element);
+		
+		$this->updateStatus($siteComponent);
+		
 		$this->addOrganizerChildren($siteComponent, $element);
 		
 		return $element;
@@ -913,6 +940,9 @@ class DomExportSiteVisitor
 		$this->addCommonOptions($siteComponent, $element);
 		$this->addOrganizerOptions($siteComponent, $element);
 		$this->addFlowOrganizerOptions($siteComponent, $element);
+		
+		$this->updateStatus($siteComponent);
+		
 		$this->addOrganizerChildren($siteComponent, $element);
 		
 		return $element;
@@ -937,6 +967,9 @@ class DomExportSiteVisitor
 		$element->setAttribute('direction', $siteComponent->getDirection());
 		$this->addFlowOrganizerOptions($siteComponent, $element);
 		$element->setAttribute('target_id', $siteComponent->getTargetId());
+		
+		$this->updateStatus($siteComponent);
+		
 		$this->addOrganizerChildren($siteComponent, $element);
 		
 		$element->setAttribute('menuDisplayType', $siteComponent->getDisplayType());
@@ -944,6 +977,38 @@ class DomExportSiteVisitor
 		return $element;
 	}
 	
+	/**
+	 * Update the export status if configured to do so.
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @return void
+	 * @access protected
+	 * @since 7/29/08
+	 */
+	protected function updateStatus (SiteComponent $siteComponent) {
+		if (!isset($this->status))
+			return;
+		
+		if (!$this->status->isInitialized())
+			$this->initializeStatus($siteComponent);
+		
+		$this->status->updateStatistics();
+	}
+	
+	/**
+	 * Initialize the status with the number of blocks and nav blocks to export
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access protected
+	 * @since 7/29/08
+	 */
+	protected function initializeStatus (SiteComponent $siteComponent) {
+		if (!isset($this->status))
+			throw new OperationFailedException("Status is not set.");
+		$this->status->initializeStatistics(
+			$siteComponent->acceptVisitor(new NumComponentsVisitor));
+	}
 }
 
 ?>

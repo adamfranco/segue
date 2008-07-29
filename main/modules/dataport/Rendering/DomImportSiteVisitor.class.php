@@ -121,12 +121,15 @@ class DomImportSiteVisitor
 	/**
 	 * Enable usage of a status indicator.
 	 * 
+	 * @param optional $message
 	 * @return void
 	 * @access public
 	 * @since 3/24/08
 	 */
-	public function enableStatusOutput () {
-		$this->status = new StatusStars(_("Importing Site"));
+	public function enableStatusOutput ($message = null) {
+		if (is_null($message))
+			$message = _("Importing Site");
+		$this->status = new StatusStars($message);
 		$elements = $this->xpath->query('//SiteNavBlock | //NavBlock | //Block | //FixedOrganizer | //FlowOrganizer | //MenuOrganizer | //Comment');
 		$this->status->initializeStatistics($elements->length);
 	}
