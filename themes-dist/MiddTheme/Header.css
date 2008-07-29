@@ -1,0 +1,18 @@
+/*********************************************************
+ * Header 1
+ *********************************************************/
+
+*.Header {
+    padding: 1px;
+    border: 0px;
+    color: [[MENU_LINK_COLOR]];
+}
+
+*.Header .Content {
+    background-color: [[FG_COLOR]];
+    padding: 5px;
+    margin: 0px;
+    font-size: large;
+    text-align: left;
+    color: [[MENU_LINK_COLOR]];
+}

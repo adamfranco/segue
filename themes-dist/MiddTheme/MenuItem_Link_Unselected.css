@@ -1,0 +1,24 @@
+/*********************************************************
+ * Menu 1 unselected content
+ *********************************************************/
+
+*.MenuItem_Link_Unselected {
+    padding: 1px;
+    margin: 1px;
+    margin-top: 5px;
+    border: 0px;
+}
+
+*.MenuItem_Link_Unselected .Content {
+    background-color: [[FG_COLOR]];
+    text-align: left;  
+    padding: 1px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+}
+
+*.MenuItem_Link a {
+    color: [[MENU_LINK_COLOR]];
+    display: block;
+    text-decoration: none;
+}

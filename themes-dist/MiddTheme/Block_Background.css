@@ -1,0 +1,66 @@
+/*********************************************************
+ * Block background
+ *********************************************************/
+
+.Block_Background {  
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.Block_Background .Content {
+    background-color: [[FG_COLOR]];
+    padding: 0px;
+    text-align: left;
+    height: 1%;
+}
+
+.Block_Background .BorderTL {
+    background: url('./images/[[IMAGE_DIR]]/corner_TL.gif') no-repeat;
+    background-color: [[FG_COLOR]];
+    width: 5px;
+    height: 5px;
+}
+
+.Block_Background .Top {
+    background: url('./images/[[IMAGE_DIR]]/top.gif') repeat-x;
+    height: 5px;
+}
+
+.Block_Background .BorderTR {
+    background: url('./images/[[IMAGE_DIR]]/corner_TR.gif') no-repeat;
+    background-color: [[FG_COLOR]];
+    width: 5px;
+    height: 5px;
+}
+
+
+.Block_Background .Right {
+    background: url('./images/[[IMAGE_DIR]]/right.gif') repeat-y;
+    width: 7px;
+
+}
+
+.Block_Background .Left {
+    background: url('./images/[[IMAGE_DIR]]/left.gif') repeat-y;
+    width: 5px;
+}
+
+
+.Block_Background .BorderBL {
+    background: url('./images/[[IMAGE_DIR]]/corner_BL.gif') no-repeat;
+    background-color: [[FG_COLOR]];
+    width: 3px;
+    height: 6px;
+}
+
+.Block_Background .Bottom {
+    background: url('./images/[[IMAGE_DIR]]/bottom.gif') repeat-x;
+    height: 6px;
+}
+
+.Block_Background .BorderBR {
+    background: url('./images/[[IMAGE_DIR]]/corner_BR.gif') no-repeat;
+    background-color: [[FG_COLOR]];
+    width: 6px;
+    height: 5px;
+}
+
