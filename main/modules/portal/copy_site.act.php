@@ -80,7 +80,7 @@ class copy_siteAction
 			
 			// Do the export
 			$visitor = new DomExportSiteVisitor($exportDir);
-			$visitor->enableStatusOutput("Exporting from original location.");
+			$visitor->enableStatusOutput(_("Exporting from original location."));
 			$srcComponent->acceptVisitor($visitor);
 			$doc = $visitor->doc;
 			
@@ -111,7 +111,7 @@ class copy_siteAction
 // 					$importer->addSiteAdministrator($idMgr->getId($adminIdString));
 // 			}
 			
-			$importer->enableStatusOutput("Importing into new location");
+			$importer->enableStatusOutput(_("Importing into new location"));
 			$importer->makeUserSiteAdministrator();			
 			$site = $importer->importAtSlot($destSlot->getShortname());
 			
@@ -128,6 +128,9 @@ class copy_siteAction
 			
 			throw $e;
 		}
+		
+		print "\n"._("Done");
+		exit;
 	}
 	
 	/**

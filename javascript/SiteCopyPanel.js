@@ -73,13 +73,7 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		// Build up the form
 		var form = document.createElement('form');
 		form.action = Harmoni.quickUrl('portal', 'copy_site');
-		form.method = 'post';
-		
-// 		var siteCopyPanel = this;
-// 		form.onsubmit = function() {
-// 			siteCopyPanel.submitForm(this);
-// 			return false;
-// 		}
+		form.method = 'POST';
 		
 		var input = document.createElement('input');
 		input.name = 'destSlot';
@@ -113,8 +107,15 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		form.appendChild(document.createElement('br'));
 		
 		var submit = document.createElement('input');
-		submit.type = 'submit';
+		submit.type = 'button';
 		submit.value = "Copy »";
+		
+		var siteCopyPanel = this;
+		submit.onclick = function() {
+			siteCopyPanel.submitForm(this.form);
+			return false;
+		}
+		
 		var div = document.createElement('div');
 		div.style.textAlign = 'right';
 		div.appendChild(submit);
@@ -132,5 +133,76 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 	 * @since 7/28/08
 	 */
 	SiteCopyPanel.prototype.submitForm = function (form) {
+		// Send off an asynchronous request to do the update and monitor the
+		// status in a new centered panel.
+		var url = form.action;
+		var params = this.getFormParams(form);
 		
+		var statusPanel = new CenteredPanel("Copy Status", 400, 800, this.positionElement);
+		statusPanel.cancel.parentNode.removeChild(statusPanel.cancel);
+		
+		var req = Harmoni.createRequest();
+		if (req) {
+			
+			// Set a callback for displaying errors.
+			req.onreadystatechange = function () {
+				// Update the status area.
+				if (req.responseText) {
+					statusPanel.contentElement.innerHTML = req.responseText;
+				}
+				
+				// only if req shows 'loaded'
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200 && req.responseText) {
+						
+					} else {
+						alert("There was a problem retrieving the data:\n" +
+							req.statusText);
+						statusPanel.contentElement.appendChild(document.createElement('br'));
+						statusPanel.contentElement.appendChild(document.createTextNode('Copy Failed'));
+					}
+					
+					var button = document.createElement('input');
+					button.type = 'button';
+					button.value = "Continue »";
+					button.onclick = function () {
+						window.location.reload();
+					};
+					statusPanel.contentElement.appendChild(document.createElement('br'));
+					statusPanel.contentElement.appendChild(document.createElement('br'));
+					statusPanel.contentElement.appendChild(button);
+				}
+			} 
+		
+			req.open('POST', url, true);
+			req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			req.setRequestHeader("Content-length", params.length);
+// 			req.setRequestHeader("Connection", "close");
+			req.send(params);
+		} else {
+			alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
+		}
+	}
+	
+	/**
+	 * Gather the elements of the form and combine them into a post string.
+	 * 
+	 * @param DOMElement form
+	 * @return string
+	 * @access public
+	 * @since 7/29/08
+	 */
+	SiteCopyPanel.prototype.getFormParams = function (form) {
+		var params = '';
+		for (var i = 0; i < form.elements.length; i++) {
+			var elem = form.elements[i];
+			if (elem.name && (elem.type != 'checkbox' || elem.checked)) {
+				if (params.length)
+					params += '&';
+				
+				params += elem.name + '=' + encodeURI(elem.value);
+			}
+		}
+		return params;
 	}
