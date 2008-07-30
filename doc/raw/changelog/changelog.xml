@@ -34,6 +34,18 @@
 		<new author='adam' date='2008-07-29' ref='1799954' reftype='fr'>
 			Portal: Can now copy sites into empty placeholders.
 		</new>
+		<change author='adam' date='2008-07-30' ref='2031895' reftype='fr'>
+			View/UI1/UI2/Portal: Links to edit-mode are now shown to all users as
+			these devolve into view mode if users have no edit authorizations. Doing
+			so prevents us from having to search for edit authorizations throughout
+			the entire site, drastically improving page-load times such as from 35s
+			to 1.3s on one particular site.
+			
+			Similarly, the 'permissions' button is now only displayed on pages where
+			the user has authorization to work with permissions. This forces users who
+			are admins of only one page to browse to that page to see the permissions
+			link, but saves enormous time on everyone else's page loads.
+		</change>
 		<fix author='adam' date='2008-07-25'>
 			UI2: fixed improper width setting in div enclosing permissions button that was causing site options box to not properly surround the background block
 		</fix>
