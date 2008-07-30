@@ -701,7 +701,8 @@ class DomExportSiteVisitor
 	protected function isAuthorizedToExport (SiteComponent $siteComponent) {
 		$authZ = Services::getService("AuthZ");
 		$idMgr = Services::getService("Id");
-		return $authZ->isUserAuthorizedBelow($idMgr->getId('edu.middlebury.authorization.view'), $siteComponent->getQualifierId());
+		// Since view AZs cascade up, just check at the node.
+		return $authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $siteComponent->getQualifierId());
 	}
 	
 	/**

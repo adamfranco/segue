@@ -56,7 +56,8 @@ class htmlAction
 	public function isAuthorizedToExecute () {
 		$idMgr = Services::getService('Id');
 		$azMgr = Services::getService('AuthZ');
-		return $azMgr->isUserAuthorizedBelow(
+		// Since view AZs cascade up, just check at the node.
+		return $azMgr->isUserAuthorized(
 			$idMgr->getId('edu.middlebury.authorization.view'),
 			SiteDispatcher::getCurrentNode()->getQualifierId());
 	}

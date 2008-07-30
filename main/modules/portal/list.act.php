@@ -585,7 +585,8 @@ class listAction
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		try {
-			if ($authZ->isUserAuthorizedBelow($idManager->getId("edu.middlebury.authorization.view"), $slot->getSiteId()))
+			// Since view AZs cascade up, just check at the node.
+			if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $slot->getSiteId()))
 			{
 				return TRUE;
 			} else {
