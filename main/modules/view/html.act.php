@@ -337,19 +337,18 @@ class htmlAction
 			// While it may be true that the anonymous user has authorization to edit,
 			// we don't want to generally support this case to force at least a visitor
 			// registration to prevent spamming.
-			!$userId->isEqual($idManager->getId('edu.middlebury.agents.anonymous')) &&
+			!$userId->isEqual($idManager->getId('edu.middlebury.agents.anonymous')) 
 			
-			// While it is more correct to check modify permission as well, people with
-			// the editor role (and hence modify permission) should also be able to 
-			// add_children. Only checking one of these currently cuts the number of 
-			// AZ queries in half.
-// 			$authZ->isUserAuthorizedBelow(
-// 				$idManager->getId("edu.middlebury.authorization.modify"),
-// 				SiteDispatcher::getCurrentRootNode()->getQualifierId())
-// 			|| 
-			$authZ->isUserAuthorizedBelow(
-				$idManager->getId("edu.middlebury.authorization.add_children"),
-				SiteDispatcher::getCurrentRootNode()->getQualifierId()))
+			// While it is more correct to check modify permission permission, doing
+			// so forces us to check AZs on the entire site until finding a node with
+			// authorization or running out of nodes to check. Since edit-mode actions
+			// devolve into view-mode if no authorization is had by the user, just
+			// show the links all the time to cut page loads from 4-6 seconds to
+			// 1 second.
+			&& $authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.view"),
+				SiteDispatcher::getCurrentRootNode()->getQualifierId())
+			)
 		{
 			print "<div class='commands'>";
 
