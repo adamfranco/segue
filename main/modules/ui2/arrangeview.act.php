@@ -76,9 +76,13 @@ class arrangeviewAction
 		// Add permissions button
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
-		if ($authZ->isUserAuthorizedBelow(
+		// Rather than checking the entire site, we will just check the current node.
+		// This forces users who are not site-wide admins to browse to the place where
+		// they are administrators in order to see the permissions button, but
+		// cuts load-times for non-admins on a given large site from 35s to 1.4s.
+		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
-			SiteDispatcher::getCurrentRootNode()->getQualifierId()))
+			SiteDispatcher::getCurrentNode()->getQualifierId()))
 		{
 			ob_start();
 			$harmoni = Harmoni::instance();
