@@ -11,7 +11,7 @@
 *.MenuItem_Link_Unselected .Content {
     background-color: [[FG_COLOR]];
     text-align: left;  
-    padding: 1px;
+    padding: 0px;
     margin-top: -5px;
     margin-bottom: -5px;
 }
