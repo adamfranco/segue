@@ -268,23 +268,22 @@ class choose_siteAction
 		if ($slot->siteExists()) {
 			$asset = $slot->getSiteAsset();
 			
-			// This authorization check slows things down considerably.
-// 			try {
-// 				$authZ = Services::getService('AuthZ');
-// 				$idMgr = Services::getService('Id');
-// 				if (!$authZ->isUserAuthorizedBelow(
-// 					$idMgr->getId('edu.middlebury.authorization.view'),
-// 					$slot->getSiteId()))
-// 				{
-// 					print "\n<div class='site_info'>";
-// 					print  "\n\t<div class='site_description'>";
-// 					print _("A site has been created for this placeholder, but you do not have authorization to view it.");
-// 					print "</div>";
-// 					print "\n</div>";
-// 					return;
-// 				}	
-// 			} catch (UnknownIdException $e) {
-// 			}
+			try {
+				$authZ = Services::getService('AuthZ');
+				$idMgr = Services::getService('Id');
+				if (!$authZ->isUserAuthorized(
+					$idMgr->getId('edu.middlebury.authorization.view'),
+					$slot->getSiteId()))
+				{
+					print "\n<div class='site_info'>";
+					print  "\n\t<div class='site_description'>";
+					print _("A site has been created for this placeholder, but you do not have authorization to view it.");
+					print "</div>";
+					print "\n</div>";
+					return;
+				}	
+			} catch (UnknownIdException $e) {
+			}
 			
 			
 			$viewUrl = $harmoni->request->quickURL('ui1', 'view', array('site' => $slot->getShortname()));

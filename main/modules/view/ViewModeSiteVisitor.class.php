@@ -442,12 +442,12 @@ class ViewModeSiteVisitor
 	public function visitNavBlock ( NavBlockSiteComponent $navBlock ) {
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");	
-		if (!$authZ->isUserAuthorizedBelow(
+		// Since view AZs cascade up, just check at the node.
+		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"), 
 			$idManager->getId($navBlock->getId())))
 		{
-			$false = false;
-			return $false;
+			return false;
 		}
 		
 		$menuItems = array();
