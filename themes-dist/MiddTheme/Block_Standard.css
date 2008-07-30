@@ -3,20 +3,21 @@
  *********************************************************/
 
 .Block_Standard {
-    padding: 0px;
-    border: 0px;
-    text-align: left;
-    margin-top: 3px;
-    margin-right: 2px;
-    margin-left: 2px;
+    background-color: [[BLOCK_COLOR]];
+    color: [[TEXT_COLOR]];
+    margin-right: 3px;
+    margin-left: 3px;
 }
 
 .Block_Standard .Content {
-    background-color: [[BLOCK_COLOR]];
     padding: 7px;
+    font-family: [[FONT_FAMILY]];
     text-align: left;
-    padding-bottom: 3px;
     height: 1%;
+}
+
+.Block_Standard a {
+    color: [[LINK_COLOR]];
 }
 
 .Block_Standard .BorderTL {
@@ -66,10 +67,4 @@
     background: url('./images/[[IMAGE_DIR]]/blockcorner_BR.gif') no-repeat;
     width: 6px;
     height: 6px;
-}
-
-.corner {
-    width: 6px;
-    height: 6px;
-    border: 0px solid gray;
 }

@@ -3,15 +3,13 @@
  *********************************************************/
 
 *.Footer {
-    padding: 1px;
-    border: 0px;
-}
-
-*.Footer .Content {
-    background-color: [[FG_COLOR]];
-    padding: 10px;
-    text-align: left;
+    padding: 5px;
     margin: 0px;
     font-size: 75%;
+    text-align: left;
+    color: [[MENU_LINK_COLOR]];
 }
 
+*.Footer a {
+    color: [[MENU_LINK_COLOR]];
+}

@@ -3,17 +3,14 @@
  *********************************************************/
 
 .MenuItem_Heading {
-    padding: 1px;
-    border: 0px;
-}
-.MenuItem_Heading .Content {
-    background-color: [[FG_COLOR]];
-    color: [[MENU_LINK_COLOR]];
-    padding: 1px;
+    padding-left: 7px;
+    margin-right: 2px;
     text-align: left;
     margin: 0px;
+    color: [[MENU_TEXT_COLOR]];
 }
 
 .MenuItem_Heading a {
-	color: [[MENU_LINK_COLOR]];
+    color: [[MENU_LINK_COLOR]];
+
 }

@@ -3,22 +3,24 @@
  *********************************************************/
 
 *.MenuItem_Link_Selected  {
-    padding: 1px;
-    border: 0px;
-    margin-top: 5px;
+
 }
 
 *.MenuItem_Link_Selected .Content {
-    background-color: [[HEADER_BG_COLOR]];
-    text-align: left;
-    color: [[MENU_LINK_COLOR]];
-    padding: 1px;
-    margin-top: -5px;
-    margin-bottom: -5px;
+    
+
 }
 
 *.MenuItem_Link_Selected a {
-    color: [[MENU_LINK_COLOR]];
+    color: [[MENU_TEXT_COLOR]];
+    display: block;
     font-size: [[MENU_FONT_SIZE]];
+    text-decoration: none;
+
 }
+
+.MenuItem_Link_Selected a:hover {
+    text-decoration: underline;
+}
+
 

@@ -3,15 +3,14 @@
  *********************************************************/
 
 *.Header {
-    padding: 1px;
-    border: 0px;
-    color: [[MENU_LINK_COLOR]];
-}
-
-*.Header .Content {
     padding: 5px;
+    padding-left: 10px;
     margin: 0px;
     font-size: large;
     text-align: left;
+    color: [[MENU_TEXT_COLOR]];
+}
+
+.Header a {
     color: [[MENU_LINK_COLOR]];
 }

@@ -3,14 +3,13 @@
  *********************************************************/
 
 *.block3 {
-    padding: 1px;
-    border: 0px;
-    color: [[MENU_LINK_COLOR]];
-}
-
-*.block3 .Content {
-    padding: 5px;
+    padding-left: 10px;
     text-align: left;
     margin: 0px;
+    color: [[MENU_TEXT_COLOR]];
+}
+
+*.block3 a {
     color: [[MENU_LINK_COLOR]];
+
 }

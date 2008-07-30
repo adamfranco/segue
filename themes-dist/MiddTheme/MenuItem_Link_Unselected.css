@@ -3,22 +3,21 @@
  *********************************************************/
 
 *.MenuItem_Link_Unselected {
-    padding: 1px;
-    margin: 1px;
-    margin-top: 5px;
-    border: 0px;
+
 }
 
 *.MenuItem_Link_Unselected .Content {
-    background-color: [[FG_COLOR]];
-    text-align: left;  
-    padding: 1px;
-    margin-top: -5px;
-    margin-bottom: -5px;
+
 }
 
-*.MenuItem_Link a {
+*.MenuItem_Link_Unselected a {
     color: [[MENU_LINK_COLOR]];
     display: block;
+    font-size: [[MENU_FONT_SIZE]];
     text-decoration: none;
 }
+
+.MenuItem_Link_Unselected a:hover {
+    text-decoration: underline;
+}
+

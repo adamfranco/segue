@@ -3,29 +3,32 @@
         <displayName lang='en_US'>Color</displayName>
         <description lang='en_US'>The color scheme of the theme.</description>
         <description lang='es_ES'>Los colores majores del tema.</description>
-        <choice>
+        <choice isDefault='true'>
+            <key>gray</key>
+            <label lang='en_US'>Gray</label>
+            <label lang='es_ES'>Gris</label>
+            <setting marker='[[IMAGE_DIR]]'>gray</setting>
+            <setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[FG_COLOR]]'>#CCCCCC</setting>
+            <setting marker='[[BLOCK_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
+            <setting marker='[[MENU_LINK_COLOR]]'>[[LINK_COLOR]]</setting>
+            <setting marker='[[MENU_TEXT_COLOR]]'>[[TEXT_COLOR]]</setting>
+            <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+            <setting marker='[[BG_LINK_COLOR]]'>#333333</setting>      
+        </choice>        <choice>
             <key>blue</key>
             <label lang='en_US'>Blue</label>
             <label lang='es_ES'>Azul</label>
             <setting marker='[[IMAGE_DIR]]'>blue</setting>
             <setting marker='[[FG_COLOR]]'>#003366</setting>
-            <setting marker='[[BLOCK_COLOR]]'>#FFFFFF</setting>
             <setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
-            <setting marker='[[MENU_LINK_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[BLOCK_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
+            <setting marker='[[MENU_LINK_COLOR]]'>#FFCC00</setting>
+            <setting marker='[[MENU_TEXT_COLOR]]'>#FFFFFF</setting>
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
-            <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>
-        </choice>
-        <choice>
-            <key>gray</key>
-            <label lang='en_US'>Gray</label>
-            <label lang='es_ES'>Azul</label>
-            <setting marker='[[IMAGE_DIR]]'>gray</setting>
-            <setting marker='[[BLOCK_COLOR]]'>#FFFFFF</setting>
-            <setting marker='[[FG_COLOR]]'>#CCCCCC</setting>
-            <setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
-            <setting marker='[[MENU_LINK_COLOR]]'>#990000</setting>
-            <setting marker='[[BG_TEXT_COLOR]]'>#000000</setting>
-            <setting marker='[[BG_LINK_COLOR]]'>#999999</setting>        
+            <setting marker='[[BG_LINK_COLOR]]'>#333333</setting>
         </choice>
     </option>
     <option id='menu_size'>
@@ -62,36 +65,6 @@
             <setting marker='[[TEXT_COLOR]]'>#555555</setting>
             <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
         </choice>
-        <choice isDefault='true'>
-            <key>red</key>
-            <label lang='en_US'>Red</label>
-            <setting marker='[[TEXT_COLOR]]'>#990000</setting>
-            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
-        </choice>
-        <choice isDefault='true'>
-            <key>blue</key>
-            <label lang='en_US'>Blue</label>
-            <setting marker='[[TEXT_COLOR]]'>#003366</setting>
-            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
-        </choice>
-        <choice isDefault='true'>
-            <key>yellow</key>
-            <label lang='en_US'>Yellow</label>
-            <setting marker='[[TEXT_COLOR]]'>#FFCC00</setting>
-            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
-        </choice>
-        <choice>
-            <key>white</key>
-            <label lang='en_US'>White</label>
-            <setting marker='[[TEXT_COLOR]]'>#FFFFFF</setting>
-            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
-        </choice>
-        <choice>
-            <key>green</key>
-            <label lang='en_US'>Green</label>
-            <setting marker='[[TEXT_COLOR]]'>#009900</setting>
-            <setting marker='[[ATRIBUTION_TEXT_COLOR]]'>#777777</setting>
-        </choice>
     </option>
     <option id='link_color'>
         <displayName lang='en_US'>Link Color</displayName>
@@ -110,16 +83,7 @@
             <key>green</key>
             <label lang='en_US'>Green</label>
             <setting marker='[[LINK_COLOR]]'>#009900</setting>
-        </choice>        <choice isDefault='true'>
-            <key>yellow</key>
-            <label lang='en_US'>Yellow</label>
-            <setting marker='[[LINK_COLOR]]'>#FFFF99</setting>
-        </choice>
-        <choice>
-            <key>white</key>
-            <label lang='en_US'>White</label>
-            <setting marker='[[LINK_COLOR]]'>#FFFFFF</setting>
-        </choice>
+        </choice>        
     </option>
     <option id='link_decoration'>
         <displayName lang='en_US'>Link Style</displayName>
@@ -137,8 +101,13 @@
     </option>
     <option id='font'>
         <displayName lang='en_US'>Font</displayName>
-        <description lang='en_US'>The fonts used in this site.</description>
+        <description lang='en_US'>The fonts used in content blocks of this site.</description>
         <choice isDefault='true'>
+            <key>times</key>
+            <label lang='en_US'>Times New Roman, Times, serif</label>
+            <setting marker='[[FONT_FAMILY]]'>"Times New Roman", Times, serif</setting>
+        </choice>  
+        <choice>
             <key>vedana</key>
             <label lang='en_US'>Vedana, Arial, Helvetica, sans-serif</label>
             <setting marker='[[FONT_FAMILY]]'>Vedana, Arial, Helvetica, sans-serif</setting>
@@ -147,12 +116,8 @@
             <key>arial</key>
             <label lang='en_US'>Arial, Helvetica, sans-serif</label>
             <setting marker='[[FONT_FAMILY]]'>Arial, Helvetica, sans-serif</setting>
-        </choice>
-        <choice>
-            <key>times</key>
-            <label lang='en_US'>Times New Roman, Times, serif</label>
-            <setting marker='[[FONT_FAMILY]]'>"Times New Roman", Times, serif</setting>
-        </choice>        <choice isDefault='true'>
+        </choice>      
+        <choice isDefault='true'>
             <key>georgia</key>
             <label lang='en_US'>Georgia, Times New Roman, Times, serif</label>
             <setting marker='[[FONT_FAMILY]]'>Georgia, "Times New Roman", Times, serif</setting>
