@@ -34,6 +34,10 @@
 		<new author='adam' date='2008-07-29' ref='1799954' reftype='fr'>
 			Portal: Can now copy sites into empty placeholders.
 		</new>
+		<new author='adam' date='2008-07-30' ref=' 2032019 ' reftype='fr' reporter='hector_vila'>
+			Portal: Site URLs are now printed below the site title on the portal
+			for easy reference.
+		</new>
 		<change author='adam' date='2008-07-30' ref='2031895' reftype='fr'>
 			View/UI1/UI2/Portal: Links to edit-mode are now shown to all users as
 			these devolve into view mode if users have no edit authorizations. Doing

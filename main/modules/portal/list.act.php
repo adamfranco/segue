@@ -647,6 +647,11 @@ class listAction
 		print "\n\t\t<a href='".$viewUrl."'>";
 		print "\n\t\t\t<strong>".HtmlString::getSafeHtml($asset->getDisplayName())."</strong>";
 		print "\n\t\t</a>";
+		print "\n\t\t<br/>";
+		$shortUrl = SiteDispatcher::getSitesUrlForSiteId($assetId->getIdString());
+		print "\n\t\t<a href='".$shortUrl."' style='font-size: smaller;'>";
+		print "\n\t\t\t".$shortUrl;
+		print "\n\t\t</a>";
 		print "\n\t</div>";
 		
 		print "\n\t<div class='portal_list_controls'>\n\t\t";
@@ -662,9 +667,9 @@ class listAction
 		// less than 1 second.
 		$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
 	
-		if ($action->getUiModule() == 'ui2') {
-			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
-		}
+// 		if ($action->getUiModule() == 'ui2') {
+// 			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+// 		}
 		
 		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
 			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
