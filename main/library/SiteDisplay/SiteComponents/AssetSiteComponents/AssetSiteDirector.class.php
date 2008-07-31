@@ -186,9 +186,10 @@ class AssetSiteDirector
 	 */
 	function activateDefaultsDownAsset ( $currentAsset ) {
 		// Escape on lack of view authorization anywhere below this node
+		// Since view AZs cascade up, just check at the node.
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");	
-		if (!$authZ->isUserAuthorizedBelow(
+		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"), 
 			$currentAsset->getId()))
 		{

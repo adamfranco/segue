@@ -66,57 +66,58 @@ class editviewAction
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		$siteId = SiteDispatcher::getCurrentRootNode()->getQualifierId();
+
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+			
+		ob_start();
+		$harmoni = Harmoni::instance();
+		
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), 
-			$siteId)
-			|| $authZ->isUserAuthorizedBelow(
-			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
 			$siteId))
 		{
-		
-			$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
-			
-			ob_start();
-			$harmoni = Harmoni::instance();
-			print "\n<div style='text-align: right;'>";
-			if ($authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.modify"), 
-				$siteId))
-			{
-				$url = $harmoni->request->quickURL("ui1", "editSite", 
-					array("node" => $siteId->getIdString(),
-					"returnNode" => SiteDispatcher::getCurrentNodeId(),
-					"returnAction" => $harmoni->request->getRequestedAction()));
-				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
-				print _("Edit Site Options")."</button>";
-			}
-			$theme = $rootSiteComponent->getTheme();
-			if ($authZ->isUserAuthorized(
-				$idManager->getId("edu.middlebury.authorization.modify"), 
-				$siteId))
-			{
-				$url = $harmoni->request->quickURL("ui1", "theme_options", 
-					array("node" => $siteId->getIdString(),
-					"returnNode" => SiteDispatcher::getCurrentNodeId(),
-					"returnAction" => $harmoni->request->getRequestedAction()));
-				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
-				print _("Theme Options")."</button>";
-			}
-			if ($authZ->isUserAuthorizedBelow(
-				$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
-				$siteId))
-			{
-				$url = $harmoni->request->quickURL("roles", "choose_agent", 
-					array("node" => SiteDispatcher::getCurrentNodeId(),
-					"returnModule" => $harmoni->request->getRequestedModule(),
-					"returnAction" => $harmoni->request->getRequestedAction()));
-				print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
-				print _("Permissions")."</button>";
-			}
-			print "\n</div>";
-			
-			$mainScreen->add(new UnstyledBlock(ob_get_clean()), $rootSiteComponent->getWidth(), null, CENTER, BOTTOM);
+			$url = $harmoni->request->quickURL("ui1", "editSite", 
+				array("node" => $siteId->getIdString(),
+				"returnNode" => SiteDispatcher::getCurrentNodeId(),
+				"returnAction" => $harmoni->request->getRequestedAction()));
+			print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
+			print _("Edit Site Options")."</button>";
 		}
+	
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteId))
+		{
+			$url = $harmoni->request->quickURL("ui1", "theme_options", 
+				array("node" => $siteId->getIdString(),
+				"returnNode" => SiteDispatcher::getCurrentNodeId(),
+				"returnAction" => $harmoni->request->getRequestedAction()));
+			print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
+			print _("Theme Options")."</button>";
+		}
+		
+		// Rather than checking the entire site, we will just check the current node.
+		// This forces users who are not site-wide admins to browse to the place where
+		// they are administrators in order to see the permissions button, but
+		// cuts load-times for non-admins on a given large site from 35s to 1.4s.
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
+			SiteDispatcher::getCurrentNode()->getQualifierId()))
+		{
+			$url = $harmoni->request->quickURL("roles", "choose_agent", 
+				array("node" => SiteDispatcher::getCurrentNodeId(),
+				"returnModule" => $harmoni->request->getRequestedModule(),
+				"returnAction" => $harmoni->request->getRequestedAction()));
+			print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
+			print _("Permissions")."</button>";
+		}
+			
+		if (strlen(ob_get_contents())) {
+			$mainScreen->add(new UnstyledBlock(
+				"\n<div style='text-align: right;'>".ob_get_contents()."\n</div>"),
+				$rootSiteComponent->getWidth(), null, CENTER, BOTTOM);
+		}
+		ob_end_clean();
 		
 		return $allwrapper;
 	}

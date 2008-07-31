@@ -294,6 +294,26 @@ class SiteDispatcher {
 		
 		return self::$director;
 	}
+	
+	/**
+	 * Answer the shortened /sites/slotname url for a site id.
+	 * 
+	 * @param string $siteId
+	 * @return string
+	 * @access public
+	 * @since 7/30/08
+	 * @static
+	 */
+	public static function getSitesUrlForSiteId ($siteId) {
+		$slotMgr = SlotManager::instance();
+		try {
+			$slot = $slotMgr->getSlotBySiteId($siteId);
+			return rtrim(MYURL, '/').'/sites/'.$slot->getShortname();
+		} catch (UnknownIdException $e) {
+			$harmoni = Harmoni::instance();
+			return $harmoni->request->quickURL('view', 'html', array('node' => $siteId));
+		}
+	}
 }
 
 ?>
