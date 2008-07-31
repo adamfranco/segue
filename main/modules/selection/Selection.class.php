@@ -83,7 +83,7 @@ class Segue_Selection
 		print 	"type: '".$siteComponent->getComponentClass()."', ";
 		print	"displayName: '"
 			.addslashes(str_replace('"', '&quot', 
-				preg_replace('/\s*/', ' ',
+				preg_replace('/\s+/', ' ',
 					strip_tags($siteComponent->getDisplayName()))))."', ";
 // 		print 	"description: '".$siteComponent->getDescription()."'";
 		print "});\"";
@@ -108,6 +108,8 @@ class Segue_Selection
 			
 			ob_start();
 			
+			print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/FixedPanel.js'></script>";
+			print "\n\t\t<link rel='stylesheet' type='text/css' href='".MYPATH."/javascript/Selection.css' />";
 			print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/Selection.js'></script>";
 			
 			print "\n\t\t<script type='text/javascript'>";
@@ -132,7 +134,7 @@ class Segue_Selection
 							print 	"type: '".$siteComponent->getComponentClass()."', ";
 							print	"displayName: '"
 								.addslashes(str_replace('"', '&quot', 
-									preg_replace('/\s*/', ' ',
+									preg_replace('/\s+/', ' ',
 										strip_tags($siteComponent->getDisplayName()))))."', ";
 					// 		print 	"description: '".$siteComponent->getDescription()."'";
 							print "});'";

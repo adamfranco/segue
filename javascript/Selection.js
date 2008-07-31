@@ -8,9 +8,9 @@
  * @version $Id$
  */
 
-Segue_Selection.prototype = new Panel();
-Segue_Selection.prototype.constructor = Panel;
-Segue_Selection.superclass = Panel.prototype;
+Segue_Selection.prototype = new FixedPanel();
+Segue_Selection.prototype.constructor = FixedPanel;
+Segue_Selection.superclass = FixedPanel.prototype;
 
 /**
  * The Segue_Selection is a panel that floats at the top of the page and displays
@@ -29,11 +29,15 @@ function Segue_Selection () {
 	
 	Segue_Selection.superclass.init.call(this, 
 								'Your Selection',
-								'200px',
-								'300px',
-								document.body,
+								{top: '0px', left: '45%'},
+								30,
+								300,
 								'segue_selection_panel');
-	this.cancel.style.display = 'none';
+	
+	var panel = this;	// define a variable for panel that will be in the
+						// scope of the onclick.
+	this.cancel.onclick = function () {panel.toggleContent();}
+	this.closeContent();
 }
 
 	/**
@@ -60,10 +64,61 @@ function Segue_Selection () {
 	 * @since 7/31/08
 	 */
 	Segue_Selection.prototype.addComponent = function (siteComponent) {
-		this.loadComponent(siteComponent);
+		try {
+			this.loadComponent(siteComponent);
+		
+			// Fire off an AJAX request to store the addition in the session.
+			var url = Harmoni.quickUrl('selection', 'add', {id: siteComponent.id});
+			var req = Harmoni.createRequest();
+			if (req) {
+				var selection = this;
+				// Set a callback for reloading the list.
+				req.onreadystatechange = function () {
+					
+					// only if req shows 'loaded'
+					if (req.readyState == 4) {
+						// only if we get a good load should we continue.
+						if (req.status == 200 && req.responseXML) {
+	// 						selection.reloadFromXML(req.responseXML);
+						} else {
+							alert("There was a problem retrieving the data:\n" +
+								req.statusText);
+						}
+					}
+				} 
+			
+				req.open('GET', url, true);
+				req.send(null);
+			} else {
+				alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
+			}
+		} catch (e) {
+			if (e == 'Already selected')
+				return;
+			else
+				throw e;
+		}
+	}
+	
+	/**
+	 * remove a site component to the selection.
+	 * 
+	 * @param object siteComponent
+	 * @return void
+	 * @access public
+	 * @since 7/31/08
+	 */
+	Segue_Selection.prototype.removeComponent = function (siteComponent) {
+		var newComponents = new Array();
+		for (var i = 0; i < this.components.length; i++) {
+			if (siteComponent.id != this.components[i].id)
+				newComponents.push(this.components[i]);
+		}
+		this.components = newComponents
+		this.buildDisplay();
 		
 		// Fire off an AJAX request to store the addition in the session.
-		var url = Harmoni.quickUrl('selection', 'add', {id: siteComponent.id});
+		var url = Harmoni.quickUrl('selection', 'remove', {id: siteComponent.id});
 		var req = Harmoni.createRequest();
 		if (req) {
 			var selection = this;
@@ -104,9 +159,65 @@ function Segue_Selection () {
 		if (!siteComponent.type)
 			throw "SiteComponents must have a type.";
 		
-		this.components.push(siteComponent);
+		if (this.isInSelection(siteComponent.id))
+			throw 'Already selected';
 		
+		this.components.push(siteComponent);
 		this.buildDisplay();
+	}
+	
+	/**
+	 * Answer true if the site component is already in the selection.
+	 * 
+	 * @param string siteComponentId
+	 * @return boolean
+	 * @access public
+	 * @since 7/31/08
+	 */
+	Segue_Selection.prototype.isInSelection = function (siteComponentId) {
+		for (var i = 0; i < this.components.length; i++) {
+			if (siteComponentId == this.components[i].id)
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Toggle the content open or closed
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 7/31/08
+	 */
+	Segue_Selection.prototype.toggleContent = function () {
+		if (this.contentElement.style.display == 'none')
+			this.openContent();
+		else
+			this.closeContent();
+	}
+	
+	/**
+	 * Close the content
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 7/31/08
+	 */
+	Segue_Selection.prototype.closeContent = function () {
+		this.contentElement.style.display = 'none';
+		this.cancel.innerHTML = 'Open';
+	}
+	
+	/**
+	 * open the content
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 7/31/08
+	 */
+	Segue_Selection.prototype.openContent = function () {
+		this.contentElement.style.display = 'block';
+		this.cancel.innerHTML = 'Close';
 	}
 	
 	/**
@@ -121,6 +232,49 @@ function Segue_Selection () {
 			this.close();
 		}
 		
+		this.titleElement.innerHTML = this.title + ' (' + this.components.length + ' items)';
+		
+		this.contentElement.innerHTML = '';
+		var list = this.contentElement.appendChild(document.createElement('ol'));
+		for (var i = 0; i < this.components.length; i++) {
+			var component = this.components[i];
+			var li = list.appendChild(document.createElement('li'));
+			
+			// Name
+			var elem = li.appendChild(document.createElement('span'));
+			elem.innerHTML = component.displayName;
+			elem.className = 'name';
+			li.appendChild(document.createTextNode(' '));
+			
+			// Type
+			var elem = li.appendChild(document.createElement('span'));
+			switch (component.type) {
+				case 'NavBlock':
+					var type = 'Nav. Item';
+					break;
+				case 'Block':
+					var type = 'Content Block';
+					break;
+				default:
+					throw "Unsupported component type: " + component.type;
+				
+			}
+			elem.innerHTML = '(' + type + ')';
+			elem.className = 'type';
+			
+			// Remove link
+			var controls = li.appendChild(document.createElement('span'));
+			controls.className = 'controls';
+			controls.appendChild(document.createTextNode(' - '));
+			var elem = controls.appendChild(document.createElement('a'));
+			elem.href = '#';
+			elem.innerHTML = 'remove';
+			elem.onclick = function() {
+				Segue_Selection.instance().removeComponent(component);
+			}
+			li.appendChild(document.createTextNode(' '));
+		}
+		
 		this.open();
-		// @todo
+		this.center();
 	}
