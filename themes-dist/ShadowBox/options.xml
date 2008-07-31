@@ -274,16 +274,19 @@
             <key>normal</key>
             <label lang='en_US'>Normal</label>
             <setting marker='[[MENU_FONT_SIZE]]'>100%</setting>
+            <setting marker='[[SUBMENU_FONT_SIZE]]'>90%</setting>
         </choice>
         <choice>
             <key>small</key>
             <label lang='en_US'>Small</label>
             <setting marker='[[MENU_FONT_SIZE]]'>90%</setting>
+            <setting marker='[[SUBMENU_FONT_SIZE]]'>90%</setting>
         </choice>
         <choice>
             <key>larger</key>
             <label lang='en_US'>Large</label>
             <setting marker='[[MENU_FONT_SIZE]]'>110%</setting>
+            <setting marker='[[SUBMENU_FONT_SIZE]]'>100%</setting>
         </choice>
     </option>
     <option id='block_class'>
