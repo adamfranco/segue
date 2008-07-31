@@ -71,6 +71,12 @@ class add_random_roleAction
 	 * @since 11/14/07
 	 */
 	function buildContent () {
+		// Do not allow execution if performance testing is not enabled.
+		// We do not want people to accidentally add random authorizations
+		// to their sites.
+		if (!defined('ENABLE_PERFORMANCE_TESTING') || !ENABLE_PERFORMANCE_TESTING)
+			throw new ConfigurationErrorException("Performance-testing actions may not be executed unless ENABLE_PERFORMANCE_TESTING is enabled.");
+
 		$harmoni = Harmoni::instance();
 		$idMgr = Services::getService("Id");
 		$agentMgr = Services::getService("Agent");

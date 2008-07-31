@@ -28,6 +28,17 @@ define ("ENABLE_DWARVES", false);
 
 
 /*********************************************************
+ * Set to true to enable actions for generating datasets
+ * for performance testing purposes.
+ *
+ * Do NOT enable this on production databases as it may result
+ * in the creation of large ammounts of bogus users, sites,
+ * and authorizations that are only useful for load-testing
+ * the server environment.
+ *********************************************************/
+define("ENABLE_PERFORMANCE_TESTING", false);
+
+/*********************************************************
  * Enable the display of timers and query-counters.
  * (Useful for debugging/testing).
  *********************************************************/
