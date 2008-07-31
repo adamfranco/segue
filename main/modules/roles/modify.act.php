@@ -156,7 +156,7 @@ class modifyAction
 			// If we have already rebuilt the implicit Authorizations and that didn't
 			// fix things, throw and exception.
 			if ($implicitRebuilt) {
-				throw new OperationFailedException('Authorizations on this site not match up to a valid role-state.');
+				throw new OperationFailedException('Authorizations on this site do not match up to a valid role-state.');
 			} 
 			// Rebuild the implicit Authorizations and retry
 			else {
