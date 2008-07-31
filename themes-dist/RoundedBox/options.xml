@@ -138,6 +138,20 @@
             <setting marker='[[MENU_FONT_SIZE]]'>110%</setting>
         </choice>
     </option>
+    <option id='menu_style'>
+        <displayName lang='en_US'>Menu Style</displayName>
+        <description lang='en_US'>The type of border around unselected navigation items</description>
+        <choice isDefault='true'>
+            <key>solid</key>
+            <label lang='en_US'>Solid Line</label>
+            <setting marker='[[MENU_BORDER]]'>solid</setting>
+        </choice>
+        <choice isDefault='true'>
+            <key>dotted</key>
+            <label lang='en_US'>Dotted Line</label>
+            <setting marker='[[MENU_BORDER]]'>dotted</setting>
+        </choice>
+    </option>
     <option id='text_color'>
         <displayName lang='en_US'>Text Color</displayName>
         <description lang='en_US'>The color or normal text.</description>
