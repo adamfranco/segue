@@ -62,6 +62,45 @@ class Segue_Selection
 	}
 	
 	/**
+	 * Add a site component to us
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 7/31/08
+	 */
+	public function addSiteComponent (SiteComponent $siteComponent) {
+		$idManager = Services::getService("Id");
+		$this->addItem($idManager->getId($siteComponent->getId()));
+	}
+	
+	/**
+	 * Remove a site component to us
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 7/31/08
+	 */
+	public function removeSiteComponent (SiteComponent $siteComponent) {
+		$idManager = Services::getService("Id");
+		$this->removeItem($idManager->getId($siteComponent->getId()));
+	}
+	
+	/**
+	 * Answer the next SiteComponent
+	 * 
+	 * @return SiteComponent
+	 * @access public
+	 * @since 7/31/08
+	 */
+	public function nextSiteComponent () {
+		$id = $this->next();		
+		$director = SiteDispatcher::getSiteDirector();
+		return $director->getSiteComponentById($id->getIdString());
+	}
+	
+	/**
 	 * Answer the link to add a particular SiteComponent to the selection
 	 * 
 	 * @param object SiteComponent $siteComponent
@@ -107,7 +146,7 @@ class Segue_Selection
 			$harmoni = Harmoni::instance();
 			
 			ob_start();
-			
+			print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/Panel.js'></script>";
 			print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/FixedPanel.js'></script>";
 			print "\n\t\t<link rel='stylesheet' type='text/css' href='".MYPATH."/javascript/Selection.css' />";
 			print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/Selection.js'></script>";
@@ -120,14 +159,14 @@ class Segue_Selection
 			$this->reset();
 			if ($this->hasNext()) {
 				$director = SiteDispatcher::getSiteDirector();
-				
+				$authZ = Services::getService("AuthZ");
+				$idManager = Services::getService("Id");
 				while ($this->hasNext()) {	
-					$id = $this->next();
-					$siteComponent = $director->getSiteComponentById($id);
+					$siteComponent = $this->nextSiteComponent();
 					
 					try {
 						if ($authZ->isUserAuthorized(
-							$idManager->getId("edu.middlebury.authorization.view"), $id))
+							$idManager->getId("edu.middlebury.authorization.view"), $siteComponent->getQualifierId()))
 						{
 							print "\n\t\t\tSegue_Selection.instance().loadComponent({";
 							print	"id: '".$siteComponent->getId()."', ";
@@ -135,9 +174,9 @@ class Segue_Selection
 							print	"displayName: '"
 								.addslashes(str_replace('"', '&quot', 
 									preg_replace('/\s+/', ' ',
-										strip_tags($siteComponent->getDisplayName()))))."', ";
+										strip_tags($siteComponent->getDisplayName()))))."' ";
 					// 		print 	"description: '".$siteComponent->getDescription()."'";
-							print "});'";
+							print "});";
 						}
 					} catch (UnknownIdException $e) {
 						// Let assets out of the purvue of our authorization manager slide.
