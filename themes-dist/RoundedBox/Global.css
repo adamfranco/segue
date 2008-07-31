@@ -3,7 +3,8 @@
  *********************************************************/
 
 body {
-    background-color: [[BG_COLOR]];
+    background: url('./images/background/[[BG_IMAGE]]') repeat-x;
+    background-color: [[BG_COLOR]];    
     color: [[TEXT_COLOR]];
     font-family: [[FONT_FAMILY]];
     font-size:12px;
@@ -30,7 +31,7 @@ a:hover {
 }
 
 .plugin_content {
-    color: [[TEXT_COLOR]];
+    
 }
 
 .plugin_content a {
@@ -106,6 +107,7 @@ seguefooter_left {
     display: block
     border: 1px solid;
     color: [[MENU_LINK_COLOR]];
+    border: 1px solid [[MENU_LINK_COLOR]];
     cursor: pointer;
 }
 

@@ -15,6 +15,8 @@
     text-align: left;
     font-size: 125%;
     margin: 0px;
+    margin-top: -3px;
+    margin-bottom: -3px;
 }
 
 .Heading_2 a {

@@ -1,0 +1,17 @@
+/*********************************************************
+ * Heading 3 - normal
+ *********************************************************/
+
+.Heading_3 {     
+    padding-left: 7px;  
+    margin-top: 5px;
+    margin-bottom: 2px;
+    text-align: left;
+    font-size: 110%;
+    color: [[MENU_TEXT_COLOR]];
+}
+
+.Heading_3 a {
+    color: [[MENU_LINK_COLOR]];
+    text-decoration: none;
+}

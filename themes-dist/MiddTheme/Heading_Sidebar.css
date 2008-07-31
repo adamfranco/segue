@@ -1,0 +1,16 @@
+/*********************************************************
+ * Heading 4
+ *********************************************************/
+
+*.Heading_Sidebar {  
+    padding-left: 7px;  
+    margin-top: 5px;
+    margin-bottom: 2px;
+    text-align: left;
+    font-size: 110%;
+}
+
+.Heading_Sidebar a {
+     color: [[MENU_LINK_COLOR]];
+     text-decoration: none;
+}

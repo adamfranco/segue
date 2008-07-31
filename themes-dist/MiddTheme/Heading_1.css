@@ -1,0 +1,16 @@
+/*********************************************************
+ * Heading 1 - Biggest
+ *********************************************************/
+
+.Heading_1 {   
+    padding-left: 7px;  
+    margin-top: 5px;
+    margin-bottom: 2px;
+    text-align: left;
+    font-size: 125%;
+}
+
+.Heading_1 a {
+    color: [[MENU_LINK_COLOR]];
+    text-decoration: none;
+}

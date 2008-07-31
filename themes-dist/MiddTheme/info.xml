@@ -1,0 +1,14 @@
+<ThemeInfo>
+    <DisplayName lang='en_US'>Midd Theme</DisplayName>
+    <Description lang='en_US'>
+        This is a somewhat formal theme with the Middlebury Seal and Middlebury College in the header area.
+        This theme contains most content in beveled box in blue and gray.
+    </Description>
+    <History>
+        <Entry date='2007-08-23'>
+            <Comment>Theme created</Comment>
+            <Name>Alex Chapin</Name>
+            <EMail>achapin@middlebury.edu</EMail>
+        </Entry>
+    </History>
+</ThemeInfo>

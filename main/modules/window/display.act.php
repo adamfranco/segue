@@ -130,7 +130,7 @@ class displayAction
 		
 		// Main menu
 		$mainMenu = SegueMenuGenerator::generateMainMenu($harmoni->getCurrentAction());
-		$centerPane->add($mainMenu,"140px",null, LEFT, TOP);
+
 		
 		// use the result from previous actions
 		if ($harmoni->printedResult) {
@@ -147,6 +147,8 @@ class displayAction
 			$contentDestination->add($harmoni->result, null, null, CENTER, TOP);
 		else if (is_string($harmoni->result))
 			$contentDestination->add(new Block($harmoni->result, STANDARD_BLOCK), null, null, CENTER, TOP);
+			
+		$centerPane->add($mainMenu,"140px",null, LEFT, TOP);
 		
 		// Right Column
 // 		$rightColumn = $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);

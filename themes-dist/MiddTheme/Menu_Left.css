@@ -1,0 +1,14 @@
+/*********************************************************
+ * Menu - Left
+ *********************************************************/
+.Menu_Left {
+    margin-top: 10px;
+    padding: 1px;
+}
+
+.Menu_Left .Menu_Sub {
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 0px;
+    font-size: [[MENU_FONT_SIZE]];
+}

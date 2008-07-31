@@ -1,0 +1,62 @@
+/*********************************************************
+ * Block 4 - Alert
+ *********************************************************/
+
+*.block4 {
+    background-color: [[ALERT_COLOR]];
+}
+
+.block4 .Content {        
+    padding: 7px;
+    text-align: left;
+    height: 1%;
+}
+
+.block4 .BorderTL {
+    background: url('./images/[[IMAGE_DIR]]/blockcorner_TL.gif') no-repeat;
+    width: 6px;
+    height: 6px;
+}
+
+.block4 .Top {
+    background: url('./images/[[IMAGE_DIR]]/block_top.gif') repeat-x;
+    height: 6px;
+ }
+
+.block4 .BorderTR {
+    background: url('./images/[[IMAGE_DIR]]/blockcorner_TR.gif') no-repeat;
+    width: 6px;
+    height: 6px;
+}
+
+
+.block4 .Right {
+    background: url('./images/[[IMAGE_DIR]]/block_right.gif') repeat-y;
+    border-right: 1px solid [[BORDER_COLOR]];
+    width: 6px;
+
+}
+
+.block4 .Left {
+    background: url('./images/[[IMAGE_DIR]]/block_left.gif') repeat-y;
+    border-left: 1px solid [[BORDER_COLOR]];
+    width: 6px;
+}
+
+
+.block4 .BorderBL {
+    background: url('./images/[[IMAGE_DIR]]/blockcorner_BL.gif') no-repeat;
+    width: 6px;
+    height: 6px;
+}
+
+.block4 .Bottom {
+    background: url('./images/[[IMAGE_DIR]]/block_bottom.gif') repeat-x;
+    height: 6px;
+}
+
+.block4 .BorderBR {
+    background: url('./images/[[IMAGE_DIR]]/blockcorner_BR.gif') no-repeat;
+    width: 6px;
+    height: 6px;
+}
