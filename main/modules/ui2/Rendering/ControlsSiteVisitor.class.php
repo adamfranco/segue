@@ -1208,6 +1208,26 @@ END;
 	}
 	
 	/**
+	 * Print out links to select the site component
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access protected
+	 * @since 7/30/08
+	 */
+	protected function printSelect (SiteComponent $siteComponent) {
+		print "\n\t\t\t\t<tr><td class='ui2_settingborder'>";
+		print "\n\t\t\t\t<div class='ui2_settingtitle'>";
+		print _('Move/Copy: ')."\n\t\t\t\t</div>";
+		print "\n\t\t\t\t</td><td class='ui2_settingborder'>";
+		
+		$selection = Segue_Selection::instance();
+		print $selection->getAddLink($siteComponent);
+		
+		print "\n\t\t\t\t</td></tr>";
+	}
+	
+	/**
 	 * Answer controls for Block SiteComponents
 	 * 
 	 * @param SiteComponent $siteComponent
@@ -1230,6 +1250,8 @@ END;
 		
 
 		$this->printDelete($siteComponent);
+		
+		$this->printSelect($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
 	}
@@ -1274,6 +1296,8 @@ END;
 // 		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
 		
+		$this->printSelect($siteComponent);
+		
 		return $this->controlsEnd($siteComponent);
 	}
 	
@@ -1291,6 +1315,8 @@ END;
 		$this->printWidth($siteComponent);
 		
 		$this->printTheme($siteComponent);
+		
+		$this->printSelect($siteComponent);
 		
 		return $this->controlsEnd($siteComponent);
 	}

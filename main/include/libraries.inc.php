@@ -51,6 +51,7 @@ require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.ph
 require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
 require_once(MYDIR."/main/library/Segue1UrlResolver.class.php");
 require_once(MYDIR."/main/library/Templates/TemplateManager.class.php");
+ require_once(MYDIR."/main/modules/selection/Selection.class.php");
 
 
 /******************************************************************************
