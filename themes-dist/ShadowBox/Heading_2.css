@@ -4,14 +4,9 @@
 
 .Heading_2 {    
     padding-left: 10px;
-    margin-right: 5px;
-}
-
-.Heading_2 .Content {
-    padding: 3px;
-    margin-left: 5px;
+    margin: 5px;    
     text-align: left;
-    font-weight: bold;
+    font-weight: bold; 
     font-size: 110%;
 }
 
