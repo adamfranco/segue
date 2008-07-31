@@ -11,6 +11,7 @@
             <setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
             <setting marker='[[FG_COLOR]]'>#CCCCCC</setting>
             <setting marker='[[BLOCK_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[BORDER_COLOR]]'>#999999</setting>
             <setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
             <setting marker='[[MENU_LINK_COLOR]]'>[[LINK_COLOR]]</setting>
             <setting marker='[[MENU_TEXT_COLOR]]'>[[TEXT_COLOR]]</setting>
@@ -24,6 +25,7 @@
             <setting marker='[[FG_COLOR]]'>#003366</setting>
             <setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
             <setting marker='[[BLOCK_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[BORDER_COLOR]]'>#999999</setting>
             <setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
             <setting marker='[[MENU_LINK_COLOR]]'>#FFCC00</setting>
             <setting marker='[[MENU_TEXT_COLOR]]'>#FFFFFF</setting>
