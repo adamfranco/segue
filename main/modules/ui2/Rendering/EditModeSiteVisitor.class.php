@@ -45,15 +45,16 @@ class EditModeSiteVisitor
 		parent::__construct();
 		$this->_classNames = array(
 			'Block' => _('Content Block'),
-			'NavBlock' => _('Nav. Item'),
+			'NavBlock' => _('Page'),
+			'NavSection' => _('Section'),
 			'SiteNavBlock' => _('Site'),
-			'MenuOrganizer' => _('Menu'),
+			'MenuOrganizer' => _('Pages Container'),
 			'FlowOrganizer' => _('Content Container'),
 			'FixedOrganizer' => _('Layout Container'),
-			'SubMenu_multipart' => _('Sub-Menu'),
-			'SidebarSubMenu_multipart' => _('Sub-Menu with Sidebar'),
-			'ContentPage_multipart' => _('Content Page'),
-			'SidebarContentPage_multipart' => _('Content Page with Sidebar')
+			'SubMenu_multipart' => _('Section'),
+			'SidebarSubMenu_multipart' => _('Section with Sidebar'),
+			'ContentPage_multipart' => _('Page'),
+			'SidebarContentPage_multipart' => _('Page with Sidebar')
 			
 		);
 		
@@ -275,6 +276,12 @@ END;
 		if (!$menuItems)
 			return $menuItems;
 		
+		if ($navBlock->isSection()) {
+			$label = $this->_classNames['NavSection'];
+		} else {
+			$label = $this->_classNames['NavBlock'];
+		}
+		
 		// Add controls bar and border
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -284,7 +291,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#090')
 				.$this->getControlsHTML(
-					"<em>".$this->_classNames['NavBlock']."</em>", 
+					"<em>".$label."</em>", 
 					$navBlock->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, true)
 				."<br/>";
@@ -426,7 +433,7 @@ END;
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
 
 	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
-			$allowed[] = _("Menu Content");
+			$allowed[] = _("Content Blocks");
 			$pluginManager = Services::getService("PluginManager");
 			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
@@ -514,7 +521,7 @@ END;
 		print " onclick='this.style.display=\"none\"; this.nextSibling.style.display=\"block\";'";
 		print ">";
 		if ($isMenu)
-			print "\n\t\t\t"._("+ Menu Item");
+			print "\n\t\t\t"._("+ Page...");
 		else
 			print "\n\t\t\t"._("+ Content");
 		print "\n\t</a>";
