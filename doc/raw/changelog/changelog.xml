@@ -31,7 +31,7 @@
 			Upgrades from versions prior to beta 26 require running the RSS Feed
 			updaters located under Admin Tools --> Segue Updates.
 		</releaseNotes>
-		<new author='adam' date='2008-07-30'>
+		<new author='alex' date='2008-07-30'>
 			Themes: Added two new themes, RoundedBox and Midd.
 		</new>
 		<new author='adam' date='2008-07-29' ref='1799954' reftype='fr'>
@@ -41,6 +41,19 @@
 			Portal: Site URLs are now printed below the site title on the portal
 			for easy reference.
 		</new>
+		<change author='alex' date='2008-07-30'>
+			Moved menu on Segue main pages from the left to the right side
+		</change>
+		<change author='alex' date='2008-07-30'>
+			UI2: removed from nav item (renamed in this release to pages/sections) options settings
+			for titles, history, comments, dates attribution and sort method (unless these were set
+			to something other than default in current installs).
+		</change>
+		<change author='alex' date='2008-07-22'>
+			UI2: removed from nav item (renamed in this release to pages/sections) options settings
+			for titles, history, comments, dates attribution and sort method (unless these were set
+			to something other than default in current installs).
+		</change>
 		<change author='adam' date='2008-07-30' ref='2031895' reftype='fr'>
 			View/UI1/UI2/Portal: Links to edit-mode are now shown to all users as
 			these devolve into view mode if users have no edit authorizations. Doing
