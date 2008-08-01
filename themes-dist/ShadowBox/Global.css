@@ -103,8 +103,7 @@ seguefooter_left {
 
 
 .pagination_links {
-    margin-right: 5px;
-    padding-right: 20px;
+    color: [[BG_TEXT_COLOR]];
 }
 
 .pagination_links a {
