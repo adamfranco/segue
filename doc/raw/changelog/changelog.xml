@@ -41,6 +41,14 @@
 			Portal: Site URLs are now printed below the site title on the portal
 			for easy reference.
 		</new>
+		<change author='alex' date='2008-07-30'>
+			Moved menu on Segue main pages from the left to the right side
+		</change>
+		<change author='alex' date='2008-07-22'>
+			UI2: removed from nav item (renamed in this release to pages/sections) options settings
+			for titles, history, comments, dates attribution and sort method (unless these were set
+			to something other than default in current installs).
+		</change>
 		<fix author='adam' date='2008-08-01'>
 			Portal: Fixed styling problems in IE.
 		</fix>

@@ -34,11 +34,8 @@
     padding-right: 1px;
 }
 
-*.Block_Standard .box03 {
-
-}
-
 .Block_Standard .Content {
+    padding: 10px;
     height: 1%;
     text-align: left;
     font-size: 100%;    

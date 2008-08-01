@@ -38,7 +38,7 @@
 }
 
 .MenuItem_Link_Unselected .Top {
-    border-top: 1px dotted [[BORDER_COLOR]];
+    border-top: 1px [[MENU_BORDER]] [[BORDER_COLOR]];
     background-color: [[FG_COLOR]];
 }
 
@@ -52,14 +52,14 @@
 
 .MenuItem_Link_Unselected .Right {
     background-color: [[FG_COLOR]];
-    border-right: 1px dotted [[BORDER_COLOR]];
+    border-right: 1px [[MENU_BORDER]] [[BORDER_COLOR]];
     width: 5px;
 
 }
 
 .MenuItem_Link_Unselected .Left {
     background-color: [[FG_COLOR]];
-    border-left: 1px dotted [[BORDER_COLOR]];
+    border-left: 1px [[MENU_BORDER]] [[BORDER_COLOR]];
     width: 5px;
 }
 
@@ -72,7 +72,7 @@
 }
 
 .MenuItem_Link_Unselected .Bottom {
-    border-bottom: 1px dotted [[BORDER_COLOR]];
+    border-bottom: 1px [[MENU_BORDER]] [[BORDER_COLOR]];
     background-color: [[FG_COLOR]];
 }
 
