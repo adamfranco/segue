@@ -56,6 +56,10 @@
 		<fix author='adam' date='2008-07-25'>
 			UI2: fixed improper width setting in div enclosing permissions button that was causing site options box to not properly surround the background block
 		</fix>
+		<change author='alex' date='2008-08-01' ref='2009049' reftype='fr'>
+			UI2: Menus are now "Page Containers", nav items with submenus below are
+			now "Sections" and otherwise "Pages".
+		</change>
 	</version>
 	<version number="2.0-beta-28" date="2008-07-24">
 		<releaseNotes>
