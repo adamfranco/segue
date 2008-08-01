@@ -59,6 +59,10 @@
 		<fix author='adam' date='2008-07-25'>
 			UI2: fixed improper width setting in div enclosing permissions button that was causing site options box to not properly surround the background block
 		</fix>
+		<change author='adam' date='2008-08-01' ref='2034986' reftype='bug'>
+			Plugins: Deprecated 'Plugin data-arrays' support as it was causing hundreds
+			of excess reordering queries every page load and not being used anyway.
+		</change>
 	</version>
 	<version number="2.0-beta-28" date="2008-07-24">
 		<releaseNotes>
