@@ -205,6 +205,7 @@ class listAction
 		
 		<script type='text/javascript' src='".MYPATH."/javascript/SiteCopyPanel.js'></script>
 		<script type='text/javascript' src='".POLYPHONY_PATH."javascript/CenteredPanel.js'></script>
+		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js'></script>
 		
 		<script type='text/javascript'>
 		// <![CDATA[
