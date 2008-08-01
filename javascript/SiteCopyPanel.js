@@ -140,6 +140,7 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		
 		var statusPanel = new CenteredPanel("Copy Status", 400, 800, this.positionElement);
 		statusPanel.cancel.parentNode.removeChild(statusPanel.cancel);
+		statusPanel.contentElement.innerHTML = "<img src='" + Harmoni.MYPATH + "/images/loading.gif' alt='Loading...' /><br/><span>Copying Site...</span>";
 		
 		var req = Harmoni.createRequest();
 		if (req) {
@@ -147,8 +148,10 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 			// Set a callback for displaying errors.
 			req.onreadystatechange = function () {
 				// Update the status area.
-				if (req.responseText) {
+				if (req.responseText && req.responseText.length) {
 					statusPanel.contentElement.innerHTML = req.responseText;
+				} else {
+// 					statusPanel.contentElement.innerHTML = "<span style='blink'>Copying Site...</span> Readystate: "  + req.readyState + " Status: " + requ.status + " " + req.statusText;
 				}
 				
 				// only if req shows 'loaded'
@@ -177,7 +180,7 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		
 			req.open('POST', url, true);
 			req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			req.setRequestHeader("Content-length", params.length);
+// 			req.setRequestHeader("Content-length", params.length);
 // 			req.setRequestHeader("Connection", "close");
 			req.send(params);
 		} else {
