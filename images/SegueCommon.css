@@ -284,8 +284,8 @@
 	}
 	
 	.portal_list_controls {
+		text-align: right;
 		clear: both;
-		float: right;
 	}
 	
 	.portal_list_site_description {
