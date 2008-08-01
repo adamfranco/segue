@@ -103,8 +103,8 @@ seguefooter_left {
 
 
 .pagination_links {
-    padding-left: 0px;
-    padding-right: 0px;
+    margin-right: 5px;
+    padding-right: 20px;
 }
 
 .pagination_links a {

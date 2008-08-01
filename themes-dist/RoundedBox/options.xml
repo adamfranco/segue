@@ -104,20 +104,6 @@
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
             <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>        
         </choice>
-        <choice>
-            <key>blue</key>
-            <label lang='en_US'>Blue</label>
-            <label lang='es_ES'>Azul</label>
-            <setting marker='[[IMAGE_DIR]]'>blue</setting>
-            <setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
-            <setting marker='[[FG_COLOR]]'>#003366</setting>
-            <setting marker='[[BORDER_COLOR]]'>#666666</setting>
-            <setting marker='[[HEADER_BG_COLOR]]'>#FFFFFF</setting>
-            <setting marker='[[MENU_COLOR]]'>#466E9F</setting>
-            <setting marker='[[MENU_LINK_COLOR]]'>#000000</setting>
-            <setting marker='[[BG_TEXT_COLOR]]'>#000000</setting>
-            <setting marker='[[BG_LINK_COLOR]]'>#999999</setting>        
-        </choice>
     </option>
     <option id='menu_size'>
         <displayName lang='en_US'>Menu Size</displayName>
@@ -138,9 +124,23 @@
             <setting marker='[[MENU_FONT_SIZE]]'>110%</setting>
         </choice>
     </option>
+    <option id='menu_style'>
+        <displayName lang='en_US'>Menu Style</displayName>
+        <description lang='en_US'>The type of border around unselected navigation items</description>
+        <choice isDefault='true'>
+            <key>solid</key>
+            <label lang='en_US'>Solid Line</label>
+            <setting marker='[[MENU_BORDER]]'>solid</setting>
+        </choice>
+        <choice isDefault='true'>
+            <key>dotted</key>
+            <label lang='en_US'>Dotted Line</label>
+            <setting marker='[[MENU_BORDER]]'>dotted</setting>
+        </choice>
+    </option>
     <option id='text_color'>
         <displayName lang='en_US'>Text Color</displayName>
-        <description lang='en_US'>The color or normal text.</description>
+        <description lang='en_US'>The color of normal text.</description>
         <choice isDefault='true'>
             <key>black</key>
             <label lang='en_US'>Black</label>
@@ -188,15 +188,16 @@
         <displayName lang='en_US'>Link Color</displayName>
         <description lang='en_US'>The color of link-text.</description>
         <choice isDefault='true'>
-            <key>red</key>
-            <label lang='en_US'>Red</label>
-            <setting marker='[[LINK_COLOR]]'>#990000</setting>
-        </choice>
-        <choice>
             <key>blue</key>
             <label lang='en_US'>Blue</label>
             <setting marker='[[LINK_COLOR]]'>#003366</setting>
         </choice>
+        <choice>
+            <key>red</key>
+            <label lang='en_US'>Red</label>
+            <setting marker='[[LINK_COLOR]]'>#990000</setting>
+        </choice>
+
         <choice>
             <key>green</key>
             <label lang='en_US'>Green</label>

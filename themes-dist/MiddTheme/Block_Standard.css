@@ -40,14 +40,12 @@
 
 .Block_Standard .Right {
     background: url('./images/[[IMAGE_DIR]]/block_right.gif') repeat-y;
-    border-right: 1px solid [[BORDER_COLOR]];
     width: 6px;
 
 }
 
 .Block_Standard .Left {
     background: url('./images/[[IMAGE_DIR]]/block_left.gif') repeat-y;
-    border-left: 1px solid [[BORDER_COLOR]];
     width: 6px;
 }
 

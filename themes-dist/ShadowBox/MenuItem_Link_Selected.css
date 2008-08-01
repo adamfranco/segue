@@ -7,8 +7,8 @@
     border-bottom: 1px solid [[MENU_BORDER_BOTTOM]];
     border-left: 0px none [[MENU_BORDER_LEFT]];
     border-right: 0px none [[MENU_BORDER_RIGHT]];
-    padding-left: 0px;
-    padding-right: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
     margin-top: 1px;
     margin-bottom: -2px;
 }
@@ -32,13 +32,12 @@
     padding-right: 2px;
 }
 
-*.MenuItem_Link_Selected .box03 {
-
-}
 
 *.MenuItem_Link_Selected .Content {
+    padding-left: 10px;
+    padding-right: 10px;
     text-align: left;
-    font-size: 100%;
+    font-size: [[MENU_FONT_SIZE]];
     padding: 0px;
 }
 

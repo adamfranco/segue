@@ -11,6 +11,7 @@
             <setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
             <setting marker='[[FG_COLOR]]'>#CCCCCC</setting>
             <setting marker='[[BLOCK_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[BORDER_COLOR]]'>#999999</setting>
             <setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
             <setting marker='[[MENU_LINK_COLOR]]'>[[LINK_COLOR]]</setting>
             <setting marker='[[MENU_TEXT_COLOR]]'>[[TEXT_COLOR]]</setting>
@@ -24,6 +25,7 @@
             <setting marker='[[FG_COLOR]]'>#003366</setting>
             <setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
             <setting marker='[[BLOCK_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[BORDER_COLOR]]'>#999999</setting>
             <setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
             <setting marker='[[MENU_LINK_COLOR]]'>#FFCC00</setting>
             <setting marker='[[MENU_TEXT_COLOR]]'>#FFFFFF</setting>
@@ -70,14 +72,14 @@
         <displayName lang='en_US'>Link Color</displayName>
         <description lang='en_US'>The color of link-text.</description>
         <choice isDefault='true'>
-            <key>red</key>
-            <label lang='en_US'>Red</label>
-            <setting marker='[[LINK_COLOR]]'>#990000</setting>
-        </choice>
-        <choice>
             <key>blue</key>
             <label lang='en_US'>Blue</label>
             <setting marker='[[LINK_COLOR]]'>#003366</setting>
+        </choice>
+        <choice>
+            <key>red</key>
+            <label lang='en_US'>Red</label>
+            <setting marker='[[LINK_COLOR]]'>#990000</setting>
         </choice>
         <choice>
             <key>green</key>

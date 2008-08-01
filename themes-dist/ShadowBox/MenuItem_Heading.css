@@ -3,13 +3,13 @@
  *********************************************************/
 
 .MenuItem_Heading {
-    padding-top: 10px;
+    margin-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
     padding-bottom: 10px;
-    text-align: left;
 }
 
 .MenuItem_Heading .Content .heading {
-
     text-align: left;
     font-weight: bold; 
 }

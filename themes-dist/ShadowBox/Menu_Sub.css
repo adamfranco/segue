@@ -3,7 +3,7 @@
  *********************************************************/
  
 *.Menu_Sub {
-    font-size: 90%;
+    font-size: [[SUBMENU_FONT_SIZE]];
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 2px;
@@ -26,8 +26,4 @@
 *.Menu_Sub .MenuItem_Link_Selected .box02 {
     border-top: 1px none [[MENU_BORDER_TOP02]];
     border-bottom: 1px none [[MENU_BORDER_BOTTOM02]];    
-}
-
-*.Menu_Sub .MenuItem_Link_Unselected a {
-
 }
