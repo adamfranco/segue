@@ -2,7 +2,7 @@
     <option id='bg_color'>
         <displayName lang='en_US'>Background Color</displayName>
         <description lang='en_US'>The color of the site background.</description>
-        <choice>
+        <choice isDefault='true'>
             <key>white</key>
             <label lang='en_US'>White</label>
             <setting marker='[[IMAGE_DIR]]'>white</setting>
@@ -10,7 +10,7 @@
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
             <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>
         </choice>
-        <choice isDefault='true'>
+        <choice>
             <key>yellow</key>
             <label lang='en_US'>Yellow</label>
             <setting marker='[[IMAGE_DIR]]'>yellow</setting>
