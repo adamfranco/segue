@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-28 (2008-07-24)
+Segue v. 2.0-beta-29 (2008-08-01)
 =================================
 
 What is Segue?
@@ -17,12 +17,32 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release fixes a number of minor bugs, improves theme-support for MS Internet
-Explorer, and adds support for embedding GoogleMaps. 
+This release adds a number of new themes, allows copying of sites, and numerous
+other improvements.
 
-See the change-log for additional details on fixes.
+Notable User-facing changes:
 
-Segue 2.0-beta-28 uses Harmoni 1.4.5 and Polyphony 1.3.0.
+- Can now copy sites to empty placeholders in the portal.
+
+- Site-URLs are now printed in the portal.
+
+- Viewing of sites has now been dramatically sped-up for users without the editer role.
+
+- Sections and Pages are now named with more clarity.
+
+- Many theme improvements.
+
+- Portal style-fixes MS Internet Explorer browser.
+
+- Better support for uploading multi-page PDFs.
+
+See the change log for more details and other fixes.
+
+Harmoni 1.4.6 includes a fix to the thumbnail generation system that prevents
+excess processing overhead on large multi-page PDFs and improves the upload and
+migration of these files.
+
+Segue 2.0-beta-28 uses Harmoni 1.4.6 and Polyphony 1.3.1.
 
 ---------------------
 
@@ -73,6 +93,48 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-29 (2008-08-01)
+----------------------------------------------------
+This release adds a number of new themes, allows copying of sites, and numerous
+other improvements.
+
+Notable User-facing changes:
+
+- Can now copy sites to empty placeholders in the portal.
+
+- Site-URLs are now printed in the portal.
+
+- Viewing of sites has now been dramatically sped-up for users without the editer role.
+
+- Sections and Pages are now named with more clarity.
+
+- Many theme improvements.
+
+- Portal style-fixes MS Internet Explorer browser.
+
+- Better support for uploading multi-page PDFs.
+
+See the change log for more details and other fixes.
+
+Harmoni 1.4.6 includes a fix to the thumbnail generation system that prevents
+excess processing overhead on large multi-page PDFs and improves the upload and
+migration of these files.
+
+Segue 2.0-beta-28 uses Harmoni 1.4.6 and Polyphony 1.3.1.
+
+---------------------
+
+Upgrades:
+
+As of this beta 25, Segue requires PHP to be
+compiled with XSL support. On unix systems this can be added by configuring PHP
+using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 26 require running the RSS Feed updaters
+located under Admin Tools --> Segue Updates.
+
 
 
 v. 2.0-beta-28 (2008-07-24)

@@ -23,7 +23,74 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-28</h2>
+<h2>Version 2.0-beta-29</h2>
+<h3>2008-08-01</h3>
+<p>This release adds a number of new themes, allows copying of sites, and numerous other improvements.
+<br>
+<br>Notable User-facing changes:
+<br>
+<br>- Can now copy sites to empty placeholders in the portal.
+<br>
+<br>- Site-URLs are now printed in the portal.
+<br>
+<br>- Viewing of sites has now been dramatically sped-up for users without the editer role.
+<br>
+<br>- Sections and Pages are now named with more clarity.
+<br>
+<br>- Many theme improvements.
+<br>
+<br>- Portal style-fixes MS Internet Explorer browser.
+<br>
+<br>- Better support for uploading multi-page PDFs.
+<br>
+<br>See the change log for more details and other fixes.
+<br>
+<br>Harmoni 1.4.6 includes a fix to the thumbnail generation system that prevents excess processing overhead on large multi-page PDFs and improves the upload and migration of these files.
+<br>
+<br>Segue 2.0-beta-28 uses Harmoni 1.4.6 and Polyphony 1.3.1.
+<br>
+<br>---------------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b> Themes: Added two new themes, RoundedBox and Midd. (<em>2008-07-30 - Alex Chapin</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799954&amp;group_id=82171&amp;atid=565237">
+        			#1799954</a> Portal: Can now copy sites into empty placeholders. (<em>2008-07-29 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2032019&amp;group_id=82171&amp;atid=565237">
+        			#2032019</a> Portal: Site URLs are now printed below the site title on the portal for easy reference. (<em>2008-07-30 - Adam Franco</em>)<br> (<em>reported by hector_vila</em>)</li>
+		<li>
+<b>Change:</b> Moved menu on Segue main pages from the left to the right side (<em>2008-07-30 - Alex Chapin</em>)</li>
+		<li>
+<b>Change:</b> UI2: removed from nav item (renamed in this release to pages/sections) options settings for titles, history, comments, dates attribution and sort method (unless these were set to something other than default in current installs). (<em>2008-07-22 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2031891&amp;group_id=82171&amp;atid=565234">
+        			#2031891</a> Removed the display of tags divider line for users viewing sites in edit mode without edit permissions. (<em>2008-08-01 - Alex Chapin</em>)</li>		<li>
+<b>Bug Fix:</b> Portal: Fixed styling problems in IE. (<em>2008-08-01 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2031895&amp;group_id=82171&amp;atid=565237">
+        			#2031895</a> View/UI1/UI2/Portal: Links to edit-mode are now shown to all users as these devolve into view mode if users have no edit authorizations. Doing so prevents us from having to search for edit authorizations throughout the entire site, drastically improving page-load times such as from 35s to 1.3s on one particular site.
+<br>
+<br>Similarly, the 'permissions' button is now only displayed on pages where the user has authorization to work with permissions. This forces users who are admins of only one page to browse to that page to see the permissions link, but saves enormous time on everyone else's page loads. (<em>2008-07-30 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: fixed improper width setting in div enclosing permissions button that was causing site options box to not properly surround the background block (<em>2008-07-25 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2034986&amp;group_id=82171&amp;atid=565234">
+        			#2034986</a> Plugins: Deprecated 'Plugin data-arrays' support as it was causing hundreds of excess reordering queries every page load and not being used anyway. (<em>2008-08-01 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009049&amp;group_id=82171&amp;atid=565237">
+        			#2009049</a> UI1/UI2: Menus are now "Page Containers", nav items with submenus below are now "Sections" and otherwise "Pages". (<em>2008-08-01 - Alex Chapin, Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Configuration: Now including the wizard-uploads configuration file to allow uploads in wizards on servers with safe-mode on. (<em>2008-08-01 - Adam Franco</em>)<br> (<em>reported by Robyn Whyte of Middlebury College</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-28</h2>
 <h3>2008-07-24</h3>
 <p>This release fixes a number of minor bugs, improves theme-support for MS Internet Explorer, and adds support for embedding GoogleMaps. 
 <br>
