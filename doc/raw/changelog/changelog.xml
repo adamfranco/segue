@@ -10,8 +10,27 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-29" date="the future">
+	<version number="2.0-beta-29" date="2008-08-01">
 		<releaseNotes>
+			This release adds a number of new themes, allows copying of sites, and
+			numerous other improvements.
+			
+			Notable User-facing changes:
+			
+			- Can now copy sites to empty placeholders in the portal.
+			
+			- Site-URLs are now printed in the portal.
+			
+			- Viewing of sites has now been dramatically sped-up for users without the
+			editer role.
+			
+			- Sections and Pages are now named with more clarity.
+			
+			- Many theme improvements.
+			
+			- Portal style-fixes MS Internet Explorer browser.
+			
+			See the change log for more details.
 			
 			Harmoni 1.4.6 includes a fix to the thumbnail generation system
 			that prevents excess processing overhead on large multi-page PDFs
@@ -75,7 +94,7 @@
 			UI1/UI2: Menus are now "Page Containers", nav items with submenus below are
 			now "Sections" and otherwise "Pages".
 		</change>
-		<fix author='adam' date='2008-08-01'>
+		<fix author='adam' date='2008-08-01' reporter='robyn_whyte'>
 			Configuration: Now including the wizard-uploads configuration file to
 			allow uploads in wizards on servers with safe-mode on.
 		</fix>
@@ -2290,6 +2309,10 @@
 		</reporter>
 		<reporter short="laurel_taylor">
 			<name>Laurel Taylor</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="robyn_whyte">
+			<name>Robyn Whyte</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 		<reporter short="thierry_leterre">
