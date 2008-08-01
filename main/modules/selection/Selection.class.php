@@ -101,6 +101,19 @@ class Segue_Selection
 	}
 	
 	/**
+	 * Answer true if the site component is in the set, false otherwise
+	 * 
+	 * @param object SiteComponent $siteComponent
+	 * @return boolean
+	 * @access public
+	 * @since 8/1/08
+	 */
+	public function isSiteComponentInSet (SiteComponent $siteComponent) {
+		$idManager = Services::getService("Id");
+		return $this->isInSet($idManager->getId($siteComponent->getId()));
+	}
+	
+	/**
 	 * Answer the link to add a particular SiteComponent to the selection
 	 * 
 	 * @param object SiteComponent $siteComponent
@@ -158,6 +171,7 @@ class Segue_Selection
 			// Load up the JS Selection with info from our session.
 			$this->reset();
 			if ($this->hasNext()) {
+				print "\n\t\twindow.addOnLoad(function () { ";
 				$director = SiteDispatcher::getSiteDirector();
 				$authZ = Services::getService("AuthZ");
 				$idManager = Services::getService("Id");
@@ -183,6 +197,8 @@ class Segue_Selection
 					}
 				}
 				$this->reset();
+				
+				print "\n\t\t});";
 			}
 			
 			print "\n\t\t// ]]> ";

@@ -79,7 +79,7 @@ function Segue_Selection () {
 					if (req.readyState == 4) {
 						// only if we get a good load should we continue.
 						if (req.status == 200 && req.responseXML) {
-	// 						selection.reloadFromXML(req.responseXML);
+							selection.reloadFromXML(req.responseXML);
 						} else {
 							alert("There was a problem retrieving the data:\n" +
 								req.statusText);
@@ -114,7 +114,8 @@ function Segue_Selection () {
 			if (siteComponent.id != this.components[i].id)
 				newComponents.push(this.components[i]);
 		}
-		this.components = newComponents
+		this.components = newComponents;
+		
 		this.buildDisplay();
 		
 		// Fire off an AJAX request to store the addition in the session.
@@ -129,7 +130,7 @@ function Segue_Selection () {
 				if (req.readyState == 4) {
 					// only if we get a good load should we continue.
 					if (req.status == 200 && req.responseXML) {
-// 						selection.reloadFromXML(req.responseXML);
+						selection.reloadFromXML(req.responseXML);
 					} else {
 						alert("There was a problem retrieving the data:\n" +
 							req.statusText);
@@ -142,6 +143,38 @@ function Segue_Selection () {
 		} else {
 			alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
 		}
+	}
+	
+	/**
+	 * Reload the listing from an XML response
+	 * 
+	 * @param object DOMDocument
+	 * @return void
+	 * @access public
+	 * @since 8/1/08
+	 */
+	Segue_Selection.prototype.reloadFromXML = function (doc) {
+		var errors = doc.getElementsByTagName('error');
+		if (errors.length) {
+			for (var i = 0; i < errors.length; i++)
+				alert(errors[i].text);
+			return;
+		}
+		
+		delete(this.components);
+		this.components = new Array();
+		
+		var elements = doc.getElementsByTagName('siteComponent');
+		for (var i = 0; i < elements.length; i++) {
+			this.loadComponent({
+				id: elements[i].getAttribute('id'),
+				type: elements[i].getAttribute('type'),
+				displayName: elements[i].getAttribute('displayName')
+			});
+		}
+		
+		if (this.components.length == 0)
+			this.close();
 	}
 	
 	/**
@@ -158,6 +191,8 @@ function Segue_Selection () {
 			throw "SiteComponents must have an id.";
 		if (!siteComponent.type)
 			throw "SiteComponents must have a type.";
+		if (!siteComponent.displayName)
+			siteComponent.displayName = 'Untitled';
 		
 		if (this.isInSelection(siteComponent.id))
 			throw 'Already selected';
@@ -221,6 +256,17 @@ function Segue_Selection () {
 	}
 	
 	/**
+	 * Additional action to do on close
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 8/1/08
+	 */
+	Segue_Selection.prototype.onClose = function () {
+		this.closeContent();
+	}
+	
+	/**
 	 * [Re]build the display of the selection contents
 	 * 
 	 * @return void
@@ -228,8 +274,9 @@ function Segue_Selection () {
 	 * @since 7/31/08
 	 */
 	Segue_Selection.prototype.buildDisplay = function () {
-		if (!this.components.length) {
+		if (this.components.length < 1) {
 			this.close();
+			return;
 		}
 		
 		this.titleElement.innerHTML = this.title + ' (' + this.components.length + ' items)';
@@ -237,44 +284,57 @@ function Segue_Selection () {
 		this.contentElement.innerHTML = '';
 		var list = this.contentElement.appendChild(document.createElement('ol'));
 		for (var i = 0; i < this.components.length; i++) {
-			var component = this.components[i];
-			var li = list.appendChild(document.createElement('li'));
-			
-			// Name
-			var elem = li.appendChild(document.createElement('span'));
-			elem.innerHTML = component.displayName;
-			elem.className = 'name';
-			li.appendChild(document.createTextNode(' '));
-			
-			// Type
-			var elem = li.appendChild(document.createElement('span'));
-			switch (component.type) {
-				case 'NavBlock':
-					var type = 'Nav. Item';
-					break;
-				case 'Block':
-					var type = 'Content Block';
-					break;
-				default:
-					throw "Unsupported component type: " + component.type;
-				
-			}
-			elem.innerHTML = '(' + type + ')';
-			elem.className = 'type';
-			
-			// Remove link
-			var controls = li.appendChild(document.createElement('span'));
-			controls.className = 'controls';
-			controls.appendChild(document.createTextNode(' - '));
-			var elem = controls.appendChild(document.createElement('a'));
-			elem.href = '#';
-			elem.innerHTML = 'remove';
-			elem.onclick = function() {
-				Segue_Selection.instance().removeComponent(component);
-			}
-			li.appendChild(document.createTextNode(' '));
+			list.appendChild(this.getListItemForComponent(this.components[i]));
 		}
 		
 		this.open();
 		this.center();
+	}
+	
+	/**
+	 * Answer a list item for the component given
+	 * 
+	 * @param object siteComponent
+	 * @return object DOMElement
+	 * @access public
+	 * @since 8/1/08
+	 */
+	Segue_Selection.prototype.getListItemForComponent = function (siteComponent) {
+		var li = document.createElement('li');
+			
+		// Name
+		var elem = li.appendChild(document.createElement('span'));
+		elem.innerHTML = siteComponent.displayName;
+		elem.className = 'name';
+		li.appendChild(document.createTextNode(' '));
+		
+		// Type
+		var elem = li.appendChild(document.createElement('span'));
+		switch (siteComponent.type) {
+			case 'NavBlock':
+				var type = 'Nav. Item';
+				break;
+			case 'Block':
+				var type = 'Content Block';
+				break;
+			default:
+				throw "Unsupported component type: " + siteComponent.type;
+			
+		}
+		elem.innerHTML = '(' + type + ')';
+		elem.className = 'type';
+		
+		// Remove link
+		var controls = li.appendChild(document.createElement('span'));
+		controls.className = 'controls';
+		controls.appendChild(document.createTextNode(' - '));
+		var elem = controls.appendChild(document.createElement('a'));
+		elem.href = '#';
+		elem.innerHTML = 'remove';
+		elem.onclick = function() {
+			Segue_Selection.instance().removeComponent(siteComponent);
+		}
+		li.appendChild(document.createTextNode(' '));
+		
+		return li;
 	}

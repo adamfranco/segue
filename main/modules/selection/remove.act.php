@@ -22,7 +22,7 @@ require_once(POLYPHONY.'/main/library/AbstractActions/XmlAction.class.php');
  *
  * @version $Id$
  */
-class addAction
+class removeAction
 	extends XmlAction
 {
 		
@@ -54,8 +54,8 @@ class addAction
 			$selection = Segue_Selection::instance();
 			$director = SiteDispatcher::getSiteDirector();
 			$component = $director->getSiteComponentById(RequestContext::value('id'));
-			if (!$selection->isSiteComponentInSet($component))
-				$selection->addSiteComponent($component);
+			if ($selection->isSiteComponentInSet($component))
+				$selection->removeSiteComponent($component);
 			
 			$this->start();
 			
