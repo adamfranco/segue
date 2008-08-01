@@ -95,8 +95,13 @@ class PersonalPortalFolder
 			$authN = Services::getService("AuthN");
 			$harmoni->request->startNamespace('personal_slot');
 			$url = $harmoni->request->quickURL();
+			print "<div style='float: left;'>";
+			print "<strong>"._("Create a new site:")."</strong><br/>";
+			print "<span style='font-size: smaller;'>"._("1. Chose a name for the placeholder of your new site. <br/>2. Create a new site in that placeholder.")."</span>";
+			print "</div>";
+			print "<div style='float: right;'>";
 			print "\n<form class='add_slot_form' method='post' action='$url'>";
-			print "<strong>"._("Create a new placeholder:")."</strong><br/>";
+			print "<div style='text-align: center;'>"._("Placeholder Name:")."</div>";
 			print PersonalSlot::getPersonalShortname($authN->getFirstUserId());
 			print "-";
 			print "\n\t<input type='text' name='".RequestContext::name('slot_postfix')."' value='' size='10'/>";
@@ -104,7 +109,8 @@ class PersonalPortalFolder
 			if (strlen($message))
 				print "\n\t<div class='error'>".$message."</div>";
 			print "\n</form>\n";
-			print "\n\t<div style='clear: both;'></div>";
+			print "\n\t</div>";
+			print "\n\t<div class='no_float_spacer'>";
 			$harmoni->request->endNamespace();
 			return ob_get_clean();
 		}
