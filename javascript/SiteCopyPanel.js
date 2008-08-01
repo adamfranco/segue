@@ -148,10 +148,14 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 			// Set a callback for displaying errors.
 			req.onreadystatechange = function () {
 				// Update the status area.
-				if (req.responseText && req.responseText.length) {
-					statusPanel.contentElement.innerHTML = req.responseText;
-				} else {
-// 					statusPanel.contentElement.innerHTML = "<span style='blink'>Copying Site...</span> Readystate: "  + req.readyState + " Status: " + requ.status + " " + req.statusText;
+				// IE will throw an error if we try to access responseText
+				try {
+					if (req.responseText && req.responseText.length) {
+						statusPanel.contentElement.innerHTML = req.responseText;
+					} else {
+//	 					statusPanel.contentElement.innerHTML = "<span style='blink'>Copying Site...</span> Readystate: "  + req.readyState + " Status: " + requ.status + " " + req.statusText;
+					}
+				} catch (e) {
 				}
 				
 				// only if req shows 'loaded'
