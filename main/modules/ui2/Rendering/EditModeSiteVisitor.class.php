@@ -276,8 +276,7 @@ END;
 		if (!$menuItems)
 			return $menuItems;
 		
-		$nestedMenuOrganizer = $navBlock->getNestedMenuOrganizer();
-		if ($nestedMenuOrganizer) {
+		if ($navBlock->isSection()) {
 			$label = $this->_classNames['NavSection'];
 		} else {
 			$label = $this->_classNames['NavBlock'];

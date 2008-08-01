@@ -55,6 +55,16 @@ interface NavBlockSiteComponent
 	 * @since 3/31/06
 	 */
 	public function getTargetId () ;
+	
+	/**
+	 * Answer true if this nav block is a "Section" containing sub-menus and other
+	 * nav blocks. If it is a "Page" containing only organizers and content, return false.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/1/08
+	 */
+	public function isSection ();
 }
 
 ?>
