@@ -305,6 +305,7 @@
 	
 	ul.portal_categories {
 		padding-left: 0px;
+		margin-left: 0px;
 		white-space: nowrap;
 	}
 	
@@ -335,6 +336,7 @@
 	
 	ul.portal_folders {
 		margin-top: 5px;
+		margin-left: 0px;
 		padding-left: 30px;
 	}
 	
