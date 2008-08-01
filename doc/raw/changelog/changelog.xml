@@ -49,7 +49,10 @@
 			for titles, history, comments, dates attribution and sort method (unless these were set
 			to something other than default in current installs).
 		</change>
-		<fix author='adam' date='2008-08-01'>
+		<fix author='alex' date='2008-08-01' ref='2031891' reftype='bug'>
+			Removed the display of tags divider line for users viewing sites in edit mode without
+			edit permissions.
+		</fix>		<fix author='adam' date='2008-08-01'>
 			Portal: Fixed styling problems in IE.
 		</fix>
 		<change author='adam' date='2008-07-30' ref='2031895' reftype='fr'>
