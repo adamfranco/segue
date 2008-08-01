@@ -368,6 +368,7 @@ class listAction
 			link.innerHTML = '"._('cancel copy')."';
 			link.onclick = function () {
 				Portal.deselectForCopy(slotName, siteId, siteTitle, link);
+				return false;
 			}
 		}
 		
@@ -400,6 +401,7 @@ class listAction
 			link.innerHTML = '"._('select for copy')."';
 			link.onclick = function () {
 				Portal.selectForCopy(slotName, siteId, siteTitle, link);
+				return false;
 			}
 		}
 		
@@ -563,7 +565,7 @@ class listAction
 				$siteId = '';
 				$display = 'none';
 			}
-			print "<span class='portal_slot_copy_area' style='display: ".$display."'> | <a href='#' class='portal_slot_copy_link' onclick=\"Portal.copyToSlot('".$slot->getShortname()."', this)\">".str_replace('%1', $selectedTitle, _("copy '%1' here..."))."</a></span>";
+			print "<span class='portal_slot_copy_area' style='display: ".$display."'> | <a href='#' class='portal_slot_copy_link' onclick=\"Portal.copyToSlot('".$slot->getShortname()."', this); return false;\">".str_replace('%1', $selectedTitle, _("copy '%1' here..."))."</a></span>";
 		} else {
 			print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
 		}
@@ -681,9 +683,9 @@ class listAction
 		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)) 
 		{
 			if (isset($slot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $slot->getShortname()) {
-				$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
+				$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
 			} else if (isset($slot)) {
-				$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("select for copy")."</a>";
+				$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("select for copy")."</a>";
 			}
 		}
 		
