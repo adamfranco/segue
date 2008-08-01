@@ -67,6 +67,10 @@
 			UI1/UI2: Menus are now "Page Containers", nav items with submenus below are
 			now "Sections" and otherwise "Pages".
 		</change>
+		<fix author='adam' date='2008-08-01'>
+			Configuration: Now including the wizard-uploads configuration file to
+			allow uploads in wizards on servers with safe-mode on.
+		</fix>
 	</version>
 	<version number="2.0-beta-28" date="2008-07-24">
 		<releaseNotes>
