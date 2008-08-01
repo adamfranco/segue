@@ -135,7 +135,7 @@ END;
 		ob_start();	
 			
 		// Tags
-		print "\n\t<div class='tagging_tags_display'>";
+		
 		SiteDispatcher::passthroughContext();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -143,6 +143,7 @@ END;
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), $block->getQualifierId()))
 		{
+			print "\n\t<div class='tagging_tags_display'>";
 			print TagAction::getTagCloudForItem($item, 'sitetag',
 				array(	'font-size: 90%;',
 						'font-size: 100%;',
