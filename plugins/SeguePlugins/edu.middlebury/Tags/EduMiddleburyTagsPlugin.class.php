@@ -13,6 +13,7 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class.php");
 require_once(dirname(__FILE__)."/TaggableItemVisitor.class.php");
 require_once(dirname(__FILE__)."/TagCloudNavParentVisitor.class.php");
+require_once(dirname(__FILE__)."/ContainerInfoVisitor.class.php");
 
 /**
  * A simple plugin for including links in a site
@@ -95,16 +96,6 @@ class EduMiddleburyTagsPlugin
 	 */
 
 	public function update( $request ) {
-		if($this->getFieldValue('submit')){
-			$order = $this->getFieldValue('order');
-			//validate that order is alpha or freq
-			if( ! ( ($order == "alpha") || ($order == "freq") ) ){
-				die();
-			}
-			$nodeId = Number($this->getFieldValue('tagNode'));
-			$this->setContent($order.";".$nodeId);
-		}	
-
 
 	}
 
@@ -122,38 +113,36 @@ class EduMiddleburyTagsPlugin
 	
 
 		if($this->getFieldValue('edit') && $this->canModify()){
+			$director = SiteDispatcher::getSiteDirector();
+ 			$node = $director->getSiteComponentById($this->getId());
 			print "\n".$this->formStartTagWithAction();
-			print "<div>Order tags by:\n";
-			print "<select name='".$this->getFieldName('order')."'>\n";
-			print "<option value='alpha'>Alphabetic Order</option>\n";
-			print "<option value='freq'>Frequency</option>\n";
-			print "</select></div>\n";
+			/*
+			$visitor = new ContainerInfoVisitor;
+			$above = $node->acceptVisitor($visitor);
 			print "<div>Node with tags: ";
-			print "<input name='".$this->getFieldName('tagNode')."'>\n";
+			$names = $above[0];
+			$ids = $above[1];
+			for($x = 0; $x < sizeof($names); $x++){
+				print $names[$x];
+				print "<input type='radio' name='".$this->getFieldName('tagNode')."' value='".$ids[$x]."'";
+				if($x == (sizeof($names)-2)){
+					print " checked";
+				}
+				print ">";
+			}
 			print "</div>";
+			*/
 			print "<input type='submit' value='Submit' name='".$this->getFieldName('submit')."'>\n";
 			print "</form>";
 		} else if ($this->canView()) {
 			$items = array();
-			$content = split(";",$this->getContent());
-			print_r($content);
 	 		$director = SiteDispatcher::getSiteDirector();
- 			$node = $director->getSiteComponentById($this->getId());
-			print get_class($node);
-			print_r(get_class_methods(get_class($node)));
-			print get_class($node->getParentComponent());
-			
- 		
-			print "<br/>";
-			print $node->getId();
-			print "<br/>";
-			$node = $node->getParentComponent();		
-			print "<br/>\n";
-			print "xx";
-			print $node->getId();
-			print "xx";
-			print "\n<br/>";
+			$id = $this->getId();
 
+			
+	 		$node = $director->getSiteComponentById($this->getId());	
+
+	
  			// Determine the navigational node above this tag cloud.
 	 		$visitor = new TagCloudNavParentVisitor;
  			$parentNavNode = $node->acceptVisitor($visitor);
@@ -161,12 +150,18 @@ class EduMiddleburyTagsPlugin
  			$visitor = new TaggableItemVisitor;
 	 		$items = $parentNavNode->acceptVisitor($visitor);
  		
- 			SiteDispatcher::passthroughContext();
+			try{
+	 			SiteDispatcher::passthroughContext();
+			} catch (NullArgumentException $e){
+				print "here";	
+			}
  	
 
 			print "\n<div class='breadcrumbs' style='height: auto; margin-top: 1px; margin-bottom: 5px; border-bottom: 1px dotted; padding-bottom: 2px;'>";
  			print str_replace('%1', $parentNavNode->acceptVisitor(new BreadCrumbsVisitor($parentNavNode)),
  			_("Tags within: %1"));
+
+	
  			print "</div>";
 			print "\n<div style='text-align: justify;'>";
 // 			print TagAction::getReadOnlyTagCloudForItems($items, 'sitetag', null);
@@ -184,6 +179,7 @@ class EduMiddleburyTagsPlugin
 				
 		return ob_get_clean();
  	} 
+
 }
 
 ?>
