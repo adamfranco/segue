@@ -1,28 +1,24 @@
 <?php
 /**
- * @since 1/13/06
+ * @since 8/1/2008
  * @package segue.plugins.Segue
  * 
- * @copyright Copyright &copy; 2005, Middlebury College
+ * @copyright Copyright &copy; 2008, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
+ * @version $Id: EduMiddleburyAudioPlayerPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
  */
-
-
-require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
-
 
 /**
  * A Simple Plugin for making editable blocks of text
  * 
- * @since 1/13/06
+ * @since 8/1/2008
  * @package segue.plugins.Segue
  * 
- * @copyright Copyright &copy; 2005, Middlebury College
+ * @copyright Copyright &copy; 2008, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
+ * @version $Id: EduMiddleburyAudioPlayerPlugin.class.php,v 0.5 2008/03/18 17:32:12 davidfouhey Exp $
  */
 class EduMiddleburyAudioPlayerPlugin
 	extends SegueAjaxPlugin
@@ -77,19 +73,6 @@ class EduMiddleburyAudioPlayerPlugin
  	 */
  	public static function getPluginVersion () {
  		return '0.1';
- 	}
- 	
- 	/**
- 	 * Answer the latest version of the plugin available. Null if no version information
- 	 * is available.
- 	 * 
- 	 * @return mixed a string or null
- 	 * @access public
- 	 * @since 12/19/07
- 	 * @static
- 	 */
- 	public static function getPluginVersionAvailable () {
- 		return null;
  	}
 		
 	/**
@@ -234,54 +217,19 @@ class EduMiddleburyAudioPlayerPlugin
 		
 		$file = $this->getMediaFile();
 		if ($file) {
-			$url = html_entity_decode($file->getUrl());
-			$id = $this->getId();
-			$playerUrl = MYPATH."/images/player2.swf";
-		
-			print "\n\t<script type='text/javaScript' src='https://segue.middlebury.edu/audio-player/audio-player/audio-player.js'></script>";
-			print "<p>";
-			print $this->getCitation($file);
-			print "</p>";
-
-			$siteComponent = SiteDispatcher::getCurrentNode();
-//			print "<pre>";
-//			print $siteComponent->getTheme()->getCss();
-//			print "</pre>";
-//			print_r($siteComponent->getTheme()->getStylesForComponentType(BLOCK,1));
-			$th = $siteComponent->getTheme();
-			print $th->getDisplayName();
-			print "<pre>";
-			print_r(get_class_methods($th));
-			echo $th->supportsOptions();
-			print_r($th->getStylesForComponentType('Block_Background',1));
-			print "</pre>";
-			print "\n\t<object width='290' height='24' id='audioplayer{$id}' data='{$playerUrl}' type='application/x-shockwave-flash'>";
-			print "\n\t<param value='{$playerUrl}' name='movie' />";
-			print "<param value='high' name='quality' /><param value='false' name='menu' /><param value='transparent' name='wmode' />\n";		
-			print "<param value='soundFile={$url}' name='FlashVars' />\n";
-			print "</object>\n";
-
-
-	
-			print "\n<div style='float: right; margin-top: 12px;'>";
-			print "<a style='text-decoration: none; font-weight: bold;' href='{$url}'>";
-			print "<img style='width: 15px; height: 15px; border: 0px;' align='top' border='0' ";
-			print "width='15px' height='15px' src='".MYPATH."/images/downarrow.gif' alt='download'>";
-			print "&nbsp;Download</a>";
-			$size = $file->getSize();
-			if($size->value()) {
-				$sizeString = $size->asString();
-			}
-			else {
-				$sizeString = "Unknown Size";
-			}
-			print "\n\t\t<span style='font-size: 90%;'>({$sizeString})</span>";
-			print "\n\t\t</div>";
-			print "<div style='float: left;'>";
-			print "qwerty {$id}";	
-			print "</div>";
-			/*
 			print "\n";	
+			$playerUrl = MYPATH."/images/player.swf";
+			$url = $file->getUrl();
+			$id = $this->getId();
+			//the url that comes back from getUrlForFlash contains html entities
+			//what we really want to handle the ampersands is url encoding, rather than
+			//&amp; That way we get the urls in a way so that flash won't think that the 
+			//variables in the url aren't for it, but in such a way that when the request
+			//gets sent, the variables will get to the server.
+			$flashUrl = urlencode(html_entity_decode($file->getUrlForFlash()));
+
+			print "\n\t<script type='text/javaScript' src='".MYPATH."/images/audio-player.js'></script>";
+
 
 			print "\n\t\t<div style='float: right; margin-top: 12px;'>";
 			print "\n\t\t<img src='".MYPATH."/images/downarrow.gif' align='top' width='15' height='15' alt='"._('download')."'/>";
@@ -303,19 +251,20 @@ class EduMiddleburyAudioPlayerPlugin
 
 
 			print "\n<div style='float: left;'>";			
-			print "\n\t<a href='".$file->getUrl()."'>";
+                        print "\n\t<object width='290' height='24' id='audioplayer{$id}' data='{$playerUrl}' type='application/x-shockwave-flash'>";
+                        print "\n\t<param value='{$playerUrl}' name='movie' />";
+                        print "<param value='high' name='quality' /><param value='false' name='menu' /><param value='transparent' name='wmode' />\n";   
+                        print "<param value='soundFile={$flashUrl}' name='FlashVars' />\n";
+                        print "</object>\n";
+			print "<br>\n";
+
 			print "\n\t\t<img src='";
-			print $file->getThumbnailUrl();
-			print "' align='bottom' border='0' width='32' height='32' alt=\""._("Download '");
 			print str_replace('"', "'", strip_tags($file->getTitle()));
-			print "'\"/>";
-			print "\n\t</a>";
 			print "\n</div>";
 			
 			print "<div style='clear: both; margin-bottom: 6px;'>";
 			print $this->getCitation($file);
 			print "\n</div>";
-			*/
 			
 			
 
@@ -438,8 +387,10 @@ class EduMiddleburyAudioPlayerPlugin
  	 */
  	public function replaceIds (array $idMap) {
  		// Update the media-file mapping
- 		$this->setContent(MediaFile::getMappedIdString($idMap, $this->getContent()));
- 		unset($this->_mediaFile);
+ 		if (strlen(trim($this->getContent()))) {
+	 		$this->setContent(MediaFile::getMappedIdString($idMap, $this->getContent()));
+ 			unset($this->_mediaFile);
+ 		}
  		
  		// Update any ids in the description HTML.
  		$this->setRawDescription($this->replaceIdsInHtml($idMap, $this->getRawDescription()));
