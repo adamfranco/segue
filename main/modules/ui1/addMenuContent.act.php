@@ -192,25 +192,25 @@ class addMenuContentAction
 		$types = array();
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart'),
-				"name" => _("Content Page"),
+				"name" => _("Page"),
 				"description" => _("Chose this for a single column page in which you can append any number of content blocks."),
 				"icon" => "Page.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart'),
-				"name" => _("Sub Menu"),
-				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of sub-pages."),
+				"name" => _("Section"),
+				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of pages or sub-sections."),
 				"icon" => "SubMenu.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart'),
-				"name" => _("Sub Menu with Sidebar"),
-				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of sub-pages AND include a right sidebar for content common to all these sub-pages!"),
+				"name" => _("Section with Sidebar"),
+				"description" => _("Chose this if you want to add another level of navigation in which you can add any number of pages AND include a right sidebar for content common to all these pages!"),
 				"icon" => "SubMenuWithSideBar.png"
 			);
 		$types[] = array(
 				"type" => new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart'),
-				"name" => _("Content Page with Sidebar"),
+				"name" => _("Page with Sidebar"),
 				"description" => _("Chose this if you want a page with a main column and a sidebar column."),
 				"icon" => "PageWithSideBar.png"
 			);

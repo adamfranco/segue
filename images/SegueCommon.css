@@ -86,9 +86,13 @@
 	}
 	
 	.pagination_links {
-		margin-left: 10px;
-		margin-right: 10px;
 		font-size: 10px;
+	}
+	
+	.pagination_links td {
+		text-align: left;
+		padding-left: 10px;
+		padding-right: 10px;
 	}
 	
 	.pagination_links select {
@@ -284,8 +288,8 @@
 	}
 	
 	.portal_list_controls {
+		text-align: right;
 		clear: both;
-		float: right;
 	}
 	
 	.portal_list_site_description {
@@ -305,6 +309,7 @@
 	
 	ul.portal_categories {
 		padding-left: 0px;
+		margin-left: 0px;
 		white-space: nowrap;
 	}
 	
@@ -335,6 +340,7 @@
 	
 	ul.portal_folders {
 		margin-top: 5px;
+		margin-left: 0px;
 		padding-left: 30px;
 	}
 	

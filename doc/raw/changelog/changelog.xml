@@ -10,14 +10,35 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-29" date="the future">
+	<version number="2.0-beta-29" date="2008-08-01">
 		<releaseNotes>
+			This release adds a number of new themes, allows copying of sites, and
+			numerous other improvements.
+			
+			Notable User-facing changes:
+			
+			- Can now copy sites to empty placeholders in the portal.
+			
+			- Site-URLs are now printed in the portal.
+			
+			- Viewing of sites has now been dramatically sped-up for users without the
+			editer role.
+			
+			- Sections and Pages are now named with more clarity.
+			
+			- Many theme improvements.
+			
+			- Portal style-fixes MS Internet Explorer browser.
+			
+			- Better support for uploading multi-page PDFs.
+			
+			See the change log for more details and other fixes.
 			
 			Harmoni 1.4.6 includes a fix to the thumbnail generation system
 			that prevents excess processing overhead on large multi-page PDFs
 			and improves the upload and migration of these files.
 			
-			Segue 2.0-beta-28 uses Harmoni 1.4.6 and Polyphony 1.3.0.
+			Segue 2.0-beta-28 uses Harmoni 1.4.6 and Polyphony 1.3.1.
 			
 			---------------------
 			
@@ -31,7 +52,7 @@
 			Upgrades from versions prior to beta 26 require running the RSS Feed
 			updaters located under Admin Tools --> Segue Updates.
 		</releaseNotes>
-		<new author='adam' date='2008-07-30'>
+		<new author='alex' date='2008-07-30'>
 			Themes: Added two new themes, RoundedBox and Midd.
 		</new>
 		<new author='adam' date='2008-07-29' ref='1799954' reftype='fr'>
@@ -41,6 +62,20 @@
 			Portal: Site URLs are now printed below the site title on the portal
 			for easy reference.
 		</new>
+		<change author='alex' date='2008-07-30'>
+			Moved menu on Segue main pages from the left to the right side
+		</change>
+		<change author='alex' date='2008-07-22'>
+			UI2: removed from nav item (renamed in this release to pages/sections) options settings
+			for titles, history, comments, dates attribution and sort method (unless these were set
+			to something other than default in current installs).
+		</change>
+		<fix author='alex' date='2008-08-01' ref='2031891' reftype='bug'>
+			Removed the display of tags divider line for users viewing sites in edit mode without
+			edit permissions.
+		</fix>		<fix author='adam' date='2008-08-01'>
+			Portal: Fixed styling problems in IE.
+		</fix>
 		<change author='adam' date='2008-07-30' ref='2031895' reftype='fr'>
 			View/UI1/UI2/Portal: Links to edit-mode are now shown to all users as
 			these devolve into view mode if users have no edit authorizations. Doing
@@ -55,6 +90,18 @@
 		</change>
 		<fix author='adam' date='2008-07-25'>
 			UI2: fixed improper width setting in div enclosing permissions button that was causing site options box to not properly surround the background block
+		</fix>
+		<change author='adam' date='2008-08-01' ref='2034986' reftype='bug'>
+			Plugins: Deprecated 'Plugin data-arrays' support as it was causing hundreds
+			of excess reordering queries every page load and not being used anyway.
+		</change>
+		<change author='alex,adam' date='2008-08-01' ref='2009049' reftype='fr'>
+			UI1/UI2: Menus are now "Page Containers", nav items with submenus below are
+			now "Sections" and otherwise "Pages".
+		</change>
+		<fix author='adam' date='2008-08-01' reporter='robyn_whyte'>
+			Configuration: Now including the wizard-uploads configuration file to
+			allow uploads in wizards on servers with safe-mode on.
 		</fix>
 	</version>
 	<version number="2.0-beta-28" date="2008-07-24">
@@ -2267,6 +2314,10 @@
 		</reporter>
 		<reporter short="laurel_taylor">
 			<name>Laurel Taylor</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="robyn_whyte">
+			<name>Robyn Whyte</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 		<reporter short="thierry_leterre">

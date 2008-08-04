@@ -2,6 +2,117 @@
 Segue Change Log
 
 
+v. 2.0-beta-29 (2008-08-01)
+----------------------------------------------------
+This release adds a number of new themes, allows copying of sites, and numerous
+other improvements.
+
+Notable User-facing changes:
+
+- Can now copy sites to empty placeholders in the portal.
+
+- Site-URLs are now printed in the portal.
+
+- Viewing of sites has now been dramatically sped-up for users without the editer role.
+
+- Sections and Pages are now named with more clarity.
+
+- Many theme improvements.
+
+- Portal style-fixes MS Internet Explorer browser.
+
+- Better support for uploading multi-page PDFs.
+
+See the change log for more details and other fixes.
+
+Harmoni 1.4.6 includes a fix to the thumbnail generation system that prevents
+excess processing overhead on large multi-page PDFs and improves the upload and
+migration of these files.
+
+Segue 2.0-beta-28 uses Harmoni 1.4.6 and Polyphony 1.3.1.
+
+---------------------
+
+Upgrades:
+
+As of this beta 25, Segue requires PHP to be
+compiled with XSL support. On unix systems this can be added by configuring PHP
+using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 26 require running the RSS Feed updaters
+located under Admin Tools --> Segue Updates.
+		
+		
+	* New feature: 
+		Themes: Added two new themes, RoundedBox and Midd.
+		(2008-07-30 - Alex Chapin)
+		
+	* New feature: #1799954 
+		Portal: Can now copy sites into empty placeholders.
+		(2008-07-29 - Adam Franco)
+		
+	* New feature: #2032019 
+		Portal: Site URLs are now printed below the site title on the portal for
+		easy reference.
+		(2008-07-30 - Adam Franco)
+		(reported by hector_vila)
+		
+	* Change: 
+		Moved menu on Segue main pages from the left to the right side
+		(2008-07-30 - Alex Chapin)
+		
+	* Change: 
+		UI2: removed from nav item (renamed in this release to pages/sections)
+		options settings for titles, history, comments, dates attribution and sort
+		method (unless these were set to something other than default in current
+		installs). 
+		(2008-07-22 - Alex Chapin)
+		
+	* Bug Fix: #2031891 
+		Removed the display of tags divider line for users viewing sites in edit
+		mode without edit permissions.
+		(2008-08-01 - Alex Chapin)		
+	* Bug Fix: 
+		Portal: Fixed styling problems in IE.
+		(2008-08-01 - Adam Franco)
+		
+	* Change: #2031895 
+		View/UI1/UI2/Portal: Links to edit-mode are now shown to all users as these
+		devolve into view mode if users have no edit authorizations. Doing so
+		prevents us from having to search for edit authorizations throughout the
+		entire site, drastically improving page-load times such as from 35s to 1.3s
+		on one particular site.
+		
+		Similarly, the 'permissions' button is now only displayed on pages where
+		the user has authorization to work with permissions. This forces users who
+		are admins of only one page to browse to that page to see the permissions
+		link, but saves enormous time on everyone else's page loads.
+		(2008-07-30 - Adam Franco)
+		
+	* Bug Fix: 
+		UI2: fixed improper width setting in div enclosing permissions button that
+		was causing site options box to not properly surround the background block
+		(2008-07-25 - Adam Franco)
+		
+	* Change: #2034986 
+		Plugins: Deprecated 'Plugin data-arrays' support as it was causing hundreds
+		of excess reordering queries every page load and not being used anyway.
+		(2008-08-01 - Adam Franco)
+		
+	* Change: #2009049 
+		UI1/UI2: Menus are now "Page Containers", nav items with submenus below are
+		now "Sections" and otherwise "Pages".
+		(2008-08-01 - Alex Chapin, Adam Franco)
+		
+	* Bug Fix: 
+		Configuration: Now including the wizard-uploads configuration file to allow
+		uploads in wizards on servers with safe-mode on.
+		(2008-08-01 - Adam Franco)
+		(reported by Robyn Whyte of Middlebury College)
+	
+
+
+
 v. 2.0-beta-28 (2008-07-24)
 ----------------------------------------------------
 This release fixes a number of minor bugs, improves theme-support for MS Internet

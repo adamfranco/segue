@@ -14,7 +14,7 @@
             <key>yellow</key>
             <label lang='en_US'>Yellow</label>
             <setting marker='[[IMAGE_DIR]]'>yellow</setting>
-            <setting marker='[[BG_COLOR]]'>#FFFFCC</setting>
+            <setting marker='[[BG_COLOR]]'>#FFF8C6</setting>
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
             <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>        
         </choice>
@@ -267,6 +267,28 @@
             <setting marker='[[STANDARD_BORDER_RIGHT02]]'>#CCCCCC</setting>                        
         </choice>
     </option>
+    <option id='menu_size'>
+        <displayName lang='en_US'>Menu Size</displayName>
+        <description lang='en_US'>The size of page links.</description>
+        <choice isDefault='true'>
+            <key>normal</key>
+            <label lang='en_US'>Normal</label>
+            <setting marker='[[MENU_FONT_SIZE]]'>100%</setting>
+            <setting marker='[[SUBMENU_FONT_SIZE]]'>90%</setting>
+        </choice>
+        <choice>
+            <key>small</key>
+            <label lang='en_US'>Small</label>
+            <setting marker='[[MENU_FONT_SIZE]]'>90%</setting>
+            <setting marker='[[SUBMENU_FONT_SIZE]]'>90%</setting>
+        </choice>
+        <choice>
+            <key>larger</key>
+            <label lang='en_US'>Large</label>
+            <setting marker='[[MENU_FONT_SIZE]]'>110%</setting>
+            <setting marker='[[SUBMENU_FONT_SIZE]]'>100%</setting>
+        </choice>
+    </option>
     <option id='block_class'>
         <displayName lang='en_US'>Content Borders</displayName>
         <description lang='en_US'>Different kinds of borders around blocks.</description>
@@ -318,12 +340,12 @@
     <option id='border_style'>
         <displayName lang='en_US'>Border Style</displayName>
         <description lang='en_US'>The style of the borders.</description>
-        <choice isDefault='true'>
+        <choice>
             <key>solid</key>
             <label lang='en_US'>Solid</label>
             <setting marker='[[BORDER_STYLE]]'>solid</setting>
         </choice>
-        <choice>
+        <choice isDefault='true'>
             <key>dotted</key>
             <label lang='en_US'>Dotted</label>
             <setting marker='[[BORDER_STYLE]]'>dotted</setting>
