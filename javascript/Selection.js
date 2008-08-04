@@ -39,6 +39,7 @@ function Segue_Selection () {
 						// scope of the onclick.
 	this.cancel.onclick = function () {panel.toggleContent();}
 	this.closeContent();
+	this.close();
 }
 
 	/**
