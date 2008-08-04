@@ -9,6 +9,7 @@
  * @version $Id$
  */ 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
+require_once(MYDIR."/main/modules/dataport/Rendering/DomExportSiteVisitor.class.php");
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 
 /**
@@ -74,6 +75,16 @@ class move_copyAction
 					default:
 						throw new InvalidArgumentException("Unknown command '".RequestContext::value('command')."'");
 				}
+				
+				// Ensure that the current user is an editor of the component.
+				// They may have had implicit Editor and only Author at the destination.
+				$roleMgr = SegueRoleManager::instance();
+				$editor = $roleMgr->getRole('editor');
+				$role = $roleMgr->getUsersRole($sourceComponent->getQualifierId(), true);
+				if ($role->isLessThan($editor))
+					$editor->applyToUser($sourceComponent->getQualifierId(), true);
+				
+				
 				print "\n".str_replace(
 					"%1", 
 					htmlspecialchars($sourceComponent->getDisplayName()), 
@@ -102,7 +113,87 @@ class move_copyAction
 	 * @since 8/4/08
 	 */
 	protected function copyComponent (SiteComponent $siteComponent) {
-		throw new UnimplementedException();
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		if (!$authZ->isUserAuthorized(
+				// Currently just check for modify to see if there is 'editor' access.
+				// In the future, maybe this should be its own authorization.
+				$idMgr->getId('edu.middlebury.authorization.modify'), 
+				$siteComponent->getQualifierId()))
+			throw new PermissionDeniedException("You are not authorized to copy this node from its original location.");
+		
+		try {
+			/*********************************************************
+			 * Export the Component
+			 *********************************************************/
+			$exportDir = DATAPORT_TMP_DIR."/".$siteComponent->getId()."-".str_replace(':', '_', DateAndTime::now()->asString());
+			mkdir($exportDir);
+			
+			// Do the export
+			$visitor = new DomExportSiteVisitor($exportDir);
+			$visitor->enableStatusOutput(_("Exporting from original location."));
+			$siteComponent->acceptVisitor($visitor);
+			$doc = $visitor->doc;
+			
+			// Validate the result
+			printpre(htmlentities($doc->saveXMLWithWhitespace()));
+// 			$tmp = new Harmoni_DomDocument;
+// 			$tmp->loadXML($doc->saveXMLWithWhitespace());
+// 			$tmp->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+			
+			$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+			
+// 			printpre($this->listDir($exportDir));
+// 			throw new Exception('test');
+
+			/*********************************************************
+			 * Import the Component
+			 *********************************************************/
+			$importer = new DomImportSiteVisitor($doc, $exportDir, $director);
+// 			if (RequestContext::value('copyPermissions') == 'true')
+				$importer->enableRoleImport();
+			
+// 			if (RequestContext::value('copyDiscussions') != 'true')
+// 				$importer->disableCommentImport();
+			
+			
+			$importer->enableStatusOutput(_("Importing into new location"));
+			$newComponent = $importer->importAtComponent($this->getDestinationComponent());
+			
+			// Delete the decompressed Archive
+			$this->deleteRecursive($exportDir);
+			
+			return $newComponent;
+		} catch (Exception $e) {
+			$this->deleteRecursive($exportDir);
+			
+			if (file_exists($exportDir.".tar.gz"))
+				unlink($exportDir.".tar.gz");
+			
+			throw $e;
+		}
+	}
+	
+	/**
+	 * Recursively delete a directory
+	 * 
+	 * @param string $path
+	 * @return void
+	 * @access protected
+	 * @since 1/18/08
+	 */
+	protected function deleteRecursive ($path) {
+		if (is_dir($path)) {
+			$entries = scandir($path);
+			foreach ($entries as $entry) {
+				if ($entry != '.' && $entry != '..') {
+					$this->deleteRecursive($path.DIRECTORY_SEPARATOR.$entry);
+				}
+			}
+			rmdir($path);
+		} else {
+			unlink($path);
+		}
 	}
 	
 	/**
@@ -125,6 +216,8 @@ class move_copyAction
 		$oldParent = $siteComponent->getParentComponent();
 		$oldParent->detatchSubcomponent($siteComponent);
 		$this->getDestinationComponent()->addSubcomponent($siteComponent);
+		
+		return $siteComponent;
 	}
 	
 	/**
