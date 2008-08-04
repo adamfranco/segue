@@ -95,9 +95,14 @@ class Segue_Selection
 	 * @since 7/31/08
 	 */
 	public function nextSiteComponent () {
-		$id = $this->next();		
+		$id = $this->next();
 		$director = SiteDispatcher::getSiteDirector();
-		return $director->getSiteComponentById($id->getIdString());
+		try {
+			return $director->getSiteComponentById($id->getIdString());
+		} catch (UnknownIdException $e) {
+			$this->removeItem($id);
+			return $this->nextSiteComponent();
+		}
 	}
 	
 	/**
@@ -212,26 +217,31 @@ class Segue_Selection
 				$director = SiteDispatcher::getSiteDirector();
 				$authZ = Services::getService("AuthZ");
 				$idManager = Services::getService("Id");
-				while ($this->hasNext()) {	
-					$siteComponent = $this->nextSiteComponent();
-					
-					try {
-						if ($authZ->isUserAuthorized(
-							$idManager->getId("edu.middlebury.authorization.view"), $siteComponent->getQualifierId()))
-						{
-							print "\n\t\t\tSegue_Selection.instance().loadComponent({";
-							print	"id: '".$siteComponent->getId()."', ";
-							print 	"type: '".$siteComponent->getComponentClass()."', ";
-							print	"displayName: '"
-								.addslashes(str_replace('"', '&quot', 
-									preg_replace('/\s+/', ' ',
-										strip_tags($siteComponent->getDisplayName()))))."' ";
-					// 		print 	"description: '".$siteComponent->getDescription()."'";
-							print "});";
+				
+				try {
+					while ($this->hasNext()) {	
+						$siteComponent = $this->nextSiteComponent();
+						
+						try {
+							if ($authZ->isUserAuthorized(
+								$idManager->getId("edu.middlebury.authorization.view"), $siteComponent->getQualifierId()))
+							{
+								print "\n\t\t\tSegue_Selection.instance().loadComponent({";
+								print	"id: '".$siteComponent->getId()."', ";
+								print 	"type: '".$siteComponent->getComponentClass()."', ";
+								print	"displayName: '"
+									.addslashes(str_replace('"', '&quot', 
+										preg_replace('/\s+/', ' ',
+											strip_tags($siteComponent->getDisplayName()))))."' ";
+						// 		print 	"description: '".$siteComponent->getDescription()."'";
+								print "});";
+							}
+						} catch (UnknownIdException $e) {
+							// Let assets out of the purvue of our authorization manager slide.
 						}
-					} catch (UnknownIdException $e) {
-						// Let assets out of the purvue of our authorization manager slide.
 					}
+				} catch (NoMoreIteratorElementsException $e) {
+					// If assets in our selection were deleted and we ran-out early, that's ok.
 				}
 				$this->reset();
 				
