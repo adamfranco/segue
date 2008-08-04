@@ -68,6 +68,8 @@ function Segue_Selection () {
 	Segue_Selection.prototype.addComponent = function (siteComponent) {
 		try {
 			this.loadComponent(siteComponent);
+			
+			this.notifyListeners();
 		
 			// Fire off an AJAX request to store the addition in the session.
 			var url = Harmoni.quickUrl('selection', 'add', {id: siteComponent.id});
@@ -205,7 +207,6 @@ function Segue_Selection () {
 		
 		this.components.push(siteComponent);
 		this.buildDisplay();
-		this.notifyListeners();
 	}
 	
 	/**

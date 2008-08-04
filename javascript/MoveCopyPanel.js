@@ -97,7 +97,7 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		this.command.value = 'copy';
 		// Change the submit label on change.
 		this.command.onchange = function () {
-			panel.submit.value = this.value + " Checked »";
+			panel.submit.value = this.options.item(this.selectedIndex).innerHTML + " Checked »";
 			panel.reloadFromSelection();
 		}
 		this.form.appendChild(this.command);
@@ -237,6 +237,7 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 	 * @since 8/4/08
 	 */
 	MoveCopyPanel.prototype.reloadFromSelection = function () {
+		var checkedIds = this.getCheckedIds();
 		this.selectionList.innerHTML = '';
 		var selection = Segue_Selection.instance();
 		
@@ -248,7 +249,7 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		
 		for (var i = 0; i < selection.components.length; i++) {
 			this.selectionList.appendChild(
-				this.getListItemForComponent(selection.components[i]));
+				this.getListItemForComponent(selection.components[i], checkedIds));
 		}
 	}
 	
@@ -256,11 +257,12 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 	 * Answer a list item for the component given
 	 * 
 	 * @param object siteComponent
+	 * @param array checkedIds
 	 * @return object DOMElement
 	 * @access public
 	 * @since 8/4/08
 	 */
-	MoveCopyPanel.prototype.getListItemForComponent = function (siteComponent) {
+	MoveCopyPanel.prototype.getListItemForComponent = function (siteComponent, checkedIds) {
 		var li = document.createElement('li');
 		
 		// Checkbox
@@ -274,6 +276,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		{
 			elem.disabled = true;
 			li.className = 'disabled';
+		} else if (checkedIds.elementExists(siteComponent.id)) {
+			elem.checked = true;
 		}
 		
 		li.appendChild(elem);
@@ -349,6 +353,26 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 			if (boxes[i].type == 'checkbox')
 				boxes[i].checked = false;
 		}
+	}
+	
+	/**
+	 * Answer an array of currently checked Ids.
+	 * 
+	 * @return Array
+	 * @access public
+	 * @since 8/4/08
+	 */
+	MoveCopyPanel.prototype.getCheckedIds = function () {
+		var checked = new Array();
+		var boxes = this.selectionList.getElementsByTagName('input');
+		for (var i = 0; i < boxes.length; i++) {
+			if (boxes[i].type.toLowerCase() == 'checkbox' && boxes[i].checked)
+			{
+				checked.push(boxes[i].value);
+			}
+		}
+		
+		return checked;
 	}
 	
 	/**
