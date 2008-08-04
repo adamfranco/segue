@@ -23,9 +23,9 @@ MoveCopyPanel.superclass = Panel.prototype;
  *
  * @version $Id$
  */
-function MoveCopyPanel ( destId, destType, positionElement ) {
+function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 	if ( arguments.length > 0 ) {
-		this.init( destId, destType, positionElement );
+		this.init( destId, destType, ancestors, positionElement );
 	}
 }
 
@@ -34,12 +34,13 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 	 * 
 	 * @param string destId
 	 * @param string destType	Either MenuOrganizer or ContentOrganizer
+	 * @param array ancestors	Id-strings of the ancestors of the destination element.
 	 * @param DOMElement positionElement
 	 * @return void
 	 * @access public
 	 * @since 8/4/08
 	 */
-	MoveCopyPanel.prototype.init = function ( destId, destType, positionElement ) {
+	MoveCopyPanel.prototype.init = function ( destId, destType, ancestors, positionElement ) {
 		if (!destId.match(/^[a-zA-Z0-9_.:-]+$/))
 			throw "Invalid destination Id, '" + destId + "'.";
 		this.destId = destId;
@@ -47,6 +48,13 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 		if (destType != 'MenuOrganizer' && destType != 'FlowOrganizer')
 			throw "Invalid destination type, '" + destType + "'. Must be 'MenuOrganizer' or 'ContentOrganizer'.";
 		this.destType = destType;
+		
+		for (var i = 0; i < ancestors.length; i++) {
+			var type = typeof(ancestors[i]);
+			if (type != 'string' && type != 'number')
+				throw "Ancestor ids must be strings. Found " + type;
+		}
+		this.ancestors = ancestors;
 				
 		MoveCopyPanel.superclass.init.call(this, 
 								"Move/Copy",
@@ -90,6 +98,7 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 		// Change the submit label on change.
 		this.command.onchange = function () {
 			panel.submit.value = this.value + " Checked »";
+			panel.reloadFromSelection();
 		}
 		this.form.appendChild(this.command);
 		this.form.appendChild(document.createTextNode(' \u00a0 \u00a0 '));
@@ -179,18 +188,18 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 	 * Initialize and run the SiteCopyPanel
 	 * 
 	 * @param string destSlot
-	 * @param string srcSiteId
-	 * @param string srcTitle
+	 * @param string destType	Either MenuOrganizer or ContentOrganizer
+	 * @param array ancestors	Id-strings of the ancestors of the destination element.
 	 * @param DOMElement positionElement
 	 * @return void
 	 * @access public
 	 * @since 11/27/06
 	 */
-	MoveCopyPanel.run = function ( destId, destType, positionElement ) {
+	MoveCopyPanel.run = function ( destId, destType, ancestors, positionElement ) {
 		if (positionElement.panel) {
 			positionElement.panel.open();
 		} else {
-			var tmp = new MoveCopyPanel( destId, destType, positionElement );
+			var tmp = new MoveCopyPanel( destId, destType, ancestors, positionElement );
 		}
 	}
 	
@@ -256,8 +265,17 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 		
 		// Checkbox
 		var elem = document.createElement('input');
+		elem.name = 'sourceIds[]';
 		elem.type = 'checkbox';
 		elem.value = siteComponent.id;
+		if (this.destId == siteComponent.id
+			|| (this.command.value == 'move' && this.isAncestor(siteComponent))
+			|| (this.destType == 'FlowOrganizer' && siteComponent.type != 'Block'))
+		{
+			elem.disabled = true;
+			li.className = 'disabled';
+		}
+		
 		li.appendChild(elem);
 		li.appendChild(document.createTextNode(' '));
 			
@@ -287,6 +305,23 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 	}
 	
 	/**
+	 * Answer true if the siteComponent passed is an ancestor of ours an hence
+	 * we cannot move it below as that would create a loop in the hierarchy.
+	 * 
+	 * @param object siteComponent
+	 * @return boolean
+	 * @access public
+	 * @since 8/4/08
+	 */
+	MoveCopyPanel.prototype.isAncestor = function (siteComponent) {
+		for (var i = 0; i < this.ancestors.length; i++) {
+			if (siteComponent.id == this.ancestors[i])
+				return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Check all of the items
 	 * 
 	 * @return void
@@ -296,7 +331,7 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 	MoveCopyPanel.prototype.checkAll = function () {
 		var boxes = this.selectionList.getElementsByTagName('input');
 		for (var i = 0; i < boxes.length; i++) {
-			if (boxes[i].type == 'checkbox')
+			if (boxes[i].type == 'checkbox' && !boxes[i].disabled)
 				boxes[i].checked = 'checked';
 		}
 	}

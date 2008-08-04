@@ -56,3 +56,7 @@
 .Selection_MoveCopy_Panel .emptySelectionMessage strong {
 	white-space: nowrap;
 }
+
+.Selection_MoveCopy_Panel .disabled {
+	color: #AAA;
+}

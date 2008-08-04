@@ -157,6 +157,16 @@ class Segue_Selection
 	public function getMoveCopyLink (FlowOrganizerSiteComponent $siteComponent) {
 		$this->addHeadJavascript();
 		
+		$ancestorIds = "[";
+		$parent = $siteComponent->getParentComponent();
+		while ($parent) {
+			$ancestorIds .= "'".$parent->getId()."'";
+			$parent = $parent->getParentComponent();
+			if ($parent)
+				$ancestorIds .= ", ";
+		}
+		$ancestorIds .= "]";
+		
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace("selection");
 		ob_start();
@@ -164,7 +174,7 @@ class Segue_Selection
 		print "<a ";
 		print " style='cursor: pointer;'";
 		print " class='Selection_MoveCopy_Link' ";
-		print " onclick=\"MoveCopyPanel.run('".$siteComponent->getId()."', '".$siteComponent->getComponentClass()."', this); return false;\"";
+		print " onclick=\"MoveCopyPanel.run('".$siteComponent->getId()."', '".$siteComponent->getComponentClass()."', ".$ancestorIds.", this); return false;\"";
 		print ">"._('+ Move/Copy...');
 		print "</a>";
 		
