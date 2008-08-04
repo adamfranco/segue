@@ -155,6 +155,16 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 		this.form.appendChild(this.selectionList);
 		
 		
+		// No Selection message.
+		this.emptySelectionMessage = document.createElement('p');
+		this.emptySelectionMessage.className = 'emptySelectionMessage';
+		
+		if (this.destType == 'MenuOrganizer')
+			this.emptySelectionMessage.innerHTML = "No pages or content blocks are selected. Use the <strong>+ Selection</strong> links to select pages or content blocks so that they can be moved or copied here.";
+		else
+			this.emptySelectionMessage.innerHTML = "No content blocks are selected. Use the <strong>+ Selection</strong> links to select content blocks so that they can be moved or copied here.";
+		this.form.appendChild(this.emptySelectionMessage);
+		
 		
 		this.contentElement.appendChild(this.form);
 		
@@ -220,6 +230,13 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 	MoveCopyPanel.prototype.reloadFromSelection = function () {
 		this.selectionList.innerHTML = '';
 		var selection = Segue_Selection.instance();
+		
+		if (selection.components.length) {
+			this.emptySelectionMessage.style.display = 'none';
+		} else {
+			this.emptySelectionMessage.style.display = 'block';
+		}
+		
 		for (var i = 0; i < selection.components.length; i++) {
 			this.selectionList.appendChild(
 				this.getListItemForComponent(selection.components[i]));

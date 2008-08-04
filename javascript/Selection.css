@@ -47,3 +47,12 @@
 	font-style: italic;
 	white-space: nowrap;
 }
+
+.Selection_MoveCopy_Panel .emptySelectionMessage {
+	font-style: italic;
+	display: none;
+}
+
+.Selection_MoveCopy_Panel .emptySelectionMessage strong {
+	white-space: nowrap;
+}
