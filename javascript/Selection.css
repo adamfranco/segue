@@ -1,4 +1,6 @@
-
+/*********************************************************
+ * Selection styles
+ *********************************************************/
 .segue_selection_panel ol {
 	padding-left: 20px;
 }
@@ -14,4 +16,24 @@
 
 .segue_selection_panel .controls {
 	white-space: nowrap;
+}
+
+/*********************************************************
+ * Move/Copy styles
+ *********************************************************/
+.Selection_MoveCopy_Link {
+	text-align: center;
+	display: block;
+}
+
+.Selection_MoveCopy_Panel form {
+	text-align: center;
+}
+
+.Selection_MoveCopy_Panel ol {
+	text-align: left;
+}
+
+.Selection_MoveCopy_Panel div.All_None {
+	padding-top: 10px;
 }

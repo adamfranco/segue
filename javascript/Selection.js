@@ -26,6 +26,7 @@ Segue_Selection.superclass = FixedPanel.prototype;
  */
 function Segue_Selection () {
 	this.components = new Array();
+	this.listeners = new Array();
 	
 	Segue_Selection.superclass.init.call(this, 
 								'Your Selection',
@@ -175,6 +176,8 @@ function Segue_Selection () {
 		
 		if (this.components.length == 0)
 			this.close();
+		
+		this.buildDisplay();
 	}
 	
 	/**
@@ -289,6 +292,8 @@ function Segue_Selection () {
 		
 		this.open();
 		this.center();
+		
+		this.notifyListeners();
 	}
 	
 	/**
@@ -337,4 +342,48 @@ function Segue_Selection () {
 		li.appendChild(document.createTextNode(' '));
 		
 		return li;
+	}
+	
+	/**
+	 * Add a listener to notify when the selection has been changed.
+	 * Listeners must implement a update(selection) method
+	 * 
+	 * @param object listener
+	 * @return void
+	 * @access public
+	 * @since 8/4/08
+	 */
+	Segue_Selection.prototype.attachListener = function (listener) {
+		this.listeners.push(listener);
+	}
+	
+	/**
+	 * Rmove a listener to notify when the selection has been changed.
+	 * Listeners must implement a update() method
+	 * 
+	 * @param object listener
+	 * @return void
+	 * @access public
+	 * @since 8/4/08
+	 */
+	Segue_Selection.prototype.detachListener = function (listener) {
+		var newListeners = new Array();
+		for (var i = 0; i < this.listeners.length; i++) {
+			if (listener !== this.listeners[i])
+				newListeners.push(this.listeners[i]);
+		}
+		this.listeners = newListeners;
+	}
+	
+	/**
+	 * Noify listeners
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 8/4/08
+	 */
+	Segue_Selection.prototype.notifyListeners = function () {
+		for (var i = 0; i < this.listeners.length; i++) {
+			this.listeners[i].update(this);
+		}
 	}

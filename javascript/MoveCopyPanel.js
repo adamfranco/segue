@@ -44,17 +44,110 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 			throw "Invalid destination Id, '" + destId + "'.";
 		this.destId = destId;
 		
-		if (destType != 'MenuOrganizer' && destType != 'ContentOrganizer')
+		if (destType != 'MenuOrganizer' && destType != 'FlowOrganizer')
 			throw "Invalid destination type, '" + destType + "'. Must be 'MenuOrganizer' or 'ContentOrganizer'.";
 		this.destType = destType;
-		
+				
 		MoveCopyPanel.superclass.init.call(this, 
 								"Move/Copy",
 								50,
-								200,
-								positionElement);
+								300,
+								positionElement,
+								'Selection_MoveCopy_Panel');
 		
-		this.reloadSelection();
+		
+		/*********************************************************
+		 * build our form
+		 *********************************************************/
+		var panel = this;
+		
+		this.form = document.createElement('form');
+		this.form.action = Harmoni.quickUrl('selection', 'move_copy', {destId: this.destId});
+		this.form.method = "POST";
+		// Submit checking.
+		this.form.onsubmit = function() {
+			try {
+				panel.validateForm();
+			} catch (e) {
+				alert(e);
+				return false;
+			}
+		}
+		
+		// Command Switching
+		this.command = document.createElement('select');
+		this.command.name = 'command';
+		var option = this.command.appendChild(document.createElement('option'));
+		option.value = 'copy';
+		option.innerHTML = 'Copy';
+		var option = this.command.appendChild(document.createElement('option'));
+		option.value = 'move';
+		option.innerHTML = 'Move';
+		var option = this.command.appendChild(document.createElement('option'));
+		option.value = 'reference';
+		option.innerHTML = 'Reference';
+		this.command.value = 'copy';
+		// Change the submit label on change.
+		this.command.onchange = function () {
+			panel.submit.value = this.value + " Checked »";
+		}
+		this.form.appendChild(this.command);
+		this.form.appendChild(document.createTextNode(' \u00a0 \u00a0 '));
+		
+		// Help Link
+		var help = document.createElement('a');
+		help.onclick = function() {
+			var string = "Copy: Insert copies of the checked blocks/pages here. The originals will not be changed.";
+			string += "\n\nMove: Move the checked blocks/pages here. Links to them will now land here in their new location. They will no longer be availible in their old location.";
+			string += "\n\nReference: Create references that will display the content of blocks inline or link back to pages in their original locations. The originals will not be changed.";
+			alert(string);
+			return false;
+		}
+		help.innerHTML = '?';
+		this.form.appendChild(help);
+		this.form.appendChild(document.createTextNode(' \u00a0 \u00a0 '));
+		
+		// Submit button
+		this.submit = document.createElement('input');
+		this.submit.type = 'submit';
+		this.submit.value = 'Copy Checked »';
+		this.form.appendChild(this.submit);
+		
+		// Check All/None
+		var div = document.createElement('div');
+		div.className = 'All_None';
+		var link = document.createElement('a');
+		link.innerHTML = "Check All";
+		link.onclick = function() {
+			panel.checkAll();
+			return false;
+		}
+		div.appendChild(link);
+		
+		div.appendChild(document.createTextNode(' \u00a0 / \u00a0 '));
+		
+		var link = document.createElement('a');
+		link.innerHTML = "Check None";
+		link.onclick = function() {
+			panel.checkNone();
+			return false;
+		}
+		div.appendChild(link);
+		this.form.appendChild(div);
+		
+		// Item list.
+		this.selectionList = document.createElement('ol');
+		this.form.appendChild(this.selectionList);
+		
+		
+		
+		this.contentElement.appendChild(this.form);
+		
+		// Register for updates with the Selection.
+		Segue_Selection.instance().attachListener(this);
+		
+		// Add items from the selection
+		this.reloadFromSelection();
 	}
 	
 	/**
@@ -76,4 +169,129 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 		}
 	}
 	
+	/**
+	 * Methods to call on panel open.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 8/4/08
+	 */
+	MoveCopyPanel.prototype.onOpen = function () {
+		// Register for updates with the Selection.
+		Segue_Selection.instance().attachListener(this);
+		
+		this.reloadFromSelection();
+	}
 	
+	/**
+	 * Methods to call on panel close.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 8/4/08
+	 */
+	MoveCopyPanel.prototype.onClose = function () {
+		// unregister for updates with the Selection.
+		Segue_Selection.instance().detachListener(this);
+	}
+	
+	/**
+	 * Reload our listing from the Selection.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 8/4/08
+	 */
+	MoveCopyPanel.prototype.reloadFromSelection = function () {
+		this.selectionList.innerHTML = '';
+		var selection = Segue_Selection.instance();
+		for (var i = 0; i < selection.components.length; i++) {
+			this.selectionList.appendChild(
+				this.getListItemForComponent(selection.components[i]));
+		}
+	}
+	
+	/**
+	 * Answer a list item for the component given
+	 * 
+	 * @param object siteComponent
+	 * @return object DOMElement
+	 * @access public
+	 * @since 8/4/08
+	 */
+	MoveCopyPanel.prototype.getListItemForComponent = function (siteComponent) {
+		var li = document.createElement('li');
+		
+		// Checkbox
+		var elem = document.createElement('input');
+		elem.type = 'checkbox';
+		elem.value = siteComponent.id;
+		li.appendChild(elem);
+		li.appendChild(document.createTextNode(' '));
+			
+		// Name
+		var elem = li.appendChild(document.createElement('span'));
+		elem.innerHTML = siteComponent.displayName;
+		elem.className = 'name';
+		li.appendChild(document.createTextNode(' '));
+		
+		// Type
+		var elem = li.appendChild(document.createElement('span'));
+		switch (siteComponent.type) {
+			case 'NavBlock':
+				var type = 'Nav. Item';
+				break;
+			case 'Block':
+				var type = 'Content Block';
+				break;
+			default:
+				throw "Unsupported component type: " + siteComponent.type;
+			
+		}
+		elem.innerHTML = '(' + type + ')';
+		elem.className = 'type';
+		
+		return li;
+	}
+	
+	/**
+	 * Check all of the items
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 8/4/08
+	 */
+	MoveCopyPanel.prototype.checkAll = function () {
+		var boxes = this.selectionList.getElementsByTagName('input');
+		for (var i = 0; i < boxes.length; i++) {
+			if (boxes[i].type == 'checkbox')
+				boxes[i].checked = 'checked';
+		}
+	}
+	
+	/**
+	 * Check none of the items
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 8/4/08
+	 */
+	MoveCopyPanel.prototype.checkNone = function () {
+		var boxes = this.selectionList.getElementsByTagName('input');
+		for (var i = 0; i < boxes.length; i++) {
+			if (boxes[i].type == 'checkbox')
+				boxes[i].checked = false;
+		}
+	}
+	
+	/**
+	 * Update the pannel when the Selection has changed
+	 * 
+	 * @param object Selection
+	 * @return void
+	 * @access public
+	 * @since 8/4/08
+	 */
+	MoveCopyPanel.prototype.update = function (selection) {
+		this.reloadFromSelection();
+	}
