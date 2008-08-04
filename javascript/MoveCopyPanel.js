@@ -386,3 +386,15 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 	MoveCopyPanel.prototype.update = function (selection) {
 		this.reloadFromSelection();
 	}
+	
+	/**
+	 * Validate that at least one item is checked before submitting.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 8/4/08
+	 */
+	MoveCopyPanel.prototype.validateForm = function () {
+		if (!this.getCheckedIds().length)
+			throw "At least one item must be checked.";
+	}
