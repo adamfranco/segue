@@ -358,9 +358,17 @@ END;
 			$idManager->getId("edu.middlebury.authorization.add_children"), 
 			$organizer->getQualifierId()))
 		{
+		
 			$pluginManager = Services::getService("PluginManager");
+			
+			$formHtml = $this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins());
+			
+			// Move/Copy from selection
+			$selection = Segue_Selection::instance();
+			$formHtml .= $selection->getMoveCopyLink($organizer);
+			
 			$form = $this->addFlowChildWrapper($organizer, $i, 
-				new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins())));
+				new UnstyledBlock($formHtml));
 			
 			// Add the form to the beginning of the list for custom ordering or recent last
 			if (in_array($organizer->sortMethod(), array('custom', 'create_date_asc', 'mod_date_asc')))
@@ -437,8 +445,13 @@ END;
 			$pluginManager = Services::getService("PluginManager");
 			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
+			$formHtml = $this->getAddFormHTML($organizer->getId(), null, $allowed, true);
+			// Move/Copy from selection
+			$selection = Segue_Selection::instance();
+			$formHtml .= $selection->getMoveCopyLink($organizer);
+			
 			$childComponent = $guiContainer->add($this->addFlowChildWrapper($organizer, $organizer->getTotalNumberOfCells(), 
-				new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed, true), 2)), null, '100%', null, TOP);
+				new UnstyledMenuItem($formHtml, 2)), null, '100%', null, TOP);
 				
 			// Add a spacer at the end of the menu
 			$guiContainer->add(new UnstyledMenuItem("<div> &nbsp; </div>"));

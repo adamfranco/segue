@@ -35,7 +35,7 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 	 * @param string destSlot
 	 * @param string srcSiteId
 	 * @param string srcTitle
-	 * @param string positionElement
+	 * @param DOMElement positionElement
 	 * @return void
 	 * @access public
 	 * @since 11/27/06
@@ -54,7 +54,7 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 	 * @param string destSlot
 	 * @param string srcSiteId
 	 * @param string srcTitle
-	 * @param string positionElement
+	 * @param DOMElement positionElement
 	 * @return void
 	 * @access public
 	 * @since 7/28/08

@@ -138,8 +138,34 @@ class Segue_Selection
 				preg_replace('/\s+/', ' ',
 					strip_tags($siteComponent->getDisplayName()))))."', ";
 // 		print 	"description: '".$siteComponent->getDescription()."'";
-		print "});\"";
+		print "}); return false;\"";
 		print ">"._('+ Selection');
+		print "</a>";
+		
+		$harmoni->request->endNamespace();				
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer a link to move/copy items from the selection into an organizer
+	 * 
+	 * @param object FlowOrganizerSiteComponent $siteComponent
+	 * @return string
+	 * @access public
+	 * @since 8/4/08
+	 */
+	public function getMoveCopyLink (FlowOrganizerSiteComponent $siteComponent) {
+		$this->addHeadJavascript();
+		
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace("selection");
+		ob_start();
+		
+		print "<a ";
+		print " style='cursor: pointer;'";
+		print " class='Selection_MoveCopy_Link' ";
+		print " onclick=\"MoveCopyPanel.run('".$siteComponent->getId()."', '".$siteComponent->getComponentClass()."', this); return false;\"";
+		print ">"._('+ Move/Copy...');
 		print "</a>";
 		
 		$harmoni->request->endNamespace();				
@@ -163,6 +189,7 @@ class Segue_Selection
 			print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/FixedPanel.js'></script>";
 			print "\n\t\t<link rel='stylesheet' type='text/css' href='".MYPATH."/javascript/Selection.css' />";
 			print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/Selection.js'></script>";
+			print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/MoveCopyPanel.js'></script>";
 			
 			print "\n\t\t<script type='text/javascript'>";
 			print "\n\t\t// <![CDATA[ ";
