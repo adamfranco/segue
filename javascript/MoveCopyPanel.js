@@ -113,6 +113,20 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 		this.submit.value = 'Copy Checked »';
 		this.form.appendChild(this.submit);
 		
+		// Removal from selection
+		this.form.appendChild(document.createElement('br'));
+		this.form.appendChild(document.createTextNode(' After usage: '));
+		var select = document.createElement('select');
+		select.name = 'remove_after_use';
+		var option = select.appendChild(document.createElement('option'));
+		option.value = 'remove';
+		option.innerHTML = 'Remove From Selection';
+		var option = select.appendChild(document.createElement('option'));
+		option.value = 'keep';
+		option.innerHTML = 'Keep in Selection';
+		this.form.appendChild(select);
+		this.form.appendChild(document.createTextNode(' \u00a0 \u00a0 '));
+		
 		// Check All/None
 		var div = document.createElement('div');
 		div.className = 'All_None';
@@ -134,6 +148,7 @@ function MoveCopyPanel ( destId, destType, positionElement ) {
 		}
 		div.appendChild(link);
 		this.form.appendChild(div);
+		
 		
 		// Item list.
 		this.selectionList = document.createElement('ol');

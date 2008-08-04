@@ -32,8 +32,18 @@
 
 .Selection_MoveCopy_Panel ol {
 	text-align: left;
+	padding-left: 20px;
 }
 
 .Selection_MoveCopy_Panel div.All_None {
 	padding-top: 10px;
+}
+
+.Selection_MoveCopy_Panel .name {
+	white-space: nowrap;
+}
+
+.Selection_MoveCopy_Panel .type {
+	font-style: italic;
+	white-space: nowrap;
 }

@@ -118,6 +118,7 @@ function Segue_Selection () {
 		this.components = newComponents;
 		
 		this.buildDisplay();
+		this.notifyListeners();
 		
 		// Fire off an AJAX request to store the addition in the session.
 		var url = Harmoni.quickUrl('selection', 'remove', {id: siteComponent.id});
@@ -178,6 +179,7 @@ function Segue_Selection () {
 			this.close();
 		
 		this.buildDisplay();
+		this.notifyListeners();
 	}
 	
 	/**
@@ -202,6 +204,7 @@ function Segue_Selection () {
 		
 		this.components.push(siteComponent);
 		this.buildDisplay();
+		this.notifyListeners();
 	}
 	
 	/**
@@ -292,8 +295,6 @@ function Segue_Selection () {
 		
 		this.open();
 		this.center();
-		
-		this.notifyListeners();
 	}
 	
 	/**
