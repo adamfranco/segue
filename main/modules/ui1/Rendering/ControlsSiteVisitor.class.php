@@ -158,6 +158,29 @@ class ControlsSiteVisitor
 	}
 	
 	/**
+	 * Answer controls for adding to the selection.
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @return string
+	 * @access public
+	 * @since 8/5/08
+	 */
+	public function getSelectionAdd (BlockSiteComponent $siteComponent) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
+		
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			return false;
+		}
+		
+		return Segue_Selection::instance()->getAddLink($siteComponent);
+	}
+	
+	/**
 	 * Print the edit controls
 	 * 
 	 * @param object SiteComponent $siteComponent
@@ -329,6 +352,8 @@ class ControlsSiteVisitor
 		$this->controlsStart($siteComponent);
 		
 		$controls = array();
+		if ($control = $this->getSelectionAdd($siteComponent))
+			$controls[] = $control;
 		if ($siteComponent->sortMethod() == 'custom' && $control = $this->getReorder($siteComponent))
 			$controls[] = $control;
 		if ($control = $this->getMove($siteComponent))
@@ -369,6 +394,8 @@ class ControlsSiteVisitor
 		$this->controlsStart($siteComponent);
 		
 		$controls = array();
+		if ($control = $this->getSelectionAdd($siteComponent))
+			$controls[] = $control;
 		if ($control = $this->getReorder($siteComponent))
 			$controls[] = $control;
 		if ($control = $this->getMove($siteComponent))

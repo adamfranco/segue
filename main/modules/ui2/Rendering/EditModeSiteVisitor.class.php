@@ -123,7 +123,8 @@ END;
 				.$this->getControlsHTML(
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true);
+					'#090', '#9F9', '#6C6', 0, true,
+					Segue_Selection::instance()->getAddLink($block));
 			$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 			
 			$guiContainer->setPostHTML($this->getBarPostHTML());
@@ -253,7 +254,8 @@ END;
 				.$this->getControlsHTML(
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true);
+					'#090', '#9F9', '#6C6', 0, true,
+					Segue_Selection::instance()->getAddLink($block));
 			$menuItem->setPreHTML($controlsHTML.$menuItem->getPreHTML($null = null));
 			
 			$menuItem->setPostHTML($this->getBarPostHTML());
@@ -293,7 +295,8 @@ END;
 				.$this->getControlsHTML(
 					"<em>".$label."</em>", 
 					$navBlock->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true)
+					'#090', '#9F9', '#6C6', 0, true,
+					Segue_Selection::instance()->getAddLink($navBlock))
 				."<br/>";
 			$menuItems[0]->setPreHTML($controlsHTML.$menuItems[0]->getPreHTML($null = null));
 			
@@ -358,9 +361,17 @@ END;
 			$idManager->getId("edu.middlebury.authorization.add_children"), 
 			$organizer->getQualifierId()))
 		{
+		
 			$pluginManager = Services::getService("PluginManager");
+			
+			$formHtml = "\n\t<div class='ui2_add_form_wrapper'>";
+			$formHtml .= $this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins());
+			// Move/Copy from selection
+			$formHtml .= "\n\t | ".Segue_Selection::instance()->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t</div>";
+			
 			$form = $this->addFlowChildWrapper($organizer, $i, 
-				new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins())));
+				new UnstyledBlock($formHtml));
 			
 			// Add the form to the beginning of the list for custom ordering or recent last
 			if (in_array($organizer->sortMethod(), array('custom', 'create_date_asc', 'mod_date_asc')))
@@ -437,8 +448,15 @@ END;
 			$pluginManager = Services::getService("PluginManager");
 			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
+			
+			$formHtml = "\n\t<div class='ui2_add_form_wrapper'>";
+			$formHtml .= $this->getAddFormHTML($organizer->getId(), null, $allowed, true);
+			// Move/Copy from selection
+			$formHtml .= "\n\t | ".Segue_Selection::instance()->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t</div>";
+			
 			$childComponent = $guiContainer->add($this->addFlowChildWrapper($organizer, $organizer->getTotalNumberOfCells(), 
-				new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed, true), 2)), null, '100%', null, TOP);
+				new UnstyledMenuItem($formHtml, 2)), null, '100%', null, TOP);
 				
 			// Add a spacer at the end of the menu
 			$guiContainer->add(new UnstyledMenuItem("<div> &nbsp; </div>"));
@@ -507,17 +525,7 @@ END;
 	function getAddFormHTML ($organizerId, $cellIndex, $allowed, $isMenu = FALSE) {
 		ob_start();
 		$harmoni = Harmoni::instance();
-		print "\n<form action='";
-		print $harmoni->request->quickURL('ui2', 'addComponent', 
-				array('returnNode' => SiteDispatcher::getCurrentNodeId(),
-					'returnAction' => $this->_action));
-		print "' method='post'>";
-		
-		print "\n\t<input type='hidden' name='".RequestContext::name('organizerId')."' value='".$organizerId."'/>";
-		if (!is_null($cellIndex))
-			print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
-		//print "\n\t<div class='block2Content' style='text-align: center;'";
-		print "\n\t<a style='text-align: center; display: block;'";
+		print "\n\t<a style='text-align: center; display: inline;'";
 		print " onclick='this.style.display=\"none\"; this.nextSibling.style.display=\"block\";'";
 		print ">";
 		if ($isMenu)
@@ -525,8 +533,17 @@ END;
 		else
 			print "\n\t\t\t"._("+ Content");
 		print "\n\t</a>";
-		print "<div style='display: none'>";
+		print "<form action='";
+		print $harmoni->request->quickURL('ui2', 'addComponent', 
+				array('returnNode' => SiteDispatcher::getCurrentNodeId(),
+					'returnAction' => $this->_action));
+		print "' method='post' ";
+		print " style='display: none' class='ui2_add_form'>";
 		
+		print "\n\t<input type='hidden' name='".RequestContext::name('organizerId')."' value='".$organizerId."'/>";
+		if (!is_null($cellIndex))
+			print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
+		//print "\n\t<div class='block2Content' style='text-align: center;'";		
 		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
 		
 		$inCat = false;
@@ -549,7 +566,7 @@ END;
 		print "\n\t\t\t<input name='".RequestContext::name('displayName')."' type='text' size='10'/>";
 		print "\n\t\t</div>";
 		
-		print "\n\t\t<div style='white-space: nowrap; text-align: right;'>";
+		print "\n\t\t<div style='white-space: nowrap; margin: 5px;'>";
 		print "\n\t\t\t<input type='button' value='"._('Submit')."'";
 		print " onclick='";
 		print "var hasTitle = false; ";
@@ -569,10 +586,9 @@ END;
 		print "}";
 		print "' />";
 		print "\n\t\t\t<input type='button' ";
-		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.style.display=\"block\";'";
+		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.style.display=\"inline\";'";
 		print " value='"._("Cancel")."'/>";
 		print "\n\t\t</div>";
-		print "\n\t</div>";
 		print "</form>";
 		return ob_get_clean();
 	}
@@ -602,7 +618,7 @@ END;
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0) {
+	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0, $selectionLinkHtml = null) {
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		
@@ -642,6 +658,13 @@ END;
 		print "\n\t\t".$title;
 		print "\n\t\t</td>";
 		print "\n\t\t<td style='text-align: right;'>";
+		if (!is_null($selectionLinkHtml)) {
+			print "\n\t\t\t\t<span class='selection_link'"
+			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
+			.">";
+			print $selectionLinkHtml;
+			print " | </span>";
+		}
 		print "\n\t\t\t\t<span class='controls_link'"
 			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
 			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'"
@@ -778,6 +801,11 @@ END;
 	function showControlsLink(mainElement) {
 		var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 		controlsLink.style.visibility = 'visible';
+		
+		// Show the selection link as well
+		var selectionLink = getDescendentByClassName(mainElement, 'selection_link');
+		if (selectionLink)
+				selectionLink.style.visibility = 'visible';
 	}
 	
 	function hideControlsLink(mainElement) {
@@ -785,6 +813,11 @@ END;
 		if (controls.style.display != 'block') {
 			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 			controlsLink.style.visibility = 'hidden';
+			
+			// Hide the selection link as well
+			var selectionLink = getDescendentByClassName(mainElement, 'selection_link');
+			if (selectionLink)
+				selectionLink.style.visibility = 'hidden';
 		}		
 	}
 	

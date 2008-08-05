@@ -1230,7 +1230,7 @@ END;
 		
 
 		$this->printDelete($siteComponent);
-		
+				
 		return $this->controlsEnd($siteComponent);
 	}
 	
@@ -1273,7 +1273,7 @@ END;
 			$this->printSortMethod($siteComponent);
 // 		$this->printAddSubMenu($siteComponent);
 		$this->printDelete($siteComponent);
-		
+				
 		return $this->controlsEnd($siteComponent);
 	}
 	
@@ -1291,7 +1291,7 @@ END;
 		$this->printWidth($siteComponent);
 		
 		$this->printTheme($siteComponent);
-		
+				
 		return $this->controlsEnd($siteComponent);
 	}
 	

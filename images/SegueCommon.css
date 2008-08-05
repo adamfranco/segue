@@ -128,6 +128,15 @@
 
 	}
 	
+	.ui1_add_form_wrapper {
+		text-align: center;
+		white-space: nowrap;
+	}
+	
+	.ui1_add_form_wrapper div {
+		display: inline;
+	}
+	
 /*********************************************************
  * UI2 CSS
  *********************************************************/
@@ -173,6 +182,16 @@
 		background-color: #FFFFFF;
 		margin-bottom: 5px;
 		margin-right: 5px;
+	}
+	
+	.controls_bar a {
+		color: #000;
+		text-decoration: none;
+	}
+	
+	.ui2_add_form_wrapper {
+		text-align: center;
+		white-space: nowrap;
 	}
 	
 /*********************************************************

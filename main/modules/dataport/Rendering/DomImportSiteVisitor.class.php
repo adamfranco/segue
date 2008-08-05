@@ -206,6 +206,66 @@ class DomImportSiteVisitor
 	}
 	
 	/**
+	 * Import an exported subtree below the site component passed.
+	 * The root of the subtree must be apropriate for importing below
+	 * the node.
+	 * 
+	 * @param object FlowOrganizerSiteComponent $organizer
+	 * @return object SiteComponent The root of the newly created subtree.
+	 * @access public
+	 * @since 8/5/08
+	 */
+	public function importSubtreeUnderOrganizer (FlowOrganizerSiteComponent $organizer) {
+		// Check Authorization
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService("Id");
+		if (!$authZ->isUserAuthorized(
+				$idMgr->getId('edu.middlebury.authorization.add_children'), 
+				$organizer->getQualifierId()))
+			throw new PermissionDeniedException("You are not authorized to import at '".$organizer->getQualifierId()->getIdString()."'.");
+		
+		// Check for a valid number of elements of the right type.
+		switch ($organizer->getComponentClass()) {
+			case 'FlowOrganizer':
+				$elements = $this->xpath->evaluate('/Segue2/Block');
+				$allowedString = "Content Block";
+				$destString = "Content Organizer";
+				break;
+			case 'MenuOrganizer':
+				$elements = $this->xpath->evaluate('/Segue2/Block | /Segue2/NavBlock');
+				$allowedString = "Content Block or Page";
+				$destString = "Page Organizer";
+				break;
+			default:
+				throw new InvalidArgumentException("Importing under ".$organizer->getComponentClass()." site components is not currently supported.");
+		}
+		if ($elements->length !== 1)
+			throw new Exception("Import source has ".$elements->length." ".$allowedString." elements. There must be one and only one for importing under a ".$destString.".");
+		
+		$element = $elements->item(0);
+		$newComponent = $this->createComponent($element, $organizer);
+		
+		try {
+			// give the editor role on the new component
+			$roleMgr = SegueRoleManager::instance();
+			$editorRole = $roleMgr->getRole('editor');
+			$editorRole->applyToUser($newComponent->getQualifierId(), true);
+			
+			$this->importComponent($element, $newComponent);
+			$this->updateMenuTargets();
+			$this->updateStoredIds();
+			
+			// In case the editor role got removed from the user or they just had author, add it.
+			$editorRole->applyToUser($newComponent->getQualifierId(), true);
+		} catch (Exception $e) {
+			// Ensure that we don't have a partially created site floating out there.
+			$this->director->deleteSiteComponent($newComponent);
+			throw $e;
+		}
+		return $newComponent;
+	}
+	
+	/**
 	 * Answer the media quota from the import
 	 *
 	 * @return int
