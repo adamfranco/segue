@@ -264,7 +264,7 @@ class Segue1UrlResolver {
 			$slotMgr = SlotManager::instance();
 			$slot = $slotMgr->getSlotByShortname($slotName);
 			if ($slot->siteExists())
-				return $slot->getSiteId();
+				return $slot->getSiteId()->asString();
 		}
 		
 		// If we still couldn't resolve throw an exception.
