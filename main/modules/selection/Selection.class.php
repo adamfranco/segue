@@ -133,16 +133,16 @@ class Segue_Selection
 		$harmoni->request->startNamespace("selection");
 		ob_start();
 		
-		print "<a ";
+		print "\n\t\t<a ";
 		print " style='cursor: pointer;'";
+		print " href='#' ";
 		print " onclick=\"Segue_Selection.instance().addComponent({";
 		print	"id: '".$siteComponent->getId()."', ";
 		print 	"type: '".$siteComponent->getComponentClass()."', ";
 		print	"displayName: '"
 			.addslashes(str_replace('"', '&quot', 
 				preg_replace('/\s+/', ' ',
-					strip_tags($siteComponent->getDisplayName()))))."', ";
-// 		print 	"description: '".$siteComponent->getDescription()."'";
+					strip_tags($siteComponent->getDisplayName()))))."' ";
 		print "}); return false;\"";
 		print ">"._('+ Selection');
 		print "</a>";
@@ -233,7 +233,6 @@ class Segue_Selection
 									.addslashes(str_replace('"', '&quot', 
 										preg_replace('/\s+/', ' ',
 											strip_tags($siteComponent->getDisplayName()))))."' ";
-						// 		print 	"description: '".$siteComponent->getDescription()."'";
 								print "});";
 							}
 						} catch (UnknownIdException $e) {
