@@ -175,6 +175,11 @@
 		margin-right: 5px;
 	}
 	
+	.controls_bar a {
+		color: #000;
+		text-decoration: none;
+	}
+	
 /*********************************************************
  * Plugin Manager Admin CSS
  *********************************************************/

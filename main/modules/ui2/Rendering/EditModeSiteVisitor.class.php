@@ -123,7 +123,8 @@ END;
 				.$this->getControlsHTML(
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true);
+					'#090', '#9F9', '#6C6', 0, true,
+					Segue_Selection::instance()->getAddLink($block));
 			$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 			
 			$guiContainer->setPostHTML($this->getBarPostHTML());
@@ -253,7 +254,8 @@ END;
 				.$this->getControlsHTML(
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true);
+					'#090', '#9F9', '#6C6', 0, true,
+					Segue_Selection::instance()->getAddLink($block));
 			$menuItem->setPreHTML($controlsHTML.$menuItem->getPreHTML($null = null));
 			
 			$menuItem->setPostHTML($this->getBarPostHTML());
@@ -293,7 +295,8 @@ END;
 				.$this->getControlsHTML(
 					"<em>".$label."</em>", 
 					$navBlock->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true)
+					'#090', '#9F9', '#6C6', 0, true,
+					Segue_Selection::instance()->getAddLink($navBlock))
 				."<br/>";
 			$menuItems[0]->setPreHTML($controlsHTML.$menuItems[0]->getPreHTML($null = null));
 			
@@ -615,7 +618,7 @@ END;
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0) {
+	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0, $selectionLinkHtml = null) {
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		
@@ -655,6 +658,13 @@ END;
 		print "\n\t\t".$title;
 		print "\n\t\t</td>";
 		print "\n\t\t<td style='text-align: right;'>";
+		if (!is_null($selectionLinkHtml)) {
+			print "\n\t\t\t\t<span class='selection_link'"
+			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
+			.">";
+			print $selectionLinkHtml;
+			print " | </span>";
+		}
 		print "\n\t\t\t\t<span class='controls_link'"
 			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
 			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'"
@@ -791,6 +801,11 @@ END;
 	function showControlsLink(mainElement) {
 		var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 		controlsLink.style.visibility = 'visible';
+		
+		// Show the selection link as well
+		var selectionLink = getDescendentByClassName(mainElement, 'selection_link');
+		if (selectionLink)
+				selectionLink.style.visibility = 'visible';
 	}
 	
 	function hideControlsLink(mainElement) {
@@ -798,6 +813,11 @@ END;
 		if (controls.style.display != 'block') {
 			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 			controlsLink.style.visibility = 'hidden';
+			
+			// Hide the selection link as well
+			var selectionLink = getDescendentByClassName(mainElement, 'selection_link');
+			if (selectionLink)
+				selectionLink.style.visibility = 'hidden';
 		}		
 	}
 	
