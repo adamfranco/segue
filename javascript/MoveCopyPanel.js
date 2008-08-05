@@ -76,6 +76,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		this.form.onsubmit = function() {
 			try {
 				panel.validateForm();
+				panel.submitForm();
+				return false;
 			} catch (e) {
 				alert(e);
 				return false;
@@ -397,4 +399,93 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 	MoveCopyPanel.prototype.validateForm = function () {
 		if (!this.getCheckedIds().length)
 			throw "At least one item must be checked.";
+	}
+	
+	/**
+	 * Submit the form and show a status panel.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 8/5/08
+	 */
+	MoveCopyPanel.prototype.submitForm = function () {
+		// Send off an asynchronous request to do the update and monitor the
+		// status in a new centered panel.
+		var url = this.form.action;
+		var params = this.getFormParams(this.form);
+		
+		var statusPanel = new CenteredPanel("Move/Copy Status", 400, 800, this.positionElement);
+		statusPanel.cancel.parentNode.removeChild(statusPanel.cancel);
+		statusPanel.contentElement.innerHTML = "<img src='" + Harmoni.MYPATH + "/images/loading.gif' alt='Loading...' /><br/><span>Copying Site...</span>";
+		
+		var req = Harmoni.createRequest();
+		if (req) {
+			
+			// Set a callback for displaying errors.
+			req.onreadystatechange = function () {
+				// Update the status area.
+				// IE will throw an error if we try to access responseText
+				try {
+					if (req.responseText && req.responseText.length) {
+						statusPanel.contentElement.innerHTML = req.responseText;
+					} else {
+//	 					statusPanel.contentElement.innerHTML = "<span style='blink'>Copying Site...</span> Readystate: "  + req.readyState + " Status: " + requ.status + " " + req.statusText;
+					}
+				} catch (e) {
+				}
+				
+				// only if req shows 'loaded'
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200 && req.responseText) {
+						
+					} else {
+						alert("There was a problem retrieving the data:\n" +
+							req.statusText);
+						statusPanel.contentElement.appendChild(document.createElement('br'));
+						statusPanel.contentElement.appendChild(document.createTextNode('Move/Copy Failed'));
+					}
+					
+					var button = document.createElement('input');
+					button.type = 'button';
+					button.value = "Continue »";
+					button.onclick = function () {
+						window.location.reload();
+					};
+					statusPanel.contentElement.appendChild(document.createElement('br'));
+					statusPanel.contentElement.appendChild(document.createElement('br'));
+					statusPanel.contentElement.appendChild(button);
+				}
+			} 
+		
+			req.open('POST', url, true);
+			req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+// 			req.setRequestHeader("Content-length", params.length);
+// 			req.setRequestHeader("Connection", "close");
+			req.send(params);
+		} else {
+			alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
+		}
+	}
+	
+	/**
+	 * Gather the elements of the form and combine them into a post string.
+	 * 
+	 * @param DOMElement form
+	 * @return string
+	 * @access public
+	 * @since 7/29/08
+	 */
+	MoveCopyPanel.prototype.getFormParams = function (form) {
+		var params = '';
+		for (var i = 0; i < form.elements.length; i++) {
+			var elem = form.elements[i];
+			if (elem.name && (elem.type != 'checkbox' || elem.checked)) {
+				if (params.length)
+					params += '&';
+				
+				params += elem.name + '=' + encodeURI(elem.value);
+			}
+		}
+		return params;
 	}
