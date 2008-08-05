@@ -38,6 +38,13 @@ class ControlsSiteVisitor
 	public function __construct () {
 		$this->module = "ui1";
 		$this->action = "editview";
+		
+		$harmoni = Harmoni::instance();
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead(
+			$outputHandler->getHead()
+			."\n\t\t\t<script type='text/javascript' src='".MYPATH."/javascript/DeletePanel.js'></script>"
+			);
 	}
 		
 	/**
@@ -120,11 +127,12 @@ class ControlsSiteVisitor
 	 * Print delete controls
 	 * 
 	 * @param SiteComponent $siteComponent
+	 * @param string $typeDisplay
 	 * @return void
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function getDelete ( $siteComponent ) {
+	function getDelete ( $siteComponent, $typeDisplay ) {
 		ob_start();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -142,15 +150,19 @@ class ControlsSiteVisitor
 						'returnAction' => $this->action
 						));
 			
-			print "\n\t\t\t\t\t<a href='#' onclick='";
+			print "\n\t\t\t\t\t<a href='#' onclick=\"";
 			
-			print 	"if (confirm(\"".$message."\")) {";
-			print 		" var url = \"".$url."\"; ";
-			print 		"window.location = url.urlDecodeAmpersands(); ";
-			print 	"} ";
+			print 	"DeletePanel.run({";
+			print		"id: '".$siteComponent->getId()."', ";
+			print		"type: '".$typeDisplay."', ";
+			print		"displayName: '".addslashes(str_replace('"', '&quot;',
+							strip_tags($siteComponent->getDisplayName())))."'";
+			print 		"}, ";
+			print		"'".SiteDispatcher::getCurrentNodeId()."', ";
+			print		"'ui1', '".$this->action."', this); ";
 			print "return false; ";
 			
-			print "'>";
+			print "\">";
 			print _("delete");
 			print "</a>";
 		}
@@ -360,7 +372,7 @@ class ControlsSiteVisitor
 			$controls[] = $control;
 		if ($control = $this->getEdit($siteComponent, 'editContent'))
 			$controls[] = $control;
-		if ($control = $this->getDelete($siteComponent))
+		if ($control = $this->getDelete($siteComponent, _("Content Block")))
 			$controls[] = $control;
 		if ($control = $this->getHistory($siteComponent))
 			$controls[] = $control;
@@ -402,8 +414,13 @@ class ControlsSiteVisitor
 			$controls[] = $control;
 		if ($control = $this->getEdit($siteComponent, 'editNav'))
 			$controls[] = $control;
-		if ($control = $this->getDelete($siteComponent))
-			$controls[] = $control;
+		if ($siteComponent->isSection()) {
+			if ($control = $this->getDelete($siteComponent, _("Section")))
+				$controls[] = $control;
+		} else {
+			if ($control = $this->getDelete($siteComponent, _("Page")))
+				$controls[] = $control;
+		}
 // 		if ($control = $this->getHistory($siteComponent))
 // 			$controls[] = $control;
 // 		if ($control = $this->getAddSubMenu($siteComponent))

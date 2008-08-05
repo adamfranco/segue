@@ -194,6 +194,18 @@
 		white-space: nowrap;
 	}
 	
+	.DeletePanel input.cancel_button {
+		float: left;
+	}
+	
+	.DeletePanel input.submit_button {
+		float: right;
+	}
+	
+	.DeletePanel div.info_area {
+		margin-bottom: 10px;
+	}
+	
 /*********************************************************
  * Plugin Manager Admin CSS
  *********************************************************/
