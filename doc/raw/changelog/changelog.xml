@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-08-05' ref='1799954' reftype='fr'>
+			SiteEditing: Can now select Pages or Content Blocks and move or copy
+			them elsewhere in the site or another site.
+		</new>
 		<fix author='adam' date='2008-08-05'>
 			Migration: Segue1UrlResolver now properly returns id-strings instead
 			of Id objects, enabling forwarding to work properly.

@@ -93,9 +93,9 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var option = this.command.appendChild(document.createElement('option'));
 		option.value = 'move';
 		option.innerHTML = 'Move';
-		var option = this.command.appendChild(document.createElement('option'));
-		option.value = 'reference';
-		option.innerHTML = 'Reference';
+// 		var option = this.command.appendChild(document.createElement('option'));
+// 		option.value = 'reference';
+// 		option.innerHTML = 'Reference';
 		this.command.value = 'copy';
 		// Change the submit label on change.
 		this.command.onchange = function () {
@@ -118,7 +118,7 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		help.onclick = function() {
 			var string = "Copy: Insert copies of the checked blocks/pages here. The originals will not be changed.";
 			string += "\n\nMove: Move the checked blocks/pages here. Links to them will now land here in their new location. They will no longer be availible in their old location.";
-			string += "\n\nReference: Create references that will display the content of blocks inline or link back to pages in their original locations. The originals will not be changed.";
+// 			string += "\n\nReference: Create references that will display the content of blocks inline or link back to pages in their original locations. The originals will not be changed.";
 			alert(string);
 			return false;
 		}
