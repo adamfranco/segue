@@ -53,6 +53,10 @@ class move_copyAction
 	public function execute () {
 		if (!$this->isAuthorizedToExecute())
 			throw new PermissionDeniedException(_("Your are not authorized to move/copy items here."));
+			
+		// Clear any output buffers.
+		while(ob_get_level())
+			ob_end_clean();
 		
 		$director = SiteDispatcher::getSiteDirector();
 		foreach (RequestContext::value('sourceIds') as $sourceId) {
@@ -136,12 +140,9 @@ class move_copyAction
 			$doc = $visitor->doc;
 			
 			// Validate the result
-			printpre(htmlentities($doc->saveXMLWithWhitespace()));
-// 			$tmp = new Harmoni_DomDocument;
-// 			$tmp->loadXML($doc->saveXMLWithWhitespace());
-// 			$tmp->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+// 			printpre(htmlentities($doc->saveXMLWithWhitespace()));
 			
-			$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+			$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-subtree.xsd");
 			
 // 			printpre($this->listDir($exportDir));
 // 			throw new Exception('test');
@@ -149,7 +150,7 @@ class move_copyAction
 			/*********************************************************
 			 * Import the Component
 			 *********************************************************/
-			$importer = new DomImportSiteVisitor($doc, $exportDir, $director);
+			$importer = new DomImportSiteVisitor($doc, $exportDir, SiteDispatcher::getSiteDirector());
 // 			if (RequestContext::value('copyPermissions') == 'true')
 				$importer->enableRoleImport();
 			
@@ -158,7 +159,7 @@ class move_copyAction
 			
 			
 			$importer->enableStatusOutput(_("Importing into new location"));
-			$newComponent = $importer->importAtComponent($this->getDestinationComponent());
+			$newComponent = $importer->importSubtreeUnderOrganizer($this->getDestinationComponent());
 			
 			// Delete the decompressed Archive
 			$this->deleteRecursive($exportDir);
