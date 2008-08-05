@@ -318,6 +318,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		elem.name = 'sourceIds[]';
 		elem.type = 'checkbox';
 		elem.value = siteComponent.id;
+		li.appendChild(elem);
+		
 		if (this.destId == siteComponent.id
 			|| (this.command.value == 'move' && this.isAncestor(siteComponent))
 			|| (this.destType == 'FlowOrganizer' && siteComponent.type != 'Block'))
@@ -328,7 +330,6 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 			elem.checked = true;
 		}
 		
-		li.appendChild(elem);
 		li.appendChild(document.createTextNode(' '));
 			
 		// Name
