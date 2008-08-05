@@ -462,7 +462,20 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		
 		var statusPanel = new CenteredPanel("Move/Copy Status", 400, 800, this.positionElement);
 		statusPanel.cancel.parentNode.removeChild(statusPanel.cancel);
-		statusPanel.contentElement.innerHTML = "<img src='" + Harmoni.MYPATH + "/images/loading.gif' alt='Loading...' /><br/><span>Copying Site...</span>";
+		switch (this.command.value) {
+			case 'move':
+				var actionText = 'Moving';
+				break;
+			case 'copy':
+				var actionText = 'Copying';
+				break;
+			case 'reference':
+				var actionText = 'Referencing';
+				break;
+			default:
+				throw "Unknown command, '" + this.command.value + "'.";
+		}
+		statusPanel.contentElement.innerHTML = "<img src='" + Harmoni.MYPATH + "/images/loading.gif' alt='Loading...' /><br/><span>" + actionText + " selected items...</span>";
 		
 		var req = Harmoni.createRequest();
 		if (req) {
