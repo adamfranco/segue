@@ -91,8 +91,8 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		input.name = 'copyPermissions';
 		input.type = 'checkbox';
 		input.value = 'true';
-		input.checked = 'checked';
 		form.appendChild(input);
+		input.checked = 'checked';
 		form.appendChild(document.createTextNode(' Copy Permissions?'));
 		form.appendChild(document.createElement('br'));
 		
@@ -100,8 +100,8 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		input.name = 'copyDiscussions';
 		input.type = 'checkbox';
 		input.value = 'true';
-		input.checked = 'checked';
 		form.appendChild(input);
+		input.checked = 'checked';
 		form.appendChild(document.createTextNode(' Copy Discussion Posts?'));
 		form.appendChild(document.createElement('br'));
 		form.appendChild(document.createElement('br'));
