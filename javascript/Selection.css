@@ -32,6 +32,16 @@
 	text-align: center;
 }
 
+.Selection_MoveCopy_Panel .copy_options_div {
+	text-align: left;
+	margin-top: 5px;
+}
+
+.Selection_MoveCopy_Panel .selection_removal_div {
+	margin-top: 5px;
+	text-align: left;
+}
+
 .Selection_MoveCopy_Panel ol {
 	text-align: left;
 	padding-left: 20px;

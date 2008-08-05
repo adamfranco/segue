@@ -151,11 +151,11 @@ class move_copyAction
 			 * Import the Component
 			 *********************************************************/
 			$importer = new DomImportSiteVisitor($doc, $exportDir, SiteDispatcher::getSiteDirector());
-// 			if (RequestContext::value('copyPermissions') == 'true')
+			if (RequestContext::value('copy_permissions') == 'true')
 				$importer->enableRoleImport();
 			
-// 			if (RequestContext::value('copyDiscussions') != 'true')
-// 				$importer->disableCommentImport();
+			if (RequestContext::value('copy_discussions') == 'false')
+				$importer->disableCommentImport();
 			
 			
 			$importer->enableStatusOutput(_("Importing into new location"));

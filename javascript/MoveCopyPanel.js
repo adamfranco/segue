@@ -100,7 +100,15 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		// Change the submit label on change.
 		this.command.onchange = function () {
 			panel.submit.value = this.options.item(this.selectedIndex).innerHTML + " Checked »";
+			
+			if (this.value == 'copy') {
+				panel.copyPermsDiv.style.display = 'block';
+			} else {
+				panel.copyPermsDiv.style.display = 'none';
+			}
+			
 			panel.reloadFromSelection();
+			
 		}
 		this.form.appendChild(this.command);
 		this.form.appendChild(document.createTextNode(' \u00a0 \u00a0 '));
@@ -124,9 +132,44 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		this.submit.value = 'Copy Checked »';
 		this.form.appendChild(this.submit);
 		
+		// Copy Permissions/Discussions
+		this.copyPermsDiv = this.form.appendChild(document.createElement('div'));
+		this.copyPermsDiv.appendChild(document.createTextNode(' Copy Options: '));
+		this.copyPermsDiv.appendChild(document.createElement('br'));
+		this.copyPermsDiv.appendChild(document.createTextNode(' \u00a0 \u00a0 \u00a0 \u00a0 '));
+		this.copyPermsDiv.className = 'copy_options_div';
+		
+		var select = document.createElement('select');
+		select.name = 'copy_permissions';
+		var option = select.appendChild(document.createElement('option'));
+		option.value = 'true';
+		option.innerHTML = 'Copy Permissions';
+		var option = select.appendChild(document.createElement('option'));
+		option.value = 'false';
+		option.innerHTML = 'Remove Permissions';
+		select.value = 'false';
+		this.copyPermsDiv.appendChild(select);
+		
+		this.copyPermsDiv.appendChild(document.createElement('br'));
+		this.copyPermsDiv.appendChild(document.createTextNode(' \u00a0 \u00a0 \u00a0 \u00a0 '));
+		var select = document.createElement('select');
+		select.name = 'copy_discussions';
+		var option = select.appendChild(document.createElement('option'));
+		option.value = 'true';
+		option.innerHTML = 'Copy Discussion Posts';
+		var option = select.appendChild(document.createElement('option'));
+		option.value = 'false';
+		option.innerHTML = 'Remove Discussion Posts';
+		select.value = 'false';
+		this.copyPermsDiv.appendChild(select);
+		
+		
 		// Removal from selection
-		this.form.appendChild(document.createElement('br'));
-		this.form.appendChild(document.createTextNode(' After usage: '));
+		var div = this.form.appendChild(document.createElement('div'));
+		div.className = 'selection_removal_div';
+		div.appendChild(document.createTextNode(' After usage: '));
+		div.appendChild(document.createElement('br'));
+		div.appendChild(document.createTextNode(' \u00a0 \u00a0 \u00a0 \u00a0 '));
 		var select = document.createElement('select');
 		select.name = 'remove_after_use';
 		var option = select.appendChild(document.createElement('option'));
@@ -135,8 +178,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var option = select.appendChild(document.createElement('option'));
 		option.value = 'keep';
 		option.innerHTML = 'Keep in Selection';
-		this.form.appendChild(select);
-		this.form.appendChild(document.createTextNode(' \u00a0 \u00a0 '));
+		div.appendChild(select);
+// 		this.form.appendChild(document.createTextNode(' \u00a0 \u00a0 '));
 		
 		// Check All/None
 		var div = document.createElement('div');
@@ -184,6 +227,9 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		
 		// Add items from the selection
 		this.reloadFromSelection();
+		
+		// Check All by default
+		this.checkAll();
 	}
 	
 	/**
