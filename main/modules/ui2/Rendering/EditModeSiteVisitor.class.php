@@ -364,11 +364,11 @@ END;
 		
 			$pluginManager = Services::getService("PluginManager");
 			
-			$formHtml = $this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins());
-			
+			$formHtml = "\n\t<div class='ui2_add_form_wrapper'>";
+			$formHtml .= $this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins());
 			// Move/Copy from selection
-			$selection = Segue_Selection::instance();
-			$formHtml .= $selection->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t | ".Segue_Selection::instance()->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t</div>";
 			
 			$form = $this->addFlowChildWrapper($organizer, $i, 
 				new UnstyledBlock($formHtml));
@@ -448,10 +448,12 @@ END;
 			$pluginManager = Services::getService("PluginManager");
 			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
-			$formHtml = $this->getAddFormHTML($organizer->getId(), null, $allowed, true);
+			
+			$formHtml = "\n\t<div class='ui2_add_form_wrapper'>";
+			$formHtml .= $this->getAddFormHTML($organizer->getId(), null, $allowed, true);
 			// Move/Copy from selection
-			$selection = Segue_Selection::instance();
-			$formHtml .= $selection->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t | ".Segue_Selection::instance()->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t</div>";
 			
 			$childComponent = $guiContainer->add($this->addFlowChildWrapper($organizer, $organizer->getTotalNumberOfCells(), 
 				new UnstyledMenuItem($formHtml, 2)), null, '100%', null, TOP);
@@ -523,17 +525,7 @@ END;
 	function getAddFormHTML ($organizerId, $cellIndex, $allowed, $isMenu = FALSE) {
 		ob_start();
 		$harmoni = Harmoni::instance();
-		print "\n<form action='";
-		print $harmoni->request->quickURL('ui2', 'addComponent', 
-				array('returnNode' => SiteDispatcher::getCurrentNodeId(),
-					'returnAction' => $this->_action));
-		print "' method='post'>";
-		
-		print "\n\t<input type='hidden' name='".RequestContext::name('organizerId')."' value='".$organizerId."'/>";
-		if (!is_null($cellIndex))
-			print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
-		//print "\n\t<div class='block2Content' style='text-align: center;'";
-		print "\n\t<a style='text-align: center; display: block;'";
+		print "\n\t<a style='text-align: center; display: inline;'";
 		print " onclick='this.style.display=\"none\"; this.nextSibling.style.display=\"block\";'";
 		print ">";
 		if ($isMenu)
@@ -541,8 +533,17 @@ END;
 		else
 			print "\n\t\t\t"._("+ Content");
 		print "\n\t</a>";
-		print "<div style='display: none'>";
+		print "<form action='";
+		print $harmoni->request->quickURL('ui2', 'addComponent', 
+				array('returnNode' => SiteDispatcher::getCurrentNodeId(),
+					'returnAction' => $this->_action));
+		print "' method='post' ";
+		print " style='display: none' class='ui2_add_form'>";
 		
+		print "\n\t<input type='hidden' name='".RequestContext::name('organizerId')."' value='".$organizerId."'/>";
+		if (!is_null($cellIndex))
+			print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
+		//print "\n\t<div class='block2Content' style='text-align: center;'";		
 		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
 		
 		$inCat = false;
@@ -565,7 +566,7 @@ END;
 		print "\n\t\t\t<input name='".RequestContext::name('displayName')."' type='text' size='10'/>";
 		print "\n\t\t</div>";
 		
-		print "\n\t\t<div style='white-space: nowrap; text-align: right;'>";
+		print "\n\t\t<div style='white-space: nowrap; margin: 5px;'>";
 		print "\n\t\t\t<input type='button' value='"._('Submit')."'";
 		print " onclick='";
 		print "var hasTitle = false; ";
@@ -585,10 +586,9 @@ END;
 		print "}";
 		print "' />";
 		print "\n\t\t\t<input type='button' ";
-		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.style.display=\"block\";'";
+		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.style.display=\"inline\";'";
 		print " value='"._("Cancel")."'/>";
 		print "\n\t\t</div>";
-		print "\n\t</div>";
 		print "</form>";
 		return ob_get_clean();
 	}

@@ -277,7 +277,12 @@ END;
 			$idManager->getId("edu.middlebury.authorization.add_children"), 
 			$organizer->getQualifierId()))
 		{
-			$form = new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null));
+			$formHtml = "\n\t<div class='ui1_add_form_wrapper'>";
+			$formHtml .= $this->getAddFormHTML($organizer->getId(), null);
+			// Move/Copy from selection
+			$formHtml .= "\n\t | ".Segue_Selection::instance()->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t</div>";
+			$form = new UnstyledBlock($formHtml);
 			
 			// Add the form to the beginning of the list for custom ordering or recent last
 			if (in_array($organizer->sortMethod(), array('custom', 'create_date_asc', 'mod_date_asc')))
@@ -330,7 +335,13 @@ END;
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
 	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
 			
-			$childComponent = $guiContainer->add(new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, 'addMenuContent', true), 2), null, '100%', CENTER, TOP);
+			$formHtml = "\n\t<div class='ui1_add_form_wrapper'>";
+			$formHtml .= $this->getAddFormHTML($organizer->getId(), null, 'addMenuContent', true);
+			// Move/Copy from selection
+			$formHtml .= "\n\t | ".Segue_Selection::instance()->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t</div>";
+			
+			$childComponent = $guiContainer->add(new UnstyledMenuItem($formHtml, 2), null, '100%', CENTER, TOP);
 			
 			// Add a spacer at the end of the menu
 			$guiContainer->add(new UnstyledMenuItem("<div> &nbsp; </div>"));
