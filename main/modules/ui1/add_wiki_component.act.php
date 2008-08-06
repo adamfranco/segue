@@ -50,7 +50,7 @@ class add_wiki_componentAction
 		print "<p>";
 		print _("This feature is not yet implemented. Please try again later.");
 		print "</p>\n<p>";
-		print "<a href='".$_SERVER['HTTP_REFERER']."'>&laquo;"._("Go Back")."</a>";
+		print "<a href='".strip_tags($_SERVER['HTTP_REFERER'])."'>&laquo;"._("Go Back")."</a>";
 		print "</p>";
 		
 		$actionRows->add(
