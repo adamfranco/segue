@@ -29,6 +29,9 @@
 		<fix author='adam' date='2008-08-04'>
 			CopySites: 'Copy Discussions' flag no longer inverted.
 		</fix>
+		<fix author='adam' date='2008-08-06' ref='2040277' reftype='security'>
+			Errors: Fixed reflective cross-site scripting vulnerability in error printer.
+		</fix>
 	</version>
 	<version number="2.0-beta-29" date="2008-08-01">
 		<releaseNotes>
@@ -2353,6 +2356,7 @@
 		<reftype name="bug" group="82171" tracker='565234'/>
 		<reftype name="fr" group="82171" tracker='565237'/>
 		<reftype name="patch" group="82171" tracker='565236'/>
+		<reftype name="security" group="82171" tracker='1098812'/>	
 		
 		<reftype name="segue_bug" group="82171" tracker='565234'/>
 		<reftype name="segue_fr" group="82171" tracker='565237'/>

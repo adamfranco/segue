@@ -163,7 +163,7 @@ class SegueErrorPrinter {
 		
 		// Normal production case
 		else {
-			$message = $e->getMessage();
+			$message = HtmlString::getSafeHtml($e->getMessage());
 			$codeString = self::getCodeString($code);
 			$errorString = _('Error');
 			if ($this->shouldLogException($e, $code))
