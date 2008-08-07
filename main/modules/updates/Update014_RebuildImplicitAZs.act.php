@@ -105,6 +105,11 @@ class Update014_RebuildImplicitAZsAction
 		$num = $result->field('num');
 		$result->free();
 		
+		/*********************************************************
+		 * Commented out here is the OSID way of doing this, but
+		 * it is way to slow to finish, so we are doing the direct
+		 * query above.
+		 *********************************************************/
 // 		$explicitAZs = $authZ->getExplicitAZs(null, $view, null, false);
 // 		$status = new StatusStars(_("Checking Explicit View AZs"));
 // 		$status->initializeStatistics($explicitAZs->count());
