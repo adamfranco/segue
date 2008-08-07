@@ -400,7 +400,7 @@ class AssetSiteDirector
 	/**
 	 * Answer an array of the visible site components
 	 * 
-	 * @param string $id
+	 * @param string $id The starting point from which to search for visibility.
 	 * @return ref array
 	 * @access public
 	 * @since 4/10/06
