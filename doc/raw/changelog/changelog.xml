@@ -10,6 +10,17 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-31" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2008-08-07' ref='1820937' reftype='fr'>
+			Can now split sites to different virtual-hosts or paths based on
+			their location category. This enables sites given the 'main' 
+			location-category to appear at a different url from sites given the
+			'community' location-category.
+		</new>
+	</version>
 	<version number="2.0-beta-30" date="2008-08-07">
 		<releaseNotes>
 			This release fixes a number of security issues, an authorization bug
