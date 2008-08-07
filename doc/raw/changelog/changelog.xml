@@ -22,6 +22,12 @@
 			SiteEditing: New delete confirmation dialog displays a list of all items
 			that will be deleted.
 		</new>
+		<fix author='adam' date='2008-08-07' reporter='peter_wilkins'>
+			AuthZ: New updater to rebuild cascading-up implicit 'view' authorizations
+			that were not getting written to the database. This has been fixed in
+			Harmoni 1.4.7 and this updater will rebuild any implicit authorization
+			rows that are not in the database.
+		</fix>
 		<fix author='adam' date='2008-08-05'>
 			Migration: Segue1UrlResolver now properly returns id-strings instead
 			of Id objects, enabling forwarding to work properly.
