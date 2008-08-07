@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-29 (2008-08-01)
+Segue v. 2.0-beta-30 (2008-08-07)
 =================================
 
 What is Segue?
@@ -17,43 +17,31 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release adds a number of new themes, allows copying of sites, and numerous
-other improvements.
+This release fixes a number of security issues, an authorization bug that was
+prevent proper view access to some sites, and a few smaller issues. As well, it
+introduces the ability to move or copy content and pages within a site or across
+sites. See the change-log for details.
 
-Notable User-facing changes:
+Notable User-Facing Changes:
 
-- Can now copy sites to empty placeholders in the portal.
+- New Move/Copy abilities
 
-- Site-URLs are now printed in the portal.
+- New delete-confirmation dialog that shows the scope of the action.
 
-- Viewing of sites has now been dramatically sped-up for users without the editer role.
-
-- Sections and Pages are now named with more clarity.
-
-- Many theme improvements.
-
-- Portal style-fixes MS Internet Explorer browser.
-
-- Better support for uploading multi-page PDFs.
-
-See the change log for more details and other fixes.
-
-Harmoni 1.4.6 includes a fix to the thumbnail generation system that prevents
-excess processing overhead on large multi-page PDFs and improves the upload and
-migration of these files.
-
-Segue 2.0-beta-28 uses Harmoni 1.4.6 and Polyphony 1.3.1.
-
----------------------
+-------------
 
 Upgrades:
 
-As of this beta 25, Segue requires PHP to be
-compiled with XSL support. On unix systems this can be added by configuring PHP
-using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+As of beta 25, Segue requires PHP to be compiled with XSL
+support. On unix systems this can be added by configuring PHP using the --with-xsl
+option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
 
-Upgrades from versions prior to beta 26 require running the RSS Feed updaters
-located under Admin Tools --> Segue Updates.
+Upgrades from versions prior to beta 30 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+-------------
+
+Segue 2.0-beta-30 uses Harmoni 1.4.7 and Polyphony 1.3.2.
 
 
 Downloads
@@ -93,6 +81,36 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-beta-30 (2008-08-07)
+----------------------------------------------------
+This release fixes a number of security issues, an authorization bug that was
+prevent proper view access to some sites, and a few smaller issues. As well, it
+introduces the ability to move or copy content and pages within a site or across
+sites. See the change-log for details.
+
+Notable User-Facing Changes:
+
+- New Move/Copy abilities
+
+- New delete-confirmation dialog that shows the scope of the action.
+
+-------------
+
+Upgrades:
+
+As of beta 25, Segue requires PHP to be compiled with XSL
+support. On unix systems this can be added by configuring PHP using the --with-xsl
+option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 30 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+-------------
+
+Segue 2.0-beta-30 uses Harmoni 1.4.7 and Polyphony 1.3.2.
+
 
 
 v. 2.0-beta-29 (2008-08-01)
