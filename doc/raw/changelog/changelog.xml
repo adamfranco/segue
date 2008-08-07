@@ -2385,6 +2385,10 @@
 			<name>Jeff Merriman</name>
 			<institution>MIT</institution>
 		</reporter>
+		<reporter short="peter_wilkins">
+			<name>Peter Wilkins</name>
+			<institution>MIT</institution>
+		</reporter>
 	</reporters>
 	<reftypes>
 		<reftype name="bug" group="82171" tracker='565234'/>
