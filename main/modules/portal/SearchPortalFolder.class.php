@@ -231,18 +231,21 @@ class SearchPortalFolder
 	protected function includeSite (Asset $asset) {
 		$matches = false;
 		
-		$slotMgr = SlotManager::instance();
-		try {
-			$slot = $slotMgr->getSlotBySiteId($asset->getId());
-		} catch (UnknownIdException $e) {
-		}
-		
-		if (isset($slot) && $this->match($slot->getShortname()))
-			$matches = true;
-		else if ($this->match($asset->getDisplayName()))
+		if ($this->match($asset->getDisplayName()))
 			$matches = true;
 		else if ($this->match($asset->getDescription()))
 			$matches = true;
+			
+		if (!$matches) {
+			$slotMgr = SlotManager::instance();
+			try {
+				$slot = $slotMgr->getSlotBySiteId($asset->getId());
+			} catch (UnknownIdException $e) {
+			}
+			
+			if (isset($slot) && $this->match($slot->getShortname()))
+				$matches = true;
+		}
 		
 		if (!$matches)
 			return false;
