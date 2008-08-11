@@ -36,7 +36,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @static
  	 */
  	static function getPluginDescription () {
- 		return _("The Text Block is a unit of HTML-formatted text that may contain inline images, links, and formatting.");
+ 		return _("The Text &amp; Images is a unit of HTML-formatted text that may contain inline images, links, and formatting.");
  	}
  	
  	/**
@@ -49,7 +49,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @static
  	 */
  	public static function getPluginDisplayName () {
- 		return _("Text Block");
+ 		return _("Text &amp; Images");
  	}
  	
  	/**

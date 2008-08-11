@@ -26,6 +26,9 @@
 		<new author='adam' date='2008-08-11' ref='2030595' reftype='fr' requester='shel_sax'>
 			Site Creation: Added a new 'Blank' template
 		</new>
+		<change author='adam' date='2008-08-11' ref='2009057' reftype='fr'>
+			UI1/UI2: TextBlock and Download plugins renamed to 'Text &amp; Images' and 'File'.
+		</change>
 		<fix author='adam' date='2008-08-11' ref='2046491' reftype='bug'>
 			UI2: Now can not delete layout containers that are targets for menus
 			as this would through the site into an invalid state.
