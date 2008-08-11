@@ -630,6 +630,12 @@ class listAction
 		// Use the alias instead of the Id if it is available.
 		$viewUrl = SiteDispatcher::getSitesUrlForSiteId($assetId->getIdString());
 		
+		$slotManager = SlotManager::instance();
+		try {
+			$slot = $slotManager->getSlotBySiteId($assetId);
+		} catch (Exception $e) {
+		}
+		
 		// Print out the content
 		ob_start();
 		print "\n\t<div class='portal_list_slotname'>";
