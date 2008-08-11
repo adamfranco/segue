@@ -252,6 +252,25 @@ class AssetFixedOrganizerSiteComponent
 	}
 	
 	/**
+	 * Answer true if this organizer is used as a target for a menu.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/11/08
+	 */
+	public function isMenuTarget () {
+		$filledTargetCells = $this->_director->getFilledTargetIds($this->getId());
+		$myFilledTargetCells = array();
+		foreach ($filledTargetCells as $cellId) {
+			if (preg_match('/'.$this->getId().'_cell:([0-9]+)/', $cellId, $matches)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Answer the last-used index
 	 * 
 	 * @return integer

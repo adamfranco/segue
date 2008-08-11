@@ -116,32 +116,39 @@ class ControlsSiteVisitor
 	 * 
 	 * @param SiteComponent $siteComponent
 	 * @param string $typeDisplay
+	 * @param option boolean $disabled If true, the control will be shown but disabled.
 	 * @return void
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printDelete ( $siteComponent, $typeDisplay ) {
+	function printDelete ( $siteComponent, $typeDisplay, $disabled = false ) {
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		
 		print "\n\t\t\t\t<tr><td colspan='3'>";
-		print "\n\t\t\t\t\t<input type='button' class='ui2_button' onclick=\"";
-		if ($authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.delete"), 
-			$siteComponent->getQualifierId()))
-		{
-			print 	"DeletePanel.run({";
-			print		"id: '".$siteComponent->getId()."', ";
-			print		"type: '".$typeDisplay."', ";
-			print		"displayName: '".addslashes(str_replace('"', '&quot;',
-							strip_tags($siteComponent->getDisplayName())))."'";
-			print 		"}, ";
-			print		"'".SiteDispatcher::getCurrentNodeId()."', ";
-			print		"'ui2', '".$this->action."', this);";
+		print "\n\t\t\t\t\t<input type='button'";
+		if ($disabled) {
+			print " class='ui2_button_disabled' disabled='disabled'";
 		} else {
-			print "alert('"._('You are not authorized to delete this item.')."'); return false;";
+			print " class='ui2_button' onclick=\"";
+			if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.delete"), 
+				$siteComponent->getQualifierId()))
+			{
+				print 	"DeletePanel.run({";
+				print		"id: '".$siteComponent->getId()."', ";
+				print		"type: '".$typeDisplay."', ";
+				print		"displayName: '".addslashes(str_replace('"', '&quot;',
+								strip_tags($siteComponent->getDisplayName())))."'";
+				print 		"}, ";
+				print		"'".SiteDispatcher::getCurrentNodeId()."', ";
+				print		"'ui2', '".$this->action."', this);";
+			} else {
+				print "alert('"._('You are not authorized to delete this item.')."'); return false;";
+			}
+			print "\"";
 		}
-		print "\" value='";
+		print " value='";
 		print _("Delete");
 		print "'/>";
 		print "\n\t\t\t\t</td></tr>";
@@ -1317,7 +1324,11 @@ END;
 		
 		$this->printRowsColumns($siteComponent);
 // 		$this->printDirection($siteComponent);
-		$this->printDelete($siteComponent, _("Layout Container"));
+
+		if ($siteComponent->isMenuTarget())
+			$this->printDelete($siteComponent, _("Layout Container"), true);
+		else
+			$this->printDelete($siteComponent, _("Layout Container"));
 		
 		return $this->controlsEnd($siteComponent);
 	}

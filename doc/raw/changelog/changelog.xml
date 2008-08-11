@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-beta-31" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-08-11' ref='2046491' reftype='bug'>
+			UI2: Now can not delete layout containers that are targets for menus
+			as this would through the site into an invalid state.
+		</fix>
+	</version>
 	<version number="2.0-beta-30" date="2008-08-07">
 		<releaseNotes>
 			This release fixes a number of security issues, an authorization bug
