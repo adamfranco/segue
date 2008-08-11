@@ -168,7 +168,10 @@ class Segue_Wiki_TextTemplateResolver {
 			$offset = $match[0][1] + $offsetDiff;
 			$wikiText = $match[0][0];
 			$templateName = strtolower($match[2][0]);
-			$paramString = trim($match[3][0]);
+			if (isset($match[3]))
+				$paramString = trim($match[3][0]);
+			else
+				$paramString = '';
 			
 			// Ignore markup surrounded by nowiki tags
 			if (!strlen($match[1][0]) && (!isset($match[4]) || !strlen($match[4][0]))) {
