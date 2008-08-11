@@ -64,15 +64,17 @@ class SearchPortalCategory
 	 */
 	public function getDescription () {
 		$harmoni = Harmoni::instance();
+		$handler = $harmoni->getOutputHandler();
+		$handler->setHead($handler->getHead()
+			."\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/PortalSearch.js'></script>");
+		
 		ob_start();
-// 		$harmoni->request->startNamespace('portal_search');
-		print "\n<form action='";
+		print "\n<form onsubmit='PortalSearch.submitForm(this); return false;' action='";
 		print $harmoni->request->quickUrl('portal', 'perform_search'); 
-		print "' method='POST'>";
+		print "' method='post'>";
 		print "\n\t<input type='text' name='".RequestContext::name('query')."' size='15'/>";
 		print "\n\t<input type='submit' value='"._("Search &raquo;")."'/>";
 		print "\n</form>";
-// 		$harmoni->request->endNamespace();
 		return ob_get_clean();
 	}
 	

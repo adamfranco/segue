@@ -337,6 +337,10 @@
 		font-size: smaller;
 	}
 	
+	.search_status {
+		text-align: center;
+	}
+	
 	.button {
 		border: 1px solid;
 	}
