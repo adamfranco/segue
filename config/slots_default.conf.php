@@ -33,3 +33,10 @@
 	
 	// Set a default Media quota
 // 	SlotAbstract::setDefaultMediaQuota(ByteSize::fromString('10MB'));
+
+	/*********************************************************
+	 * Redirects for splitting sites based on location-category
+	 *********************************************************/
+// 	SiteDispatcher::setBaseUrlForLocationCategory('main', 'http://segue.example.edu/index.php');
+// 	SiteDispatcher::setBaseUrlForLocationCategory('community', 'http://seguecommunity.example.edu/index.php');
+	

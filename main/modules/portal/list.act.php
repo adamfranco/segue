@@ -628,14 +628,7 @@ class listAction
 		$centered->addSP(new TextAlignSP("center"));	
 		
 		// Use the alias instead of the Id if it is available.
-		$slotManager = SlotManager::instance();
-		try {
-			$slot = $slotManager->getSlotBySiteId($assetId);
-			$params = array('site' => $slot->getShortname());
-		} catch (Exception $e) {
-			$params = array('node' => $assetId->getIdString());
-		}
-		$viewUrl = $harmoni->request->quickURL('view', 'html', $params);
+		$viewUrl = SiteDispatcher::getSitesUrlForSiteId($assetId->getIdString());
 		
 		// Print out the content
 		ob_start();
@@ -651,9 +644,8 @@ class listAction
 		print "\n\t\t\t<strong>".HtmlString::getSafeHtml($asset->getDisplayName())."</strong>";
 		print "\n\t\t</a>";
 		print "\n\t\t<br/>";
-		$shortUrl = SiteDispatcher::getSitesUrlForSiteId($assetId->getIdString());
-		print "\n\t\t<a href='".$shortUrl."' style='font-size: smaller;'>";
-		print "\n\t\t\t".$shortUrl;
+		print "\n\t\t<a href='".$viewUrl."' style='font-size: smaller;'>";
+		print "\n\t\t\t".$viewUrl;
 		print "\n\t\t</a>";
 		print "\n\t</div>";
 		

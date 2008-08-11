@@ -91,6 +91,19 @@ class htmlAction
 	 */
 	function execute () {
 		$harmoni = Harmoni::instance();
+		
+		/*********************************************************
+		 * Split sites based on their location-category
+		 *********************************************************/
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		try {
+			$slot = $rootSiteComponent->getSlot();
+			if (SiteDispatcher::getBaseUrlForSlot($slot) != MYURL) {
+				RequestContext::sendTo(SiteDispatcher::quickUrl());
+			}
+		} catch (UnknownIdException $e) {		// No slot for the site....
+		}
+		
 		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		$allWrapper = $this->addHeaderControls($mainScreen);

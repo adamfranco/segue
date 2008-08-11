@@ -14,9 +14,19 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-08-07' ref='1820937' reftype='fr'>
+			Can now split sites to different virtual-hosts or paths based on
+			their location category. This enables sites given the 'main' 
+			location-category to appear at a different url from sites given the
+			'community' location-category.
+		</new>
 		<fix author='adam' date='2008-08-11' ref='2046491' reftype='bug'>
 			UI2: Now can not delete layout containers that are targets for menus
 			as this would through the site into an invalid state.
+		</fix>
+		<fix author='adam' date='2008-08-11'>
+			Fixed a number of notices that were filling up the logs when the MSNBot
+			crawled Segue.
 		</fix>
 	</version>
 	<version number="2.0-beta-30" date="2008-08-07">
