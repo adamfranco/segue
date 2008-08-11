@@ -69,7 +69,7 @@ class SearchPortalFolder
 	 * @since 4/1/08
 	 */
 	public function getDescription () {
-		return '';
+		return "<button onclick='PortalSearch.clear(\"".urlencode($this->getIdString())."\", this.parentNode.parentNode); return false;'>X</button>";
 	}
 	
 	/**

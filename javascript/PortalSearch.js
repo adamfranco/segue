@@ -22,6 +22,51 @@
 function PortalSearch () {
 	
 }
+	
+	/**
+	 * Clear a result
+	 * 
+	 * @param string id
+	 * @param DOMElement displayElement
+	 * @return void
+	 * @access public
+	 * @since 8/11/08
+	 */
+	PortalSearch.clear = function (id, displayElement) {
+		try {
+			// Fire off an AJAX request to store the addition in the session.
+			var url = Harmoni.quickUrl('portal', 'clear_search', {id: id});
+			var req = Harmoni.createRequest();
+			if (req) {
+				// Set a callback for reloading the list.
+				req.onreadystatechange = function () {
+					
+					// only if req shows 'loaded'
+					if (req.readyState == 4) {
+						// only if we get a good load should we continue.
+						if (req.status == 200 && req.responseText) {
+							
+						} else {
+							alert("There was a problem retrieving the data:\n" +
+								req.statusText);
+						}
+					}
+				} 
+			
+				req.open('GET', url, true);
+				req.send(null);
+			} else {
+				alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
+			}
+		} catch (e) {
+			if (e == 'Already selected')
+				return;
+			else
+				throw e;
+		}
+		
+		displayElement.style.display = 'none';
+	}
 
 	/**
 	 * Submit the search form
