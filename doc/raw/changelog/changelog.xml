@@ -23,6 +23,9 @@
 			location-category to appear at a different url from sites given the
 			'community' location-category.
 		</new>
+		<new author='adam' date='2008-08-11' ref='2030595' reftype='fr' requester='shel_sax'>
+			Site Creation: Added a new 'Blank' template
+		</new>
 		<fix author='adam' date='2008-08-11' ref='2046491' reftype='bug'>
 			UI2: Now can not delete layout containers that are targets for menus
 			as this would through the site into an invalid state.
