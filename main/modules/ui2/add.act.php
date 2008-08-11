@@ -360,7 +360,7 @@ class addAction
 	 */
 	function getReturnUrl () {
 		$harmoni = Harmoni::instance();
-		if ($this->_siteId) 
+		if (isset($this->_siteId) && $this->_siteId) 
 			return $harmoni->request->quickURL($harmoni->request->getRequestedModule(), "editview", array(
 				"node" => $this->_siteId));
 		else
