@@ -206,6 +206,16 @@ class SlotManager {
 	 * @since 8/16/07
 	 */
 	public function getSlotBySiteId ($siteId) {
+		ArgumentValidator::validate($siteId, 
+			OrValidatorRule::getRule(
+				NonzeroLengthStringValidatorRule::getRule(),
+				ExtendsValidatorRule::getRule('Id')));
+				
+		if (is_object($siteId)) {
+			$tmp = $siteId;
+			unset($siteId);
+			$siteId = $tmp->getIdString();
+		}
 		// Check our cache
 		foreach ($this->slots as $slot) {
 			if ($slot->getSiteId() == $siteId)
