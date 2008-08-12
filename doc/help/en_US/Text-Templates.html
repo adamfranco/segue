@@ -18,9 +18,9 @@
 		
 		
 		<h1>Video Text-Template</h1>
-		<h4>video</h4>
+		<h2>video</h2>
 		<p>This template will allow the embedding of Flash Video from a variety of sources. These sources must be configured by the Segue administrator if they are not included in the default configuration.</p>
-		<h4>Parameters:</h4>
+		<h2>Parameters:</h2>
 		<dl>
 			<dt><strong>service</strong></dt>
 			<dd>The service at which this video is hosted -- all lowercase. Examples: youtube, youtube_playlist, google, vimeo, hulu</dd> 		
@@ -32,7 +32,7 @@
 			<dd>The integer height of the player in pixels. Example: 250</dd> 	
 		</dl>
 		
-		<h4>Example Usage:</h4>
+		<h2>Example Usage:</h2>
 		<p>
 			<font face="Courier New">{{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}}</font>
 			<object height="344" width="425">
@@ -42,17 +42,17 @@
 			</object>
 		</p>
 		
-		<h4>Note:</h4>
+		<h2>Note:</h2>
 		<p>If you paste the embed code from a supported service into a text block, it will automatically be converted into the template markup when saved.</p>
 		
 		
 		<h1>Search Text-Template</h1>
-		<h4>search</h4>
+		<h2>search</h2>
 		<p>This template will insert a search form that will open a new window with the search criteria supplied. The default search provider is Google, but other search providers can be used by specifying <em>base_url</em> and <em>search_param_name</em> options.</p>
-		<h4>Parameters:</h4>
+		<h2>Parameters:</h2>
 		<dl> 		<dt><strong>base_url</strong></dt><dd>The base url that the search form will submit to. If specified, the param_name must be specified as well.</dd> 		<dt><strong>search_param_name</strong></dt> 		<dd>The name of the query parameter that will be added to the URL.</dd> 		<dt><strong>size</strong></dt> 		<dd>Optional: The number of characters to show in the field</dd> 		<dt><strong>button_text</strong></dt> 		<dd>Optional: The text to display in the button field, the default is 'Search'</dd> 		<dt><strong>additional_params</strong></dt> 		<dd>Optional: A url encoded string of paramName=parmValue&amp;paramName2=paramValue2 to be added to the query string. Example 'lang=en_US&amp;go=true'</dd> 		<dt><strong>provider</strong></dt> 		<dd>Optional: A preconfigured search. If used, all other options except size will be ignored. Allowed values: google, wikipedia, yahoo, youtube</dd> 	</dl>
 		
-		<h4>Example Usage:</h4>
+		<h2>Example Usage:</h2>
 		<ul>
 			<li><font face="Courier New">{{search}}</font>
 			
@@ -93,16 +93,16 @@
 		
 		
 		<h1>GoogleMaps Text-Template</h1>
-		<h4>googlemap</h4>
+		<h2>googlemap</h2>
 		<p>This template will insert an embedded Google Map. Pasting the Google Map embed-code into a TextBlock will automatically convert the embed-code into template markup.</p>
 		
-		<h4>Parameters:</h4>
+		<h2>Parameters:</h2>
 		<dl> 		<dt><strong>url</strong></dt><dt> 		 
 		</dt><dd>The base url of the map.</dd> 		<dt><strong>s</strong></dt><dt> 		 
 		
 		</dt><dd>The security token that Google maps uses for their embeded maps, visible in the embed-source code. (Required)</dd> 		<dt><strong>width</strong></dt> 		<dd>The integer width of the map in pixels. (Optional) Example: 325</dd> 		<dt><strong>height</strong></dt> 		<dd>The integer height of the map in pixels. (Optional) Example: 250</dd> 	</dl>
 		
-		<h4>Example Usage:</h4>
+		<h2>Example Usage:</h2>
 		<ul>
 			<li>{{googlemap|url=http://maps.google.com/?ie=UTF8&amp;t=h&amp;ll=44.009021,-73.174374&amp;spn=0.011451,0.013046&amp;z=16|s=AARTsJqzARj-Z8VnW5pkPMLMmZbqrJcYpw}} <br/>
 		
