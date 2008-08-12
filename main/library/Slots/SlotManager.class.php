@@ -106,7 +106,7 @@ class SlotManager {
 	 */
 	public function getSlotsByType ( $slotType ) {
 		if (!isset($this->slotTypes[$slotType])) {
-			throw new Exception ("Unknown SlotType, $slotType.");
+			throw new InvalidArgumentException ("Unknown SlotType, $slotType.");
 		}
 		
 		// Each time a slot is requested by name, but doesn't exist this method gets
