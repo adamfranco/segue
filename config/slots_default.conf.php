@@ -40,3 +40,32 @@
 // 	SiteDispatcher::setBaseUrlForLocationCategory('main', 'http://segue.example.edu/index.php');
 // 	SiteDispatcher::setBaseUrlForLocationCategory('community', 'http://seguecommunity.example.edu/index.php');
 	
+	/*********************************************************
+	 * Define a key for providing a listing of course-sites
+	 * to other systems.
+	 *
+	 * This listing can be accessed at
+	 * http://segue.example.com/index.php?module=slots&action=course_listing&key=xxxxxxxxx
+	 * where xxxxxxxxx is the key defined below.
+	 *
+	 * Please define your own unique key.
+	 *********************************************************/
+// 	define('SEGUE_COURSE_SITE_LISTING_KEY', 'jwf0u34nfg08923ng-2983456ty');
+// 	$GLOBALS['SEGUE_COURSE_SITE_LISTING_SEMESTERS'] = array('f', 's', 'w', 'l');
+// 	
+// 	/**
+// 	 * Match a slot-name against a semester and year filter. If the slotname
+// 	 * matches the semester and year filters, return true, false otherwise
+// 	 * 
+// 	 * @param string $slotname The slotname to match
+// 	 * @param string $semesterFilter
+// 	 * @param string $yearFilter A four-digit year.
+// 	 * @return boolean
+// 	 * @access public
+// 	 * @since 8/12/08
+// 	 */
+// 	function match_segue_course_site($slotname, $semesterFilter, $yearFilter) {		
+// 		return preg_match('/^[a-z]{2,4}[0-9]{3,4}[a-z]?-'.$semesterFilter.substr(strval($yearFilter), 2, 2).'$/', $slotname);
+// 	}
+// 	define('SEGUE_COURSE_SITE_LISTING_MATCH_CALLBACK', 'match_segue_course_site');
+	

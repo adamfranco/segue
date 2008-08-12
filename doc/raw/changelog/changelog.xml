@@ -26,6 +26,10 @@
 		<new author='adam' date='2008-08-11' ref='2030595' reftype='fr' requester='shel_sax'>
 			Site Creation: Added a new 'Blank' template
 		</new>
+		<new author='adam' date='2008-08-12' ref='2039320' reftype='fr'>
+			New course-sites listing action to provide listings of course sites to
+			external systems.
+		</new>
 		<change author='adam' date='2008-08-11' ref='2009057' reftype='fr'>
 			UI1/UI2: TextBlock and Download plugins renamed to 'Text &amp; Images' and 'File'.
 		</change>
