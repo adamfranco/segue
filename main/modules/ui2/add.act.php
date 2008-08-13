@@ -133,58 +133,18 @@ class addAction
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
-		
-		// Site Admins.
-		$this->addSiteAdminStep($wizard);
+				
+		// Roles Step.
+		$this->addRolesStep($wizard);
 		
 		// Template
 		$this->addTemplateStep($wizard);
-
+		
+		// Theme
+		$wizard->addStep("theme", $this->getThemeStep());
+		$wizard->makeStepRequired('theme');
 		
 		return $wizard;
-	}
-	
-	/**
-	 * Add any additional site admins to a multi-select.
-	 * 
-	 * @param object Wizard $wizard
-	 * @return void
-	 * @access protected
-	 * @since 1/28/08
-	 */
-	protected function addSiteAdminStep (Wizard $wizard) {
-		/*********************************************************
-		 * Owner step if multiple owners
-		 *********************************************************/
-		$step = new WizardStep();
-		$step->setDisplayName(_("Choose Admins"));	
-		
-		$property = $step->addComponent("admins", new WMultiCheckList);
-		
-		$agentMgr = Services::getService("Agent");
-		$i = 0;
-		$owners = $this->getOwners();
-		foreach ($owners as $ownerId) {
-			$i++;
-			$owner = $agentMgr->getAgent($ownerId);
-			$property->addOption($ownerId->getIdString(), htmlspecialchars($owner->getDisplayName()));
-			$property->setValue($ownerId->getIdString());
-		}
-		$property->setSize($i);
-		
-		// Create the step text
-		ob_start();
-		print "\n<h2>"._("Choose Site Admins")."</h2>";
-		print "\n<p>"._("The following users are listed as owners of this placeholder. Keep them selected if you would like them be administrators of this site or de-select them if they should not be administrators of this site. Any choice made now can be changed later through the 'Permissions' screen for the site.");
-		print "\n<br />[[admins]]</p>";
-		print "\n<div style='width: 400px'> &nbsp; </div>";
-		$step->setContent(ob_get_contents());
-		ob_end_clean();
-		
-		if ($i) {
-			$step = $wizard->addStep("owners", $step);
-			$wizard->makeStepRequired('owners');
-		}
 	}
 	
 	/**
@@ -206,6 +166,65 @@ class addAction
 				$owners[] = $ownerId;
 		}
 		return $owners;
+	}
+	
+	/**
+	 * Add a step to set site-wide permissions.
+	 * 
+	 * @param object Wizard $wizard
+	 * @return void
+	 * @access protected
+	 * @since 8/13/08
+	 */
+	protected function addRolesStep (Wizard $wizard) {
+		$step = new WizardStep();
+		$step->setDisplayName(_("Roles"));	
+		
+		$rolesProperty = $step->addComponent('roles', new RowRadioMatrix);
+		$roleMgr = SegueRoleManager::instance();
+		// Add the options
+		foreach($roleMgr->getRoles() as $role) {
+			if (!$role->isEqual($roleMgr->getRole('custom')))
+				$rolesProperty->addOption($role->getIdString(), $role->getDisplayName(), $role->getDescription());
+		}
+		
+		// Add agents.
+		$agentMgr = Services::getService("Agent");
+		$idMgr = Services::getService("Id");
+		
+		// Super groups
+		$agentsIds = array();
+		$agentsIds[] = $idMgr->getId('edu.middlebury.agents.everyone');
+		$agentsIds[] = $idMgr->getId('edu.middlebury.institute');
+		
+		foreach ($agentsIds as $agentId) {
+			$agent = $agentMgr->getAgentOrGroup($agentId);
+			$rolesProperty->addField($agentId->getIdString(), $agent->getDisplayName(), 'no_access');
+		}
+		
+		// Other owners
+		foreach ($this->getOwners() as $agentId) {
+			$agent = $agentMgr->getAgentOrGroup($agentId);
+			$rolesProperty->addField($agentId->getIdString(), $agent->getDisplayName(), 'admin');
+		}
+		
+		// Search
+		$property = $step->addComponent("search", new AddSiteAgentSearchField);
+		$property->setRolesProperty($rolesProperty);
+		
+		
+		
+		// Create the step text
+		ob_start();
+		print "\n<h2>"._("Site-wide Roles")."</h2>";
+		print "\n<p>"._("Below you can set site-wide roles for users and groups over the entire site. Once the site is created you can use the <strong>Permissions</strong> button to set the roles that users and groups have on various parts of the site.");
+		print "\n<br />[[roles]]</p>";
+		print "\n<p>"._("Search for users or groups:")."[[search]]</p>";
+		print "\n<div style='width: 400px'> &nbsp; </div>";
+		$step->setContent(ob_get_clean());
+		
+		$step = $wizard->addStep("roles", $step);
+		$wizard->makeStepRequired('roles');
 	}
 	
 	/**
@@ -303,37 +322,33 @@ class addAction
 			$admin->applyToUser($site->getQualifierId(), true);
 			
 		/*********************************************************
-		 * Set Default "All-Access" permissions for slot owners
+		 * Set site-wide roles for other users
 		 *********************************************************/
-		$slot = $this->getSlot();
-		foreach ($slot->getOwners() as $ownerId) {
-			// If we have an 'owners' step, only make the owners chosen admins.
-			if (isset($properties['owners']) 
-				&& in_array($ownerId->getIdString(), $properties['owners']['admins'])) 
-			{
-				$role = $roleMgr->getAgentsRole($ownerId, $site->getQualifierId(), true);
-				if ($role->isLessThan($admin))
-					$admin->apply($ownerId, $site->getQualifierId(), true);
-			}
+		foreach ($properties['roles']['roles'] as $agentIdString => $roleId) {
+			$agentId = $idManager->getId($agentIdString);
+			$role = $roleMgr->getRole($roleId);
+			$role->apply($agentId, $site->getQualifierId());
 		}
 		
 		/*********************************************************
-		 * Set the default theme of the site.
+		 * // Check the Role again of the creator and make sure it is 'admin'
 		 *********************************************************/
-		$themeMgr = Services::getService('GUIManager');
-		try {
-			if (defined('SEGUE_DEFAULT_SITE_THEME'))
-				$site->updateTheme($themeMgr->getTheme(SEGUE_DEFAULT_SITE_THEME));
-			else
-				$site->updateTheme($themeMgr->getDefaultTheme());
-		} catch (UnknownIdException $e) {
-			$site->updateTheme($themeMgr->getDefaultTheme());
-		}
+		$roleMgr = SegueRoleManager::instance();
+		$role = $roleMgr->getUsersRole($site->getQualifierId(), true);
+		$admin = $roleMgr->getRole('admin');
+		if ($role->isLessThan($admin))
+			$admin->applyToUser($site->getQualifierId(), true);
+		
+		/*********************************************************
+		 * Theme
+		 *********************************************************/
+		$this->saveThemeStep($properties['theme'], $site);
 		
 		/*********************************************************
 		 * Log the success or failure
 		 *********************************************************/
-		if (Services::serviceRunning("Logging")) {
+			$slot = $this->getSlot();
+			if (Services::serviceRunning("Logging")) {
 			$loggingManager = Services::getService("Logging");
 			$log = $loggingManager->getLogForWriting("Segue");
 			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
@@ -386,6 +401,112 @@ class addAction
 			$slot->addOwner($authN->getFirstUserId());
 		}
 		return $slot;
+	}
+	
+	/**
+	 * Answer the theme step
+	 * 
+	 * @param 
+	 * @return object WizardStep
+	 * @access protected
+	 * @since 8/13/08
+	 */
+	protected function getThemeStep () {
+		
+		$step =  new WizardStep();
+		$step->setDisplayName(_("Theme"));
+		$property = $step->addComponent("theme", new WRadioListWithDelete);
+		
+		$themeMgr = Services::getService("GUIManager");
+		foreach ($themeMgr->getThemeSources() as $source) {
+			try {
+				
+				foreach ($source->getThemes() as $theme) {
+					ob_start();
+					try {
+					
+						try {
+							$thumb = $theme->getThumbnail();
+							$harmoni = Harmoni::instance();
+							print "\n\t<img src='".$harmoni->request->quickUrl('gui2', 'theme_thumbnail', array('theme' => $theme->getIdString()))."' style='float: left; width: 200px; margin-right: 10px;'/>";
+						} catch (UnimplementedException $e) {
+							print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
+						} catch (OperationFailedException $e) {
+							print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
+						}
+						print "\n\t<p>".$theme->getDescription()."</p>";
+						
+						// Delete Theme
+						if ($theme->supportsModification()) {
+							$modSess = $theme->getModificationSession();
+							if ($modSess->canModify()) {
+								$allowDelete = true;
+							} else {
+								$allowDelete = false;
+							}
+						} else {
+							$allowDelete = false;
+						}
+						
+						print "\n\t<div style='clear: both;'> &nbsp; </div>";
+						$property->addOption($theme->getIdString(), "<strong>".$theme->getDisplayName()."</strong>", ob_get_contents(), $allowDelete);
+					} catch (Exception $e) {
+					}
+					ob_end_clean();
+				} 
+			} catch (Exception $e) {
+			}
+		}
+		
+		if (defined('SEGUE_DEFAULT_SITE_THEME'))
+			$property->setValue(SEGUE_DEFAULT_SITE_THEME);
+		else
+			$property->setValue($themeMgr->getDefaultTheme()->getIdString());
+		
+		ob_start();
+		print "\n<h2>"._("Theme")."</h2>";
+		print "\n<p>";
+		print _("Here you can set the theme for the site."); 
+		print "\n</p>\n";
+		print "[[theme]]";
+		
+		$step->setContent(ob_get_clean());
+		
+		return $step;
+	}
+	
+	/**
+	 * Save the theme step
+	 * 
+	 * @param array $values
+	 * @param object SiteNavBlockSiteComponent $site
+	 * @return boolean
+	 * @access protected
+	 * @since 5/8/08
+	 */
+	protected function saveThemeStep (array $values, SiteNavBlockSiteComponent $site) {
+		$themeMgr = Services::getService("GUIManager");
+		
+		/*********************************************************
+		 * Set the default theme of the site.
+		 *********************************************************/
+		$themeMgr = Services::getService('GUIManager');
+		try {		
+			// Set the chosen theme.
+			if (is_null($values['theme']['selected'])) {
+				if (defined('SEGUE_DEFAULT_SITE_THEME'))
+					$site->updateTheme($themeMgr->getTheme(SEGUE_DEFAULT_SITE_THEME));
+				else
+					$site->updateTheme($themeMgr->getDefaultTheme());
+			} else {
+				$site->updateTheme($themeMgr->getTheme($values['theme']['selected']));
+			}
+		
+		} catch (UnknownIdException $e) {
+			$site->updateTheme($themeMgr->getDefaultTheme());
+		}
+		
+		return true;
 	}
 }
 
