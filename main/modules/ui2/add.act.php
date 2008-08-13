@@ -365,19 +365,22 @@ class addAction
 			$admin->applyToUser($site->getQualifierId(), true);
 			
 		/*********************************************************
-		 * Set Default "All-Access" permissions for slot owners
+		 * Set site-wide roles for other users
 		 *********************************************************/
-		$slot = $this->getSlot();
-		foreach ($slot->getOwners() as $ownerId) {
-			// If we have an 'owners' step, only make the owners chosen admins.
-			if (isset($properties['owners']) 
-				&& in_array($ownerId->getIdString(), $properties['owners']['admins'])) 
-			{
-				$role = $roleMgr->getAgentsRole($ownerId, $site->getQualifierId(), true);
-				if ($role->isLessThan($admin))
-					$admin->apply($ownerId, $site->getQualifierId(), true);
-			}
+		foreach ($properties['roles']['roles'] as $agentIdString => $roleId) {
+			$agentId = $idManager->getId($agentIdString);
+			$role = $roleMgr->getRole($roleId);
+			$role->apply($agentId, $site->getQualifierId());
 		}
+		
+		/*********************************************************
+		 * // Check the Role again of the creator and make sure it is 'admin'
+		 *********************************************************/
+		$roleMgr = SegueRoleManager::instance();
+		$role = $roleMgr->getUsersRole($site->getQualifierId(), true);
+		$admin = $roleMgr->getRole('admin');
+		if ($role->isLessThan($admin))
+			$admin->applyToUser($site->getQualifierId(), true);
 		
 		/*********************************************************
 		 * Set the default theme of the site.
@@ -395,7 +398,8 @@ class addAction
 		/*********************************************************
 		 * Log the success or failure
 		 *********************************************************/
-		if (Services::serviceRunning("Logging")) {
+			$slot = $this->getSlot();
+			if (Services::serviceRunning("Logging")) {
 			$loggingManager = Services::getService("Logging");
 			$log = $loggingManager->getLogForWriting("Segue");
 			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
