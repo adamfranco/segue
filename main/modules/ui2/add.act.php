@@ -133,10 +133,7 @@ class addAction
 		print "\n<div style='width: 400px'> &nbsp; </div>";
 		$step->setContent(ob_get_contents());
 		ob_end_clean();
-		
-		// Site Admins.
-// 		$this->addSiteAdminStep($wizard);
-		
+				
 		// Roles Step.
 		$this->addRolesStep($wizard);
 		
@@ -145,49 +142,6 @@ class addAction
 
 		
 		return $wizard;
-	}
-	
-	/**
-	 * Add any additional site admins to a multi-select.
-	 * 
-	 * @param object Wizard $wizard
-	 * @return void
-	 * @access protected
-	 * @since 1/28/08
-	 */
-	protected function addSiteAdminStep (Wizard $wizard) {
-		/*********************************************************
-		 * Owner step if multiple owners
-		 *********************************************************/
-		$step = new WizardStep();
-		$step->setDisplayName(_("Choose Admins"));	
-		
-		$property = $step->addComponent("admins", new WMultiCheckList);
-		
-		$agentMgr = Services::getService("Agent");
-		$i = 0;
-		$owners = $this->getOwners();
-		foreach ($owners as $ownerId) {
-			$i++;
-			$owner = $agentMgr->getAgent($ownerId);
-			$property->addOption($ownerId->getIdString(), htmlspecialchars($owner->getDisplayName()));
-			$property->setValue($ownerId->getIdString());
-		}
-		$property->setSize($i);
-		
-		// Create the step text
-		ob_start();
-		print "\n<h2>"._("Choose Site Admins")."</h2>";
-		print "\n<p>"._("The following users are listed as owners of this placeholder. Keep them selected if you would like them be administrators of this site or de-select them if they should not be administrators of this site. Any choice made now can be changed later through the 'Permissions' screen for the site.");
-		print "\n<br />[[admins]]</p>";
-		print "\n<div style='width: 400px'> &nbsp; </div>";
-		$step->setContent(ob_get_contents());
-		ob_end_clean();
-		
-		if ($i) {
-			$step = $wizard->addStep("owners", $step);
-			$wizard->makeStepRequired('owners');
-		}
 	}
 	
 	/**
