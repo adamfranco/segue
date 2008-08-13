@@ -220,7 +220,7 @@ class addAction
 		// Create the step text
 		ob_start();
 		print "\n<h2>"._("Site-wide Roles")."</h2>";
-		print "\n<p>"._("Below you can set site-wide roles for users and groups over the entire site. Once the site is created you can use the <strong>Roles</strong> button to set the roles that users and groups have on various parts of the site.");
+		print "\n<p>"._("Below you can set site-wide roles for users and groups over the entire site. Once the site is created you can use the <strong>Roles</strong> button (at the top of the page) to set the roles that users and groups have on various parts of the site.");
 		print "\n<br />[[roles]]</p>";
 		print "\n<p>"._("Search for users or groups:")."[[search]]</p>";
 		print "\n<div style='width: 400px'> &nbsp; </div>";
