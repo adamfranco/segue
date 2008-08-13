@@ -208,6 +208,9 @@ class addAction
 			$rolesProperty->addField($agentId->getIdString(), $agent->getDisplayName(), 'admin');
 		}
 		
+		$rolesProperty->makeDisabled('edu.middlebury.agents.everyone', 'admin');
+		$rolesProperty->makeDisabled('edu.middlebury.institute', 'admin');
+		
 		// Search
 		$property = $step->addComponent("search", new AddSiteAgentSearchField);
 		$property->setRolesProperty($rolesProperty);
