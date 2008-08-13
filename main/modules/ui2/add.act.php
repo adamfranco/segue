@@ -135,7 +135,10 @@ class addAction
 		ob_end_clean();
 		
 		// Site Admins.
-		$this->addSiteAdminStep($wizard);
+// 		$this->addSiteAdminStep($wizard);
+		
+		// Roles Step.
+		$this->addRolesStep($wizard);
 		
 		// Template
 		$this->addTemplateStep($wizard);
@@ -206,6 +209,65 @@ class addAction
 				$owners[] = $ownerId;
 		}
 		return $owners;
+	}
+	
+	/**
+	 * Add a step to set site-wide permissions.
+	 * 
+	 * @param object Wizard $wizard
+	 * @return void
+	 * @access protected
+	 * @since 8/13/08
+	 */
+	protected function addRolesStep (Wizard $wizard) {
+		$step = new WizardStep();
+		$step->setDisplayName(_("Roles"));	
+		
+		$rolesProperty = $step->addComponent('roles', new RowRadioMatrix);
+		$roleMgr = SegueRoleManager::instance();
+		// Add the options
+		foreach($roleMgr->getRoles() as $role) {
+			if (!$role->isEqual($roleMgr->getRole('custom')))
+				$rolesProperty->addOption($role->getIdString(), $role->getDisplayName(), $role->getDescription());
+		}
+		
+		// Add agents.
+		$agentMgr = Services::getService("Agent");
+		$idMgr = Services::getService("Id");
+		
+		// Super groups
+		$agentsIds = array();
+		$agentsIds[] = $idMgr->getId('edu.middlebury.agents.everyone');
+		$agentsIds[] = $idMgr->getId('edu.middlebury.institute');
+		
+		foreach ($agentsIds as $agentId) {
+			$agent = $agentMgr->getAgentOrGroup($agentId);
+			$rolesProperty->addField($agentId->getIdString(), $agent->getDisplayName(), 'no_access');
+		}
+		
+		// Other owners
+		foreach ($this->getOwners() as $agentId) {
+			$agent = $agentMgr->getAgentOrGroup($agentId);
+			$rolesProperty->addField($agentId->getIdString(), $agent->getDisplayName(), 'admin');
+		}
+		
+		// Search
+		$property = $step->addComponent("search", new AddSiteAgentSearchField);
+		$property->setRolesProperty($rolesProperty);
+		
+		
+		
+		// Create the step text
+		ob_start();
+		print "\n<h2>"._("Site-wide Roles")."</h2>";
+		print "\n<p>"._("Below you can set site-wide roles for users and groups over the entire site. Once the site is created you can use the <strong>Permissions</strong> button to set the roles that users and groups have on various parts of the site.");
+		print "\n<br />[[roles]]</p>";
+		print "\n<p>"._("Search for users or groups:")."[[search]]</p>";
+		print "\n<div style='width: 400px'> &nbsp; </div>";
+		$step->setContent(ob_get_clean());
+		
+		$step = $wizard->addStep("roles", $step);
+		$wizard->makeStepRequired('roles');
 	}
 	
 	/**
