@@ -146,10 +146,10 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		select.name = 'copy_permissions';
 		var option = select.appendChild(document.createElement('option'));
 		option.value = 'true';
-		option.innerHTML = 'Copy Permissions';
+		option.innerHTML = 'Copy Roles';
 		var option = select.appendChild(document.createElement('option'));
 		option.value = 'false';
-		option.innerHTML = 'Remove Permissions';
+		option.innerHTML = 'Remove Roles';
 		select.value = 'false';
 		this.copyPermsDiv.appendChild(select);
 		

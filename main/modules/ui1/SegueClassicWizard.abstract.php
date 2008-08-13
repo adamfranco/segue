@@ -749,7 +749,7 @@ class SegueClassicWizard
 	 */
 	public function getPermissionsStep () {
 		$step =  new WizardStep();
-		$step->setDisplayName(_("Permissions"));
+		$step->setDisplayName(_("Roles"));
 		$property = $step->addComponent("perms_table", new RowRadioMatrix);
 		
 		$roleMgr = SegueRoleManager::instance();
@@ -851,9 +851,9 @@ class SegueClassicWizard
 		
 		
 		ob_start();
-		print "\n<h2>"._("Permissions")."</h2>";
+		print "\n<h2>"._("Roles")."</h2>";
 		print "\n<p>";
-		print _("Here you can set permissions for this component and its children. Permissions are additive -- this means that you can add additional permissions (but not remove them) for any children.");
+		print _("Here you can set roles for this component and its children. Roles are additive -- this means that you can add additional roles (but not remove them) for any children.");
 		print "\n</p>\n";
 		print "[[perms_table]]";
 		

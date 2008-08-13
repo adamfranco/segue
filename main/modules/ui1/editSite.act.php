@@ -168,7 +168,7 @@ class editSiteAction
 	 */
 	public function getPermissionsStep () {
 		$step =  new WizardStep();
-		$step->setDisplayName(_("Permissions"));
+		$step->setDisplayName(_("Roles"));
 		$property = $step->addComponent("perms_table", new RowRadioMatrix);
 		
 		$roleMgr = SegueRoleManager::instance();
@@ -215,12 +215,12 @@ class editSiteAction
 		
 		
 		ob_start();
-		print "\n<h2>"._("Permissions")."</h2>";
+		print "\n<h2>"._("Roles")."</h2>";
 		print "\n<p>";
-		print _("Here you can set the permissions for the world and/or institute users over the entire site. Permissions are additive -- this means that you can add additional permissions (but not remove them) for any part of the site."); 
+		print _("Here you can set the roles for the world and/or institute users over the entire site. Roles are additive -- this means that you can add additional roles (but not remove them) for any part of the site."); 
 		print "\n</p>\n";
 		print "\n<p style='font-weight: bold;'>";
-		print _("To change permissions for other parts of the site or for other users or groups, please click the 'permissions' button at the bottom of the edit-view of the site."); 
+		print _("To change roles for other parts of the site or for other users or groups, please click the 'roles' button at the bottom of the edit-view of the site."); 
 		print "\n</p>\n";
 		print "[[perms_table]]";
 		

@@ -37,6 +37,9 @@
 			Help: Added new help documentation for Portal, Copy-Site, Move/Copy,
 			Wiki-Linking, and Text-Templates.
 		</fix>
+		<change author='adam' date='2008-08-13'>
+			Roles: Renamed all references to 'Permissions' to 'Roles' for consistency.
+		</change>
 		<change author='adam' date='2008-08-11' ref='2009057' reftype='fr'>
 			UI1/UI2: TextBlock and Download plugins renamed to 'Text &amp; Images' and 'File'.
 		</change>

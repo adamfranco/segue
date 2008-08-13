@@ -109,7 +109,7 @@ class editviewAction
 				"returnModule" => $harmoni->request->getRequestedModule(),
 				"returnAction" => $harmoni->request->getRequestedAction()));
 			print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
-			print _("Permissions")."</button>";
+			print _("Roles")."</button>";
 		}
 			
 		if (strlen(ob_get_contents())) {

@@ -103,7 +103,7 @@ class editviewAction
 					"returnModule" => $harmoni->request->getRequestedModule(),
 					"returnAction" => $harmoni->request->getRequestedAction()));
 			print "\n\t<button onclick='window.location = \"$url\".urlDecodeAmpersands();'>";
-			print _("Permissions")."</button>";
+			print _("Roles")."</button>";
 			print "\n</div>";
 			$mainScreen->add(new UnstyledBlock(ob_get_clean()), '100%', null, CENTER, BOTTOM);
 		}

@@ -91,7 +91,7 @@ class arrangeviewAction
 					array("node" => SiteDispatcher::getCurrentNodeId(),
 					"returnModule" => $harmoni->request->getRequestedModule(),
 					"returnAction" => $harmoni->request->getRequestedAction()))."'>";
-			print "\n\t<input type='button' value='"._("Permissions")."'/>";
+			print "\n\t<input type='button' value='"._("Roles")."'/>";
 			print "\n</a>";
 			print "\n</div>";
 			$mainScreen->add(new UnstyledBlock(ob_get_clean()), SiteDispatcher::getCurrentRootNode()->getWidth(), null, CENTER, BOTTOM);
