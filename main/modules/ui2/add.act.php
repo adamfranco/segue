@@ -139,7 +139,10 @@ class addAction
 		
 		// Template
 		$this->addTemplateStep($wizard);
-
+		
+		// Theme
+		$wizard->addStep("theme", $this->getThemeStep());
+		$wizard->makeStepRequired('theme');
 		
 		return $wizard;
 	}
@@ -337,17 +340,9 @@ class addAction
 			$admin->applyToUser($site->getQualifierId(), true);
 		
 		/*********************************************************
-		 * Set the default theme of the site.
+		 * Theme
 		 *********************************************************/
-		$themeMgr = Services::getService('GUIManager');
-		try {
-			if (defined('SEGUE_DEFAULT_SITE_THEME'))
-				$site->updateTheme($themeMgr->getTheme(SEGUE_DEFAULT_SITE_THEME));
-			else
-				$site->updateTheme($themeMgr->getDefaultTheme());
-		} catch (UnknownIdException $e) {
-			$site->updateTheme($themeMgr->getDefaultTheme());
-		}
+		$this->saveThemeStep($properties['theme'], $site);
 		
 		/*********************************************************
 		 * Log the success or failure
@@ -406,6 +401,112 @@ class addAction
 			$slot->addOwner($authN->getFirstUserId());
 		}
 		return $slot;
+	}
+	
+	/**
+	 * Answer the theme step
+	 * 
+	 * @param 
+	 * @return object WizardStep
+	 * @access protected
+	 * @since 8/13/08
+	 */
+	protected function getThemeStep () {
+		
+		$step =  new WizardStep();
+		$step->setDisplayName(_("Theme"));
+		$property = $step->addComponent("theme", new WRadioListWithDelete);
+		
+		$themeMgr = Services::getService("GUIManager");
+		foreach ($themeMgr->getThemeSources() as $source) {
+			try {
+				
+				foreach ($source->getThemes() as $theme) {
+					ob_start();
+					try {
+					
+						try {
+							$thumb = $theme->getThumbnail();
+							$harmoni = Harmoni::instance();
+							print "\n\t<img src='".$harmoni->request->quickUrl('gui2', 'theme_thumbnail', array('theme' => $theme->getIdString()))."' style='float: left; width: 200px; margin-right: 10px;'/>";
+						} catch (UnimplementedException $e) {
+							print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
+						} catch (OperationFailedException $e) {
+							print "\n\t<div style='font-style: italic'>"._("Thumbnail not available.")."</div>";
+						}
+						print "\n\t<p>".$theme->getDescription()."</p>";
+						
+						// Delete Theme
+						if ($theme->supportsModification()) {
+							$modSess = $theme->getModificationSession();
+							if ($modSess->canModify()) {
+								$allowDelete = true;
+							} else {
+								$allowDelete = false;
+							}
+						} else {
+							$allowDelete = false;
+						}
+						
+						print "\n\t<div style='clear: both;'> &nbsp; </div>";
+						$property->addOption($theme->getIdString(), "<strong>".$theme->getDisplayName()."</strong>", ob_get_contents(), $allowDelete);
+					} catch (Exception $e) {
+					}
+					ob_end_clean();
+				} 
+			} catch (Exception $e) {
+			}
+		}
+		
+		if (defined('SEGUE_DEFAULT_SITE_THEME'))
+			$property->setValue(SEGUE_DEFAULT_SITE_THEME);
+		else
+			$property->setValue($themeMgr->getDefaultTheme()->getIdString());
+		
+		ob_start();
+		print "\n<h2>"._("Theme")."</h2>";
+		print "\n<p>";
+		print _("Here you can set the theme for the site."); 
+		print "\n</p>\n";
+		print "[[theme]]";
+		
+		$step->setContent(ob_get_clean());
+		
+		return $step;
+	}
+	
+	/**
+	 * Save the theme step
+	 * 
+	 * @param array $values
+	 * @param object SiteNavBlockSiteComponent $site
+	 * @return boolean
+	 * @access protected
+	 * @since 5/8/08
+	 */
+	protected function saveThemeStep (array $values, SiteNavBlockSiteComponent $site) {
+		$themeMgr = Services::getService("GUIManager");
+		
+		/*********************************************************
+		 * Set the default theme of the site.
+		 *********************************************************/
+		$themeMgr = Services::getService('GUIManager');
+		try {		
+			// Set the chosen theme.
+			if (is_null($values['theme']['selected'])) {
+				if (defined('SEGUE_DEFAULT_SITE_THEME'))
+					$site->updateTheme($themeMgr->getTheme(SEGUE_DEFAULT_SITE_THEME));
+				else
+					$site->updateTheme($themeMgr->getDefaultTheme());
+			} else {
+				$site->updateTheme($themeMgr->getTheme($values['theme']['selected']));
+			}
+		
+		} catch (UnknownIdException $e) {
+			$site->updateTheme($themeMgr->getDefaultTheme());
+		}
+		
+		return true;
 	}
 }
 
