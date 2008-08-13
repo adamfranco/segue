@@ -54,11 +54,11 @@ class editSiteAction
 		$wizard = SimpleStepWizard::withDefaultLayout();
 		
 		$wizard->addStep("namedesc", $this->getTitleStep());
-		try {
-			$wizard->addStep("permissions", $this->getPermissionsStep());
-		} catch (PermissionDeniedException $e) {
-		
-		}
+// 		try {
+// 			$wizard->addStep("permissions", $this->getPermissionsStep());
+// 		} catch (PermissionDeniedException $e) {
+// 		
+// 		}
 		$wizard->addStep("theme", $this->getThemeStep());
 		$wizard->addStep("display", $this->getDisplayOptionsStep());
 		$wizard->addStep("header", $this->getHeaderStep());
