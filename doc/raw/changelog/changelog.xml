@@ -40,6 +40,10 @@
 		<change author='adam' date='2008-08-13'>
 			Roles: Renamed all references to 'Permissions' to 'Roles' for consistency.
 		</change>
+		<change author='adam' date='2008-08-13'>
+			UI2: Roles-link has now been moved to the commands area at the top of the
+			page for easier access. Also added to that area for Classic mode.
+		</change>
 		<change author='adam' date='2008-08-11' ref='2009057' reftype='fr'>
 			UI1/UI2: TextBlock and Download plugins renamed to 'Text &amp; Images' and 'File'.
 		</change>
