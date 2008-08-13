@@ -259,9 +259,7 @@ class htmlAction
 		ob_start();
 		print "<div class='seguefooter_left'>";
 		// Help LInk
-		print "<a target='_blank' href='";
-		print $harmoni->request->quickURL("help", "browse_help");
-		print "'>"._("Help")."</a>";
+		print Help::link();
 		
 		// Site Map
 		$siteMapUrl = $harmoni->request->quickURL("view", "map", array('node' => SiteDispatcher::getCurrentNodeId()));

@@ -161,10 +161,11 @@ class displayAction
 	// :: Footer ::
 		$footer = new Container (new XLayout, BLANK, 1);
 		
-		$helpText = "<a target='_blank' href='";
-		$helpText .= $harmoni->request->quickURL("help", "browse_help");
-		$helpText .= "'>"._("Help")."</a>";
-		$footer->add(new UnstyledBlock($helpText), "50%", null, LEFT, BOTTOM);
+		if ($harmoni->getData('help_topic'))
+			$helpLink = Help::link($harmoni->getData('help_topic'));
+		else
+			$helpLink = Help::link();
+		$footer->add(new UnstyledBlock($helpLink), "50%", null, LEFT, BOTTOM);
 		
 		
 		$footer->add(new UnstyledBlock(self::getVersionText()), "50%", null, RIGHT, BOTTOM);

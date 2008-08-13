@@ -105,6 +105,8 @@ class listAction
 		$this->addHeadJs();
 		
 		$harmoni = Harmoni::instance();
+		$harmoni->attachData('help_topic', 'Portal');
+		
 		// Categories
 		ob_start();
 		$portalMgr = PortalManager::instance();
