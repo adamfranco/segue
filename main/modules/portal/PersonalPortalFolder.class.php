@@ -96,7 +96,7 @@ class PersonalPortalFolder
 			$harmoni->request->startNamespace('personal_slot');
 			$url = $harmoni->request->quickURL();
 			print "<div style='float: left;'>";
-			print "<strong>"._("Create a new site:")."</strong><br/>";
+			print "<strong>"._("Create a new site")." <span style='font-size: smaller;'>(".Help::link('Portal').")</span>:</strong><br/>";
 			print "<span style='font-size: smaller;'>"._("1. Chose a name for the placeholder of your new site. <br/>2. Create a new site in that placeholder.")."</span>";
 			print "</div>";
 			print "<div style='float: right;'>";

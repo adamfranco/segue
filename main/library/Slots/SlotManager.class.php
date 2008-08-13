@@ -106,7 +106,7 @@ class SlotManager {
 	 */
 	public function getSlotsByType ( $slotType ) {
 		if (!isset($this->slotTypes[$slotType])) {
-			throw new Exception ("Unknown SlotType, $slotType.");
+			throw new InvalidArgumentException ("Unknown SlotType, $slotType.");
 		}
 		
 		// Each time a slot is requested by name, but doesn't exist this method gets
@@ -176,6 +176,9 @@ class SlotManager {
 	 * @since 8/16/07
 	 */
 	public function getSlotByShortname ($shortname) {
+		ArgumentValidator::validate($shortname, NonzeroLengthStringValidatorRule::getRule());
+		ArgumentValidator::validate($shortname, RegexValidatorRule::getRule('^[a-z0-9\._-]+$'));
+		
 		if (!isset($this->slots[$shortname])) {
 			$this->getSlots();
 			
@@ -203,6 +206,16 @@ class SlotManager {
 	 * @since 8/16/07
 	 */
 	public function getSlotBySiteId ($siteId) {
+		ArgumentValidator::validate($siteId, 
+			OrValidatorRule::getRule(
+				NonzeroLengthStringValidatorRule::getRule(),
+				ExtendsValidatorRule::getRule('Id')));
+				
+		if (is_object($siteId)) {
+			$tmp = $siteId;
+			unset($siteId);
+			$siteId = $tmp->getIdString();
+		}
 		// Check our cache
 		foreach ($this->slots as $slot) {
 			if ($slot->getSiteId() == $siteId)

@@ -2,6 +2,75 @@
 Segue Change Log
 
 
+v. 2.0-beta-30 (2008-08-07)
+----------------------------------------------------
+This release fixes a number of security issues, an authorization bug that was
+prevent proper view access to some sites, and a few smaller issues. As well, it
+introduces the ability to move or copy content and pages within a site or across
+sites. See the change-log for details.
+
+Notable User-Facing Changes:
+
+- New Move/Copy abilities
+
+- New delete-confirmation dialog that shows the scope of the action.
+
+-------------
+
+Upgrades:
+
+As of beta 25, Segue requires PHP to be compiled with XSL
+support. On unix systems this can be added by configuring PHP using the --with-xsl
+option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 30 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+-------------
+
+Segue 2.0-beta-30 uses Harmoni 1.4.7 and Polyphony 1.3.2.
+		
+		
+	* New feature: #1799954 
+		SiteEditing: Can now select Pages or Content Blocks and move or copy them
+		elsewhere in the site or another site.
+		(2008-08-05 - Adam Franco)
+		
+	* New feature: 
+		SiteEditing: New delete confirmation dialog displays a list of all items
+		that will be deleted.
+		(2008-08-05 - Adam Franco)
+		
+	* Bug Fix: 
+		AuthZ: New updater to rebuild cascading-up implicit 'view' authorizations
+		that were not getting written to the database. This has been fixed in
+		Harmoni 1.4.7 and this updater will rebuild any implicit authorization rows
+		that are not in the database.
+		(2008-08-07 - Adam Franco)
+		(reported by peter_wilkins)
+		
+	* Bug Fix: 
+		Migration: Segue1UrlResolver now properly returns id-strings instead of Id
+		objects, enabling forwarding to work properly.
+		(2008-08-05 - Adam Franco)
+		
+	* Bug Fix: 
+		CopySites: 'Copy Discussions' flag no longer inverted.
+		(2008-08-04 - Adam Franco)
+		
+	* Bug Fix: #2040277 
+		Security: Fixed reflective cross-site scripting vulnerability in error
+		printer. 
+		(2008-08-06 - Adam Franco)
+		
+	* Bug Fix: #2040303 
+		Security: Fixed Cross-Site Scripting vulnerability in all usage of
+		HTTP_REFERER. 
+		(2008-08-06 - Adam Franco)
+	
+
+
+
 v. 2.0-beta-29 (2008-08-01)
 ----------------------------------------------------
 This release adds a number of new themes, allows copying of sites, and numerous

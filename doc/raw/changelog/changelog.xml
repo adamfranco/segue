@@ -10,9 +10,69 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-beta-20" date="The Future">
+	<version number="2.0-beta-31" date="The Future">
 		<releaseNotes>
 			
+		</releaseNotes>
+		<new author='adam' date='2008-08-11' ref='2032839' reftype='fr'>
+			Portal: Can now search for sites by title, description, or placeholder.
+		</new>
+		<new author='adam' date='2008-08-07' ref='1820937' reftype='fr'>
+			Can now split sites to different virtual-hosts or paths based on
+			their location category. This enables sites given the 'main' 
+			location-category to appear at a different url from sites given the
+			'community' location-category.
+		</new>
+		<new author='adam' date='2008-08-11' ref='2030595' reftype='fr' requester='shel_sax'>
+			Site Creation: Added a new 'Blank' template
+		</new>
+		<new author='adam' date='2008-08-12' ref='2039320' reftype='fr'>
+			New course-sites listing action to provide listings of course sites to
+			external systems.
+		</new>
+		<fix author='adam' date='2008-08-13' ref='1820837' reftype='fr'>
+			Help: Added new help documentation for Portal, Wiki-Linking, and Text-Templates.
+		</fix>
+		<change author='adam' date='2008-08-11' ref='2009057' reftype='fr'>
+			UI1/UI2: TextBlock and Download plugins renamed to 'Text &amp; Images' and 'File'.
+		</change>
+		<fix author='adam' date='2008-08-11' ref='2046491' reftype='bug'>
+			UI2: Now can not delete layout containers that are targets for menus
+			as this would through the site into an invalid state.
+		</fix>
+		<fix author='adam' date='2008-08-11'>
+			Fixed a number of notices that were filling up the logs when the MSNBot
+			crawled Segue.
+		</fix>
+	</version>
+	<version number="2.0-beta-30" date="2008-08-07">
+		<releaseNotes>
+			This release fixes a number of security issues, an authorization bug
+			that was prevent proper view access to some sites, and a few smaller
+			issues. As well, it introduces the ability to move or copy content and
+			pages within a site or across sites. See the change-log for details.
+			
+			Notable User-Facing Changes:
+			
+			- New Move/Copy abilities
+			
+			- New delete-confirmation dialog that shows the scope of the action.
+			
+			-------------
+			
+			Upgrades:
+			
+			As of beta 25, Segue requires PHP to be compiled with XSL support.
+			On unix systems this can be added by configuring PHP using the --with-xsl
+			option. See the following for installation instructions:
+			http://www.php.net/manual/en/xsl.installation.php
+			
+			Upgrades from versions prior to beta 30 require running system
+			updaters located under Admin Tools --> Segue Updates.
+			
+			-------------
+			
+			Segue 2.0-beta-30 uses Harmoni 1.4.7 and Polyphony 1.3.2.
 		</releaseNotes>
 		<new author='adam' date='2008-08-05' ref='1799954' reftype='fr'>
 			SiteEditing: Can now select Pages or Content Blocks and move or copy
@@ -22,12 +82,24 @@
 			SiteEditing: New delete confirmation dialog displays a list of all items
 			that will be deleted.
 		</new>
+		<fix author='adam' date='2008-08-07' reporter='peter_wilkins'>
+			AuthZ: New updater to rebuild cascading-up implicit 'view' authorizations
+			that were not getting written to the database. This has been fixed in
+			Harmoni 1.4.7 and this updater will rebuild any implicit authorization
+			rows that are not in the database.
+		</fix>
 		<fix author='adam' date='2008-08-05'>
 			Migration: Segue1UrlResolver now properly returns id-strings instead
 			of Id objects, enabling forwarding to work properly.
 		</fix>
 		<fix author='adam' date='2008-08-04'>
 			CopySites: 'Copy Discussions' flag no longer inverted.
+		</fix>
+		<fix author='adam' date='2008-08-06' ref='2040277' reftype='security'>
+			Security: Fixed reflective cross-site scripting vulnerability in error printer.
+		</fix>
+		<fix author='adam' date='2008-08-06' ref='2040303' reftype='security'>
+			Security: Fixed Cross-Site Scripting vulnerability in all usage of HTTP_REFERER.
 		</fix>
 	</version>
 	<version number="2.0-beta-29" date="2008-08-01">
@@ -2348,11 +2420,16 @@
 			<name>Jeff Merriman</name>
 			<institution>MIT</institution>
 		</reporter>
+		<reporter short="peter_wilkins">
+			<name>Peter Wilkins</name>
+			<institution>MIT</institution>
+		</reporter>
 	</reporters>
 	<reftypes>
 		<reftype name="bug" group="82171" tracker='565234'/>
 		<reftype name="fr" group="82171" tracker='565237'/>
 		<reftype name="patch" group="82171" tracker='565236'/>
+		<reftype name="security" group="82171" tracker='1098812'/>	
 		
 		<reftype name="segue_bug" group="82171" tracker='565234'/>
 		<reftype name="segue_fr" group="82171" tracker='565237'/>

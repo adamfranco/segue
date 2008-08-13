@@ -79,9 +79,8 @@ class choose_siteAction
 		print " "._("You can only import sites into empty placeholders.");
 		print "</p>";
 		print "<p>";
-		print _("Please note that at this time Segue 2 does not support all of the features of Segue 1.");
-		print " "._("As a result, if part of your site does not import properly please view these lists of <a href='https://sourceforge.net/tracker/?group_id=82171&amp;atid=565237'>outstanding features</a> and <a href='https://sourceforge.net/tracker/?group_id=82171&amp;atid=565234'>bugs</a> to check the status of support for that feature.");
-		print " "._("If you do not find a listing there, please submit a report in one of the trackers listed or email <a href='mailto:afranco@middlebury.edu'>Adam Franco</a>");
+		print str_replace('%1', Help::link('Copy Sites'), 
+			 _("If you import a segue1 site more than once, redirects from old links will point at the most recent import of that site. If you wish to maintain old links and duplicate a site, import it once and then use the 'copy site' (%1) in the portal to make additional copies."));
 		print "</p>";
 		return new Block(ob_get_clean(), STANDARD_BLOCK);
 	}

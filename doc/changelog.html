@@ -23,7 +23,48 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-29</h2>
+<h2>Version 2.0-beta-30</h2>
+<h3>2008-08-07</h3>
+<p>This release fixes a number of security issues, an authorization bug that was prevent proper view access to some sites, and a few smaller issues. As well, it introduces the ability to move or copy content and pages within a site or across sites. See the change-log for details.
+<br>
+<br>Notable User-Facing Changes:
+<br>
+<br>- New Move/Copy abilities
+<br>
+<br>- New delete-confirmation dialog that shows the scope of the action.
+<br>
+<br>-------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 30 require running system updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br>-------------
+<br>
+<br>Segue 2.0-beta-30 uses Harmoni 1.4.7 and Polyphony 1.3.2.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799954&amp;group_id=82171&amp;atid=565237">
+        			#1799954</a> SiteEditing: Can now select Pages or Content Blocks and move or copy them elsewhere in the site or another site. (<em>2008-08-05 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> SiteEditing: New delete confirmation dialog displays a list of all items that will be deleted. (<em>2008-08-05 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> AuthZ: New updater to rebuild cascading-up implicit 'view' authorizations that were not getting written to the database. This has been fixed in Harmoni 1.4.7 and this updater will rebuild any implicit authorization rows that are not in the database. (<em>2008-08-07 - Adam Franco</em>)<br> (<em>reported by peter_wilkins</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Segue1UrlResolver now properly returns id-strings instead of Id objects, enabling forwarding to work properly. (<em>2008-08-05 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> CopySites: 'Copy Discussions' flag no longer inverted. (<em>2008-08-04 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2040277&amp;group_id=82171&amp;atid=1098812">
+        			#2040277</a> Security: Fixed reflective cross-site scripting vulnerability in error printer. (<em>2008-08-06 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2040303&amp;group_id=82171&amp;atid=1098812">
+        			#2040303</a> Security: Fixed Cross-Site Scripting vulnerability in all usage of HTTP_REFERER. (<em>2008-08-06 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-29</h2>
 <h3>2008-08-01</h3>
 <p>This release adds a number of new themes, allows copying of sites, and numerous other improvements.
 <br>

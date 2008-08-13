@@ -55,9 +55,12 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 				throw "Ancestor ids must be strings. Found " + type;
 		}
 		this.ancestors = ancestors;
+		
+		var helpUrl = Harmoni.quickUrl('help', 'browse_help', {topic: 'Move-Copy'});
+		var helpLink = " &nbsp; &nbsp; (<a href='#' onclick=\"var helpWindow = window.open('" + helpUrl + "', 'help', 'width=700,height=600,scrollbars=yes,resizable=yes'); helpWindow.focus(); return false;\">Help</a>)";
 				
 		MoveCopyPanel.superclass.init.call(this, 
-								"Move/Copy",
+								"Move/Copy" + helpLink,
 								50,
 								300,
 								positionElement,

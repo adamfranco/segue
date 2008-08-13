@@ -605,8 +605,15 @@ END;
 		print "\n\t\t\t<option value='".$type->asString()."'>";
 		if (isset($this->_classNames[$type->getKeyword()]))
 			print $this->_classNames[$type->getKeyword()];
-		else
-			print $type->getKeyword();
+		else {
+			try {
+				$pluginManager = Services::getService("PluginManager");
+				$class = $pluginManager->getPluginClass($type);
+				print call_user_func(array($class, 'getPluginDisplayName'));
+			} catch (UnknownIdException $e) {
+				print $type->getKeyword();
+			}
+		}
 		print "</option>";
 	}
 	

@@ -61,6 +61,13 @@ class SiteDispatcher {
 	private static $rootSiteComponent;
 	
 	/**
+	 * @var array $locationCategoryUrls;  
+	 * @access private
+	 * @since 8/7/08
+	 */
+	private static $locationCategoryUrls = array();
+	
+	/**
 	 * Answer the nodeId
 	 * 
 	 * @return string
@@ -139,7 +146,12 @@ class SiteDispatcher {
 		if (!count($params))
 			$params = null;
 		
-		$url = $harmoni->request->mkURL($module, $action, $params);
+		try {
+			$slot = self::getCurrentRootNode()->getSlot();
+			$url = $harmoni->request->mkUrlWithBase(self::getBaseUrlForSlot($slot), $module, $action, $params);
+		} catch (UnknownIdException $e) {
+			$url = $harmoni->request->mkURL($module, $action, $params);
+		}
 		
 		$harmoni->request->startNamespace(null);
 		foreach ($context as $key => $val) {
@@ -308,11 +320,44 @@ class SiteDispatcher {
 		$slotMgr = SlotManager::instance();
 		try {
 			$slot = $slotMgr->getSlotBySiteId($siteId);
-			return rtrim(MYURL, '/').'/sites/'.$slot->getShortname();
+			return rtrim(self::getBaseUrlForSlot($slot), '/').'/sites/'.$slot->getShortname();
 		} catch (UnknownIdException $e) {
 			$harmoni = Harmoni::instance();
 			return $harmoni->request->quickURL('view', 'html', array('node' => $siteId));
 		}
+	}
+	
+	/**
+	 * Set the base-url (MYURL equivalent) to use for a particular location-category.
+	 * 
+	 * @param string $locationCategory
+	 * @param string $baseUrl
+	 * @return void
+	 * @access public
+	 * @since 8/7/08
+	 * @static
+	 */
+	public static function setBaseUrlForLocationCategory ($locationCategory, $baseUrl) {
+		if (!in_array($locationCategory, SlotAbstract::getLocationCategories()))
+			throw new Exception("Invalid category, '$locationCategory'.");
+		
+		self::$locationCategoryUrls[$locationCategory] = $baseUrl;
+	}
+	
+	/**
+	 * Answer the baseURL to use for a slot
+	 * 
+	 * @param object Slot $slot
+	 * @return string
+	 * @access public
+	 * @since 8/7/08
+	 * @static
+	 */
+	public static function getBaseUrlForSlot (Slot $slot) {
+		if (isset(self::$locationCategoryUrls[$slot->getLocationCategory()])) {
+			return self::$locationCategoryUrls[$slot->getLocationCategory()];
+		}
+		return MYURL;
 	}
 }
 
