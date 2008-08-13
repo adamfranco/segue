@@ -606,9 +606,14 @@ class EduMiddleburyTextBlockPlugin
  		ob_start();
  		print "\n<div class='help_text'>";
  		$message = _('<strong>Wiki linking (%1) :</strong> To link to a page on your site whose title is "Introduction" use &#91;&#91;Introduction&#93;&#93;. If no content with the title "Introduction" exists a link to create such content will be made. To see all titles used in this site, see: %2');
- 		$message = str_replace('%1', Help::link('wiki linking'), $message);
+ 		$message = str_replace('%1', Help::link('Wiki-Linking'), $message);
 //  		$message = str_replace('%2', SiteMap::link($this->getId()), $message);
-		$message = str_replace('%2', 'Site Map', $message);
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
+		$siteMapUrl = $harmoni->request->quickUrl('view', 'map', array('node' => $this->getId()));
+		$harmoni->request->endNamespace();
+		$siteMapText = "<a target='site_map' href='".$siteMapUrl."' onclick=\"var url = '".$siteMapUrl."'; window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); return false;\">"._("Site Map")."</a>";
+		$message = str_replace('%2', $siteMapText, $message);
  		print $message;
  		print "\n</div>";
  		return ob_get_clean();
