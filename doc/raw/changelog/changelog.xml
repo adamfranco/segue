@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-rc-2" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-08-14'>
+			Errors: Fixed unknown index notice in the SegueErrorPrinter.
+		</fix>
+	</version>
 	<version number="2.0-rc-1" date="2008-08-14">
 		<releaseNotes>
 			This first production release candidate of Segue 2 fixes a number of
