@@ -41,6 +41,9 @@
 			Security: Actions that involve data modification now require per-user
 			tokens in the request to prevent Cross-Site Request Forgeries.
 		</change>
+		<change author='adam' date='2008-08-14'>
+			Now welcome message is configurable.
+		</change>
 	</version>
 	<version number="2.0-rc-1" date="2008-08-14">
 		<releaseNotes>

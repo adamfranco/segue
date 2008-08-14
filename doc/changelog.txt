@@ -38,6 +38,10 @@ system.
 		in the request to prevent Cross-Site Request Forgeries.
 		(2008-08-14 - Adam Franco)
 		(reported by Josh Abraham of Rapid7, LLC.)
+		
+	* Change: 
+		Now welcome message is configurable.
+		(2008-08-14 - Adam Franco)
 	
 
 

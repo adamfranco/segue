@@ -95,7 +95,8 @@ $configs = array(
 					'tagging',
 					'templates',
 					'themes',
-					'uploads'
+					'uploads',
+					'welcome'
 				);
 
 foreach ($configs as $config) {
