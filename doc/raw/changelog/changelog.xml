@@ -27,6 +27,10 @@
 			Migration: Redirects to Segue 1 now properly include the 'site' action
 			when short-form URLs ('/sites/sitename') are used.
 		</fix>
+		<change author='adam' date='2008-08-14' ref='2040513' reftype='security'>
+			Security: Actions that involve data modification now require per-user
+			tokens in the request to prevent Cross-Site Request Forgeries.
+		</change>
 	</version>
 	<version number="2.0-rc-1" date="2008-08-14">
 		<releaseNotes>
