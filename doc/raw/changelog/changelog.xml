@@ -23,6 +23,10 @@
 			Segue 1 had some instances of uppercase slot-names that were causing
 			errors in migration and redirects.
 		</fix>
+		<fix author='adam' date='2008-08-14'>
+			Migration: Redirects to Segue 1 now properly include the 'site' action
+			when short-form URLs ('/sites/sitename') are used.
+		</fix>
 	</version>
 	<version number="2.0-rc-1" date="2008-08-14">
 		<releaseNotes>

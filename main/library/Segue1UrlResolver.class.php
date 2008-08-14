@@ -137,8 +137,12 @@ class Segue1UrlResolver {
 		if (isset($_SERVER['PATH_INFO']) 
 			&& preg_match('/^\/sites\/(\w+)\/?/', $_SERVER['PATH_INFO'], $matches)) 
 		{
+			$get['action'] = 'site';
 			$get['site'] = $matches[1];
 		}
+		if (isset($get['site']) && !isset($get['action']))
+			$get['action'] = 'site';
+		
 		$this->resolveGetArray($get);
 	}
 	
