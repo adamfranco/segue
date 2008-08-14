@@ -23,7 +23,32 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-rc-1</h2>
+<h2>Version 2.0-rc-2</h2>
+<h3>2008-08-14</h3>
+<p>This release fixes a number of small bugs and a number of security issues.
+<br>
+<br>Security issues fixed: 
+<br>
+<br>- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+<br>
+<br>- Segue can now be configured to use secure/http-only cookies. 
+<br>
+<br>- Admin actions are now restricted to prevent listing of users and ids in the system.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> Errors: Fixed unknown index notice in the SegueErrorPrinter. (<em>2008-08-14 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Slots/Placeholders: Now folds slot names to lowercase when looking up.
+<br>
+<br>Segue 1 had some instances of uppercase slot-names that were causing errors in migration and redirects. (<em>2008-08-14 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Redirects to Segue 1 now properly include the 'site' action when short-form URLs ('/sites/sitename') are used. (<em>2008-08-14 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2040513&amp;group_id=82171&amp;atid=1098812">
+        			#2040513</a> Security: Actions that involve data modification now require per-user tokens in the request to prevent Cross-Site Request Forgeries. (<em>2008-08-14 - Adam Franco</em>)<br> (<em>reported by Josh Abraham of Rapid7, LLC.</em>)</li>
+	</ul>
+<br><h2>Version 2.0-rc-1</h2>
 <h3>2008-08-14</h3>
 <p>This first production release candidate of Segue 2 fixes a number of user-interface difficulties and adds much documentation.
 <br>
@@ -118,10 +143,10 @@
 <b>Bug Fix:</b> CopySites: 'Copy Discussions' flag no longer inverted. (<em>2008-08-04 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2040277&amp;group_id=82171&amp;atid=1098812">
-        			#2040277</a> Security: Fixed reflective cross-site scripting vulnerability in error printer. (<em>2008-08-06 - Adam Franco</em>)</li>
+        			#2040277</a> Security: Fixed reflective cross-site scripting vulnerability in error printer. (<em>2008-08-06 - Adam Franco</em>)<br> (<em>reported by Josh Abraham of Rapid7, LLC.</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2040303&amp;group_id=82171&amp;atid=1098812">
-        			#2040303</a> Security: Fixed Cross-Site Scripting vulnerability in all usage of HTTP_REFERER. (<em>2008-08-06 - Adam Franco</em>)</li>
+        			#2040303</a> Security: Fixed Cross-Site Scripting vulnerability in all usage of HTTP_REFERER. (<em>2008-08-06 - Adam Franco</em>)<br> (<em>reported by Josh Abraham of Rapid7, LLC.</em>)</li>
 	</ul>
 <br><h2>Version 2.0-beta-29</h2>
 <h3>2008-08-01</h3>

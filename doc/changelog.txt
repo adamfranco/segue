@@ -2,6 +2,46 @@
 Segue Change Log
 
 
+v. 2.0-rc-2 (2008-08-14)
+----------------------------------------------------
+This release fixes a number of small bugs and a number of security issues.
+
+Security issues fixed: 
+
+- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+
+- Segue can now be configured to use secure/http-only cookies. 
+
+- Admin actions are now restricted to prevent listing of users and ids in the
+system. 
+		
+		
+	* Bug Fix: 
+		Errors: Fixed unknown index notice in the SegueErrorPrinter.
+		(2008-08-14 - Adam Franco)
+		
+	* Bug Fix: 
+		Slots/Placeholders: Now folds slot names to lowercase when looking up.
+		
+		Segue 1 had some instances of uppercase slot-names that were causing
+		errors in migration and redirects.
+		(2008-08-14 - Adam Franco)
+		
+	* Bug Fix: 
+		Migration: Redirects to Segue 1 now properly include the 'site' action when
+		short-form URLs ('/sites/sitename') are used.
+		(2008-08-14 - Adam Franco)
+		
+	* Change: #2040513 
+		Security: Actions that involve data modification now require per-user tokens
+		in the request to prevent Cross-Site Request Forgeries.
+		(2008-08-14 - Adam Franco)
+		(reported by Josh Abraham of Rapid7, LLC.)
+	
+
+
+
 v. 2.0-rc-1 (2008-08-14)
 ----------------------------------------------------
 This first production release candidate of Segue 2 fixes a number of user-interface
@@ -152,11 +192,13 @@ Segue 2.0-beta-30 uses Harmoni 1.4.7 and Polyphony 1.3.2.
 		Security: Fixed reflective cross-site scripting vulnerability in error
 		printer. 
 		(2008-08-06 - Adam Franco)
+		(reported by Josh Abraham of Rapid7, LLC.)
 		
 	* Bug Fix: #2040303 
 		Security: Fixed Cross-Site Scripting vulnerability in all usage of
 		HTTP_REFERER. 
 		(2008-08-06 - Adam Franco)
+		(reported by Josh Abraham of Rapid7, LLC.)
 	
 
 
