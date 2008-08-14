@@ -93,7 +93,7 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		input.value = 'true';
 		form.appendChild(input);
 		input.checked = 'checked';
-		form.appendChild(document.createTextNode(' Copy Permissions?'));
+		form.appendChild(document.createTextNode(' Copy Roles?'));
 		form.appendChild(document.createElement('br'));
 		
 		var input = document.createElement('input');

@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-30 (2008-08-07)
+Segue v. 2.0-rc-1 (2008-08-14)
 =================================
 
 What is Segue?
@@ -17,16 +17,20 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release fixes a number of security issues, an authorization bug that was
-prevent proper view access to some sites, and a few smaller issues. As well, it
-introduces the ability to move or copy content and pages within a site or across
-sites. See the change-log for details.
+This first production release candidate of Segue 2 fixes a number of user-interface
+difficulties and adds much documentation.
 
 Notable User-Facing Changes:
 
-- New Move/Copy abilities
+- Can now search for sites in the Portal by title, description, or placeholder
 
-- New delete-confirmation dialog that shows the scope of the action.
+- More contextual help.
+
+- New 'Blank' template.
+
+- Can now set site-wide roles and theme when creating a site.
+
+- Roles links have been moved to the top of the screen for easier access.
 
 -------------
 
@@ -41,7 +45,7 @@ under Admin Tools --> Segue Updates.
 
 -------------
 
-Segue 2.0-beta-30 uses Harmoni 1.4.7 and Polyphony 1.3.2.
+Segue 2.0.0 uses Harmoni 1.5.0 and Polyphony 1.3.3.
 
 
 Downloads
@@ -81,6 +85,40 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-rc-1 (2008-08-14)
+----------------------------------------------------
+This first production release candidate of Segue 2 fixes a number of user-interface
+difficulties and adds much documentation.
+
+Notable User-Facing Changes:
+
+- Can now search for sites in the Portal by title, description, or placeholder
+
+- More contextual help.
+
+- New 'Blank' template.
+
+- Can now set site-wide roles and theme when creating a site.
+
+- Roles links have been moved to the top of the screen for easier access.
+
+-------------
+
+Upgrades:
+
+As of beta 25, Segue requires PHP to be compiled with XSL
+support. On unix systems this can be added by configuring PHP using the --with-xsl
+option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 30 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+-------------
+
+Segue 2.0.0 uses Harmoni 1.5.0 and Polyphony 1.3.3.
+
 
 
 v. 2.0-beta-30 (2008-08-07)
