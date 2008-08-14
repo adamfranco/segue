@@ -1,5 +1,5 @@
 
-Segue v. 2.0-rc-1 (2008-08-14)
+Segue v. 2.0-rc-2 (2008-08-14)
 =================================
 
 What is Segue?
@@ -17,35 +17,17 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This first production release candidate of Segue 2 fixes a number of user-interface
-difficulties and adds much documentation.
+This release fixes a number of small bugs and a number of security issues.
 
-Notable User-Facing Changes:
+Security issues fixed: 
 
-- Can now search for sites in the Portal by title, description, or placeholder
+- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
 
-- More contextual help.
+- Segue can now be configured to use secure/http-only cookies. 
 
-- New 'Blank' template.
-
-- Can now set site-wide roles and theme when creating a site.
-
-- Roles links have been moved to the top of the screen for easier access.
-
--------------
-
-Upgrades:
-
-As of beta 25, Segue requires PHP to be compiled with XSL
-support. On unix systems this can be added by configuring PHP using the --with-xsl
-option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
-
-Upgrades from versions prior to beta 30 require running system updaters located
-under Admin Tools --> Segue Updates.
-
--------------
-
-Segue 2.0.0 uses Harmoni 1.5.0 and Polyphony 1.3.3.
+- Admin actions are now restricted to prevent listing of users and ids in the
+system. 
 
 
 Downloads
@@ -85,6 +67,22 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0-rc-2 (2008-08-14)
+----------------------------------------------------
+This release fixes a number of small bugs and a number of security issues.
+
+Security issues fixed: 
+
+- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+
+- Segue can now be configured to use secure/http-only cookies. 
+
+- Admin actions are now restricted to prevent listing of users and ids in the
+system. 
+
 
 
 v. 2.0-rc-1 (2008-08-14)

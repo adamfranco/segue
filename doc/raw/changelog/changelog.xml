@@ -10,9 +10,19 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-rc-2" date="The Future">
+	<version number="2.0-rc-2" date="2008-08-14">
 		<releaseNotes>
+			This release fixes a number of small bugs and a number of security issues.
 			
+			Security issues fixed: 
+						
+			- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+			actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+			
+			- Segue can now be configured to use secure/http-only cookies. 
+			
+			- Admin actions are now restricted to prevent listing of users and
+			ids in the system.
 		</releaseNotes>
 		<fix author='adam' date='2008-08-14'>
 			Errors: Fixed unknown index notice in the SegueErrorPrinter.
@@ -27,9 +37,12 @@
 			Migration: Redirects to Segue 1 now properly include the 'site' action
 			when short-form URLs ('/sites/sitename') are used.
 		</fix>
-		<change author='adam' date='2008-08-14' ref='2040513' reftype='security'>
+		<change author='adam' date='2008-08-14' ref='2040513' reftype='security' reporter='josh_abraham'>
 			Security: Actions that involve data modification now require per-user
 			tokens in the request to prevent Cross-Site Request Forgeries.
+		</change>
+		<change author='adam' date='2008-08-14'>
+			Now welcome message is configurable.
 		</change>
 	</version>
 	<version number="2.0-rc-1" date="2008-08-14">
@@ -157,10 +170,10 @@
 		<fix author='adam' date='2008-08-04'>
 			CopySites: 'Copy Discussions' flag no longer inverted.
 		</fix>
-		<fix author='adam' date='2008-08-06' ref='2040277' reftype='security'>
+		<fix author='adam' date='2008-08-06' ref='2040277' reftype='security' reporter='josh_abraham'>
 			Security: Fixed reflective cross-site scripting vulnerability in error printer.
 		</fix>
-		<fix author='adam' date='2008-08-06' ref='2040303' reftype='security'>
+		<fix author='adam' date='2008-08-06' ref='2040303' reftype='security' reporter='josh_abraham'>
 			Security: Fixed Cross-Site Scripting vulnerability in all usage of HTTP_REFERER.
 		</fix>
 	</version>
@@ -2485,6 +2498,10 @@
 		<reporter short="peter_wilkins">
 			<name>Peter Wilkins</name>
 			<institution>MIT</institution>
+		</reporter>
+		<reporter short="josh_abraham">
+			<name>Josh Abraham</name>
+			<institution>Rapid7, LLC.</institution>
 		</reporter>
 	</reporters>
 	<reftypes>
