@@ -10,12 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0.0" date="The Future">
+	<version number="2.0-rc-3" date="The Future">
 		<releaseNotes>
 			
 		</releaseNotes>
 		<fix author='adam' date='2008-08-18'>
 			Migration: Segue 1 redirects now work for RSS feeds and site-names with hyphens.
+		</fix>
+		<fix author='adam' date='2008-08-18' ref='2058072' reftype='bug'>
+			Migration: Local URLs are now updated to point a new locations.
 		</fix>
 		<fix author='adam' date='2008-08-18' ref='2053923' reftype='bug'>
 			Dataport: Admin-only import tool now works again.
