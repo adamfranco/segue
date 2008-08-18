@@ -23,6 +23,9 @@
 		<fix author='adam' date='2008-08-18' ref='2053923' reftype='bug'>
 			Dataport: Admin-only import tool now works again.
 		</fix>
+		<fix author='adam' date='2008-08-18'>
+			UI2: Ajax plugin updates now do not result in a null-argument exception.
+		</fix>
 	</version>
 	<version number="2.0-rc-2" date="2008-08-14">
 		<releaseNotes>
