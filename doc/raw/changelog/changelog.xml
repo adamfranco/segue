@@ -17,6 +17,9 @@
 		<fix author='adam' date='2008-08-18'>
 			Migration: Segue 1 redirects now work for RSS feeds and site-names with hyphens.
 		</fix>
+		<fix author='adam' date='2008-08-18' ref='2053923' reftype='bug'>
+			Dataport: Admin-only import tool now works again.
+		</fix>
 	</version>
 	<version number="2.0-rc-2" date="2008-08-14">
 		<releaseNotes>
