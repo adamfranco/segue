@@ -124,7 +124,7 @@ END;
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, true,
-					Segue_Selection::instance()->getAddLink($block));
+					Segue_Selection::instance()->getAddLink($block))				."<br/>";
 			$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 			
 			$guiContainer->setPostHTML($this->getBarPostHTML());
@@ -255,7 +255,7 @@ END;
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, true,
-					Segue_Selection::instance()->getAddLink($block));
+					Segue_Selection::instance()->getAddLink($block))				."<br/>";
 			$menuItem->setPreHTML($controlsHTML.$menuItem->getPreHTML($null = null));
 			
 			$menuItem->setPostHTML($this->getBarPostHTML());
