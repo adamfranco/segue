@@ -26,6 +26,20 @@
 		<fix author='adam' date='2008-08-18'>
 			UI2: Ajax plugin updates now do not result in a null-argument exception.
 		</fix>
+		<fix author='adam' date='2008-08-19'>
+			Re-applied a set of changes that should have been in beta 28, but that
+			got accidentally dropped during resolution of a merge conflict.
+			
+			 - Plugins: Text-Plugin now prompts with confirmation before unloading 
+			 the page (back, refresh, link-click, etc) when the plugin is open for 
+			 editing in UI2.
+			 
+			 - Improved XML error checking in RSS feed display.
+			 
+			 - Removed debugging lines.
+			 
+			 - Placeholder admin screens now remember pagination state.
+		</fix>
 	</version>
 	<version number="2.0-rc-2" date="2008-08-14">
 		<releaseNotes>
