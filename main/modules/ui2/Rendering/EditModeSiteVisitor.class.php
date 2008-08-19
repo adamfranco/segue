@@ -635,7 +635,7 @@ END;
 		ob_start();
 		print "\n<div class='controls_bar' style='"
 			."color: #000; "
-			."min-width: 200px; "
+			."min-width: 150px; "
 // 			."border-top: $lineWidth solid $borderColor; "
 // 			."border-left: $lineWidth solid $borderColor; "
 // 			."border-right: $lineWidth solid $borderColor; "
