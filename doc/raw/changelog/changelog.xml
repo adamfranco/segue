@@ -44,6 +44,10 @@
 			UI2: Block controls now are above header so that they don't hide reorder
 			and history links.
 		</fix>
+		<change author='adam' date='2008-08-19'>
+			Text-Templates now support multi-valued arguments. Needed for allowing 
+			multiple Google-Calendars.
+		</change>
 	</version>
 	<version number="2.0-rc-2" date="2008-08-14">
 		<releaseNotes>
