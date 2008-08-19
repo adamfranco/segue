@@ -151,6 +151,8 @@ class SiteDispatcher {
 			$url = $harmoni->request->mkUrlWithBase(self::getBaseUrlForSlot($slot), $module, $action, $params);
 		} catch (UnknownIdException $e) {
 			$url = $harmoni->request->mkURL($module, $action, $params);
+		} catch (NullArgumentException $e) {
+			$url = $harmoni->request->mkURL($module, $action, $params);
 		}
 		
 		$harmoni->request->startNamespace(null);

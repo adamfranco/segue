@@ -182,7 +182,14 @@ class Segue_Wiki_TextTemplateResolver {
 					$params = array();
 					preg_match_all($paramRegexp, $paramString, $paramMatches);
 					foreach ($paramMatches[1] as $j => $paramName) {
-						$params[$paramName] = $paramMatches[2][$j];
+						if (!isset($params[$paramName]))
+							$params[$paramName] = $paramMatches[2][$j];
+						else if (is_array($params[$paramName]))
+							$params[$paramName][] = $paramMatches[2][$j];
+						else {
+							$params[$paramName] = array($params[$paramName]);
+							$params[$paramName][] = $paramMatches[2][$j];
+						}
 					}
 					
 					// Execute the template
@@ -193,7 +200,7 @@ class Segue_Wiki_TextTemplateResolver {
 						$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
 						$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
 					} catch (Exception $e) {
-						
+						print $e->getMessage();
 					}
 				} catch (UnknownIdException $e) {
 					if ($e->getCode() != 34563)
@@ -231,7 +238,11 @@ class Segue_Wiki_TextTemplateResolver {
 				foreach ($replacements as $html => $params) {
 					$markup = '{{'.$name;
 					foreach ($params as $key => $val) {
-						$markup .= '|'.$key.'='.$val;
+						if (is_array($val)) {
+							foreach ($val as $arrayVal)
+								$markup .= '|'.$key.'='.$arrayVal;
+						} else
+							$markup .= '|'.$key.'='.$val;
 					}
 					$markup .= '}}';
 					$text = str_replace($html, $markup, $text);

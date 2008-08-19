@@ -477,7 +477,7 @@ abstract class SeguePluginsDriver
 	final public function replaceIdsInHtml (array $idMap, $htmlString) {
 		$orig = $htmlString;
 		// non-wiki urls
-		$tokenizedHtml = $this->tokenizeLocalUrls($htmlString);
+		$htmlString = $this->tokenizeLocalUrls($htmlString);
 		preg_match_all('/\[\[localurl:([^\]]*)\]\]/', $htmlString, $matches);
 		for ($j = 0; $j < count($matches[1]); $j++) {
 			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1][$j], $paramMatches);
@@ -526,7 +526,7 @@ abstract class SeguePluginsDriver
 		}
 		
 		
-		return $htmlString;
+		return $this->untokenizeLocalUrls($htmlString);
 	}
 
 	/**

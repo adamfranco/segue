@@ -111,5 +111,45 @@
 			</li>
 			<li>{{googlemap|url=http://maps.google.com/?ie=UTF8&amp;t=h&amp;ll=44.009021,-73.174374&amp;spn=0.011451,0.013046&amp;z=16|s=AARTsJqzARj-Z8VnW5pkPMLMmZbqrJcYpw|width=425|height=350}}</li>
   		</ul>
+  		
+		<h1>GoogleCalendar Text-Template</h1>
+		<h2>googlecalendar</h2>
+		<p>This template will insert an embedded google calendar. It is easiest to copy paste the embed code from <a href='http://www.google.com/calendar/' target='_blank'>GoogleCalendar</a> rather than manually writing the template markup.</p>
+		<h2>Parameters:</h2>
+		<dl>
+			<dt><strong>id</strong></dt>
+			<dd>The id of a calendar usually an email address sort of thing. You can specify multiple id parameters. Example: gqq3gqfr4jvo79o1b3e2000fh8@group.calendar.google.com</dd>
+			<dt><strong>color</strong></dt>
+			<dd>The color of a calendar. You can specify multiple color parameters, one for each calendar id. Example: #ff0044</dd>
+			<dt><strong>title</strong></dt>
+			<dd>The title to display for the embeded calendar (Optional)</dd>
+			<dt><strong>width</strong></dt>
+			<dd>The integer width of the calendar in pixels. (Optional) Example: 325</dd>
+			<dt><strong>height</strong></dt>
+			<dd>The integer height of the calendar in pixels. (Optional) Example: 250</dd>
+			<dt><strong>mode</strong></dt>
+			<dd>The mode of the calendar - WEEK, MONTH, or AGENDA (Optional) Example: MONTH</dd>
+			<dt><strong>show_nav</strong></dt>
+			<dd>Show or hide the navigation buttons at the top of the calendar - 0 or 1 - default is 1 (Optional)</dd>
+			<dt><strong>show_title</strong></dt>
+			<dd>Show or hide the title at the top of the calendar - 0 or 1 - default is 1 (Optional)</dd>
+			<dt><strong>show_date</strong></dt>
+			<dd>Show or hide the date text at the top of the calendar - 0 or 1 - default is 1 (Optional)</dd>
+			<dt><strong>show_tabs</strong></dt>
+			<dd>Show or hide the tabs to week, month, or agenda views at the top of the calendar - 0 or 1 - default is 1 (Optional)</dd>
+			<dt><strong>show_calendars</strong></dt>
+			<dd>Show or hide the calendar list at the top of the calendar - 0 or 1 - default is 1 (Optional)</dd>
+			<dt><strong>bg_color</strong></dt>
+			<dd>Background Color - default is white #ffffff (Optional) Example #a3902d</dd>
+			<dt><strong>week_start</strong></dt>
+			<dd>Day of the week to start with - 1 (Sunday), 2 (Monday), or 7 (Saturday) default is 1 (Optional) Example: 2</dd>
+			<dt><strong>time_zone</strong></dt>
+			<dd>The time-zone to use default is empty (Optional) Example: America/New_York</dd>
+		</dl>
+		<h2>Example Usage:</h2>
+		<ul>
+			<li>{{googlecalendar|title=My Calendar Title|bg_color=#FFFFFF|week_start=1|time_zone=America/New_York|color=#528800|id=gqq3gqfr4jvo79o1b3e2000fh8@group.calendar.google.com|height=400}}</li>
+		</ul>
+
 	</body>
 </html>
