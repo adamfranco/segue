@@ -48,6 +48,9 @@
 			Text-Templates now support multi-valued arguments. Needed for allowing 
 			multiple Google-Calendars.
 		</change>
+		<new author='adam' date='2008-08-19' ref='2058349' reftype='fr' reporter='shel_sax'>
+			Text-Templates: New GoogleCalendar text-template.
+		</new>
 	</version>
 	<version number="2.0-rc-2" date="2008-08-14">
 		<releaseNotes>
