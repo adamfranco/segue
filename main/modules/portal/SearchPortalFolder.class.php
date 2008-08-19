@@ -42,7 +42,7 @@ class SearchPortalFolder
 		$this->query = strip_tags($query);
 		
 		$this->queryParts = explode(' ', 
-			mb_convert_encoding($this->query, 'UTF-8', mb_detect_encoding($this->query)));
+			mb_convert_encoding($this->query, 'UTF-8', mb_detect_encoding($this->query, "ASCII,JIS,UTF-8,EUC-JP,SJIS, ISO-8859-1")));
 		
 		$this->id = urlencode($this->query);
 		
