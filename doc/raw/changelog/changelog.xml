@@ -14,6 +14,13 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='alex' date='2008-08-19' ref='2053286' reftype='bug'>
+			Themes: Border color and style options for Bevelbox theme now apply to
+			content block heading.
+		</fix>
+		<fix author='alex' date='2008-08-19'>
+			UI2: changed minimal width of options layer from 200px to 150px.
+		</fix>
 		<fix author='adam' date='2008-08-18'>
 			Migration: Segue 1 redirects now work for RSS feeds and site-names with hyphens.
 		</fix>
