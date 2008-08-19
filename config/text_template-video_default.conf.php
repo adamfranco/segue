@@ -20,22 +20,26 @@ $video = WikiResolver::instance()->getTextTemplate('video');
  *********************************************************/
 $service = $video->addService(new Segue_TextTemplates_Video_Service(
 	'youtube', 
-	'<object width="###WIDTH###" height="###HEIGHT###"><param name="movie" value="http://www.youtube.com/v/###ID###&amp;hl=en&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><embed src="http://www.youtube.com/v/###ID###&amp;hl=en&amp;fs=1" type="application/x-shockwave-flash" allowfullscreen="true" width="###WIDTH###" height="###HEIGHT###"></embed></object>'
+	'<object width="###WIDTH###" height="###HEIGHT###"><param name="movie" value="http://www.youtube.com/v/###ID###&amp;hl=en&amp;fs=1###FMT###"></param><param name="allowFullScreen" value="true"></param><embed src="http://www.youtube.com/v/###ID###&amp;hl=en&amp;fs=1###FMT###" type="application/x-shockwave-flash" allowfullscreen="true" width="###WIDTH###" height="###HEIGHT###"></embed></object>'
 ));
 $service->setDefaultValue('width', '425');
 $service->setDefaultValue('height', '344');
 $service->setHtmlPlayerRegex('/http:\/\/www\.youtube\.com\/v\//');
 $service->setHtmlIdRegex('/http:\/\/www\.youtube\.com\/v\/([a-z0-9_-]+)/i');
+$service->addParam('fmt', '/^[0-9]*$/', '', '&amp;ap=%2526fmt%3D');
+$service->setHtmlParamsRegex('/\&ap=%2526fmt%3D([0-9]+)/', array(1 => 'fmt'));
 
 // Playlists
 $service = $video->addService(new Segue_TextTemplates_Video_Service(
 	'youtube_playlist', 
-	'<object width="###WIDTH###" height="###HEIGHT###"><param name="movie" value="http://www.youtube.com/p/###ID###&amp;hl=en&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><embed src="http://www.youtube.com/p/###ID###&amp;hl=en&amp;fs=1" type="application/x-shockwave-flash" allowfullscreen="true" width="###WIDTH###" height="###HEIGHT###"></embed></object>'
+	'<object width="###WIDTH###" height="###HEIGHT###"><param name="movie" value="http://www.youtube.com/p/###ID###&amp;hl=en&amp;fs=1###FMT###"></param><param name="allowFullScreen" value="true"></param><embed src="http://www.youtube.com/p/###ID###&amp;hl=en&amp;fs=1###FMT###" type="application/x-shockwave-flash" allowfullscreen="true" width="###WIDTH###" height="###HEIGHT###"></embed></object>'
 ));
 $service->setDefaultValue('width', '425');
 $service->setDefaultValue('height', '344');
 $service->setHtmlPlayerRegex('/http:\/\/www\.youtube\.com\/p\//');
 $service->setHtmlIdRegex('/http:\/\/www\.youtube\.com\/p\/([a-z0-9_-]+)/i');
+$service->addParam('fmt', '/^[0-9]*$/', '', '&amp;ap=%2526fmt%3D');
+$service->setHtmlParamsRegex('/\&ap=%2526fmt%3D([0-9]+)/', array(1 => 'fmt'));
 
 
 /*********************************************************
