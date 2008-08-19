@@ -10,6 +10,41 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0-rc-3" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-08-18'>
+			Migration: Segue 1 redirects now work for RSS feeds and site-names with hyphens.
+		</fix>
+		<fix author='adam' date='2008-08-18' ref='2058072' reftype='bug'>
+			Migration: Local URLs are now updated to point a new locations.
+		</fix>
+		<fix author='adam' date='2008-08-18' ref='2053923' reftype='bug'>
+			Dataport: Admin-only import tool now works again.
+		</fix>
+		<fix author='adam' date='2008-08-18'>
+			UI2: Ajax plugin updates now do not result in a null-argument exception.
+		</fix>
+		<fix author='adam' date='2008-08-19'>
+			Re-applied a set of changes that should have been in beta 28, but that
+			got accidentally dropped during resolution of a merge conflict.
+			
+			 - Plugins: Text-Plugin now prompts with confirmation before unloading 
+			 the page (back, refresh, link-click, etc) when the plugin is open for 
+			 editing in UI2.
+			 
+			 - Improved XML error checking in RSS feed display.
+			 
+			 - Removed debugging lines.
+			 
+			 - Placeholder admin screens now remember pagination state.
+		</fix>
+		<fix author='adam' date='2008-08-19' ref='2060103' reftype='bug' reporter='shel_sax'>
+			UI2: Block controls now are above header so that they don't hide reorder
+			and history links.
+		</fix>
+	</version>
 	<version number="2.0-rc-2" date="2008-08-14">
 		<releaseNotes>
 			This release fixes a number of small bugs and a number of security issues.

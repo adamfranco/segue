@@ -52,6 +52,7 @@ class editAction
 	 */
 	public function buildContent () {
 		$harmoni = Harmoni::instance();
+		$harmoni->request->passthrough('starting_number');
 		$harmoni->request->startNamespace("slots");
 		$name = strtolower(RequestContext::value("name"));
 		$harmoni->request->passthrough("name");
@@ -65,6 +66,7 @@ class editAction
 		}
 		
 		$this->runWizard (get_class($this).'_'.$name, $this->getActionRows());
+		$harmoni->request->forget('starting_number');
 	}
 	
 	/**
