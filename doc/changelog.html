@@ -23,7 +23,79 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-rc-2</h2>
+<h2>Version 2.0.0</h2>
+<h3>2008-08-20</h3>
+<p>This first stable release of Segue 2 fixes a number of issues that were found during testing of the release candidates. 
+<br>
+<br>Notable user-facing changes:
+<br>
+<br>- Now supports embeded GoogleCalendars.
+<br>
+<br>- Now supports links targeting pop-up windows.
+<br>
+<br>- YouTube videos now can be loaded in high quality using the fmt=18 option.
+<br>
+<br>- A warning is now given if leaving a page with a text-editor open.
+<br>
+<br>See the change-log for details of these and other fixes.
+<br>
+<br>-------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 30 require running system updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br>-------------
+<br>
+<br>This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2053286&amp;group_id=82171&amp;atid=565234">
+        			#2053286</a> Themes: Border color and style options for Bevelbox theme now apply to content block heading. (<em>2008-08-19 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: changed minimal width of options layer from 200px to 150px. (<em>2008-08-19 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Segue 1 redirects now work for RSS feeds and site-names with hyphens. (<em>2008-08-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2058072&amp;group_id=82171&amp;atid=565234">
+        			#2058072</a> Migration: Local URLs are now updated to point a new locations. (<em>2008-08-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2053923&amp;group_id=82171&amp;atid=565234">
+        			#2053923</a> Dataport: Admin-only import tool now works again. (<em>2008-08-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: Ajax plugin updates now do not result in a null-argument exception. (<em>2008-08-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Re-applied a set of changes that should have been in beta 28, but that got accidentally dropped during resolution of a merge conflict.
+<br>
+<br> - Plugins: Text-Plugin now prompts with confirmation before unloading the page (back, refresh, link-click, etc) when the plugin is open for editing in UI2. 
+<br>
+<br> * Improved XML error checking in RSS feed display. 
+<br>
+<br> * Removed debugging lines. 
+<br>
+<br> * Placeholder admin screens now remember pagination state. (<em>2008-08-19 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2060103&amp;group_id=82171&amp;atid=565234">
+        			#2060103</a> UI2: Block controls now are above header so that they don't hide reorder and history links. (<em>2008-08-19 - Adam Franco</em>)<br> (<em>reported by Shel Sax of Middlebury College</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2060070&amp;group_id=82171&amp;atid=565234">
+        			#2060070</a> Text-Templates: New text template for popup-windows enables usage of links that spawn popup windows as created by the FCKEditor. (<em>2008-08-20 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2060070&amp;group_id=82171&amp;atid=565234">
+        			#2060070</a> Text-Templates can now optionally flag themselves as 'WYSIWYG editor safe' so that their HTML can be modified in the FCKEditor and then converted back to markup for storage and filtering. (<em>2008-08-20 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Text-Templates now support multi-valued arguments. Needed for allowing multiple Google-Calendars. (<em>2008-08-19 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2058349&amp;group_id=82171&amp;atid=565237">
+        			#2058349</a> Text-Templates: New GoogleCalendar text-template. (<em>2008-08-19 - Adam Franco</em>)<br> (<em>reported by Shel Sax of Middlebury College</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2058238&amp;group_id=82171&amp;atid=565237">
+        			#2058238</a> Text-Templates: Youtube text-template now supports the fmt (format) option which can take '18' as a value to get a high-quality video. (<em>2008-08-19 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-rc-2</h2>
 <h3>2008-08-14</h3>
 <p>This release fixes a number of small bugs and a number of security issues.
 <br>
