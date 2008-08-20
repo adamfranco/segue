@@ -150,6 +150,44 @@
 		<ul>
 			<li>{{googlecalendar|title=My Calendar Title|bg_color=#FFFFFF|week_start=1|time_zone=America/New_York|color=#528800|id=gqq3gqfr4jvo79o1b3e2000fh8@group.calendar.google.com|height=400}}</li>
 		</ul>
+		
+		<h1>Pop-Up Window Text-Template</h1>
+		<h2>popup</h2>
+		<p>This template will open a link in a popup window.</p>
+		<h2>Parameters:</h2>
+		<dl>
+			<dt><strong>url</strong></dt>
+			<dd>The url to link to. (Required)</dd>
+			<dt><strong>text</strong></dt>
+			<dd>The text to display in the link. (Required)</dd>
+			<dt><strong>window_name</strong></dt>
+			<dd>A name for the new window. If given, multiple links can open in the same popup window rather than spawning new windows. Must be letters, numbers, or underscores. (Optional) Example: help_window</dd>
+			<dt><strong>width</strong></dt>
+			<dd>The integer width of the popup window in pixels. (Optional) Example: 325</dd>
+			<dt><strong>height</strong></dt>
+			<dd>The integer height of the popup window in pixels. (Optional) Example: 250</dd>
+			<dt><strong>resizable</strong></dt>
+			<dd>If yes, the popup window will be resizable. 'yes' or 'no' - default is 'yes' (Optional)</dd>
+			<dt><strong>location</strong></dt>
+			<dd>If yes, the popup window will have the location bar. 'yes' or 'no' - default is 'no' (Optional)</dd>
+			<dt><strong>scrollbars</strong></dt>
+			<dd>If yes, the popup window will have scrollbars if needed. 'yes' or 'no' - default is 'yes' (Optional)</dd>
+			<dt><strong>status</strong></dt>
+			<dd>If yes, the popup window will have a status bar displayed at the bottom of the window. 'yes' or 'no' - default is 'yes' (Optional)</dd>
+			<dt><strong>menubar</strong></dt>
+			<dd>If yes, the popup window will have the menu bar with file, edit, menus. 'yes' or 'no' - default is 'no' (Optional)</dd>
+			<dt><strong>toolbar</strong></dt>
+			<dd>If yes, the popup window will have the tool bar with back/forward/refresh buttons. 'yes' or 'no' - default is 'no' (Optional)</dd>
+			<dt><strong>top</strong></dt>
+			<dd>The integer position of the popup window in pixels from the top of the screen. (Optional) Example: 25</dd>
+			<dt><strong>left</strong></dt>
+			<dd>The integer position of the popup window in pixels from the left side of the screen. (Optional) Example: 250</dd>
+		</dl>
+		<h2>Example Usage:</h2>
+		<ul>
+			<li>{{popup|url=http://slashdot.org|text=Slashdot|resizable=no|location=yes|menubar=yes|scrollbars=yes|status=no|toolbar=no|fullscreen=no|dependent=no|width=300|height=600}}</li>
+			
+		</ul>
 
 	</body>
 </html>

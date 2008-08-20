@@ -44,6 +44,10 @@
 			UI2: Block controls now are above header so that they don't hide reorder
 			and history links.
 		</fix>
+		<new author='adam' date='2008-08-20' ref='2060070' reftype='bug'>
+			Text-Templates: New text template for popup-windows enables usage
+			of links that spawn popup windows as created by the FCKEditor.
+		</new>
 		<change author='adam' date='2008-08-19'>
 			Text-Templates now support multi-valued arguments. Needed for allowing 
 			multiple Google-Calendars.
