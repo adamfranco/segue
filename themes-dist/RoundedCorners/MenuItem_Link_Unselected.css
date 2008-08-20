@@ -11,26 +11,24 @@
     background-color: [[MENU_COLOR]];
     text-align: left;  
     font-size: 100%;
-    margin: 0px;
+    margin-top: -2px;
+    margin-bottom: -2px;
 }
 
-
-*.MenuItem_Link_Unselected a {
+*.MenuItem_Link a {
     display: block;
     text-decoration: none;
-    color: [[MENU_LINK_COLOR]];
 }
 
-*.MenuItem_Link a:hover {
-    display: block;
-    background-color: [[HEADER_BG_COLOR]];
-    text-decoration: none;
-    color: [[MENU_LINK_COLOR]];
-}
 
 .MenuItem_Link_Unselected .Content:hover {
     background-color: [[HEADER_BG_COLOR]];
 }
+
+.MenuItem_Link_Unselected:hover td {
+    background-color: [[HEADER_BG_COLOR]];
+}
+
 
 .MenuItem_Link_Unselected .BorderTL {
     background: url('./images/[[IMAGE_DIR]]/corner_TL.gif') no-repeat;

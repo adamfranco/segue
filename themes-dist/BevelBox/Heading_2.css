@@ -15,7 +15,7 @@
 
 
 *.Heading_2 .box02 {
-    border: 1px solid [[BACKGROUND_BORDER02]];
+    border: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
     margin: 0px;
 }
 

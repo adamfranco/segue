@@ -45,15 +45,16 @@ class EditModeSiteVisitor
 		parent::__construct();
 		$this->_classNames = array(
 			'Block' => _('Content Block'),
-			'NavBlock' => _('Nav. Item'),
+			'NavBlock' => _('Page'),
+			'NavSection' => _('Section'),
 			'SiteNavBlock' => _('Site'),
-			'MenuOrganizer' => _('Menu'),
+			'MenuOrganizer' => _('Pages Container'),
 			'FlowOrganizer' => _('Content Container'),
 			'FixedOrganizer' => _('Layout Container'),
-			'SubMenu_multipart' => _('Sub-Menu'),
-			'SidebarSubMenu_multipart' => _('Sub-Menu with Sidebar'),
-			'ContentPage_multipart' => _('Content Page'),
-			'SidebarContentPage_multipart' => _('Content Page with Sidebar')
+			'SubMenu_multipart' => _('Section'),
+			'SidebarSubMenu_multipart' => _('Section with Sidebar'),
+			'ContentPage_multipart' => _('Page'),
+			'SidebarContentPage_multipart' => _('Page with Sidebar')
 			
 		);
 		
@@ -122,7 +123,8 @@ END;
 				.$this->getControlsHTML(
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true);
+					'#090', '#9F9', '#6C6', 0, true,
+					Segue_Selection::instance()->getAddLink($block))				."<br/>";
 			$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 			
 			$guiContainer->setPostHTML($this->getBarPostHTML());
@@ -194,7 +196,6 @@ END;
 		ob_start();	
 			
 		// Tags
-		print "\n\t<div class='tagging_tags_display'>";
 		SiteDispatcher::passthroughContext();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -202,6 +203,7 @@ END;
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), $block->getQualifierId()))
 		{
+			print "\n\t<div class='tagging_tags_display'>";
 			print TagAction::getTagCloudForItem($item, 'sitetag',
 				array(	'font-size: 90%;',
 						'font-size: 100%;',
@@ -252,7 +254,8 @@ END;
 				.$this->getControlsHTML(
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true);
+					'#090', '#9F9', '#6C6', 0, true,
+					Segue_Selection::instance()->getAddLink($block))				."<br/>";
 			$menuItem->setPreHTML($controlsHTML.$menuItem->getPreHTML($null = null));
 			
 			$menuItem->setPostHTML($this->getBarPostHTML());
@@ -275,6 +278,12 @@ END;
 		if (!$menuItems)
 			return $menuItems;
 		
+		if ($navBlock->isSection()) {
+			$label = $this->_classNames['NavSection'];
+		} else {
+			$label = $this->_classNames['NavBlock'];
+		}
+		
 		// Add controls bar and border
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -284,9 +293,10 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#090')
 				.$this->getControlsHTML(
-					"<em>".$this->_classNames['NavBlock']."</em>", 
+					"<em>".$label."</em>", 
 					$navBlock->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true)
+					'#090', '#9F9', '#6C6', 0, true,
+					Segue_Selection::instance()->getAddLink($navBlock))
 				."<br/>";
 			$menuItems[0]->setPreHTML($controlsHTML.$menuItems[0]->getPreHTML($null = null));
 			
@@ -351,9 +361,17 @@ END;
 			$idManager->getId("edu.middlebury.authorization.add_children"), 
 			$organizer->getQualifierId()))
 		{
+		
 			$pluginManager = Services::getService("PluginManager");
+			
+			$formHtml = "\n\t<div class='ui2_add_form_wrapper'>";
+			$formHtml .= $this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins());
+			// Move/Copy from selection
+			$formHtml .= "\n\t | ".Segue_Selection::instance()->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t</div>";
+			
 			$form = $this->addFlowChildWrapper($organizer, $i, 
-				new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null, $pluginManager->getEnabledPlugins())));
+				new UnstyledBlock($formHtml));
 			
 			// Add the form to the beginning of the list for custom ordering or recent last
 			if (in_array($organizer->sortMethod(), array('custom', 'create_date_asc', 'mod_date_asc')))
@@ -426,12 +444,19 @@ END;
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
 
 	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
-			$allowed[] = _("Menu Content");
+			$allowed[] = _("Content Blocks");
 			$pluginManager = Services::getService("PluginManager");
 			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
 			
+			
+			$formHtml = "\n\t<div class='ui2_add_form_wrapper'>";
+			$formHtml .= $this->getAddFormHTML($organizer->getId(), null, $allowed, true);
+			// Move/Copy from selection
+			$formHtml .= "\n\t | ".Segue_Selection::instance()->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t</div>";
+			
 			$childComponent = $guiContainer->add($this->addFlowChildWrapper($organizer, $organizer->getTotalNumberOfCells(), 
-				new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, $allowed, true), 2)), null, '100%', null, TOP);
+				new UnstyledMenuItem($formHtml, 2)), null, '100%', null, TOP);
 				
 			// Add a spacer at the end of the menu
 			$guiContainer->add(new UnstyledMenuItem("<div> &nbsp; </div>"));
@@ -500,26 +525,25 @@ END;
 	function getAddFormHTML ($organizerId, $cellIndex, $allowed, $isMenu = FALSE) {
 		ob_start();
 		$harmoni = Harmoni::instance();
-		print "\n<form action='";
+		print "\n\t<a style='text-align: center; display: inline;'";
+		print " onclick='this.style.display=\"none\"; this.nextSibling.style.display=\"block\";'";
+		print ">";
+		if ($isMenu)
+			print "\n\t\t\t"._("+ Page...");
+		else
+			print "\n\t\t\t"._("+ Content");
+		print "\n\t</a>";
+		print "<form action='";
 		print $harmoni->request->quickURL('ui2', 'addComponent', 
 				array('returnNode' => SiteDispatcher::getCurrentNodeId(),
 					'returnAction' => $this->_action));
-		print "' method='post'>";
+		print "' method='post' ";
+		print " style='display: none' class='ui2_add_form'>";
 		
 		print "\n\t<input type='hidden' name='".RequestContext::name('organizerId')."' value='".$organizerId."'/>";
 		if (!is_null($cellIndex))
 			print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
-		//print "\n\t<div class='block2Content' style='text-align: center;'";
-		print "\n\t<a style='text-align: center; display: block;'";
-		print " onclick='this.style.display=\"none\"; this.nextSibling.style.display=\"block\";'";
-		print ">";
-		if ($isMenu)
-			print "\n\t\t\t"._("+ Menu Item");
-		else
-			print "\n\t\t\t"._("+ Content");
-		print "\n\t</a>";
-		print "<div style='display: none'>";
-		
+		//print "\n\t<div class='block2Content' style='text-align: center;'";		
 		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
 		
 		$inCat = false;
@@ -542,7 +566,7 @@ END;
 		print "\n\t\t\t<input name='".RequestContext::name('displayName')."' type='text' size='10'/>";
 		print "\n\t\t</div>";
 		
-		print "\n\t\t<div style='white-space: nowrap; text-align: right;'>";
+		print "\n\t\t<div style='white-space: nowrap; margin: 5px;'>";
 		print "\n\t\t\t<input type='button' value='"._('Submit')."'";
 		print " onclick='";
 		print "var hasTitle = false; ";
@@ -562,10 +586,9 @@ END;
 		print "}";
 		print "' />";
 		print "\n\t\t\t<input type='button' ";
-		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.style.display=\"block\";'";
+		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.style.display=\"inline\";'";
 		print " value='"._("Cancel")."'/>";
 		print "\n\t\t</div>";
-		print "\n\t</div>";
 		print "</form>";
 		return ob_get_clean();
 	}
@@ -582,8 +605,15 @@ END;
 		print "\n\t\t\t<option value='".$type->asString()."'>";
 		if (isset($this->_classNames[$type->getKeyword()]))
 			print $this->_classNames[$type->getKeyword()];
-		else
-			print $type->getKeyword();
+		else {
+			try {
+				$pluginManager = Services::getService("PluginManager");
+				$class = $pluginManager->getPluginClass($type);
+				print call_user_func(array($class, 'getPluginDisplayName'));
+			} catch (UnknownIdException $e) {
+				print $type->getKeyword();
+			}
+		}
 		print "</option>";
 	}
 	
@@ -595,7 +625,7 @@ END;
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0) {
+	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0, $selectionLinkHtml = null) {
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		
@@ -605,7 +635,7 @@ END;
 		ob_start();
 		print "\n<div class='controls_bar' style='"
 			."color: #000; "
-			."min-width: 200px; "
+			."min-width: 150px; "
 // 			."border-top: $lineWidth solid $borderColor; "
 // 			."border-left: $lineWidth solid $borderColor; "
 // 			."border-right: $lineWidth solid $borderColor; "
@@ -635,6 +665,13 @@ END;
 		print "\n\t\t".$title;
 		print "\n\t\t</td>";
 		print "\n\t\t<td style='text-align: right;'>";
+		if (!is_null($selectionLinkHtml)) {
+			print "\n\t\t\t\t<span class='selection_link'"
+			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
+			.">";
+			print $selectionLinkHtml;
+			print " | </span>";
+		}
 		print "\n\t\t\t\t<span class='controls_link'"
 			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
 			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'"
@@ -771,6 +808,11 @@ END;
 	function showControlsLink(mainElement) {
 		var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 		controlsLink.style.visibility = 'visible';
+		
+		// Show the selection link as well
+		var selectionLink = getDescendentByClassName(mainElement, 'selection_link');
+		if (selectionLink)
+				selectionLink.style.visibility = 'visible';
 	}
 	
 	function hideControlsLink(mainElement) {
@@ -778,6 +820,11 @@ END;
 		if (controls.style.display != 'block') {
 			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 			controlsLink.style.visibility = 'hidden';
+			
+			// Hide the selection link as well
+			var selectionLink = getDescendentByClassName(mainElement, 'selection_link');
+			if (selectionLink)
+				selectionLink.style.visibility = 'hidden';
 		}		
 	}
 	

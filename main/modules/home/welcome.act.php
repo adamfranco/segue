@@ -55,9 +55,14 @@ class welcomeAction
 	function buildContent () {
 		$actionRows = $this->getActionRows();
 		ob_start();
-		print "\n<p>";
-		print _("<strong>Segue</strong> is a collaborative learning tool developed at Middlebury College.");
-		print "</p>";
+		
+		if (defined('SEGUE_WELCOME_MESSAGE'))
+			print SEGUE_WELCOME_MESSAGE;
+		else {
+			print "\n<p>";
+			print _("<strong>Segue</strong> is a collaborative learning tool developed at Middlebury College.");
+			print "</p>";
+		}
 		
 		$actionRows->add(
 			new Block(ob_get_clean(), STANDARD_BLOCK), 

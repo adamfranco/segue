@@ -91,6 +91,19 @@ class htmlAction
 	 */
 	function execute () {
 		$harmoni = Harmoni::instance();
+		
+		/*********************************************************
+		 * Split sites based on their location-category
+		 *********************************************************/
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		try {
+			$slot = $rootSiteComponent->getSlot();
+			if (SiteDispatcher::getBaseUrlForSlot($slot) != MYURL) {
+				RequestContext::sendTo(SiteDispatcher::quickUrl());
+			}
+		} catch (UnknownIdException $e) {		// No slot for the site....
+		}
+		
 		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		$allWrapper = $this->addHeaderControls($mainScreen);
@@ -246,9 +259,7 @@ class htmlAction
 		ob_start();
 		print "<div class='seguefooter_left'>";
 		// Help LInk
-		print "<a target='_blank' href='";
-		print $harmoni->request->quickURL("help", "browse_help");
-		print "'>"._("Help")."</a>";
+		print Help::link();
 		
 		// Site Map
 		$siteMapUrl = $harmoni->request->quickURL("view", "map", array('node' => SiteDispatcher::getCurrentNodeId()));

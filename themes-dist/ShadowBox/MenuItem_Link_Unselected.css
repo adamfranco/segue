@@ -6,6 +6,8 @@
     border-bottom: 1px solid [[MENU_BORDER_BOTTOM01]];
     border-left: 0px none [[MENU_BORDER_LEFT]];
     border-right: 0px none [[MENU_BORDER_RIGHT]];
+    margin-left: 5px;
+    margin-right: 5px;
     margin-bottom: -2px;    
 }
 
@@ -29,7 +31,7 @@
     background-color: [[MENU_BG_COLOR]];
     padding: 0px;
     text-align: left;    
-    font-size: 100%;
+    font-size: [[MENU_FONT_SIZE]];
 }
 
 

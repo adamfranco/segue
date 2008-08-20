@@ -1,0 +1,193 @@
+<html>
+	<head>
+		<title>Text-Templates</title>
+	</head>
+	<body>
+		<h1>About Text-Templates</h1>
+		
+		<p>Text-templates are simple systems for creating dynamic text similar to MediaWiki templates. Access to text-templates is done by adding the following markup to text:</p>
+		<div style='margin: 20px; font-family: monospace;'>{{template_name}}</div>
+		
+		<p>Additionally, optional named parameters can also be passed to text-templates:</p>
+		<div style='margin: 20px; font-family: monospace;'>{{template_name|paramName=value|param2Name=value2}}</div>
+		
+		<p>Text-templates can be useful for inserting predefined scripts or objects into HTML without allowing cross-site scripting attacks. They can also be used to make common html blocks easier to display or change.</p>
+		
+		<p>Below is a listing of text-templates that come with Segue. See the Documentation <a href="https://segue2.middlebury.edu/view/html/node/481252">page on text-templates</a> for information on creating your own text-templates. </p>
+		
+		
+		
+		<h1>Video Text-Template</h1>
+		<h2>video</h2>
+		<p>This template will allow the embedding of Flash Video from a variety of sources. These sources must be configured by the Segue administrator if they are not included in the default configuration.</p>
+		<h2>Parameters:</h2>
+		<dl>
+			<dt><strong>service</strong></dt>
+			<dd>The service at which this video is hosted -- all lowercase. Examples: youtube, youtube_playlist, google, vimeo, hulu</dd> 		
+			<dt><strong>id</strong></dt> 		
+			<dd>The Id of the video, the specific form of this dependent on the service, but generally this can be found in the URL for flash-video file. Example for YouTube: s13dLaTIHSg</dd>
+			<dt><strong>width</strong></dt>
+			<dd>The integer width of the player in pixels. Example: 325</dd>
+			<dt><strong>height</strong></dt>
+			<dd>The integer height of the player in pixels. Example: 250</dd> 	
+		</dl>
+		
+		<h2>Example Usage:</h2>
+		<p>
+			<font face="Courier New">{{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}}</font>
+			<object height="344" width="425">
+				<param name="movie" value="http://www.youtube.com/v/s13dLaTIHSg&amp;hl=en&amp;fs=1"/>
+				<param name="allowFullScreen" value="true"/>
+				<embed src="http://www.youtube.com/v/s13dLaTIHSg&amp;hl=en&amp;fs=1" type="application/x-shockwave-flash" allowfullscreen="true" height="344" width="425"/>
+			</object>
+		</p>
+		
+		<h2>Note:</h2>
+		<p>If you paste the embed code from a supported service into a text block, it will automatically be converted into the template markup when saved.</p>
+		
+		
+		<h1>Search Text-Template</h1>
+		<h2>search</h2>
+		<p>This template will insert a search form that will open a new window with the search criteria supplied. The default search provider is Google, but other search providers can be used by specifying <em>base_url</em> and <em>search_param_name</em> options.</p>
+		<h2>Parameters:</h2>
+		<dl> 		<dt><strong>base_url</strong></dt><dd>The base url that the search form will submit to. If specified, the param_name must be specified as well.</dd> 		<dt><strong>search_param_name</strong></dt> 		<dd>The name of the query parameter that will be added to the URL.</dd> 		<dt><strong>size</strong></dt> 		<dd>Optional: The number of characters to show in the field</dd> 		<dt><strong>button_text</strong></dt> 		<dd>Optional: The text to display in the button field, the default is 'Search'</dd> 		<dt><strong>additional_params</strong></dt> 		<dd>Optional: A url encoded string of paramName=parmValue&amp;paramName2=paramValue2 to be added to the query string. Example 'lang=en_US&amp;go=true'</dd> 		<dt><strong>provider</strong></dt> 		<dd>Optional: A preconfigured search. If used, all other options except size will be ignored. Allowed values: google, wikipedia, yahoo, youtube</dd> 	</dl>
+		
+		<h2>Example Usage:</h2>
+		<ul>
+			<li><font face="Courier New">{{search}}</font>
+			
+		<form action="http://www.google.com/search" method="get" target="_blank">
+			<input name="q" value="" type="text"/>
+			<input value="Search Google" type="submit"/>
+		</form></li>
+			<li><font face="Courier New">{{search|size=50}}</font>
+			
+		
+		<form action="http://www.google.com/search" method="get" target="_blank">
+			<input name="q" value="" type="text"/>
+			<input value="Search Google" type="submit"/>
+		</form></li>
+			<li><font face="Courier New">{{search|base_url=http://youtube.com/results|search_param_name=search_query}}</font>
+			
+		<form action="http://youtube.com/results" method="get" target="_blank">
+			<input name="search_query" value="" type="text"/>
+			<input value="Search" type="submit"/>
+		</form></li>
+			<li><font face="Courier New">{{search|base_url=http://youtube.com/results|search_param_name=search_query|additional_params=search_sort=video_date_uploaded&amp;uploaded=d}}</font>
+		
+			
+		<form action="http://youtube.com/results" method="get" target="_blank">
+			<input name="search_query" value="" type="text"/>
+			<input value="Search" type="submit"/>
+			<input name="search_sort" value="video_date_uploaded" type="hidden"/>
+			<input name="uploaded" value="d" type="hidden"/>
+		</form></li>
+			<li><font face="Courier New">{{search|provider=yahoo}}</font>
+			
+		<form action="http://search.yahoo.com/search" method="get" target="_blank">
+			<input name="p" value="" type="text"/>
+			<input value="Search Yahoo" type="submit"/>
+		
+		</form></li>
+		</ul>
+		
+		
+		<h1>GoogleMaps Text-Template</h1>
+		<h2>googlemap</h2>
+		<p>This template will insert an embedded Google Map. Pasting the Google Map embed-code into a TextBlock will automatically convert the embed-code into template markup.</p>
+		
+		<h2>Parameters:</h2>
+		<dl> 		<dt><strong>url</strong></dt><dt> 		 
+		</dt><dd>The base url of the map.</dd> 		<dt><strong>s</strong></dt><dt> 		 
+		
+		</dt><dd>The security token that Google maps uses for their embeded maps, visible in the embed-source code. (Required)</dd> 		<dt><strong>width</strong></dt> 		<dd>The integer width of the map in pixels. (Optional) Example: 325</dd> 		<dt><strong>height</strong></dt> 		<dd>The integer height of the map in pixels. (Optional) Example: 250</dd> 	</dl>
+		
+		<h2>Example Usage:</h2>
+		<ul>
+			<li>{{googlemap|url=http://maps.google.com/?ie=UTF8&amp;t=h&amp;ll=44.009021,-73.174374&amp;spn=0.011451,0.013046&amp;z=16|s=AARTsJqzARj-Z8VnW5pkPMLMmZbqrJcYpw}} <br/>
+		
+			
+				<iframe marginheight="0" marginwidth="0" src="http://maps.google.com/?ie=UTF8&amp;t=h&amp;ll=44.009021,-73.174374&amp;spn=0.011451,0.013046&amp;z=16&amp;output=embed&amp;s=AARTsJqzARj-Z8VnW5pkPMLMmZbqrJcYpw" frameborder="0" height="350" scrolling="no" width="425"> </iframe>
+			</li>
+			<li>{{googlemap|url=http://maps.google.com/?ie=UTF8&amp;t=h&amp;ll=44.009021,-73.174374&amp;spn=0.011451,0.013046&amp;z=16|s=AARTsJqzARj-Z8VnW5pkPMLMmZbqrJcYpw|width=425|height=350}}</li>
+  		</ul>
+  		
+		<h1>GoogleCalendar Text-Template</h1>
+		<h2>googlecalendar</h2>
+		<p>This template will insert an embedded google calendar. It is easiest to copy paste the embed code from <a href='http://www.google.com/calendar/' target='_blank'>GoogleCalendar</a> rather than manually writing the template markup.</p>
+		<h2>Parameters:</h2>
+		<dl>
+			<dt><strong>id</strong></dt>
+			<dd>The id of a calendar usually an email address sort of thing. You can specify multiple id parameters. Example: gqq3gqfr4jvo79o1b3e2000fh8@group.calendar.google.com</dd>
+			<dt><strong>color</strong></dt>
+			<dd>The color of a calendar. You can specify multiple color parameters, one for each calendar id. Example: #ff0044</dd>
+			<dt><strong>title</strong></dt>
+			<dd>The title to display for the embeded calendar (Optional)</dd>
+			<dt><strong>width</strong></dt>
+			<dd>The integer width of the calendar in pixels. (Optional) Example: 325</dd>
+			<dt><strong>height</strong></dt>
+			<dd>The integer height of the calendar in pixels. (Optional) Example: 250</dd>
+			<dt><strong>mode</strong></dt>
+			<dd>The mode of the calendar - WEEK, MONTH, or AGENDA (Optional) Example: MONTH</dd>
+			<dt><strong>show_nav</strong></dt>
+			<dd>Show or hide the navigation buttons at the top of the calendar - 0 or 1 - default is 1 (Optional)</dd>
+			<dt><strong>show_title</strong></dt>
+			<dd>Show or hide the title at the top of the calendar - 0 or 1 - default is 1 (Optional)</dd>
+			<dt><strong>show_date</strong></dt>
+			<dd>Show or hide the date text at the top of the calendar - 0 or 1 - default is 1 (Optional)</dd>
+			<dt><strong>show_tabs</strong></dt>
+			<dd>Show or hide the tabs to week, month, or agenda views at the top of the calendar - 0 or 1 - default is 1 (Optional)</dd>
+			<dt><strong>show_calendars</strong></dt>
+			<dd>Show or hide the calendar list at the top of the calendar - 0 or 1 - default is 1 (Optional)</dd>
+			<dt><strong>bg_color</strong></dt>
+			<dd>Background Color - default is white #ffffff (Optional) Example #a3902d</dd>
+			<dt><strong>week_start</strong></dt>
+			<dd>Day of the week to start with - 1 (Sunday), 2 (Monday), or 7 (Saturday) default is 1 (Optional) Example: 2</dd>
+			<dt><strong>time_zone</strong></dt>
+			<dd>The time-zone to use default is empty (Optional) Example: America/New_York</dd>
+		</dl>
+		<h2>Example Usage:</h2>
+		<ul>
+			<li>{{googlecalendar|title=My Calendar Title|bg_color=#FFFFFF|week_start=1|time_zone=America/New_York|color=#528800|id=gqq3gqfr4jvo79o1b3e2000fh8@group.calendar.google.com|height=400}}</li>
+		</ul>
+		
+		<h1>Pop-Up Window Text-Template</h1>
+		<h2>popup</h2>
+		<p>This template will open a link in a popup window.</p>
+		<h2>Parameters:</h2>
+		<dl>
+			<dt><strong>url</strong></dt>
+			<dd>The url to link to. (Required)</dd>
+			<dt><strong>text</strong></dt>
+			<dd>The text to display in the link. (Required)</dd>
+			<dt><strong>window_name</strong></dt>
+			<dd>A name for the new window. If given, multiple links can open in the same popup window rather than spawning new windows. Must be letters, numbers, or underscores. (Optional) Example: help_window</dd>
+			<dt><strong>width</strong></dt>
+			<dd>The integer width of the popup window in pixels. (Optional) Example: 325</dd>
+			<dt><strong>height</strong></dt>
+			<dd>The integer height of the popup window in pixels. (Optional) Example: 250</dd>
+			<dt><strong>resizable</strong></dt>
+			<dd>If yes, the popup window will be resizable. 'yes' or 'no' - default is 'yes' (Optional)</dd>
+			<dt><strong>location</strong></dt>
+			<dd>If yes, the popup window will have the location bar. 'yes' or 'no' - default is 'no' (Optional)</dd>
+			<dt><strong>scrollbars</strong></dt>
+			<dd>If yes, the popup window will have scrollbars if needed. 'yes' or 'no' - default is 'yes' (Optional)</dd>
+			<dt><strong>status</strong></dt>
+			<dd>If yes, the popup window will have a status bar displayed at the bottom of the window. 'yes' or 'no' - default is 'yes' (Optional)</dd>
+			<dt><strong>menubar</strong></dt>
+			<dd>If yes, the popup window will have the menu bar with file, edit, menus. 'yes' or 'no' - default is 'no' (Optional)</dd>
+			<dt><strong>toolbar</strong></dt>
+			<dd>If yes, the popup window will have the tool bar with back/forward/refresh buttons. 'yes' or 'no' - default is 'no' (Optional)</dd>
+			<dt><strong>top</strong></dt>
+			<dd>The integer position of the popup window in pixels from the top of the screen. (Optional) Example: 25</dd>
+			<dt><strong>left</strong></dt>
+			<dd>The integer position of the popup window in pixels from the left side of the screen. (Optional) Example: 250</dd>
+		</dl>
+		<h2>Example Usage:</h2>
+		<ul>
+			<li>{{popup|url=http://slashdot.org|text=Slashdot|resizable=no|location=yes|menubar=yes|scrollbars=yes|status=no|toolbar=no|fullscreen=no|dependent=no|width=300|height=600}}</li>
+			
+		</ul>
+
+	</body>
+</html>

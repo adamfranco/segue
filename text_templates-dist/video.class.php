@@ -24,7 +24,21 @@
 class Segue_TextTemplates_video
 	implements Segue_Wiki_TextTemplate 
 {
-
+	
+	/**
+	 * Answer true if this text template is safe for inclusion and editing with
+	 * the WYSIWYG HTML editor. If true, users will not see the text template 
+	 * markup in the editor, but rather the generated code. This should really
+	 * only be used for templates that work with HTML generated directly by the editor.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function isEditorSafe () {
+		return false;
+	}
+	
 	/**
 	 * Constructor
 	 * 
@@ -255,6 +269,9 @@ class Segue_TextTemplates_Video_Service {
 		if (!preg_match('/###ID###/', $targetHtml))
 			throw new InvalidArgumentException('targetHtml is missing the required ###ID### placeholder');
 		$this->targetHtml = $targetHtml;
+		
+		$this->preText = array();
+		$this->postText = array();
 	}
 	
 	/**
@@ -275,11 +292,13 @@ class Segue_TextTemplates_Video_Service {
 	 * @param string $paramName
 	 * @param string $regex
 	 * @param string $defaultValue
+	 * @param optional string $pre Text to add before the parameter, only if it has a value.
+	 * @param optional string $post Text to add after the parameter, only if it has a value.
 	 * @return void
 	 * @access public
 	 * @since 7/15/08
 	 */
-	public function addParam ($paramName, $regex, $defaultValue) {
+	public function addParam ($paramName, $regex, $defaultValue, $pre='', $post='') {
 		if (!preg_match('/^\/.+\/[a-z]*$/', $regex))
 			throw new InvalidArgumentException("$regex is not a valid preg_match regular expression.");
 		if (!preg_match('/^[a-z0-9_-]+$/', $paramName))
@@ -288,6 +307,10 @@ class Segue_TextTemplates_Video_Service {
 			throw new Exception("Param '$paramName' already exists.");
 		
 		$this->paramRegexes[$paramName] = $regex;
+		
+		$this->preText[$paramName] = $pre;
+		$this->postText[$paramName] = $post;
+		
 		
 		$this->setDefaultValue($paramName, $defaultValue);
 	}
@@ -448,7 +471,13 @@ class Segue_TextTemplates_Video_Service {
 		// Replace placeholders with our params
 		$output = $this->targetHtml;
 		foreach ($params as $param => $val) {
-			$output = str_replace('###'.strtoupper($param).'###', $val, $output);
+			$text = $val;
+			if (isset($this->preText[$param]) && $val)
+				$text = $this->preText[$param].$text;
+			if (isset($this->postText[$param]) && $val)
+				$text = $text.$this->postText[$param];
+			
+			$output = str_replace('###'.strtoupper($param).'###', $text, $output);
 		}
 		
 		return $output;

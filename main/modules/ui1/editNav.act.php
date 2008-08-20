@@ -34,7 +34,12 @@ class editNavAction
 	 * @since 5/11/07
 	 */
 	function getHeadingText () {
-		return _("Edit Navigation");
+		$nav = $this->getSiteComponent();
+		if ($nav->isSection())
+			$label = _("Section");
+		else
+			$label = _("Page");
+		return str_replace('%1', $label, _("Edit %1"));
 	}
 	
 	/**

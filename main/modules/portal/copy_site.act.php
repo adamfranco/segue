@@ -102,7 +102,7 @@ class copy_siteAction
 			if (RequestContext::value('copyPermissions') == 'true')
 				$importer->enableRoleImport();
 			
-			if (RequestContext::value('copyDiscussions') == 'true')
+			if (RequestContext::value('copyDiscussions') != 'true')
 				$importer->disableCommentImport();
 			
 // 			if (isset($values['owners'])) {

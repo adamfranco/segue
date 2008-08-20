@@ -1,5 +1,5 @@
 
-Segue v. 2.0-beta-28 (2008-07-24)
+Segue v. 2.0.0 (2008-08-20)
 =================================
 
 What is Segue?
@@ -17,23 +17,35 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release fixes a number of minor bugs, improves theme-support for MS Internet
-Explorer, and adds support for embedding GoogleMaps. 
+This first stable release of Segue 2 fixes a number of issues that were found during
+testing of the release candidates. 
 
-See the change-log for additional details on fixes.
+Notable user-facing changes:
 
-Segue 2.0-beta-28 uses Harmoni 1.4.5 and Polyphony 1.3.0.
+- Now supports embeded GoogleCalendars.
 
----------------------
+- Now supports links targeting pop-up windows.
+
+- YouTube videos now can be loaded in high quality using the fmt=18 option.
+
+- A warning is now given if leaving a page with a text-editor open.
+
+See the change-log for details of these and other fixes.
+
+-------------
 
 Upgrades:
 
-As of this beta 25, Segue requires PHP to be
-compiled with XSL support. On unix systems this can be added by configuring PHP
-using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+As of beta 25, Segue requires PHP to be compiled with XSL
+support. On unix systems this can be added by configuring PHP using the --with-xsl
+option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
 
-Upgrades from versions prior to beta 26 require running the RSS Feed updaters
-located under Admin Tools --> Segue Updates.
+Upgrades from versions prior to beta 30 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
 
 
 Downloads
@@ -73,6 +85,162 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0.0 (2008-08-20)
+----------------------------------------------------
+This first stable release of Segue 2 fixes a number of issues that were found during
+testing of the release candidates. 
+
+Notable user-facing changes:
+
+- Now supports embeded GoogleCalendars.
+
+- Now supports links targeting pop-up windows.
+
+- YouTube videos now can be loaded in high quality using the fmt=18 option.
+
+- A warning is now given if leaving a page with a text-editor open.
+
+See the change-log for details of these and other fixes.
+
+-------------
+
+Upgrades:
+
+As of beta 25, Segue requires PHP to be compiled with XSL
+support. On unix systems this can be added by configuring PHP using the --with-xsl
+option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 30 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+
+
+
+v. 2.0-rc-2 (2008-08-14)
+----------------------------------------------------
+This release fixes a number of small bugs and a number of security issues.
+
+Security issues fixed: 
+
+- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+
+- Segue can now be configured to use secure/http-only cookies. 
+
+- Admin actions are now restricted to prevent listing of users and ids in the
+system. 
+
+
+
+v. 2.0-rc-1 (2008-08-14)
+----------------------------------------------------
+This first production release candidate of Segue 2 fixes a number of user-interface
+difficulties and adds much documentation.
+
+Notable User-Facing Changes:
+
+- Can now search for sites in the Portal by title, description, or placeholder
+
+- More contextual help.
+
+- New 'Blank' template.
+
+- Can now set site-wide roles and theme when creating a site.
+
+- Roles links have been moved to the top of the screen for easier access.
+
+-------------
+
+Upgrades:
+
+As of beta 25, Segue requires PHP to be compiled with XSL
+support. On unix systems this can be added by configuring PHP using the --with-xsl
+option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 30 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+-------------
+
+Segue 2.0.0 uses Harmoni 1.5.0 and Polyphony 1.3.3.
+
+
+
+v. 2.0-beta-30 (2008-08-07)
+----------------------------------------------------
+This release fixes a number of security issues, an authorization bug that was
+prevent proper view access to some sites, and a few smaller issues. As well, it
+introduces the ability to move or copy content and pages within a site or across
+sites. See the change-log for details.
+
+Notable User-Facing Changes:
+
+- New Move/Copy abilities
+
+- New delete-confirmation dialog that shows the scope of the action.
+
+-------------
+
+Upgrades:
+
+As of beta 25, Segue requires PHP to be compiled with XSL
+support. On unix systems this can be added by configuring PHP using the --with-xsl
+option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 30 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+-------------
+
+Segue 2.0-beta-30 uses Harmoni 1.4.7 and Polyphony 1.3.2.
+
+
+
+v. 2.0-beta-29 (2008-08-01)
+----------------------------------------------------
+This release adds a number of new themes, allows copying of sites, and numerous
+other improvements.
+
+Notable User-facing changes:
+
+- Can now copy sites to empty placeholders in the portal.
+
+- Site-URLs are now printed in the portal.
+
+- Viewing of sites has now been dramatically sped-up for users without the editer role.
+
+- Sections and Pages are now named with more clarity.
+
+- Many theme improvements.
+
+- Portal style-fixes MS Internet Explorer browser.
+
+- Better support for uploading multi-page PDFs.
+
+See the change log for more details and other fixes.
+
+Harmoni 1.4.6 includes a fix to the thumbnail generation system that prevents
+excess processing overhead on large multi-page PDFs and improves the upload and
+migration of these files.
+
+Segue 2.0-beta-28 uses Harmoni 1.4.6 and Polyphony 1.3.1.
+
+---------------------
+
+Upgrades:
+
+As of this beta 25, Segue requires PHP to be
+compiled with XSL support. On unix systems this can be added by configuring PHP
+using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 26 require running the RSS Feed updaters
+located under Admin Tools --> Segue Updates.
+
 
 
 v. 2.0-beta-28 (2008-07-24)

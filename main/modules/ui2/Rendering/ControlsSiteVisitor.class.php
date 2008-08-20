@@ -38,6 +38,13 @@ class ControlsSiteVisitor
 	public function __construct () {
 		$this->module = "ui2";
 		$this->action = "editview";
+		
+		$harmoni = Harmoni::instance();
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead(
+			$outputHandler->getHead()
+			."\n\t\t\t<script type='text/javascript' src='".MYPATH."/javascript/DeletePanel.js'></script>"
+			);
 	}
 	
 	/**
@@ -108,35 +115,40 @@ class ControlsSiteVisitor
 	 * Print delete controls
 	 * 
 	 * @param SiteComponent $siteComponent
+	 * @param string $typeDisplay
+	 * @param option boolean $disabled If true, the control will be shown but disabled.
 	 * @return void
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function printDelete ( $siteComponent ) {
+	function printDelete ( $siteComponent, $typeDisplay, $disabled = false ) {
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
-		$harmoni = Harmoni::instance();
-		$message = _("Are you sure that you wish to delete this component and all of its children?");
-		$url = 	$harmoni->request->quickURL('ui2', 'deleteComponent', array(
-					'node' => $siteComponent->getId(),
-					'returnNode' => SiteDispatcher::getCurrentNodeId(),
-					'returnAction' => $this->action
-					));
 		
 		print "\n\t\t\t\t<tr><td colspan='3'>";
-		print "\n\t\t\t\t\t<input type='button' class='ui2_button' onclick='";
-		if ($authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.delete"), 
-			$siteComponent->getQualifierId()))
-		{
-			print 	"if (confirm(\"".$message."\")) {";
-			print 		" var url = \"".$url."\"; ";
-			print 		"window.location = url.urlDecodeAmpersands(); return false;";
-			print 	"} ";
+		print "\n\t\t\t\t\t<input type='button'";
+		if ($disabled) {
+			print " class='ui2_button_disabled' disabled='disabled'";
 		} else {
-			print "alert(\""._('You are not authorized to delete this item.')."\"); return false;";
+			print " class='ui2_button' onclick=\"";
+			if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.delete"), 
+				$siteComponent->getQualifierId()))
+			{
+				print 	"DeletePanel.run({";
+				print		"id: '".$siteComponent->getId()."', ";
+				print		"type: '".$typeDisplay."', ";
+				print		"displayName: '".addslashes(str_replace('"', '&quot;',
+								strip_tags($siteComponent->getDisplayName())))."'";
+				print 		"}, ";
+				print		"'".SiteDispatcher::getCurrentNodeId()."', ";
+				print		"'ui2', '".$this->action."', this);";
+			} else {
+				print "alert('"._('You are not authorized to delete this item.')."'); return false;";
+			}
+			print "\"";
 		}
-		print "' value='";
+		print " value='";
 		print _("Delete");
 		print "'/>";
 		print "\n\t\t\t\t</td></tr>";
@@ -1229,8 +1241,8 @@ END;
 // 		$this->printWidth($siteComponent);
 		
 
-		$this->printDelete($siteComponent);
-		
+		$this->printDelete($siteComponent, _("Content Block"));
+				
 		return $this->controlsEnd($siteComponent);
 	}
 	
@@ -1272,8 +1284,12 @@ END;
 		if ($siteComponent->sortMethodSetting() !== 'default')
 			$this->printSortMethod($siteComponent);
 // 		$this->printAddSubMenu($siteComponent);
-		$this->printDelete($siteComponent);
-		
+
+		if ($siteComponent->isSection())
+			$this->printDelete($siteComponent, _("Section"));
+		else
+			$this->printDelete($siteComponent, _("Page"));
+				
 		return $this->controlsEnd($siteComponent);
 	}
 	
@@ -1291,7 +1307,7 @@ END;
 		$this->printWidth($siteComponent);
 		
 		$this->printTheme($siteComponent);
-		
+				
 		return $this->controlsEnd($siteComponent);
 	}
 	
@@ -1308,7 +1324,11 @@ END;
 		
 		$this->printRowsColumns($siteComponent);
 // 		$this->printDirection($siteComponent);
-		$this->printDelete($siteComponent);
+
+		if ($siteComponent->isMenuTarget())
+			$this->printDelete($siteComponent, _("Layout Container"), true);
+		else
+			$this->printDelete($siteComponent, _("Layout Container"));
 		
 		return $this->controlsEnd($siteComponent);
 	}
@@ -1350,7 +1370,8 @@ END;
 		$this->printDirection($siteComponent);
 		$this->printFlowRowsColumns($siteComponent);
 		$this->printWidth($siteComponent);
-		$this->printDelete($siteComponent);
+		
+		$this->printDelete($siteComponent, _("Content Container"));
 		
 		return $this->controlsEnd($siteComponent);
 	}
@@ -1377,7 +1398,7 @@ END;
 		$this->printWidth($siteComponent);
 		
 // 		if (!$siteComponent->isRootMenu())
-// 			$this->printDelete($siteComponent);
+// 			$this->printDelete($siteComponent, _("Pages Container"));
 		
 		return $this->controlsEnd($siteComponent);
 	}

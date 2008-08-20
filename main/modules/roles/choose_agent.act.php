@@ -94,9 +94,9 @@ class choose_agentAction
 		$step = $wizard->addStep("agents", new WizardStep);
 		
 		ob_start();
-		print "\n<h2>"._("Permissions")."</h2>";
+		print "\n<h2>"._("Roles")."</h2>";
 		print "\n<p>";
-		print _("Choose a user or group to edit permissions for.");
+		print _("Choose a user or group to edit roles for.");
 		print "\n</p>\n";
 		
 		

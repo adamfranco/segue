@@ -35,7 +35,7 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 	 * @param string destSlot
 	 * @param string srcSiteId
 	 * @param string srcTitle
-	 * @param string positionElement
+	 * @param DOMElement positionElement
 	 * @return void
 	 * @access public
 	 * @since 11/27/06
@@ -54,7 +54,7 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 	 * @param string destSlot
 	 * @param string srcSiteId
 	 * @param string srcTitle
-	 * @param string positionElement
+	 * @param DOMElement positionElement
 	 * @return void
 	 * @access public
 	 * @since 7/28/08
@@ -91,17 +91,17 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		input.name = 'copyPermissions';
 		input.type = 'checkbox';
 		input.value = 'true';
-		input.checked = 'checked';
 		form.appendChild(input);
-		form.appendChild(document.createTextNode(' Copy Permissions?'));
+		input.checked = 'checked';
+		form.appendChild(document.createTextNode(' Copy Roles?'));
 		form.appendChild(document.createElement('br'));
 		
 		var input = document.createElement('input');
 		input.name = 'copyDiscussions';
 		input.type = 'checkbox';
 		input.value = 'true';
-		input.checked = 'checked';
 		form.appendChild(input);
+		input.checked = 'checked';
 		form.appendChild(document.createTextNode(' Copy Discussion Posts?'));
 		form.appendChild(document.createElement('br'));
 		form.appendChild(document.createElement('br'));
@@ -140,6 +140,7 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		
 		var statusPanel = new CenteredPanel("Copy Status", 400, 800, this.positionElement);
 		statusPanel.cancel.parentNode.removeChild(statusPanel.cancel);
+		statusPanel.contentElement.innerHTML = "<img src='" + Harmoni.MYPATH + "/images/loading.gif' alt='Loading...' /><br/><span>Copying Site...</span>";
 		
 		var req = Harmoni.createRequest();
 		if (req) {
@@ -147,8 +148,14 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 			// Set a callback for displaying errors.
 			req.onreadystatechange = function () {
 				// Update the status area.
-				if (req.responseText) {
-					statusPanel.contentElement.innerHTML = req.responseText;
+				// IE will throw an error if we try to access responseText
+				try {
+					if (req.responseText && req.responseText.length) {
+						statusPanel.contentElement.innerHTML = req.responseText;
+					} else {
+//	 					statusPanel.contentElement.innerHTML = "<span style='blink'>Copying Site...</span> Readystate: "  + req.readyState + " Status: " + requ.status + " " + req.statusText;
+					}
+				} catch (e) {
 				}
 				
 				// only if req shows 'loaded'
@@ -177,7 +184,7 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		
 			req.open('POST', url, true);
 			req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			req.setRequestHeader("Content-length", params.length);
+// 			req.setRequestHeader("Content-length", params.length);
 // 			req.setRequestHeader("Connection", "close");
 			req.send(params);
 		} else {

@@ -105,6 +105,8 @@ class listAction
 		$this->addHeadJs();
 		
 		$harmoni = Harmoni::instance();
+		$harmoni->attachData('help_topic', 'Portal');
+		
 		// Categories
 		ob_start();
 		$portalMgr = PortalManager::instance();
@@ -205,6 +207,7 @@ class listAction
 		
 		<script type='text/javascript' src='".MYPATH."/javascript/SiteCopyPanel.js'></script>
 		<script type='text/javascript' src='".POLYPHONY_PATH."javascript/CenteredPanel.js'></script>
+		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js'></script>
 		
 		<script type='text/javascript'>
 		// <![CDATA[
@@ -367,6 +370,7 @@ class listAction
 			link.innerHTML = '"._('cancel copy')."';
 			link.onclick = function () {
 				Portal.deselectForCopy(slotName, siteId, siteTitle, link);
+				return false;
 			}
 		}
 		
@@ -399,6 +403,7 @@ class listAction
 			link.innerHTML = '"._('select for copy')."';
 			link.onclick = function () {
 				Portal.selectForCopy(slotName, siteId, siteTitle, link);
+				return false;
 			}
 		}
 		
@@ -562,7 +567,7 @@ class listAction
 				$siteId = '';
 				$display = 'none';
 			}
-			print "<span class='portal_slot_copy_area' style='display: ".$display."'> | <a href='#' class='portal_slot_copy_link' onclick=\"Portal.copyToSlot('".$slot->getShortname()."', this)\">".str_replace('%1', $selectedTitle, _("copy '%1' here..."))."</a></span>";
+			print "<span class='portal_slot_copy_area' style='display: ".$display."'> | <a href='#' class='portal_slot_copy_link' onclick=\"Portal.copyToSlot('".$slot->getShortname()."', this); return false;\">".str_replace('%1', $selectedTitle, _("copy '%1' here..."))."</a></span>";
 		} else {
 			print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
 		}
@@ -625,14 +630,13 @@ class listAction
 		$centered->addSP(new TextAlignSP("center"));	
 		
 		// Use the alias instead of the Id if it is available.
+		$viewUrl = SiteDispatcher::getSitesUrlForSiteId($assetId->getIdString());
+		
 		$slotManager = SlotManager::instance();
 		try {
 			$slot = $slotManager->getSlotBySiteId($assetId);
-			$params = array('site' => $slot->getShortname());
 		} catch (Exception $e) {
-			$params = array('node' => $assetId->getIdString());
 		}
-		$viewUrl = $harmoni->request->quickURL('view', 'html', $params);
 		
 		// Print out the content
 		ob_start();
@@ -648,9 +652,8 @@ class listAction
 		print "\n\t\t\t<strong>".HtmlString::getSafeHtml($asset->getDisplayName())."</strong>";
 		print "\n\t\t</a>";
 		print "\n\t\t<br/>";
-		$shortUrl = SiteDispatcher::getSitesUrlForSiteId($assetId->getIdString());
-		print "\n\t\t<a href='".$shortUrl."' style='font-size: smaller;'>";
-		print "\n\t\t\t".$shortUrl;
+		print "\n\t\t<a href='".$viewUrl."' style='font-size: smaller;'>";
+		print "\n\t\t\t".$viewUrl;
 		print "\n\t\t</a>";
 		print "\n\t</div>";
 		
@@ -680,9 +683,9 @@ class listAction
 		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)) 
 		{
 			if (isset($slot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $slot->getShortname()) {
-				$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
+				$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
 			} else if (isset($slot)) {
-				$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this);\" class='portal_slot_select_link'>"._("select for copy")."</a>";
+				$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("select for copy")."</a>";
 			}
 		}
 		

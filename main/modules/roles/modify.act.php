@@ -114,12 +114,12 @@ class modifyAction
 			$type = _("user");
 		$title = str_replace("%1", $type,
 					str_replace ("%2", $agent->getDisplayName(),
-						_("Permissions for %1 '%2'")));		
+						_("Roles for %1 '%2'")));		
 		
 		ob_start();
 		print "\n<h2>".$title."</h2>";
 		print "\n<p>";
-		print _("Permissions are additive -- this means that you can add additional permissions (but not remove them) for child-nodes.");
+		print _("Roles are additive -- this means that you can add additional roles (but not remove them) for child-nodes.");
 		print "\n</p>\n";
 		
 		print "\n<p>";

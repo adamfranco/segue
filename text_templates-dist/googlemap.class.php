@@ -23,6 +23,20 @@
 class Segue_TextTemplates_googlemap
 	implements Segue_Wiki_TextTemplate
 {
+
+	/**
+	 * Answer true if this text template is safe for inclusion and editing with
+	 * the WYSIWYG HTML editor. If true, users will not see the text template 
+	 * markup in the editor, but rather the generated code. This should really
+	 * only be used for templates that work with HTML generated directly by the editor.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function isEditorSafe () {
+		return false;
+	}
 		
 	/**
 	 * Answer a block of HTML text that describes this template and its parameters.
@@ -69,13 +83,13 @@ class Segue_TextTemplates_googlemap
 	<p>This template will insert an embedded google map.</p>
 	<h4>Parameters:</h4>
 	<dl>
-		<dt>url<dt>
+		<dt><strong>url</strong></dt>
 		<dd>The base url of the map.</dd>
-		<dt>s<dt>
+		<dt><strong>s</strong></dt>
 		<dd>The security token that Google maps uses for their embeded maps, visible in the embed-source code. (Required)</dd>
-		<dt>width</dt>
+		<dt><strong>width</strong></dt>
 		<dd>The integer width of the map in pixels. (Optional) Example: 325</dd>
-		<dt>height</dt>
+		<dt><strong>height</strong></dt>
 		<dd>The integer height of the map in pixels. (Optional) Example: 250</dd>
 	</dl>
 	<h4>Example Usage:</h4>

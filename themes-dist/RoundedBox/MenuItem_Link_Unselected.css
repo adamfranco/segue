@@ -11,32 +11,22 @@
 *.MenuItem_Link_Unselected .Content {
     background-color: [[FG_COLOR]];
     text-align: left;  
-    padding: 1px;
+    padding: 0px;
     margin-top: -5px;
     margin-bottom: -5px;
 }
 
-
-*.MenuItem_Link_Unselected a {
+*.MenuItem_Link a {
+    color: [[MENU_LINK_COLOR]];
     display: block;
     text-decoration: none;
-    color: [[MENU_LINK_COLOR]];
-    font-size: [[MENU_FONT_SIZE]];
-}
-
-*.MenuItem_Link a:hover {
-    display: block;
-    background-color: [[HEADER_BG_COLOR]];
-/*    border: 1px solid [[BORDER_COLOR]];*/
-    text-decoration: none;
-    color: [[MENU_LINK_COLOR]];
 }
 
 .MenuItem_Link_Unselected .Content:hover {
     background-color: [[HEADER_BG_COLOR]];
 }
 
-.MenuItem_Link_Unselected .hover:hover {
+.MenuItem_Link_Unselected:hover td {
     background-color: [[HEADER_BG_COLOR]];
 }
 
@@ -48,7 +38,7 @@
 }
 
 .MenuItem_Link_Unselected .Top {
-    border-top: 1px dotted [[BORDER_COLOR]];
+    border-top: 1px [[MENU_BORDER]] [[BORDER_COLOR]];
     background-color: [[FG_COLOR]];
 }
 
@@ -62,14 +52,14 @@
 
 .MenuItem_Link_Unselected .Right {
     background-color: [[FG_COLOR]];
-    border-right: 1px dotted [[BORDER_COLOR]];
+    border-right: 1px [[MENU_BORDER]] [[BORDER_COLOR]];
     width: 5px;
 
 }
 
 .MenuItem_Link_Unselected .Left {
     background-color: [[FG_COLOR]];
-    border-left: 1px dotted [[BORDER_COLOR]];
+    border-left: 1px [[MENU_BORDER]] [[BORDER_COLOR]];
     width: 5px;
 }
 
@@ -82,7 +72,7 @@
 }
 
 .MenuItem_Link_Unselected .Bottom {
-    border-bottom: 1px dotted [[BORDER_COLOR]];
+    border-bottom: 1px [[MENU_BORDER]] [[BORDER_COLOR]];
     background-color: [[FG_COLOR]];
 }
 

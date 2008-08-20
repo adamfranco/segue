@@ -246,6 +246,7 @@ abstract class SeguePluginsDriver
 	 * @since 1/13/06
 	 */
 	final public function getDataRecords () {
+		throw new UnimplementedException("Data Records are depricated.");
 		return $this->data;
 	}
 
@@ -257,6 +258,7 @@ abstract class SeguePluginsDriver
 	 * @since 1/18/06
 	 */
 	final public function updateDataRecords () {
+		throw new UnimplementedException("Data Records are depricated.");
 		$this->_storeData();
 	}
 	
@@ -335,6 +337,26 @@ abstract class SeguePluginsDriver
 			$siteComponent = $this->getRelatedSiteComponent();
 		
 			$text = $wikiResolver->parseText($text, $siteComponent);
+		} catch (OperationFailedException $e) {
+		}
+		
+		return $text;
+	}
+	
+	/**
+	 * Parse and replace any text-templates that are safe for use in an WYSIWYG editor 
+	 * with HTML markup. This can be used to allow WYSIWG editing of elements that
+	 * will later be converted back to text-templates using unapplyTextTemplates().
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function applyEditorSafeTextTemplates($text) {
+		$wikiResolver = WikiResolver::instance();		
+		try {
+			$text = $wikiResolver->applyEditorSafeTextTemplates($text);
 		} catch (OperationFailedException $e) {
 		}
 		
@@ -475,7 +497,7 @@ abstract class SeguePluginsDriver
 	final public function replaceIdsInHtml (array $idMap, $htmlString) {
 		$orig = $htmlString;
 		// non-wiki urls
-		$tokenizedHtml = $this->tokenizeLocalUrls($htmlString);
+		$htmlString = $this->tokenizeLocalUrls($htmlString);
 		preg_match_all('/\[\[localurl:([^\]]*)\]\]/', $htmlString, $matches);
 		for ($j = 0; $j < count($matches[1]); $j++) {
 			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1][$j], $paramMatches);
@@ -524,7 +546,7 @@ abstract class SeguePluginsDriver
 		}
 		
 		
-		return $htmlString;
+		return $this->untokenizeLocalUrls($htmlString);
 	}
 
 	/**
@@ -1268,7 +1290,8 @@ abstract class SeguePluginsDriver
 		$this->_pluginDir = $this->_configuration->getProperty("plugin_dir")."/".$type->getDomain()."/".
 						$type->getAuthority()."/".$type->getKeyword()."/";
 		
-		$this->_loadData();
+		// Data Records are now depricated
+// 		$this->_loadData();
 	}
 	
 	/**
@@ -1381,7 +1404,8 @@ abstract class SeguePluginsDriver
 				$this->_asset->updateDescription($desc);
 			}
 			
-			$this->_storeData();
+			// Data records are now depricated.
+// 			$this->_storeData();
 			
 			
 			$harmoni->request->endNamespace();
@@ -1502,6 +1526,7 @@ abstract class SeguePluginsDriver
 	 * @since 1/12/06
 	 */
 	final private function _loadData () {
+		throw new UnimplementedException("Data Records are depricated.");
 		// one array for the data, a second for the persistence of ids
 		if (isset($this->data))
 			unset($this->data, $this->_data_ids);
@@ -1595,6 +1620,7 @@ abstract class SeguePluginsDriver
 	 * @since 1/13/06
 	 */
 	final private function _storeData () {
+		throw new UnimplementedException("Data Records are depricated.");
 		if (isset($changes))
 			unset($changes);
 		// only change things when you must
@@ -1655,6 +1681,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 1/27/06
 	 */
 	final private function _changeFileInfo () {
+		throw new UnimplementedException("Data Records are depricated.");
 		$idManager = Services::getService("Id");
 		$changes = array();
 		foreach ($this->data['FILE'] as $instance => $file) {
@@ -1720,6 +1747,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 1/27/06
 	 */
 	final private function _populateFileInfo () {
+		throw new UnimplementedException("Data Records are depricated.");
 		// plugins get specific file information, can request URL or 
 		// data via functions defined above
 		$idManager = Services::getService("Id");
@@ -1795,6 +1823,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 1/13/06
 	 */
 	final private function _dataChanged () {
+		throw new UnimplementedException("Data Records are depricated.");
 		// @todo test different implementations of this function
 		$new = serialize($this->data);
 		$old = serialize($this->_loadedData);
@@ -1811,6 +1840,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 1/13/06
 	 */
 	final private function _fileDataChanged () {
+		throw new UnimplementedException("Data Records are depricated.");
 		// @todo test different implementations of this function
 		$new = serialize($this->data['FILE']);
 		$old = serialize($this->_loadedData['FILE']);
@@ -1876,6 +1906,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 3/1/06
 	 */
 	final private function _createInstance ($dname, $instance) {
+		throw new UnimplementedException("Data Records are depricated.");
 		// @todo take the data in $this->data[$rs][$instance] and create a 
 		// proper record for it in the database.
 		

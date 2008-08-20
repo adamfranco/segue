@@ -3,50 +3,59 @@
         <displayName lang='en_US'>Background Color</displayName>
         <description lang='en_US'>The background color of the theme.</description>
         <description lang='es_ES'>Los colores majores del tema.</description>
-        <choice>
-            <key>white</key>
-            <label lang='en_US'>White</label>
+        <choice isDefault='true'>
+            <key>white_silver</key>
+            <label lang='en_US'>White-silver</label>
             <label lang='es_ES'>Blanco</label>
-            <setting marker='[[BG_IMAGE_DIR]]'>bg-white</setting>
+            <setting marker='[[BG_IMAGE]]'>white-silver.jpg</setting>
+            <setting marker='[[BG_COLOR]]'>#F4F4F4</setting>
+            <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+            <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>
+        </choice>
+        <choice>
+            <key>silver_white</key>
+            <label lang='en_US'>Silver-white</label>
+            <label lang='es_ES'>Blanco</label>
+            <setting marker='[[BG_IMAGE]]'>silver-white.jpg</setting>
             <setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
             <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>
         </choice>
-        <choice isDefault='true'>
-            <key>yellow</key>
-            <label lang='en_US'>Yellow</label>
+        <choice>
+            <key>yellow_white</key>
+            <label lang='en_US'>Yellow-white</label>
             <label lang='es_ES'>Amarillo</label>
-            <setting marker='[[BG_IMAGE_DIR]]'>bg-yellow</setting>
+            <setting marker='[[BG_IMAGE]]'>yellow-white.jpg</setting>
+            <setting marker='[[BG_COLOR]]'>#FFFFFF</setting>
+            <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+            <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>   
+        </choice>
+        <choice>
+            <key>white_yellow</key>
+            <label lang='en_US'>White-yellow</label>
+            <label lang='es_ES'>Amarillo</label>
+            <setting marker='[[BG_IMAGE]]'>white-yellow.jpg</setting>
             <setting marker='[[BG_COLOR]]'>#FFF8C6</setting>
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
             <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>   
         </choice>
         <choice>
-            <key>black</key>
-            <label lang='en_US'>Black</label>
+            <key>black_gray</key>
+            <label lang='en_US'>Black-gray</label>
             <label lang='es_ES'>Negro</label>
-            <setting marker='[[BG_IMAGE_DIR]]'>bg-black</setting>
-            <setting marker='[[BG_COLOR]]'>#0B0B0B</setting>
+            <setting marker='[[BG_IMAGE]]'>black-gray.png</setting>
+            <setting marker='[[BG_COLOR]]'>#262626</setting>
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
             <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>        
         </choice>
         <choice>
-            <key>blue</key>
-            <label lang='en_US'>Blue</label>
-            <label lang='es_ES'>Azul</label>
-            <setting marker='[[BG_IMAGE_DIR]]'>bg-blue</setting>
-            <setting marker='[[BG_COLOR]]'>#003366</setting>
-            <setting marker='[[BG_TEXT_COLOR]]'>#000000</setting>
-            <setting marker='[[BG_LINK_COLOR]]'>#999999</setting>        
-        </choice>
-        <choice>
-            <key>green</key>
-            <label lang='en_US'>Green</label>
-            <label lang='es_ES'>Verde</label>
-            <setting marker='[[BG_IMAGE_DIR]]'>bg-green</setting>
-            <setting marker='[[BG_COLOR]]'>#E6FFD3</setting>
-            <setting marker='[[BG_TEXT_COLOR]]'>#333333</setting>
-            <setting marker='[[BG_LINK_COLOR]]'>#003366</setting>        
+            <key>gray_black</key>
+            <label lang='en_US'>Gray-black</label>
+            <label lang='es_ES'>Negro</label>
+            <setting marker='[[BG_IMAGE]]'>gray-black.png</setting>
+            <setting marker='[[BG_COLOR]]'>#0F0F0F</setting>
+            <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
+            <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>        
         </choice>
     </option>
     <option id='fg_color'>
@@ -73,9 +82,9 @@
             <label lang='es_ES'>Amarillo</label>
             <setting marker='[[IMAGE_DIR]]'>yellow</setting>
             <setting marker='[[ALERT_COLOR]]'>#FFCC33</setting>
-            <setting marker='[[FG_COLOR]]'>#FFFFCC</setting>
+            <setting marker='[[FG_COLOR]]'>#FFF8C6</setting>
             <setting marker='[[BORDER_COLOR]]'>#979797</setting>
-            <setting marker='[[HEADER_BG_COLOR]]'>#F5F5F5</setting>
+            <setting marker='[[HEADER_BG_COLOR]]'>#FFFFFF</setting>
             <setting marker='[[MENU_COLOR]]'>#d3d3d3</setting>
             <setting marker='[[MENU_LINK_COLOR]]'>[[LINK_COLOR]]</setting>
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
@@ -86,42 +95,14 @@
             <label lang='en_US'>Black</label>
             <label lang='es_ES'>Negro</label>
             <setting marker='[[IMAGE_DIR]]'>black</setting>
-            <setting marker='[[FG_COLOR]]'>#0B0B0B</setting>
+            <setting marker='[[FG_COLOR]]'>#000000</setting>
             <setting marker='[[ALERT_COLOR]]'>#FFFF99</setting>
-            <setting marker='[[BORDER_COLOR]]'>#666666</setting>
-            <setting marker='[[HEADER_BG_COLOR]]'>#333333</setting>
+            <setting marker='[[BORDER_COLOR]]'>#333333</setting>
+            <setting marker='[[HEADER_BG_COLOR]]'>#181818</setting>
             <setting marker='[[MENU_COLOR]]'>#161616</setting>
             <setting marker='[[MENU_LINK_COLOR]]'>#CCCCCC</setting>
             <setting marker='[[BG_TEXT_COLOR]]'>#999999</setting>
             <setting marker='[[BG_LINK_COLOR]]'>#666666</setting>        
-        </choice>
-        <choice>
-            <key>blue</key>
-            <label lang='en_US'>Blue</label>
-            <label lang='es_ES'>Azul</label>
-            <setting marker='[[IMAGE_DIR]]'>blue</setting>
-            <setting marker='[[ALERT_COLOR]]'>#FFFFCC</setting>
-            <setting marker='[[FG_COLOR]]'>#FDFDFD</setting>
-            <setting marker='[[BORDER_COLOR]]'>#000000</setting>
-            <setting marker='[[HEADER_BG_COLOR]]'>#90A8C5</setting>
-            <setting marker='[[MENU_COLOR]]'>#466E9F</setting>
-            <setting marker='[[MENU_LINK_COLOR]]'>#FFFFFF</setting>
-            <setting marker='[[BG_TEXT_COLOR]]'>#000000</setting>
-            <setting marker='[[BG_LINK_COLOR]]'>#999999</setting>        
-        </choice>
-        <choice>
-            <key>green</key>
-            <label lang='en_US'>Green</label>
-            <label lang='es_ES'>Verde</label>
-            <setting marker='[[IMAGE_DIR]]'>green</setting>
-            <setting marker='[[ALERT_COLOR]]'>#FFFF99</setting>
-            <setting marker='[[FG_COLOR]]'>#FFFFFF</setting>
-            <setting marker='[[BORDER_COLOR]]'>#999999</setting>
-            <setting marker='[[HEADER_BG_COLOR]]'>#CCE3BB</setting>
-            <setting marker='[[MENU_COLOR]]'>#ABBD9D</setting>
-            <setting marker='[[MENU_LINK_COLOR]]'>#666666</setting>
-            <setting marker='[[BG_TEXT_COLOR]]'>#333333</setting>
-            <setting marker='[[BG_LINK_COLOR]]'>#003366</setting>        
         </choice>
     </option>
     <option id='menu_size'>
@@ -143,9 +124,23 @@
             <setting marker='[[MENU_FONT_SIZE]]'>110%</setting>
         </choice>
     </option>
+    <option id='menu_style'>
+        <displayName lang='en_US'>Menu Style</displayName>
+        <description lang='en_US'>The type of border around unselected navigation items</description>
+        <choice isDefault='true'>
+            <key>solid</key>
+            <label lang='en_US'>Solid Line</label>
+            <setting marker='[[MENU_BORDER]]'>solid</setting>
+        </choice>
+        <choice isDefault='true'>
+            <key>dotted</key>
+            <label lang='en_US'>Dotted Line</label>
+            <setting marker='[[MENU_BORDER]]'>dotted</setting>
+        </choice>
+    </option>
     <option id='text_color'>
         <displayName lang='en_US'>Text Color</displayName>
-        <description lang='en_US'>The color or normal text.</description>
+        <description lang='en_US'>The color of normal text.</description>
         <choice isDefault='true'>
             <key>black</key>
             <label lang='en_US'>Black</label>
@@ -193,15 +188,16 @@
         <displayName lang='en_US'>Link Color</displayName>
         <description lang='en_US'>The color of link-text.</description>
         <choice isDefault='true'>
-            <key>red</key>
-            <label lang='en_US'>Red</label>
-            <setting marker='[[LINK_COLOR]]'>#990000</setting>
-        </choice>
-        <choice>
             <key>blue</key>
             <label lang='en_US'>Blue</label>
             <setting marker='[[LINK_COLOR]]'>#003366</setting>
         </choice>
+        <choice>
+            <key>red</key>
+            <label lang='en_US'>Red</label>
+            <setting marker='[[LINK_COLOR]]'>#990000</setting>
+        </choice>
+
         <choice>
             <key>green</key>
             <label lang='en_US'>Green</label>

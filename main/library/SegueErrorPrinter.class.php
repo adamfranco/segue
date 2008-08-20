@@ -98,14 +98,16 @@ class SegueErrorPrinter {
 	 * @since 2/26/08
 	 */
 	private function shouldLogException (Exception $e, $code) {
-		$userAgent = trim($_SERVER['HTTP_USER_AGENT']);
-		if (array_key_exists($userAgent, $this->userAgentFilters)) {
-			if (!count($this->userAgentFilters[$userAgent]))
-				return false;
-			if (in_array($code, $this->userAgentFilters[$userAgent]))
-				return false;
-			if (in_array(get_class($e), $this->userAgentFilters[$userAgent]))
-				return false;
+		if (isset($_SERVER['HTTP_USER_AGENT'])) {
+			$userAgent = trim($_SERVER['HTTP_USER_AGENT']);
+			if (array_key_exists($userAgent, $this->userAgentFilters)) {
+				if (!count($this->userAgentFilters[$userAgent]))
+					return false;
+				if (in_array($code, $this->userAgentFilters[$userAgent]))
+					return false;
+				if (in_array(get_class($e), $this->userAgentFilters[$userAgent]))
+					return false;
+			}
 		}
 		
 		return true;
@@ -163,7 +165,7 @@ class SegueErrorPrinter {
 		
 		// Normal production case
 		else {
-			$message = $e->getMessage();
+			$message = HtmlString::getSafeHtml($e->getMessage());
 			$codeString = self::getCodeString($code);
 			$errorString = _('Error');
 			if ($this->shouldLogException($e, $code))

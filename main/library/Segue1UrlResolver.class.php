@@ -98,7 +98,7 @@ class Segue1UrlResolver {
 	 */
 	public function getMatchesSegue1 (array $get) {
 		// Valid Segue 1 actions to link to
-		$segue1Actions = array('site', 'viewsite');
+		$segue1Actions = array('site', 'viewsite', 'rss');
 		if (!isset($get['action']) || !in_array($get['action'], $segue1Actions))
 			return false;
 		
@@ -135,10 +135,14 @@ class Segue1UrlResolver {
 	public function resolveCurrent () {
 		$get = $_GET;
 		if (isset($_SERVER['PATH_INFO']) 
-			&& preg_match('/^\/sites\/(\w+)\/?/', $_SERVER['PATH_INFO'], $matches)) 
+			&& preg_match('/^\/sites\/([\w_-]+)\/?/', $_SERVER['PATH_INFO'], $matches)) 
 		{
+			$get['action'] = 'site';
 			$get['site'] = $matches[1];
 		}
+		if (isset($get['site']) && !isset($get['action']))
+			$get['action'] = 'site';
+		
 		$this->resolveGetArray($get);
 	}
 	
@@ -264,7 +268,7 @@ class Segue1UrlResolver {
 			$slotMgr = SlotManager::instance();
 			$slot = $slotMgr->getSlotByShortname($slotName);
 			if ($slot->siteExists())
-				return $slot->getSiteId();
+				return $slot->getSiteId()->asString();
 		}
 		
 		// If we still couldn't resolve throw an exception.

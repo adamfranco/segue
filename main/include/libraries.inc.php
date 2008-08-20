@@ -49,8 +49,12 @@ require_once(HARMONI."GUIManager/Components/MenuItem.class.php");
 require_once(HARMONI."GUIManager/Components/MenuItemLinkWithAdditionalHtml.class.php");
 require_once(POLYPHONY."/main/library/Importer/XMLImporters/XMLImporter.class.php");
 require_once(MYDIR."/main/modules/roles/AgentSearchSource.class.php");
+require_once(MYDIR."/main/modules/ui2/AddSiteAgentSearchSource.class.php");
+require_once(MYDIR."/main/modules/ui2/AddSiteAgentSearchField.class.php");
 require_once(MYDIR."/main/library/Segue1UrlResolver.class.php");
 require_once(MYDIR."/main/library/Templates/TemplateManager.class.php");
+require_once(MYDIR."/main/modules/selection/Selection.class.php");
+require_once(MYDIR."/main/modules/portal/SearchPortalFolder.class.php");
 
 
 /******************************************************************************

@@ -586,6 +586,18 @@ interface SeguePluginsAPI {
 	public function parseWikiText ($text);
 	
 	/**
+	 * Parse and replace any text-templates that are safe for use in an WYSIWYG editor 
+	 * with HTML markup. This can be used to allow WYSIWG editing of elements that
+	 * will later be converted back to text-templates using unapplyTextTemplates().
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function applyEditorSafeTextTemplates($text);
+	
+	/**
 	 * Given a block of HTML text, replace any local-system urls with tokenized
 	 * placeholders. These placeholders can the be translated back at display time
 	 * in order to match the current system base-url 

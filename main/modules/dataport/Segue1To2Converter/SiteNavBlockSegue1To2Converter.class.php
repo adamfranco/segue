@@ -68,13 +68,15 @@ class SiteNavBlockSegue1To2Converter
 				} else if ($themeName == "default") {
 					$themeName = "Tabs";
 				} else if ($themeName == "roundedcorners") {
-					$themeName = "RoundedCorners";
+					$themeName = "RoundedBox";
 				} else if ($themeName == "tornpaper") {
 					$themeName = "TornPaper";
 				} else if ($themeName == "minimal") {
 					$themeName = "Minimal";
 				} else if ($themeName == "beveledge") {
 					$themeName = "BevelBox";
+				} else if ($themeName == "bevelbox") {
+					$themeName = "MiddTheme";
 				} else {
 					$themeName = "BevelBox";
 				}

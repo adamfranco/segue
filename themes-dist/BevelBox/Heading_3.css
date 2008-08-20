@@ -16,7 +16,7 @@
 
 
 *.Heading_3 .box02 {
-    border: 1px solid [[BACKGROUND_BORDER03]];
+    border: 1px [[BORDER_STYLE]] [[BORDER_COLOR]];
     margin: 0px;
 }
 
