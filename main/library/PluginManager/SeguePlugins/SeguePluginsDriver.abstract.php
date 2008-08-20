@@ -344,6 +344,26 @@ abstract class SeguePluginsDriver
 	}
 	
 	/**
+	 * Parse and replace any text-templates that are safe for use in an WYSIWYG editor 
+	 * with HTML markup. This can be used to allow WYSIWG editing of elements that
+	 * will later be converted back to text-templates using unapplyTextTemplates().
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function applyEditorSafeTextTemplates($text) {
+		$wikiResolver = WikiResolver::instance();		
+		try {
+			$text = $wikiResolver->applyEditorSafeTextTemplates($text);
+		} catch (OperationFailedException $e) {
+		}
+		
+		return $text;
+	}
+	
+	/**
 	 * Parse and replace any output HTML that matches two-way text-plugins with their markup. 
 	 * These are text-plugins that can convert themselves to and from HTML markup.
 	 * 

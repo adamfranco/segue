@@ -441,7 +441,7 @@ class EduMiddleburyTextBlockPlugin
 
 		
 		if (is_null($this->workingContent))
-	 		$oFCKeditor->Value = $this->cleanHTML($this->untokenizeLocalUrls($this->getContent()));
+	 		$oFCKeditor->Value = $this->applyEditorSafeTextTemplates($this->cleanHTML($this->untokenizeLocalUrls($this->getContent())));
 	 	else
 	 		$oFCKeditor->Value = $this->workingContent;
 	 	
@@ -490,7 +490,7 @@ class EduMiddleburyTextBlockPlugin
  		$property->setStartingDisplayText(_("Add a comment about your changes here."));
  		
  		$property = $wrapper->addComponent('content', HtmlTextArea::withRowsAndColumns(20, 80));
- 		$property->setValue($this->cleanHTML($this->untokenizeLocalUrls($this->getContent())));
+ 		$property->setValue($this->applyEditorSafeTextTemplates($this->cleanHTML($this->untokenizeLocalUrls($this->getContent()))));
  		$property->chooseEditor('fck');
  		
  		$fckArea = $property->getEditor('fck');

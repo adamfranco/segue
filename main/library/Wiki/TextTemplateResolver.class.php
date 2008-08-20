@@ -118,11 +118,13 @@ class Segue_Wiki_TextTemplateResolver {
 	 * Parse the wiki-text and replace wiki markup with HTML markup.
 	 * 
 	 * @param string $text
+	 * @param optional $editorSafeOnly If true, only templates that are safe for
+	 *				working with in a WYSIWIG editor will be applied.
 	 * @return string
 	 * @access public
 	 * @since 7/14/08
 	 */
-	public function applyTextTemplates ($text) {
+	public function applyTextTemplates ($text, $editorSafeOnly = false) {
 		$regexp = "/
 
 (<nowiki>)?		# optional nowiki tag to prevent parsing.
@@ -177,30 +179,32 @@ class Segue_Wiki_TextTemplateResolver {
 			if (!strlen($match[1][0]) && (!isset($match[4]) || !strlen($match[4][0]))) {
 				try {
 					$template = $this->getTextTemplate($templateName);
+					if (!$editorSafeOnly || $template->isEditorSafe()) {
 					
-					// Build the parameter array
-					$params = array();
-					preg_match_all($paramRegexp, $paramString, $paramMatches);
-					foreach ($paramMatches[1] as $j => $paramName) {
-						if (!isset($params[$paramName]))
-							$params[$paramName] = $paramMatches[2][$j];
-						else if (is_array($params[$paramName]))
-							$params[$paramName][] = $paramMatches[2][$j];
-						else {
-							$params[$paramName] = array($params[$paramName]);
-							$params[$paramName][] = $paramMatches[2][$j];
+						// Build the parameter array
+						$params = array();
+						preg_match_all($paramRegexp, $paramString, $paramMatches);
+						foreach ($paramMatches[1] as $j => $paramName) {
+							if (!isset($params[$paramName]))
+								$params[$paramName] = $paramMatches[2][$j];
+							else if (is_array($params[$paramName]))
+								$params[$paramName][] = $paramMatches[2][$j];
+							else {
+								$params[$paramName] = array($params[$paramName]);
+								$params[$paramName][] = $paramMatches[2][$j];
+							}
 						}
-					}
-					
-					// Execute the template
-					try {
-						$output = $template->generate($params);
-// 						$output .= printpre(htmlentities(print_r($template->getHtmlMatches($output), true)), true);
 						
-						$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
-						$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
-					} catch (Exception $e) {
-						print $e->getMessage();
+						// Execute the template
+						try {
+							$output = $template->generate($params);
+	// 						$output .= printpre(htmlentities(print_r($template->getHtmlMatches($output), true)), true);
+							
+							$offsetDiff = $offsetDiff + mb_strlen($output) - mb_strlen($wikiText);
+							$text = substr_replace($text, $output, $offset, mb_strlen($wikiText));
+						} catch (Exception $e) {
+							print $e->getMessage();
+						}
 					}
 				} catch (UnknownIdException $e) {
 					if ($e->getCode() != 34563)
@@ -217,6 +221,20 @@ class Segue_Wiki_TextTemplateResolver {
 		}
 		
 		return $text;
+	}
+	
+	/**
+	 * Parse and replace any text-templates that are safe for use in an WYSIWYG editor 
+	 * with HTML markup. This can be used to allow WYSIWG editing of elements that
+	 * will later be converted back to text-templates using unapplyTextTemplates().
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function applyEditorSafeTextTemplates($text) {
+		return $this->applyTextTemplates($text, true);
 	}
 	
 	/**

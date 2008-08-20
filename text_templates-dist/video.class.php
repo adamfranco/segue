@@ -24,7 +24,21 @@
 class Segue_TextTemplates_video
 	implements Segue_Wiki_TextTemplate 
 {
-
+	
+	/**
+	 * Answer true if this text template is safe for inclusion and editing with
+	 * the WYSIWYG HTML editor. If true, users will not see the text template 
+	 * markup in the editor, but rather the generated code. This should really
+	 * only be used for templates that work with HTML generated directly by the editor.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function isEditorSafe () {
+		return false;
+	}
+	
 	/**
 	 * Constructor
 	 * 

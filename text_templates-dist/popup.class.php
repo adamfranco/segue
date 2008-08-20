@@ -24,7 +24,21 @@
 class Segue_TextTemplates_popup
 	implements Segue_Wiki_TextTemplate
 {
-		
+	
+	/**
+	 * Answer true if this text template is safe for inclusion and editing with
+	 * the WYSIWYG HTML editor. If true, users will not see the text template 
+	 * markup in the editor, but rather the generated code. This should really
+	 * only be used for templates that work with HTML generated directly by the editor.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function isEditorSafe () {
+		return true;
+	}
+	
 	/**
 	 * Answer a block of HTML text that describes this template and its parameters.
 	 * Use an h4 tag for the template name.
@@ -151,7 +165,9 @@ class Segue_TextTemplates_popup
 		
 		ob_start();
 		print '<a href="'.$paramList['url'].'" ';
-		print 'onclick="window.open(this.href, \''.$paramList['window_name']."', '";
+		print 'onclick="';
+// 		print "var newWindow=";
+		print "window.open(this.href, '".$paramList['window_name']."', '";
 		
 		$optionOutput = array();
 		foreach ($options as $option => $default) {
@@ -163,7 +179,9 @@ class Segue_TextTemplates_popup
 		}
 		print implode(',', $optionOutput);
 		
-		print "'); return false;\">".$paramList['text']."</a>";
+		print "');";
+// 		print " newWindow.focus();";
+		print " return false;\">".$paramList['text']."</a>";
 		return ob_get_clean();
 	}
 	
@@ -187,15 +205,34 @@ class Segue_TextTemplates_popup
 		$regex = '/
 <a
 \s
-href="([^"]+)"		#href
-\s+
-onclick="window\.open\(this\.href,
+
+# HREF first
+(?: 
+	href="([^"]+)"		#href
+	\s+
+)?
+
+onclick="
+(?: var\snewWindow=)?
+window\.open\(this\.href,
 \s?
 \'([^\']*)\',		# window name
 \s?
 \'([^\']*)\'\);		# options
+
+(?: \snewWindow\.focus\(\); )?
+
 \s?
-return\sfalse;?">
+return\sfalse;?"
+
+# HREF first
+(?: 
+	\s*
+	href="([^"]+)"		#href
+	\s*
+)?
+
+>
 (.+)				# link text
 <\/a>
 			/iUx';
@@ -209,9 +246,14 @@ return\sfalse;?">
 // 			printpre("working on: ".htmlentities($match));
 			try {
 				$matchParams = array();
-				$matchParams['url'] = $matches[1][$i];
+				if (strlen($matches[1][$i]))
+					$matchParams['url'] = $matches[1][$i];
+				else if (strlen($matches[4][$i]))
+					$matchParams['url'] = $matches[4][$i];
+				else
+					throw new OperationFailedException("href is not specified.");
 				$matchParams['window_name'] = $matches[2][$i];
-				$matchParams['text'] = $matches[4][$i];
+				$matchParams['text'] = $matches[5][$i];
 				
 				$srcParts = explode(',', $matches[3][$i]);
 				$srcOptions = array();
