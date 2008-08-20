@@ -69,13 +69,13 @@ class Segue_TextTemplates_googlemap
 	<p>This template will insert an embedded google map.</p>
 	<h4>Parameters:</h4>
 	<dl>
-		<dt>url<dt>
+		<dt><strong>url</strong></dt>
 		<dd>The base url of the map.</dd>
-		<dt>s<dt>
+		<dt><strong>s</strong></dt>
 		<dd>The security token that Google maps uses for their embeded maps, visible in the embed-source code. (Required)</dd>
-		<dt>width</dt>
+		<dt><strong>width</strong></dt>
 		<dd>The integer width of the map in pixels. (Optional) Example: 325</dd>
-		<dt>height</dt>
+		<dt><strong>height</strong></dt>
 		<dd>The integer height of the map in pixels. (Optional) Example: 250</dd>
 	</dl>
 	<h4>Example Usage:</h4>
