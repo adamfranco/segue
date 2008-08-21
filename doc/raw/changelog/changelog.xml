@@ -19,6 +19,9 @@
 			an AJAX form submission. Now using the proper encodeURIComponent()
 			method instead of the escape() method.
 		</fix>
+		<fix author='adam' date='2008-08-21'>
+			Migration: Now redirecting segue 1 urls even if they include encoded ampersands.
+		</fix>
 	</version>
 	<version number="2.0.0" date="2008-08-20">
 		<releaseNotes>
