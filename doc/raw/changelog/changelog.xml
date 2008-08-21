@@ -12,7 +12,14 @@
 <changelog name="Segue">
 	<version number="2.0.1" date="2008-08-21">
 		<releaseNotes>
+			This bug fix release fixes an error in editing multi-lingual text
+			in 'new mode' as well as a minor Segue 1 redirect issue.
 			
+			See the change-log for details of these fixes.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
 		</releaseNotes>
 		<fix author='adam' date='2008-08-21'>
 			UI2: Non-ASCII UTF-8 text was getting improperly encoded when doing
