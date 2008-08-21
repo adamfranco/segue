@@ -10,6 +10,16 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.0.1" date="2008-08-21">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-08-21'>
+			UI2: Non-ASCII UTF-8 text was getting improperly encoded when doing
+			an AJAX form submission. Now using the proper encodeURIComponent()
+			method instead of the escape() method.
+		</fix>
+	</version>
 	<version number="2.0.0" date="2008-08-20">
 		<releaseNotes>
 			This first stable release of Segue 2 fixes a number of issues that

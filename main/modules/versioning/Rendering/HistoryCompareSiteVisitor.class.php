@@ -120,7 +120,7 @@ class HistoryCompareSiteVisitor
 			print 		"var url = Harmoni.quickUrl('versioning', 'revert', ";
 			print 			"{node_id:'".$version->getPluginInstance()->getId()."', ";
 			print 			"version_id:'".$version->getVersionId()."', ";
-			print 			"comment:escape(commentText)}); ";
+			print 			"comment:encodeURIComponent(commentText)}); ";
 			print 		"window.location = url; ";
 			print "} else { return false; }";
 			print "\"/>";
