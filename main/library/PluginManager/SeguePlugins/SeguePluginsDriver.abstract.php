@@ -395,9 +395,9 @@ abstract class SeguePluginsDriver
 	public function tokenizeLocalUrls ($htmlString) {
 		$patterns = array();
 		$harmoni = Harmoni::instance();
-		$pattern = '#'.str_replace('.', '\.', MYURL).'[^\'"\s\]<>]*#i';
+		$pattern = '#[\'"]('.str_replace('.', '\.', MYURL).'[^\'"\s\]<>]*)#i';
 		$urls = preg_match_all($pattern, $htmlString, $matches);
-		foreach ($matches[0] as $url) {
+		foreach ($matches[1] as $url) {
 			$paramString = $harmoni->request->getParameterListFromUrl($url);
 			if ($paramString !== false) {
 				// File urls

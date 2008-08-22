@@ -16,7 +16,8 @@
 		</releaseNotes>
 		<fix author='adam' date='2008-08-22' ref='2068137' reftype='bug'>
 			Plugins: Local-URLs as plain-text instead of link href values now 
-			don't break HTML formatting.
+			don't break HTML formatting. Local URLs are now only tokenized if
+			they are used in an href, src or other tag, not just plain text.
 		</fix>
 		<change author='adam' date='2008-08-22' ref='2062718' reftype='fr'>
 			View/UI1/UI2: Site-name is now included in all site-viewing urls to
