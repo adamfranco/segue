@@ -146,6 +146,30 @@ class SegueErrorPrinter {
 			HarmoniErrorHandler::logException($e);
 	}
 	
+	/**
+	 * Handle an exception and the provide a redirect to another page.
+	 * 
+	 * @param object Exception $e
+	 * @parma int $code The HTTP status code to use.
+	 * @param string $additionalHtml
+	 * @return void
+	 * @access public
+	 * @since 8/22/08
+	 */
+	public function handExceptionWithRedirect (Exception $e, $code, $additionalHtml) {
+		ArgumentValidator::validate($code, IntegerValidatorRule::getRule());
+		ArgumentValidator::validate($additionalHtml, StringValidatorRule::getRule());
+		
+		if (!headers_sent())
+			header('HTTP/1.1 '.$code.' '.self::getCodeString($code));
+		
+		ob_start();
+		print "\n\t\t<p>".$additionalHtml."</p>";
+		$this->printException($e, $code, ob_get_clean());
+		
+		if ($this->shouldLogException($e, $code))
+			HarmoniErrorHandler::logException($e);
+	}
 	
 	/**
 	 * Print out a custom error page for an exception with the HTTP status code
@@ -157,7 +181,7 @@ class SegueErrorPrinter {
 	 * @access private
 	 * @since 2/21/08
 	 */
-	private function printException (Exception $e, $code) {
+	private function printException (Exception $e, $code, $additionalHtml = '') {
 		// Debugging mode for development, rethrow the exception
 		if (defined('DISPLAY_ERROR_BACKTRACE') && DISPLAY_ERROR_BACKTRACE) {
 			throw $e;
@@ -220,6 +244,7 @@ class SegueErrorPrinter {
 			<p>$message</p>
 		</blockquote>
 		<p>$logMessage</p>
+		$additionalHtml
 	</body>
 </html>
 

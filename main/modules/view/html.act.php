@@ -95,7 +95,27 @@ class htmlAction
 		/*********************************************************
 		 * Split sites based on their location-category
 		 *********************************************************/
-		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		try {
+			$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		} catch (UnknownIdException $e) {
+			// For non-existant node exceptions, redirect to the site root.
+			if ($e->getCode() == 289743 
+				&& RequestContext::value('node') && RequestContext::value('site')) 
+			{
+				$url = SiteDispatcher::quickURL(
+							$harmoni->request->getRequestedModule(),
+							$harmoni->request->getRequestedAction(),
+							array('site' => RequestContext::value('site')));
+				$errorPrinter = SegueErrorPrinter::instance();
+				$message = "<strong>"._("The node you requested does not exist or has been deleted. Click %1 to go to the %2.")."</strong>";
+				$message = str_replace('%1', "<a href='".$url."'>"._("here")."</a>", $message);
+				$message = str_replace('%2', "<a href='".$url."'>"._("main page of the site")."</a>", $message);
+				$errorPrinter->handExceptionWithRedirect($e, 404, $message);
+				exit;
+			} else {
+				throw $e;
+			}
+		}
 		try {
 			$slot = $rootSiteComponent->getSlot();
 			if (SiteDispatcher::getBaseUrlForSlot($slot) != MYURL) {

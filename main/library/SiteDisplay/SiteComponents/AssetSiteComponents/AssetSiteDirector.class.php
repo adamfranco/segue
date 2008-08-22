@@ -127,11 +127,15 @@ class AssetSiteDirector
 			
 			$idManager = Services::getService("Id");
 			
-			if (preg_match('/^(\w+)----(\w+)$/', $id, $matches))
-				$currentAsset = $this->_repository->getAsset(
-						$idManager->getId($matches[1]));
-			else
-				$currentAsset = $this->_repository->getAsset($idManager->getId($id));
+			try {
+				if (preg_match('/^(\w+)----(\w+)$/', $id, $matches))
+					$currentAsset = $this->_repository->getAsset(
+							$idManager->getId($matches[1]));
+				else
+					$currentAsset = $this->_repository->getAsset($idManager->getId($id));
+			} catch (UnknownIdException $e) {
+				throw new UnknownIdException($e->getMessage(), 289743);
+			}
 			
 			$this->activateDefaultsDownAsset($currentAsset);
 			$this->_rootSiteComponent = $this->traverseUpToRootSiteComponent($currentAsset);
@@ -331,17 +335,21 @@ class AssetSiteDirector
 	 */
 	function getSiteComponentById ( $id ) {
 		$idManager = Services::getService('Id');
-		if (preg_match('/^(\w+)----(\w+)$/', $id, $matches)) {
-			$asset = $this->_repository->getAsset(
-						$idManager->getId($matches[1]));
-			$xmlDoc = $this->getXmlDocumentFromAsset($asset);
-			$element = $xmlDoc->getElementByIdAttribute($matches[2]);
-			return $this->getSiteComponentFromXml($asset, $element);
-		} else {
-			return $this->getSiteComponentFromAsset(
-						$this->_repository->getAsset(
-							$idManager->getId($id)));
-		}		
+		try {
+			if (preg_match('/^(\w+)----(\w+)$/', $id, $matches)) {
+				$asset = $this->_repository->getAsset(
+							$idManager->getId($matches[1]));
+				$xmlDoc = $this->getXmlDocumentFromAsset($asset);
+				$element = $xmlDoc->getElementByIdAttribute($matches[2]);
+				return $this->getSiteComponentFromXml($asset, $element);
+			} else {
+				return $this->getSiteComponentFromAsset(
+							$this->_repository->getAsset(
+								$idManager->getId($id)));
+			}		
+		} catch (UnknownIdException $e) {
+			throw new UnknownIdException($e->getMessage(), 289743);
+		}
 	}
 	
 	/**

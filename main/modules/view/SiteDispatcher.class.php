@@ -293,8 +293,9 @@ class SiteDispatcher {
 	 * @since 3/31/08
 	 */
 	public static function getCurrentRootNode () {
-		if (!isset(self::$rootSiteComponent))
+		if (!isset(self::$rootSiteComponent)) {
 			self::$rootSiteComponent = self::getSiteDirector()->getRootSiteComponent(self::getCurrentNodeId());
+		}
 		
 		return self::$rootSiteComponent;
 	}

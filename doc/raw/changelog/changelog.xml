@@ -10,6 +10,19 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.1.0" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<change author='adam' date='2008-08-22' ref='2062718' reftype='fr'>
+			View/UI1/UI2: Site-name is now included in all site-viewing urls to
+			provide context to users.
+		</change>
+		<change author='adam' date='2008-08-22'>
+			View: When users request a node that doesn't exist and have a site
+			parameter in the URL, they are given a link to the main page of the site.
+		</change>
+	</version>
 	<version number="2.0.1" date="2008-08-21">
 		<releaseNotes>
 			This bug fix release fixes an error in editing multi-lingual text
