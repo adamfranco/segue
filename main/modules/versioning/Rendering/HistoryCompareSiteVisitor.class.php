@@ -51,7 +51,7 @@ class HistoryCompareSiteVisitor
 		ob_start();
 // 		print "\n<h3 class='diff_title'>"._("Selected Versions")."</h3>";
 		print "\n<a href='";
-		$browseHistoryUrl = $harmoni->request->quickURL(
+		$browseHistoryUrl = SiteDispatcher::quickURL(
 			$harmoni->request->getRequestedModule(), 'view_history', 
 			array('node' => SiteDispatcher::getCurrentNodeId(), 
 				'early_rev' => RequestContext::value('early_rev'),

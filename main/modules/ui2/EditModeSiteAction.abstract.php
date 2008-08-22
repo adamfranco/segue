@@ -131,7 +131,7 @@ abstract class EditModeSiteAction
 			$node = RequestContext::value('returnNode');
 		}
 		
-		RequestContext::locationHeader($harmoni->request->quickURL(
+		RequestContext::locationHeader(SiteDispatcher::quickURL(
 			$harmoni->request->getRequestedModule(), $returnAction,
 			array("node" => $node)));	
 	}

@@ -159,6 +159,10 @@ class SiteDispatcher {
 		foreach ($context as $key => $val) {
 			$url->setValue($key, $val);
 		}
+		// Shift the site and node parameters to the beggining of the URL.
+		$url->moveValueToBeginning('node');
+		$url->moveValueToBeginning('site');
+		
 		$harmoni->request->endNamespace();
 		return $url;
 	}
@@ -235,7 +239,30 @@ class SiteDispatcher {
 		}
 		$harmoni->request->endNamespace();
 		
-		return array($nodeKey => $nodeVal);
+		// We are now going to ensure that the site name is always in the url
+		if ($nodeKey == 'site') {
+			return array('site' => $nodeVal);
+		}
+		// If we have a node, look up its slot and add the name to the URL.
+		else {
+			try {
+				$site = self::getSiteDirector()->getRootSiteComponent($nodeVal);
+				$slot = $site->getSlot();
+				
+				// If the site-node is the one we are linking to, just use the
+				// slot name.
+				if ($site->getId() == $nodeVal)
+					return array('site' => $slot->getShortname());
+				// Otherwise, use both.
+				else
+					return array(
+						'site' => $slot->getShortname(),
+						'node' => $nodeVal);	
+			} catch (UnknownIdException $e) {
+				// If we can't figure out the site name, just return the node value.
+				return array('node' => $nodeVal);
+			}
+		}
 	}
 	
 	/**

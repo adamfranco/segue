@@ -62,7 +62,7 @@ class contentAction
 		
 		// set feed channel title and url
 		$this->setTitle($siteComponent->getDisplayName()." - "._("Content"));
-		$this->setLink($harmoni->request->quickURL("ui1","view",array("node" => $siteComponent->getId())));
+		$this->setLink(SiteDispatcher::quickURL("view","html",array("node" => $siteComponent->getId())));
 		
 		if (method_exists($siteComponent, 'getDescription'))
 			$this->setDescription(strip_tags($siteComponent->getDescription()));
@@ -100,14 +100,14 @@ class contentAction
 	
 		$item = $this->addItem(new RSSItem);
 		$item->setTitle($siteComponent->getDisplayName());
-		$item->setLink($harmoni->request->quickURL("ui1","view",array("node" => $siteComponent->getId())), true);
+		$item->setLink(SiteDispatcher::quickURL("view","html",array("node" => $siteComponent->getId())), true);
 		$item->setPubDate($siteComponent->getModificationDate());
 		
 		$agentMgr = Services::getService("Agent");
 		$agent = $agentMgr->getAgent($siteComponent->getCreator());
 		$item->setAuthor($agent->getDisplayName());
 				
-		$item->setCommentsLink($harmoni->request->quickURL("ui1","view",array("node" => $siteComponent->getId())));		
+		$item->setCommentsLink(SiteDispatcher::quickURL("view","html",array("node" => $siteComponent->getId())));		
 				
 		//@todo get full content from plugin
 		$item->setDescription($siteComponent->getDescription());

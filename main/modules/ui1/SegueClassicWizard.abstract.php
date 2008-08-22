@@ -117,6 +117,7 @@ class SegueClassicWizard
 	function buildContent () {
 		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough("node");
+		$harmoni->request->passthrough("site");
 		$harmoni->request->passthrough("returnNode");
 		if (RequestContext::value('returnModule'))
 			$harmoni->request->passthrough("returnModule");
@@ -232,7 +233,7 @@ class SegueClassicWizard
 			$returnModule = $harmoni->request->get("returnModule");
 		else
 			$returnModule = 'ui1';
-		return $harmoni->request->quickURL(
+		return SiteDispatcher::quickURL(
 			$returnModule, $harmoni->request->get("returnAction"),
 			array('node' => $harmoni->request->get("returnNode")));
 	}

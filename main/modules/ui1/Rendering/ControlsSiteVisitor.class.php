@@ -76,7 +76,7 @@ class ControlsSiteVisitor
 		
 // 		print "\n\t\t\t<form method='post'";
 // 		print " action='";
-// 		print $harmoni->request->quickURL('ui1', 'modifyComponent',
+// 		print SiteDispatcher::quickURL('ui1', 'modifyComponent',
 // 				array('node' => $siteComponent->getId(),
 // 					"returnNode" => SiteDispatcher::getCurrentNodeId(),
 // 					'returnAction' => $this->action));
@@ -217,7 +217,7 @@ class ControlsSiteVisitor
 			$parent->getId();
 			
 			
-			$url = 	$harmoni->request->mkURL('ui1', $action, array(
+			$url = 	SiteDispatcher::mkURL('ui1', $action, array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action
@@ -250,7 +250,7 @@ class ControlsSiteVisitor
 		{
 			$harmoni = Harmoni::instance();
 			$harmoni->history->markReturnURL('view_history_'.$siteComponent->getId());
-			$url =  $harmoni->request->quickURL('versioning', 'view_history',
+			$url =  SiteDispatcher::quickURL('versioning', 'view_history',
 					array("node" => $siteComponent->getId(), 
 						'returnModule' => $harmoni->request->getRequestedModule(),
 						'returnAction' => $harmoni->request->getRequestedAction()));
@@ -285,7 +285,7 @@ class ControlsSiteVisitor
 			$siteComponent->getParentComponent()->getQualifierId()))
 		{
 			
-			$url = 	$harmoni->request->quickURL('ui1', 'editContentWizard', array(
+			$url = 	SiteDispatcher::quickURL('ui1', 'editContentWizard', array(
 							'node' => $siteComponent->getId(),
 							'returnNode' => SiteDispatcher::getCurrentNodeId(),
 							'returnAction' => $this->action
@@ -325,7 +325,7 @@ class ControlsSiteVisitor
 			$harmoni = Harmoni::instance();
 			$message = _("Are you sure that you wish to create a submenu?");
 			$url = str_replace('&amp;', '&', 
-					$harmoni->request->quickURL('ui1', 'createSubMenu', array(
+					SiteDispatcher::quickURL('ui1', 'createSubMenu', array(
 						'parent' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action,
@@ -494,7 +494,7 @@ class ControlsSiteVisitor
 			$siteComponent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', 'editFlowOrg', array(
+			$url = 	SiteDispatcher::quickURL('ui1', 'editFlowOrg', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action
@@ -537,7 +537,7 @@ class ControlsSiteVisitor
 			$siteComponent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', 'editMenu', array(
+			$url = 	SiteDispatcher::quickURL('ui1', 'editMenu', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action

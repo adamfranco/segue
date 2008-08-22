@@ -1067,7 +1067,7 @@ END;
 		{
 			print " readonly='readonly'";
 		} else {
-			$url = $harmoni->request->quickURL('ui1', 'editSite', array(
+			$url = SiteDispatcher::quickURL('ui1', 'editSite', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnModule' => $this->module,
@@ -1100,7 +1100,7 @@ END;
 			$authZ = Services::getService("AuthZ");
 			$idManager = Services::getService("Id");
 			$harmoni = Harmoni::instance();
-			$url = $harmoni->request->quickURL('ui1', 'theme_options', array(
+			$url = SiteDispatcher::quickURL('ui1', 'theme_options', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnModule' => $this->module,

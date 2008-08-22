@@ -668,10 +668,10 @@ class listAction
 		// devolve into view-mode if no authorization is had by the user, just
 		// show the links all the time to cut page loads from 4-6 seconds to
 		// less than 1 second.
-		$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
+		$controls[] = "<a href='".SiteDispatcher::quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
 	
 // 		if ($action->getUiModule() == 'ui2') {
-// 			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+// 			$controls[] = "<a href='".SiteDispatcher::quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
 // 		}
 		
 		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))

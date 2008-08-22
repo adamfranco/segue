@@ -407,7 +407,7 @@ END;
 		
 		print "\n\t<div style='white-space: nowrap; text-align: center;'>";
 		print "\n\t\t<a href='";
-		print $harmoni->request->quickURL('ui1', $action, $params);
+		print SiteDispatcher::quickURL('ui1', $action, $params);
 		print "'>";
 		if ($isMenu)
 			print "\n\t\t\t"._("+ Menu Item");

@@ -285,7 +285,7 @@ class choose_siteAction
 			}
 			
 			
-			$viewUrl = $harmoni->request->quickURL('ui1', 'view', array('site' => $slot->getShortname()));
+			$viewUrl = SiteDispatcher::quickURL('view', 'html', array('site' => $slot->getShortname()));
 			
 			print "\n<div class='site_info'>";
 			print "\n\t<div class='site_title'>";

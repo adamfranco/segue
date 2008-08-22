@@ -127,7 +127,7 @@ class choose_agentAction
 				print "\n\t\t\t".$agent->getDisplayName();
 				print "\n\t\t</td>";
 				print "\n\t\t<td class='color$i' style='text-align: right;'>";
-				$url = $harmoni->request->quickURL('roles', 'modify', array(
+				$url = SiteDispatcher::quickURL('roles', 'modify', array(
 					'node' => SiteDispatcher::getCurrentNodeId(),
 					'agent' => $agent->getId()->getIdString()
 				));
@@ -170,7 +170,11 @@ class choose_agentAction
 			$action = RequestContext::value('returnAction');
 		else
 			$action = 'editview';
-		return $harmoni->request->quickURL($module, $action);
+			
+		$harmoni->request->forget('returnAction');
+		$harmoni->request->forget('returnModule');
+		$harmoni->request->forget('agent');
+		return SiteDispatcher::quickURL($module, $action);
 	}
 }
 

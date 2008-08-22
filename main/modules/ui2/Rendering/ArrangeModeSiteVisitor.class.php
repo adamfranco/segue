@@ -152,7 +152,7 @@ class ArrangeModeSiteVisitor
 	 */
 	function getDetailUrl ($id) {
 		$harmoni = Harmoni::instance();
-		return $harmoni->request->quickURL(
+		return SiteDispatcher::quickURL(
 				$harmoni->request->getRequestedModule(),
 				'editview',
 				array("node" => $id));
