@@ -230,6 +230,9 @@ class SiteDispatcher {
 		} else if (isset($params['site'])) {
 			$nodeKey = 'site';
 			$nodeVal = $params['site'];
+		} else if (RequestContext::value("node")) {
+			$nodeKey = 'node';
+			$nodeVal = RequestContext::value("node");
 		} else if (RequestContext::value("site")) {
 			$nodeKey = 'site';
 			$nodeVal = RequestContext::value("site");
@@ -238,7 +241,7 @@ class SiteDispatcher {
 			$nodeVal = self::getCurrentNodeId();
 		}
 		$harmoni->request->endNamespace();
-		
+				
 		// We are now going to ensure that the site name is always in the url
 		if ($nodeKey == 'site') {
 			return array('site' => $nodeVal);
