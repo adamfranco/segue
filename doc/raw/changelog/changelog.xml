@@ -18,7 +18,7 @@
 			View/UI1/UI2: Site-name is now included in all site-viewing urls to
 			provide context to users.
 		</change>
-		<new author='adam' date='2008-08-25' ref='2067943' reftype='fr' reporter='richard_jenkins>
+		<new author='adam' date='2008-08-25' ref='2067943' reftype='fr' reporter='richard_jenkins'>
 			Text-Templates: Added support for embedded Meebo chat widget. http://www.meebome.com/
 		</new>
 		<fix author='adam' date='2008-08-22' ref='2068137' reftype='bug'>
