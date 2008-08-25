@@ -328,6 +328,7 @@ class EduMiddleburyTextBlockPlugin
 		if ($this->textEditor == "none") {
 			$this->printTextField();
 		} else if ($this->textEditor == "fck") {
+			print Help::link('Rich-Text Editor');
 			$this->printFckEditor();
 		} else {
 			throw new Exception("Supplied editor, '".$this->textEditor."', is not valid.");

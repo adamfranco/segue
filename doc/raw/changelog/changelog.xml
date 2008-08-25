@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='alex' date='2008-08-25' ref='1820837' reftype='fr'>
+			Help: Added new help documentation for adding content; addng pages and sections; and for
+			using the Rich-Text Editor.
+		</new>
 		<fix author='adam' date='2008-08-22' ref='2068137' reftype='bug'>
 			Plugins: Local-URLs as plain-text instead of link href values now 
 			don't break HTML formatting. Local URLs are now only tokenized if

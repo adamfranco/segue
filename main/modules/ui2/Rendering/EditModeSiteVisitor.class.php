@@ -561,7 +561,12 @@ END;
 		if ($inCat)
 			print "\n\t\t\t</optgroup>";
 		
-		print "\n\t\t</select>";
+		print "\n\t\t</select> ";
+		if ($isMenu) {
+			print Help::link('Adding Pages and Sections');
+		} else {
+			print Help::link('Adding Content');
+		}
 		print "\n\t\t<div style='white-space: nowrap;'>"._("Title: ");
 		print "\n\t\t\t<input name='".RequestContext::name('displayName')."' type='text' size='10'/>";
 		print "\n\t\t</div>";
