@@ -372,7 +372,7 @@ END;
 			$organizer->getQualifierId()))
 		{
 			print "<div style='height: 50px; border: 1px solid #F00; margin: 0px 5px 5px 5px; padding: 5px;'>";
-			print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+			print _("This Section has no Pages yet. <br/><br/>Add a Page by clicking the <strong>+ Page</strong> button for this Section and choose 'Page'.");
 		} else {
 			print "<div style='height: 50px; margin: 0px 5px 5px 5px; padding: 5px;'>";
 			print " ";
@@ -410,7 +410,7 @@ END;
 		print SiteDispatcher::quickURL('ui1', $action, $params);
 		print "'>";
 		if ($isMenu)
-			print "\n\t\t\t"._("+ Menu Item");
+			print "\n\t\t\t"._("+ Page");
 		else
 			print "\n\t\t\t"._("+ Content");
 		print "\n\t\t</a>";

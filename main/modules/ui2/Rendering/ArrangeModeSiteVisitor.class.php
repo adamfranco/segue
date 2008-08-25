@@ -403,7 +403,7 @@ class ArrangeModeSiteVisitor
 			$idMgr->getId("edu.middlebury.authorization.add_children"),
 			$organizer->getQualifierId()))
 		{
-			print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+			print _("This Section has no Pages yet. <br/><br/>Add a Page by clicking the <strong>+ Page</strong> button for this Section and choose 'Page'.");
 		} else {
 			print " ";
 			print "\n</div>";

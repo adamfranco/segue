@@ -27,6 +27,13 @@
 			View: When users request a node that doesn't exist and have a site
 			parameter in the URL, they are given a link to the main page of the site.
 		</change>
+		<fix author='adam' date='2008-08-25' ref='2067965' reftype='bug'>
+			UI1/UI2: Empty Section UI message now refers to link text of "+ Page".
+		</fix>
+		<fix author='adam' date='2008-08-25'>
+			UI1: Updated menu addition text from "+ Menu Item" to "+ Page" for consistancy
+			with UI2.
+		</fix>
 	</version>
 	<version number="2.0.1" date="2008-08-21">
 		<releaseNotes>
