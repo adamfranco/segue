@@ -34,6 +34,9 @@
 			UI1: Updated menu addition text from "+ Menu Item" to "+ Page" for consistancy
 			with UI2.
 		</fix>
+		<fix author='adam' date='2008-08-25'>
+			Login form now says Username/Email instead of just 'username'.
+		</fix>
 	</version>
 	<version number="2.0.1" date="2008-08-21">
 		<releaseNotes>
