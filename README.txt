@@ -1,5 +1,5 @@
 
-Segue v. 2.0.1 (2008-08-21)
+Segue v. 2.1.0 (2008-08-25)
 =================================
 
 What is Segue?
@@ -17,14 +17,15 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This bug fix release fixes an error in editing multi-lingual text in 'new mode' as
-well as a minor Segue 1 redirect issue.
+This release updates site URLs to include the site/placeholder name to improve the
+sense of context by users. Additionally, this release includes 'Meebo' chat widget
+support as well as a number of fixes.
 
 See the change-log for details of these fixes.
 
 -------------
 
-This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+This Segue 2 release uses Harmoni 1.6.2 and Polyphony 1.4.2.
 
 
 Downloads
@@ -64,6 +65,20 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.1.0 (2008-08-25)
+----------------------------------------------------
+This release updates site URLs to include the site/placeholder name to improve the
+sense of context by users. Additionally, this release includes 'Meebo' chat widget
+support as well as a number of fixes.
+
+See the change-log for details of these fixes.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.6.2 and Polyphony 1.4.2.
+
 
 
 v. 2.0.1 (2008-08-21)
