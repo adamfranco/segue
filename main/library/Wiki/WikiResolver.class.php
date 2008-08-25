@@ -168,6 +168,20 @@ class WikiResolver {
 	}
 	
 	/**
+	 * Parse and replace any text-templates that are safe for use in an WYSIWYG editor 
+	 * with HTML markup. This can be used to allow WYSIWG editing of elements that
+	 * will later be converted back to text-templates using unapplyTextTemplates().
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function applyEditorSafeTextTemplates($text) {
+		return $this->textTemplateResolver->applyEditorSafeTextTemplates($text);
+	}
+	
+	/**
 	 * Convert HTML markup back into wiki-style text-templates markup
 	 * 
 	 * @param string $text

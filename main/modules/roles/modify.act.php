@@ -317,7 +317,7 @@ class modifyAction
 		
 		$chooseUserListener = $wizard->getChild('choose_user');
 		if ($chooseUserListener->wasPressed())
-			return $harmoni->request->quickURL('roles', 'choose_agent');
+			return SiteDispatcher::quickURL('roles', 'choose_agent');
 		else {
 			if (RequestContext::value('returnModule'))
 				$module = RequestContext::value('returnModule');
@@ -328,7 +328,11 @@ class modifyAction
 				$action = RequestContext::value('returnAction');
 			else
 				$action = 'editview';
-			return $harmoni->request->quickURL($module, $action);
+			
+			$harmoni->request->forget('returnAction');
+			$harmoni->request->forget('returnModule');
+			$harmoni->request->forget('agent');
+			return SiteDispatcher::quickURL($module, $action);
 		}
 	}
 	

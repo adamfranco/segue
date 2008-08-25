@@ -195,7 +195,7 @@ class addContentAction
 	function getReturnUrl () {
 		if (isset($this->_newId)) {
 			$harmoni = Harmoni::instance();
-			return $harmoni->request->quickURL(
+			return SiteDispatcher::quickURL(
 				'ui1', 'editContent',
 				array('node' => $this->_newId,
 					'returnAction' => $harmoni->request->get("returnAction"),

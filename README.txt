@@ -1,5 +1,5 @@
 
-Segue v. 2.0-rc-2 (2008-08-14)
+Segue v. 2.0.1 (2008-08-21)
 =================================
 
 What is Segue?
@@ -17,17 +17,14 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release fixes a number of small bugs and a number of security issues.
+This bug fix release fixes an error in editing multi-lingual text in 'new mode' as
+well as a minor Segue 1 redirect issue.
 
-Security issues fixed: 
+See the change-log for details of these fixes.
 
-- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
-actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+-------------
 
-- Segue can now be configured to use secure/http-only cookies. 
-
-- Admin actions are now restricted to prevent listing of users and ids in the
-system. 
+This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
 
 
 Downloads
@@ -67,6 +64,53 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.0.1 (2008-08-21)
+----------------------------------------------------
+This bug fix release fixes an error in editing multi-lingual text in 'new mode' as
+well as a minor Segue 1 redirect issue.
+
+See the change-log for details of these fixes.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+
+
+
+v. 2.0.0 (2008-08-20)
+----------------------------------------------------
+This first stable release of Segue 2 fixes a number of issues that were found during
+testing of the release candidates. 
+
+Notable user-facing changes:
+
+- Now supports embeded GoogleCalendars.
+
+- Now supports links targeting pop-up windows.
+
+- YouTube videos now can be loaded in high quality using the fmt=18 option.
+
+- A warning is now given if leaving a page with a text-editor open.
+
+See the change-log for details of these and other fixes.
+
+-------------
+
+Upgrades:
+
+As of beta 25, Segue requires PHP to be compiled with XSL
+support. On unix systems this can be added by configuring PHP using the --with-xsl
+option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 30 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+
 
 
 v. 2.0-rc-2 (2008-08-14)

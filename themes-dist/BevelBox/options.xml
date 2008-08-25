@@ -115,7 +115,7 @@
     </option>
     <option id='border_color'>
         <displayName lang='en_US'>Border Color</displayName>
-        <description lang='en_US'>The color of the borders.</description>
+        <description lang='en_US'>The color of the heading borders.</description>
         <choice isDefault='true'>
             <key>gray</key>
             <label lang='en_US'>Gray</label>
@@ -149,7 +149,7 @@
     </option>
     <option id='border_style'>
         <displayName lang='en_US'>Border Style</displayName>
-        <description lang='en_US'>The style of the borders.</description>
+        <description lang='en_US'>The style of the heading borders.</description>
         <choice isDefault='true'>
             <key>solid</key>
             <label lang='en_US'>Solid</label>

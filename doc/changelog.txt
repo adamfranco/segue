@@ -2,6 +2,141 @@
 Segue Change Log
 
 
+v. 2.0.1 (2008-08-21)
+----------------------------------------------------
+This bug fix release fixes an error in editing multi-lingual text in 'new mode' as
+well as a minor Segue 1 redirect issue.
+
+See the change-log for details of these fixes.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+		
+		
+	* Bug Fix: 
+		UI2: Non-ASCII UTF-8 text was getting improperly encoded when doing an AJAX
+		form submission. Now using the proper encodeURIComponent() method instead of
+		the escape() method.
+		(2008-08-21 - Adam Franco)
+		
+	* Bug Fix: 
+		Migration: Now redirecting segue 1 urls even if they include encoded
+		ampersands. 
+		(2008-08-21 - Adam Franco)
+	
+
+
+
+v. 2.0.0 (2008-08-20)
+----------------------------------------------------
+This first stable release of Segue 2 fixes a number of issues that were found during
+testing of the release candidates. 
+
+Notable user-facing changes:
+
+- Now supports embeded GoogleCalendars.
+
+- Now supports links targeting pop-up windows.
+
+- YouTube videos now can be loaded in high quality using the fmt=18 option.
+
+- A warning is now given if leaving a page with a text-editor open.
+
+See the change-log for details of these and other fixes.
+
+-------------
+
+Upgrades:
+
+As of beta 25, Segue requires PHP to be compiled with XSL
+support. On unix systems this can be added by configuring PHP using the --with-xsl
+option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+
+Upgrades from versions prior to beta 30 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+		
+		
+	* Bug Fix: #2053286 
+		Themes: Border color and style options for Bevelbox theme now apply to
+		content block heading.
+		(2008-08-19 - Alex Chapin)
+		
+	* Bug Fix: 
+		UI2: changed minimal width of options layer from 200px to 150px.
+		(2008-08-19 - Alex Chapin)
+		
+	* Bug Fix: 
+		Migration: Segue 1 redirects now work for RSS feeds and site-names with
+		hyphens. 
+		(2008-08-18 - Adam Franco)
+		
+	* Bug Fix: #2058072 
+		Migration: Local URLs are now updated to point a new locations.
+		(2008-08-18 - Adam Franco)
+		
+	* Bug Fix: #2053923 
+		Dataport: Admin-only import tool now works again.
+		(2008-08-18 - Adam Franco)
+		
+	* Bug Fix: 
+		UI2: Ajax plugin updates now do not result in a null-argument exception.
+		(2008-08-18 - Adam Franco)
+		
+	* Bug Fix: 
+		Re-applied a set of changes that should have been in beta 28, but that got
+		accidentally dropped during resolution of a merge conflict.
+		
+		 - Plugins: Text-Plugin now prompts with confirmation before unloading
+		the page (back, refresh, link-click, etc) when the plugin is open for
+		editing in UI2. 
+		
+		 * Improved XML error checking in RSS feed display. 
+		
+		 * Removed debugging lines. 
+		
+		 * Placeholder admin screens now remember pagination state.
+		(2008-08-19 - Adam Franco)
+		
+	* Bug Fix: #2060103 
+		UI2: Block controls now are above header so that they don't hide reorder and
+		history links.
+		(2008-08-19 - Adam Franco)
+		(reported by Shel Sax of Middlebury College)
+		
+	* New feature: #2060070 
+		Text-Templates: New text template for popup-windows enables usage of links
+		that spawn popup windows as created by the FCKEditor.
+		(2008-08-20 - Adam Franco)
+		
+	* New feature: #2060070 
+		Text-Templates can now optionally flag themselves as 'WYSIWYG editor safe'
+		so that their HTML can be modified in the FCKEditor and then converted back
+		to markup for storage and filtering.
+		(2008-08-20 - Adam Franco)
+		
+	* Change: 
+		Text-Templates now support multi-valued arguments. Needed for allowing
+		multiple Google-Calendars.
+		(2008-08-19 - Adam Franco)
+		
+	* New feature: #2058349 
+		Text-Templates: New GoogleCalendar text-template.
+		(2008-08-19 - Adam Franco)
+		(reported by Shel Sax of Middlebury College)
+		
+	* Change: #2058238 
+		Text-Templates: Youtube text-template now supports the fmt (format) option
+		which can take '18' as a value to get a high-quality video.
+		(2008-08-19 - Adam Franco)
+	
+
+
+
 v. 2.0-rc-2 (2008-08-14)
 ----------------------------------------------------
 This release fixes a number of small bugs and a number of security issues.

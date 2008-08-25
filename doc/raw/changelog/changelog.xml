@@ -10,10 +10,91 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.0-rc-3" date="The Future">
+	<version number="2.1.0" date="The Future">
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2008-08-22' ref='2068137' reftype='bug'>
+			Plugins: Local-URLs as plain-text instead of link href values now 
+			don't break HTML formatting. Local URLs are now only tokenized if
+			they are used in an href, src or other tag, not just plain text.
+		</fix>
+		<change author='adam' date='2008-08-22' ref='2062718' reftype='fr'>
+			View/UI1/UI2: Site-name is now included in all site-viewing urls to
+			provide context to users.
+		</change>
+		<change author='adam' date='2008-08-22'>
+			View: When users request a node that doesn't exist and have a site
+			parameter in the URL, they are given a link to the main page of the site.
+		</change>
+		<fix author='adam' date='2008-08-25' ref='2067965' reftype='bug'>
+			UI1/UI2: Empty Section UI message now refers to link text of "+ Page".
+		</fix>
+		<fix author='adam' date='2008-08-25'>
+			UI1: Updated menu addition text from "+ Menu Item" to "+ Page" for consistancy
+			with UI2.
+		</fix>
+	</version>
+	<version number="2.0.1" date="2008-08-21">
+		<releaseNotes>
+			This bug fix release fixes an error in editing multi-lingual text
+			in 'new mode' as well as a minor Segue 1 redirect issue.
+			
+			See the change-log for details of these fixes.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+		</releaseNotes>
+		<fix author='adam' date='2008-08-21'>
+			UI2: Non-ASCII UTF-8 text was getting improperly encoded when doing
+			an AJAX form submission. Now using the proper encodeURIComponent()
+			method instead of the escape() method.
+		</fix>
+		<fix author='adam' date='2008-08-21'>
+			Migration: Now redirecting segue 1 urls even if they include encoded ampersands.
+		</fix>
+	</version>
+	<version number="2.0.0" date="2008-08-20">
+		<releaseNotes>
+			This first stable release of Segue 2 fixes a number of issues that
+			were found during testing of the release candidates. 
+			
+			Notable user-facing changes:
+			
+			- Now supports embeded GoogleCalendars.
+			
+			- Now supports links targeting pop-up windows.
+			
+			- YouTube videos now can be loaded in high quality using the fmt=18 option.
+			
+			- A warning is now given if leaving a page with a text-editor open.
+			
+			See the change-log for details of these and other fixes.
+			
+			-------------
+			
+			Upgrades:
+			
+			As of beta 25, Segue requires PHP to be compiled with XSL support.
+			On unix systems this can be added by configuring PHP using the --with-xsl
+			option. See the following for installation instructions:
+			http://www.php.net/manual/en/xsl.installation.php
+			
+			Upgrades from versions prior to beta 30 require running system
+			updaters located under Admin Tools --> Segue Updates.
+			
+			-------------
+			
+			This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+		</releaseNotes>
+		<fix author='alex' date='2008-08-19' ref='2053286' reftype='bug'>
+			Themes: Border color and style options for Bevelbox theme now apply to
+			content block heading.
+		</fix>
+		<fix author='alex' date='2008-08-19'>
+			UI2: changed minimal width of options layer from 200px to 150px.
+		</fix>
 		<fix author='adam' date='2008-08-18'>
 			Migration: Segue 1 redirects now work for RSS feeds and site-names with hyphens.
 		</fix>
@@ -44,6 +125,26 @@
 			UI2: Block controls now are above header so that they don't hide reorder
 			and history links.
 		</fix>
+		<new author='adam' date='2008-08-20' ref='2060070' reftype='bug'>
+			Text-Templates: New text template for popup-windows enables usage
+			of links that spawn popup windows as created by the FCKEditor.
+		</new>
+		<new author='adam' date='2008-08-20' ref='2060070' reftype='bug'>
+			Text-Templates can now optionally flag themselves as 'WYSIWYG editor safe'
+			so that their HTML can be modified in the FCKEditor and then converted
+			back to markup for storage and filtering.
+		</new>
+		<change author='adam' date='2008-08-19'>
+			Text-Templates now support multi-valued arguments. Needed for allowing 
+			multiple Google-Calendars.
+		</change>
+		<new author='adam' date='2008-08-19' ref='2058349' reftype='fr' reporter='shel_sax'>
+			Text-Templates: New GoogleCalendar text-template.
+		</new>
+		<change author='adam' date='2008-08-19' ref='2058238' reftype='fr'>
+			Text-Templates: Youtube text-template now supports the fmt (format)
+			option which can take '18' as a value to get a high-quality video.
+		</change>
 	</version>
 	<version number="2.0-rc-2" date="2008-08-14">
 		<releaseNotes>
@@ -97,7 +198,7 @@
 			
 			- Roles links have been moved to the top of the screen for easier access.
 			
-				-------------
+			-------------
 			
 			Upgrades:
 			

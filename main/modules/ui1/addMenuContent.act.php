@@ -227,7 +227,7 @@ class addMenuContentAction
 	function getReturnUrl () {
 		if (isset($this->_newIsNav) && $this->_newIsNav && isset($this->_newId)) {
 			$harmoni = Harmoni::instance();
-			return $harmoni->request->quickURL(
+			return SiteDispatcher::quickURL(
 				'ui1', 'editNav',
 				array('node' => $this->_newId,
 					'returnAction' => $harmoni->request->get("returnAction"),
