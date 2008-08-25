@@ -14,15 +14,18 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<change author='adam' date='2008-08-22' ref='2062718' reftype='fr'>
+			View/UI1/UI2: Site-name is now included in all site-viewing urls to
+			provide context to users.
+		</change>
+		<new author='adam' date='2008-08-25' ref='2067943' reftype='fr' reporter='richard_jenkins>
+			Text-Templates: Added support for embedded Meebo chat widget. http://www.meebome.com/
+		</new>
 		<fix author='adam' date='2008-08-22' ref='2068137' reftype='bug'>
 			Plugins: Local-URLs as plain-text instead of link href values now 
 			don't break HTML formatting. Local URLs are now only tokenized if
 			they are used in an href, src or other tag, not just plain text.
 		</fix>
-		<change author='adam' date='2008-08-22' ref='2062718' reftype='fr'>
-			View/UI1/UI2: Site-name is now included in all site-viewing urls to
-			provide context to users.
-		</change>
 		<change author='adam' date='2008-08-22'>
 			View: When users request a node that doesn't exist and have a site
 			parameter in the URL, they are given a link to the main page of the site.
@@ -2629,6 +2632,10 @@
 		<reporter short="thierry_leterre">
 			<name>Thierry Leterre</name>
 			<institution>Middlebury College/Université de Versailles-Saint-Quentin-en-Yvelines</institution>
+		</reporter>
+		<reporter short="richard_jenkins">
+			<name>Richard Jenkins</name>
+			<institution>Middlebury College</institution>
 		</reporter>
 		<reporter short="jeff_merriman">
 			<name>Jeff Merriman</name>
