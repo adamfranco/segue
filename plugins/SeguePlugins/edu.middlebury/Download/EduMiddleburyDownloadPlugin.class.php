@@ -136,14 +136,11 @@ class EduMiddleburyDownloadPlugin
 			print "\n".$this->formStartTagWithAction();
  			
  			print "\n\t<input name='".$this->getFieldName('file_id')."' type='hidden' value=\"".$this->getContent()."\"/>";
- 			 			
- 			// Description
- 			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->cleanHTML($this->untokenizeLocalUrls($this->getRawDescription()))."</textarea>";
  			
- 			print $this->getWikiHelp();
- 			
+ 			print "\n\t<h3>"._("File:")."</h3>";
+
  			// Select File button
- 			print "\n\t<br/><br/><input type='button' value='"._('Select File')."' onclick=\"";
+ 			print "\n\t<input type='button' value='"._('Select File')."' onclick=\"";
  			print "this.onUse = function (mediaFile) { ";
  			
  			print 		"this.form.elements['".$this->getFieldName('file_id')."'].value = mediaFile.getId(); ";
@@ -178,9 +175,15 @@ class EduMiddleburyDownloadPlugin
  			print "\"/>";
  			
  			// Container for example download bar.
- 			print "<div>".$this->getDownloadBar()."</div>";
+ 			print "<div style='margin-top: 10px;'>".$this->getDownloadBar()."</div>";
  			
- 			
+ 			// Description
+ 			print "\n\t<h3>"._("Caption:")."</h3>";
+ 			$this->printFckEditor($this->getFieldName('description'), 
+ 					$this->applyEditorSafeTextTemplates(
+ 						$this->cleanHTML($this->untokenizeLocalUrls(
+ 							$this->getRawDescription()))));
+ 			print $this->getWikiHelp();
  			
  			print "\n\t<br/>";
  			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
@@ -194,15 +197,14 @@ class EduMiddleburyDownloadPlugin
 // 				print "\n<div onclick=".$this->url(array('edit' => 'true')).">";
 //  			}
  			
- 			if ($this->getRawDescription()) {
-				print "\n<p>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getRawDescription())))."</p>";
-				print "\n<hr/>";
-			}
- 			
  			// DownLoad bar
 	 		print "\n<div>";
 	 		print $this->getDownloadBar();
 	 		print "</div>";
+	 		
+	 		if ($this->getRawDescription()) {
+				print "\n<div style='margin-top: 10px;'>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getRawDescription())))."</div>";
+			}
 	 		
 	 		if ($this->shouldShowControls()) {
 // 				print "\n</div>";
@@ -216,7 +218,65 @@ class EduMiddleburyDownloadPlugin
  		return ob_get_clean();
  	}
  	
- 	
+ 	/**
+ 	 * Get fckeditor specified by this->textEditor
+ 	 * 
+ 	 * @string $fieldname The field-name to user for the editor
+ 	 * @string $value The value to display in the editor.
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 8/22/07
+ 	 */
+ 	function printFckEditor ($fieldname, $value) {
+		$oFCKeditor = new FCKeditor($fieldname);
+			
+		$oFCKeditor->Config['EnterMode'] = "br";
+		$oFCKeditor->Config['ShiftEnterMode'] = "p";
+		
+		$oFCKeditor->Config['ImageBrowser'] = "true";
+		
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace('media');
+		$oFCKeditor->Config['ImageBrowserURL'] = str_replace('&amp;', '&', $harmoni->request->quickURL('media', 'filebrowser', array('node' => $this->getId())));
+		$harmoni->request->endNamespace();
+		$oFCKeditor->Config['ImageBrowserWindowWidth'] = "700";
+		$oFCKeditor->Config['ImageBrowserWindowHeight'] = "600";
+		
+		$oFCKeditor->Config['LinkDlgHideTarget'] = "false";
+		$oFCKeditor->Config['LinkDlgHideAdvanced'] = "false";
+		
+		$oFCKeditor->Config['ImageDlgHideLink'] = "false";
+		$oFCKeditor->Config['ImageDlgHideAdvanced'] = "false";
+		
+		$oFCKeditor->Config['FlashDlgHideAdvanced'] = "false";
+		
+		
+		$oFCKeditor->BasePath	= POLYPHONY_PATH."/javascript/fckeditor/" ;
+		
+		$oFCKeditor->Config['CustomConfigurationsPath'] = MYPATH.'/javascript/fck_custom_config.js';
+
+		
+ 		$oFCKeditor->Value = $value;
+	 	
+		$oFCKeditor->Height		= '300' ;
+//		$oFCKeditor->Width		= '400' ;
+		$oFCKeditor->ToolbarSet		= 'ContentBlock' ;
+		
+		$oFCKeditor->Create() ;
+		
+		// Add an event check on back button to confirm that the user wants to
+		// leave with their editor open.
+		$string = _("You have edits open. Any changes will be lost.");
+		print "
+<script type='text/javascript'>
+// <![CDATA[ 
+
+		window.addUnloadConfirmationForElement(\"$fieldname\", \"$string\");
+	
+// ]]>
+</script>
+";
+ 	}
 	
 	/**
 	 * Answer the download bar.

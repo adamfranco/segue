@@ -24,6 +24,10 @@
 			Plugins: New plugin methods available for accessing media from Flash
 			while maintaining session-based authentication of the file-access.
 		</new>
+		<change author='adam' date='2008-08-26'>
+			Plugins: File-for-download now uses the FCKEditor and puts the caption
+			below the file rather than above.
+		</change>
 		<fix author='adam' date='2008-08-26' reporter='hector_vila'>
 			Roles: Fixed NullArgumentException in Roles UI when entering from the
 			site-level.
