@@ -126,7 +126,7 @@ class EduMiddleburyAudioPlayerPlugin
  			
  			// Select File button
  			print "\n\t<h3>"._("File:")."</h3>";
- 			print "\n\t<input type='button' value='"._('Select File')."' onclick=\"";
+ 			print "\n\t<input type='button' value='"._('Select MP3 File')."' onclick=\"";
  			print "this.onUse = function (mediaFile) { ";
  			
  			print 		"this.form.elements['".$this->getFieldName('file_id')."'].value = mediaFile.getId(); ";
@@ -143,7 +143,7 @@ class EduMiddleburyAudioPlayerPlugin
  			print 		"img.alt = mediaFile.getTitles()[0]; ";
  			
  			print		"var downloadDiv = downloadBar.appendChild(document.createElement('div')); ";
- 			print		"downloadDiv.style.textAlign = 'center'; ";
+ 			print		"downloadDiv.style.textAlign = 'right'; ";
  			print		"var download = downloadDiv.appendChild(document.createElement('a')); ";
  			print 		"download.innerHTML = '"._("Download this file")."'; ";
  			print		"download.style.fontWeight = 'bold'; ";
@@ -157,7 +157,7 @@ class EduMiddleburyAudioPlayerPlugin
  			
  			print 		"this.nextSibling.innerHTML = '<div>' + downloadBar.innerHTML + '<div style=\\'clear: both;\\'></div></div>'; ";
  			print "}; "; 
- 			print "MediaLibrary.run('".$this->getId()."', this); ";
+ 			print "MediaLibrary.run('".$this->getId()."', this, ['audio/mpeg']); ";
  			print "\"/>";
  			
  			// Container for example download bar.
