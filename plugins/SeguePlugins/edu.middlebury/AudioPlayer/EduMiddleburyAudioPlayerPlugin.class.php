@@ -165,7 +165,10 @@ class EduMiddleburyAudioPlayerPlugin
  			
  			// Description
  			print "\n\t<h3>"._("Caption:")."</h3>";
- 			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->cleanHTML($this->untokenizeLocalUrls($this->getRawDescription()))."</textarea>";
+ 			$this->printFckEditor($this->getFieldName('description'), 
+ 					$this->applyEditorSafeTextTemplates(
+ 						$this->cleanHTML($this->untokenizeLocalUrls(
+ 							$this->getRawDescription()))));
  			
  			print $this->getWikiHelp();
  			
@@ -204,6 +207,65 @@ class EduMiddleburyAudioPlayerPlugin
  		return ob_get_clean();
  	}
  	
+ 	/**
+ 	 * Get fckeditor specified by this->textEditor
+ 	 * 
+ 	 * @string $fieldname The field-name to user for the editor
+ 	 * @string $value The value to display in the editor.
+ 	 * @return void
+ 	 * @access public
+ 	 * @since 8/22/07
+ 	 */
+ 	function printFckEditor ($fieldname, $value) {
+		$oFCKeditor = new FCKeditor($fieldname);
+			
+		$oFCKeditor->Config['EnterMode'] = "br";
+		$oFCKeditor->Config['ShiftEnterMode'] = "p";
+		
+		$oFCKeditor->Config['ImageBrowser'] = "true";
+		
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace('media');
+		$oFCKeditor->Config['ImageBrowserURL'] = str_replace('&amp;', '&', $harmoni->request->quickURL('media', 'filebrowser', array('node' => $this->getId())));
+		$harmoni->request->endNamespace();
+		$oFCKeditor->Config['ImageBrowserWindowWidth'] = "700";
+		$oFCKeditor->Config['ImageBrowserWindowHeight'] = "600";
+		
+		$oFCKeditor->Config['LinkDlgHideTarget'] = "false";
+		$oFCKeditor->Config['LinkDlgHideAdvanced'] = "false";
+		
+		$oFCKeditor->Config['ImageDlgHideLink'] = "false";
+		$oFCKeditor->Config['ImageDlgHideAdvanced'] = "false";
+		
+		$oFCKeditor->Config['FlashDlgHideAdvanced'] = "false";
+		
+		
+		$oFCKeditor->BasePath	= POLYPHONY_PATH."/javascript/fckeditor/" ;
+		
+		$oFCKeditor->Config['CustomConfigurationsPath'] = MYPATH.'/javascript/fck_custom_config.js';
+
+		
+ 		$oFCKeditor->Value = $value;
+	 	
+		$oFCKeditor->Height		= '300' ;
+//		$oFCKeditor->Width		= '400' ;
+		$oFCKeditor->ToolbarSet		= 'ContentBlock' ;
+		
+		$oFCKeditor->Create() ;
+		
+		// Add an event check on back button to confirm that the user wants to
+		// leave with their editor open.
+		$string = _("You have edits open. Any changes will be lost.");
+		print "
+<script type='text/javascript'>
+// <![CDATA[ 
+
+		window.addUnloadConfirmationForElement(\"$fieldname\", \"$string\");
+	
+// ]]>
+</script>
+";
+ 	}
  	
 	
 	/**
