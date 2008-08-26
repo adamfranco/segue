@@ -256,10 +256,8 @@ class EduMiddleburyAudioPlayerPlugin
                         print "<param value='high' name='quality' /><param value='false' name='menu' /><param value='transparent' name='wmode' />\n";   
                         print "<param value='soundFile={$flashUrl}' name='FlashVars' />\n";
                         print "</object>\n";
-			print "<br>\n";
-
-			print "\n\t\t<img src='";
-			print str_replace('"', "'", strip_tags($file->getTitle()));
+			print "<br/>\n";
+			
 			print "\n</div>";
 			
 			print "<div style='clear: both; margin-bottom: 6px;'>";
