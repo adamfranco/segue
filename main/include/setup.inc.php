@@ -99,7 +99,9 @@ $configs = array(
 					'dataport',
 					'tagging',
 					'templates',
-					'themes'
+					'themes',
+					'uploads',
+					'welcome'
 				);
 
 foreach ($configs as $config) {
@@ -117,3 +119,50 @@ if (defined('SEGUE_STARTING_SITE') && SEGUE_STARTING_SITE) {
 	$harmoni->config->set("defaultAction","html");
 	$harmoni->config->set("defaultParams",array("site" => SEGUE_STARTING_SITE));
 }
+
+/*********************************************************
+ * Set a list of actions that require request tokens to prevent 
+ * Cross-Site Request Forgery attacks. All actions that 
+ * could potentially change data should require this.
+ *
+ * Actions in this list will not be able to be loaded directly.
+ *********************************************************/
+$harmoni->ActionHandler->addRequestTokenRequiredActions(array(
+		"comments.*",
+		"dataport.convert",
+		"dataport.import",
+		"media.delete",
+		"media.update",
+		"media.upload",
+		"plugin_manager.update_ajax",
+		"media.delete",
+		"portal.copy_site",
+		"roles.choose_agent",
+		"roles.modify",
+		"roles.rebuildImplicit",
+		"slots.delete",
+		"slots.edit",
+		"ui1.add",
+		"ui1.add_wiki_component",
+		"ui1.addContent",
+		"ui1.addMenuContent",
+		"ui1.deleteComponent",
+		"ui1.editContent",
+		"ui1.editFlowOrg",
+		"ui1.editHeader",
+		"ui1.editMenu",
+		"ui1.editNav",
+		"ui1.editSite",
+		"ui1.reorder",
+		"ui1.theme_options",
+		"ui2.add",
+		"ui2.add_wiki_component",
+		"ui2.addComponent",
+		"ui2.createSubMenu",
+		"ui2.deleteComponent",
+		"ui2.modifyComponent",
+		"ui2.moveComponent",
+		"ui2.reorder",
+		"updates.*",
+		"versioning.revert"
+	));

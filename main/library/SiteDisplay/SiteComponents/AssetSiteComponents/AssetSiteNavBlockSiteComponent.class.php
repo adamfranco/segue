@@ -175,7 +175,7 @@ class AssetSiteNavBlockSiteComponent
 	 */
 	function getSlot () {
 		$slotManager = SlotManager::instance();
-		return $slotManager->getSlotForSiteId($this->getId());
+		return $slotManager->getSlotBySiteId($this->getId());
 	}
 	
 	/*********************************************************

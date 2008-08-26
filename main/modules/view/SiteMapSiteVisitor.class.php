@@ -172,7 +172,7 @@ class SiteMapSiteVisitor
 	 */
 	function getDetailUrl ($id) {
 		$harmoni = Harmoni::instance();
-		return $harmoni->request->quickURL(
+		return SiteDispatcher::quickURL(
 				$harmoni->request->getRequestedModule(),
 				"view",
 				array("node" => $id));

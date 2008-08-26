@@ -122,6 +122,10 @@ class TextBlockSegue1To2Converter
 		$longHtml = $this->attachMediaFromHtml($longHtml, $mediaElement);
 		$longHtml = $this->rewriteLocalLinks($longHtml);
 		
+		// Convert any media to Text-Template markup
+		$shortHtml = WikiResolver::instance()->unapplyTextTemplates($shortHtml);
+		$longHtml = WikiResolver::instance()->unapplyTextTemplates($longHtml);
+		
 		// Clean out any bad html
 		$shortHtml = $this->cleanHtml($shortHtml);
 		$longHtml = $this->cleanHtml($longHtml);

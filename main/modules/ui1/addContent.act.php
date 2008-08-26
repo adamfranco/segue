@@ -128,12 +128,18 @@ class addContentAction
 			if ($icon) {
 				print "\n\t<img src='".$icon."' width='300px' align='left' style='margin-right: 5px; margin-bottom: 5px;' alt='icon' />";
 			}
-			print " <strong>".$pType->getKeyword()."</strong>";
+			try {
+				$class = $pluginManager->getPluginClass($pType);
+				$name = call_user_func(array($class, 'getPluginDisplayName'));
+			} catch (UnknownIdException $e) {
+				$name = $pType->getKeyword();
+			}
+			print " <strong>".$name."</strong>";
 			print "\n\t<div>".$pType->getDescription()."</div>";
 			print "\n</div>";
 			print "\n<div style='clear: both;'></div>";
 			$property->addOption($key, 
-				str_replace('%1', $pType->getKeyword(),_('Create %1 >> ')), 
+				str_replace('%1', $name,_('Create %1 >> ')), 
 				ob_get_clean());
 			if (!$set) {
 				$property->setValue($key);
@@ -189,7 +195,7 @@ class addContentAction
 	function getReturnUrl () {
 		if (isset($this->_newId)) {
 			$harmoni = Harmoni::instance();
-			return $harmoni->request->quickURL(
+			return SiteDispatcher::quickURL(
 				'ui1', 'editContent',
 				array('node' => $this->_newId,
 					'returnAction' => $harmoni->request->get("returnAction"),

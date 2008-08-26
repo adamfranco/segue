@@ -23,7 +23,587 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.0-beta-24</h2>
+<h2>Version 2.1.0</h2>
+<h3>2008-08-25</h3>
+<p>This release updates site URLs to include the site/placeholder name to improve the sense of context by users. Additionally, this release includes 'Meebo' chat widget support as well as a number of fixes.
+<br>
+<br>See the change-log for details of these fixes.
+<br>
+<br>-------------
+<br>
+<br>This Segue 2 release uses Harmoni 1.6.2 and Polyphony 1.4.2.</p>
+<ul>
+		
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2062718&amp;group_id=82171&amp;atid=565237">
+        			#2062718</a> View/UI1/UI2: Site-name is now included in all site-viewing urls to provide context to users. (<em>2008-08-22 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2067943&amp;group_id=82171&amp;atid=565237">
+        			#2067943</a> Text-Templates: Added support for embedded Meebo chat widget. http://www.meebome.com/ (<em>2008-08-25 - Adam Franco</em>)<br> (<em>reported by Richard Jenkins of Middlebury College</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820837&amp;group_id=82171&amp;atid=565237">
+        			#1820837</a> Help: Added new help documentation for adding content; addng pages and sections; and for using the Rich-Text Editor. (<em>2008-08-25 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2068137&amp;group_id=82171&amp;atid=565234">
+        			#2068137</a> Plugins: Local-URLs as plain-text instead of link href values now don't break HTML formatting. Local URLs are now only tokenized if they are used in an href, src or other tag, not just plain text. (<em>2008-08-22 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> View: When users request a node that doesn't exist and have a site parameter in the URL, they are given a link to the main page of the site. (<em>2008-08-22 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2067965&amp;group_id=82171&amp;atid=565234">
+        			#2067965</a> UI1/UI2: Empty Section UI message now refers to link text of "+ Page". (<em>2008-08-25 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI1: Updated menu addition text from "+ Menu Item" to "+ Page" for consistancy with UI2. (<em>2008-08-25 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Login form now says Username/Email instead of just 'username'. (<em>2008-08-25 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0.1</h2>
+<h3>2008-08-21</h3>
+<p>This bug fix release fixes an error in editing multi-lingual text in 'new mode' as well as a minor Segue 1 redirect issue.
+<br>
+<br>See the change-log for details of these fixes.
+<br>
+<br>-------------
+<br>
+<br>This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> UI2: Non-ASCII UTF-8 text was getting improperly encoded when doing an AJAX form submission. Now using the proper encodeURIComponent() method instead of the escape() method. (<em>2008-08-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Now redirecting segue 1 urls even if they include encoded ampersands. (<em>2008-08-21 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0.0</h2>
+<h3>2008-08-20</h3>
+<p>This first stable release of Segue 2 fixes a number of issues that were found during testing of the release candidates. 
+<br>
+<br>Notable user-facing changes:
+<br>
+<br>- Now supports embeded GoogleCalendars.
+<br>
+<br>- Now supports links targeting pop-up windows.
+<br>
+<br>- YouTube videos now can be loaded in high quality using the fmt=18 option.
+<br>
+<br>- A warning is now given if leaving a page with a text-editor open.
+<br>
+<br>See the change-log for details of these and other fixes.
+<br>
+<br>-------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 30 require running system updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br>-------------
+<br>
+<br>This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2053286&amp;group_id=82171&amp;atid=565234">
+        			#2053286</a> Themes: Border color and style options for Bevelbox theme now apply to content block heading. (<em>2008-08-19 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: changed minimal width of options layer from 200px to 150px. (<em>2008-08-19 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Segue 1 redirects now work for RSS feeds and site-names with hyphens. (<em>2008-08-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2058072&amp;group_id=82171&amp;atid=565234">
+        			#2058072</a> Migration: Local URLs are now updated to point a new locations. (<em>2008-08-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2053923&amp;group_id=82171&amp;atid=565234">
+        			#2053923</a> Dataport: Admin-only import tool now works again. (<em>2008-08-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: Ajax plugin updates now do not result in a null-argument exception. (<em>2008-08-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Re-applied a set of changes that should have been in beta 28, but that got accidentally dropped during resolution of a merge conflict.
+<br>
+<br> - Plugins: Text-Plugin now prompts with confirmation before unloading the page (back, refresh, link-click, etc) when the plugin is open for editing in UI2. 
+<br>
+<br> * Improved XML error checking in RSS feed display. 
+<br>
+<br> * Removed debugging lines. 
+<br>
+<br> * Placeholder admin screens now remember pagination state. (<em>2008-08-19 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2060103&amp;group_id=82171&amp;atid=565234">
+        			#2060103</a> UI2: Block controls now are above header so that they don't hide reorder and history links. (<em>2008-08-19 - Adam Franco</em>)<br> (<em>reported by Shel Sax of Middlebury College</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2060070&amp;group_id=82171&amp;atid=565234">
+        			#2060070</a> Text-Templates: New text template for popup-windows enables usage of links that spawn popup windows as created by the FCKEditor. (<em>2008-08-20 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2060070&amp;group_id=82171&amp;atid=565234">
+        			#2060070</a> Text-Templates can now optionally flag themselves as 'WYSIWYG editor safe' so that their HTML can be modified in the FCKEditor and then converted back to markup for storage and filtering. (<em>2008-08-20 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Text-Templates now support multi-valued arguments. Needed for allowing multiple Google-Calendars. (<em>2008-08-19 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2058349&amp;group_id=82171&amp;atid=565237">
+        			#2058349</a> Text-Templates: New GoogleCalendar text-template. (<em>2008-08-19 - Adam Franco</em>)<br> (<em>reported by Shel Sax of Middlebury College</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2058238&amp;group_id=82171&amp;atid=565237">
+        			#2058238</a> Text-Templates: Youtube text-template now supports the fmt (format) option which can take '18' as a value to get a high-quality video. (<em>2008-08-19 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-rc-2</h2>
+<h3>2008-08-14</h3>
+<p>This release fixes a number of small bugs and a number of security issues.
+<br>
+<br>Security issues fixed: 
+<br>
+<br>- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
+<br>
+<br>- Segue can now be configured to use secure/http-only cookies. 
+<br>
+<br>- Admin actions are now restricted to prevent listing of users and ids in the system.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> Errors: Fixed unknown index notice in the SegueErrorPrinter. (<em>2008-08-14 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Slots/Placeholders: Now folds slot names to lowercase when looking up.
+<br>
+<br>Segue 1 had some instances of uppercase slot-names that were causing errors in migration and redirects. (<em>2008-08-14 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Redirects to Segue 1 now properly include the 'site' action when short-form URLs ('/sites/sitename') are used. (<em>2008-08-14 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2040513&amp;group_id=82171&amp;atid=1098812">
+        			#2040513</a> Security: Actions that involve data modification now require per-user tokens in the request to prevent Cross-Site Request Forgeries. (<em>2008-08-14 - Adam Franco</em>)<br> (<em>reported by Josh Abraham of Rapid7, LLC.</em>)</li>
+		<li>
+<b>Change:</b> Now welcome message is configurable. (<em>2008-08-14 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-rc-1</h2>
+<h3>2008-08-14</h3>
+<p>This first production release candidate of Segue 2 fixes a number of user-interface difficulties and adds much documentation.
+<br>
+<br>Notable User-Facing Changes:
+<br>
+<br>- Can now search for sites in the Portal by title, description, or placeholder
+<br>
+<br>- More contextual help.
+<br>
+<br>- New 'Blank' template.
+<br>
+<br>- Can now set site-wide roles and theme when creating a site.
+<br>
+<br>- Roles links have been moved to the top of the screen for easier access.
+<br>
+<br>-------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 30 require running system updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br>-------------
+<br>
+<br>Segue 2.0.0 uses Harmoni 1.5.0 and Polyphony 1.3.3.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2032839&amp;group_id=82171&amp;atid=565237">
+        			#2032839</a> Portal: Can now search for sites by title, description, or placeholder. (<em>2008-08-11 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820937&amp;group_id=82171&amp;atid=565237">
+        			#1820937</a> Can now split sites to different virtual-hosts or paths based on their location category. This enables sites given the 'main' location-category to appear at a different url from sites given the 'community' location-category. (<em>2008-08-07 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2030595&amp;group_id=82171&amp;atid=565237">
+        			#2030595</a> Site Creation: Added a new 'Blank' template (<em>2008-08-11 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Site Creation: Can now set site-wide roles and choose theme in create-site wizard. (<em>2008-08-13 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2039320&amp;group_id=82171&amp;atid=565237">
+        			#2039320</a> New course-sites listing action to provide listings of course sites to external systems. (<em>2008-08-12 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820837&amp;group_id=82171&amp;atid=565237">
+        			#1820837</a> Help: Added new help documentation for Portal, Copy-Site, Move/Copy, Wiki-Linking, and Text-Templates. (<em>2008-08-13 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Roles: Renamed all references to 'Permissions' to 'Roles' for consistency. (<em>2008-08-13 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> UI2: Roles-link has now been moved to the commands area at the top of the page for easier access. Also added to that area for Classic mode. (<em>2008-08-13 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009057&amp;group_id=82171&amp;atid=565237">
+        			#2009057</a> UI1/UI2: TextBlock and Download plugins renamed to 'Text &amp; Images' and 'File'. (<em>2008-08-11 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2046491&amp;group_id=82171&amp;atid=565234">
+        			#2046491</a> UI2: Now can not delete layout containers that are targets for menus as this would through the site into an invalid state. (<em>2008-08-11 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Fixed a number of notices that were filling up the logs when the MSNBot crawled Segue. (<em>2008-08-11 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-30</h2>
+<h3>2008-08-07</h3>
+<p>This release fixes a number of security issues, an authorization bug that was prevent proper view access to some sites, and a few smaller issues. As well, it introduces the ability to move or copy content and pages within a site or across sites. See the change-log for details.
+<br>
+<br>Notable User-Facing Changes:
+<br>
+<br>- New Move/Copy abilities
+<br>
+<br>- New delete-confirmation dialog that shows the scope of the action.
+<br>
+<br>-------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 30 require running system updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br>-------------
+<br>
+<br>Segue 2.0-beta-30 uses Harmoni 1.4.7 and Polyphony 1.3.2.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799954&amp;group_id=82171&amp;atid=565237">
+        			#1799954</a> SiteEditing: Can now select Pages or Content Blocks and move or copy them elsewhere in the site or another site. (<em>2008-08-05 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> SiteEditing: New delete confirmation dialog displays a list of all items that will be deleted. (<em>2008-08-05 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> AuthZ: New updater to rebuild cascading-up implicit 'view' authorizations that were not getting written to the database. This has been fixed in Harmoni 1.4.7 and this updater will rebuild any implicit authorization rows that are not in the database. (<em>2008-08-07 - Adam Franco</em>)<br> (<em>reported by Peter Wilkins of MIT</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Segue1UrlResolver now properly returns id-strings instead of Id objects, enabling forwarding to work properly. (<em>2008-08-05 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> CopySites: 'Copy Discussions' flag no longer inverted. (<em>2008-08-04 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2040277&amp;group_id=82171&amp;atid=1098812">
+        			#2040277</a> Security: Fixed reflective cross-site scripting vulnerability in error printer. (<em>2008-08-06 - Adam Franco</em>)<br> (<em>reported by Josh Abraham of Rapid7, LLC.</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2040303&amp;group_id=82171&amp;atid=1098812">
+        			#2040303</a> Security: Fixed Cross-Site Scripting vulnerability in all usage of HTTP_REFERER. (<em>2008-08-06 - Adam Franco</em>)<br> (<em>reported by Josh Abraham of Rapid7, LLC.</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-29</h2>
+<h3>2008-08-01</h3>
+<p>This release adds a number of new themes, allows copying of sites, and numerous other improvements.
+<br>
+<br>Notable User-facing changes:
+<br>
+<br>- Can now copy sites to empty placeholders in the portal.
+<br>
+<br>- Site-URLs are now printed in the portal.
+<br>
+<br>- Viewing of sites has now been dramatically sped-up for users without the editer role.
+<br>
+<br>- Sections and Pages are now named with more clarity.
+<br>
+<br>- Many theme improvements.
+<br>
+<br>- Portal style-fixes MS Internet Explorer browser.
+<br>
+<br>- Better support for uploading multi-page PDFs.
+<br>
+<br>See the change log for more details and other fixes.
+<br>
+<br>Harmoni 1.4.6 includes a fix to the thumbnail generation system that prevents excess processing overhead on large multi-page PDFs and improves the upload and migration of these files.
+<br>
+<br>Segue 2.0-beta-28 uses Harmoni 1.4.6 and Polyphony 1.3.1.
+<br>
+<br>---------------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b> Themes: Added two new themes, RoundedBox and Midd. (<em>2008-07-30 - Alex Chapin</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1799954&amp;group_id=82171&amp;atid=565237">
+        			#1799954</a> Portal: Can now copy sites into empty placeholders. (<em>2008-07-29 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2032019&amp;group_id=82171&amp;atid=565237">
+        			#2032019</a> Portal: Site URLs are now printed below the site title on the portal for easy reference. (<em>2008-07-30 - Adam Franco</em>)<br> (<em>reported by hector_vila</em>)</li>
+		<li>
+<b>Change:</b> Moved menu on Segue main pages from the left to the right side (<em>2008-07-30 - Alex Chapin</em>)</li>
+		<li>
+<b>Change:</b> UI2: removed from nav item (renamed in this release to pages/sections) options settings for titles, history, comments, dates attribution and sort method (unless these were set to something other than default in current installs). (<em>2008-07-22 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2031891&amp;group_id=82171&amp;atid=565234">
+        			#2031891</a> Removed the display of tags divider line for users viewing sites in edit mode without edit permissions. (<em>2008-08-01 - Alex Chapin</em>)</li>		<li>
+<b>Bug Fix:</b> Portal: Fixed styling problems in IE. (<em>2008-08-01 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2031895&amp;group_id=82171&amp;atid=565237">
+        			#2031895</a> View/UI1/UI2/Portal: Links to edit-mode are now shown to all users as these devolve into view mode if users have no edit authorizations. Doing so prevents us from having to search for edit authorizations throughout the entire site, drastically improving page-load times such as from 35s to 1.3s on one particular site.
+<br>
+<br>Similarly, the 'permissions' button is now only displayed on pages where the user has authorization to work with permissions. This forces users who are admins of only one page to browse to that page to see the permissions link, but saves enormous time on everyone else's page loads. (<em>2008-07-30 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: fixed improper width setting in div enclosing permissions button that was causing site options box to not properly surround the background block (<em>2008-07-25 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2034986&amp;group_id=82171&amp;atid=565234">
+        			#2034986</a> Plugins: Deprecated 'Plugin data-arrays' support as it was causing hundreds of excess reordering queries every page load and not being used anyway. (<em>2008-08-01 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009049&amp;group_id=82171&amp;atid=565237">
+        			#2009049</a> UI1/UI2: Menus are now "Page Containers", nav items with submenus below are now "Sections" and otherwise "Pages". (<em>2008-08-01 - Alex Chapin, Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Configuration: Now including the wizard-uploads configuration file to allow uploads in wizards on servers with safe-mode on. (<em>2008-08-01 - Adam Franco</em>)<br> (<em>reported by Robyn Whyte of Middlebury College</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-28</h2>
+<h3>2008-07-24</h3>
+<p>This release fixes a number of minor bugs, improves theme-support for MS Internet Explorer, and adds support for embedding GoogleMaps. 
+<br>
+<br>See the change-log for additional details on fixes.
+<br>
+<br>Segue 2.0-beta-28 uses Harmoni 1.4.5 and Polyphony 1.3.0.
+<br>
+<br>---------------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b> TextTemplates: New Text-Template for embedding Google Maps. For details See: https://segue2.middlebury.edu/view/html/node/481328 (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2026991&amp;group_id=82171&amp;atid=565234">
+        			#2026991</a> UI2: Content display name fields now doen't get extra entity encoding. (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021654&amp;group_id=82171&amp;atid=565234">
+        			#2021654</a> Plugins: Text-Plugin now prompts with confirmation before unloading the page (back, refresh, link-click, etc) when the plugin is open for editing. The Classic-Mode wizard similarly prompts the user. (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2023876&amp;group_id=82171&amp;atid=565234">
+        			#2023876</a> Placeholders: Admin placeholder management screens now keep pagination state. (<em>2008-07-22 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Themes: updated the RoundedCorners theme to be more compatible with other themes and to display more consistently across browsers. (<em>2008-07-23 - Alex Chapin</em>)</li>
+		<li>
+<b>Change:</b> UI2: removed the Nav block display of settings for titles, history, comments dates, attribution and sort method unless these are other than the default settings. These settings are being removed from the nav block because they can be set in the content containers within that nav block. (<em>2008-07-22 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021654&amp;group_id=82171&amp;atid=565234">
+        			#2021654</a> Plugins: Text-Plugin now prompts with confirmation before unloading the page (back, refresh, link-click, etc) when the plugin is open for editing in UI2. (<em>2008-07-24 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2023876&amp;group_id=82171&amp;atid=565234">
+        			#2023876</a> Placeholders: Admin placeholder management screens now keep pagination state. (<em>2008-07-22 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-27.2</h2>
+<h3>2008-07-21</h3>
+<p>This release fixes a number of bugs in migration and with wiki-text.
+<br>
+<br>An additional bug fix in Harmoni 1.4.4 fixes an issue with permissions settings for members of groups the ids of which contain quotes.
+<br>
+<br>See the change-log for additional details on fixes.
+<br>
+<br>Segue 2.0-beta-27 uses Harmoni 1.4.4 and Polyphony 1.2.11.
+<br>
+<br>---------------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021759&amp;group_id=82171&amp;atid=565237">
+        			#2021759</a> WikiText: Wrapping wiki-links and text-template markup in &lt;nowiki&gt; tags now prevents parsing of the wiki-text. This is useful for documenting how to use wiki-markup. (<em>2008-07-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> WikiText: Wiki-links to page names with diacritics now work properly. (<em>2008-07-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021588&amp;group_id=82171&amp;atid=565234">
+        			#2021588</a> WikiText: Links to Segue root now do not get converted into invalid page links. (<em>2008-07-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Wizard/Dataport: File upload temporary directory is now configurable using the POLYPHONY_TMP_DIR constant located in a new uploads.conf.php configuration file. (<em>2008-07-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021570&amp;group_id=82171&amp;atid=565234">
+        			#2021570</a> Migration: User doing migration now always gets the Admin Role. Certain permissions settings in the origin site sometimes caused a revocation of admin privlidges mid-way through the migration process. (<em>2008-07-21 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021564&amp;group_id=82171&amp;atid=565234">
+        			#2021564</a> Migration: For sites with complex permissions, header view perms are now properly set. (<em>2008-07-21 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-27.1</h2>
+<h3>2008-07-18</h3>
+<p>This release fixes an issue that preventing inline images from appearing in text blocks.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=this&amp;group_id=82171&amp;atid=565234">
+        			#this</a> Plugins: File-url and local-url markup is now not stripped from HTML output by the Safe-HTML system when displaying plugins. Inline images will now display properly. (<em>2008-07-18 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-27</h2>
+<h3>2008-07-17</h3>
+<p>This release adds support for embedded Flash videos, text-templates, and fixes several bugs.
+<br>
+<br>Text-templates are a new extension system that use the same markup as MediaWiki's templates to enable output of custom HTML blocks customized with a set of named parameters. 
+<br>
+<br>For example, a new 'video' template inserts embed code for videos from a variety of providers defined in a white-list (to prevent XSS attacks). Example of usage: {{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}} This video template will also search through the HTML source in a text-block and replace any embed orobject elements with appropriate template markup.
+<br>
+<br>Also included is a 'search' template that can insert a customized search field into a text-block. Example of usage: {{search}} Example of usage: {{search|base_url=http://youtube.com/results|search_param_name=search_query}}
+<br>
+<br>See the change-log for additional details on fixes.
+<br>
+<br>Segue 2.0-beta-27 uses Harmoni 1.4.3 and Polyphony 1.2.10.
+<br>
+<br>---------------------
+<br>
+<br>Upgrades:
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b> Text-Templates: New 'text-templates' extension system uses markup like MediaWiki's templates to enable output of HTML blocks given a template and set of parameters. A 'video' template to enabled white-listed embedded video and a 'search' template to insert a search form are the first uses of this new system. (<em>2008-07-16 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2013487&amp;group_id=82171&amp;atid=565237">
+        			#2013487</a> Text-Templates: New 'video' template inserts embed code for videos from a variety of providers defined in a white-list to prevent XSS attacks. This template will also search an HTML block and replace any embed or object elements with appropriate template markup. Example: {{video|service=youtube|id=s13dLaTIHSg|width=425|height=344}} (<em>2008-07-16 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Text-Templates: New 'search' template inserts a search form for a variety of providers or custom search end-points. Insert {{search}} into a text-content block to use. (<em>2008-07-16 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: Accessing edit-mode when not logged in now doesn't cause a fatal error of a class not found. (<em>2008-07-15 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2018685&amp;group_id=82171&amp;atid=565234">
+        			#2018685</a> UI2: Quotes in titles no longer break XHTML validity. (<em>2008-07-16 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2018232&amp;group_id=82171&amp;atid=565234">
+        			#2018232</a> Themes: Themes with non-default options set now load CSS files with the option choices. Fixes for this are in Harmoni (commit de26816ffa93753366584861cb798380eb8ef09a) and Polyphony (commit 717117f3e9f05e63e9a1e4f79fc9efed34f2ebb9). (<em>2008-07-17 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2018218&amp;group_id=82171&amp;atid=565234">
+        			#2018218</a> RSS: Feeds in alternate encodings are now converted to UTF-8. (<em>2008-07-17 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2018160&amp;group_id=82171&amp;atid=565234">
+        			#2018160</a> Migration: All characters in Segue v1 tags other than alphanumeric and underscores are converted to underscore in order to comply with Segue v2 tag validation. (<em>2008-07-17 - Alex Chapin</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-26.1</h2>
+<h3>2008-07-14</h3>
+<p>This release fixes a few bugs that were not fixed in beta 26.
+<br>
+<br>---------------------
+<br>
+<br>From Beta 26:
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br>-----------------------
+<br>
+<br>Segue 2.0-beta-26.1 uses Harmoni 1.4.2 and Polyphony 1.2.8.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2017290&amp;group_id=82171&amp;atid=565234">
+        			#2017290</a> Themes: Added missing method getModificationDate() that was preventing custom theme CSS from loading. (<em>2008-07-14 - Adam Franco</em>)<br> (<em>reported by Laurel Taylor of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2014548&amp;group_id=82171&amp;atid=565234">
+        			#2014548</a> Roles: Additional fix for 'invalid default state' issues.
+<br>
+<br>The roles UI now rebuilds implicit AZs if an 'invalid default state' exception is raised, and then re-attempts to load the roles UI.
+<br>
+<br>Also added an admin-only action for manually rebuilding implicit AZs.
+<br>
+<br>It seems that some sites have been created with invalid or missing implicit AZs. Rebuilding the Hierarchy-caused Implicit AZs for the site fixes this issue. This should not be necessary for newly created sites. (<em>2008-07-14 - Adam Franco</em>)<br> (<em>reported by Thierry Leterre of Middlebury College/Université de Versailles-Saint-Quentin-en-Yvelines</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-26</h2>
+<h3>2008-07-11</h3>
+<p>This release fixes a major bug in the permissions/role-setting system that was preventing modifications of roles for some groups. Also improved are the RSS feed-display plugin's support for slightly non-conforming feeds and a few other minor issues.
+<br>
+<br>As of this beta 25, Segue requires PHP to be compiled with XSL support. On unix systems this can be added by configuring PHP using the --with-xsl option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
+<br>
+<br>Upgrades from versions prior to beta 26 require running the RSS Feed updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br>Segue 2.0-beta-25 uses Harmoni 1.4.2 and Polyphony 1.2.7.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2014548&amp;group_id=82171&amp;atid=565234">
+        			#2014548</a> Roles: Fixed Roles issue with 'invalid default state'.
+<br>
+<br>It appears that since the transition to the new AuthZ2 implementation, the roles system has not been working correctly when setting complex authorization. This issue stems from the 'new' property of view authorizations cascading up as well as down. This cascading up was confusing the roles system. When there was no site-wide view authorization the roles system thought that there was due to a view authorization cascading up from a story or page.
+<br>
+<br>This has now been sorted out and the roles system only looks at implicit authorizations that cascade down when determining what role to display for a user. (<em>2008-07-11 - Adam Franco</em>)<br> (<em>reported by Laurel Taylor of Middlebury College</em>)</li>
+		<li>
+<b>Change:</b> Plugins: RSS remote access script now validates and cleans RSS doc instead of using XSD validation.
+<br>
+<br>The schema was too strict and failing on too many feeds. Since the reader only uses a few elements in the feed, these are verified and cleaned. (<em>2008-07-11 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Plugins: Extended cached size of RSS data. (<em>2008-07-11 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Plugins: Cached RSS data is now deleted after expiration time on any cache addition, not just its own. (<em>2008-07-11 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009044&amp;group_id=82171&amp;atid=565237">
+        			#2009044</a> UI2: New menu items are selected after creation. (<em>2008-07-11 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-25</h2>
+<h3>2008-07-10</h3>
+<p>This release adds the capability to display RSS feeds inline in a site and fixes a wide range of bugs.
+<br>
+<br>Notable User-facing changes:
+<br>
+<br> * Can now display RSS feeds in a site.
+<br>
+<br> * 'New Mode' is now the default user interface.
+<br>
+<br> * Migration fixes enable more sites to be successfully migrated.
+<br>
+<br> * Major speed improvements for users viewing sites without editing access.
+<br>
+<br>Upgrades from versions prior to beta 25 require running the RSS Feed updaterlocated under Admin Tools --&gt; Segue Updates.
+<br>
+<br>Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.</p>
+<ul>
+		
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1998213&amp;group_id=82171&amp;atid=565237">
+        			#1998213</a> Dataport: Added status display during site import. (<em>2008-07-10 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Dataport: Added more error checking during import process to help debug import problems. (<em>2008-07-10 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009035&amp;group_id=82171&amp;atid=565237">
+        			#2009035</a> UI: New Mode now the default editing UI. (<em>2008-07-10 - Alex Chapin</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820785&amp;group_id=82171&amp;atid=565237">
+        			#1820785</a> Plugins: New RSS feed-display plugin to allow in-line display of RSS feeds. (<em>2008-06-18 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> As of this release, Segue requires PHP to be compiled with XSL support. See the following for installation: http://www.php.net/manual/en/xsl.installation.php (<em>2008-07-07 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Run the RSS display updater under Admin Tools -&gt; Segue Updates to enable the RssFeed plugin. (<em>2008-07-08 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1959168&amp;group_id=82171&amp;atid=565234">
+        			#1959168</a> View/Portal: Major speed improvements for non-editor and non-logged in users. Now only checking 'add_children' authorization for determining when to show mode-switching links, saving dramatically on the number of authorization queries when all such queries return false. As well, mode-switching-link checks will simply be bypassed if the user is not authenticated to prevent even more authorization queries. (<em>2008-07-10 - Adam Franco</em>)<br> (<em>reported by Jeff Merriman of MIT</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2014319&amp;group_id=82171&amp;atid=565234">
+        			#2014319</a> Starting Site: Now doesn't require a second click to access other parts of the site when using a custom starting site. (<em>2008-07-09 - Adam Franco</em>)<br> (<em>reported by Jeff Merriman of MIT</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2013156&amp;group_id=82171&amp;atid=565234">
+        			#2013156</a> Authentication: Failed login followed by successful login now doesn't retain the 'login failed' message. (<em>2008-07-09 - Adam Franco</em>)<br> (<em>reported by Gabe Schine</em>)</li>
+		<li>
+<b>Change:</b> Roles: With 'Editor' role set for 'everyone' log-in is required to edit.
+<br>
+<br>To accomplish this, the role-system now merges authorizations for the 'edu.middlebury.agents.everyone' group and the 'edu.middlebury.agents.users' group when viewing or setting roles for 'Everyone'.
+<br>
+<br>The 'edu.middlebury.agents.everyone' group (which includes the anonymous user) is only ever given the 'reader' role (view authorization) and the view_comments authorization (part of the 'commenter' role) while the 'edu.middlebury.agents.users' group(which includes all authenticated users, even visitors) is given the additional authorizations.
+<br>
+<br>As far as the UI is concerned site admins are just setting roles for 'Everyone', but now anonymous users aren't being given grants to make changes. This should prevent spam and make modifications at least nominally traceable. (<em>2008-07-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009077&amp;group_id=82171&amp;atid=565234">
+        			#2009077</a> View: Fixed issue where theme name was printed in the site title. This was initially added in commit b633fb846d9addf2f8f7ef44a1f13e5db00c21d7 as a debugging aid. The site title now includes the full breadcrumb trail. (<em>2008-07-09 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009092&amp;group_id=82171&amp;atid=565234">
+        			#2009092</a> Migration: Segue v1 sites with null creation dates no longer halts site migration. (<em>2008-07-08 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009095&amp;group_id=82171&amp;atid=565234">
+        			#2009095</a> Migration: Segue v1 null agent information now replaced with unknown agent and no longer halts site migration (<em>2008-07-08 - Alex Chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2009104&amp;group_id=82171&amp;atid=565234">
+        			#2009104</a> Migration: migrating theme options from Segue v1 that do not exist in Segue v2 no longer throws an error (<em>2008-07-07 - Alex Chapin</em>)</li>
+		<li>
+<b>Change:</b> Plugins: Manager now executes any script blocks when reloading the plugin after AJAX update. (<em>2008-06-17 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820785&amp;group_id=82171&amp;atid=565237">
+        			#1820785</a> Plugins: Plugins can now get URLs for static files in their own 'public' directories. Enables serving of custom javascript/images/css. (<em>2008-06-18 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820785&amp;group_id=82171&amp;atid=565237">
+        			#1820785</a> Plugins: Plugins can now specify CSS and Javascript files to be linked from the document head. (<em>2008-06-18 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Themes: Theme CSS now configured to be loaded from a separate file to cut down on document size. (<em>2008-06-18 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Updates: Updates now check for authorization. (<em>2008-07-10 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.0-beta-24</h2>
 <h3>2008-06-16</h3>
 <p>This release fixes a number of minor bugs that were affecting some users and adds support for setting a particular Segue site as the default page when no particular action or site is specified.
 <br>

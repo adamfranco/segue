@@ -34,7 +34,7 @@ class EduMiddleburyDownloadPlugin
  	 * @static
  	 */
  	static function getPluginDescription () {
- 		return _("The Download plugin allows you to chose a file-for-download and have a link to it displayed in a bar with a citation and a custom description. Use this plugin with audio files for creating podcasts.");
+ 		return _("The File download plugin allows you to chose a file-for-download and have a link to it displayed in a bar with a citation and a custom description. Use this plugin with audio files for creating podcasts.");
  	}
  	
  	/**
@@ -47,7 +47,7 @@ class EduMiddleburyDownloadPlugin
  	 * @static
  	 */
  	public static function getPluginDisplayName () {
- 		return _("File For Download");
+ 		return _("File");
  	}
  	
  	/**

@@ -33,11 +33,9 @@
     padding-right: 1px;
 }
 
-*.block4 .box03 {
-
-}
 
 *.block4 .Content {
+    padding: 10px;
     height: 1%;
     background-color: [[ALERT_BG_COLOR]];    
     text-align: left;

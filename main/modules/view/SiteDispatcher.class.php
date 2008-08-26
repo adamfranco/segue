@@ -61,6 +61,13 @@ class SiteDispatcher {
 	private static $rootSiteComponent;
 	
 	/**
+	 * @var array $locationCategoryUrls;  
+	 * @access private
+	 * @since 8/7/08
+	 */
+	private static $locationCategoryUrls = array();
+	
+	/**
 	 * Answer the nodeId
 	 * 
 	 * @return string
@@ -73,7 +80,9 @@ class SiteDispatcher {
 			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace(null);
 			
-			if (RequestContext::value("site")) {
+			if (RequestContext::value("node")) {
+				$nodeId = RequestContext::value("node");
+			} else if (RequestContext::value("site")) {
 				$slotManager = SlotManager::instance();
 				$slot = $slotManager->getSlotByShortname(RequestContext::value("site"));
 				if ($slot->siteExists())
@@ -82,8 +91,6 @@ class SiteDispatcher {
 					$harmoni->request->endNamespace();
 					throw new UnknownIdException("A Site has not been created for the slotname '".$slot->getShortname()."'.");
 				}
-			} else if (RequestContext::value("node")) {
-				$nodeId = RequestContext::value("node");
 			}
 			
 			if (!isset($nodeId) || !$nodeId) {
@@ -139,12 +146,23 @@ class SiteDispatcher {
 		if (!count($params))
 			$params = null;
 		
-		$url = $harmoni->request->mkURL($module, $action, $params);
+		try {
+			$slot = self::getCurrentRootNode()->getSlot();
+			$url = $harmoni->request->mkUrlWithBase(self::getBaseUrlForSlot($slot), $module, $action, $params);
+		} catch (UnknownIdException $e) {
+			$url = $harmoni->request->mkURL($module, $action, $params);
+		} catch (NullArgumentException $e) {
+			$url = $harmoni->request->mkURL($module, $action, $params);
+		}
 		
 		$harmoni->request->startNamespace(null);
 		foreach ($context as $key => $val) {
 			$url->setValue($key, $val);
 		}
+		// Shift the site and node parameters to the beggining of the URL.
+		$url->moveValueToBeginning('node');
+		$url->moveValueToBeginning('site');
+		
 		$harmoni->request->endNamespace();
 		return $url;
 	}
@@ -212,6 +230,9 @@ class SiteDispatcher {
 		} else if (isset($params['site'])) {
 			$nodeKey = 'site';
 			$nodeVal = $params['site'];
+		} else if (RequestContext::value("node")) {
+			$nodeKey = 'node';
+			$nodeVal = RequestContext::value("node");
 		} else if (RequestContext::value("site")) {
 			$nodeKey = 'site';
 			$nodeVal = RequestContext::value("site");
@@ -220,8 +241,31 @@ class SiteDispatcher {
 			$nodeVal = self::getCurrentNodeId();
 		}
 		$harmoni->request->endNamespace();
-		
-		return array($nodeKey => $nodeVal);
+				
+		// We are now going to ensure that the site name is always in the url
+		if ($nodeKey == 'site') {
+			return array('site' => $nodeVal);
+		}
+		// If we have a node, look up its slot and add the name to the URL.
+		else {
+			try {
+				$site = self::getSiteDirector()->getRootSiteComponent($nodeVal);
+				$slot = $site->getSlot();
+				
+				// If the site-node is the one we are linking to, just use the
+				// slot name.
+				if ($site->getId() == $nodeVal)
+					return array('site' => $slot->getShortname());
+				// Otherwise, use both.
+				else
+					return array(
+						'site' => $slot->getShortname(),
+						'node' => $nodeVal);	
+			} catch (UnknownIdException $e) {
+				// If we can't figure out the site name, just return the node value.
+				return array('node' => $nodeVal);
+			}
+		}
 	}
 	
 	/**
@@ -249,8 +293,9 @@ class SiteDispatcher {
 	 * @since 3/31/08
 	 */
 	public static function getCurrentRootNode () {
-		if (!isset(self::$rootSiteComponent))
+		if (!isset(self::$rootSiteComponent)) {
 			self::$rootSiteComponent = self::getSiteDirector()->getRootSiteComponent(self::getCurrentNodeId());
+		}
 		
 		return self::$rootSiteComponent;
 	}
@@ -293,6 +338,59 @@ class SiteDispatcher {
 		}
 		
 		return self::$director;
+	}
+	
+	/**
+	 * Answer the shortened /sites/slotname url for a site id.
+	 * 
+	 * @param string $siteId
+	 * @return string
+	 * @access public
+	 * @since 7/30/08
+	 * @static
+	 */
+	public static function getSitesUrlForSiteId ($siteId) {
+		$slotMgr = SlotManager::instance();
+		try {
+			$slot = $slotMgr->getSlotBySiteId($siteId);
+			return rtrim(self::getBaseUrlForSlot($slot), '/').'/sites/'.$slot->getShortname();
+		} catch (UnknownIdException $e) {
+			$harmoni = Harmoni::instance();
+			return $harmoni->request->quickURL('view', 'html', array('node' => $siteId));
+		}
+	}
+	
+	/**
+	 * Set the base-url (MYURL equivalent) to use for a particular location-category.
+	 * 
+	 * @param string $locationCategory
+	 * @param string $baseUrl
+	 * @return void
+	 * @access public
+	 * @since 8/7/08
+	 * @static
+	 */
+	public static function setBaseUrlForLocationCategory ($locationCategory, $baseUrl) {
+		if (!in_array($locationCategory, SlotAbstract::getLocationCategories()))
+			throw new Exception("Invalid category, '$locationCategory'.");
+		
+		self::$locationCategoryUrls[$locationCategory] = $baseUrl;
+	}
+	
+	/**
+	 * Answer the baseURL to use for a slot
+	 * 
+	 * @param object Slot $slot
+	 * @return string
+	 * @access public
+	 * @since 8/7/08
+	 * @static
+	 */
+	public static function getBaseUrlForSlot (Slot $slot) {
+		if (isset(self::$locationCategoryUrls[$slot->getLocationCategory()])) {
+			return self::$locationCategoryUrls[$slot->getLocationCategory()];
+		}
+		return MYURL;
 	}
 }
 

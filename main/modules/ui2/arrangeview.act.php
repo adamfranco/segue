@@ -73,26 +73,6 @@ class arrangeviewAction
 			$mainScreen->setPostHTML($visitor->getBarPostHTML());
 		}
 		
-		// Add permissions button
-		$authZ = Services::getService("AuthZ");
-		$idManager = Services::getService("Id");
-		if ($authZ->isUserAuthorizedBelow(
-			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
-			SiteDispatcher::getCurrentRootNode()->getQualifierId()))
-		{
-			ob_start();
-			$harmoni = Harmoni::instance();
-			print "\n<div style='text-align: right; margin-top: 10px;'>";
-			print "\n<a href='".$harmoni->request->quickURL("roles", "choose_agent", 
-					array("node" => SiteDispatcher::getCurrentNodeId(),
-					"returnModule" => $harmoni->request->getRequestedModule(),
-					"returnAction" => $harmoni->request->getRequestedAction()))."'>";
-			print "\n\t<input type='button' value='"._("Permissions")."'/>";
-			print "\n</a>";
-			print "\n</div>";
-			$mainScreen->add(new UnstyledBlock(ob_get_clean()), SiteDispatcher::getCurrentRootNode()->getWidth(), null, CENTER, BOTTOM);
-		}
-		
 		return $allwrapper;
 	}
 	
@@ -109,25 +89,42 @@ class arrangeviewAction
 		ob_start();
 		print "<div class='commands'>";
 		print "<a href='";
-		$url = $harmoni->request->mkURLWithPassthrough('view', 'html');
-		print $url->write();
+		print SiteDispatcher::quickURL('view', 'html');
 		print "' title='"._("Go to View-Mode")."'>";
 		print _("view")."</a>";
 		
 		print " | <a href='";
-		$url = $harmoni->request->mkURLWithPassthrough('ui2', 'editview');
-		print $url->write();
+		print SiteDispatcher::quickURL('ui2', 'editview');
 		print "' title='"._("Go to Edit-Mode")."'>";
 		print _("edit")."</a>";
 		
 		
 		print " | <a href='";
-		$url = $harmoni->request->mkURLWithPassthrough('ui2', 'headerfooter');
-		print $url->write();
+		print SiteDispatcher::quickURL('ui2', 'headerfooter');
 		print "' title='"._("Go to Header/Footer Edit-Mode")."'>";
 		print _("header/footer")."</a>";
 		
 		print " | "._("arrange");
+		
+		// Add permissions button
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		// Rather than checking the entire site, we will just check the current node.
+		// This forces users who are not site-wide admins to browse to the place where
+		// they are administrators in order to see the permissions button, but
+		// cuts load-times for non-admins on a given large site from 35s to 1.4s.
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
+			SiteDispatcher::getCurrentNode()->getQualifierId()))
+		{
+			$url = SiteDispatcher::quickURL("roles", "choose_agent", 
+					array("node" => SiteDispatcher::getCurrentNodeId(),
+					"returnModule" => $harmoni->request->getRequestedModule(),
+					"returnAction" => $harmoni->request->getRequestedAction()));
+			print " | \n\t<a href='#' onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>";
+			print _("roles")."</a>";
+		}
+		
 		print " | ".self::getUiSwitchForm();
 		print "</div>";
 				

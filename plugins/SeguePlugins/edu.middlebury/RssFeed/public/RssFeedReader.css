@@ -1,0 +1,44 @@
+/*********************************************************
+ * RSS Feed Display plugin
+ *********************************************************/
+.RssFeedReader_channel h3 {
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+
+.RssFeedReader_channel_description {
+	margin-bottom: 5px;
+}
+
+.RssFeedReader_item {
+	margin-bottom: 10px;
+	clear: both;
+}
+
+.RssFeedReader_divider {
+	border-top: 1px dotted;
+}
+
+.RssFeedReader_item h4 {
+	margin-top: 3px;
+	margin-bottom: 5px;
+}
+
+.RssFeedReader_item_description {
+	margin-bottom: 5px;
+	clear: both;
+}
+
+.RssFeedReader_meta {
+	font-size: smaller;
+	white-space: nowrap;
+	float: left;
+	margin-right: 15px;
+	margin-bottom: 5px;
+}
+
+.RssFeedReader_loading {
+/*	text-decoration: blink;*/
+	text-align: center;
+	font-weight: bold;
+}

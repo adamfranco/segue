@@ -1,0 +1,74 @@
+/*********************************************************
+ * Selection styles
+ *********************************************************/
+.segue_selection_panel ol {
+	padding-left: 20px;
+}
+
+.segue_selection_panel .name {
+	white-space: nowrap;
+}
+
+.segue_selection_panel .type {
+	font-style: italic;
+	white-space: nowrap;
+}
+
+.segue_selection_panel .controls {
+	white-space: nowrap;
+}
+
+/*********************************************************
+ * Move/Copy styles
+ *********************************************************/
+/*
+.Selection_MoveCopy_Link {
+	text-align: center;
+	display: block;
+}
+*/
+
+.Selection_MoveCopy_Panel form {
+	text-align: center;
+}
+
+.Selection_MoveCopy_Panel .copy_options_div {
+	text-align: left;
+	margin-top: 5px;
+}
+
+.Selection_MoveCopy_Panel .selection_removal_div {
+	margin-top: 5px;
+	text-align: left;
+}
+
+.Selection_MoveCopy_Panel ol {
+	text-align: left;
+	padding-left: 20px;
+}
+
+.Selection_MoveCopy_Panel div.All_None {
+	padding-top: 10px;
+}
+
+.Selection_MoveCopy_Panel .name {
+	white-space: nowrap;
+}
+
+.Selection_MoveCopy_Panel .type {
+	font-style: italic;
+	white-space: nowrap;
+}
+
+.Selection_MoveCopy_Panel .emptySelectionMessage {
+	font-style: italic;
+	display: none;
+}
+
+.Selection_MoveCopy_Panel .emptySelectionMessage strong {
+	white-space: nowrap;
+}
+
+.Selection_MoveCopy_Panel .disabled {
+	color: #AAA;
+}

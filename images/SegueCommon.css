@@ -86,9 +86,13 @@
 	}
 	
 	.pagination_links {
-		margin-left: 10px;
-		margin-right: 10px;
 		font-size: 10px;
+	}
+	
+	.pagination_links td {
+		text-align: left;
+		padding-left: 10px;
+		padding-right: 10px;
 	}
 	
 	.pagination_links select {
@@ -122,6 +126,15 @@
 
 	.ui1_controls a {
 
+	}
+	
+	.ui1_add_form_wrapper {
+		text-align: center;
+		white-space: nowrap;
+	}
+	
+	.ui1_add_form_wrapper div {
+		display: inline;
 	}
 	
 /*********************************************************
@@ -169,6 +182,37 @@
 		background-color: #FFFFFF;
 		margin-bottom: 5px;
 		margin-right: 5px;
+	}
+	
+	.ui2_button_disabled {
+		font-size: 12px;
+		color: #999999;
+		border: 1px solid #aaaaaa;
+		background-color: #FFFFFF;
+		margin-bottom: 5px;
+		margin-right: 5px;
+	}
+	
+	.controls_bar a {
+		color: #000;
+		text-decoration: none;
+	}
+	
+	.ui2_add_form_wrapper {
+		text-align: center;
+		white-space: nowrap;
+	}
+	
+	.DeletePanel input.cancel_button {
+		float: left;
+	}
+	
+	.DeletePanel input.submit_button {
+		float: right;
+	}
+	
+	.DeletePanel div.info_area {
+		margin-bottom: 10px;
 	}
 	
 /*********************************************************
@@ -284,13 +328,17 @@
 	}
 	
 	.portal_list_controls {
+		text-align: right;
 		clear: both;
-		float: right;
 	}
 	
 	.portal_list_site_description {
 		float: left;
 		font-size: smaller;
+	}
+	
+	.search_status {
+		text-align: center;
 	}
 	
 	.button {
@@ -305,6 +353,7 @@
 	
 	ul.portal_categories {
 		padding-left: 0px;
+		margin-left: 0px;
 		white-space: nowrap;
 	}
 	
@@ -335,6 +384,7 @@
 	
 	ul.portal_folders {
 		margin-top: 5px;
+		margin-left: 0px;
 		padding-left: 30px;
 	}
 	
@@ -601,7 +651,7 @@ table.theme_advanced_table th {
 	table.search_results tr.search_result_item td.action_button {
 		text-align: right;
 	}
-	
+
 /*********************************************************
  * Other
  *********************************************************/

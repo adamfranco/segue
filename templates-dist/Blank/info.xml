@@ -1,0 +1,11 @@
+<TemplateInfo>
+    <DisplayName lang="en_US">Blank</DisplayName>
+    <Description lang="en_US">
+        A starting point with no pages.
+    </Description>
+<!-- 
+    <Authorized>
+		<Group id="edu.middlebury.agents.everyone">Everyone</Group>
+    </Authorized>
+ -->
+</TemplateInfo>

@@ -351,7 +351,7 @@ class ViewModeSiteVisitor
 	 */
 	function getDetailUrl ($id) {
 		$harmoni = Harmoni::instance();
-		return $harmoni->request->quickURL(
+		return SiteDispatcher::quickURL(
 				$harmoni->request->getRequestedModule(),
 				$harmoni->request->getRequestedAction(),
 				array("node" => $id));
@@ -389,7 +389,7 @@ class ViewModeSiteVisitor
 	function getHistoryUrl ($id) {
 		$harmoni = Harmoni::instance();
 		$harmoni->history->markReturnURL('view_history_'.$id);
-		return $harmoni->request->quickURL('versioning', 'view_history',
+		return SiteDispatcher::quickURL('versioning', 'view_history',
 				array("node" => $id, 
 					'returnModule' => $harmoni->request->getRequestedModule(),
 					'returnAction' => $harmoni->request->getRequestedAction()));
@@ -442,12 +442,12 @@ class ViewModeSiteVisitor
 	public function visitNavBlock ( NavBlockSiteComponent $navBlock ) {
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");	
-		if (!$authZ->isUserAuthorizedBelow(
+		// Since view AZs cascade up, just check at the node.
+		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"), 
 			$idManager->getId($navBlock->getId())))
 		{
-			$false = false;
-			return $false;
+			return false;
 		}
 		
 		$menuItems = array();
@@ -527,31 +527,75 @@ class ViewModeSiteVisitor
 		$childGuiComponent = $childOrganizer->acceptVisitor($this);
 				
 		// Check completeness and render any nodes still waiting for targets
-		foreach (array_keys($this->_missingTargets) as $targetId) {
-			if (!isset($this->_emptyCellContainers[$targetId])) {
-				throwError(new Error("Target id '$targetId' was not found or is not empty.", __CLASS__));
-			}
-			if (!is_object($this->_emptyCellContainers[$targetId])) {
-				ob_start();
-				var_dump($this->_emptyCellContainers[$targetId]);
-				throwError(new Error("Expecting object, found '".ob_get_clean()."'.", __CLASS__));
-			}
-			
-			if (isset($this->_missingTargetWidths[$targetId]) && $this->_missingTargetWidths[$targetId])
-				$width = $this->_missingTargetWidths[$targetId];
-			else
-				$width = null;
-			
-			$this->_emptyCellContainers[$targetId]->insertAtPlaceholder(
-				$this->_emptyCellPlaceholders[$targetId],
-				$this->_missingTargets[$targetId], 
-				$width, '100%', null, TOP);
+		try {
+			foreach (array_keys($this->_missingTargets) as $targetId) {
+				if (!isset($this->_emptyCellContainers[$targetId])) {
+					throw new OperationFailedException("Target id '$targetId' was not found or is not empty.", 390134);
+				}
+				if (!is_object($this->_emptyCellContainers[$targetId])) {
+					ob_start();
+					var_dump($this->_emptyCellContainers[$targetId]);
+					throwError(new Error("Expecting object, found '".ob_get_clean()."'.", __CLASS__));
+				}
 				
+				if (isset($this->_missingTargetWidths[$targetId]) && $this->_missingTargetWidths[$targetId])
+					$width = $this->_missingTargetWidths[$targetId];
+				else
+					$width = null;
 				
-			unset($this->_emptyCellContainers[$targetId]);
-			unset($this->_emptyCellPlaceholders[$targetId]);
-			unset($this->_missingTargets[$targetId]);
-			unset($this->_missingTargetWidths[$targetId]);
+				$this->_emptyCellContainers[$targetId]->insertAtPlaceholder(
+					$this->_emptyCellPlaceholders[$targetId],
+					$this->_missingTargets[$targetId], 
+					$width, '100%', null, TOP);
+					
+					
+				unset($this->_emptyCellContainers[$targetId]);
+				unset($this->_emptyCellPlaceholders[$targetId]);
+				unset($this->_missingTargets[$targetId]);
+				unset($this->_missingTargetWidths[$targetId]);
+			}
+		} catch (OperationFailedException $e) {
+			/*********************************************************
+			 * Try to allow recovery if we have just one
+			 * missing empty cell and one menu missing a target.
+			 *********************************************************/
+			if ($e->getCode() == 390134 && count($this->_missingTargets) == 1 && count($this->_emptyCellContainers) == 1) {
+				print "<div class='error'>";
+				printpre("Inconsistant state. Looking for empty cell: ");
+				printpre(array_keys($this->_missingTargets));
+				printpre("Found empty cell: ");
+				printpre(array_keys($this->_emptyCellContainers));
+				print("Using arrange mode, drag the Layout container for your section/page to fix this state.");
+				print "Please report what you did to cause this state at the <a href='https://sourceforge.net/tracker/index.php?func=detail&amp;aid=2046491&amp;group_id=82171&amp;atid=565234'>bug tracker</a> or to Adam Franco (afranco@middlebury.edu).";
+				print "</div>";
+				$emptyCellId = key($this->_emptyCellContainers);
+				$targetId = key($this->_missingTargets);
+				
+				if (!is_object($this->_emptyCellContainers[$emptyCellId])) {
+					ob_start();
+					var_dump($this->_emptyCellContainers[$emptyCellId]);
+					throwError(new Error("Expecting object, found '".ob_get_clean()."'.", __CLASS__));
+				}
+				
+				if (isset($this->_missingTargetWidths[$targetId]) && $this->_missingTargetWidths[$targetId])
+					$width = $this->_missingTargetWidths[$targetId];
+				else
+					$width = null;
+				
+				$this->_emptyCellContainers[$emptyCellId]->insertAtPlaceholder(
+					$this->_emptyCellPlaceholders[$emptyCellId],
+					$this->_missingTargets[$targetId], 
+					$width, '100%', null, TOP);
+					
+					
+				unset($this->_emptyCellContainers[$emptyCellId]);
+				unset($this->_emptyCellPlaceholders[$emptyCellId]);
+				unset($this->_missingTargets[$targetId]);
+				unset($this->_missingTargetWidths[$targetId]);
+				
+			} else {
+				throw $e;
+			}
 		}
 		
 		// returning the entire site in GUI component object tree.
@@ -767,7 +811,7 @@ class ViewModeSiteVisitor
 	 */
 	function getUrlForComponent ( $id ) {
 		$harmoni = Harmoni::instance();
-		return $harmoni->request->quickURL(
+		return SiteDispatcher::quickURL(
 			$harmoni->request->getRequestedModule(), 
 			$harmoni->request->getRequestedAction(),
 			array("node" => $id));

@@ -127,11 +127,15 @@ class AssetSiteDirector
 			
 			$idManager = Services::getService("Id");
 			
-			if (preg_match('/^(\w+)----(\w+)$/', $id, $matches))
-				$currentAsset = $this->_repository->getAsset(
-						$idManager->getId($matches[1]));
-			else
-				$currentAsset = $this->_repository->getAsset($idManager->getId($id));
+			try {
+				if (preg_match('/^(\w+)----(\w+)$/', $id, $matches))
+					$currentAsset = $this->_repository->getAsset(
+							$idManager->getId($matches[1]));
+				else
+					$currentAsset = $this->_repository->getAsset($idManager->getId($id));
+			} catch (UnknownIdException $e) {
+				throw new UnknownIdException($e->getMessage(), 289743);
+			}
 			
 			$this->activateDefaultsDownAsset($currentAsset);
 			$this->_rootSiteComponent = $this->traverseUpToRootSiteComponent($currentAsset);
@@ -186,9 +190,10 @@ class AssetSiteDirector
 	 */
 	function activateDefaultsDownAsset ( $currentAsset ) {
 		// Escape on lack of view authorization anywhere below this node
+		// Since view AZs cascade up, just check at the node.
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");	
-		if (!$authZ->isUserAuthorizedBelow(
+		if (!$authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.view"), 
 			$currentAsset->getId()))
 		{
@@ -330,17 +335,21 @@ class AssetSiteDirector
 	 */
 	function getSiteComponentById ( $id ) {
 		$idManager = Services::getService('Id');
-		if (preg_match('/^(\w+)----(\w+)$/', $id, $matches)) {
-			$asset = $this->_repository->getAsset(
-						$idManager->getId($matches[1]));
-			$xmlDoc = $this->getXmlDocumentFromAsset($asset);
-			$element = $xmlDoc->getElementByIdAttribute($matches[2]);
-			return $this->getSiteComponentFromXml($asset, $element);
-		} else {
-			return $this->getSiteComponentFromAsset(
-						$this->_repository->getAsset(
-							$idManager->getId($id)));
-		}		
+		try {
+			if (preg_match('/^(\w+)----(\w+)$/', $id, $matches)) {
+				$asset = $this->_repository->getAsset(
+							$idManager->getId($matches[1]));
+				$xmlDoc = $this->getXmlDocumentFromAsset($asset);
+				$element = $xmlDoc->getElementByIdAttribute($matches[2]);
+				return $this->getSiteComponentFromXml($asset, $element);
+			} else {
+				return $this->getSiteComponentFromAsset(
+							$this->_repository->getAsset(
+								$idManager->getId($id)));
+			}		
+		} catch (UnknownIdException $e) {
+			throw new UnknownIdException($e->getMessage(), 289743);
+		}
 	}
 	
 	/**
@@ -399,7 +408,7 @@ class AssetSiteDirector
 	/**
 	 * Answer an array of the visible site components
 	 * 
-	 * @param string $id
+	 * @param string $id The starting point from which to search for visibility.
 	 * @return ref array
 	 * @access public
 	 * @since 4/10/06

@@ -130,7 +130,7 @@ class displayAction
 		
 		// Main menu
 		$mainMenu = SegueMenuGenerator::generateMainMenu($harmoni->getCurrentAction());
-		$centerPane->add($mainMenu,"140px",null, LEFT, TOP);
+
 		
 		// use the result from previous actions
 		if ($harmoni->printedResult) {
@@ -147,6 +147,8 @@ class displayAction
 			$contentDestination->add($harmoni->result, null, null, CENTER, TOP);
 		else if (is_string($harmoni->result))
 			$contentDestination->add(new Block($harmoni->result, STANDARD_BLOCK), null, null, CENTER, TOP);
+			
+		$centerPane->add($mainMenu,"140px",null, LEFT, TOP);
 		
 		// Right Column
 // 		$rightColumn = $centerPane->add(new Container($yLayout, OTHER, 1), "140px", null, LEFT, TOP);
@@ -159,10 +161,11 @@ class displayAction
 	// :: Footer ::
 		$footer = new Container (new XLayout, BLANK, 1);
 		
-		$helpText = "<a target='_blank' href='";
-		$helpText .= $harmoni->request->quickURL("help", "browse_help");
-		$helpText .= "'>"._("Help")."</a>";
-		$footer->add(new UnstyledBlock($helpText), "50%", null, LEFT, BOTTOM);
+		if ($harmoni->getData('help_topic'))
+			$helpLink = Help::link($harmoni->getData('help_topic'));
+		else
+			$helpLink = Help::link();
+		$footer->add(new UnstyledBlock($helpLink), "50%", null, LEFT, BOTTOM);
 		
 		
 		$footer->add(new UnstyledBlock(self::getVersionText()), "50%", null, RIGHT, BOTTOM);
@@ -281,7 +284,9 @@ class displayAction
 				"logout")."'>"._("Log Out")."</a>";
 		} else {
 			// set bookmarks for success and failure
-			$harmoni->history->markReturnURL("polyphony/display_login");
+			$current = $harmoni->request->mkURLWithPassthrough();
+			$current->setValue('login_failed', null);
+			$harmoni->history->markReturnURL("polyphony/display_login", $current);
 			$harmoni->history->markReturnURL("polyphony/login_fail",
 				$harmoni->request->quickURL("user", "main", array('login_failed' => 'true')));
 
@@ -293,7 +298,7 @@ class displayAction
 			print "\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
 				"' style='text-align: right' method='post'><small>".
-				"\n\t"._("Username:")." <input class='small' type='text' size='8' 
+				"\n\t"._("Username/email:")." <input class='small' type='text' size='8' 
 					name='$usernameField'/>".
 				"\n\t"._("Password:")." <input class='small' type='password' size ='8' 
 					name='$passwordField'/>".
@@ -347,7 +352,7 @@ class displayAction
 	 */
 	function getUiModule () {
 		if (!isset($_SESSION['UI_MODULE']))
-			$this->setUiModule('ui1');
+			$this->setUiModule('ui2');
 			
 		return $_SESSION['UI_MODULE'];
 	}

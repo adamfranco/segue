@@ -98,7 +98,7 @@ class deleteComponentAction
 		if ($this->_returnNode) {
 			if (!$action = RequestContext::value('returnAction'))
 				 $action = "editview";
-			RequestContext::locationHeader($harmoni->request->quickURL(
+			RequestContext::locationHeader(SiteDispatcher::quickURL(
 				$harmoni->request->getRequestedModule(), $action,
 				array("node" => $this->_returnNode)));	
 		} else {

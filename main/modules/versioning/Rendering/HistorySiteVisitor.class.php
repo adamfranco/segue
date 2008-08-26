@@ -73,7 +73,7 @@ class HistorySiteVisitor
 		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
 		ob_start();
-		print "\n<form action='".$harmoni->request->quickURL('versioning', 'compare_versions')."' method='get'>";
+		print "\n<form action='".SiteDispatcher::quickURL('versioning', 'compare_versions', array('node' => SiteDispatcher::getCurrentNodeId()))."' method='get'>";
 		print "\n\t<div style='float: right;'>";
 		print "\n\t<input type='submit' value='"._("Compare Selected Revisions &raquo;")."'";
 		if (count($plugin->getVersions()) <= 1) {
@@ -223,7 +223,7 @@ class HistorySiteVisitor
 		$action = $harmoni->request->getActionFromUrl($origUrl);
 		if ($action == false)
 			$action = 'view';
-		return $harmoni->request->quickURL(
+		return SiteDispatcher::quickURL(
 			$module, 
 			$action,
 			array("node" => $id));

@@ -37,7 +37,7 @@ $configuration->addProperty('whether_to_add_terms', $CREATE_TERMS);
 
 
 
-for($year=2004; $year<2008; $year++){
+for($year = 2004; $year < 2010; $year++){
 	
 
 	

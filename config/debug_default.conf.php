@@ -26,6 +26,18 @@ define ("ENABLE_RESET", false);
  *********************************************************/
 define ("ENABLE_DWARVES", false);
 
+/*********************************************************
+ * Enable logging of redirects when the node requested
+ * doesn't match the site in the URL. 
+ *
+ * This is added in Segue 2.1.0 for testing that all 
+ * Segue-generated links are producing the correct URLs.
+ * This should be removed here and in
+ *		segue/main/modules/view/html.act.php
+ * after testing is complete.
+ *********************************************************/
+define('DEBUG_LOG_WRONG_SITE', false);
+
 
 /*********************************************************
  * Enable the display of timers and query-counters.

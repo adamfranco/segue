@@ -246,6 +246,7 @@ abstract class SeguePluginsDriver
 	 * @since 1/13/06
 	 */
 	final public function getDataRecords () {
+		throw new UnimplementedException("Data Records are depricated.");
 		return $this->data;
 	}
 
@@ -257,6 +258,7 @@ abstract class SeguePluginsDriver
 	 * @since 1/18/06
 	 */
 	final public function updateDataRecords () {
+		throw new UnimplementedException("Data Records are depricated.");
 		$this->_storeData();
 	}
 	
@@ -269,7 +271,13 @@ abstract class SeguePluginsDriver
 	 * @since 1/26/06
 	 */
 	final public function cleanHTML ($htmlString) {
-		return HtmlString::getSafeHtml($htmlString);
+		$htmlStringObj = HtmlString::fromString($htmlString);
+		// SafeHTML looks for the first colon to determine if something is a
+		// a protocal.
+		$htmlStringObj->addSafeProtocal('[[fileurl');
+		$htmlStringObj->addSafeProtocal('[[localurl');
+		$htmlStringObj->cleanXSS();
+		return $htmlStringObj->asString();
 	}
 	
 	/**
@@ -285,6 +293,10 @@ abstract class SeguePluginsDriver
 	 */
 	final public function trimHTML ($htmlString, $maxWords, $addElipses = true) {
 		$htmlStringObj = HtmlString::withValue($htmlString);
+		// SafeHTML looks for the first colon to determine if something is a
+		// a protocal.
+		$htmlStringObj->addSafeProtocal('[[fileurl');
+		$htmlStringObj->addSafeProtocal('[[localurl');
 		$htmlStringObj->cleanXSS();
  		$htmlStringObj->trim($maxWords, $addElipses);
  		return $htmlStringObj->asString();
@@ -332,6 +344,45 @@ abstract class SeguePluginsDriver
 	}
 	
 	/**
+	 * Parse and replace any text-templates that are safe for use in an WYSIWYG editor 
+	 * with HTML markup. This can be used to allow WYSIWG editing of elements that
+	 * will later be converted back to text-templates using unapplyTextTemplates().
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function applyEditorSafeTextTemplates($text) {
+		$wikiResolver = WikiResolver::instance();		
+		try {
+			$text = $wikiResolver->applyEditorSafeTextTemplates($text);
+		} catch (OperationFailedException $e) {
+		}
+		
+		return $text;
+	}
+	
+	/**
+	 * Parse and replace any output HTML that matches two-way text-plugins with their markup. 
+	 * These are text-plugins that can convert themselves to and from HTML markup.
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 7/15/08
+	 */
+	final public function unapplyTextTemplates ($text) {
+		$wikiResolver = WikiResolver::instance();		
+		try {
+			$text = $wikiResolver->unapplyTextTemplates($text);
+		} catch (OperationFailedException $e) {
+		}
+		
+		return $text;
+	}
+	
+	/**
 	 * Given a block of HTML text, replace any local-system urls with tokenized
 	 * placeholders. These placeholders can the be translated back at display time
 	 * in order to match the current system base-url 
@@ -344,9 +395,9 @@ abstract class SeguePluginsDriver
 	public function tokenizeLocalUrls ($htmlString) {
 		$patterns = array();
 		$harmoni = Harmoni::instance();
-		$pattern = '/'.str_replace('/', '\/', MYURL).'[^\'"\s\]]*/i';
+		$pattern = '#[\'"]('.str_replace('.', '\.', MYURL).'[^\'"\s\]<>]*)#i';
 		$urls = preg_match_all($pattern, $htmlString, $matches);
-		foreach ($matches[0] as $url) {
+		foreach ($matches[1] as $url) {
 			$paramString = $harmoni->request->getParameterListFromUrl($url);
 			if ($paramString !== false) {
 				// File urls
@@ -446,7 +497,7 @@ abstract class SeguePluginsDriver
 	final public function replaceIdsInHtml (array $idMap, $htmlString) {
 		$orig = $htmlString;
 		// non-wiki urls
-		$tokenizedHtml = $this->tokenizeLocalUrls($htmlString);
+		$htmlString = $this->tokenizeLocalUrls($htmlString);
 		preg_match_all('/\[\[localurl:([^\]]*)\]\]/', $htmlString, $matches);
 		for ($j = 0; $j < count($matches[1]); $j++) {
 			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1][$j], $paramMatches);
@@ -495,7 +546,7 @@ abstract class SeguePluginsDriver
 		}
 		
 		
-		return $htmlString;
+		return $this->untokenizeLocalUrls($htmlString);
 	}
 
 	/**
@@ -585,22 +636,177 @@ abstract class SeguePluginsDriver
 
 		return $dir;
 	}
-
+	
 	/**
-	 * Answer the url filepath for the plugin?
+	 * This method will give you a url to access files in a 'public'
+	 * subdirectory of your plugin. 
+	 *
+	 * Example, status_image.gif in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *	
+	 * Usage: print $this->getPublicFileUrl('status_image.gif');
 	 * 
-	 * @return string the url path to this plugin directory
+	 * @param string $filename.
+	 * @return string
 	 * @access public
-	 * @since 1/19/06
+	 * @since 6/18/08
 	 */
-	final public function getPluginPath () {
-		$path = $this->_configuration->getProperty('plugin_path')."/";
-		$type = $this->_asset->getAssetType();
-		$path .= $type->getDomain()."/";
-		$path .= $type->getAuthority()."/";
-		$path .= $type->getKeyword()."/";
-
-		return $path;
+	final public function getPublicFileUrl ($filename) {
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
+		$url = $harmoni->request->quickURL('plugin_manager', 'public_file', 
+			array('plugin' => HarmoniType::typeToString($this->_asset->getAssetType()),
+				'file' => $filename));
+		$harmoni->request->endNamespace();
+		return $url;
+	}
+	
+	/**
+	 * This method will give you a url to access an action script in your plugin.
+	 * Action script files must me named with the action name followed by '.act.php'.
+	 * Action scripts must contain a class with the same name as the action name.
+	 * The action script's class must implement the 'SeguePluginsAction' interface.
+	 * 
+	 * @param string $actionName
+	 * @param optional array $params
+	 * @return string
+	 * @access public
+	 * @since 6/19/08
+	 */
+	final public function getPluginActionUrl ($actionName, $params = array()) {
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
+		$allParams = array(
+				'plugin' => HarmoniType::typeToString($this->_asset->getAssetType()),
+				'paction' => $actionName);
+		$restricted = array('module', 'action', 'plugin', 'paction', 'plugin_id');
+		foreach ($params as $key => $val) {
+			if (in_array($key, $restricted))
+				throw new InvalidArgumentException("Parameter $key is not allowed.");
+			
+			$allParams[$key] = $val;
+		}
+		$url = $harmoni->request->quickURL('plugin_manager', 'plugin_action', $allParams);
+		$harmoni->request->endNamespace();
+		return $url;
+	}
+	
+	/**
+	 * A static array that holds a list of the css added to the head to 
+	 * prevent duplication. 
+	 *
+	 * @var array $headCss; 
+	 * @access private
+	 * @since 6/18/08
+	 * @statis
+	 */
+	private static $headCss = array();
+	
+	/**
+	 * This method will add the CSS contained in a file in the plugin's
+	 * 'public' subdirectory to the <head> of the page the plugin
+	 * is displayed on.
+	 *
+	 * Example, assignment_styles.css in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *				assignment_styles.css
+	 *				assignment_functions.js
+	 *	
+	 * Usage: $this->addHeadCss('assignment_styles.css');
+	 * 
+	 * @param string $filename
+	 * @return void
+	 * @access public
+	 * @since 6/18/08
+	 */
+	final public function addHeadCss ($filename) {
+		$harmoni = Harmoni::instance();
+		
+		// Get the file url
+		$harmoni->request->startNamespace(null);
+		$url = $harmoni->request->quickURL('plugin_manager', 'public_file', 
+			array('plugin' => HarmoniType::typeToString($this->_asset->getAssetType()),
+				'file' => $filename));
+		$harmoni->request->endNamespace();
+		
+		// If this file has been added already, don't add it again.
+		if (in_array($url, self::$headCss))
+			return;
+		else
+			self::$headCss[] = $url;
+		
+		// Add the style sheet to the head
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead($outputHandler->getHead()
+			."\n\t\t<link rel='stylesheet' type='text/css' href='$url'/>");
+	}
+	
+	/**
+	 * A static array that holds a list of the javascript added to the head to 
+	 * prevent duplication. 
+	 *
+	 * @var array $headJs; 
+	 * @access private
+	 * @since 6/18/08
+	 * @statis
+	 */
+	private static $headJs = array();
+	
+	/**
+	 * This method will add the Javascript contained in a file in the plugin's
+	 * 'public' subdirectory to the <head> of the page the plugin
+	 * is displayed on.
+	 *
+	 * Example, assignment_functions.js in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *				assignment_styles.css
+	 *				assignment_functions.js
+	 *	
+	 * Usage: $this->addHeadJavascript('assignment_functions.js');
+	 * 
+	 * @param string $filename
+	 * @return void
+	 * @access public
+	 * @since 6/18/08
+	 */
+	final public function addHeadJavascript ($filename) {
+		$harmoni = Harmoni::instance();
+		
+		// Get the file url
+		$harmoni->request->startNamespace(null);
+		$url = $harmoni->request->quickURL('plugin_manager', 'public_file', 
+			array('plugin' => HarmoniType::typeToString($this->_asset->getAssetType()),
+				'file' => $filename));
+		$harmoni->request->endNamespace();
+		
+		// If this file has been added already, don't add it again.
+		if (in_array($url, self::$headJs))
+			return;
+		else
+			self::$headJs[] = $url;
+		
+		// Add the js to the head
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead($outputHandler->getHead()
+			."\n\t\t<script type='text/javascript' src='$url'></script>");
 	}
 
 /*********************************************************
@@ -1084,7 +1290,8 @@ abstract class SeguePluginsDriver
 		$this->_pluginDir = $this->_configuration->getProperty("plugin_dir")."/".$type->getDomain()."/".
 						$type->getAuthority()."/".$type->getKeyword()."/";
 		
-		$this->_loadData();
+		// Data Records are now depricated
+// 		$this->_loadData();
 	}
 	
 	/**
@@ -1197,7 +1404,8 @@ abstract class SeguePluginsDriver
 				$this->_asset->updateDescription($desc);
 			}
 			
-			$this->_storeData();
+			// Data records are now depricated.
+// 			$this->_storeData();
 			
 			
 			$harmoni->request->endNamespace();
@@ -1318,6 +1526,7 @@ abstract class SeguePluginsDriver
 	 * @since 1/12/06
 	 */
 	final private function _loadData () {
+		throw new UnimplementedException("Data Records are depricated.");
 		// one array for the data, a second for the persistence of ids
 		if (isset($this->data))
 			unset($this->data, $this->_data_ids);
@@ -1411,6 +1620,7 @@ abstract class SeguePluginsDriver
 	 * @since 1/13/06
 	 */
 	final private function _storeData () {
+		throw new UnimplementedException("Data Records are depricated.");
 		if (isset($changes))
 			unset($changes);
 		// only change things when you must
@@ -1471,6 +1681,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 1/27/06
 	 */
 	final private function _changeFileInfo () {
+		throw new UnimplementedException("Data Records are depricated.");
 		$idManager = Services::getService("Id");
 		$changes = array();
 		foreach ($this->data['FILE'] as $instance => $file) {
@@ -1536,6 +1747,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 1/27/06
 	 */
 	final private function _populateFileInfo () {
+		throw new UnimplementedException("Data Records are depricated.");
 		// plugins get specific file information, can request URL or 
 		// data via functions defined above
 		$idManager = Services::getService("Id");
@@ -1611,6 +1823,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 1/13/06
 	 */
 	final private function _dataChanged () {
+		throw new UnimplementedException("Data Records are depricated.");
 		// @todo test different implementations of this function
 		$new = serialize($this->data);
 		$old = serialize($this->_loadedData);
@@ -1627,6 +1840,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 1/13/06
 	 */
 	final private function _fileDataChanged () {
+		throw new UnimplementedException("Data Records are depricated.");
 		// @todo test different implementations of this function
 		$new = serialize($this->data['FILE']);
 		$old = serialize($this->_loadedData['FILE']);
@@ -1692,6 +1906,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 	 * @since 3/1/06
 	 */
 	final private function _createInstance ($dname, $instance) {
+		throw new UnimplementedException("Data Records are depricated.");
 		// @todo take the data in $this->data[$rs][$instance] and create a 
 		// proper record for it in the database.
 		

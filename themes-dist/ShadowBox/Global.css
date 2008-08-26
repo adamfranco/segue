@@ -29,6 +29,10 @@ a:hover {
     border: 0px solid #000;
 }
 
+.plugin_content {
+    color: [[TEXT_COLOR]];
+}
+
 .plugin_content a {
     text-decoration: [[LINK_DECORATION]];
 }
@@ -99,8 +103,7 @@ seguefooter_left {
 
 
 .pagination_links {
-    padding-left: 0px;
-    padding-right: 0px;
+    color: [[BG_TEXT_COLOR]];
 }
 
 .pagination_links a {

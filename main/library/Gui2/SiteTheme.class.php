@@ -268,7 +268,9 @@ class Segue_Gui2_SiteTheme
 	 * @since 5/13/08
 	 */
 	public function getModificationDate () {
-		throw new UnimplementedException();
+		if (!isset($this->modificationDate))
+			$this->loadInfo();
+		return $this->modificationDate;
 	}
 	
 	/**

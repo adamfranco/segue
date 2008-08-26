@@ -124,10 +124,16 @@ abstract class EditModeSiteAction
 		$harmoni = Harmoni::instance();
 		if (!($returnAction = RequestContext::value('returnAction')))
 			$returnAction = 'editview';
-			
-		RequestContext::locationHeader($harmoni->request->quickURL(
+		
+		if (isset($this->newIdToSendTo)) {
+			$node = $this->newIdToSendTo;
+		} else {
+			$node = RequestContext::value('returnNode');
+		}
+		
+		RequestContext::locationHeader(SiteDispatcher::quickURL(
 			$harmoni->request->getRequestedModule(), $returnAction,
-			array("node" => RequestContext::value('returnNode'))));	
+			array("node" => $node)));	
 	}
 }
 

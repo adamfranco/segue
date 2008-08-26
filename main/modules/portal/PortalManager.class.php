@@ -12,6 +12,7 @@
 require_once(dirname(__FILE__)."/MainPortalCategory.class.php");
 require_once(dirname(__FILE__)."/AccessPortalCategory.class.php");
 require_once(dirname(__FILE__)."/ClassesPortalCategory.class.php");
+require_once(dirname(__FILE__)."/SearchPortalCategory.class.php");
 
 /**
  * The PortalManager provides a central access point to portal categories and folders.
@@ -70,6 +71,7 @@ class PortalManager {
 		$this->categories = array(
 			new MainPortalCategory,
 			new ClassesPortalCategory,
+			new SearchPortalCategory,
 			new AccessPortalCategory
 			
 		);

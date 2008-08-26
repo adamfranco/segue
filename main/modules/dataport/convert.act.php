@@ -70,7 +70,10 @@ class convertAction
 			
 			// Download and convert the site
 			$doc = $this->convertFrom1To2($destFilePath, 'media');
-//			printpre(htmlentities($doc->saveXMLWithWhitespace()));
+			
+// 			printpre(htmlentities($doc->saveXMLWithWhitespace()));
+// 			throw new Exception('test');
+			
 			$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			
 			$status->updateStatistics();

@@ -64,9 +64,10 @@ class addComponentAction
 		$director->getRootSiteComponent($targetOrgId);
 		
 		$componentType = HarmoniType::fromString(RequestContext::value('componentType'));
-		if ($componentType->getDomain() == 'segue-multipart')
+		if ($componentType->getDomain() == 'segue-multipart') {
 			$component = self::createMultipartComponent($director, $componentType, $organizer);
-		else
+			$this->newIdToSendTo = $component->getId();
+		} else
 			$component = $director->createSiteComponent($componentType, $organizer);
 		
 		if (!is_null($targetCell))

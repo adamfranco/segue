@@ -72,6 +72,9 @@ class Update
 	 * @since 3/5/07
 	 */
 	function execute () {
+		if (!$this->isAuthorizedToExecute())
+			throw new PermissionDeniedException();
+		
 		$harmoni = Harmoni::instance();
 		ob_start();
 		

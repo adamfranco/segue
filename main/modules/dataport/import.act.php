@@ -8,7 +8,7 @@
  *
  * @version $Id: import.act.php,v 1.14 2008/04/01 13:36:30 adamfranco Exp $
  */ 
-require_once(MYDIR."/main/modules/ui1/add.act.php");
+require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
 
 // Use a custom version of Archive/Tar if requested.
 if (defined('ARCHIVE_TAR_PATH'))
@@ -37,7 +37,7 @@ require_once(dirname(__FILE__)."/Rendering/UntrustedAgentAndTimeDomImportSiteVis
  * @version $Id: import.act.php,v 1.14 2008/04/01 13:36:30 adamfranco Exp $
  */
 class importAction
-	extends addAction
+	extends MainWindowAction
 {
 		
 	/**
@@ -108,6 +108,7 @@ class importAction
 	 */
 	public function buildContent () {
 		$harmoni = Harmoni::instance();
+		$harmoni->request->passthrough('starting_number');
 		$harmoni->request->passthrough("site");
 		
 		$centerPane = $this->getActionRows();
@@ -180,6 +181,49 @@ class importAction
 	}
 	
 	/**
+	 * Add any additional site admins to a multi-select.
+	 * 
+	 * @param object Wizard $wizard
+	 * @return void
+	 * @access protected
+	 * @since 1/28/08
+	 */
+	protected function addSiteAdminStep (Wizard $wizard) {
+		/*********************************************************
+		 * Owner step if multiple owners
+		 *********************************************************/
+		$step = new WizardStep();
+		$step->setDisplayName(_("Choose Admins"));	
+		
+		$property = $step->addComponent("admins", new WMultiCheckList);
+		
+		$agentMgr = Services::getService("Agent");
+		$i = 0;
+		$owners = $this->getOwners();
+		foreach ($owners as $ownerId) {
+			$i++;
+			$owner = $agentMgr->getAgent($ownerId);
+			$property->addOption($ownerId->getIdString(), htmlspecialchars($owner->getDisplayName()));
+			$property->setValue($ownerId->getIdString());
+		}
+		$property->setSize($i);
+		
+		// Create the step text
+		ob_start();
+		print "\n<h2>"._("Choose Site Admins")."</h2>";
+		print "\n<p>"._("The following users are listed as owners of this placeholder. Keep them selected if you would like them be administrators of this site or de-select them if they should not be administrators of this site. Any choice made now can be changed later through the 'Permissions' screen for the site.");
+		print "\n<br />[[admins]]</p>";
+		print "\n<div style='width: 400px'> &nbsp; </div>";
+		$step->setContent(ob_get_contents());
+		ob_end_clean();
+		
+		if ($i) {
+			$step = $wizard->addStep("owners", $step);
+			$wizard->makeStepRequired('owners');
+		}
+	}
+	
+	/**
 	 * Save our results. Tearing down and unsetting the Wizard is handled by
 	 * in {@link runWizard()} and does not need to be implemented here.
 	 * 
@@ -206,6 +250,8 @@ class importAction
 			$archiveName = basename($archivePath);
 			$decompressDir = DATAPORT_TMP_DIR.'/'.$archiveName.'_source';
 			
+			if (!$values['mode']['backup_file']['size'])
+				throw new Exception("File upload error - archive was not successfully uploaded and has no size.");
 			$this->decompressArchive($archivePath, $decompressDir);
 			
 			
@@ -242,6 +288,7 @@ class importAction
 					$importer->addSiteAdministrator($idMgr->getId($adminIdString));
 			}
 			
+			$importer->enableStatusOutput();
 			$site = $importer->importAtSlot($values['mode']['slotname']);
 			
 			// Delete the uploaded file
@@ -289,7 +336,9 @@ class importAction
 				$priorityType = new Type("logging", "edu.middlebury", "Error",
 								"Recoverable errors.");
 				
-				$item = new AgentNodeEntryItem("Create Site", "Failure in importing site for placeholder, '".$values['mode']['slotname']."'.");
+				$item = new AgentNodeEntryItem("Create Site", "Failure in importing site for placeholder, '".$values['mode']['slotname']."'. ".$importException->getMessage());
+				$item->setBacktrace($importException->getTrace());
+				$item->addTextToBactrace("Archive Upload: ".printpre($values['mode']['backup_file'], true));
 				
 				$log->appendLogWithTypes($item,	$formatType, $priorityType);
 			}
@@ -327,6 +376,11 @@ class importAction
 	 * @since 3/14/08
 	 */
 	public function decompressArchive ($archivePath, $decompressDir) {
+		if (!file_exists($archivePath))
+			throw new Exception("Archive, '".basename($archivePath)."' does not exist.");
+		if (!is_readable($archivePath))
+			throw new Exception("Archive, '".basename($archivePath)."' is not readable.");
+		
 		// Decompress the archive into our temp-dir
 		$archive = new Archive_Tar($archivePath);
 		
@@ -366,7 +420,7 @@ class importAction
 	function getReturnUrl () {
 		$harmoni = Harmoni::instance();
 		$harmoni->request->forget('site');
-		if ($this->_siteId) 
+		if (isset($this->_siteId) && $this->_siteId) 
 			return $harmoni->request->quickURL('ui1', "view", array(
 				"node" => $this->_siteId));
 		else

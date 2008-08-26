@@ -87,7 +87,7 @@ class PopulateRolesVisitor
 		
 		// Skip any printing of the node if the current user has no authorization 
 		// to view the node or any descendents.
-		if (!$authZ->isUserAuthorizedBelow($idMgr->getId("edu.middlebury.authorization.view"), $qualifierId)
+		if (!$authZ->isUserAuthorized($idMgr->getId("edu.middlebury.authorization.view"), $qualifierId)
 			&& !$authZ->isUserAuthorizedBelow($idMgr->getId("edu.middlebury.authorization.view_authorizations"), $qualifierId)) 
 		{
 			return;

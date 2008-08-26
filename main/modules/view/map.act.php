@@ -64,7 +64,8 @@ class mapAction
 		// get siteRoot node and check that
 		$idMgr = Services::getService('Id');
 		$azMgr = Services::getService('AuthZ');
-		return $azMgr->isUserAuthorizedBelow(
+		// Since view AZs cascade up, just check at the node.
+		return $azMgr->isUserAuthorized(
 			$idMgr->getId('edu.middlebury.authorization.view'),
 			SiteDispatcher::getCurrentRootNode()->getQualifierId());
 	}
@@ -232,7 +233,7 @@ class mapAction
 		
 		print $this->getTabs()."\t\t";
 		print "<div class='title'>";
-		$nodeUrl = $harmoni->request->quickURL('view', 'html', array('node' => $siteComponent->getId()));
+		$nodeUrl = SiteDispatcher::quickURL('view', 'html', array('node' => $siteComponent->getId()));
 		print "<a href='".$nodeUrl."' ";
 		print ' onclick="';
 		print "if (window.opener) { ";

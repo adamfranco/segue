@@ -173,7 +173,7 @@ abstract class Segue1To2Converter {
 			case 'image':
 				$class = 'ImageBlockSegue1To2Converter';
 				break;
-			case 'link':
+			case 'rss':
 				$class = 'RssBlockSegue1To2Converter';
 				break;
 			default:
@@ -208,8 +208,27 @@ abstract class Segue1To2Converter {
 				$value = null;
 			}
 		}
-		if ($value)
+		if ($value) {
 			$destElement->setAttribute('create_agent', $this->addAgent($value));
+		}
+				
+		try {
+			$value = $this->getStringValue($this->getSingleSourceElement('./history/last_edited_time', $this->sourceElement));
+		} catch (MissingNodeException $e) {
+			try {
+				$value = $this->getStringValue($this->getSingleSourceElement('./last_edited_time', $this->sourceElement));
+			} catch (MissingNodeException $e) {
+				$value = null;
+			}
+		}
+		if ($value) {
+			if ($value == "0000-00-00 00:00:00") 
+				$modify_date = date("Y-m-d H:i:s");
+			else
+				$modify_date = $value;
+						
+			$destElement->setAttribute('modify_date', $modify_date);
+		}
 		
 		try {
 			$value = $this->getStringValue($this->getSingleSourceElement('./history/created_time', $this->sourceElement));
@@ -220,20 +239,16 @@ abstract class Segue1To2Converter {
 				$value = null;
 			}
 		}
-		if ($value)
+		if ($value) {		
+			if ($value == "0000-00-00 00:00:00")
+				if (isset($modify_date)) 
+					$value = $modify_date;
+				else 
+					$value = date("Y-m-d H:i:s");
+
 			$destElement->setAttribute('create_date', $value);
-		
-		try {
-			$value = $this->getStringValue($this->getSingleSourceElement('./history/last_edited_time', $this->sourceElement));
-		} catch (MissingNodeException $e) {
-			try {
-				$value = $this->getStringValue($this->getSingleSourceElement('./last_edited_time', $this->sourceElement));
-			} catch (MissingNodeException $e) {
-				$value = null;
-			}
 		}
-		if ($value)
-			$destElement->setAttribute('modify_date', $value);
+
 	}
 	
 /*********************************************************

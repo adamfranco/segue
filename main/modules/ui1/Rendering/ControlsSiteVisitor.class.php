@@ -38,6 +38,13 @@ class ControlsSiteVisitor
 	public function __construct () {
 		$this->module = "ui1";
 		$this->action = "editview";
+		
+		$harmoni = Harmoni::instance();
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead(
+			$outputHandler->getHead()
+			."\n\t\t\t<script type='text/javascript' src='".MYPATH."/javascript/DeletePanel.js'></script>"
+			);
 	}
 		
 	/**
@@ -69,7 +76,7 @@ class ControlsSiteVisitor
 		
 // 		print "\n\t\t\t<form method='post'";
 // 		print " action='";
-// 		print $harmoni->request->quickURL('ui1', 'modifyComponent',
+// 		print SiteDispatcher::quickURL('ui1', 'modifyComponent',
 // 				array('node' => $siteComponent->getId(),
 // 					"returnNode" => SiteDispatcher::getCurrentNodeId(),
 // 					'returnAction' => $this->action));
@@ -120,11 +127,12 @@ class ControlsSiteVisitor
 	 * Print delete controls
 	 * 
 	 * @param SiteComponent $siteComponent
+	 * @param string $typeDisplay
 	 * @return void
 	 * @access public
 	 * @since 4/17/06
 	 */
-	function getDelete ( $siteComponent ) {
+	function getDelete ( $siteComponent, $typeDisplay ) {
 		ob_start();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -142,19 +150,46 @@ class ControlsSiteVisitor
 						'returnAction' => $this->action
 						));
 			
-			print "\n\t\t\t\t\t<a href='#' onclick='";
+			print "\n\t\t\t\t\t<a href='#' onclick=\"";
 			
-			print 	"if (confirm(\"".$message."\")) {";
-			print 		" var url = \"".$url."\"; ";
-			print 		"window.location = url.urlDecodeAmpersands(); ";
-			print 	"} ";
+			print 	"DeletePanel.run({";
+			print		"id: '".$siteComponent->getId()."', ";
+			print		"type: '".$typeDisplay."', ";
+			print		"displayName: '".addslashes(str_replace('"', '&quot;',
+							strip_tags($siteComponent->getDisplayName())))."'";
+			print 		"}, ";
+			print		"'".SiteDispatcher::getCurrentNodeId()."', ";
+			print		"'ui1', '".$this->action."', this); ";
 			print "return false; ";
 			
-			print "'>";
+			print "\">";
 			print _("delete");
 			print "</a>";
 		}
 		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer controls for adding to the selection.
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @return string
+	 * @access public
+	 * @since 8/5/08
+	 */
+	public function getSelectionAdd (BlockSiteComponent $siteComponent) {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni = Harmoni::instance();
+		
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"), 
+			$siteComponent->getQualifierId()))
+		{
+			return false;
+		}
+		
+		return Segue_Selection::instance()->getAddLink($siteComponent);
 	}
 	
 	/**
@@ -182,7 +217,7 @@ class ControlsSiteVisitor
 			$parent->getId();
 			
 			
-			$url = 	$harmoni->request->mkURL('ui1', $action, array(
+			$url = 	SiteDispatcher::mkURL('ui1', $action, array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action
@@ -215,7 +250,7 @@ class ControlsSiteVisitor
 		{
 			$harmoni = Harmoni::instance();
 			$harmoni->history->markReturnURL('view_history_'.$siteComponent->getId());
-			$url =  $harmoni->request->quickURL('versioning', 'view_history',
+			$url =  SiteDispatcher::quickURL('versioning', 'view_history',
 					array("node" => $siteComponent->getId(), 
 						'returnModule' => $harmoni->request->getRequestedModule(),
 						'returnAction' => $harmoni->request->getRequestedAction()));
@@ -250,7 +285,7 @@ class ControlsSiteVisitor
 			$siteComponent->getParentComponent()->getQualifierId()))
 		{
 			
-			$url = 	$harmoni->request->quickURL('ui1', 'editContentWizard', array(
+			$url = 	SiteDispatcher::quickURL('ui1', 'editContentWizard', array(
 							'node' => $siteComponent->getId(),
 							'returnNode' => SiteDispatcher::getCurrentNodeId(),
 							'returnAction' => $this->action
@@ -290,7 +325,7 @@ class ControlsSiteVisitor
 			$harmoni = Harmoni::instance();
 			$message = _("Are you sure that you wish to create a submenu?");
 			$url = str_replace('&amp;', '&', 
-					$harmoni->request->quickURL('ui1', 'createSubMenu', array(
+					SiteDispatcher::quickURL('ui1', 'createSubMenu', array(
 						'parent' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action,
@@ -329,13 +364,15 @@ class ControlsSiteVisitor
 		$this->controlsStart($siteComponent);
 		
 		$controls = array();
+		if ($control = $this->getSelectionAdd($siteComponent))
+			$controls[] = $control;
 		if ($siteComponent->sortMethod() == 'custom' && $control = $this->getReorder($siteComponent))
 			$controls[] = $control;
 		if ($control = $this->getMove($siteComponent))
 			$controls[] = $control;
 		if ($control = $this->getEdit($siteComponent, 'editContent'))
 			$controls[] = $control;
-		if ($control = $this->getDelete($siteComponent))
+		if ($control = $this->getDelete($siteComponent, _("Content Block")))
 			$controls[] = $control;
 		if ($control = $this->getHistory($siteComponent))
 			$controls[] = $control;
@@ -369,14 +406,21 @@ class ControlsSiteVisitor
 		$this->controlsStart($siteComponent);
 		
 		$controls = array();
+		if ($control = $this->getSelectionAdd($siteComponent))
+			$controls[] = $control;
 		if ($control = $this->getReorder($siteComponent))
 			$controls[] = $control;
 		if ($control = $this->getMove($siteComponent))
 			$controls[] = $control;
 		if ($control = $this->getEdit($siteComponent, 'editNav'))
 			$controls[] = $control;
-		if ($control = $this->getDelete($siteComponent))
-			$controls[] = $control;
+		if ($siteComponent->isSection()) {
+			if ($control = $this->getDelete($siteComponent, _("Section")))
+				$controls[] = $control;
+		} else {
+			if ($control = $this->getDelete($siteComponent, _("Page")))
+				$controls[] = $control;
+		}
 // 		if ($control = $this->getHistory($siteComponent))
 // 			$controls[] = $control;
 // 		if ($control = $this->getAddSubMenu($siteComponent))
@@ -450,7 +494,7 @@ class ControlsSiteVisitor
 			$siteComponent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', 'editFlowOrg', array(
+			$url = 	SiteDispatcher::quickURL('ui1', 'editFlowOrg', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action
@@ -493,7 +537,7 @@ class ControlsSiteVisitor
 			$siteComponent->getQualifierId()))
 		{
 		
-			$url = 	$harmoni->request->quickURL('ui1', 'editMenu', array(
+			$url = 	SiteDispatcher::quickURL('ui1', 'editMenu', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnAction' => $this->action

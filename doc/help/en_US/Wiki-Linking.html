@@ -1,0 +1,62 @@
+<html>
+	<head>
+		<title>Wiki-Linking</title>
+	</head>
+	<body>
+		<h1>About wiki-linking</h1>
+		
+		<p>Wiki-Linking allows you to use simplified markup to link to other pages based on titles such as <code><nowiki>[[Introduction]]</nowiki></code> rather than using more verbose html tags and copy-pasting urls such as <code>&lt;a href="http://segue.example.edu/view/html/node/12345"&gt;Introduction&lt;/a&gt;</code>.</p>
+		
+		<p>Segue's wiki-link uses a syntax similar to <a href='http://en.wikipedia.org/wiki/Wikipedia:How_to_edit_a_page#Links_and_URLs'>MediaWiki's</a>.</p>
+		
+		
+		
+		<h1>Links within Segue</h1>
+		
+		
+		<h2>Links within a site</h2>
+		
+		<p>Put square-brackets around the title of a section, page, or content block to make a link to it. To link to a page called Introduction, you would use:</p>
+		<blockquote><code><nowiki>[[Introduction]]</nowiki></code></blockquote>
+		
+		<p>To display alternate text, use the 'pipe' character after the name followed by the text to display:</p>
+		<blockquote><code><nowiki>[[Introduction|the introduction to my site]]</nowiki></code></blockquote>
+		
+		
+		<h2>Links to another site</h2>
+		
+		<p>Linking to a page in another site is similar to linking to one in the same site, but with the addition of 'site:placeholder-name ' to the before the page title. To link to a page called Introduction in another site called 'chem101', you would use:</p>
+		<blockquote><code><nowiki>[[site:chem101 Introduction]]</nowiki></code></blockquote>
+		
+		<p>To display alternate text, use the 'pipe' character after the name followed by the text to display:</p>
+		<blockquote><code><nowiki>[[site:chem101 Introduction|An introduction to chemistry]]</nowiki></code></blockquote>
+		
+		
+		<h2>Links to a 'node' id</h2>
+		
+		<p>Sometimes a site will have several pages or content blocks with the same title and you may wish to link to a particular one. In this case, you can use the 'node' id of the page or content block to link specifically to it. You can find the 'node id' as the 'node' parameter for the address of that page:</p>
+		<blockquote style='white-space: nowrap;'><code>http://segue.example.edu/view/html/node/<strong>123456</strong>/</code>
+		<br/><code>http://segue.example.edu/?module=view&amp;action=html&amp;node=<strong>123456</strong></code></blockquote>
+		
+		<p>To link to a page with id '123456', you would use the following. The current title will be used as the link-text.</p>
+		<blockquote><code><nowiki>[[node:123456]]</nowiki></code></blockquote>
+		
+		<p>To display alternate text, use the 'pipe' character after the name followed by the text to display:</p>
+		<blockquote><code><nowiki>[[node:123456|The introduction to my site]]</nowiki></code></blockquote>
+		
+		
+		
+		<h1>External links</h1>
+		
+		<p>You can also use wiki-markup to link to full URLs. Linking to full URLs uses only one square-bracket:</p>
+		<blockquote style='white-space: nowrap;'><code>[http://www.example.com/index.html]</code></blockquote>
+		
+		<p>To display alternate text, use a space after the name followed by the text to display:</p>
+		<blockquote style='white-space: nowrap;'><code>[http://www.example.com/index.html Another web site]</code></blockquote>
+		
+		<h1>Other forms of wiki-markup</h1>
+		
+		<p>Segue also provides [[text-templates]] for embedding videos, maps, and other media. See the [[Text-Templates|help page on text-templates]] for more information.</p>
+		
+	</body>
+</html>

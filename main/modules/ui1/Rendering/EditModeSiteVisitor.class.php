@@ -135,7 +135,7 @@ END;
 		ob_start();	
 			
 		// Tags
-		print "\n\t<div class='tagging_tags_display'>";
+		
 		SiteDispatcher::passthroughContext();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
@@ -143,6 +143,7 @@ END;
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"), $block->getQualifierId()))
 		{
+			print "\n\t<div class='tagging_tags_display'>";
 			print TagAction::getTagCloudForItem($item, 'sitetag',
 				array(	'font-size: 90%;',
 						'font-size: 100%;',
@@ -276,7 +277,12 @@ END;
 			$idManager->getId("edu.middlebury.authorization.add_children"), 
 			$organizer->getQualifierId()))
 		{
-			$form = new UnstyledBlock($this->getAddFormHTML($organizer->getId(), null));
+			$formHtml = "\n\t<div class='ui1_add_form_wrapper'>";
+			$formHtml .= $this->getAddFormHTML($organizer->getId(), null);
+			// Move/Copy from selection
+			$formHtml .= "\n\t | ".Segue_Selection::instance()->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t</div>";
+			$form = new UnstyledBlock($formHtml);
 			
 			// Add the form to the beginning of the list for custom ordering or recent last
 			if (in_array($organizer->sortMethod(), array('custom', 'create_date_asc', 'mod_date_asc')))
@@ -329,7 +335,13 @@ END;
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
 	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
 			
-			$childComponent = $guiContainer->add(new UnstyledMenuItem($this->getAddFormHTML($organizer->getId(), null, 'addMenuContent', true), 2), null, '100%', CENTER, TOP);
+			$formHtml = "\n\t<div class='ui1_add_form_wrapper'>";
+			$formHtml .= $this->getAddFormHTML($organizer->getId(), null, 'addMenuContent', true);
+			// Move/Copy from selection
+			$formHtml .= "\n\t | ".Segue_Selection::instance()->getMoveCopyLink($organizer);
+			$formHtml .= "\n\t</div>";
+			
+			$childComponent = $guiContainer->add(new UnstyledMenuItem($formHtml, 2), null, '100%', CENTER, TOP);
 			
 			// Add a spacer at the end of the menu
 			$guiContainer->add(new UnstyledMenuItem("<div> &nbsp; </div>"));
@@ -360,7 +372,7 @@ END;
 			$organizer->getQualifierId()))
 		{
 			print "<div style='height: 50px; border: 1px solid #F00; margin: 0px 5px 5px 5px; padding: 5px;'>";
-			print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+			print _("This Section has no Pages yet. <br/><br/>Add a Page by clicking the <strong>+ Page</strong> button for this Section and choose 'Page'.");
 		} else {
 			print "<div style='height: 50px; margin: 0px 5px 5px 5px; padding: 5px;'>";
 			print " ";
@@ -395,10 +407,10 @@ END;
 		
 		print "\n\t<div style='white-space: nowrap; text-align: center;'>";
 		print "\n\t\t<a href='";
-		print $harmoni->request->quickURL('ui1', $action, $params);
+		print SiteDispatcher::quickURL('ui1', $action, $params);
 		print "'>";
 		if ($isMenu)
-			print "\n\t\t\t"._("+ Menu Item");
+			print "\n\t\t\t"._("+ Page");
 		else
 			print "\n\t\t\t"._("+ Content");
 		print "\n\t\t</a>";

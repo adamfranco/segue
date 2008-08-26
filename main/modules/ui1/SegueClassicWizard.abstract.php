@@ -117,6 +117,7 @@ class SegueClassicWizard
 	function buildContent () {
 		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough("node");
+		$harmoni->request->passthrough("site");
 		$harmoni->request->passthrough("returnNode");
 		if (RequestContext::value('returnModule'))
 			$harmoni->request->passthrough("returnModule");
@@ -150,6 +151,8 @@ class SegueClassicWizard
 		$wizard->addStep("display", $this->getDisplayOptionsStep());
 // 		$wizard->addStep("status", $this->getStatusStep());
 		
+		
+		$wizard->addConfimLeavingMessage(_("Click 'Save' or 'Cancel' to leave this wizard and 'Next' or 'Previous' to move around in it. Otherwise, unsubmitted changes may be lost."));
 		return $wizard;
 	}
 	
@@ -230,7 +233,7 @@ class SegueClassicWizard
 			$returnModule = $harmoni->request->get("returnModule");
 		else
 			$returnModule = 'ui1';
-		return $harmoni->request->quickURL(
+		return SiteDispatcher::quickURL(
 			$returnModule, $harmoni->request->get("returnAction"),
 			array('node' => $harmoni->request->get("returnNode")));
 	}
@@ -747,7 +750,7 @@ class SegueClassicWizard
 	 */
 	public function getPermissionsStep () {
 		$step =  new WizardStep();
-		$step->setDisplayName(_("Permissions"));
+		$step->setDisplayName(_("Roles"));
 		$property = $step->addComponent("perms_table", new RowRadioMatrix);
 		
 		$roleMgr = SegueRoleManager::instance();
@@ -849,9 +852,9 @@ class SegueClassicWizard
 		
 		
 		ob_start();
-		print "\n<h2>"._("Permissions")."</h2>";
+		print "\n<h2>"._("Roles")."</h2>";
 		print "\n<p>";
-		print _("Here you can set permissions for this component and its children. Permissions are additive -- this means that you can add additional permissions (but not remove them) for any children.");
+		print _("Here you can set roles for this component and its children. Roles are additive -- this means that you can add additional roles (but not remove them) for any children.");
 		print "\n</p>\n";
 		print "[[perms_table]]";
 		

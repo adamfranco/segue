@@ -586,6 +586,18 @@ interface SeguePluginsAPI {
 	public function parseWikiText ($text);
 	
 	/**
+	 * Parse and replace any text-templates that are safe for use in an WYSIWYG editor 
+	 * with HTML markup. This can be used to allow WYSIWG editing of elements that
+	 * will later be converted back to text-templates using unapplyTextTemplates().
+	 * 
+	 * @param string $text
+	 * @return string
+	 * @access public
+	 * @since 8/20/08
+	 */
+	public function applyEditorSafeTextTemplates($text);
+	
+	/**
 	 * Given a block of HTML text, replace any local-system urls with tokenized
 	 * placeholders. These placeholders can the be translated back at display time
 	 * in order to match the current system base-url 
@@ -666,15 +678,94 @@ interface SeguePluginsAPI {
 	 * @since 1/19/06
 	 */
 	public function getPluginDir ();
-
+	
 	/**
-	 * Answer the url filepath for the plugin?
+	 * This method will give you a url to access files in a 'public'
+	 * subdirectory of your plugin. 
+	 *
+	 * Example, status_image.gif in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *				assignment_styles.css
+	 *				assignment_functions.js
+	 *	
+	 * Usage: print $this->getPublicFileUrl('status_image.gif');
 	 * 
-	 * @return string the url path to this plugin directory
+	 * @param string $filename.
+	 * @return string
 	 * @access public
-	 * @since 1/19/06
+	 * @since 6/18/08
 	 */
-	public function getPluginPath ();
+	public function getPublicFileUrl ($filename);
+	
+	/**
+	 * This method will give you a url to access an action script in your plugin.
+	 * Action script files must me named with the action name followed by '.act.php'.
+	 * Action scripts must contain a class with the same name as the action name.
+	 * The action script's class must implement the 'SeguePluginsAction' interface.
+	 * 
+	 * @param string $actionName
+	 * @param optional array $params
+	 * @return string
+	 * @access public
+	 * @since 6/19/08
+	 */
+	public function getPluginActionUrl ($actionName, $params = array());
+	
+	/**
+	 * This method will add the CSS contained in a file in the plugin's
+	 * 'public' subdirectory to the <head> of the page the plugin
+	 * is displayed on.
+	 *
+	 * Example, assignment_styles.css in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *				assignment_styles.css
+	 *				assignment_functions.js
+	 *	
+	 * Usage: $this->addHeadCss('assignment_styles.css');
+	 * 
+	 * @param string $filename
+	 * @return void
+	 * @access public
+	 * @since 6/18/08
+	 */
+	public function addHeadCss ($filename);
+	
+	/**
+	 * This method will add the Javascript contained in a file in the plugin's
+	 * 'public' subdirectory to the <head> of the page the plugin
+	 * is displayed on.
+	 *
+	 * Example, assignment_functions.js in an 'Assignment' plugin by Example University:
+	 *
+	 * File Structure
+	 *		Assignment/
+	 *			EduExampleAssignmentPlugin.class.php
+	 *			icon.png
+	 *			public/
+	 *				status_image.gif
+	 *				assignment_styles.css
+	 *				assignment_functions.js
+	 *	
+	 * Usage: $this->addHeadJavascript('assignment_functions.js');
+	 * 
+	 * @param string $filename
+	 * @return void
+	 * @access public
+	 * @since 6/18/08
+	 */
+	public function addHeadJavascript ($filename);
 
 /*********************************************************
  * Files

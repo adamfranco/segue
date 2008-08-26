@@ -36,7 +36,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @static
  	 */
  	static function getPluginDescription () {
- 		return _("The Text Block is a unit of HTML-formatted text that may contain inline images, links, and formatting.");
+ 		return _("The Text &amp; Images is a unit of HTML-formatted text that may contain inline images, links, and formatting.");
  	}
  	
  	/**
@@ -49,7 +49,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @static
  	 */
  	public static function getPluginDisplayName () {
- 		return _("Text Block");
+ 		return _("Text &amp; Images");
  	}
  	
  	/**
@@ -126,7 +126,7 @@ class EduMiddleburyTextBlockPlugin
 	 		$this->editing = true;
 	 	
  		if ($this->getFieldValue('submit_pressed')) {	
- 			$this->setContent($this->tokenizeLocalUrls($this->cleanHTML($this->getFieldValue('content'))));
+ 			$this->setContent($this->tokenizeLocalUrls($this->cleanHTML($this->unapplyTextTemplates($this->getFieldValue('content')))));
  			$this->setRawDescription(intval($this->getFieldValue('abstractLength')));
  			$this->logEvent('Modify Content', 'TextBlock content updated');
  			
@@ -170,9 +170,9 @@ class EduMiddleburyTextBlockPlugin
  			if ($this->hasContent()) {
 				$abstractLength = intval($this->getRawDescription());
 				if ($abstractLength) {
-					print "\n".$this->trimHTML($this->parseWikiText($this->getContent()), $abstractLength);
+					print "\n".$this->parseWikiText($this->trimHTML($this->getContent(), $abstractLength));
 				} else {
-					print "\n".$this->cleanHTML($this->parseWikiText($this->getContent()));
+					print "\n".$this->parseWikiText($this->cleanHTML($this->getContent()));
 				}
 			} else {
 				print "\n<div class='plugin_empty'>";
@@ -217,7 +217,7 @@ class EduMiddleburyTextBlockPlugin
 				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
  			}
  			if ($this->hasContent()) {
-		 		print "\n".$this->cleanHTML($this->parseWikiText($this->getContent()));
+		 		print "\n".$this->parseWikiText($this->cleanHTML($this->getContent()));
 	 		} else {
 				print "\n<div class='plugin_empty'>";
 				print _("No text has been added yet. ");
@@ -270,7 +270,7 @@ class EduMiddleburyTextBlockPlugin
 		print ' if (this.form.onsubmit) {this.form.onsubmit(); this.form.submit();} else {this.form.submit();} ';
 		print "'>";
 		print "\n\t<option value='fck'".(($this->textEditor=='fck')?" selected='selected'":"").">Rich-Text Editor</option>";
-		print "\n\t<option value='none'".(($this->textEditor=='none')?" selected='selected'":"").">None</option>";
+		print "\n\t<option value='none'".(($this->textEditor=='none')?" selected='selected'":"").">Plain-Text</option>";
 		print "\n\t</select></div>";
 
  		// replace with editor code
@@ -328,10 +328,25 @@ class EduMiddleburyTextBlockPlugin
 		if ($this->textEditor == "none") {
 			$this->printTextField();
 		} else if ($this->textEditor == "fck") {
+			print Help::link('Rich-Text Editor');
 			$this->printFckEditor();
 		} else {
 			throw new Exception("Supplied editor, '".$this->textEditor."', is not valid.");
 		}
+		
+		// Add an event check on back button to confirm that the user wants to
+		// leave with their editor open.
+		$fieldName = $this->getFieldName('content');
+		$string = _("You have edits open. Any changes will be lost.");
+		print "
+<script type='text/javascript'>
+// <![CDATA[ 
+
+		window.addUnloadConfirmationForElement(\"$fieldName\", \"$string\");
+	
+// ]]>
+</script>
+";
  	}
  	
  	 	/**
@@ -342,7 +357,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 8/27/07
  	 */
  	function printTextField () {
- 		print "\n\t<textarea name='".$this->getFieldName('content')."' rows='20' style='width: 100%;'>";
+ 		print "\n\t<textarea id='".$this->getFieldName('content')."' name='".$this->getFieldName('content')."' rows='20' style='width: 100%;'>";
  		if (is_null($this->workingContent))
 	 		print $this->cleanHTML($this->untokenizeLocalUrls($this->getContent()));
 	 	else
@@ -427,7 +442,7 @@ class EduMiddleburyTextBlockPlugin
 
 		
 		if (is_null($this->workingContent))
-	 		$oFCKeditor->Value = $this->cleanHTML($this->untokenizeLocalUrls($this->getContent()));
+	 		$oFCKeditor->Value = $this->applyEditorSafeTextTemplates($this->cleanHTML($this->untokenizeLocalUrls($this->getContent())));
 	 	else
 	 		$oFCKeditor->Value = $this->workingContent;
 	 	
@@ -476,7 +491,7 @@ class EduMiddleburyTextBlockPlugin
  		$property->setStartingDisplayText(_("Add a comment about your changes here."));
  		
  		$property = $wrapper->addComponent('content', HtmlTextArea::withRowsAndColumns(20, 80));
- 		$property->setValue($this->cleanHTML($this->untokenizeLocalUrls($this->getContent())));
+ 		$property->setValue($this->applyEditorSafeTextTemplates($this->cleanHTML($this->untokenizeLocalUrls($this->getContent()))));
  		$property->chooseEditor('fck');
  		
  		$fckArea = $property->getEditor('fck');
@@ -570,7 +585,7 @@ class EduMiddleburyTextBlockPlugin
  	 * @since 5/8/07
  	 */
  	function updateFromWizard ( $values ) {
- 		$this->setContent($this->tokenizeLocalUrls($values['content']));
+ 		$this->setContent($this->unapplyTextTemplates($this->tokenizeLocalUrls($values['content'])));
  		$this->setRawDescription(intval($values['abstractLength']));
  		$this->logEvent('Modify Content', 'TextBlock content updated');
  		$this->markVersion($values['comment']);
@@ -606,9 +621,14 @@ class EduMiddleburyTextBlockPlugin
  		ob_start();
  		print "\n<div class='help_text'>";
  		$message = _('<strong>Wiki linking (%1) :</strong> To link to a page on your site whose title is "Introduction" use &#91;&#91;Introduction&#93;&#93;. If no content with the title "Introduction" exists a link to create such content will be made. To see all titles used in this site, see: %2');
- 		$message = str_replace('%1', Help::link('wiki linking'), $message);
+ 		$message = str_replace('%1', Help::link('Wiki-Linking'), $message);
 //  		$message = str_replace('%2', SiteMap::link($this->getId()), $message);
-		$message = str_replace('%2', 'Site Map', $message);
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
+		$siteMapUrl = $harmoni->request->quickUrl('view', 'map', array('node' => $this->getId()));
+		$harmoni->request->endNamespace();
+		$siteMapText = "<a target='site_map' href='".$siteMapUrl."' onclick=\"var url = '".$siteMapUrl."'; window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); return false;\">"._("Site Map")."</a>";
+		$message = str_replace('%2', $siteMapText, $message);
  		print $message;
  		print "\n</div>";
  		return ob_get_clean();
@@ -683,13 +703,13 @@ class EduMiddleburyTextBlockPlugin
  		$abstractLength = $this->getAbstractLengthFromVersion($version);
  		if ($abstractLength) {
  			print "\n<div>";
- 			print $this->trimHTML($this->parseWikiText($content), $abstractLength);
+ 			print $this->parseWikiText($this->trimHTML($content, $abstractLength));
  			print "\n</div>";
  			print "\n<hr/>";
  		}
  		
  		print "\n<div>";
-		print $this->cleanHTML($this->parseWikiText($content));
+		print $this->parseWikiText($this->cleanHTML($content));
 		print "\n</div>";
 		
 		return ob_get_clean();

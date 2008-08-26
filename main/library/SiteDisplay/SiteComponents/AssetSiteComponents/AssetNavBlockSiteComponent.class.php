@@ -10,6 +10,7 @@
  */ 
 
 require_once(dirname(__FILE__)."/../AbstractSiteComponents/NavBlockSiteComponent.abstract.php");
+require_once(dirname(__FILE__)."/../../Rendering/HasMenuBelowSiteVisitor.class.php");
 
 /**
  * The NavBlock component is a hierarchal node that provides a gateway to a 
@@ -54,6 +55,18 @@ class AssetNavBlockSiteComponent
 	 */
 	function getComponentClass () {
 		return 'NavBlock';
+	}
+	
+	/**
+	 * Answer true if this nav block is a "Section" containing sub-menus and other
+	 * nav blocks. If it is a "Page" containing only organizers and content, return false.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 8/1/08
+	 */
+	public function isSection () {
+		return $this->acceptVisitor(new HasMenuBelowSiteVisitor);
 	}
 	
 	/**

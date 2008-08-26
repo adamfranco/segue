@@ -55,6 +55,7 @@ class modifyAction
 	function buildContent () {
 		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough("node");
+		$harmoni->request->passthrough("site");
 		$harmoni->request->passthrough("agent");
 		$harmoni->request->passthrough("returnNode");
 		$harmoni->request->passthrough("returnModule");
@@ -103,8 +104,8 @@ class modifyAction
 		$button->addEvent("edu.middlebury.segue.choose_user");
 		
 		$step = $wizard->addStep("permissions", new WizardStep);
-		$property = $step->addComponent("perms_table", new RowHierarchicalRadioMatrix);
-		
+				
+		$step->addComponent("perms_table", $this->getPermissionsMatrix());
 		
 		$agent = $this->getAgent();
 		
@@ -114,21 +115,12 @@ class modifyAction
 			$type = _("user");
 		$title = str_replace("%1", $type,
 					str_replace ("%2", $agent->getDisplayName(),
-						_("Permissions for %1 '%2'")));		
-		
-		
-		$roleMgr = SegueRoleManager::instance();
-		// Add the options
-		foreach($roleMgr->getRoles() as $role)
-			$property->addOption($role->getIdString(), $role->getDisplayName(), $role->getDescription());
-		
-		$this->getSite()->acceptVisitor(new PopulateRolesVisitor($property, $agent));
-		
+						_("Roles for %1 '%2'")));		
 		
 		ob_start();
 		print "\n<h2>".$title."</h2>";
 		print "\n<p>";
-		print _("Permissions are additive -- this means that you can add additional permissions (but not remove them) for child-nodes.");
+		print _("Roles are additive -- this means that you can add additional roles (but not remove them) for child-nodes.");
 		print "\n</p>\n";
 		
 		print "\n<p>";
@@ -140,6 +132,95 @@ class modifyAction
 		$step->setContent(ob_get_clean());
 		
 		return $wizard;
+	}
+	
+	/**
+	 * Answer a permission matrix property
+	 * 
+	 * @return object RowHierarchicalRadioMatrix
+	 * @access protected
+	 * @since 7/14/08
+	 */
+	protected function getPermissionsMatrix ($implicitRebuilt = false) {
+		$property = new RowHierarchicalRadioMatrix;
+		
+		$agent = $this->getAgent();		
+		
+		$roleMgr = SegueRoleManager::instance();
+		// Add the options
+		foreach($roleMgr->getRoles() as $role)
+			$property->addOption($role->getIdString(), $role->getDisplayName(), $role->getDescription());
+		
+		try {
+			$this->getSite()->acceptVisitor(new PopulateRolesVisitor($property, $agent));
+		} catch (RuleValidationFailedException $e) {
+			// If we have already rebuilt the implicit Authorizations and that didn't
+			// fix things, throw and exception.
+			if ($implicitRebuilt) {
+				throw new OperationFailedException('Authorizations on this site do not match up to a valid role-state.');
+			} 
+			// Rebuild the implicit Authorizations and retry
+			else {
+				$this->rebuildImplictAZs();
+				return $this->getPermissionsMatrix(true);
+			}
+		}
+		
+		return $property;
+	}
+	
+	/**
+	 * Rebuild the hierarchy-based implicit authorizations.
+	 * 
+	 * @return void
+	 * @access protected
+	 * @since 7/14/08
+	 */
+	protected function rebuildImplictAZs () {
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$hierarchyManager = Services::getService('Hierarchy');
+		
+		$site = $this->getSite();
+		$hierarchy = $hierarchyManager->getHierarchy(
+			$idManager->getId("edu.middlebury.authorization.hierarchy"));
+		$infoList = $hierarchy->traverse(
+			$idManager->getId($site->getId()),
+			Hierarchy::TRAVERSE_MODE_DEPTH_FIRST,
+			Hierarchy::TRAVERSE_DIRECTION_DOWN,
+			Hierarchy::TRAVERSE_LEVELS_ALL);
+		
+// 		$status = new StatusStars(str_replace('%1', $infoList->count(), _("Rebuilding Implicit AZs on %1 nodes.")));
+// 		$status->initializeStatistics($infoList->count());
+		$azCache = $authZ->getAuthorizationCache();
+		while ($infoList->hasNext()) {
+			$info = $infoList->next();
+			$node = $hierarchy->getNode($info->getNodeId());
+// 			printpre("Rebuilding implicit AZs for ".$node->getId()." '".$node->getDisplayName()."'. Ancestors:");
+// 			printpre($node->getAncestorIds());
+			$azCache->createHierarchyImplictAZs($node, $node->getAncestorIds());
+// 			$status->updateStatistics();
+		}
+		
+		/*********************************************************
+		 * Log the event
+		 *********************************************************/
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Error",
+							"Errors that did not halt execution");
+			
+			
+			$item = new AgentNodeEntryItem("Rebuilt Implict AZs", "Hierarchy-Implicit AZs for site '".$site->getDisplayName()."' had to be rebuilt.");
+			
+			$item->addNodeId($site->getQualifierId());
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
+		
 	}
 	
 	/**
@@ -237,7 +318,7 @@ class modifyAction
 		
 		$chooseUserListener = $wizard->getChild('choose_user');
 		if ($chooseUserListener->wasPressed())
-			return $harmoni->request->quickURL('roles', 'choose_agent');
+			return SiteDispatcher::quickURL('roles', 'choose_agent');
 		else {
 			if (RequestContext::value('returnModule'))
 				$module = RequestContext::value('returnModule');
@@ -248,7 +329,11 @@ class modifyAction
 				$action = RequestContext::value('returnAction');
 			else
 				$action = 'editview';
-			return $harmoni->request->quickURL($module, $action);
+			
+			$harmoni->request->forget('returnAction');
+			$harmoni->request->forget('returnModule');
+			$harmoni->request->forget('agent');
+			return SiteDispatcher::quickURL($module, $action);
 		}
 	}
 	
