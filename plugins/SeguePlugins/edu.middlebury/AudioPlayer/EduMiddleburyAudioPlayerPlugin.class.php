@@ -113,6 +113,7 @@ class EduMiddleburyAudioPlayerPlugin
  		if ($this->getFieldValue('submit')) { 			
  			$this->setFileId($this->getFieldValue('file_id'));
  			$this->setRawDescription($this->tokenizeLocalUrls($this->getFieldValue('description')));
+ 			$this->setShowDownloadLink(($this->getFieldValue('show_download_link') == 'true')?true:false);
  			$this->logEvent('Modify Content', 'File for download updated');
  		}
  	}
@@ -173,6 +174,15 @@ class EduMiddleburyAudioPlayerPlugin
  			
  			// Container for example download bar.
  			print "<div style='margin-top: 10px;'>".$this->getDownloadBar()."</div>";
+ 			
+ 			// Download link
+ 			print "\n\t<h3>"._("Options:")."</h3>";
+ 			print "\n\t<div>";
+ 			print "\n\t\t<input name='".$this->getFieldName('show_download_link')."' type='checkbox' value='true'";
+ 			if ($this->showDownloadLink()) 
+ 				print " checked='checked'";
+ 			print "/> "._("Show Download Link");
+ 			print "\n\t</div>";
  			
  			// Description
  			print "\n\t<h3>"._("Caption:")."</h3>";
@@ -304,24 +314,25 @@ class EduMiddleburyAudioPlayerPlugin
 
 			print "\n\t<script type='text/javascript' src='".$this->getPublicFileUrl('audio-player.js')."'></script>";
 
-
-			print "\n\t\t<div style='float: right; margin-top: 12px;'>";
-			print "\n\t\t<img src='".MYPATH."/images/downarrow.gif' align='top' width='15' height='15' alt='"._('download')."'/>";
-			print "\n\t\t\t<a style='text-decoration: none;' href='";
-			print $file->getUrl();
-			print "'>";
-			print "<strong>"._("Download")."</strong>";
-			print "</a>";
-			
-			$size = $file->getSize();
-			
-			if ($size->value()) {
-				$sizeString = $size->asString();
-			} else {
-				$sizeString = _("unknown size");
+			if ($this->showDownloadLink()) {
+				print "\n\t\t<div style='float: right; margin-top: 12px;'>";
+				print "\n\t\t<img src='".MYPATH."/images/downarrow.gif' align='top' width='15' height='15' alt='"._('download')."'/>";
+				print "\n\t\t\t<a style='text-decoration: none;' href='";
+				print $file->getUrl();
+				print "'>";
+				print "<strong>"._("Download")."</strong>";
+				print "</a>";
+				
+				$size = $file->getSize();
+				
+				if ($size->value()) {
+					$sizeString = $size->asString();
+				} else {
+					$sizeString = _("unknown size");
+				}
+				print "\n\t\t<span style='font-size: 90%;'>(".$sizeString.")</span>";
+				print "\n\t</div>";	
 			}
-			print "\n\t\t<span style='font-size: 90%;'>(".$sizeString.")</span>";
-			print "\n\t</div>";	
 
 
 			print "\n<div style='float: left;'>";			
@@ -489,7 +500,75 @@ class EduMiddleburyAudioPlayerPlugin
  		
  		$this->setContent($this->doc->saveXMLWithWhitespace());
  	}
-
+ 	
+ 	/**
+ 	 * Answer true if the download link should be shown.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 8/26/08
+ 	 */
+ 	protected function showDownloadLink () {
+ 		return $this->_getBoolean('show_download_link', false);
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the download link should be shown.
+ 	 * 
+ 	 * @param boolean $bool
+ 	 * @return void
+ 	 * @access protected
+ 	 * @since 8/26/08
+ 	 */
+ 	protected function setShowDownloadLink ($bool) {
+ 		return $this->_setBoolean('show_download_link', $bool);
+ 	}
+	
+	/**
+ 	 * Answer a boolean option
+ 	 * 
+ 	 * @param string $name
+ 	 * @param optional $default
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/19/08
+ 	 */
+ 	protected function _getBoolean ($name, $default = true) {
+ 		$elements = $this->xpath->query('/AudioPlayerPlugin/File');
+ 		if (!$elements->length)
+ 			return $default;
+ 		
+ 		$elem = $elements->item(0);
+ 		if (!$elem->hasAttribute($name))
+ 			return $default;
+ 			
+ 		if ($elem->getAttribute($name) == 'false')
+ 			return false;
+ 		
+ 		return true;
+ 	}
+ 	
+ 	/**
+ 	 * Set a boolean option
+ 	 * 
+ 	 * @param string $name
+ 	 * @param boolean $value
+ 	 * @return void
+ 	 * @access protected
+ 	 * @since 6/19/08
+ 	 */
+ 	protected function _setBoolean ($name, $value) {
+ 		$feedElements = $this->xpath->query('/AudioPlayerPlugin/File');
+ 		if ($feedElements->length)
+ 			$feedElement = $feedElements->item(0);
+ 		else
+ 			$feedElement = $this->doc->documentElement->appendChild(
+ 				$this->doc->createElement('File'));
+ 		
+ 		$feedElement->setAttribute($name, (($value)?'true':'false'));
+ 		
+ 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 	}
  	
  	/*********************************************************
  	 * The following methods are needed to support restoring
