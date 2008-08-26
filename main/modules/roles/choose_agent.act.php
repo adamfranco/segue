@@ -52,6 +52,7 @@ class choose_agentAction
 	function buildContent () {
 		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough("node");
+		$harmoni->request->passthrough("site");
 		$harmoni->request->passthrough("agent");
 		$harmoni->request->passthrough("returnNode");
 		$harmoni->request->passthrough("returnModule");
