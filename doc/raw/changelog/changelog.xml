@@ -14,6 +14,16 @@
 		<releaseNotes>
 		
 		</releaseNotes>
+		<new author='adam' date='2008-08-26' ref='1820865' reftype='fr'>
+			Plugins: New Audio Player plugin.
+		</new>
+		<change author='adam' date='2008-08-26'>
+			MediaLibrary: Can now limit selection to certain MIME Types.
+		</change>
+		<new author='adam' date='2008-08-26'>
+			Plugins: New plugin methods available for accessing media from Flash
+			while maintaining session-based authentication of the file-access.
+		</new>
 		<fix author='adam' date='2008-08-26' reporter='hector_vila'>
 			Roles: Fixed NullArgumentException in Roles UI when entering from the
 			site-level.
@@ -39,7 +49,7 @@
 			Text-Templates: Added support for embedded Meebo chat widget. http://www.meebome.com/
 		</new>
 		<new author='alex' date='2008-08-25' ref='1820837' reftype='fr'>
-			Help: Added new help documentation for adding content; addng pages and sections; and for
+			Help: Added new help documentation for adding content; adding pages and sections; and for
 			using the Rich-Text Editor.
 		</new>
 		<fix author='adam' date='2008-08-22' ref='2068137' reftype='bug'>
@@ -55,7 +65,7 @@
 			UI1/UI2: Empty Section UI message now refers to link text of "+ Page".
 		</fix>
 		<fix author='adam' date='2008-08-25'>
-			UI1: Updated menu addition text from "+ Menu Item" to "+ Page" for consistancy
+			UI1: Updated menu addition text from "+ Menu Item" to "+ Page" for consistency
 			with UI2.
 		</fix>
 		<fix author='adam' date='2008-08-25'>
@@ -89,7 +99,7 @@
 			
 			Notable user-facing changes:
 			
-			- Now supports embeded GoogleCalendars.
+			- Now supports embedded GoogleCalendars.
 			
 			- Now supports links targeting pop-up windows.
 			
