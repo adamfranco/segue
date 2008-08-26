@@ -85,7 +85,18 @@ class EduMiddleburyAudioPlayerPlugin
  	 * @since 1/12/06
  	 */
  	function initialize () {
-		// Override as needed.
+ 		$this->doc = new Harmoni_DOMDocument;
+		$this->doc->preserveWhiteSpace = false;
+		if (strlen($this->getContent())) {
+			try {
+				$this->doc->loadXML($this->getContent());
+			} catch (DOMException $e) {
+				$this->doc->loadXML("<AudioPlayerPlugin></AudioPlayerPlugin>");
+			}
+	 	} else
+	 		$this->doc->loadXML("<AudioPlayerPlugin></AudioPlayerPlugin>");
+	 			
+ 		$this->xpath = new DOMXPath($this->doc);
  	}
  	
  	/**
@@ -100,7 +111,7 @@ class EduMiddleburyAudioPlayerPlugin
  	 */
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) { 			
- 			$this->setContent($this->getFieldValue('file_id'));
+ 			$this->setFileId($this->getFieldValue('file_id'));
  			$this->setRawDescription($this->tokenizeLocalUrls($this->getFieldValue('description')));
  			$this->logEvent('Modify Content', 'File for download updated');
  		}
@@ -122,7 +133,7 @@ class EduMiddleburyAudioPlayerPlugin
  		if ($this->getFieldValue('edit') && $this->canModify()) {
 			print "\n".$this->formStartTagWithAction();
  			
- 			print "\n\t<input name='".$this->getFieldName('file_id')."' type='hidden' value=\"".$this->getContent()."\"/>";
+ 			print "\n\t<input name='".$this->getFieldName('file_id')."' type='hidden' value=\"".$this->getFileId()."\"/>";
  			
  			// Select File button
  			print "\n\t<h3>"._("File:")."</h3>";
@@ -396,8 +407,8 @@ class EduMiddleburyAudioPlayerPlugin
 	function getMediaFile () {
 		if (!isset($this->_mediaFile)) {
 			try {
-				if ($this->getContent())
-					$this->_mediaFile = MediaFile::withIdString($this->getContent());				
+				if ($this->getFileId())
+					$this->_mediaFile = MediaFile::withIdString($this->getFileId());				
 				else
 					return null;
 			} catch (InvalidArgumentException $e) {
@@ -431,6 +442,55 @@ class EduMiddleburyAudioPlayerPlugin
  		return ob_get_clean();
  	}
  	
+ 	/**
+ 	 * Answer the file id or null.
+ 	 * 
+ 	 * @return mixed string or null
+ 	 * @access protected
+ 	 * @since 8/26/08
+ 	 */
+ 	protected function getFileId () {
+ 		$elements = $this->xpath->query('/AudioPlayerPlugin/File/Id');
+ 		if (!$elements->length)
+ 			return null;
+ 		
+ 		$id = $elements->item(0)->nodeValue;
+ 		if (strlen($id)) {
+ 			return str_replace('&amp;', '&', $id);
+ 		}
+ 		return null;
+ 	}
+ 	
+ 	/**
+ 	 * Answer the file id or null.
+ 	 * 
+ 	 * @param string $id
+ 	 * @return void
+ 	 * @access protected
+ 	 * @since 8/26/08
+ 	 */
+ 	protected function setFileId ($id) {
+ 		// Reencode ampersands for XML
+ 		$id = str_replace('&', '&amp;', $id);
+ 		
+ 		$fileElements = $this->xpath->query('/AudioPlayerPlugin/File');
+ 		if ($fileElements->length)
+ 			$fileElement = $fileElements->item(0);
+ 		else
+ 			$fileElement = $this->doc->documentElement->appendChild(
+ 				$this->doc->createElement('File'));
+ 		
+ 		$idElements = $this->xpath->query('./Id', $fileElement);
+ 		if ($idElements->length) {
+ 			$idElement = $idElements->item(0);
+ 			$idElement->nodeValue = $id;
+ 		} else
+ 			$fileElement->appendChild($this->doc->createElement('Id', $id));
+ 		
+ 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 	}
+
+ 	
  	/*********************************************************
  	 * The following methods are needed to support restoring
  	 * from backups and importing/exporting plugin data.
@@ -448,8 +508,8 @@ class EduMiddleburyAudioPlayerPlugin
  	 */
  	public function replaceIds (array $idMap) {
  		// Update the media-file mapping
- 		if (strlen(trim($this->getContent()))) {
-	 		$this->setContent(MediaFile::getMappedIdString($idMap, $this->getContent()));
+ 		if (strlen(trim($this->getFileId()))) {
+	 		$this->setFileId(MediaFile::getMappedIdString($idMap, $this->getFileId()));
  			unset($this->_mediaFile);
  		}
  		
