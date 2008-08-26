@@ -218,7 +218,7 @@ class EduMiddleburyAudioPlayerPlugin
 		$file = $this->getMediaFile();
 		if ($file) {
 			print "\n";	
-			$playerUrl = MYPATH."/images/player.swf";
+			$playerUrl = $this->getPublicFileUrl("player.swf");
 			$url = $file->getUrl();
 			$id = $this->getId();
 			//the url that comes back from getUrlForFlash contains html entities
@@ -228,7 +228,7 @@ class EduMiddleburyAudioPlayerPlugin
 			//gets sent, the variables will get to the server.
 			$flashUrl = urlencode(html_entity_decode($file->getUrlForFlash()));
 
-			print "\n\t<script type='text/javaScript' src='".MYPATH."/images/audio-player.js'></script>";
+			print "\n\t<script type='text/javascript' src='".$this->getPublicFileUrl('audio-player.js')."'></script>";
 
 
 			print "\n\t\t<div style='float: right; margin-top: 12px;'>";
