@@ -123,14 +123,10 @@ class EduMiddleburyAudioPlayerPlugin
 			print "\n".$this->formStartTagWithAction();
  			
  			print "\n\t<input name='".$this->getFieldName('file_id')."' type='hidden' value=\"".$this->getContent()."\"/>";
- 			 			
- 			// Description
- 			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->cleanHTML($this->untokenizeLocalUrls($this->getRawDescription()))."</textarea>";
- 			
- 			print $this->getWikiHelp();
  			
  			// Select File button
- 			print "\n\t<br/><br/><input type='button' value='"._('Select File')."' onclick=\"";
+ 			print "\n\t<h3>"._("File:")."</h3>";
+ 			print "\n\t<input type='button' value='"._('Select File')."' onclick=\"";
  			print "this.onUse = function (mediaFile) { ";
  			
  			print 		"this.form.elements['".$this->getFieldName('file_id')."'].value = mediaFile.getId(); ";
@@ -165,8 +161,13 @@ class EduMiddleburyAudioPlayerPlugin
  			print "\"/>";
  			
  			// Container for example download bar.
- 			print "<div>".$this->getDownloadBar()."</div>";
+ 			print "<div style='margin-top: 10px;'>".$this->getDownloadBar()."</div>";
  			
+ 			// Description
+ 			print "\n\t<h3>"._("Caption:")."</h3>";
+ 			print "\n\t<textarea name='".$this->getFieldName('description')."' rows='5' cols='40'>".$this->cleanHTML($this->untokenizeLocalUrls($this->getRawDescription()))."</textarea>";
+ 			
+ 			print $this->getWikiHelp();
  			
  			
  			print "\n\t<br/>";
@@ -181,15 +182,15 @@ class EduMiddleburyAudioPlayerPlugin
 // 				print "\n<div onclick=".$this->url(array('edit' => 'true')).">";
 //  			}
  			
- 			if ($this->getRawDescription()) {
-				print "\n<p>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getRawDescription())))."</p>";
-				print "\n<hr/>";
-			}
- 			
  			// DownLoad bar
 	 		print "\n<div>";
 	 		print $this->getDownloadBar();
 	 		print "</div>";
+	 		
+	 		if ($this->getRawDescription()) {
+// 				print "\n<hr/>";
+				print "\n<p>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getRawDescription())))."</p>";
+			}
 	 		
 	 		if ($this->shouldShowControls()) {
 // 				print "\n</div>";
