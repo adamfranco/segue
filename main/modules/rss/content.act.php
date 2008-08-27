@@ -121,6 +121,13 @@ class contentAction
 			}
 		} catch (UnimplementedException $e) {
 		}
+		
+		// Tags
+		$taggedItem = TaggedItem::forId($siteComponent->getQualifierId(), 'segue');
+		$tags = $taggedItem->getTags();
+		while ($tags->hasNext()) {
+			$item->addCategory($tags->next()->getValue());
+		}
 	}
 	
 	/**

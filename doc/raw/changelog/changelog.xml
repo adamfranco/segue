@@ -30,7 +30,10 @@
 		</change>
 		<new author='adam' date='2008-08-27' ref='2076091' reftype='fr'>
 			RSS/Plugins: Download and Audio Clip plugins now support enclosures
-			in the RSS Feeds.
+			in the RSS feeds.
+		</new>
+		<new author='adam' date='2008-08-27'>
+			RSS: RSS feeds now include tags.
 		</new>
 		<fix author='adam' date='2008-08-26' reporter='hector_vila'>
 			Roles: Fixed NullArgumentException in Roles UI when entering from the
