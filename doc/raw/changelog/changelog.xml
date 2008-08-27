@@ -54,6 +54,9 @@
 			UI2: History link is now available under 'Options' so that it is
 			accessible when titles are hidden.
 		</fix>
+		<fix author='adam' date='2008-08-27' reporter='bryan_carson'>
+			Themes: Fixed spelling mistake in UI.
+		</fix>
 	</version>
 	<version number="2.1.0" date="2008-08-25">
 		<releaseNotes>
