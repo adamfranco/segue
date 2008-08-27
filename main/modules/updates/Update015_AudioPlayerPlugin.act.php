@@ -70,7 +70,7 @@ class Update015_AudioPlayerPluginAction
 	function isInPlace () {
 		$pluginMgr = Services::getService("PluginManager");
 		
-		if (!$pluginMgr->isInstalled(new Type ('SeguePlugins', 'edu.middlebury', 'RssFeed')))
+		if (!$pluginMgr->isInstalled(new Type ('SeguePlugins', 'edu.middlebury', 'AudioPlayer')))
 			return false;
 		if (!$pluginMgr->isEnabled(new Type ('SeguePlugins', 'edu.middlebury', 'AudioPlayer')))
 			return false;
