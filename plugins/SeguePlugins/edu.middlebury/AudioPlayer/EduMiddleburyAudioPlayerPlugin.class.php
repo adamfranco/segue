@@ -239,7 +239,10 @@ class EduMiddleburyAudioPlayerPlugin
  	 * @since 8/27/08
  	 */
  	public function getRelatedMediaFiles () {
- 		return array(MediaFile::withIdString($this->getFileId()));
+ 		if ($this->getFileId())
+	 		return array(MediaFile::withIdString($this->getFileId()));
+	 	else
+	 		return array();
  	}
  	
  	/**

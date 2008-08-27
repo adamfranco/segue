@@ -229,7 +229,10 @@ class EduMiddleburyDownloadPlugin
  	 * @since 8/27/08
  	 */
  	public function getRelatedMediaFiles () {
- 		return array($this->getMediaFile());
+ 		if ($this->getMediaFile())
+	 		return array($this->getMediaFile());
+	 	else
+	 		return array();
  	}
  	
  	/**
