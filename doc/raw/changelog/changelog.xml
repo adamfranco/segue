@@ -15,7 +15,7 @@
 		
 		</releaseNotes>
 		<new author='adam' date='2008-08-26' ref='1820865' reftype='fr'>
-			Plugins: New Audio Player plugin.
+			Plugins: New Audio Clip plugin.
 		</new>
 		<change author='adam' date='2008-08-26'>
 			MediaLibrary: Can now limit selection to certain MIME Types.
@@ -28,6 +28,10 @@
 			Plugins: File-for-download now uses the FCKEditor and puts the caption
 			below the file rather than above.
 		</change>
+		<new author='adam' date='2008-08-27' ref='2076091' reftype='fr'>
+			RSS/Plugins: Download and Audio Clip plugins now support enclosures
+			in the RSS Feeds.
+		</new>
 		<fix author='adam' date='2008-08-26' reporter='hector_vila'>
 			Roles: Fixed NullArgumentException in Roles UI when entering from the
 			site-level.

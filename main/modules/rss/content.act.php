@@ -108,10 +108,19 @@ class contentAction
 		$item->setAuthor($agent->getDisplayName());
 				
 		$item->setCommentsLink(SiteDispatcher::quickURL("view","html",array("node" => $siteComponent->getId())));		
-				
-		//@todo get full content from plugin
-		$item->setDescription($siteComponent->getDescription());
-
+		
+		$pluginMgr = Services::getService("PluginManager");
+		$plugin = $pluginMgr->getPlugin($siteComponent->getAsset());
+		
+		$item->setDescription($plugin->executeAndGetMarkup());
+		
+		// MediaFile eclosures.
+		try {
+			foreach ($plugin->getRelatedMediaFiles() as $file) {
+				$item->addEnclosure($file->getUrl(), $file->getSize()->value(), $file->getMimeType());
+			}
+		} catch (UnimplementedException $e) {
+		}
 	}
 	
 	/**

@@ -229,6 +229,20 @@ class EduMiddleburyAudioPlayerPlugin
  	}
  	
  	/**
+ 	 * Answer an array of MediaFiles that should be referenced along with the plugin
+ 	 * representation in RSS feed enclosures or other similar uses.
+ 	 *
+ 	 * Throw an UnimplementedException if not implemented.
+ 	 * 
+ 	 * @return array of MediaFile objects
+ 	 * @access public
+ 	 * @since 8/27/08
+ 	 */
+ 	public function getRelatedMediaFiles () {
+ 		return array(MediaFile::withIdString($this->getFileId()));
+ 	}
+ 	
+ 	/**
  	 * Get fckeditor specified by this->textEditor
  	 * 
  	 * @string $fieldname The field-name to user for the editor
