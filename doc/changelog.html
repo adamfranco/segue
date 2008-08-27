@@ -23,7 +23,61 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.1.0</h2>
+<h2>Version 2.2.0</h2>
+<h3>2008-08-27</h3>
+<p>This Release adds several new plugins, a number of user-interface and RSS improvements, and numerous fixes.
+<br>
+<br>Notable User-facing changes:
+<br>
+<br>- New Audio Clip plugin
+<br>
+<br>- RSS feeds now include enclosures for File for Download and Audio Clip plugins.
+<br>
+<br>- RSS feeds now include tags.
+<br>
+<br>See the change log for more details on these and other fixes.
+<br>
+<br>-------------
+<br>
+<br>This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820865&amp;group_id=82171&amp;atid=565237">
+        			#1820865</a> Plugins: New Audio Clip plugin. (<em>2008-08-26 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> MediaLibrary: Can now limit selection to certain MIME Types. (<em>2008-08-26 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Plugins: New plugin methods available for accessing media from Flash while maintaining session-based authentication of the file-access. (<em>2008-08-26 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2073883&amp;group_id=82171&amp;atid=565237">
+        			#2073883</a> Plugins: New Next/Previous links plugin for auto-creating links between pages in a section. (<em>2008-08-27 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Plugins: File-for-download now uses the FCKEditor and puts the caption below the file rather than above. (<em>2008-08-26 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2076091&amp;group_id=82171&amp;atid=565237">
+        			#2076091</a> RSS/Plugins: Download and Audio Clip plugins now support enclosures in the RSS feeds. (<em>2008-08-27 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> RSS: RSS feeds now include tags. (<em>2008-08-27 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2076735&amp;group_id=82171&amp;atid=565237">
+        			#2076735</a> Roles/View: Roles link is now shown in view mode as well as edit mode, whenever the user is authorized to see roles on the current node. (<em>2008-08-27 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Roles: Fixed NullArgumentException in Roles UI when entering from the site-level. (<em>2008-08-26 - Adam Franco</em>)<br> (<em>reported by hector_vila</em>)</li>
+		<li>
+<b>New feature:</b> UI2: Options links now have more agreeable spacing. (<em>2008-08-27 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2067369&amp;group_id=82171&amp;atid=565234">
+        			#2067369</a> UI2: History link is now available under 'Options' so that it is accessible when titles are hidden. (<em>2008-08-27 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Themes: Fixed spelling mistake in UI. (<em>2008-08-27 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2058072&amp;group_id=82171&amp;atid=565234">
+        			#2058072</a> Plugins: Now allowing Local URLs outside of href tags to be converted.
+<br>
+<br>Commit 4b01672feaf80a6cef6d3df4f68293369ebde587 (2.1.0) went a little too far and broke local-url tokenization for File and RSS plugins that need to tokenize plain URLs. (<em>2008-08-27 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.1.0</h2>
 <h3>2008-08-25</h3>
 <p>This release updates site URLs to include the site/placeholder name to improve the sense of context by users. Additionally, this release includes 'Meebo' chat widget support as well as a number of fixes.
 <br>
@@ -42,7 +96,7 @@
         			#2067943</a> Text-Templates: Added support for embedded Meebo chat widget. http://www.meebome.com/ (<em>2008-08-25 - Adam Franco</em>)<br> (<em>reported by Richard Jenkins of Middlebury College</em>)</li>
 		<li>
 <b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820837&amp;group_id=82171&amp;atid=565237">
-        			#1820837</a> Help: Added new help documentation for adding content; addng pages and sections; and for using the Rich-Text Editor. (<em>2008-08-25 - Alex Chapin</em>)</li>
+        			#1820837</a> Help: Added new help documentation for adding content; adding pages and sections; and for using the Rich-Text Editor. (<em>2008-08-25 - Alex Chapin</em>)</li>
 		<li>
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2068137&amp;group_id=82171&amp;atid=565234">
         			#2068137</a> Plugins: Local-URLs as plain-text instead of link href values now don't break HTML formatting. Local URLs are now only tokenized if they are used in an href, src or other tag, not just plain text. (<em>2008-08-22 - Adam Franco</em>)</li>
@@ -52,7 +106,7 @@
 <b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2067965&amp;group_id=82171&amp;atid=565234">
         			#2067965</a> UI1/UI2: Empty Section UI message now refers to link text of "+ Page". (<em>2008-08-25 - Adam Franco</em>)</li>
 		<li>
-<b>Bug Fix:</b> UI1: Updated menu addition text from "+ Menu Item" to "+ Page" for consistancy with UI2. (<em>2008-08-25 - Adam Franco</em>)</li>
+<b>Bug Fix:</b> UI1: Updated menu addition text from "+ Menu Item" to "+ Page" for consistency with UI2. (<em>2008-08-25 - Adam Franco</em>)</li>
 		<li>
 <b>Bug Fix:</b> Login form now says Username/Email instead of just 'username'. (<em>2008-08-25 - Adam Franco</em>)</li>
 	</ul>
@@ -78,7 +132,7 @@
 <br>
 <br>Notable user-facing changes:
 <br>
-<br>- Now supports embeded GoogleCalendars.
+<br>- Now supports embedded GoogleCalendars.
 <br>
 <br>- Now supports links targeting pop-up windows.
 <br>

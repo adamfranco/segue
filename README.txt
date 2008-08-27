@@ -1,5 +1,5 @@
 
-Segue v. 2.1.0 (2008-08-25)
+Segue v. 2.2.0 (2008-08-27)
 =================================
 
 What is Segue?
@@ -17,15 +17,22 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release updates site URLs to include the site/placeholder name to improve the
-sense of context by users. Additionally, this release includes 'Meebo' chat widget
-support as well as a number of fixes.
+This Release adds several new plugins, a number of user-interface and RSS
+improvements, and numerous fixes.
 
-See the change-log for details of these fixes.
+Notable User-facing changes:
+
+- New Audio Clip plugin
+
+- RSS feeds now include enclosures for File for Download and Audio Clip plugins.
+
+- RSS feeds now include tags.
+
+See the change log for more details on these and other fixes.
 
 -------------
 
-This Segue 2 release uses Harmoni 1.6.2 and Polyphony 1.4.2.
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
 
 
 Downloads
@@ -67,6 +74,27 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 ===================================================================
 
 
+v. 2.2.0 (2008-08-27)
+----------------------------------------------------
+This Release adds several new plugins, a number of user-interface and RSS
+improvements, and numerous fixes.
+
+Notable User-facing changes:
+
+- New Audio Clip plugin
+
+- RSS feeds now include enclosures for File for Download and Audio Clip plugins.
+
+- RSS feeds now include tags.
+
+See the change log for more details on these and other fixes.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+
+
+
 v. 2.1.0 (2008-08-25)
 ----------------------------------------------------
 This release updates site URLs to include the site/placeholder name to improve the
@@ -101,7 +129,7 @@ testing of the release candidates.
 
 Notable user-facing changes:
 
-- Now supports embeded GoogleCalendars.
+- Now supports embedded GoogleCalendars.
 
 - Now supports links targeting pop-up windows.
 
