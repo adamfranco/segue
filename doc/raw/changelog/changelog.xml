@@ -24,6 +24,10 @@
 			Plugins: New plugin methods available for accessing media from Flash
 			while maintaining session-based authentication of the file-access.
 		</new>
+		<new author='adam' date='2008-08-27' ref='2073883' reftype='fr'>
+			Plugins: New Next/Previous links plugin for auto-creating links between
+			pages in a section.
+		</new>
 		<change author='adam' date='2008-08-26'>
 			Plugins: File-for-download now uses the FCKEditor and puts the caption
 			below the file rather than above.
