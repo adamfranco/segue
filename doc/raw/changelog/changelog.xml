@@ -50,6 +50,10 @@
 		<new author='adam' date='2008-08-27'>
 			UI2: Options links now have more agreeable spacing.
 		</new>
+		<fix author='adam' date='2008-08-27' ref='2067369' reftype='bug'>
+			UI2: History link is now available under 'Options' so that it is
+			accessible when titles are hidden.
+		</fix>
 	</version>
 	<version number="2.1.0" date="2008-08-25">
 		<releaseNotes>
