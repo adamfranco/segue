@@ -131,10 +131,7 @@ class EduMiddleburyNextPreviousPlugin
 			{
 				// Found a previous nav
 				print "\n\t<div style='float: left; padding-right: 5px;'>";
-				print "\n\t\t<a href='".SiteDispatcher::quickUrl(
-						$harmoni->request->getRequestedModule(),
-						$harmoni->request->getRequestedAction(),
-						array('node' => $child->getId()))."'>";
+				print "\n\t\t<a href='".$this->getUrlForComponent($child->getId())."'>";
 				print "&laquo; ".$this->cleanHTML($child->getDisplayName());
 				print "</a>";
 				print "\n\t</div>";
@@ -149,10 +146,7 @@ class EduMiddleburyNextPreviousPlugin
 			{
 				// Found a next nav
 				print "\n\t<div style='float: right; padding-left: 5px;'>";
-				print "\n\t\t<a href='".SiteDispatcher::quickUrl(
-						$harmoni->request->getRequestedModule(),
-						$harmoni->request->getRequestedAction(),
-						array('node' => $child->getId()))."'>";
+				print "\n\t\t<a href='".$this->getUrlForComponent($child->getId())."'>";
 				print $this->cleanHTML($child->getDisplayName())." &raquo;";
 				print "</a>";
 				print "\n\t</div>";
@@ -164,6 +158,37 @@ class EduMiddleburyNextPreviousPlugin
 		
 		return ob_get_clean();
  	}
+ 	
+ 	/**
+	 * Answer the Url for this component id.
+	 *
+	 * Note: this is clunky that this object has to know about harmoni and 
+	 * what action to target. Maybe rewrite...
+	 * 
+	 * @param string $id
+	 * @return string
+	 * @access public
+	 * @since 4/4/06
+	 */
+	protected function getUrlForComponent ( $id ) {
+		$harmoni = Harmoni::instance();
+		if ($harmoni->request->getRequestedModule() == 'versioning') {
+			$origUrl = $harmoni->history->getReturnURL('view_history_'.SiteDispatcher::getCurrentNodeId());
+			$module = $harmoni->request->getModuleFromUrl($origUrl);
+			if ($module == false)
+				$module = 'ui1';
+			$action = $harmoni->request->getActionFromUrl($origUrl);
+			if ($action == false)
+				$action = 'view';
+		} else {
+			$module = $harmoni->request->getRequestedModule();
+			$action = $harmoni->request->getRequestedAction();
+		}
+		return SiteDispatcher::quickURL(
+			$module, 
+			$action,
+			array("node" => $id));
+	}
  	
  	/**
  	 * Answer the NavBlock above the node passed
