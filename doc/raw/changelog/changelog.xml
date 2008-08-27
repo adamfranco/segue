@@ -35,6 +35,10 @@
 		<new author='adam' date='2008-08-27'>
 			RSS: RSS feeds now include tags.
 		</new>
+		<change author='adam' date='2008-08-27' ref='2076735' reftype='fr'>
+			Roles/View: Roles link is now shown in view mode as well as edit mode,
+			whenever the user is authorized to see roles on the current node.
+		</change>
 		<fix author='adam' date='2008-08-26' reporter='hector_vila'>
 			Roles: Fixed NullArgumentException in Roles UI when entering from the
 			site-level.

@@ -443,6 +443,25 @@ class htmlAction
 				print _("edit")."</a>";			
 			}
 			
+			// Add permissions button
+			$authZ = Services::getService("AuthZ");
+			$idManager = Services::getService("Id");
+			// Rather than checking the entire site, we will just check the current node.
+			// This forces users who are not site-wide admins to browse to the place where
+			// they are administrators in order to see the permissions button, but
+			// cuts load-times for non-admins on a given large site from 35s to 1.4s.
+			if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
+				SiteDispatcher::getCurrentNode()->getQualifierId()))
+			{
+				$url = SiteDispatcher::quickURL("roles", "choose_agent", 
+						array("node" => SiteDispatcher::getCurrentNodeId(),
+						"returnModule" => $harmoni->request->getRequestedModule(),
+						"returnAction" => $harmoni->request->getRequestedAction()));
+				print " | \n\t<a href='#' onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>";
+				print _("roles")."</a>";
+			}
+			
 			print " | ".self::getUiSwitchForm();
 			print "</div>";
 		}
