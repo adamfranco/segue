@@ -395,7 +395,7 @@ abstract class SeguePluginsDriver
 	public function tokenizeLocalUrls ($htmlString) {
 		$patterns = array();
 		$harmoni = Harmoni::instance();
-		$pattern = '#[\'"]('.str_replace('.', '\.', MYURL).'[^\'"\s\]<>]*)#i';
+		$pattern = '#('.str_replace('.', '\.', MYURL).'[^\'"\s\]<>]*)#i';
 		$urls = preg_match_all($pattern, $htmlString, $matches);
 		foreach ($matches[1] as $url) {
 			$paramString = $harmoni->request->getParameterListFromUrl($url);
@@ -456,13 +456,19 @@ abstract class SeguePluginsDriver
 					$args[$key] = $value;
 			}
 			
-			if (!isset($module))
-				$module = 'ui1';
-			if (!isset($action))
-				$action = 'view';
+			if (!count($args)) {
+				$newUrl = MYURL;
+			} else {
+				if (!isset($module))
+					$module = 'view';
+				if (!isset($action))
+					$action = 'html';
 			
-			$newUrl = $harmoni->request->mkURLWithoutContext($module, $action, $args);
-			$htmlString = $this->str_replace_once($matches[0], $newUrl->write(), $htmlString);
+			
+				$newUrl = $harmoni->request->mkURLWithoutContext($module, $action, $args);
+				$newUrl = $newUrl->write();
+			}
+			$htmlString = $this->str_replace_once($matches[0], $newUrl, $htmlString);
 		}
 		$harmoni->request->endNamespace();
 		return $htmlString;

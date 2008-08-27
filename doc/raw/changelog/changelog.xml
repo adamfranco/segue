@@ -57,6 +57,13 @@
 		<fix author='adam' date='2008-08-27' reporter='bryan_carson'>
 			Themes: Fixed spelling mistake in UI.
 		</fix>
+		<fix author='adam' date='2008-08-27' ref='2058072' reftype='bug'>
+			Plugins: Now allowing Local URLs outside of href tags to be converted.
+			
+			Commit 4b01672feaf80a6cef6d3df4f68293369ebde587 (2.1.0) went a little too far 
+			and broke local-url tokenization for File and RSS plugins that need
+			to tokenize plain URLs.
+		</fix>
 	</version>
 	<version number="2.1.0" date="2008-08-25">
 		<releaseNotes>
