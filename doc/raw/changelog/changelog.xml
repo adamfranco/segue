@@ -10,9 +10,9 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.1.1" date="The Future">
+	<version number="2.2.0" date="2008-08-27">
 		<releaseNotes>
-		
+			
 		</releaseNotes>
 		<new author='adam' date='2008-08-26' ref='1820865' reftype='fr'>
 			Plugins: New Audio Clip plugin.
@@ -47,6 +47,9 @@
 			Roles: Fixed NullArgumentException in Roles UI when entering from the
 			site-level.
 		</fix>
+		<new author='adam' date='2008-08-27'>
+			UI2: Options links now have more agreeable spacing.
+		</new>
 	</version>
 	<version number="2.1.0" date="2008-08-25">
 		<releaseNotes>

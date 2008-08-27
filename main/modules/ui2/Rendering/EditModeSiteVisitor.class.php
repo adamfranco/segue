@@ -675,7 +675,7 @@ END;
 			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
 			.">";
 			print $selectionLinkHtml;
-			print " | </span>";
+			print " &nbsp; |</span>";
 		}
 		print "\n\t\t\t\t<span class='controls_link'"
 			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
