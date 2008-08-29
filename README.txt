@@ -1,5 +1,5 @@
 
-Segue v. 2.2.0 (2008-08-27)
+Segue v. 2.2.1 (2008-08-29)
 =================================
 
 What is Segue?
@@ -17,16 +17,14 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This Release adds several new plugins, a number of user-interface and RSS
-improvements, and numerous fixes.
+This release improves the speed of searching for sites in the portal as well as
+fixes a number of minor bugs.
 
-Notable User-facing changes:
+Notable user-facing changes:
 
-- New Audio Clip plugin
+- speed improvements in the portal
 
-- RSS feeds now include enclosures for File for Download and Audio Clip plugins.
-
-- RSS feeds now include tags.
+- Audio Clip plugin can now be used in comments.
 
 See the change log for more details on these and other fixes.
 
@@ -72,6 +70,25 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.1 (2008-08-29)
+----------------------------------------------------
+This release improves the speed of searching for sites in the portal as well as
+fixes a number of minor bugs.
+
+Notable user-facing changes:
+
+- speed improvements in the portal
+
+- Audio Clip plugin can now be used in comments.
+
+See the change log for more details on these and other fixes.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+
 
 
 v. 2.2.0 (2008-08-27)

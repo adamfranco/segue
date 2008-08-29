@@ -2,6 +2,50 @@
 Segue Change Log
 
 
+v. 2.2.1 (2008-08-29)
+----------------------------------------------------
+This release improves the speed of searching for sites in the portal as well as
+fixes a number of minor bugs.
+
+Notable user-facing changes:
+
+- speed improvements in the portal
+
+- Audio Clip plugin can now be used in comments.
+
+See the change log for more details on these and other fixes.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+		
+		
+	* Bug Fix: #2079425 
+		Slots/Portal: Slots/Placeholders are now only merged with external owner
+		lists when owners are requested rather than when the slot is instantiated.
+		This change means that searching for slots in the portal doesn't require
+		loading course information.
+		(2008-08-28 - Adam Franco)
+		
+	* Bug Fix: #2080741 
+		Plugins: Fixed PHP notice in Next/Previous Links.
+		(2008-08-28 - Adam Franco)
+		
+	* Bug Fix: #2079423 
+		Comments: AudioPlayer plugin can now be used for comments.
+		(2008-08-28 - Adam Franco)
+		
+	* Bug Fix: #2080744 
+		Portal: Fixed PHP notice in Portal search.
+		(2008-08-28 - Adam Franco)
+		
+	* Bug Fix: #2081075 
+		Portal: removed the "All Editable" folder because it is too slow.
+		(2008-08-29 - Adam Franco)
+	
+
+
+
 v. 2.2.0 (2008-08-27)
 ----------------------------------------------------
 This Release adds several new plugins, a number of user-interface and RSS
@@ -860,7 +904,7 @@ Segue 2.0-beta-26.1 uses Harmoni 1.4.2 and Polyphony
 		implicit AZs. Rebuilding the Hierarchy-caused Implicit AZs for the site
 		fixes this issue. This should not be necessary for newly created sites.
 		(2008-07-14 - Adam Franco)
-		(reported by Thierry Leterre of Middlebury College/Université de Versailles-Saint-Quentin-en-Yvelines)
+		(reported by Thierry Leterre of Middlebury College/Universit&#xE9; de Versailles-Saint-Quentin-en-Yvelines)
 	
 
 
