@@ -29,6 +29,9 @@
 		<fix author='adam' date='2008-08-28' ref='2080744' reftype='bug'>
 			Portal: Fixed PHP notice in Portal search.
 		</fix>
+		<fix author='adam' date='2008-08-29' ref='2081075' reftype='bug'>
+			Portal: removed the "All Editable" folder because it is too slow.
+		</fix>
 	</version>
 	<version number="2.2.0" date="2008-08-27">
 		<releaseNotes>
