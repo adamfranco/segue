@@ -119,6 +119,9 @@ class EduMiddleburyNextPreviousPlugin
 			}
 		}
 		
+		if (!isset($activePos))
+			$activePos = 0;
+		
 		print "\n<div class='next_previous_links'>";
 		$harmoni = Harmoni::instance();
 		$authZ = Services::getService('AuthZ');
