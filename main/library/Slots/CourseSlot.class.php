@@ -97,6 +97,13 @@ class CourseSlot
 	}
 
 	/**
+	 * @var boolean $mergedWithExternal;  
+	 * @access private
+	 * @since 8/28/08
+	 */
+	private $mergedWithExternal = false;
+	
+	/**
 	 * Given an internal definition of the slot, load any extra owners
 	 * that might be in an external data source.
 	 * 
@@ -198,6 +205,11 @@ class CourseSlot
 	 * @since 7/30/07
 	 */
 	public function getOwners () {
+		if (!$this->mergedWithExternal) {
+			$this->mergeWithExternal();
+			$this->mergedWithExternal = true;
+		}
+		
 		// Lazily load the slot owners.
 		if (!$this->ownersPopulated && isset($this->course)) {
 			
