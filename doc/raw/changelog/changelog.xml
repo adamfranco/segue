@@ -23,6 +23,9 @@
 		<fix author='adam' date='2008-08-28' ref='2080741' reftype='bug'>
 			Plugins: Fixed PHP notice in Next/Previous Links.
 		</fix>
+		<fix author='adam' date='2008-08-28' ref='2079423' reftype='bug'>
+			Comments: AudioPlayer plugin can now be used for comments.
+		</fix>
 	</version>
 	<version number="2.2.0" date="2008-08-27">
 		<releaseNotes>
