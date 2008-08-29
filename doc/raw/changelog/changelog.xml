@@ -12,13 +12,20 @@
 <changelog name="Segue">
 	<version number="2.2.2" date="2008-08-29">
 		<releaseNotes>
-		
+			This release fixes several issues that were in 2.2.1.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
 		</releaseNotes>
 		<fix author='adam' date='2008-08-29'>
 			Portal: Now hiding edit links when not authenticated to help exclude crawlers.
 		</fix>
 		<fix author='adam' date='2008-08-29'>
 			Errors: UnknownActionException now gives a 404 error instead of a 400.
+		</fix>
+		<fix author='adam' date='2008-08-29' reporter='hector_vila'>
+			Slots: Fixed infinite loop in course-owner merging.
 		</fix>
 	</version>
 	<version number="2.2.1" date="2008-08-29">
