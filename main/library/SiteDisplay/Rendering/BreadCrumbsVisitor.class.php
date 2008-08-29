@@ -65,7 +65,7 @@ class BreadCrumbsVisitor
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace(null);
 		$this->_links[] = "<a href='"
-							.$harmoni->request->quickUrl(
+							.SiteDispatcher::quickUrl(
 								$this->getModule(),
 								$this->getAction(),
 								array('node' => $node->getId()))

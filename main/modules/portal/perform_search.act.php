@@ -59,7 +59,7 @@ class perform_searchAction
 			$usingOld = false;
 			foreach ($_SESSION['portal_searches'] as $searchFolder) {
 				if ($searchFolder->getIdString() == $folder->getIdString()
-					&& $folder->getAgentId()->isEqual($seachFolder->getAgentId()))
+					&& $folder->getAgentId()->isEqual($searchFolder->getAgentId()))
 				{
 					$folder = $searchFolder;
 					$usingOld = true;

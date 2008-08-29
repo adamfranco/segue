@@ -112,6 +112,9 @@
 		height: 0px;
 	}
 
+	.next_previous_links {
+		font-weight: bold;
+	}
 
 		
 /*********************************************************
@@ -213,6 +216,20 @@
 	
 	.DeletePanel div.info_area {
 		margin-bottom: 10px;
+	}
+	
+	.controls_bar_title {
+		padding-right: 10px;
+	}
+	
+	.selection_link {
+		margin-left: 5px;
+		margin-right: 3px;
+	}
+	
+	.controls_link {
+		margin-left: 3px;
+		margin-right: 5px;
 	}
 	
 /*********************************************************

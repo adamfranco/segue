@@ -233,7 +233,7 @@ class mapAction
 		
 		print $this->getTabs()."\t\t";
 		print "<div class='title'>";
-		$nodeUrl = $harmoni->request->quickURL('view', 'html', array('node' => $siteComponent->getId()));
+		$nodeUrl = SiteDispatcher::quickURL('view', 'html', array('node' => $siteComponent->getId()));
 		print "<a href='".$nodeUrl."' ";
 		print ' onclick="';
 		print "if (window.opener) { ";

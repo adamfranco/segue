@@ -1,5 +1,5 @@
 
-Segue v. 2.0.0 (2008-08-20)
+Segue v. 2.2.0 (2008-08-27)
 =================================
 
 What is Segue?
@@ -17,35 +17,22 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This first stable release of Segue 2 fixes a number of issues that were found during
-testing of the release candidates. 
+This Release adds several new plugins, a number of user-interface and RSS
+improvements, and numerous fixes.
 
-Notable user-facing changes:
+Notable User-facing changes:
 
-- Now supports embeded GoogleCalendars.
+- New Audio Clip plugin
 
-- Now supports links targeting pop-up windows.
+- RSS feeds now include enclosures for File for Download and Audio Clip plugins.
 
-- YouTube videos now can be loaded in high quality using the fmt=18 option.
+- RSS feeds now include tags.
 
-- A warning is now given if leaving a page with a text-editor open.
-
-See the change-log for details of these and other fixes.
+See the change log for more details on these and other fixes.
 
 -------------
 
-Upgrades:
-
-As of beta 25, Segue requires PHP to be compiled with XSL
-support. On unix systems this can be added by configuring PHP using the --with-xsl
-option. See the following for installation instructions: http://www.php.net/manual/en/xsl.installation.php
-
-Upgrades from versions prior to beta 30 require running system updaters located
-under Admin Tools --> Segue Updates.
-
--------------
-
-This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
 
 
 Downloads
@@ -87,6 +74,54 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 ===================================================================
 
 
+v. 2.2.0 (2008-08-27)
+----------------------------------------------------
+This Release adds several new plugins, a number of user-interface and RSS
+improvements, and numerous fixes.
+
+Notable User-facing changes:
+
+- New Audio Clip plugin
+
+- RSS feeds now include enclosures for File for Download and Audio Clip plugins.
+
+- RSS feeds now include tags.
+
+See the change log for more details on these and other fixes.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+
+
+
+v. 2.1.0 (2008-08-25)
+----------------------------------------------------
+This release updates site URLs to include the site/placeholder name to improve the
+sense of context by users. Additionally, this release includes 'Meebo' chat widget
+support as well as a number of fixes.
+
+See the change-log for details of these fixes.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.6.2 and Polyphony 1.4.2.
+
+
+
+v. 2.0.1 (2008-08-21)
+----------------------------------------------------
+This bug fix release fixes an error in editing multi-lingual text in 'new mode' as
+well as a minor Segue 1 redirect issue.
+
+See the change-log for details of these fixes.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+
+
+
 v. 2.0.0 (2008-08-20)
 ----------------------------------------------------
 This first stable release of Segue 2 fixes a number of issues that were found during
@@ -94,7 +129,7 @@ testing of the release candidates.
 
 Notable user-facing changes:
 
-- Now supports embeded GoogleCalendars.
+- Now supports embedded GoogleCalendars.
 
 - Now supports links targeting pop-up windows.
 

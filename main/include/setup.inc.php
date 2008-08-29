@@ -22,6 +22,11 @@ if (file_exists(MYDIR.'/config/harmoni.conf.php'))
 	require_once (MYDIR.'/config/harmoni.conf.php');
 else
 	require_once (MYDIR.'/config/harmoni_default.conf.php');
+	
+if (file_exists(MYDIR.'/config/action.conf.php'))
+	require_once (MYDIR.'/config/action.conf.php');
+else
+	require_once (MYDIR.'/config/action_default.conf.php');
  
 $harmoni->startSession();
 

@@ -23,9 +23,9 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  *
  * @version $Id: MediaLibrary.js,v 1.24 2008/04/11 21:50:56 adamfranco Exp $
  */
-function MediaLibrary ( assetId, callingElement ) {
+function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
 	if ( arguments.length > 0 ) {
-		this.init( assetId, callingElement );
+		this.init( assetId, callingElement, allowedMimeTypes );
 	}
 }
 
@@ -41,7 +41,7 @@ function MediaLibrary ( assetId, callingElement ) {
 	 * @access public
 	 * @since 1/26/07
 	 */
-	MediaLibrary.prototype.init = function ( assetId, callingElement ) {
+	MediaLibrary.prototype.init = function ( assetId, callingElement, allowedMimeTypes ) {
 		if (!assetId || !assetId.length) {
 			var message = "Required parameter, assetId, does not have a value";
 // 			alert(message);
@@ -57,6 +57,7 @@ function MediaLibrary ( assetId, callingElement ) {
 		
 		this.caller = callingElement;
 		this.assetId = assetId;
+		this.allowedMimeTypes = allowedMimeTypes;
 		
 		this.tabs = new TabbedContent();
 		this.tabs.appendToContainer(this.contentElement);
@@ -103,11 +104,11 @@ function MediaLibrary ( assetId, callingElement ) {
 	 * @access public
 	 * @since  1/26/07
 	 */
-	MediaLibrary.run = function (assetId, callingElement ) {
+	MediaLibrary.run = function (assetId, callingElement, allowedMimeTypes ) {
 		if (callingElement.panel) {
 			callingElement.panel.open();
 		} else {
-			var tmp = new MediaLibrary(assetId, callingElement );
+			var tmp = new MediaLibrary(assetId, callingElement, allowedMimeTypes );
 		}
 	}
 	
@@ -221,6 +222,20 @@ function FileLibrary ( owner, assetId, caller, container ) {
 		element.appendChild(document.createTextNode('modification date'));
 		
 		container.appendChild(this.mediaList);
+	}
+	
+	/**
+	 * Answer a list of allowed mime types or null if any are allowed.
+	 * 
+	 * @return mixed Array or null
+	 * @access public
+	 * @since 8/26/08
+	 */
+	FileLibrary.prototype.getAllowedMimeTypes = function () {
+		if (this.owner.allowedMimeTypes && this.owner.allowedMimeTypes.length)
+			return this.owner.allowedMimeTypes;
+		else
+			return null;
 	}
 	
 	/**
@@ -1343,6 +1358,7 @@ function MediaFile ( xmlElement, asset, library) {
 		this.asset = asset;
 		this.library = library;
 		this.recordId = xmlElement.getAttribute('id');
+		this.mimeType = xmlElement.getAttribute('mimetype');
 		this.name = xmlElement.getElementsByTagName('name')[0].firstChild.data;
 		this.size = xmlElement.getElementsByTagName('size')[0].firstChild.data;
 		this.url = xmlElement.getElementsByTagName('url')[0].firstChild.data;
@@ -1367,7 +1383,15 @@ function MediaFile ( xmlElement, asset, library) {
 		
 		var useButton = fileDiv.appendChild(document.createElement('button'));
 		useButton.innerHTML = 'use';
-		useButton.onclick = this.library.onUse.bind(this.library, this);
+		
+		var allowedTypes = this.library.getAllowedMimeTypes();
+		if (!allowedTypes || !allowedTypes.length 
+			|| allowedTypes.elementExists(this.mimeType))
+		{
+			useButton.onclick = this.library.onUse.bind(this.library, this);
+		} else {
+			useButton.disabled = true;
+		}
 		
 		fileDiv.appendChild(document.createTextNode(' '));
 		

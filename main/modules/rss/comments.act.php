@@ -63,7 +63,7 @@ class commentsAction
 			$comment = $comments->next();
 			$item = $this->addItem(new RSSItem);
 			$item->setTitle($comment->getSubject());
-			$item->setLink($harmoni->request->quickURL("ui1","view",array("node" => $siteComponent->getId()))."#comment_".$comment->getIdString(), true);
+			$item->setLink(SiteDispatcher::quickURL("view","html",array("node" => $siteComponent->getId()))."#comment_".$comment->getIdString(), true);
 			$item->setPubDate($comment->getModificationDate());
 			
 			$agentMgr = Services::getService("Agent");
@@ -71,9 +71,20 @@ class commentsAction
 			$item->setAuthor($agent->getDisplayName());
 			
 			
-			$item->setCommentsLink($harmoni->request->quickURL("ui1","view",array("node" => $siteComponent->getId())));
+			$item->setCommentsLink(SiteDispatcher::quickURL("view","html",array("node" => $siteComponent->getId())));
+						
+			$pluginMgr = Services::getService("PluginManager");
+			$plugin = $pluginMgr->getPlugin($comment->getAsset());
 			
-			$item->setDescription($comment->getBody(false));
+			$item->setDescription($plugin->executeAndGetMarkup());
+			
+			// MediaFile eclosures.
+			try {
+				foreach ($plugin->getRelatedMediaFiles() as $file) {
+					$item->addEnclosure($file->getUrl(), $file->getSize()->value(), $file->getMimeType());
+				}
+			} catch (UnimplementedException $e) {
+			}
 		}
 
 	}

@@ -94,7 +94,7 @@ class theme_optionsAction
 	function getReturnUrl () {
 		if (isset($this->createdCopy) && $this->createdCopy) {
 			$harmoni = Harmoni::instance();
-			return $harmoni->request->quickURL(
+			return SiteDispatcher::quickURL(
 				'ui1', 'theme_options',
 				array('wizardSkipToStep' => "advanced"));
 		} else {

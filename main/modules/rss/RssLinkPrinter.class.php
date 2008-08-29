@@ -95,7 +95,7 @@ class RssLinkPrinter {
 		
 		// Content RSS
 		$links[] = array(
-			'url' =>  $harmoni->request->quickUrl(
+			'url' =>  SiteDispatcher::quickUrl(
 						"rss",
 						"content",
 						array('node' => $siteComponent->getId())),
@@ -105,7 +105,7 @@ class RssLinkPrinter {
 		
 		// Comments RSS
 		$links[] = array(
-			'url' =>  $harmoni->request->quickUrl(
+			'url' =>  SiteDispatcher::quickUrl(
 						"rss",
 						"comments",
 						array('node' => $siteComponent->getId())),

@@ -734,8 +734,8 @@ class CommentManager {
 				
 				dest.innerHTML = subject;
 				var params = {
-					'subject': escape(subject), 
-					'comment_id': escape(comment_id)
+					'subject': encodeURIComponent(subject), 
+					'comment_id': encodeURIComponent(comment_id)
 					};
 					
 				var url = Harmoni.quickUrl('comments', 'update_ajax', params, 'comments');

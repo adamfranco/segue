@@ -501,7 +501,7 @@ END;
 			$organizer->getQualifierId()))
 		{
 			print "<div style='height: 50px; border: 1px solid #F00; margin: 0px 5px 5px 5px; padding: 5px;'>";
-			print _("This Menu has no Content Pages yet. <br/><br/>Add a Content Page by clicking the <strong>+ Menu Item</strong> button for this Menu and choose 'Content Page'.");
+			print _("This Section has no Pages yet. <br/><br/>Add a Page by clicking the <strong>+ Page</strong> button for this Section and choose 'Page'.");
 		} else {
 			print "<div style='height: 50px; margin: 0px 5px 5px 5px; padding: 5px;'>";
 			print " ";
@@ -561,7 +561,12 @@ END;
 		if ($inCat)
 			print "\n\t\t\t</optgroup>";
 		
-		print "\n\t\t</select>";
+		print "\n\t\t</select> ";
+		if ($isMenu) {
+			print Help::link('Adding Pages and Sections');
+		} else {
+			print Help::link('Adding Content');
+		}
 		print "\n\t\t<div style='white-space: nowrap;'>"._("Title: ");
 		print "\n\t\t\t<input name='".RequestContext::name('displayName')."' type='text' size='10'/>";
 		print "\n\t\t</div>";
@@ -670,7 +675,7 @@ END;
 			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
 			.">";
 			print $selectionLinkHtml;
-			print " | </span>";
+			print " &nbsp; |</span>";
 		}
 		print "\n\t\t\t\t<span class='controls_link'"
 			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"

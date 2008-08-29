@@ -192,7 +192,6 @@ class SlotManager {
 				$this->slots[$shortname] = new $slotClass($shortname);
 			}
 			
-			$this->slots[$shortname]->mergeWithExternal();
 		}
 		
 		return $this->slots[$shortname];
@@ -236,7 +235,6 @@ class SlotManager {
 				throw new Exception ("Mismached number of slots.");
 			
 			$slot = current($slots);
-			$slot->mergeWithExternal();
 			$this->slots[$slot->getShortname()] = $slot;
 		} else {
 			throw new UnknownIdException("No Slot Found for site id, '$siteId'");
@@ -350,7 +348,6 @@ class SlotManager {
 			$slots = $this->getSlotsFromQueryResult($result);
 				
 			foreach ($slots as $slot) {
-				$slot->mergeWithExternal();
 				$this->slots[$slot->getShortname()] = $slot;
 				$slotsToReturn[] = $slot;
 			}
