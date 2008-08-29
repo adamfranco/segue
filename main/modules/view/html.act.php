@@ -150,7 +150,30 @@ class htmlAction
 			}
 		} catch (UnknownIdException $e) {		// No slot for the site....
 		}
-		
+
+        $authZ = Services::getService("AuthZ");
+        $recordManager = Services::getService("RecordManager");
+
+        //
+        // Begin Optimizations
+        //
+        // The code below queues up authorizations for all visible nodes, 
+        // as well as pre-fetches all of the RecordSets that have data
+        // specific to the visible nodes.
+        $visibleComponents = SiteDispatcher::getSiteDirector()->getVisibleComponents(SiteDispatcher::getCurrentNodeId());
+
+        $preCacheIds = array();
+        foreach ($visibleComponents as $component) {
+            $id = $component->getQualifierId();
+            $authZ->getIsAuthorizedCache()->queueId($id);
+            $preCacheIds[] = $id->getIdString();
+        }
+
+        $recordManager->preCacheRecordsFromRecordSetIDs($preCacheIds);
+        //
+        // End Optimizations
+        //
+
 		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		
 		$allWrapper = $this->addHeaderControls($mainScreen);
