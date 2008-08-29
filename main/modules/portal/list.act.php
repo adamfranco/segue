@@ -102,6 +102,10 @@ class listAction
 		$actionRows = $this->getActionRows();
 		$portalWrapper = $actionRows->add(new Container(new XLayout, BLANK, 1), "100%", null, CENTER, TOP);
 		
+		// Store the login state for determining whether or not to show edit links.
+		$authN = Services::getService("AuthN");
+		$this->isAuthenticated = $authN->isUserAuthenticatedWithAnyType();
+		
 		$this->addHeadJs();
 		
 		$harmoni = Harmoni::instance();
@@ -662,30 +666,33 @@ class listAction
 		
 		$controls[] = "<a href='".$viewUrl."'>"._("view")."</a>";
 		
-		// While it is more correct to check modify permission permission, doing
-		// so forces us to check AZs on the entire site until finding a node with
-		// authorization or running out of nodes to check. Since edit-mode actions
-		// devolve into view-mode if no authorization is had by the user, just
-		// show the links all the time to cut page loads from 4-6 seconds to
-		// less than 1 second.
-		$controls[] = "<a href='".SiteDispatcher::quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
-	
-// 		if ($action->getUiModule() == 'ui2') {
-// 			$controls[] = "<a href='".SiteDispatcher::quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
-// 		}
+		// Hide all edit links if not authenticated to prevent web spiders from traversing them
+		if ($this->isAuthenticated) {
+			// While it is more correct to check modify permission permission, doing
+			// so forces us to check AZs on the entire site until finding a node with
+			// authorization or running out of nodes to check. Since edit-mode actions
+			// devolve into view-mode if no authorization is had by the user, just
+			// show the links all the time to cut page loads from 4-6 seconds to
+			// less than 1 second.
+			$controls[] = "<a href='".SiteDispatcher::quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
 		
-		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
-			$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
-		
-		
-		// Add a control to select this site for copying. This should probably
-		// have its own authorization, but we'll use add_children/modify for now.
-		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)) 
-		{
-			if (isset($slot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $slot->getShortname()) {
-				$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
-			} else if (isset($slot)) {
-				$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("select for copy")."</a>";
+	// 		if ($action->getUiModule() == 'ui2') {
+	// 			$controls[] = "<a href='".SiteDispatcher::quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
+	// 		}
+			
+			if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
+				$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
+			
+			
+			// Add a control to select this site for copying. This should probably
+			// have its own authorization, but we'll use add_children/modify for now.
+			if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)) 
+			{
+				if (isset($slot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $slot->getShortname()) {
+					$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
+				} else if (isset($slot)) {
+					$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("select for copy")."</a>";
+				}
 			}
 		}
 		
