@@ -144,7 +144,7 @@ class Segue_Selection
 				preg_replace('/\s+/', ' ',
 					strip_tags($siteComponent->getDisplayName()))))."' ";
 		print "}); return false;\"";
-		print ">"._('+ Selection');
+		print ">"._('+ Select');
 		print "</a>";
 		
 		$harmoni->request->endNamespace();				
