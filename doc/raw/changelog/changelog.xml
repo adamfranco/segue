@@ -18,6 +18,15 @@
 			Migration: Segue v2 to v1 URL resolver now does not add extra slashes
 			to the URL.
 		</fix>
+		<fix author='alex' date='2008-09-12' ref='2112929' reftype='bug'>
+			Roles: search field in Roles UI is now labelled and includes instructions for use.
+		</fix>		
+		<fix author='alex' date='2008-09-12' ref='2094932' reftype='bug'>
+			UI2: title fields have been increased in size to accomodate more title text.
+		</fix>		
+		<fix author='alex' date='2008-09-12' ref='2094944' reftype='bug'>
+			UI2: options box title bar now no longer obscures block, page or section titles.
+		</fix>		
 	</version>
 	<version number="2.2.2" date="2008-08-29">
 		<releaseNotes>
