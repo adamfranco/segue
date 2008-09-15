@@ -261,7 +261,7 @@ class convertAction
 		if (!defined('DATAPORT_SEGUE1_SECRET_VALUE'))
 			throw new ConfigurationErrorException('DATAPORT_SEGUE1_SECRET_VALUE is not defined.');
 		
-		$sourceUrl = DATAPORT_SEGUE1_URL.'/export/getSiteExport.php?site='.$this->getSourceSlotName()
+		$sourceUrl = rtrim(DATAPORT_SEGUE1_URL, '/').'/export/getSiteExport.php?site='.$this->getSourceSlotName()
 				.'&'.DATAPORT_SEGUE1_SECRET_KEY.'='.DATAPORT_SEGUE1_SECRET_VALUE;
 		
 		$destDir = DATAPORT_TMP_DIR."/Segue1Export-".$this->getSourceSlotName();

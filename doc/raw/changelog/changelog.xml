@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.3" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-09-15' ref='2098632' reftype='bug'>
+			Migration: Segue v2 to v1 URL resolver now does not add extra slashes
+			to the URL.
+		</fix>
+	</version>
 	<version number="2.2.2" date="2008-08-29">
 		<releaseNotes>
 			This release fixes several issues that were in 2.2.1.
