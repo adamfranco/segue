@@ -26,7 +26,11 @@
 		</fix>		
 		<fix author='alex' date='2008-09-12' ref='2094944' reftype='bug'>
 			UI2: options box title bar now no longer obscures block, page or section titles.
-		</fix>		
+		</fix>
+		<fix author='adam' date='2008-09-16'>
+			Wiki: File-URL writing now puts the repository first to keep it out of 
+			display in the browser's title-bar.
+		</fix>
 	</version>
 	<version number="2.2.2" date="2008-08-29">
 		<releaseNotes>

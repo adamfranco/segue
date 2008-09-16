@@ -525,6 +525,9 @@ $		# Anchor for the end of the line
 			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1], $paramMatches);
 			$args = array();
 			
+			// Default repository Id:
+			$args['repository_id'] = 'edu.middlebury.segue.sites_repository';
+			
 			for ($i = 0; $i < count($paramMatches[1]); $i++) {
 				$key = $paramMatches[3][$i];
 				$value = $paramMatches[4][$i];
@@ -555,10 +558,7 @@ $		# Anchor for the end of the line
 			if (!isset($module))
 				$module = 'repository';
 			if (!isset($action))
-				$action = 'viewfile';
-			
-			if (!isset($args['repository_id']))
-				$args['repository_id'] = 'edu.middlebury.segue.sites_repository';
+				$action = 'viewfile';	
 			
 			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace('polyphony-repository');
