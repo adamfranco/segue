@@ -1,5 +1,5 @@
 
-Segue v. 2.2.2 (2008-08-29)
+Segue v. 2.2.3 (2008-09-17)
 =================================
 
 What is Segue?
@@ -17,11 +17,11 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release fixes several issues that were in 2.2.1.
+This release fixes a number of small bugs and usability issues.
 
 -------------
 
-This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.4.
 
 
 Downloads
@@ -61,6 +61,16 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.3 (2008-09-17)
+----------------------------------------------------
+This release fixes a number of small bugs and usability issues.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.4.
+
 
 
 v. 2.2.2 (2008-08-29)
