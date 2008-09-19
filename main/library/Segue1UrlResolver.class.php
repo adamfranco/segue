@@ -97,6 +97,8 @@ class Segue1UrlResolver {
 	 * @since 3/20/08
 	 */
 	public function getMatchesSegue1 (array $get) {
+		$get = $this->cleanUpGet($get);
+		
 		// Valid Segue 1 actions to link to
 		$segue1Actions = array('site', 'viewsite', 'rss');
 		if (!isset($get['action']) || !in_array($get['action'], $segue1Actions))
@@ -134,6 +136,8 @@ class Segue1UrlResolver {
 	 */
 	public function resolveCurrent () {
 		$get = $_GET;
+		$get = $this->cleanUpGet($get);
+		
 		if (isset($_SERVER['PATH_INFO']) 
 			&& preg_match('/^\/sites\/([\w_-]+)\/?/', $_SERVER['PATH_INFO'], $matches)) 
 		{
@@ -143,7 +147,34 @@ class Segue1UrlResolver {
 		if (isset($get['site']) && !isset($get['action']))
 			$get['action'] = 'site';
 		
+		$get = $this->cleanUpGet($get);
+		
 		$this->resolveGetArray($get);
+	}
+	
+	/**
+	 * Clean up munged get vars.
+	 * 
+	 * @param array $get
+	 * @return array $get
+	 * @access protected
+	 * @since 8/21/08
+	 */
+	protected function cleanUpGet (array $get) {
+		// Clean up any munged parameters as we seem to be recieving a lot of them.
+		$munged = array(
+			'amp;story'	=>	'story', 
+			'amp;page'	=>	'page', 
+			'amp;section'	=>	'section', 
+			'amp;site'	=>	'site');
+		foreach ($munged as $bad => $good) {
+			if (isset($get[$bad]) && !isset($get[$good])) {
+				$get[$good] = $get[$bad];
+				unset($get[$bad]);
+			}
+		}
+		
+		return $get;
 	}
 	
 	/**
@@ -189,7 +220,7 @@ class Segue1UrlResolver {
 				return false;
 			
 			// If segue 1 knows about 
-			$segue1Url = DATAPORT_SEGUE1_URL.'/index.php?';
+			$segue1Url = rtrim(DATAPORT_SEGUE1_URL, '/').'/index.php?';
 			foreach ($get as $key => $value)
 				$segue1Url .= '&'.$key.'='.rawurlencode($value);
 			
@@ -212,7 +243,7 @@ class Segue1UrlResolver {
 		if (!isset($get['site']))
 			throw new Exception("Could not validate Segue 1 site, no site specified.");
 		
-		$url = DATAPORT_SEGUE1_URL.'/export/siteExists.php?';
+		$url = rtrim(DATAPORT_SEGUE1_URL, '/').'/export/siteExists.php?';
 		foreach ($get as $key => $value)
 				$url .= '&'.$key.'='.rawurlencode($value);
 				
@@ -268,7 +299,7 @@ class Segue1UrlResolver {
 			$slotMgr = SlotManager::instance();
 			$slot = $slotMgr->getSlotByShortname($slotName);
 			if ($slot->siteExists())
-				return $slot->getSiteId()->asString();
+				return $slot->getSiteId()->getIdString();
 		}
 		
 		// If we still couldn't resolve throw an exception.

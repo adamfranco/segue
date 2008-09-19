@@ -52,6 +52,7 @@ class choose_agentAction
 	function buildContent () {
 		$harmoni = Harmoni::instance();
 		$harmoni->request->passthrough("node");
+		$harmoni->request->passthrough("site");
 		$harmoni->request->passthrough("agent");
 		$harmoni->request->passthrough("returnNode");
 		$harmoni->request->passthrough("returnModule");
@@ -127,7 +128,7 @@ class choose_agentAction
 				print "\n\t\t\t".$agent->getDisplayName();
 				print "\n\t\t</td>";
 				print "\n\t\t<td class='color$i' style='text-align: right;'>";
-				$url = $harmoni->request->quickURL('roles', 'modify', array(
+				$url = SiteDispatcher::quickURL('roles', 'modify', array(
 					'node' => SiteDispatcher::getCurrentNodeId(),
 					'agent' => $agent->getId()->getIdString()
 				));
@@ -141,9 +142,11 @@ class choose_agentAction
 		
 		$property = $step->addComponent("search", new WSearchField);
 		$property->setSearchSource(new AgentSearchSource);
-		
 		print "\n<div style='margin-top: 20px; border-top: 1px solid; padding: 5px;'>";
-		print _("Search: ")." [[search]]";
+		print "\n<h3>"._("Assign roles to other users/groups")."</h3>";
+		print _("Search for other users/groups.  Once found you will be able to assign roles to these other users/groups.  To assign roles to students in a class, type in the course code (e.g. span0101a-f08)")."<br/><br/>";
+		
+		print _("User/group name: ")." [[search]]";
 		print "</div>";
 		
 		$step->setContent(ob_get_clean());
@@ -170,7 +173,11 @@ class choose_agentAction
 			$action = RequestContext::value('returnAction');
 		else
 			$action = 'editview';
-		return $harmoni->request->quickURL($module, $action);
+			
+		$harmoni->request->forget('returnAction');
+		$harmoni->request->forget('returnModule');
+		$harmoni->request->forget('agent');
+		return SiteDispatcher::quickURL($module, $action);
 	}
 }
 

@@ -60,7 +60,7 @@
         </choice>
     </option>
     <option id='fg_color'>
-        <displayName lang='en_US'>Forground Color</displayName>
+        <displayName lang='en_US'>Foreground Color</displayName>
         <description lang='en_US'>The color of the site foreground.</description>
         <choice isDefault='true'>
             <key>white</key>

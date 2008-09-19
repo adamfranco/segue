@@ -283,7 +283,9 @@ class MediaAction
 			while ($fileRecords->hasNext()) {
 				$fileRecord = $fileRecords->next();
 				$fileRecordId = $fileRecord->getId();
-				print "\n\t\t<file id=\"".$fileRecordId->getIdString()."\">";
+				print "\n\t\t<file id=\"".$fileRecordId->getIdString()."\"";
+				print " mimetype=\"".$fileRecord->getPartsByPartStructure($idManager->getId("MIME_TYPE"))->next()->getValue()."\"";
+				print ">";
 				
 				$parts = $fileRecord->getPartsByPartStructure($idManager->getId("FILE_NAME"));
 				$part = $parts->next();

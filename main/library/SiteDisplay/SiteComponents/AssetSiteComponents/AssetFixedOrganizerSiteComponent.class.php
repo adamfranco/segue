@@ -36,7 +36,7 @@ class AssetFixedOrganizerSiteComponent
 	 * @since 4/10/06
 	 */
 	function getDisplayName () {
-		return _("<em>Layout Container</em>");
+		return _("<span class='controls_bar_title'>Layout Container</span>");
 	}
 	
 	/**

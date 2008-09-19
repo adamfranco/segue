@@ -351,7 +351,7 @@ class ViewModeSiteVisitor
 	 */
 	function getDetailUrl ($id) {
 		$harmoni = Harmoni::instance();
-		return $harmoni->request->quickURL(
+		return SiteDispatcher::quickURL(
 				$harmoni->request->getRequestedModule(),
 				$harmoni->request->getRequestedAction(),
 				array("node" => $id));
@@ -389,7 +389,7 @@ class ViewModeSiteVisitor
 	function getHistoryUrl ($id) {
 		$harmoni = Harmoni::instance();
 		$harmoni->history->markReturnURL('view_history_'.$id);
-		return $harmoni->request->quickURL('versioning', 'view_history',
+		return SiteDispatcher::quickURL('versioning', 'view_history',
 				array("node" => $id, 
 					'returnModule' => $harmoni->request->getRequestedModule(),
 					'returnAction' => $harmoni->request->getRequestedAction()));
@@ -811,7 +811,7 @@ class ViewModeSiteVisitor
 	 */
 	function getUrlForComponent ( $id ) {
 		$harmoni = Harmoni::instance();
-		return $harmoni->request->quickURL(
+		return SiteDispatcher::quickURL(
 			$harmoni->request->getRequestedModule(), 
 			$harmoni->request->getRequestedAction(),
 			array("node" => $id));

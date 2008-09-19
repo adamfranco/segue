@@ -76,7 +76,7 @@ class editviewAction
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteId))
 		{
-			$url = $harmoni->request->quickURL("ui1", "editSite", 
+			$url = SiteDispatcher::quickURL("ui1", "editSite", 
 				array("node" => $siteId->getIdString(),
 				"returnNode" => SiteDispatcher::getCurrentNodeId(),
 				"returnAction" => $harmoni->request->getRequestedAction()));
@@ -88,7 +88,7 @@ class editviewAction
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$siteId))
 		{
-			$url = $harmoni->request->quickURL("ui1", "theme_options", 
+			$url = SiteDispatcher::quickURL("ui1", "theme_options", 
 				array("node" => $siteId->getIdString(),
 				"returnNode" => SiteDispatcher::getCurrentNodeId(),
 				"returnAction" => $harmoni->request->getRequestedAction()));
@@ -104,7 +104,7 @@ class editviewAction
 			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
 			SiteDispatcher::getCurrentNode()->getQualifierId()))
 		{
-			$url = $harmoni->request->quickURL("roles", "choose_agent", 
+			$url = SiteDispatcher::quickURL("roles", "choose_agent", 
 				array("node" => SiteDispatcher::getCurrentNodeId(),
 				"returnModule" => $harmoni->request->getRequestedModule(),
 				"returnAction" => $harmoni->request->getRequestedAction()));
@@ -135,8 +135,7 @@ class editviewAction
 		ob_start();
 		print "<div class='commands'>";
 		print "<a href='";
-		$url = $harmoni->request->mkURLWithPassthrough('view', 'html');
-		print $url->write();
+		print SiteDispatcher::quickURL('view', 'html');
 		print "' title='"._("Go to View-Mode")."'>";
 		print _("view")."</a>";
 		
@@ -153,7 +152,7 @@ class editviewAction
 			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
 			SiteDispatcher::getCurrentNode()->getQualifierId()))
 		{
-			$url = $harmoni->request->quickURL("roles", "choose_agent", 
+			$url = SiteDispatcher::quickURL("roles", "choose_agent", 
 					array("node" => SiteDispatcher::getCurrentNodeId(),
 					"returnModule" => $harmoni->request->getRequestedModule(),
 					"returnAction" => $harmoni->request->getRequestedAction()));

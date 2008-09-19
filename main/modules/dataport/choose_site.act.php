@@ -163,7 +163,7 @@ class choose_siteAction
 			if ($slot->siteExists()) {
 				$asset = $slot->getSiteAsset();
 				
-				$viewUrl = DATAPORT_SEGUE1_URL.'/index.php?action=site&amp;site='.$slot->getShortname();
+				$viewUrl = rtrim(DATAPORT_SEGUE1_URL, '/').'/index.php?action=site&amp;site='.$slot->getShortname();
 			
 				print "\n<div class='site_info'>";
 				print "\n\t<div class='site_title'>";
@@ -285,7 +285,7 @@ class choose_siteAction
 			}
 			
 			
-			$viewUrl = $harmoni->request->quickURL('ui1', 'view', array('site' => $slot->getShortname()));
+			$viewUrl = SiteDispatcher::quickURL('view', 'html', array('site' => $slot->getShortname()));
 			
 			print "\n<div class='site_info'>";
 			print "\n\t<div class='site_title'>";
@@ -423,7 +423,7 @@ class choose_siteAction
 				if (!defined('DATAPORT_SEGUE1_SECRET_VALUE'))
 					throw new ConfigurationErrorException('DATAPORT_SEGUE1_SECRET_VALUE is not defined.');
 				
-				$url = DATAPORT_SEGUE1_URL.'/export/getSiteList.php?user='.$this->getSegue1UserName()
+				$url = rtrim(DATAPORT_SEGUE1_URL, '/').'/export/getSiteList.php?user='.$this->getSegue1UserName()
 						.'&'.DATAPORT_SEGUE1_SECRET_KEY.'='.DATAPORT_SEGUE1_SECRET_VALUE;
 				
 				$_SESSION['DATAPORT_SEGUE1_DATA'][$this->getSegue1UserName()] = file_get_contents($url);

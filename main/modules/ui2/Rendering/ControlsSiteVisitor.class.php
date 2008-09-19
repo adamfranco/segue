@@ -1067,7 +1067,7 @@ END;
 		{
 			print " readonly='readonly'";
 		} else {
-			$url = $harmoni->request->quickURL('ui1', 'editSite', array(
+			$url = SiteDispatcher::quickURL('ui1', 'editSite', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnModule' => $this->module,
@@ -1100,7 +1100,7 @@ END;
 			$authZ = Services::getService("AuthZ");
 			$idManager = Services::getService("Id");
 			$harmoni = Harmoni::instance();
-			$url = $harmoni->request->quickURL('ui1', 'theme_options', array(
+			$url = SiteDispatcher::quickURL('ui1', 'theme_options', array(
 						'node' => $siteComponent->getId(),
 						'returnNode' => SiteDispatcher::getCurrentNodeId(),
 						'returnModule' => $this->module,
@@ -1220,6 +1220,38 @@ END;
 	}
 	
 	/**
+	 * Print the history link
+	 * 
+	 * @param SiteComponent $siteComponent
+	 * @return void
+	 * @access public
+	 * @since 6/04/08
+	 */
+
+	function printHistoryLink ( SiteComponent $siteComponent ) {
+	
+		print "\n\t\t\t\t<tr><td class='ui2_settingborder'>";
+		print "\n\t\t\t\t<div class='ui2_settingtitle'>";
+		print _('Edit History: ')."\n\t\t\t\t</div>";
+		print "\n\t\t\t\t</td><td class='ui2_settingborder'>";
+			
+		
+		print "\n\t\t\t\t\t";
+		print "<a href='";
+		$harmoni = Harmoni::instance();
+		$harmoni->history->markReturnURL('view_history_'.$siteComponent->getId());
+		print SiteDispatcher::quickURL('versioning', 'view_history',
+				array("node" => $siteComponent->getId(), 
+					'returnModule' => $harmoni->request->getRequestedModule(),
+					'returnAction' => $harmoni->request->getRequestedAction()));
+		print "'>";
+		print _("view history");
+		print " &raquo;</a>";
+		print "\n\t\t\t\t</td></tr>";
+
+	}
+	
+	/**
 	 * Answer controls for Block SiteComponents
 	 * 
 	 * @param SiteComponent $siteComponent
@@ -1240,6 +1272,7 @@ END;
 // 		$this->printDescription($siteComponent);
 // 		$this->printWidth($siteComponent);
 		
+		$this->printHistoryLink($siteComponent);
 
 		$this->printDelete($siteComponent, _("Content Block"));
 				

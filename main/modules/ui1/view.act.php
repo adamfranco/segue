@@ -47,9 +47,7 @@ class viewAction
 	 */
 	function execute () {
 		// redirect
-		$harmoni = Harmoni::instance();
-		$newUrl = $harmoni->request->mkURLWithPassthrough('view', 'html');
-		RequestContext::sendTo($newUrl->write());
+		RequestContext::sendTo(SiteDispatcher::quickURL('view', 'html'));
 	}
 }
 

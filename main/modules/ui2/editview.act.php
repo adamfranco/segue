@@ -101,22 +101,19 @@ class editviewAction
 		print "<div class='commands'>";
 		
 		print "<a href='";
-		$url = $harmoni->request->mkURLWithPassthrough('view', 'html');
-		print $url->write();
+		print SiteDispatcher::quickURL('view', 'html');
 		print "' title='"._("Go to View-Mode")."'>";
 		print _("view")."</a>";
 		
 		print " | "._("edit");
 		
 		print " | <a href='";
-		$url = $harmoni->request->mkURLWithPassthrough('ui2', 'headerfooter');
-		print $url->write();
+		print SiteDispatcher::quickURL('ui2', 'headerfooter');
 		print "' title='"._("Go to Header/Footer Edit-Mode")."'>";
 		print _("header/footer")."</a>";
 		
 		print " | <a href='";
-		$url = $harmoni->request->mkURLWithPassthrough('ui2', 'arrangeview');
-		print $url->write();
+		print SiteDispatcher::quickURL('ui2', 'arrangeview');
 		print "' title='"._("Go to Arrange-Mode")."'>";
 		print _("arrange")."</a>";		
 		
@@ -131,7 +128,7 @@ class editviewAction
 			$idManager->getId("edu.middlebury.authorization.view_authorizations"), 
 			SiteDispatcher::getCurrentNode()->getQualifierId()))
 		{
-			$url = $harmoni->request->quickURL("roles", "choose_agent", 
+			$url = SiteDispatcher::quickURL("roles", "choose_agent", 
 					array("node" => SiteDispatcher::getCurrentNodeId(),
 					"returnModule" => $harmoni->request->getRequestedModule(),
 					"returnAction" => $harmoni->request->getRequestedAction()));

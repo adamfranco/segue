@@ -10,6 +10,220 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.3" date="2008-09-17">
+		<releaseNotes>
+			This release fixes a number of small bugs and usability issues.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.4.
+		</releaseNotes>
+		<fix author='adam' date='2008-09-15' ref='2098632' reftype='bug'>
+			Migration: Segue v2 to v1 URL resolver now does not add extra slashes
+			to the URL.
+		</fix>
+		<fix author='alex' date='2008-09-12' ref='2112929' reftype='bug'>
+			Roles: search field in Roles UI is now labelled and includes instructions for use.
+		</fix>		
+		<fix author='alex' date='2008-09-12' ref='2094932' reftype='bug'>
+			UI2: title fields have been increased in size to accomodate more title text.
+		</fix>		
+		<fix author='alex' date='2008-09-12' ref='2094944' reftype='bug'>
+			UI2: options box title bar now no longer obscures block, page or section titles.
+		</fix>
+		<fix author='adam' date='2008-09-16'>
+			Wiki: File-URL writing now puts the repository first to keep it out of 
+			display in the browser's title-bar.
+		</fix>
+	</version>
+	<version number="2.2.2" date="2008-08-29">
+		<releaseNotes>
+			This release fixes several issues that were in 2.2.1.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+		</releaseNotes>
+		<fix author='adam' date='2008-08-29'>
+			Portal: Now hiding edit links when not authenticated to help exclude crawlers.
+		</fix>
+		<fix author='adam' date='2008-08-29'>
+			Errors: UnknownActionException now gives a 404 error instead of a 400.
+		</fix>
+		<fix author='adam' date='2008-08-29' reporter='hector_vila'>
+			Slots: Fixed infinite loop in course-owner merging.
+		</fix>
+	</version>
+	<version number="2.2.1" date="2008-08-29">
+		<releaseNotes>
+			This release improves the speed of searching for sites in the portal
+			as well as fixes a number of minor bugs.
+			
+			Notable user-facing changes:
+			
+			- speed improvements in the portal
+			
+			- Audio Clip plugin can now be used in comments.
+			
+			See the change log for more details on these and other fixes.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+		</releaseNotes>
+		<fix author='adam' date='2008-08-28' ref='2079425' reftype='bug'>
+			Slots/Portal: Slots/Placeholders are now only merged with external 
+			owner lists when owners are requested rather than when the slot is
+			instantiated. This change means that searching for slots in the portal
+			doesn't require loading course information.
+		</fix>
+		<fix author='adam' date='2008-08-28' ref='2080741' reftype='bug'>
+			Plugins: Fixed PHP notice in Next/Previous Links.
+		</fix>
+		<fix author='adam' date='2008-08-28' ref='2079423' reftype='bug'>
+			Comments: AudioPlayer plugin can now be used for comments.
+		</fix>
+		<fix author='adam' date='2008-08-28' ref='2080744' reftype='bug'>
+			Portal: Fixed PHP notice in Portal search.
+		</fix>
+		<fix author='adam' date='2008-08-29' ref='2081075' reftype='bug'>
+			Portal: removed the "All Editable" folder because it is too slow.
+		</fix>
+	</version>
+	<version number="2.2.0" date="2008-08-27">
+		<releaseNotes>
+			This Release adds several new plugins, a number of user-interface 
+			and RSS improvements, and numerous fixes.
+			
+			Notable User-facing changes:
+			
+			- New Audio Clip plugin
+			
+			- RSS feeds now include enclosures for File for Download and Audio Clip
+			plugins.
+			
+			- RSS feeds now include tags.
+			
+			See the change log for more details on these and other fixes.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+		</releaseNotes>
+		<new author='adam' date='2008-08-26' ref='1820865' reftype='fr'>
+			Plugins: New Audio Clip plugin.
+		</new>
+		<change author='adam' date='2008-08-26'>
+			MediaLibrary: Can now limit selection to certain MIME Types.
+		</change>
+		<new author='adam' date='2008-08-26'>
+			Plugins: New plugin methods available for accessing media from Flash
+			while maintaining session-based authentication of the file-access.
+		</new>
+		<new author='adam' date='2008-08-27' ref='2073883' reftype='fr'>
+			Plugins: New Next/Previous links plugin for auto-creating links between
+			pages in a section.
+		</new>
+		<change author='adam' date='2008-08-26'>
+			Plugins: File-for-download now uses the FCKEditor and puts the caption
+			below the file rather than above.
+		</change>
+		<new author='adam' date='2008-08-27' ref='2076091' reftype='fr'>
+			RSS/Plugins: Download and Audio Clip plugins now support enclosures
+			in the RSS feeds.
+		</new>
+		<new author='adam' date='2008-08-27'>
+			RSS: RSS feeds now include tags.
+		</new>
+		<change author='adam' date='2008-08-27' ref='2076735' reftype='fr'>
+			Roles/View: Roles link is now shown in view mode as well as edit mode,
+			whenever the user is authorized to see roles on the current node.
+		</change>
+		<fix author='adam' date='2008-08-26' reporter='hector_vila'>
+			Roles: Fixed NullArgumentException in Roles UI when entering from the
+			site-level.
+		</fix>
+		<new author='adam' date='2008-08-27'>
+			UI2: Options links now have more agreeable spacing.
+		</new>
+		<fix author='adam' date='2008-08-27' ref='2067369' reftype='bug'>
+			UI2: History link is now available under 'Options' so that it is
+			accessible when titles are hidden.
+		</fix>
+		<fix author='adam' date='2008-08-27' reporter='bryan_carson'>
+			Themes: Fixed spelling mistake in UI.
+		</fix>
+		<fix author='adam' date='2008-08-27' ref='2058072' reftype='bug'>
+			Plugins: Now allowing Local URLs outside of href tags to be converted.
+			
+			Commit 4b01672feaf80a6cef6d3df4f68293369ebde587 (2.1.0) went a little too far 
+			and broke local-url tokenization for File and RSS plugins that need
+			to tokenize plain URLs.
+		</fix>
+	</version>
+	<version number="2.1.0" date="2008-08-25">
+		<releaseNotes>
+			This release updates site URLs to include the site/placeholder name
+			to improve the sense of context by users. Additionally, this release
+			includes 'Meebo' chat widget support as well as a number of fixes.
+			
+			See the change-log for details of these fixes.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.6.2 and Polyphony 1.4.2.
+		</releaseNotes>
+		<change author='adam' date='2008-08-22' ref='2062718' reftype='fr'>
+			View/UI1/UI2: Site-name is now included in all site-viewing urls to
+			provide context to users.
+		</change>
+		<new author='adam' date='2008-08-25' ref='2067943' reftype='fr' reporter='richard_jenkins'>
+			Text-Templates: Added support for embedded Meebo chat widget. http://www.meebome.com/
+		</new>
+		<new author='alex' date='2008-08-25' ref='1820837' reftype='fr'>
+			Help: Added new help documentation for adding content; adding pages and sections; and for
+			using the Rich-Text Editor.
+		</new>
+		<fix author='adam' date='2008-08-22' ref='2068137' reftype='bug'>
+			Plugins: Local-URLs as plain-text instead of link href values now 
+			don't break HTML formatting. Local URLs are now only tokenized if
+			they are used in an href, src or other tag, not just plain text.
+		</fix>
+		<change author='adam' date='2008-08-22'>
+			View: When users request a node that doesn't exist and have a site
+			parameter in the URL, they are given a link to the main page of the site.
+		</change>
+		<fix author='adam' date='2008-08-25' ref='2067965' reftype='bug'>
+			UI1/UI2: Empty Section UI message now refers to link text of "+ Page".
+		</fix>
+		<fix author='adam' date='2008-08-25'>
+			UI1: Updated menu addition text from "+ Menu Item" to "+ Page" for consistency
+			with UI2.
+		</fix>
+		<fix author='adam' date='2008-08-25'>
+			Login form now says Username/Email instead of just 'username'.
+		</fix>
+	</version>
+	<version number="2.0.1" date="2008-08-21">
+		<releaseNotes>
+			This bug fix release fixes an error in editing multi-lingual text
+			in 'new mode' as well as a minor Segue 1 redirect issue.
+			
+			See the change-log for details of these fixes.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
+		</releaseNotes>
+		<fix author='adam' date='2008-08-21'>
+			UI2: Non-ASCII UTF-8 text was getting improperly encoded when doing
+			an AJAX form submission. Now using the proper encodeURIComponent()
+			method instead of the escape() method.
+		</fix>
+		<fix author='adam' date='2008-08-21'>
+			Migration: Now redirecting segue 1 urls even if they include encoded ampersands.
+		</fix>
+	</version>
 	<version number="2.0.0" date="2008-08-20">
 		<releaseNotes>
 			This first stable release of Segue 2 fixes a number of issues that
@@ -17,7 +231,7 @@
 			
 			Notable user-facing changes:
 			
-			- Now supports embeded GoogleCalendars.
+			- Now supports embedded GoogleCalendars.
 			
 			- Now supports links targeting pop-up windows.
 			
@@ -2581,6 +2795,10 @@
 		<reporter short="thierry_leterre">
 			<name>Thierry Leterre</name>
 			<institution>Middlebury College/Université de Versailles-Saint-Quentin-en-Yvelines</institution>
+		</reporter>
+		<reporter short="richard_jenkins">
+			<name>Richard Jenkins</name>
+			<institution>Middlebury College</institution>
 		</reporter>
 		<reporter short="jeff_merriman">
 			<name>Jeff Merriman</name>

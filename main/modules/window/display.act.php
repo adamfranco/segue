@@ -298,7 +298,7 @@ class displayAction
 			print "\n<form action='".
 				$harmoni->request->quickURL("auth", "login").
 				"' style='text-align: right' method='post'><small>".
-				"\n\t"._("Username:")." <input class='small' type='text' size='8' 
+				"\n\t"._("Username/email:")." <input class='small' type='text' size='8' 
 					name='$usernameField'/>".
 				"\n\t"._("Password:")." <input class='small' type='password' size ='8' 
 					name='$passwordField'/>".

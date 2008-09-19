@@ -51,7 +51,7 @@ class HistoryCompareSiteVisitor
 		ob_start();
 // 		print "\n<h3 class='diff_title'>"._("Selected Versions")."</h3>";
 		print "\n<a href='";
-		$browseHistoryUrl = $harmoni->request->quickURL(
+		$browseHistoryUrl = SiteDispatcher::quickURL(
 			$harmoni->request->getRequestedModule(), 'view_history', 
 			array('node' => SiteDispatcher::getCurrentNodeId(), 
 				'early_rev' => RequestContext::value('early_rev'),
@@ -120,7 +120,7 @@ class HistoryCompareSiteVisitor
 			print 		"var url = Harmoni.quickUrl('versioning', 'revert', ";
 			print 			"{node_id:'".$version->getPluginInstance()->getId()."', ";
 			print 			"version_id:'".$version->getVersionId()."', ";
-			print 			"comment:escape(commentText)}); ";
+			print 			"comment:encodeURIComponent(commentText)}); ";
 			print 		"window.location = url; ";
 			print "} else { return false; }";
 			print "\"/>";
