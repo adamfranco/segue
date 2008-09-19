@@ -94,7 +94,7 @@ try {
 // Send back HTTP Headers indicating that an error has ocurred to help prevent
 // crawlers from continuing to pound invalid urls.
 } catch (UnknownActionException $e) {
-	SegueErrorPrinter::handleException($e, 400);
+	SegueErrorPrinter::handleException($e, 404);
 } catch (NullArgumentException $e) {
 	SegueErrorPrinter::handleException($e, 400);
 } catch (PermissionDeniedException $e) {

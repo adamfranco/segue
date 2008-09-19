@@ -142,9 +142,11 @@ class choose_agentAction
 		
 		$property = $step->addComponent("search", new WSearchField);
 		$property->setSearchSource(new AgentSearchSource);
-		
 		print "\n<div style='margin-top: 20px; border-top: 1px solid; padding: 5px;'>";
-		print _("Search: ")." [[search]]";
+		print "\n<h3>"._("Assign roles to other users/groups")."</h3>";
+		print _("Search for other users/groups.  Once found you will be able to assign roles to these other users/groups.  To assign roles to students in a class, type in the course code (e.g. span0101a-f08)")."<br/><br/>";
+		
+		print _("User/group name: ")." [[search]]";
 		print "</div>";
 		
 		$step->setContent(ob_get_clean());

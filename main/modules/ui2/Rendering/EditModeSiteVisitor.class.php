@@ -437,7 +437,7 @@ END;
 			$organizer->getQualifierId()))
 		{
 			$allowed = array();
-			$allowed[] = _("Pages and Navigation");
+			$allowed[] = _("Pages and Sections");
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart');
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
 			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
@@ -544,7 +544,7 @@ END;
 		if (!is_null($cellIndex))
 			print "\n\t<input type='hidden' name='".RequestContext::name('cellIndex')."' value='".$cellIndex."'/>";
 		//print "\n\t<div class='block2Content' style='text-align: center;'";		
-		print "\n\t\t<select name='".RequestContext::name('componentType')."'>";
+		print "\n\t\t<select class='ui2_page_select' name='".RequestContext::name('componentType')."'>";
 		
 		$inCat = false;
 		foreach ($allowed as $type) {
@@ -562,13 +562,15 @@ END;
 			print "\n\t\t\t</optgroup>";
 		
 		print "\n\t\t</select> ";
+		
+		print "\n\t\t<div style='white-space: nowrap;'>"._("Title: ");		
 		if ($isMenu) {
-			print Help::link('Adding Pages and Sections');
+			print "(".Help::link('Adding Pages and Sections').")";
+			print "\n\t\t\t<br/><input class='ui2_title_field_page' name='".RequestContext::name('displayName')."' type='text' size='20'/>";
 		} else {
 			print Help::link('Adding Content');
-		}
-		print "\n\t\t<div style='white-space: nowrap;'>"._("Title: ");
-		print "\n\t\t\t<input name='".RequestContext::name('displayName')."' type='text' size='10'/>";
+			print "\n\t\t\t<br/><input class='ui2_title_field_content' name='".RequestContext::name('displayName')."' type='text' size='20'/>";
+		}		
 		print "\n\t\t</div>";
 		
 		print "\n\t\t<div style='white-space: nowrap; margin: 5px;'>";
@@ -675,7 +677,7 @@ END;
 			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
 			.">";
 			print $selectionLinkHtml;
-			print " &nbsp; |</span>";
+			print " |</span>";
 		}
 		print "\n\t\t\t\t<span class='controls_link'"
 			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"

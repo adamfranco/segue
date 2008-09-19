@@ -220,7 +220,7 @@ class Segue1UrlResolver {
 				return false;
 			
 			// If segue 1 knows about 
-			$segue1Url = DATAPORT_SEGUE1_URL.'/index.php?';
+			$segue1Url = rtrim(DATAPORT_SEGUE1_URL, '/').'/index.php?';
 			foreach ($get as $key => $value)
 				$segue1Url .= '&'.$key.'='.rawurlencode($value);
 			
@@ -243,7 +243,7 @@ class Segue1UrlResolver {
 		if (!isset($get['site']))
 			throw new Exception("Could not validate Segue 1 site, no site specified.");
 		
-		$url = DATAPORT_SEGUE1_URL.'/export/siteExists.php?';
+		$url = rtrim(DATAPORT_SEGUE1_URL, '/').'/export/siteExists.php?';
 		foreach ($get as $key => $value)
 				$url .= '&'.$key.'='.rawurlencode($value);
 				
@@ -299,7 +299,7 @@ class Segue1UrlResolver {
 			$slotMgr = SlotManager::instance();
 			$slot = $slotMgr->getSlotByShortname($slotName);
 			if ($slot->siteExists())
-				return $slot->getSiteId()->asString();
+				return $slot->getSiteId()->getIdString();
 		}
 		
 		// If we still couldn't resolve throw an exception.

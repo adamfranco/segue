@@ -112,14 +112,18 @@ class CourseSlot
 	 * @since 8/14/07
 	 */
 	public function mergeWithExternal () {
-		$courseMgr = SegueCourseManager::instance();
-		$idMgr = Services::getService("Id");
-		$course = $courseMgr->getCourse($idMgr->getId($this->getShortname()));
-		
-		foreach ($course->getInstructors() as $instructor) {
-			if (!$this->isOwner($instructor) && !$this->isRemovedOwner($instructor)) {
-				$this->populateOwnerId($instructor);
+		if (!$this->mergedWithExternal) {
+			$courseMgr = SegueCourseManager::instance();
+			$idMgr = Services::getService("Id");
+			$course = $courseMgr->getCourse($idMgr->getId($this->getShortname()));
+			$this->mergedWithExternal = true;
+			
+			foreach ($course->getInstructors() as $instructor) {
+				if (!$this->isOwner($instructor) && !$this->isRemovedOwner($instructor)) {
+					$this->populateOwnerId($instructor);
+				}
 			}
+			
 		}
 	}
 	

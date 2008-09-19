@@ -2,6 +2,112 @@
 Segue Change Log
 
 
+v. 2.2.3 (2008-09-17)
+----------------------------------------------------
+This release fixes a number of small bugs and usability issues.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.4.
+		
+		
+	* Bug Fix: #2098632 
+		Migration: Segue v2 to v1 URL resolver now does not add extra slashes to the
+		URL. 
+		(2008-09-15 - Adam Franco)
+		
+	* Bug Fix: #2112929 
+		Roles: search field in Roles UI is now labelled and includes instructions
+		for use.
+		(2008-09-12 - Alex Chapin)		
+		
+	* Bug Fix: #2094932 
+		UI2:title fields have been increased in size to accomodate more title text.
+		(2008-09-12 - Alex Chapin)		
+		
+	* Bug Fix: #2094944 
+		UI2: options box title bar now no longer obscures block, page or section
+		titles. 
+		(2008-09-12 - Alex Chapin)
+		
+	* Bug Fix: 
+		Wiki: File-URL writing now puts the repository first to keep it out of
+		display in the browser's title-bar.
+		(2008-09-16 - Adam Franco)
+	
+
+
+
+v. 2.2.2 (2008-08-29)
+----------------------------------------------------
+This release fixes several issues that were in 2.2.1.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+		
+		
+	* Bug Fix: 
+		Portal: Now hiding edit links when not authenticated to help exclude
+		crawlers. 
+		(2008-08-29 - Adam Franco)
+		
+	* Bug Fix: 
+		Errors: UnknownActionException now gives a 404 error instead of a 400.
+		(2008-08-29 - Adam Franco)
+		
+	* Bug Fix: 
+		Slots: Fixed infinite loop in course-owner merging.
+		(2008-08-29 - Adam Franco)
+		(reported by hector_vila)
+	
+
+
+
+v. 2.2.1 (2008-08-29)
+----------------------------------------------------
+This release improves the speed of searching for sites in the portal as well as
+fixes a number of minor bugs.
+
+Notable user-facing changes:
+
+- speed improvements in the portal
+
+- Audio Clip plugin can now be used in comments.
+
+See the change log for more details on these and other fixes.
+
+-------------
+
+This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+		
+		
+	* Bug Fix: #2079425 
+		Slots/Portal: Slots/Placeholders are now only merged with external owner
+		lists when owners are requested rather than when the slot is instantiated.
+		This change means that searching for slots in the portal doesn't require
+		loading course information.
+		(2008-08-28 - Adam Franco)
+		
+	* Bug Fix: #2080741 
+		Plugins: Fixed PHP notice in Next/Previous Links.
+		(2008-08-28 - Adam Franco)
+		
+	* Bug Fix: #2079423 
+		Comments: AudioPlayer plugin can now be used for comments.
+		(2008-08-28 - Adam Franco)
+		
+	* Bug Fix: #2080744 
+		Portal: Fixed PHP notice in Portal search.
+		(2008-08-28 - Adam Franco)
+		
+	* Bug Fix: #2081075 
+		Portal: removed the "All Editable" folder because it is too slow.
+		(2008-08-29 - Adam Franco)
+	
+
+
+
 v. 2.2.0 (2008-08-27)
 ----------------------------------------------------
 This Release adds several new plugins, a number of user-interface and RSS

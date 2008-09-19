@@ -10,9 +10,66 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.1" date="The Future">
+	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>
-		
+			This release fixes a number of small bugs and usability issues.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.4.
+		</releaseNotes>
+		<fix author='adam' date='2008-09-15' ref='2098632' reftype='bug'>
+			Migration: Segue v2 to v1 URL resolver now does not add extra slashes
+			to the URL.
+		</fix>
+		<fix author='alex' date='2008-09-12' ref='2112929' reftype='bug'>
+			Roles: search field in Roles UI is now labelled and includes instructions for use.
+		</fix>		
+		<fix author='alex' date='2008-09-12' ref='2094932' reftype='bug'>
+			UI2: title fields have been increased in size to accomodate more title text.
+		</fix>		
+		<fix author='alex' date='2008-09-12' ref='2094944' reftype='bug'>
+			UI2: options box title bar now no longer obscures block, page or section titles.
+		</fix>
+		<fix author='adam' date='2008-09-16'>
+			Wiki: File-URL writing now puts the repository first to keep it out of 
+			display in the browser's title-bar.
+		</fix>
+	</version>
+	<version number="2.2.2" date="2008-08-29">
+		<releaseNotes>
+			This release fixes several issues that were in 2.2.1.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
+		</releaseNotes>
+		<fix author='adam' date='2008-08-29'>
+			Portal: Now hiding edit links when not authenticated to help exclude crawlers.
+		</fix>
+		<fix author='adam' date='2008-08-29'>
+			Errors: UnknownActionException now gives a 404 error instead of a 400.
+		</fix>
+		<fix author='adam' date='2008-08-29' reporter='hector_vila'>
+			Slots: Fixed infinite loop in course-owner merging.
+		</fix>
+	</version>
+	<version number="2.2.1" date="2008-08-29">
+		<releaseNotes>
+			This release improves the speed of searching for sites in the portal
+			as well as fixes a number of minor bugs.
+			
+			Notable user-facing changes:
+			
+			- speed improvements in the portal
+			
+			- Audio Clip plugin can now be used in comments.
+			
+			See the change log for more details on these and other fixes.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
 		</releaseNotes>
 		<fix author='adam' date='2008-08-28' ref='2079425' reftype='bug'>
 			Slots/Portal: Slots/Placeholders are now only merged with external 
@@ -28,6 +85,9 @@
 		</fix>
 		<fix author='adam' date='2008-08-28' ref='2080744' reftype='bug'>
 			Portal: Fixed PHP notice in Portal search.
+		</fix>
+		<fix author='adam' date='2008-08-29' ref='2081075' reftype='bug'>
+			Portal: removed the "All Editable" folder because it is too slow.
 		</fix>
 	</version>
 	<version number="2.2.0" date="2008-08-27">

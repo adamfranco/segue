@@ -41,7 +41,7 @@ class AccessPortalCategory
 	public function __construct () {
 		$this->folders = array();
 		$this->folders[] = new AllVisiblePortalFolder;
-		$this->folders[] = new AllEditablePortalFolder;
+// 		$this->folders[] = new AllEditablePortalFolder;
 	}
 		
 	/**

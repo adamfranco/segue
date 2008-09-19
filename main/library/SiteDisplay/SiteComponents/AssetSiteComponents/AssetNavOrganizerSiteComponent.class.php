@@ -36,7 +36,7 @@ class AssetNavOrganizerSiteComponent
 	 */
 	function getDisplayName () {
 		$parent = $this->getParentComponent();
-		return $parent->getDisplayName()._(" <em>Layout Container</em>");
+		return $parent->getDisplayName()._(" <span class='controls_bar_title'>Layout Container</span>");
 	}
 	
 	/**
