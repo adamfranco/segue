@@ -95,23 +95,21 @@ class Segue_AccessLog {
 	public function getRecentSlots () {
 		$slots = array();
 		
-		if ($this->_storePersistently()) {
-			$dbc = Services::getService('DatabaseManager');
-			
-			$query = new SelectQuery;
-			$query->addTable('segue_accesslog');
-			$query->addColumn('fk_slotname');
-			$query->addColumn('tstamp');
-			$query->addWhereEqual('agent_id', $this->_getCurrentAgentId());
-			$query->addOrderBy('tstamp', DESCENDING);
-			$query->limitNumberOfRows(50);
-			
-			$result = $dbc->query($query, IMPORTER_CONNECTION);
-			
-			while ($result->hasNext()) {
-				$row = $result->next();
-				$slots[$row['fk_slotname']] = DateAndTime::fromString($row['tstamp'])->asString();
-			}
+		$dbc = Services::getService('DatabaseManager');
+		
+		$query = new SelectQuery;
+		$query->addTable('segue_accesslog');
+		$query->addColumn('fk_slotname');
+		$query->addColumn('tstamp');
+		$query->addWhereEqual('agent_id', $this->_getCurrentAgentId());
+		$query->addOrderBy('tstamp', DESCENDING);
+		$query->limitNumberOfRows(50);
+		
+		$result = $dbc->query($query, IMPORTER_CONNECTION);
+		
+		while ($result->hasNext()) {
+			$row = $result->next();
+			$slots[$row['fk_slotname']] = DateAndTime::fromString($row['tstamp'])->asString();
 		}
 		
 		// Add session-stored slots
