@@ -218,6 +218,9 @@ class htmlAction
 		// Add the RSS head links
 		RssLinkPrinter::addHeadLinks(SiteDispatcher::getCurrentNode());
 		
+		// Add the selection Panel
+		Segue_Selection::instance()->addHeadJavascript();
+		
 		$allWrapper = new Container(new YLayout, BLANK, 1);
 		
 		

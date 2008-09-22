@@ -108,6 +108,9 @@ class listAction
 		
 		$this->addHeadJs();
 		
+		// Add the selection Panel
+		Segue_Selection::instance()->addHeadJavascript();
+		
 		$harmoni = Harmoni::instance();
 		$harmoni->attachData('help_topic', 'Portal');
 		

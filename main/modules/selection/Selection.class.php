@@ -194,7 +194,7 @@ class Segue_Selection
 	 * @access protected
 	 * @since 7/31/08
 	 */
-	protected function addHeadJavascript () {
+	public function addHeadJavascript () {
 		$harmoni = Harmoni::instance();
 		if (!$harmoni->getAttachedData('Segue_Selection_headJsAdded')) {
 			$harmoni = Harmoni::instance();

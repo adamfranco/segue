@@ -30,6 +30,10 @@
 		<new author='adam' date='2008-09-22'>
 			Choice of 'Classic Mode' or 'New Mode' is now stored across sessions.
 		</new>
+		<change author='adam' date='2008-09-22' ref='2117996' reftype='fr' reporter='bryan_carson'>
+			Selection: The selection panel is now visible in view-mode and on the
+			portal.
+		</change>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>
