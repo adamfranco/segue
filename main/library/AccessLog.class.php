@@ -59,6 +59,8 @@ class Segue_AccessLog {
 	private function __construct () {
 		if (!isset($_SESSION['segue_access_log']))
 			$_SESSION['segue_access_log'] = array();
+		
+		$this->_syncSessionLog();
 	}
 	
 	/**
@@ -74,27 +76,8 @@ class Segue_AccessLog {
 		ArgumentValidator::validate($slotname, NonzeroLengthStringValidatorRule::getRule());
 		
 		if ($this->_storePersistently()) {
-			$dbc = Services::getService('DatabaseManager');
 			
-			// First try running an update query, since most will be updates
-			$query = new UpdateQuery;
-			$query->setTable('segue_accesslog');
-			$query->addRawValue('tstamp', 'NOW()');
-			$query->addWhereEqual('agent_id', $this->_getCurrentAgentId());
-			$query->addWhereEqual('fk_slotname', $slotname);
-			
-			$result = $dbc->query($query, IMPORTER_CONNECTION);
-			
-			// If no rows were updated, insert a new one for this user/slot
-			if (!$result->getNumberOfRows()) {
-				$query = new InsertQuery;
-				$query->setTable('segue_accesslog');
-				$query->addRawValue('tstamp', 'NOW()');
-				$query->addValue('agent_id', $this->_getCurrentAgentId());
-				$query->addValue('fk_slotname', $slotname);
-				
-				$dbc->query($query, IMPORTER_CONNECTION);
-			}
+			$this->_recordVisit($slotname);
 		} 
 		// Maintain a session-record for anonymous/admin users
 		else {
@@ -120,7 +103,7 @@ class Segue_AccessLog {
 			$query->addColumn('fk_slotname');
 			$query->addColumn('tstamp');
 			$query->addWhereEqual('agent_id', $this->_getCurrentAgentId());
-			$query->addOrderBy('tstamp', DESC);
+			$query->addOrderBy('tstamp', DESCENDING);
 			$query->limitNumberOfRows(50);
 			
 			$result = $dbc->query($query, IMPORTER_CONNECTION);
@@ -132,11 +115,104 @@ class Segue_AccessLog {
 		}
 		
 		// Add session-stored slots
-		foreach ($_SESSION['segue_access_log'] as $slotname => $tstamp)
-			$slots[$slotname] = $tstamp;
+		if (isset($_SESSION['segue_access_log'])) {
+			foreach ($_SESSION['segue_access_log'] as $slotname => $tstamp)
+				$slots[$slotname] = $tstamp;
+			
+			arsort($slots);
+		}
 		
-		arsort($slots);
-		return $slots;
+		return array_keys($slots);
+	}
+	
+	/**
+	 * Synchronize any sites viewed while not logged in with the database if
+	 * we now know the current user.
+	 * 
+	 * @return void
+	 * @access protected
+	 * @since 9/22/08
+	 */
+	protected function _syncSessionLog () {
+		if ($this->_storePersistently() && count($_SESSION['segue_access_log'])) {
+			// Store any sites visited while not logged in.
+			foreach ($_SESSION['segue_access_log'] as $s_slot => $s_timestamp) {
+				$this->_recordPastVisit($s_slot, $s_timestamp);
+			}
+			$_SESSION['segue_access_log'] = array();
+		}
+	}
+	
+	/**
+	 * Record a visit in the database
+	 * 
+	 * @param string $slotname
+	 * @return void
+	 * @access protected
+	 * @since 9/22/08
+	 */
+	protected function _recordVisit ($slotname) {
+		$dbc = Services::getService('DatabaseManager');
+			
+		// First try running an update query, since most will be updates
+		$query = new UpdateQuery;
+		$query->setTable('segue_accesslog');
+		$query->addRawValue('tstamp', 'NOW()');
+		$query->addWhereEqual('agent_id', $this->_getCurrentAgentId());
+		$query->addWhereEqual('fk_slotname', $slotname);
+		
+		$result = $dbc->query($query, IMPORTER_CONNECTION);
+		
+		// If no rows were updated, insert a new one for this user/slot
+		if (!$result->getNumberOfRows()) {
+			$query = new InsertQuery;
+			$query->setTable('segue_accesslog');
+			$query->addRawValue('tstamp', 'NOW()');
+			$query->addValue('agent_id', $this->_getCurrentAgentId());
+			$query->addValue('fk_slotname', $slotname);
+			
+			$dbc->query($query, IMPORTER_CONNECTION);
+		}
+	}
+	
+	/**
+	 * Record a visit in the database
+	 * 
+	 * @param string $slotname
+	 * @param string $timestamp
+	 * @return void
+	 * @access protected
+	 * @since 9/22/08
+	 */
+	protected function _recordPastVisit ($slotname, $timestamp) {
+		$dbc = Services::getService('DatabaseManager');
+			
+		// First try running an update query, since most will be updates
+		$query = new UpdateQuery;
+		$query->setTable('segue_accesslog');
+		$query->addValue('tstamp', $timestamp);
+		$query->addWhereEqual('agent_id', $this->_getCurrentAgentId());
+		$query->addWhereEqual('fk_slotname', $slotname);
+		$query->addWhereLessThan('tstamp', $timestamp);
+		
+		$result = $dbc->query($query, IMPORTER_CONNECTION);
+		
+		// If no rows were updated, insert a new one for this user/slot
+		if (!$result->getNumberOfRows()) {
+			try {
+				$query = new InsertQuery;
+				$query->setTable('segue_accesslog');
+				$query->addValue('tstamp', $timestamp);
+				$query->addValue('agent_id', $this->_getCurrentAgentId());
+				$query->addValue('fk_slotname', $slotname);
+				
+				$dbc->query($query, IMPORTER_CONNECTION);
+				
+			// If the update query failed the more recent time where clause, 
+			// this insert query will fail. That is fine, just ignore.
+			} catch (DuplicateKeyDatabaseException $e) {
+			}
+		}
 	}
 	
 	/**
