@@ -505,13 +505,13 @@ class listAction
 				} catch (UnknownIdException $e) {
 					$this->currentFolderId = 'personal';
 				}
-			} else if (UserPreferences::instance()->getPreference('segue_portal_last_folder')) {
+			} else if (UserData::instance()->getPreference('segue_portal_last_folder')) {
 				$harmoni = Harmoni::instance();
-				$this->currentFolderId = UserPreferences::instance()->getPreference('segue_portal_last_folder');
+				$this->currentFolderId = UserData::instance()->getPreference('segue_portal_last_folder');
 				
-				if (!strlen(RequestContext::value('starting_number')) && UserPreferences::instance()->getPreference('segue_portal_starting_number')) {
+				if (!strlen(RequestContext::value('starting_number')) && UserData::instance()->getPreference('segue_portal_starting_number')) {
 					
-					$harmoni->request->setRequestParam('starting_number', UserPreferences::instance()->getPreference('segue_portal_starting_number'));
+					$harmoni->request->setRequestParam('starting_number', UserData::instance()->getPreference('segue_portal_starting_number'));
 				}
 				
 				try {
@@ -527,8 +527,8 @@ class listAction
 			}
 		}
 		
-		UserPreferences::instance()->setPreference('segue_portal_last_folder', $this->currentFolderId);
-		UserPreferences::instance()->setPreference('segue_portal_starting_number', strval(intval(RequestContext::value('starting_number'))));
+		UserData::instance()->setPreference('segue_portal_last_folder', $this->currentFolderId);
+		UserData::instance()->setPreference('segue_portal_starting_number', strval(intval(RequestContext::value('starting_number'))));
 		return $this->currentFolderId;
 	}
 	
