@@ -503,10 +503,10 @@ class listAction
 					$folder = $portalMgr->getFolder(RequestContext::value('folder'));
 					$this->currentFolderId = $folder->getIdString();
 				} catch (UnknownIdException $e) {
-					$this->currentFolderId = 'personal';
+					$this->currentFolderId = 'recent_access';
 				}
 			} else {
-				$this->currentFolderId = 'personal';
+				$this->currentFolderId = 'recent_access';
 			}
 		}
 		

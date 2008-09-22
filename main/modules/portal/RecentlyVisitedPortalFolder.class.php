@@ -57,7 +57,7 @@ class RecentlyVisitedPortalFolder
 	 * @since 4/1/08
 	 */
 	public function getIdString () {
-		return "recent_visit";
+		return "recent_access";
 	}
 	
 	/**
