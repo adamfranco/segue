@@ -96,7 +96,6 @@ class editviewAction
 	 */
 	function getCommandsComponent () {
 		$harmoni = Harmoni::instance();
-		//printpre("module: ".$_SESSION['UI_MODULE']);
 		ob_start();
 		print "<div class='commands'>";
 		

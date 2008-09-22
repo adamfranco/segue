@@ -351,10 +351,12 @@ class displayAction
 	 * @since 7/27/07
 	 */
 	function getUiModule () {
-		if (!isset($_SESSION['UI_MODULE']))
-			$this->setUiModule('ui2');
-			
-		return $_SESSION['UI_MODULE'];
+		$module = UserData::instance()->getPreference('segue_ui_module');
+		$allowed = array('ui1', 'ui2');
+		if (in_array($module, $allowed))
+			return $module;
+		else
+			return 'ui2';
 	}
 
 	
@@ -367,7 +369,10 @@ class displayAction
 	 * @since 7/27/07
 	 */
 	function setUiModule ($module) {
-		$_SESSION['UI_MODULE'] = $module;
+		$allowed = array('ui1', 'ui2');
+		
+		if (in_array($module, $allowed))
+			UserData::instance()->setPreference('segue_ui_module', $module);
 	}
 
 	
