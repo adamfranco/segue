@@ -56,6 +56,8 @@ require_once(MYDIR."/main/library/Templates/TemplateManager.class.php");
 require_once(MYDIR."/main/modules/selection/Selection.class.php");
 require_once(MYDIR."/main/modules/portal/SearchPortalFolder.class.php");
 require_once(HARMONI."UserData/UserData.class.php");
+require_once(MYDIR."/main/library/AccessLog.class.php");
+
 
 /******************************************************************************
  * Include any theme classes we want to use. They need to be included prior

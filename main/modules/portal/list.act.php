@@ -503,7 +503,7 @@ class listAction
 					$folder = $portalMgr->getFolder(RequestContext::value('folder'));
 					$this->currentFolderId = $folder->getIdString();
 				} catch (UnknownIdException $e) {
-					$this->currentFolderId = 'personal';
+					$this->currentFolderId = 'recent_access';
 				}
 			} else if (UserData::instance()->getPreference('segue_portal_last_folder')) {
 				$harmoni = Harmoni::instance();
@@ -523,7 +523,7 @@ class listAction
 					$harmoni->request->setRequestParam('starting_number', '0');
 				}
 			} else {
-				$this->currentFolderId = 'personal';
+				$this->currentFolderId = 'recent_access';
 			}
 		}
 		

@@ -10,9 +10,24 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.3" date="The Future">
+	<version number="2.3.0" date="The Future">
 		<releaseNotes>
 			
+		</releaseNotes>
+		<new author='adam' date='2008-09-22' ref='2117994' reftype='fr'>
+			Portal: New 'Recently Visited' folder.
+		</new>
+		<important author='adam' date='2008-07-08'>
+			Run the 'Access Log' updater under Admin Tools -&gt; Segue Updates.
+		</important>
+	</version>
+	<version number="2.2.3" date="2008-09-17">
+		<releaseNotes>
+			This release fixes a number of small bugs and usability issues.
+			
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.4.
 		</releaseNotes>
 		<fix author='adam' date='2008-09-15' ref='2098632' reftype='bug'>
 			Migration: Segue v2 to v1 URL resolver now does not add extra slashes
