@@ -505,11 +505,30 @@ class listAction
 				} catch (UnknownIdException $e) {
 					$this->currentFolderId = 'recent_access';
 				}
+			} else if (UserData::instance()->getPreference('segue_portal_last_folder')) {
+				$harmoni = Harmoni::instance();
+				$this->currentFolderId = UserData::instance()->getPreference('segue_portal_last_folder');
+				
+				if (!strlen(RequestContext::value('starting_number')) && UserData::instance()->getPreference('segue_portal_starting_number')) {
+					
+					$harmoni->request->setRequestParam('starting_number', UserData::instance()->getPreference('segue_portal_starting_number'));
+				}
+				
+				try {
+					$portalMgr = PortalManager::instance();
+					$folder = $portalMgr->getFolder($this->currentFolderId);
+					$this->currentFolderId = $folder->getIdString();
+				} catch (UnknownIdException $e) {
+					$this->currentFolderId = 'personal';
+					$harmoni->request->setRequestParam('starting_number', '0');
+				}
 			} else {
 				$this->currentFolderId = 'recent_access';
 			}
 		}
 		
+		UserData::instance()->setPreference('segue_portal_last_folder', $this->currentFolderId);
+		UserData::instance()->setPreference('segue_portal_starting_number', strval(intval(RequestContext::value('starting_number'))));
 		return $this->currentFolderId;
 	}
 	

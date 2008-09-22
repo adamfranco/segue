@@ -20,6 +20,13 @@
 		<important author='adam' date='2008-07-08'>
 			Run the 'Access Log' updater under Admin Tools -&gt; Segue Updates.
 		</important>
+		<new author='adam' date='2008-09-22' ref='2112775' reftype='fr'>
+			Portal: The current portal folder is now remembered so that users
+			get returned to the same folder each time they go to the portal.
+		</new>
+		<important author='adam' date='2008-07-08'>
+			Run the 'User Data' updater under Admin Tools -&gt; Segue Updates.
+		</important>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>
