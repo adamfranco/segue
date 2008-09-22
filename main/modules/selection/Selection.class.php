@@ -144,7 +144,8 @@ class Segue_Selection
 				preg_replace('/\s+/', ' ',
 					strip_tags($siteComponent->getDisplayName()))))."' ";
 		print "}); return false;\"";
-		print ">"._('+ Select');
+		print 'title="'._("Copy to your Selection").'" ';
+		print ">"._('Copy');
 		print "</a>";
 		
 		$harmoni->request->endNamespace();				
@@ -180,7 +181,8 @@ class Segue_Selection
 		print " style='cursor: pointer;'";
 		print " class='Selection_MoveCopy_Link' ";
 		print " onclick=\"MoveCopyPanel.run('".$siteComponent->getId()."', '".$siteComponent->getComponentClass()."', ".$ancestorIds.", this); return false;\"";
-		print ">"._('+ Move/Copy...');
+		print " title=\""._("Paste from your Selection")."\"";
+		print ">"._('Paste');
 		print "</a>";
 		
 		$harmoni->request->endNamespace();				
