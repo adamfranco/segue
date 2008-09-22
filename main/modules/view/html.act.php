@@ -148,6 +148,10 @@ class htmlAction
 					RequestContext::sendTo(SiteDispatcher::quickUrl());
 				}
 			}
+			
+			// Mark the site as viewed
+			Segue_AccessLog::instance()->touch($slot->getShortname());
+			
 		} catch (UnknownIdException $e) {		// No slot for the site....
 		}
 		
@@ -157,7 +161,6 @@ class htmlAction
 				
 		$this->addSiteContent($mainScreen);
 		$this->addFooterControls($allWrapper);
-
 		
 		$this->mainScreen = $mainScreen;
 		return $allWrapper;
