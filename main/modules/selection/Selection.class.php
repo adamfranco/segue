@@ -134,9 +134,16 @@ class Segue_Selection
 		ob_start();
 		
 		print "\n\t\t<a ";
+		print " id='selection_add_link-".$siteComponent->getId()."'";
+		print " class='";
+		if ($this->isSiteComponentInSet($siteComponent))
+			print "Selection_add_link_selected";
+		else
+			print "Selection_add_link_deselected";
+		print "' ";
 		print " style='cursor: pointer;'";
 		print " href='#' ";
-		print " onclick=\"Segue_Selection.instance().addComponent({";
+		print " onclick=\"Segue_Selection.instance().toggleComponent({";
 		print	"id: '".$siteComponent->getId()."', ";
 		print 	"type: '".$siteComponent->getComponentClass()."', ";
 		print	"displayName: '"

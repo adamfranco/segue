@@ -58,6 +58,21 @@ function Segue_Selection () {
 	}
 	
 	/**
+	 * Add or remove a site component to the selection.
+	 * 
+	 * @param object siteComponent
+	 * @return void
+	 * @access public
+	 * @since 7/31/08
+	 */
+	Segue_Selection.prototype.toggleComponent = function (siteComponent) {
+		if (this.isInSelection(siteComponent.id)) 
+			this.removeComponent(siteComponent);
+		else
+			this.addComponent(siteComponent);
+	}
+	
+	/**
 	 * Add a site component to the selection.
 	 * 
 	 * @param object siteComponent
@@ -119,6 +134,12 @@ function Segue_Selection () {
 				newComponents.push(this.components[i]);
 		}
 		this.components = newComponents;
+		
+		// Try to mark the add-link as deselected.
+		var link = document.get_element_by_id("selection_add_link-" + siteComponent.id);
+		if (link) {
+			link.className = "Selection_add_link_deselected";
+		}
 		
 		this.buildDisplay();
 		this.notifyListeners();
@@ -206,6 +227,13 @@ function Segue_Selection () {
 			throw 'Already selected';
 		
 		this.components.push(siteComponent);
+		
+		// Try to mark the add-link as selected.
+		var link = document.get_element_by_id("selection_add_link-" + siteComponent.id);
+		if (link) {
+			link.className = "Selection_add_link_selected";
+		}
+		
 		this.buildDisplay();
 	}
 	

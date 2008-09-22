@@ -38,6 +38,9 @@
 			Selection: '+ Selection' button renamed to 'Copy', '+ Move/Copy' renamed 
 			to 'Paste'.
 		</change>
+		<change author='adam' date='2008-09-22' ref='2117959' reftype='fr'>
+			Selection: When an item is selected the 'Copy' button now is highlighted by a border.
+		</change>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>
