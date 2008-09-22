@@ -50,7 +50,7 @@ class TimePortalCategory
 	 * @since 4/1/08
 	 */
 	public function getDisplayName () {
-		return _("By Time");
+		return _("Recent Activity");
 	}
 	
 	/**
