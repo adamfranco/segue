@@ -217,10 +217,10 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		this.emptySelectionMessage.className = 'emptySelectionMessage';
 		
 		if (this.destType == 'MenuOrganizer')
-			this.emptySelectionMessage.innerHTML = "No pages or content blocks are selected. Use the <strong>+ Selection</strong> links to select pages or content blocks so that they can be moved or copied here.";
+			this.emptySelectionMessage.innerHTML = "No pages or content blocks are selected. Use the <strong>Copy</strong> links to select pages or content blocks so that they can be moved or copied here.";
 		else
-			this.emptySelectionMessage.innerHTML = "No content blocks are selected. Use the <strong>+ Selection</strong> links to select content blocks so that they can be moved or copied here.";
-		this.form.appendChild(this.emptySelectionMessage);
+			this.emptySelectionMessage.innerHTML = "No content blocks are selected. Use the <strong>Copy</strong> links to select content blocks so that they can be moved or copied here.";
+		this.contentElement.appendChild(this.emptySelectionMessage);
 		
 		
 		this.contentElement.appendChild(this.form);
@@ -294,8 +294,10 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		
 		if (selection.components.length) {
 			this.emptySelectionMessage.style.display = 'none';
+			this.form.style.display = 'block';
 		} else {
 			this.emptySelectionMessage.style.display = 'block';
+			this.form.style.display = 'none';
 		}
 		
 		for (var i = 0; i < selection.components.length; i++) {
