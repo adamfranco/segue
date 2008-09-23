@@ -238,6 +238,13 @@ class Segue_Selection
 								print "\n\t\t\tSegue_Selection.instance().loadComponent({";
 								print	"id: '".$siteComponent->getId()."', ";
 								print 	"type: '".$siteComponent->getComponentClass()."', ";
+								if (method_exists($siteComponent, 'isSection')) {
+									if ($siteComponent->isSection())
+										print "navType: 'Section', ";
+									else
+										print "navType: 'Page', ";
+									
+								}
 								print	"displayName: '"
 									.addslashes(str_replace('"', '&quot', 
 										preg_replace('/\s+/', ' ',

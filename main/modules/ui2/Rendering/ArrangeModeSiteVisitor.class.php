@@ -463,7 +463,7 @@ class ArrangeModeSiteVisitor
 <script type='text/javascript'>
 /* <![CDATA[ */
 	
-	new Draggable('comp_$id',{revert:true, ghosting:false, handle:'controls_bar_title'});
+	new Draggable('comp_$id',{revert:true, ghosting:false, handle:'controls_bar_title', scroll: window});
 	
 	var element = document.get_element_by_id('comp_$id');
 	var handle = element.down('.controls_bar_title');

@@ -192,9 +192,15 @@ function Segue_Selection () {
 		
 		var elements = doc.getElementsByTagName('siteComponent');
 		for (var i = 0; i < elements.length; i++) {
+			if (elements[i].hasAttribute('navType'))
+				var navType = elements[i].getAttribute('navType');
+			else
+				var navType = null;
+				
 			this.loadComponent({
 				id: elements[i].getAttribute('id'),
 				type: elements[i].getAttribute('type'),
+				navType: navType,
 				displayName: elements[i].getAttribute('displayName')
 			});
 		}
@@ -348,7 +354,12 @@ function Segue_Selection () {
 		var elem = li.appendChild(document.createElement('span'));
 		switch (siteComponent.type) {
 			case 'NavBlock':
-				var type = 'Nav. Item';
+				if (siteComponent.navType == 'Page')
+					var type = 'Page';
+				else if (siteComponent.navType == 'Section')
+					var type = 'Section';
+				else
+					var type = 'Nav. Item';
 				break;
 			case 'Block':
 				var type = 'Content Block';
