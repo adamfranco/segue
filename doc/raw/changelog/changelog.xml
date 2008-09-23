@@ -48,6 +48,9 @@
 		<change author='adam' date='2008-09-23' ref='2117959' reftype='fr'>
 			Move-Copy: Now only shows controls if there are selected items.
 		</change>
+		<new author='adam' date='2008-09-23'>
+			Move-Copy: Now remembers all paste-panel settings persistently.
+		</new>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>

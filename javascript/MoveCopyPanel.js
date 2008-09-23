@@ -159,8 +159,16 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var option = select.appendChild(document.createElement('option'));
 		option.value = 'false';
 		option.innerHTML = 'Remove Roles';
-		select.value = 'false';
 		this.copyPermsDiv.appendChild(select);
+		
+		if (userData.getPreference('segue_movecopy_copy_permissions'))
+			select.value = userData.getPreference('segue_movecopy_copy_permissions');
+		else
+			select.value = 'false';
+		select.onchange = function () {
+			// Set the new value as the user's preference.
+			UserData.instance().setPreference('segue_movecopy_copy_permissions', this.value);
+		}
 		
 		this.copyPermsDiv.appendChild(document.createElement('br'));
 		this.copyPermsDiv.appendChild(document.createTextNode(' \u00a0 \u00a0 \u00a0 \u00a0 '));
@@ -172,8 +180,16 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var option = select.appendChild(document.createElement('option'));
 		option.value = 'false';
 		option.innerHTML = 'Remove Discussion Posts';
-		select.value = 'false';
 		this.copyPermsDiv.appendChild(select);
+		
+		if (userData.getPreference('segue_movecopy_copy_discussions'))
+			select.value = userData.getPreference('segue_movecopy_copy_discussions');
+		else
+			select.value = 'false';
+		select.onchange = function () {
+			// Set the new value as the user's preference.
+			UserData.instance().setPreference('segue_movecopy_copy_discussions', this.value);
+		}
 		
 		
 		// Removal from selection
@@ -191,6 +207,17 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		option.value = 'keep';
 		option.innerHTML = 'Keep in Selection';
 		div.appendChild(select);
+		
+		if (userData.getPreference('segue_movecopy_remove_after_use'))
+			select.value = userData.getPreference('segue_movecopy_remove_after_use');
+		else
+			select.value = 'remove';
+		select.onchange = function () {
+			// Set the new value as the user's preference.
+			UserData.instance().setPreference('segue_movecopy_remove_after_use', this.value);
+		}
+		
+		
 // 		this.form.appendChild(document.createTextNode(' \u00a0 \u00a0 '));
 		
 		// Check All/None
