@@ -12,6 +12,7 @@
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
 require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
 require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
+require_once(POLYPHONY.'/main/modules/user/UserDataHelper.class.php');
 
 /**
  * The edit-mode site visitor renders the site for editing, displaying controls.
@@ -84,6 +85,8 @@ END;
 		$harmoni = Harmoni::instance();
 		$outputHandler = $harmoni->getOutputHandler();
 		$outputHandler->setHead($outputHandler->getHead().ob_get_clean());
+		
+		UserDataHelper::writeHeadJs();
 	}
 	
 	/**

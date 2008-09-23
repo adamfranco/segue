@@ -70,6 +70,7 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		/*********************************************************
 		 * build our form
 		 *********************************************************/
+		var userData = UserData.instance();
 		var panel = this;
 		
 		this.form = document.createElement('form');
@@ -99,7 +100,10 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 // 		var option = this.command.appendChild(document.createElement('option'));
 // 		option.value = 'reference';
 // 		option.innerHTML = 'Reference';
-		this.command.value = 'copy';
+		if (userData.getPreference('segue_movecopy_command'))
+			this.command.value = userData.getPreference('segue_movecopy_command');
+		else
+			this.command.value = 'copy';
 		// Change the submit label on change.
 		this.command.onchange = function () {
 			panel.submit.value = this.options.item(this.selectedIndex).innerHTML + " Checked »";
@@ -111,6 +115,9 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 			}
 			
 			panel.reloadFromSelection();
+			
+			// Set the new value as the user's preference.
+			UserData.instance().setPreference('segue_movecopy_command', this.value);
 			
 		}
 		this.form.appendChild(this.command);
@@ -137,6 +144,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		
 		// Copy Permissions/Discussions
 		this.copyPermsDiv = this.form.appendChild(document.createElement('div'));
+		if (this.command.value == 'move')
+			this.copyPermsDiv.style.display = 'none';
 		this.copyPermsDiv.appendChild(document.createTextNode(' Copy Options: '));
 		this.copyPermsDiv.appendChild(document.createElement('br'));
 		this.copyPermsDiv.appendChild(document.createTextNode(' \u00a0 \u00a0 \u00a0 \u00a0 '));
