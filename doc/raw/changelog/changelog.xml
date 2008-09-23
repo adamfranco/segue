@@ -58,6 +58,10 @@
 		<fix author='adam' date='2008-09-23' ref='2118182' reftype='fr' reporter='bryan_carson'>
 			UI2: Window now scrolls when dragging items in 'Arrange' mode.
 		</fix>
+		<new author='adam' date='2008-09-23' ref='2118001' reftype='fr' reporter='bryan_carson'>
+			MediaLibrary: The Textblock and FileForDownload plugins now include
+			buttons below the FCKEditor for inserting images and links to files.
+		</new>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>
