@@ -347,7 +347,12 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var elem = li.appendChild(document.createElement('span'));
 		switch (siteComponent.type) {
 			case 'NavBlock':
-				var type = 'Nav. Item';
+				if (siteComponent.navType == 'Page')
+					var type = 'Page';
+				else if (siteComponent.navType == 'Section')
+					var type = 'Section';
+				else
+					var type = 'Nav. Item';
 				break;
 			case 'Block':
 				var type = 'Content Block';

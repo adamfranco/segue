@@ -35,11 +35,18 @@
 			portal.
 		</change>
 		<change author='adam' date='2008-09-22' ref='2117959' reftype='fr'>
-			Selection: '+ Selection' button renamed to 'Copy', '+ Move/Copy' renamed 
+			Selection/Move-Copy: '+ Selection' button renamed to 'Copy', '+ Move/Copy' renamed 
 			to 'Paste'.
 		</change>
 		<change author='adam' date='2008-09-22' ref='2114523' reftype='fr'>
 			Selection: When an item is selected the 'Copy' button now is highlighted by a border.
+		</change>
+		<change author='adam' date='2008-09-23' ref='2117959' reftype='fr'>
+			Selection/Move-Copy: Sections and Pages are now differentiated in the Selection 
+			and Paste panels.
+		</change>
+		<change author='adam' date='2008-09-23' ref='2117959' reftype='fr'>
+			Move-Copy: Now only shows controls if there are selected items.
 		</change>
 	</version>
 	<version number="2.2.3" date="2008-09-17">

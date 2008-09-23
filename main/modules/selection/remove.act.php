@@ -63,6 +63,13 @@ class removeAction
 			while($selection->hasNext()) {
 				$siteComponent = $selection->nextSiteComponent();
 				print "\n\t<siteComponent type='".$siteComponent->getComponentClass()."' ";
+				if (method_exists($siteComponent, 'isSection')) {
+					if ($siteComponent->isSection())
+						print "navType='Section' ";
+					else
+						print "navType='Page' ";
+					
+				}
 				print "id='".$siteComponent->getId()."' ";
 				print "displayName=\"".str_replace('"', '&quot', 
 				preg_replace('/\s+/', ' ',
