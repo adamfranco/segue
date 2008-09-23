@@ -55,6 +55,9 @@
 			UI2: 'Copy' and 'Options' links are now always shown in to controls 
 			bar rather than only when the bar itself is moused-over.
 		</fix>
+		<fix author='adam' date='2008-09-23' ref='2118182' reftype='fr' reporter='bryan_carson'>
+			UI2: Window now scrolls when dragging items in 'Arrange' mode.
+		</fix>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>
