@@ -169,7 +169,11 @@ class Segue_AccessLog {
 			$query->addValue('agent_id', $this->_getCurrentAgentId());
 			$query->addValue('fk_slotname', $slotname);
 			
-			$dbc->query($query, IMPORTER_CONNECTION);
+			try {
+				$dbc->query($query, IMPORTER_CONNECTION);
+			} catch (DuplicateKeyDatabaseException $e) {
+				// multiple requests may colide, just ignore.
+			}
 		}
 	}
 	
