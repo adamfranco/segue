@@ -281,6 +281,13 @@ class EduMiddleburyDownloadPlugin
 		
 		$oFCKeditor->Create() ;
 		
+		$writeJsCallback = "function (htmlString) { "
+			."var oEditor = FCKeditorAPI.GetInstance('".$fieldname."'); "
+			."oEditor.InsertHtml(htmlString); "
+			."}";
+		
+		print "\n\t".Segue_MediaLibrary::getMediaButtons($this->getId(), $writeJsCallback);
+		
 		// Add an event check on back button to confirm that the user wants to
 		// leave with their editor open.
 		$string = _("You have edits open. Any changes will be lost.");
