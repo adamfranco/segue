@@ -51,6 +51,10 @@
 		<new author='adam' date='2008-09-23'>
 			Move-Copy: Now remembers all paste-panel settings persistently.
 		</new>
+		<fix author='adam' date='2008-09-23' ref='2123498' reftype='bug'>
+			UI2: 'Copy' and 'Options' links are now always shown in to controls 
+			bar rather than only when the bar itself is moused-over.
+		</fix>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>

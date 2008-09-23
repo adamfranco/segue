@@ -659,8 +659,8 @@ END;
 		
 		
 		print "'";
-		print " onmouseover='showControlsLink(this)'"
-			." onmouseout='hideControlsLink(this)'";
+// 		print " onmouseover='showControlsLink(this)'"
+// 			." onmouseout='hideControlsLink(this)'";
 		print ">";
 		print "\n<table border='0' cellpadding='0' cellspacing='0'"
 			." style='width: 100%; padding: 0px; margin: 0px; "
@@ -677,13 +677,17 @@ END;
 		print "\n\t\t<td style='text-align: right;'>";
 		if (!is_null($selectionLinkHtml)) {
 			print "\n\t\t\t\t<span class='selection_link'"
-			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
+			." style='"
+// 			."visibility: hidden; "
+			."cursor: pointer; white-space: nowrap;'"
 			.">";
 			print $selectionLinkHtml;
 			print " |</span>";
 		}
 		print "\n\t\t\t\t<span class='controls_link'"
-			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
+			." style='"
+// 			."visibility: hidden; "
+			."cursor: pointer; white-space: nowrap;'"
 			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'"
 			.">";
 		print "\n\t\t\t"._("Options");
