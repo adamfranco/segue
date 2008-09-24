@@ -124,6 +124,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#090')
 				.$this->getControlsHTML(
+					$block,
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, true,
@@ -255,6 +256,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#090')
 				.$this->getControlsHTML(
+					$block,
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, true,
@@ -296,6 +298,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#090')
 				.$this->getControlsHTML(
+					$navBlock,
 					"<em>".$label."</em>", 
 					$navBlock->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, true,
@@ -409,6 +412,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#00F')
 				.$this->getControlsHTML(
+					$organizer,
 					"<em>".$this->_classNames['FlowOrganizer']."</em>", 
 					$organizer->acceptVisitor($this->_controlsVisitor), 
 					'#00F', '#99F', '#66F');
@@ -474,6 +478,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#00F')
 				.$this->getControlsHTML(
+					$organizer,
 					"<em>".$this->_classNames['MenuOrganizer']."</em>", 
 					$organizer->acceptVisitor($this->_controlsVisitor), 
 					'#00F', '#99F', '#66F');
@@ -635,7 +640,7 @@ END;
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0, $selectionLinkHtml = null) {
+	function getControlsHTML (SiteComponent $siteComponent, $title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0, $selectionLinkHtml = null) {
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		
@@ -675,6 +680,7 @@ END;
 		print "\n\t\t".$title;
 		print "\n\t\t</td>";
 		print "\n\t\t<td style='text-align: right;'>";
+		print AuthZPrinter::getAZIcon($siteComponent->getQualifierId());	
 		if (!is_null($selectionLinkHtml)) {
 			print "\n\t\t\t\t<span class='selection_link'"
 			." style='"

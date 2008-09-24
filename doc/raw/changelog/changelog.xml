@@ -72,6 +72,14 @@
 		<change author='adam' date='2008-09-24' ref='2126714' reftype='fr'>
 			TextBlock: Now remembers setting for plain-text editor or rich-text editor.
 		</change>
+		<new author='adam' date='2008-09-24' ref='2118038' reftype='fr'>
+			MediaLibrary: Authoriztion icons are now displayed for files in the
+			media library.
+		</new>
+		<new author='adam' date='2008-09-24' ref='2118038' reftype='fr'>
+			Roles: Authorization icons are now displayed in edit mode to give
+			editors an idea of what is public and what is private.
+		</new>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>

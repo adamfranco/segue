@@ -376,6 +376,8 @@ class ControlsSiteVisitor
 			$controls[] = $control;
 		if ($control = $this->getHistory($siteComponent))
 			$controls[] = $control;
+		if ($control = AuthZPrinter::getAZIcon($siteComponent->getQualifierId()))
+			$controls[] = $control;
 			
 		print implode($this->getDelimiter($siteComponent), $controls);
 		
@@ -425,6 +427,9 @@ class ControlsSiteVisitor
 // 			$controls[] = $control;
 // 		if ($control = $this->getAddSubMenu($siteComponent))
 // 			$controls[] = $control;
+		
+		if ($control = AuthZPrinter::getAZIcon($siteComponent->getQualifierId()))
+			$controls[] = $control;
 		
 		print implode($this->getDelimiter($siteComponent), $controls);
 		
