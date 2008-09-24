@@ -107,6 +107,10 @@
 			Roles: Authorization icons are now displayed in edit mode to give
 			editors an idea of what is public and what is private.
 		</new>
+		<change author='gabe' date='2008-08-28'>
+			Performance: Added pre-caching optimization to site viewing actions
+			to reduce the number of queries needed.
+		</change>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>
