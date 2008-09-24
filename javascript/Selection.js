@@ -58,6 +58,21 @@ function Segue_Selection () {
 	}
 	
 	/**
+	 * Add or remove a site component to the selection.
+	 * 
+	 * @param object siteComponent
+	 * @return void
+	 * @access public
+	 * @since 7/31/08
+	 */
+	Segue_Selection.prototype.toggleComponent = function (siteComponent) {
+		if (this.isInSelection(siteComponent.id)) 
+			this.removeComponent(siteComponent);
+		else
+			this.addComponent(siteComponent);
+	}
+	
+	/**
 	 * Add a site component to the selection.
 	 * 
 	 * @param object siteComponent
@@ -120,6 +135,12 @@ function Segue_Selection () {
 		}
 		this.components = newComponents;
 		
+		// Try to mark the add-link as deselected.
+		var link = document.get_element_by_id("selection_add_link-" + siteComponent.id);
+		if (link) {
+			link.className = "Selection_add_link_deselected";
+		}
+		
 		this.buildDisplay();
 		this.notifyListeners();
 		
@@ -171,9 +192,15 @@ function Segue_Selection () {
 		
 		var elements = doc.getElementsByTagName('siteComponent');
 		for (var i = 0; i < elements.length; i++) {
+			if (elements[i].hasAttribute('navType'))
+				var navType = elements[i].getAttribute('navType');
+			else
+				var navType = null;
+				
 			this.loadComponent({
 				id: elements[i].getAttribute('id'),
 				type: elements[i].getAttribute('type'),
+				navType: navType,
 				displayName: elements[i].getAttribute('displayName')
 			});
 		}
@@ -206,6 +233,13 @@ function Segue_Selection () {
 			throw 'Already selected';
 		
 		this.components.push(siteComponent);
+		
+		// Try to mark the add-link as selected.
+		var link = document.get_element_by_id("selection_add_link-" + siteComponent.id);
+		if (link) {
+			link.className = "Selection_add_link_selected";
+		}
+		
 		this.buildDisplay();
 	}
 	
@@ -320,7 +354,12 @@ function Segue_Selection () {
 		var elem = li.appendChild(document.createElement('span'));
 		switch (siteComponent.type) {
 			case 'NavBlock':
-				var type = 'Nav. Item';
+				if (siteComponent.navType == 'Page')
+					var type = 'Page';
+				else if (siteComponent.navType == 'Section')
+					var type = 'Section';
+				else
+					var type = 'Nav. Item';
 				break;
 			case 'Block':
 				var type = 'Content Block';
@@ -341,6 +380,7 @@ function Segue_Selection () {
 		elem.innerHTML = 'remove';
 		elem.onclick = function() {
 			Segue_Selection.instance().removeComponent(siteComponent);
+			return false;
 		}
 		li.appendChild(document.createTextNode(' '));
 		

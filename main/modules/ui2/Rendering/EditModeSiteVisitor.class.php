@@ -12,6 +12,7 @@
 require_once(HARMONI."GUIManager/StyleProperties/VerticalAlignSP.class.php");
 require_once(dirname(__FILE__)."/EditModeControlsSiteVisitor.class.php");
 require_once(HARMONI."GUIManager/Components/UnstyledMenuItem.class.php");
+require_once(POLYPHONY.'/main/modules/user/UserDataHelper.class.php');
 
 /**
  * The edit-mode site visitor renders the site for editing, displaying controls.
@@ -84,6 +85,8 @@ END;
 		$harmoni = Harmoni::instance();
 		$outputHandler = $harmoni->getOutputHandler();
 		$outputHandler->setHead($outputHandler->getHead().ob_get_clean());
+		
+		UserDataHelper::writeHeadJs();
 	}
 	
 	/**
@@ -121,6 +124,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#090')
 				.$this->getControlsHTML(
+					$block,
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, true,
@@ -252,6 +256,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#090')
 				.$this->getControlsHTML(
+					$block,
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, true,
@@ -293,6 +298,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#090')
 				.$this->getControlsHTML(
+					$navBlock,
 					"<em>".$label."</em>", 
 					$navBlock->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, true,
@@ -406,6 +412,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#00F')
 				.$this->getControlsHTML(
+					$organizer,
 					"<em>".$this->_classNames['FlowOrganizer']."</em>", 
 					$organizer->acceptVisitor($this->_controlsVisitor), 
 					'#00F', '#99F', '#66F');
@@ -471,6 +478,7 @@ END;
 		{
 			$controlsHTML = $this->getBarPreHTML('#00F')
 				.$this->getControlsHTML(
+					$organizer,
 					"<em>".$this->_classNames['MenuOrganizer']."</em>", 
 					$organizer->acceptVisitor($this->_controlsVisitor), 
 					'#00F', '#99F', '#66F');
@@ -632,7 +640,7 @@ END;
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function getControlsHTML ($title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0, $selectionLinkHtml = null) {
+	function getControlsHTML (SiteComponent $siteComponent, $title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0, $selectionLinkHtml = null) {
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		
@@ -656,8 +664,8 @@ END;
 		
 		
 		print "'";
-		print " onmouseover='showControlsLink(this)'"
-			." onmouseout='hideControlsLink(this)'";
+// 		print " onmouseover='showControlsLink(this)'"
+// 			." onmouseout='hideControlsLink(this)'";
 		print ">";
 		print "\n<table border='0' cellpadding='0' cellspacing='0'"
 			." style='width: 100%; padding: 0px; margin: 0px; "
@@ -672,15 +680,20 @@ END;
 		print "\n\t\t".$title;
 		print "\n\t\t</td>";
 		print "\n\t\t<td style='text-align: right;'>";
+		print AuthZPrinter::getAZIcon($siteComponent->getQualifierId());	
 		if (!is_null($selectionLinkHtml)) {
 			print "\n\t\t\t\t<span class='selection_link'"
-			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
+			." style='"
+// 			."visibility: hidden; "
+			."cursor: pointer; white-space: nowrap;'"
 			.">";
 			print $selectionLinkHtml;
 			print " |</span>";
 		}
 		print "\n\t\t\t\t<span class='controls_link'"
-			." style='visibility: hidden; cursor: pointer; white-space: nowrap;'"
+			." style='"
+// 			."visibility: hidden; "
+			."cursor: pointer; white-space: nowrap;'"
 			." onclick='toggleControls(this.parentNode.parentNode.parentNode.parentNode.parentNode);'"
 			.">";
 		print "\n\t\t\t"._("Options");

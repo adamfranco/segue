@@ -134,9 +134,16 @@ class Segue_Selection
 		ob_start();
 		
 		print "\n\t\t<a ";
+		print " id='selection_add_link-".$siteComponent->getId()."'";
+		print " class='";
+		if ($this->isSiteComponentInSet($siteComponent))
+			print "Selection_add_link_selected";
+		else
+			print "Selection_add_link_deselected";
+		print "' ";
 		print " style='cursor: pointer;'";
 		print " href='#' ";
-		print " onclick=\"Segue_Selection.instance().addComponent({";
+		print " onclick=\"Segue_Selection.instance().toggleComponent({";
 		print	"id: '".$siteComponent->getId()."', ";
 		print 	"type: '".$siteComponent->getComponentClass()."', ";
 		print	"displayName: '"
@@ -144,7 +151,8 @@ class Segue_Selection
 				preg_replace('/\s+/', ' ',
 					strip_tags($siteComponent->getDisplayName()))))."' ";
 		print "}); return false;\"";
-		print ">"._('+ Select');
+		print 'title="'._("Copy to your Selection").'" ';
+		print ">"._('Copy');
 		print "</a>";
 		
 		$harmoni->request->endNamespace();				
@@ -180,7 +188,8 @@ class Segue_Selection
 		print " style='cursor: pointer;'";
 		print " class='Selection_MoveCopy_Link' ";
 		print " onclick=\"MoveCopyPanel.run('".$siteComponent->getId()."', '".$siteComponent->getComponentClass()."', ".$ancestorIds.", this); return false;\"";
-		print ">"._('+ Move/Copy...');
+		print " title=\""._("Paste from your Selection")."\"";
+		print ">"._('Paste');
 		print "</a>";
 		
 		$harmoni->request->endNamespace();				
@@ -194,7 +203,7 @@ class Segue_Selection
 	 * @access protected
 	 * @since 7/31/08
 	 */
-	protected function addHeadJavascript () {
+	public function addHeadJavascript () {
 		$harmoni = Harmoni::instance();
 		if (!$harmoni->getAttachedData('Segue_Selection_headJsAdded')) {
 			$harmoni = Harmoni::instance();
@@ -229,6 +238,13 @@ class Segue_Selection
 								print "\n\t\t\tSegue_Selection.instance().loadComponent({";
 								print	"id: '".$siteComponent->getId()."', ";
 								print 	"type: '".$siteComponent->getComponentClass()."', ";
+								if (method_exists($siteComponent, 'isSection')) {
+									if ($siteComponent->isSection())
+										print "navType: 'Section', ";
+									else
+										print "navType: 'Page', ";
+									
+								}
 								print	"displayName: '"
 									.addslashes(str_replace('"', '&quot', 
 										preg_replace('/\s+/', ' ',

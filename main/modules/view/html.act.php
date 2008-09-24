@@ -148,6 +148,10 @@ class htmlAction
 					RequestContext::sendTo(SiteDispatcher::quickUrl());
 				}
 			}
+			
+			// Mark the site as viewed
+			Segue_AccessLog::instance()->touch($slot->getShortname());
+			
 		} catch (UnknownIdException $e) {		// No slot for the site....
 		}
 
@@ -180,7 +184,6 @@ class htmlAction
 				
 		$this->addSiteContent($mainScreen);
 		$this->addFooterControls($allWrapper);
-
 		
 		$this->mainScreen = $mainScreen;
 		return $allWrapper;
@@ -237,6 +240,9 @@ class htmlAction
 		
 		// Add the RSS head links
 		RssLinkPrinter::addHeadLinks(SiteDispatcher::getCurrentNode());
+		
+		// Add the selection Panel
+		Segue_Selection::instance()->addHeadJavascript();
 		
 		$allWrapper = new Container(new YLayout, BLANK, 1);
 		

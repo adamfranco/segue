@@ -60,7 +60,7 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var helpLink = " &nbsp; &nbsp; (<a href='#' onclick=\"var helpWindow = window.open('" + helpUrl + "', 'help', 'width=700,height=600,scrollbars=yes,resizable=yes'); helpWindow.focus(); return false;\">Help</a>)";
 				
 		MoveCopyPanel.superclass.init.call(this, 
-								"Move/Copy" + helpLink,
+								"Paste (Move/Copy)" + helpLink,
 								50,
 								300,
 								positionElement,
@@ -70,6 +70,7 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		/*********************************************************
 		 * build our form
 		 *********************************************************/
+		var userData = UserData.instance();
 		var panel = this;
 		
 		this.form = document.createElement('form');
@@ -99,7 +100,10 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 // 		var option = this.command.appendChild(document.createElement('option'));
 // 		option.value = 'reference';
 // 		option.innerHTML = 'Reference';
-		this.command.value = 'copy';
+		if (userData.getPreference('segue_movecopy_command'))
+			this.command.value = userData.getPreference('segue_movecopy_command');
+		else
+			this.command.value = 'copy';
 		// Change the submit label on change.
 		this.command.onchange = function () {
 			panel.submit.value = this.options.item(this.selectedIndex).innerHTML + " Checked »";
@@ -111,6 +115,9 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 			}
 			
 			panel.reloadFromSelection();
+			
+			// Set the new value as the user's preference.
+			UserData.instance().setPreference('segue_movecopy_command', this.value);
 			
 		}
 		this.form.appendChild(this.command);
@@ -137,6 +144,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		
 		// Copy Permissions/Discussions
 		this.copyPermsDiv = this.form.appendChild(document.createElement('div'));
+		if (this.command.value == 'move')
+			this.copyPermsDiv.style.display = 'none';
 		this.copyPermsDiv.appendChild(document.createTextNode(' Copy Options: '));
 		this.copyPermsDiv.appendChild(document.createElement('br'));
 		this.copyPermsDiv.appendChild(document.createTextNode(' \u00a0 \u00a0 \u00a0 \u00a0 '));
@@ -150,8 +159,16 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var option = select.appendChild(document.createElement('option'));
 		option.value = 'false';
 		option.innerHTML = 'Remove Roles';
-		select.value = 'false';
 		this.copyPermsDiv.appendChild(select);
+		
+		if (userData.getPreference('segue_movecopy_copy_permissions'))
+			select.value = userData.getPreference('segue_movecopy_copy_permissions');
+		else
+			select.value = 'false';
+		select.onchange = function () {
+			// Set the new value as the user's preference.
+			UserData.instance().setPreference('segue_movecopy_copy_permissions', this.value);
+		}
 		
 		this.copyPermsDiv.appendChild(document.createElement('br'));
 		this.copyPermsDiv.appendChild(document.createTextNode(' \u00a0 \u00a0 \u00a0 \u00a0 '));
@@ -163,8 +180,16 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var option = select.appendChild(document.createElement('option'));
 		option.value = 'false';
 		option.innerHTML = 'Remove Discussion Posts';
-		select.value = 'false';
 		this.copyPermsDiv.appendChild(select);
+		
+		if (userData.getPreference('segue_movecopy_copy_discussions'))
+			select.value = userData.getPreference('segue_movecopy_copy_discussions');
+		else
+			select.value = 'false';
+		select.onchange = function () {
+			// Set the new value as the user's preference.
+			UserData.instance().setPreference('segue_movecopy_copy_discussions', this.value);
+		}
 		
 		
 		// Removal from selection
@@ -182,6 +207,17 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		option.value = 'keep';
 		option.innerHTML = 'Keep in Selection';
 		div.appendChild(select);
+		
+		if (userData.getPreference('segue_movecopy_remove_after_use'))
+			select.value = userData.getPreference('segue_movecopy_remove_after_use');
+		else
+			select.value = 'remove';
+		select.onchange = function () {
+			// Set the new value as the user's preference.
+			UserData.instance().setPreference('segue_movecopy_remove_after_use', this.value);
+		}
+		
+		
 // 		this.form.appendChild(document.createTextNode(' \u00a0 \u00a0 '));
 		
 		// Check All/None
@@ -217,10 +253,10 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		this.emptySelectionMessage.className = 'emptySelectionMessage';
 		
 		if (this.destType == 'MenuOrganizer')
-			this.emptySelectionMessage.innerHTML = "No pages or content blocks are selected. Use the <strong>+ Selection</strong> links to select pages or content blocks so that they can be moved or copied here.";
+			this.emptySelectionMessage.innerHTML = "No pages or content blocks are selected. Use the <strong>Copy</strong> links to select pages or content blocks so that they can be moved or copied here.";
 		else
-			this.emptySelectionMessage.innerHTML = "No content blocks are selected. Use the <strong>+ Selection</strong> links to select content blocks so that they can be moved or copied here.";
-		this.form.appendChild(this.emptySelectionMessage);
+			this.emptySelectionMessage.innerHTML = "No content blocks are selected. Use the <strong>Copy</strong> links to select content blocks so that they can be moved or copied here.";
+		this.contentElement.appendChild(this.emptySelectionMessage);
 		
 		
 		this.contentElement.appendChild(this.form);
@@ -294,8 +330,10 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		
 		if (selection.components.length) {
 			this.emptySelectionMessage.style.display = 'none';
+			this.form.style.display = 'block';
 		} else {
 			this.emptySelectionMessage.style.display = 'block';
+			this.form.style.display = 'none';
 		}
 		
 		for (var i = 0; i < selection.components.length; i++) {
@@ -345,7 +383,12 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var elem = li.appendChild(document.createElement('span'));
 		switch (siteComponent.type) {
 			case 'NavBlock':
-				var type = 'Nav. Item';
+				if (siteComponent.navType == 'Page')
+					var type = 'Page';
+				else if (siteComponent.navType == 'Section')
+					var type = 'Section';
+				else
+					var type = 'Nav. Item';
 				break;
 			case 'Block':
 				var type = 'Content Block';

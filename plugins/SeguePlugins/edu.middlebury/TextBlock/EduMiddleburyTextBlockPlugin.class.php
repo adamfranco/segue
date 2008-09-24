@@ -10,6 +10,7 @@
  */
  
 require_once(POLYPHONY_DIR."/javascript/fckeditor/fckeditor.php");
+require_once(MYDIR."/main/modules/media/MediaLibrary.class.php");
 
 /**
  * A Simple Plugin for making editable blocks of text
@@ -101,8 +102,8 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function initialize () {
 		// Override as needed.
-		if (isset($_SESSION[$this->getId()."_textEditor"]))
-			$this->textEditor = $_SESSION[$this->getId()."_textEditor"];
+		if (UserData::instance()->getPreference('segue_text_editor') == 'none')
+			$this->textEditor = 'none';
 		else
 	 		$this->textEditor = 'fck';
 	 	
@@ -137,7 +138,7 @@ class EduMiddleburyTextBlockPlugin
 	 		
  		} else if ($this->getFieldValue('editor')) {
 			$this->textEditor = $this->getFieldValue('editor');
-			$_SESSION[$this->getId()."_textEditor"] = $this->textEditor;
+			UserData::instance()->setPreference('segue_text_editor', $this->textEditor);;
 			
 			$this->editing = true;
 			$this->workingContent = $this->cleanHTML($this->getFieldValue('content'));
@@ -364,45 +365,10 @@ class EduMiddleburyTextBlockPlugin
 	 		print $this->workingContent;
  		print "</textarea>";
  		
-		// Image button
-		print "\n\t<br/><input type='button' value='"._('Add Image')."' onclick=\"";
-		print "this.onUse = function (mediaFile) { ";
-		print 		"var title = mediaFile.getTitles()[0]; ";
-		print		"if (title) { title = title.escapeHTML(); }; ";
-		print 		"var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + title + '\'/>' ; ";
-		print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
-		print "}; "; 
-		print "MediaLibrary.run('".$this->getId()."', this); ";
-		print "\"/>";
-		
-		// File button
-		print "\n\t<input type='button' value='"._('Add File')."' onclick=\"";
-		print "this.onUse = function (mediaFile) { ";
-		print		"var downloadBar = document.createElement('div'); ";
-		print 		"var link = downloadBar.appendChild(document.createElement('a')); ";
-		print 		"link.href = mediaFile.getUrl().escapeHTML(); ";
-		
-		print 		"link.title = mediaFile.getTitles()[0]; ";
-		print		"if (link.title) { link.title = link.title.escapeHTML(); }; ";
-		
-		print		"var img = link.appendChild(document.createElement('img')); ";
-		print		"img.src = mediaFile.getThumbnailUrl(); ";
-		print		"img.align = 'left'; ";
-		print		"img.border = '0'; ";
-		
-		print		"var title = downloadBar.appendChild(document.createElement('div')); ";
-		print 		"title.innerHTML = mediaFile.getTitles()[0]; ";
-		print		"title.fontWeight = 'bold'; ";
-		
-		print		"var citation = downloadBar.appendChild(document.createElement('div')); ";
-		print 		"mediaFile.writeCitation(citation); ";
-		
-		print 		"var newString = '<div>' + downloadBar.innerHTML + '<div style=\'clear: both;\'></div></div>'; ";
-		print 		"edInsertContent(this.form.elements['".$this->getFieldName('content')."'], newString); ";
-		print "}; "; 
-		print "MediaLibrary.run('".$this->getId()."', this); ";
-		print "\"/><br/>";
-		
+		$writeJsCallback = "function (htmlString) { "
+			."edInsertContent(this.form.elements['".$this->getFieldName('content')."'], htmlString); "
+			."}";
+		print "\n\t".Segue_MediaLibrary::getMediaButtons($this->getId(), $writeJsCallback);
  	}
 
  	/**
@@ -451,6 +417,13 @@ class EduMiddleburyTextBlockPlugin
 		$oFCKeditor->ToolbarSet		= 'ContentBlock' ;
 		
 		$oFCKeditor->Create() ;
+		
+		$writeJsCallback = "function (htmlString) { "
+			."var oEditor = FCKeditorAPI.GetInstance('".$this->getFieldName('content')."'); "
+			."oEditor.InsertHtml(htmlString); "
+			."}";
+		
+		print "\n\t".Segue_MediaLibrary::getMediaButtons($this->getId(), $writeJsCallback);
  	}
  	
  	/*********************************************************
@@ -506,7 +479,20 @@ class EduMiddleburyTextBlockPlugin
  			$harmoni->request->quickURL('media', 'filebrowser', array('node' => $this->getId())));
  		$harmoni->request->endNamespace();
  		
- 		$property->addPostHtml('none', $this->getImageAndFileButtons());
+ 		$writeJsCallback = "function (htmlString) { "
+			."edInsertContent(this.form.elements['[[fieldname:]]'], htmlString); "
+			."}";		
+ 		$property->addPostHtml('none', 
+ 			"<br/>"
+ 			.Segue_MediaLibrary::getMediaButtons($this->getId(), $writeJsCallback));
+ 			
+ 		$writeJsCallback = "function (htmlString) { "
+			."var oEditor = FCKeditorAPI.GetInstance('[[fieldname:]]'); "
+			."oEditor.InsertHtml(htmlString); "
+			."}";
+ 		$property->addPostHtml('fck', 
+ 			"<br/>"
+ 			.Segue_MediaLibrary::getMediaButtons($this->getId(), $writeJsCallback));
  		
  		print "[[content]]";
  		

@@ -46,6 +46,14 @@
 	border: 0px;
 }
 
+.medialibrary .perms_col {
+	width: 50px;
+}
+
+.medialibrary td.perms_col {
+	text-align: center;
+}
+
 
 /*********************************************************
  * Media Quotas
