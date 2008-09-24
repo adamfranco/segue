@@ -1,42 +1,54 @@
 <?php
 /**
- * @since 4/10/08
+ * @since 9/23/08
  * @package segue.plugins.Segue
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ContainerInfoVisitor.class.php,v 1.2 2008/04/11 20:38:59 davidfouhey Exp $
+ * @version $Id: UmbrellaVisitor.class.php,v 1.2 2008/04/11 20:38:59 davidfouhey Exp $
  */ 
 
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
+require_once(dirname(__FILE__)."/SiteNodeDataVisitor.class.php");
 
 /**
- * This visitor will return all of the blocks above the site component passed to it and their ids.
- * This visitor class is no longer used by the tag plugin. It has been replaced by the 
- * UmbrellaVisitor class, which uses the SiteNodeDataVisitor class.
+ * This visitor will find the first site nav block above the node passed to it and
+ * will then use a SiteNodeDataVisitor to collect data about the ids and names of all
+ * of the sub-blocks of the site.
  * 
- * @since 4/10/08
+ * @since 9/23/08
  * @package segue.plugins.Segue
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: ContainerInfoVisitor.class.php,v 1.2 2008/04/11 20:38:59 adamfranco Exp $
+ * @version $Id: UmbrellaVisitor.class.php,v 1.2 2008/04/11 20:38:59 davidfouhey Exp $
  */
-class ContainerInfoVisitor
+class UmbrellaVisitor
 	implements SiteVisitor
 {
-
-	function ContainerInfoVisitor(){
-		$this->_names = array();
-		$this->_ids = array();	
+	/**
+	 * Set up the umbrella visitor class
+	 * Basically, just initialize the instance variable _nodeData
+	 * @return none
+	 * @access public
+	 * @since 9/23/08
+	 */
+	function UmbrellaVisitor(){
+		$this->_nodeData = array();
 	}
 
-	public function addData($node,$prefix=""){
-		$this->_names[] = $prefix.$node->getDisplayName();
-		$this->_ids[] = $node->getId();
-	}	
+	/**
+	 * Return the gathered data on the nodes.
+	 * 
+	 * @return An array in 
+	 * @access public
+	 * @since 9/23/08
+	 */
+	public function getNodeData(){
+		return $this->_nodeData;
+	}
 
 	/**
 	 * Visit a Block
@@ -47,7 +59,6 @@ class ContainerInfoVisitor
 	 * @since 8/1/08
 	 */
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
-		$this->addData($siteComponent,"b");
 		$parent = $siteComponent->getParentComponent();
 		return $parent->acceptVisitor($this);
 	}
@@ -61,19 +72,19 @@ class ContainerInfoVisitor
 	 * @since 8/1/08
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) {
-		return $this->visitBlock($siteComponent);
+		$parent = $siteComponent->getParentComponent();
+		return $parent->acceptVisitor($this);
 	}
-	
+
 	/**
-	 * Visit a Navigation Block
-	 * 
-	 * @param object NavBlockSiteComponent $siteComponent
+	 *
 	 * @return mixed
 	 * @access public
 	 * @since 8/31/07
 	 */
 	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
-		return $this->visitBlock($siteComponent);
+		$parent = $siteComponent->getParentComponent();
+		return $parent->acceptVisitor($this);
 	}
 	
 	/**
@@ -86,13 +97,10 @@ class ContainerInfoVisitor
 	 */
 
 	public function visitSiteNavBlock( SiteNavBlockSiteComponent $siteComponent ) {
-		$this->addData($siteComponent,"SiteNavBlock");
-		$retArray = array();
-		$retArray[] = array_reverse($this->_names);
-		$retArray[] = array_reverse($this->_ids);
-		return $retArray;
+		$visitor = new SiteNodeDataVisitor;
+		$siteComponent->acceptVisitor($visitor);
+		$this->_nodeData = $visitor->getNodeData();	
 	}
-
 
         /**
          * Visit a fixed organizer
@@ -145,10 +153,6 @@ class ContainerInfoVisitor
                 $parent = $siteComponent->getParentComponent();
                 return $parent->acceptVisitor($this);
         }
-	
-
-
-
 }
 
 
@@ -157,3 +161,6 @@ class ContainerInfoVisitor
 
 
 ?>
+
+
+

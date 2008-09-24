@@ -14,6 +14,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class
 require_once(dirname(__FILE__)."/TaggableItemVisitor.class.php");
 require_once(dirname(__FILE__)."/TagCloudNavParentVisitor.class.php");
 require_once(dirname(__FILE__)."/ContainerInfoVisitor.class.php");
+require_once(dirname(__FILE__)."/UmbrellaVisitor.class.php");
 
 /**
  * A simple plugin for including links in a site
@@ -96,7 +97,35 @@ class EduMiddleburyTagsPlugin
 	 */
 
 	public function update( $request ) {
+		if($this->getFieldValue('tagNode')){
+			$this->setContent($this->getFieldValue('tagNode'));	
+		} 
+	}
 
+
+	/**
+	 * Helper methods, writes out options for a selection box given 
+	 * the variety of tree that the UmbrellaVisitor generates
+	 *
+	 * @return none
+	 * @access public
+	 * @since 9/23/08
+	 */	
+	public function writeUmbrellaSelect($node, $target, $depth = 0){
+		$toWrite = $node[0];
+		echo "<!-- ${target} -->\n";
+		echo "<option value='".$toWrite[1]."'";
+		if($target == $toWrite[1]){
+			echo " selected";
+		}
+		echo ">";
+		if($depth > 0){
+			echo str_repeat("&nbsp;",($depth*5));	
+		}
+		echo $toWrite[0]."</option>\n";
+		for($i = 1; $i < sizeof($node); $i++){
+			$this->writeUmbrellaSelect($node[$i], $target, $depth+1);	
+		} 
 	}
 
  	/**
@@ -114,34 +143,37 @@ class EduMiddleburyTagsPlugin
 
 		if($this->getFieldValue('edit') && $this->canModify()){
 			$director = SiteDispatcher::getSiteDirector();
+			$node = $director->getSiteComponentById($this->getId());	
+
+			$currentTarget = $this->getId();
+			if($this->getContent()){
+				$currentTarget = $this->getContent();
+			} else {
+				$visitor = new TagCloudNavParentVisitor;
+				$parentNavNode = $node->acceptVisitor($visitor);
+				$currentTarget = $parentNavNode->getId();
+			}		
  			$node = $director->getSiteComponentById($this->getId());
 			print "\n".$this->formStartTagWithAction();
-			/*
-			$visitor = new ContainerInfoVisitor;
-			$above = $node->acceptVisitor($visitor);
-			print "<div>Node with tags: ";
-			$names = $above[0];
-			$ids = $above[1];
-			for($x = 0; $x < sizeof($names); $x++){
-				print $names[$x];
-				print "<input type='radio' name='".$this->getFieldName('tagNode')."' value='".$ids[$x]."'";
-				if($x == (sizeof($names)-2)){
-					print " checked";
-				}
-				print ">";
-			}
+			$visitor = new UmbrellaVisitor;
+			$node->acceptVisitor($visitor);
+			print "<div>Select the node: ";
+			print "<select name='".$this->getFieldName('tagNode')."'>";
+			$this->writeUmbrellaSelect($visitor->getNodeData(),$currentTarget);
+			print "</select>";
+			print "<input type='submit' value='Update' name='".$this->getFieldName('submit')."'>\n";
 			print "</div>";
-			*/
-			print "<input type='submit' value='Submit' name='".$this->getFieldName('submit')."'>\n";
 			print "</form>";
 		} else if ($this->canView()) {
 			$items = array();
 	 		$director = SiteDispatcher::getSiteDirector();
 			$id = $this->getId();
-
-			
-	 		$node = $director->getSiteComponentById($this->getId());	
-
+	 		
+			if(!$this->getContent()){  
+				$node = $director->getSiteComponentById($this->getId());	
+			} else {
+				$node = $director->getSiteComponentById($this->getContent());
+			}
 	
  			// Determine the navigational node above this tag cloud.
 	 		$visitor = new TagCloudNavParentVisitor;
@@ -150,18 +182,13 @@ class EduMiddleburyTagsPlugin
  			$visitor = new TaggableItemVisitor;
 	 		$items = $parentNavNode->acceptVisitor($visitor);
  		
-			try{
-	 			SiteDispatcher::passthroughContext();
-			} catch (NullArgumentException $e){
-				print "here";	
-			}
+ 			//SiteDispatcher::passthroughContext();
  	
 
 			print "\n<div class='breadcrumbs' style='height: auto; margin-top: 1px; margin-bottom: 5px; border-bottom: 1px dotted; padding-bottom: 2px;'>";
  			print str_replace('%1', $parentNavNode->acceptVisitor(new BreadCrumbsVisitor($parentNavNode)),
  			_("Tags within: %1"));
 
-	
  			print "</div>";
 			print "\n<div style='text-align: justify;'>";
 // 			print TagAction::getReadOnlyTagCloudForItems($items, 'sitetag', null);
@@ -173,6 +200,16 @@ class EduMiddleburyTagsPlugin
 				print "\n\t<a ".$this->href(array('edit' => 'true')).">".("Configure Tag Cloud")."</a>";
 				print "\n</div>";
 			}
+		
+			/* 	
+			$visitor = new UmbrellaVisitor;
+			$node->acceptVisitor($visitor);
+			print "<br/><pre>";
+			print_r($visitor->getNodeData());
+			print "</pre><br/>\n";
+			*/
+
+
  			SiteDispatcher::forgetContext();
 
  		}
