@@ -69,6 +69,9 @@
 			MediaLibrary: The Textblock and FileForDownload plugins now include
 			buttons below the FCKEditor for inserting images and links to files.
 		</new>
+		<change author='adam' date='2008-09-24' ref='2126714' reftype='fr'>
+			TextBlock: Now remembers setting for plain-text editor or rich-text editor.
+		</change>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>

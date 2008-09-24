@@ -102,8 +102,8 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function initialize () {
 		// Override as needed.
-		if (isset($_SESSION[$this->getId()."_textEditor"]))
-			$this->textEditor = $_SESSION[$this->getId()."_textEditor"];
+		if (UserData::instance()->getPreference('segue_text_editor') == 'none')
+			$this->textEditor = 'none';
 		else
 	 		$this->textEditor = 'fck';
 	 	
@@ -138,7 +138,7 @@ class EduMiddleburyTextBlockPlugin
 	 		
  		} else if ($this->getFieldValue('editor')) {
 			$this->textEditor = $this->getFieldValue('editor');
-			$_SESSION[$this->getId()."_textEditor"] = $this->textEditor;
+			UserData::instance()->setPreference('segue_text_editor', $this->textEditor);;
 			
 			$this->editing = true;
 			$this->workingContent = $this->cleanHTML($this->getFieldValue('content'));
