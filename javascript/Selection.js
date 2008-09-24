@@ -380,6 +380,7 @@ function Segue_Selection () {
 		elem.innerHTML = 'remove';
 		elem.onclick = function() {
 			Segue_Selection.instance().removeComponent(siteComponent);
+			return false;
 		}
 		li.appendChild(document.createTextNode(' '));
 		

@@ -14,7 +14,7 @@
 		<releaseNotes>
 			
 		</releaseNotes>
-		<new author='adam' date='2008-09-24' ref='2102311' reftype='segue_fr' reporter='bryan_carson'>
+		<new author='adam' date='2008-09-24' ref='2102311' reftype='fr' reporter='bryan_carson'>
 			Agent: Now supports IP-range-based group membership. Configure in
 			segue/config/agent.conf.php
 		</new>
@@ -34,6 +34,9 @@
 		<new author='adam' date='2008-09-22'>
 			Choice of 'Classic Mode' or 'New Mode' is now stored across sessions.
 		</new>
+		<fix author='adam' date='2008-09-24' ref='2126727' reftype='bug'>
+			Selection: Removing an item now doesn't jump to the top of the page.
+		</fix>
 		<change author='adam' date='2008-09-22' ref='2117996' reftype='fr' reporter='bryan_carson'>
 			Selection: The selection panel is now visible in view-mode and on the
 			portal.
