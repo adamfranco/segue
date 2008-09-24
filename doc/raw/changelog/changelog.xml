@@ -14,6 +14,10 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-09-24' ref='2102311' reftype='segue_fr' reporter='bryan_carson'>
+			Agent: Now supports IP-range-based group membership. Configure in
+			segue/config/agent.conf.php
+		</new>
 		<new author='adam' date='2008-09-22' ref='2117994' reftype='fr'>
 			Portal: New 'Recently Visited' folder.
 		</new>

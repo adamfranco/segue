@@ -22,6 +22,15 @@
 	$configuration->addProperty('defaultAgentFlavor', $agentFlavor);
 	$configuration->addProperty('database_index', $dbID);
 	$configuration->addProperty('database_name', $dbName);
+	
+	// IP ranges can be specified as a dotted quarted with each unit being
+	// either an integer (e.g. 128), a wildcard (e.g. *), or an integer range
+	// (e.g. 62-134).
+	$configuration->addProperty('group_ip_ranges', array(
+// 		'edu.middlebury.institute'	=>	'140.233.*.*'
+	
+	));
+	
 	Services::startManagerAsService("AgentManager", $context, $configuration);
 
 // :: Set up PropertyManager ::
