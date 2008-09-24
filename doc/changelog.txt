@@ -2,6 +2,137 @@
 Segue Change Log
 
 
+v. 2.2.4.0 (2008-09-24)
+----------------------------------------------------
+This release includes a large number of usability improvements that make Segue usage
+much more smooth.
+
+Notable User-Facing changes:
+
+- New 'Recently Visited' folder
+
+- The current portal folder and many settings are now remembered.
+
+- New media library buttons in the Text and Images plugin make it much easier to
+insert images and add links to files.
+
+- Permissions icons are now shown in edit-mode and in the media library.
+
+- The move/copy process has be renamed to better fit with the copy/paste metaphor
+of usage.
+
+- The selection panel now is always shown.
+
+- The window now scrolls when dragging in Arrange mode.
+
+See the change log for more details and other improvements.
+
+Upgrades from versions prior to 2.2.4.0 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+ *------------
+
+This Segue 2 release uses Harmoni 1.8.0 and Polyphony 1.4.5.
+		
+		
+	* New feature: #2102311 
+		Agent: Now supports IP-range-based group membership. Configure in
+		segue/config/agent.conf.php 
+		(2008-09-24 - Adam Franco)
+		(reported by Bryan Carson of Middlebury College)
+		
+	* New feature: #2117994 
+		Portal: New 'Recently Visited' folder.
+		(2008-09-22 - Adam Franco)
+		
+	**** IMPORTANT *** Change: 
+		Run the 'Access Log' updater under Admin Tools -> Segue Updates.
+		(2008-07-08 - Adam Franco)
+		
+	* New feature: #2112775 
+		Portal: The current portal folder is now remembered so that users get
+		returned to the same folder each time they go to the portal.
+		(2008-09-22 - Adam Franco)
+		
+	**** IMPORTANT *** Change: 
+		Run the 'User Data' updater under Admin Tools -> Segue Updates.
+		(2008-07-08 - Adam Franco)
+		
+	* New feature: 
+		Choice of 'Classic Mode' or 'New Mode' is now stored across sessions.
+		(2008-09-22 - Adam Franco)
+		
+	* Bug Fix: #2126727 
+		Selection: Removing an item now doesn't jump to the top of the page.
+		(2008-09-24 - Adam Franco)
+		
+	* Change: #2117996 
+		Selection: The selection panel is now visible in view-mode and on the
+		portal. 
+		(2008-09-22 - Adam Franco)
+		(reported by Bryan Carson of Middlebury College)
+		
+	* Change: #2117959 
+		Selection/Move-Copy: '+ Selection' button renamed to 'Copy', '+ Move/Copy'
+		renamed to 'Paste'.
+		(2008-09-22 - Adam Franco)
+		
+	* Change: #2114523 
+		Selection: When an item is selected the 'Copy' button now is highlighted by
+		a border.
+		(2008-09-22 - Adam Franco)
+		
+	* Change: #2117959 
+		Selection/Move-Copy: Sections and Pages are now differentiated in the
+		Selection and Paste panels.
+		(2008-09-23 - Adam Franco)
+		
+	* Change: #2117959 
+		Move-Copy: Now only shows controls if there are selected items.
+		(2008-09-23 - Adam Franco)
+		
+	* New feature: 
+		Move-Copy: Now remembers all paste-panel settings persistently.
+		(2008-09-23 - Adam Franco)
+		
+	* Bug Fix: #2123498 
+		UI2: 'Copy' and 'Options' links are now always shown in to controls bar
+		rather than only when the bar itself is moused-over.
+		(2008-09-23 - Adam Franco)
+		
+	* Bug Fix: #2118182 
+		UI2: Window now scrolls when dragging items in 'Arrange' mode.
+		(2008-09-23 - Adam Franco)
+		(reported by Bryan Carson of Middlebury College)
+		
+	* New feature: #2118001 
+		MediaLibrary: The Textblock and FileForDownload plugins now include buttons
+		below the FCKEditor for inserting images and links to files.
+		(2008-09-23 - Adam Franco)
+		(reported by Bryan Carson of Middlebury College)
+		
+	* Change: #2126714 
+		TextBlock: Now remembers setting for plain-text editor or rich-text editor.
+		(2008-09-24 - Adam Franco)
+		
+	* New feature: #2118038 
+		MediaLibrary: Authoriztion icons are now displayed for files in the media
+		library. 
+		(2008-09-24 - Adam Franco)
+		
+	* New feature: #2118038 
+		Roles: Authorization icons are now displayed in edit mode to give editors an
+		idea of what is public and what is private.
+		(2008-09-24 - Adam Franco)
+		
+	* Change: 
+		Performance: Added pre-caching optimization to site viewing actions to
+		reduce the number of queries needed.
+		(2008-08-28 - gabe)
+	
+
+
+
 v. 2.2.3 (2008-09-17)
 ----------------------------------------------------
 This release fixes a number of small bugs and usability issues.
