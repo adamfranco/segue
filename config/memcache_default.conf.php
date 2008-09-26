@@ -11,7 +11,6 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  */
  
-	Services::startService("Memcache");
     $memcache = Services::getService("Memcache");
 	
 /*********************************************************
