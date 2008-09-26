@@ -288,6 +288,7 @@ class ArrangeModeSiteVisitor
 		{			
 			$controlsHTML = $this->getBarPreHTML('#F00')
 				.$this->getControlsHTML(
+					$organizer,
 					$organizer->getDisplayName(), 
 					$organizer->acceptVisitor($this->_controlsVisitor), 
 					'#F00', '#F99', '#F66');
@@ -416,6 +417,7 @@ class ArrangeModeSiteVisitor
 				_("<em>Sub-Menu of</em> %1 <em>Target Placeholder</em>"));
 				
 		$controlsHTML = $this->getControlsHTML(
+			$organizer,
 			$title,
 			'', 
 			'#F00', '#F99', '#F66');

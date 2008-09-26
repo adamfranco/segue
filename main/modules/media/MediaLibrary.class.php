@@ -68,7 +68,9 @@ if (title) {
 };
 var newString = '\\n<img src=\'' + mediaFile.getUrl().escapeHTML() + '\' title=\'' + title + '\' border=\'0\' />';
 ";
-		return self::getButton($libraryId, _("Insert Image"), $buildString, $writeJsCallback);
+		return self::getButton($libraryId, _("Insert Image"), $buildString, $writeJsCallback,
+			array('image/jpeg', 'image/gif', 'image/png', 'image/tiff')
+		);
 	}
 	
 	/**
@@ -150,14 +152,18 @@ var newString = downloadBar.innerHTML;
 	 * @since 9/23/08
 	 * @static
 	 */
-	public static function getButton ($libraryId, $buttonTitle, $buildStringJs, $writeJsCallback) {
+	public static function getButton ($libraryId, $buttonTitle, $buildStringJs, $writeJsCallback, array $allowedMimeTypes = array()) {
 		ob_start();
 		print "this.writeCallback = ".$writeJsCallback."; ";
 		print "this.onUse = function (mediaFile) { ";
 		print		$buildStringJs." ";
 		print 		"this.writeCallback(newString); ";
 		print "}; "; 
-		print "MediaLibrary.run('".$libraryId."', this); ";
+		print "MediaLibrary.run('".$libraryId."', this";
+		if (count($allowedMimeTypes)) {
+			print ", ['".implode("', '", $allowedMimeTypes)."']";
+		}
+		print "); ";
 		$js = preg_replace("/\s+/", " ", ob_get_clean());
 		
 		return "<input type='button' value='".$buttonTitle."' onclick=\"".$js."\" />";

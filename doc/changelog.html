@@ -23,7 +23,92 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.2.3</h2>
+<h2>Version 2.2.4.0</h2>
+<h3>2008-09-24</h3>
+<p>This release includes a large number of usability improvements that make Segue usage much more smooth.
+<br>
+<br>Notable User-Facing changes:
+<br>
+<br>- New 'Recently Visited' folder
+<br>
+<br>- The current portal folder and many settings are now remembered.
+<br>
+<br>- New media library buttons in the Text and Images plugin make it much easier to insert images and add links to files.
+<br>
+<br>- Permissions icons are now shown in edit-mode and in the media library.
+<br>
+<br>- The move/copy process has be renamed to better fit with the copy/paste metaphor of usage.
+<br>
+<br>- The selection panel now is always shown.
+<br>
+<br>- The window now scrolls when dragging in Arrange mode.
+<br>
+<br>See the change log for more details and other improvements.
+<br>
+<br>Upgrades from versions prior to 2.2.4.0 require running system updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br> *------------
+<br>
+<br>This Segue 2 release uses Harmoni 1.8.0 and Polyphony 1.4.5.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2102311&amp;group_id=82171&amp;atid=565237">
+        			#2102311</a> Agent: Now supports IP-range-based group membership. Configure in segue/config/agent.conf.php (<em>2008-09-24 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2117994&amp;group_id=82171&amp;atid=565237">
+        			#2117994</a> Portal: New 'Recently Visited' folder. (<em>2008-09-22 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Run the 'Access Log' updater under Admin Tools -&gt; Segue Updates. (<em>2008-07-08 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2112775&amp;group_id=82171&amp;atid=565237">
+        			#2112775</a> Portal: The current portal folder is now remembered so that users get returned to the same folder each time they go to the portal. (<em>2008-09-22 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Run the 'User Data' updater under Admin Tools -&gt; Segue Updates. (<em>2008-07-08 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Choice of 'Classic Mode' or 'New Mode' is now stored across sessions. (<em>2008-09-22 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2126727&amp;group_id=82171&amp;atid=565234">
+        			#2126727</a> Selection: Removing an item now doesn't jump to the top of the page. (<em>2008-09-24 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2117996&amp;group_id=82171&amp;atid=565237">
+        			#2117996</a> Selection: The selection panel is now visible in view-mode and on the portal. (<em>2008-09-22 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2117959&amp;group_id=82171&amp;atid=565237">
+        			#2117959</a> Selection/Move-Copy: '+ Selection' button renamed to 'Copy', '+ Move/Copy' renamed to 'Paste'. (<em>2008-09-22 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2114523&amp;group_id=82171&amp;atid=565237">
+        			#2114523</a> Selection: When an item is selected the 'Copy' button now is highlighted by a border. (<em>2008-09-22 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2117959&amp;group_id=82171&amp;atid=565237">
+        			#2117959</a> Selection/Move-Copy: Sections and Pages are now differentiated in the Selection and Paste panels. (<em>2008-09-23 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2117959&amp;group_id=82171&amp;atid=565237">
+        			#2117959</a> Move-Copy: Now only shows controls if there are selected items. (<em>2008-09-23 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Move-Copy: Now remembers all paste-panel settings persistently. (<em>2008-09-23 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2123498&amp;group_id=82171&amp;atid=565234">
+        			#2123498</a> UI2: 'Copy' and 'Options' links are now always shown in to controls bar rather than only when the bar itself is moused-over. (<em>2008-09-23 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2118182&amp;group_id=82171&amp;atid=565237">
+        			#2118182</a> UI2: Window now scrolls when dragging items in 'Arrange' mode. (<em>2008-09-23 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2118001&amp;group_id=82171&amp;atid=565237">
+        			#2118001</a> MediaLibrary: The Textblock and FileForDownload plugins now include buttons below the FCKEditor for inserting images and links to files. (<em>2008-09-23 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2126714&amp;group_id=82171&amp;atid=565237">
+        			#2126714</a> TextBlock: Now remembers setting for plain-text editor or rich-text editor. (<em>2008-09-24 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2118038&amp;group_id=82171&amp;atid=565237">
+        			#2118038</a> MediaLibrary: Authoriztion icons are now displayed for files in the media library. (<em>2008-09-24 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2118038&amp;group_id=82171&amp;atid=565237">
+        			#2118038</a> Roles: Authorization icons are now displayed in edit mode to give editors an idea of what is public and what is private. (<em>2008-09-24 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Performance: Added pre-caching optimization to site viewing actions to reduce the number of queries needed. (<em>2008-08-28 - gabe</em>)</li>
+	</ul>
+<br><h2>Version 2.2.3</h2>
 <h3>2008-09-17</h3>
 <p>This release fixes a number of small bugs and usability issues.
 <br>

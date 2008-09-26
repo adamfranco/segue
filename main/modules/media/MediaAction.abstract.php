@@ -367,6 +367,11 @@ class MediaAction
 			}
 			
 			
+			print "\n\t\t<permsHtml><![CDATA[";
+			print AuthZPrinter::getAZIcon($asset->getId());		
+			print "]]></permsHtml>";
+			
+			
 			print "\n\t</asset>";
 			
 			return ob_get_clean();

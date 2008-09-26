@@ -698,3 +698,7 @@ table.theme_advanced_table th {
 		font-weight: bold;
 		text-align: center;
 	}
+	
+	.controls_bar img.az_icon {
+		vertical-align: middle;
+	}

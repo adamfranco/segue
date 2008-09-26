@@ -76,6 +76,7 @@ class editviewAction
 			$visitor = $this->getSiteVisitor();
 			$controlsHTML = $visitor->getBarPreHTML('#090')
 				.$visitor->getControlsHTML(
+					SiteDispatcher::getCurrentRootNode(),
 					"<em>"._("Site")."</em>", 
 					SiteDispatcher::getCurrentRootNode()->acceptVisitor($visitor->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, false);

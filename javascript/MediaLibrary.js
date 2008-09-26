@@ -221,6 +221,10 @@ function FileLibrary ( owner, assetId, caller, container ) {
 		var element = this.mediaListHead.appendChild(document.createElement('th'));
 		element.appendChild(document.createTextNode('modification date'));
 		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('permissions'));
+		element.className = 'perms_col';
+		
 		container.appendChild(this.mediaList);
 	}
 	
@@ -828,6 +832,11 @@ function MediaAsset ( assetId, xmlElement, library ) {
 			}
 		}
 		
+		// AZ Icon
+		if (xmlElement.getElementsByTagName('permsHtml').length) {
+			this.permsHtml = xmlElement.getElementsByTagName('permsHtml')[0].firstChild.data;
+		}
+		
 		this.files = new Array();
 		var mediaElements = xmlElement.getElementsByTagName('file');
 		for (var i = 0; i < mediaElements.length; i++) {
@@ -907,6 +916,12 @@ function MediaAsset ( assetId, xmlElement, library ) {
 					}
 				}
 			}
+		}
+		
+		var permsElement = row.appendChild(document.createElement('td'));
+		permsElement.className = 'perms_col';
+		if (this.permsHtml) {
+			permsElement.innerHTML = this.permsHtml;
 		}
 		
 		return this.entryElement;

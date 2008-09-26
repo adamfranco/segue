@@ -10,10 +10,41 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.3.0" date="The Future">
+	<version number="2.2.4.0" date="2008-09-24">
 		<releaseNotes>
+			This release includes a large number of usability improvements that
+			make Segue usage much more smooth.
 			
+			Notable User-Facing changes:
+			
+			- New 'Recently Visited' folder
+			
+			- The current portal folder and many settings are now remembered.
+			
+			- New media library buttons in the Text and Images plugin make it 
+			much easier to insert images and add links to files.
+			
+			- Permissions icons are now shown in edit-mode and in the media library.
+			
+			- The move/copy process has be renamed to better fit with the copy/paste
+			metaphor of usage.
+			
+			- The selection panel now is always shown.
+			
+			- The window now scrolls when dragging in Arrange mode.
+			
+			See the change log for more details and other improvements.
+			
+			Upgrades from versions prior to 2.2.4.0 require running system
+			updaters located under Admin Tools --> Segue Updates.
+			-------------
+						
+			This Segue 2 release uses Harmoni 1.8.0 and Polyphony 1.4.5.
 		</releaseNotes>
+		<new author='adam' date='2008-09-24' ref='2102311' reftype='fr' reporter='bryan_carson'>
+			Agent: Now supports IP-range-based group membership. Configure in
+			segue/config/agent.conf.php
+		</new>
 		<new author='adam' date='2008-09-22' ref='2117994' reftype='fr'>
 			Portal: New 'Recently Visited' folder.
 		</new>
@@ -30,6 +61,9 @@
 		<new author='adam' date='2008-09-22'>
 			Choice of 'Classic Mode' or 'New Mode' is now stored across sessions.
 		</new>
+		<fix author='adam' date='2008-09-24' ref='2126727' reftype='bug'>
+			Selection: Removing an item now doesn't jump to the top of the page.
+		</fix>
 		<change author='adam' date='2008-09-22' ref='2117996' reftype='fr' reporter='bryan_carson'>
 			Selection: The selection panel is now visible in view-mode and on the
 			portal.
@@ -62,6 +96,21 @@
 			MediaLibrary: The Textblock and FileForDownload plugins now include
 			buttons below the FCKEditor for inserting images and links to files.
 		</new>
+		<change author='adam' date='2008-09-24' ref='2126714' reftype='fr'>
+			TextBlock: Now remembers setting for plain-text editor or rich-text editor.
+		</change>
+		<new author='adam' date='2008-09-24' ref='2118038' reftype='fr'>
+			MediaLibrary: Authoriztion icons are now displayed for files in the
+			media library.
+		</new>
+		<new author='adam' date='2008-09-24' ref='2118038' reftype='fr'>
+			Roles: Authorization icons are now displayed in edit mode to give
+			editors an idea of what is public and what is private.
+		</new>
+		<change author='gabe' date='2008-08-28'>
+			Performance: Added pre-caching optimization to site viewing actions
+			to reduce the number of queries needed.
+		</change>
 	</version>
 	<version number="2.2.3" date="2008-09-17">
 		<releaseNotes>

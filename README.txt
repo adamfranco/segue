@@ -1,5 +1,5 @@
 
-Segue v. 2.2.3 (2008-09-17)
+Segue v. 2.2.4.0 (2008-09-24)
 =================================
 
 What is Segue?
@@ -17,11 +17,35 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This release fixes a number of small bugs and usability issues.
+This release includes a large number of usability improvements that make Segue usage
+much more smooth.
 
--------------
+Notable User-Facing changes:
 
-This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.4.
+- New 'Recently Visited' folder
+
+- The current portal folder and many settings are now remembered.
+
+- New media library buttons in the Text and Images plugin make it much easier to
+insert images and add links to files.
+
+- Permissions icons are now shown in edit-mode and in the media library.
+
+- The move/copy process has be renamed to better fit with the copy/paste metaphor
+of usage.
+
+- The selection panel now is always shown.
+
+- The window now scrolls when dragging in Arrange mode.
+
+See the change log for more details and other improvements.
+
+Upgrades from versions prior to 2.2.4.0 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+ *------------
+
+This Segue 2 release uses Harmoni 1.8.0 and Polyphony 1.4.5.
 
 
 Downloads
@@ -61,6 +85,40 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.4.0 (2008-09-24)
+----------------------------------------------------
+This release includes a large number of usability improvements that make Segue usage
+much more smooth.
+
+Notable User-Facing changes:
+
+- New 'Recently Visited' folder
+
+- The current portal folder and many settings are now remembered.
+
+- New media library buttons in the Text and Images plugin make it much easier to
+insert images and add links to files.
+
+- Permissions icons are now shown in edit-mode and in the media library.
+
+- The move/copy process has be renamed to better fit with the copy/paste metaphor
+of usage.
+
+- The selection panel now is always shown.
+
+- The window now scrolls when dragging in Arrange mode.
+
+See the change log for more details and other improvements.
+
+Upgrades from versions prior to 2.2.4.0 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+ *------------
+
+This Segue 2 release uses Harmoni 1.8.0 and Polyphony 1.4.5.
+
 
 
 v. 2.2.3 (2008-09-17)
