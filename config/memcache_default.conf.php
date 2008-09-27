@@ -11,8 +11,6 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  */
  
-    $memcache = Services::getService("Memcache");
-	
 /*********************************************************
  * Set up the memcache connection
  *********************************************************/
@@ -24,5 +22,9 @@
 
     // Uncomment/modify/add lines to add servers.
 
-    // $memcache->addServer("some.ip", 11211)
-    // $memcache->addServer("other.ip", 11211)
+    if (HAVE_MEMCACHE) {
+        $memcache = Services::getService("Memcache");
+	
+        // $memcache->addServer("some.ip", 11211)
+        // $memcache->addServer("other.ip", 11211)
+    }
