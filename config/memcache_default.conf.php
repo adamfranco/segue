@@ -25,6 +25,6 @@
     if (HAVE_MEMCACHE) {
         $memcache = Services::getService("Memcache");
 	
-        // $memcache->addServer("some.ip", 11211)
-        // $memcache->addServer("other.ip", 11211)
+        // $memcache->addServer("some.ip", 11211);
+        // $memcache->addServer("other.ip", 11211);
     }
