@@ -56,7 +56,7 @@ class UmbrellaVisitor
 	 * @param object BlockSiteComponent $siteComponent
 	 * @return mixed
 	 * @access public
-	 * @since 8/1/08
+	 * @since 9/23/08
 	 */
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
 		$parent = $siteComponent->getParentComponent();
@@ -69,7 +69,7 @@ class UmbrellaVisitor
 	 * @param object BlockSiteComponent $siteComponent
 	 * @return mixed
 	 * @access public
-	 * @since 8/1/08
+	 * @since 9/23/08
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) {
 		$parent = $siteComponent->getParentComponent();
@@ -108,7 +108,7 @@ class UmbrellaVisitor
          * @param object FixedOrganizerSiteComponent $organizer
          * @return boolean
          * @access public
-         * @since 8/1/08
+         * @since 9/23/08
          */
 	 public function visitFixedOrganizer ( FixedOrganizerSiteComponent $siteComponent ) {    
                 $parent = $siteComponent->getParentComponent();
@@ -121,7 +121,7 @@ class UmbrellaVisitor
          * @param object FixedOrganizerSiteComponent $organizer
          * @return boolean
          * @access public
-         * @since 8/1/08
+         * @since 9/23/08
          */
         public function visitNavOrganizer ( NavOrganizerSiteComponent $siteComponent ) {
                 $parent = $siteComponent->getParentComponent();
@@ -134,7 +134,7 @@ class UmbrellaVisitor
          * @param object FlowOrganizerSiteComponent
          * @return boolean
          * @access public
-         * @since 8/1/08
+         * @since 9/23/08
          */
         public function visitFlowOrganizer ( FlowOrganizerSiteComponent $siteComponent ) {
                 $parent = $siteComponent->getParentComponent();
@@ -147,7 +147,7 @@ class UmbrellaVisitor
          * @param object MenuOrganizerSiteComponent
          * @return boolean
          * @access public
-         * @since 8/1/08
+         * @since 9/23/08
          */
         public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) {
                 $parent = $siteComponent->getParentComponent();

@@ -191,7 +191,6 @@ class EduMiddleburyTagsPlugin
 
  			print "</div>";
 			print "\n<div style='text-align: justify;'>";
-// 			print TagAction::getReadOnlyTagCloudForItems($items, 'sitetag', null);
 			$tags = TagAction::getTagsFromItems($items);
 			print TagAction::getTagCloudDiv($tags, 'viewuser', null);
 			print "</div>";
