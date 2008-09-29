@@ -837,5 +837,3 @@ class EduMiddleburyTextBlockPlugin
  		$contentElement->nodeValue = $this->replaceIdsInHtml($idMap, $contentElement->nodeValue);
  	}
 }
-
-?>

@@ -891,4 +891,3 @@ class Segue_Gui2_SiteTheme
 
 }
 
-?>
