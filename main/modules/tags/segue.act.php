@@ -61,7 +61,7 @@ class segueAction
 	 * @since 4/8/08
 	 */
 	public function getResultTitle () {
- 		$title = _("All tags added by you within Segue");
+ 		$title = _("All tags added by everyone within Segue");
 		return new Heading($title, 2);
 	}
 	
