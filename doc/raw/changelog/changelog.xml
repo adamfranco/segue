@@ -17,6 +17,9 @@
 		<fix author='adam' date='2008-09-30' ref='2136177' reftype='bug'>
 			Tagging: Fixed erroneous title when viewing all tags added by everyone within all of Segue.
 		</fix>
+		<fix author='adam' date='2008-09-30'>
+			Access Log: Fixed spelling mistake that was preventing a DuplicateKeyDatabaseException from being caught.
+		</fix>
 	</version>
 	<version number="2.2.4.0" date="2008-09-24">
 		<releaseNotes>
