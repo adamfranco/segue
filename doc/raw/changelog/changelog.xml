@@ -24,6 +24,9 @@
 			Media: File URLs now include the file name at the end for clarity and
 			to support usage by the FlowPlayer.
 		</fix>
+		<fix author='adam' date='2008-09-30' ref='2136489' reftype='bug'>
+			Roles: Users now cannot accidentally revoke their own administrator access.
+		</fix>
 	</version>
 	<version number="2.2.4.0" date="2008-09-24">
 		<releaseNotes>
