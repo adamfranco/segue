@@ -20,6 +20,10 @@
 		<fix author='adam' date='2008-09-30'>
 			Access Log: Fixed spelling mistake that was preventing a DuplicateKeyDatabaseException from being caught.
 		</fix>
+		<fix author='adam' date='2008-09-30' ref='2138652' reftype='bug'>
+			Media: File URLs now include the file name at the end for clarity and
+			to support usage by the FlowPlayer.
+		</fix>
 	</version>
 	<version number="2.2.4.0" date="2008-09-24">
 		<releaseNotes>
