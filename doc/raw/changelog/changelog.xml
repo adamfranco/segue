@@ -27,6 +27,11 @@
 		<fix author='adam' date='2008-09-30' ref='2136489' reftype='bug'>
 			Roles: Users now cannot accidentally revoke their own administrator access.
 		</fix>
+		<fix author='adam' date='2008-10-01' ref='2138946' reftype='bug' reporter='shel_sax'>
+			Text-Templates: GoogleCalendar text-template now works with multiple calendars
+			again. The issue was that the embed code was changed to drop the "http:" 
+			at the beginning of the source url.
+		</fix>
 	</version>
 	<version number="2.2.4.0" date="2008-09-24">
 		<releaseNotes>

@@ -250,7 +250,7 @@ class Segue_TextTemplates_googlecalendar
 [^<>]*		# Other stuff
 
 src=[\'"]
-	(http:\/\/www\.google\.com\/calendar\/embed\?[a-z0-9_\.\/?&=,;:%+~-]+)
+	((?:http:)?\/\/www\.google\.com\/calendar\/embed\?[a-z0-9_\.\/?&=,;:%+~-]+)
 [\'"]
 
 [^<>]*		# Other stuff
