@@ -42,11 +42,14 @@
 		<fix author='adam' date='2008-10-02' ref='2131028' reftype='bug'>
 			UI2: Controls links now properly hide along with the bar.
 		</fix>
-		<fix author='adam' date='2008-10-02' ref='' reftype='bug'>
+		<fix author='adam' date='2008-10-02'>
 			UI2: Controls-bar now spans the width of its item.
 		</fix>
-		<fix author='adam' date='2008-10-02' ref='' reftype='bug'>
+		<fix author='adam' date='2008-10-02'>
 			UI2: Controls-bar now is fixed width. It right-aligned on wide items and left-aligned on items narrower than its width to always keep it close while 			still accessible.
+		</fix>
+		<fix author='adam' date='2008-10-02'>
+			Portal: Folder icons now displayed again.
 		</fix>
 	</version>
 	<version number="2.2.4.0" date="2008-09-24">
@@ -167,7 +170,7 @@
 			Roles: search field in Roles UI is now labelled and includes instructions for use.
 		</fix>		
 		<fix author='alex' date='2008-09-12' ref='2094932' reftype='bug'>
-			UI2: title fields have been increased in size to accomodate more title text.
+			UI2: title fields have been increased in size to accommodate more title text.
 		</fix>		
 		<fix author='alex' date='2008-09-12' ref='2094944' reftype='bug'>
 			UI2: options box title bar now no longer obscures block, page or section titles.
