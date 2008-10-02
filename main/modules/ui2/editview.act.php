@@ -79,7 +79,7 @@ class editviewAction
 					SiteDispatcher::getCurrentRootNode(),
 					"<em>"._("Site")."</em>", 
 					SiteDispatcher::getCurrentRootNode()->acceptVisitor($visitor->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, false);
+					'#090', '#9F9', '#6C6', 0, '0px');
 			$mainScreen->setPreHTML($controlsHTML.$mainScreen->getPreHTML($null = null));
 			
 			$mainScreen->setPostHTML($visitor->getBarPostHTML());

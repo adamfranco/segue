@@ -127,7 +127,7 @@ END;
 					$block,
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true,
+					'#090', '#9F9', '#6C6', 0, '0px',
 					Segue_Selection::instance()->getAddLink($block))				."<br/>";
 			$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 			
@@ -259,7 +259,7 @@ END;
 					$block,
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true,
+					'#090', '#9F9', '#6C6', 0, '0px',
 					Segue_Selection::instance()->getAddLink($block))				."<br/>";
 			$menuItem->setPreHTML($controlsHTML.$menuItem->getPreHTML($null = null));
 			
@@ -301,7 +301,7 @@ END;
 					$navBlock,
 					"<em>".$label."</em>", 
 					$navBlock->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true,
+					'#090', '#9F9', '#6C6', 0, '0px',
 					Segue_Selection::instance()->getAddLink($navBlock))
 				."<br/>";
 			$menuItems[0]->setPreHTML($controlsHTML.$menuItems[0]->getPreHTML($null = null));
@@ -422,6 +422,21 @@ END;
 		}
 		
 		return $guiContainer;
+	}
+	/**
+	 * Add any needed markup to a gui component that is the child of a flow organizer
+	 * 
+	 * @param object FlowOrganizerSiteComponent $organizer
+	 * @param integer $cellIndex
+	 * @param object Component $guiComponent
+	 * @access protected
+	 * @since 12/18/07
+	 */
+	protected function addFlowChildWrapper (FlowOrganizerSiteComponent $organizer, $cellIndex, Component $guiComponent) {
+		$guiComponent = parent::addFlowChildWrapper($organizer, $cellIndex, $guiComponent);
+		$guiComponent->setPreHTML("<div style='margin: 3px;'>".$guiComponent->getPreHTML($null = null));
+		$guiComponent->setPostHTML($guiComponent->getPostHTML($null = null)."</div>");
+		return $guiComponent;
 	}
 	
 	/**
@@ -640,7 +655,7 @@ END;
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function getControlsHTML (SiteComponent $siteComponent, $title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0, $selectionLinkHtml = null) {
+	function getControlsHTML (SiteComponent $siteComponent, $title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $borderWidth = '0px', $selectionLinkHtml = null) {
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		
@@ -653,9 +668,9 @@ END;
 			."style='"
 			."color: #000; "
 			."min-width: 150px; "
-// 			."border-top: $lineWidth solid $borderColor; "
-// 			."border-left: $lineWidth solid $borderColor; "
-// 			."border-right: $lineWidth solid $borderColor; "
+			."border-top: $borderWidth solid $borderColor; "
+			."border-left: $borderWidth solid $borderColor; "
+			."border-right: $borderWidth solid $borderColor; "
 			.(($leftIndentLevel)?"margin-left: 10px; ":"");
 		
 		if (!$this->controlsAlwaysVisible())
@@ -753,15 +768,15 @@ END;
 	 * @access public
 	 * @since 1/16/07
 	 */
-	function getBarPreHTML ($borderColor, SiteComponent $siteComponent) {
+	function getBarPreHTML ($borderColor, SiteComponent $siteComponent, $borderWidth = '2px') {
 		ob_start();
 		print "\n<div class='site_component_wrapper'";
 		if (!$this->controlsAlwaysVisible()) {
 			print " onmouseover='this.borderColor = \"$borderColor\"; showControls(this)'";
 			print " onmouseout='if (isValidMouseOut(this, event)) {hideControls(this);} '";
-			print " style='position: relative; border: 2px solid transparent;'";
+			print " style='position: relative; border: $borderWidth solid transparent;'";
 		} else {
-			print " style='position: relative; border: 2px solid $borderColor;'";
+			print " style='position: relative; border: $borderWidth solid $borderColor;'";
 		}
 		
 		print " onclick='";

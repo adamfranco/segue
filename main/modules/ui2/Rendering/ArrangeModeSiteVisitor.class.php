@@ -286,12 +286,12 @@ class ArrangeModeSiteVisitor
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
 		{			
-			$controlsHTML = $this->getBarPreHTML('#F00', $organizer)
+			$controlsHTML = $this->getBarPreHTML('#F00', $organizer, '1px')
 				.$this->getControlsHTML(
 					$organizer,
 					$organizer->getDisplayName(), 
 					$organizer->acceptVisitor($this->_controlsVisitor), 
-					'#F00', '#F99', '#F66');
+					'#F00', '#F99', '#F66', 0, '1px');
 			$guiContainer->setPreHTML($controlsHTML."\n<div style='z-index: 0;'>".$guiContainer->getPreHTML($null = null));
 			
 			$guiContainer->setPostHTML($guiContainer->getPostHTML($null = null)."</div>".$this->getBarPostHTML());
@@ -327,6 +327,8 @@ class ArrangeModeSiteVisitor
 	 * @since 12/18/07
 	 */
 	protected function addFlowChildWrapper (FlowOrganizerSiteComponent $organizer, $cellIndex, Component $guiComponent) {
+		$guiComponent = parent::addFlowChildWrapper($organizer, $cellIndex, $guiComponent);
+		
 		$this->wrapAsDroppable($guiComponent, 
 					$organizer->getId()."_cell:".$cellIndex,
 					array_keys($organizer->getVisibleComponentsForPossibleAdditionToCell($cellIndex)));
@@ -427,7 +429,7 @@ class ArrangeModeSiteVisitor
 									'placeholder_red_outline', 
 									'Red Outline', 
 									'A red outline around a menu placeholder');
-		$styleCollection->addSP(new BorderSP('2px', 'solid', '#F00'));
+		$styleCollection->addSP(new BorderSP('1px', 'solid', '#F00'));
 		$placeholder->addStyle($styleCollection);
 		return $placeholder;
 	}
