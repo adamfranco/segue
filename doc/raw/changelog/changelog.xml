@@ -32,6 +32,10 @@
 			again. The issue was that the embed code was changed to drop the "http:" 
 			at the beginning of the source url.
 		</fix>
+		<new author='adam' date='2008-10-02' ref='2138942' reftype='fr' reporter='shel_sax'>
+			UI2: Can now open options-panel by holding down CTRL and SHIFT while clicking 
+			on content or containers.
+		</new>
 	</version>
 	<version number="2.2.4.0" date="2008-09-24">
 		<releaseNotes>

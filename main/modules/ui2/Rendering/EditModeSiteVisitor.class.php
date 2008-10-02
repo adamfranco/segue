@@ -122,7 +122,7 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$block->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#090')
+			$controlsHTML = $this->getBarPreHTML('#090', $block)
 				.$this->getControlsHTML(
 					$block,
 					"<em>".$this->_classNames['Block']."</em>", 
@@ -254,7 +254,7 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$block->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#090')
+			$controlsHTML = $this->getBarPreHTML('#090', $block)
 				.$this->getControlsHTML(
 					$block,
 					"<em>".$this->_classNames['Block']."</em>", 
@@ -296,7 +296,7 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$navBlock->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#090')
+			$controlsHTML = $this->getBarPreHTML('#090', $navBlock)
 				.$this->getControlsHTML(
 					$navBlock,
 					"<em>".$label."</em>", 
@@ -410,7 +410,7 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#00F')
+			$controlsHTML = $this->getBarPreHTML('#00F', $organizer)
 				.$this->getControlsHTML(
 					$organizer,
 					"<em>".$this->_classNames['FlowOrganizer']."</em>", 
@@ -476,7 +476,7 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#00F')
+			$controlsHTML = $this->getBarPreHTML('#00F', $organizer)
 				.$this->getControlsHTML(
 					$organizer,
 					"<em>".$this->_classNames['MenuOrganizer']."</em>", 
@@ -648,7 +648,9 @@ END;
 							."-moz-opacity: .70; "
 							."opacity: .70; ";
 		ob_start();
-		print "\n<div class='controls_bar' style='"
+		print "\n<div class='controls_bar' "
+			."id='".$siteComponent->getId()."__controls_bar' "
+			."style='"
 			."color: #000; "
 			."min-width: 150px; "
 // 			."border-top: $lineWidth solid $borderColor; "
@@ -734,11 +736,12 @@ END;
 	 * controls-bar for the item
 	 * 
 	 * @param string $borderColor
+	 * @param SiteComponent $siteComponent
 	 * @return string
 	 * @access public
 	 * @since 1/16/07
 	 */
-	function getBarPreHTML ($borderColor) {
+	function getBarPreHTML ($borderColor, SiteComponent $siteComponent) {
 		ob_start();
 		print "\n<div class='site_component_wrapper'";
 		if (!$this->controlsAlwaysVisible()) {
@@ -748,6 +751,18 @@ END;
 		} else {
 			print " style='position: relative; border: 2px solid $borderColor;'";
 		}
+		
+		print " onclick='";
+		print "if (event.shiftKey && (event.metaKey || event.ctrlKey)) { ";
+		print 		"toggleControls(document.get_element_by_id(\"".$siteComponent->getId()."__controls_bar\")); ";
+		print 		"if (event.stopPropagation) { ";
+		print			"event.stopPropagation(); ";
+		print 		"} else if (window.event) { ";
+		print 			"window.event.cancelBubble = true; ";
+		print 		"}";
+		print "}";
+		print "'";
+		
 		print ">";
 		return ob_get_clean();
 	}

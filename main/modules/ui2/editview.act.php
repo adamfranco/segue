@@ -74,7 +74,7 @@ class editviewAction
 			SiteDispatcher::getCurrentRootNode()->getQualifierId()))
 		{
 			$visitor = $this->getSiteVisitor();
-			$controlsHTML = $visitor->getBarPreHTML('#090')
+			$controlsHTML = $visitor->getBarPreHTML('#090', SiteDispatcher::getCurrentRootNode())
 				.$visitor->getControlsHTML(
 					SiteDispatcher::getCurrentRootNode(),
 					"<em>"._("Site")."</em>", 

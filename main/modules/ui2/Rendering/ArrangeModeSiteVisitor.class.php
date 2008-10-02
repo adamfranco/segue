@@ -286,7 +286,7 @@ class ArrangeModeSiteVisitor
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
 		{			
-			$controlsHTML = $this->getBarPreHTML('#F00')
+			$controlsHTML = $this->getBarPreHTML('#F00', $organizer)
 				.$this->getControlsHTML(
 					$organizer,
 					$organizer->getDisplayName(), 

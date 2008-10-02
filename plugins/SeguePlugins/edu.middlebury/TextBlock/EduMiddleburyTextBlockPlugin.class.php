@@ -165,7 +165,7 @@ class EduMiddleburyTextBlockPlugin
 			$this->printEditForm();
  		} else if ($this->canView()) {
  			if ($this->shouldShowControls()) {
-				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
+				print "\n<div onclick='if (event.shiftKey && !(event.metaKey || event.ctrlKey)) { ".$this->locationSend(array('edit' => 'true'))."}'>";
  			}
  			
  			if ($this->hasContent()) {
@@ -215,7 +215,7 @@ class EduMiddleburyTextBlockPlugin
 			$this->printEditForm();
  		} else if ($this->canView()) {
  			if ($this->shouldShowControls()) {
-				print "\n<div onclick='if (event.shiftKey) { ".$this->locationSend(array('edit' => 'true'))."}'>";
+				print "\n<div onclick='if (event.shiftKey && !(event.metaKey || event.ctrlKey)) { ".$this->locationSend(array('edit' => 'true'))." event.stopPropagation();}'>";
  			}
  			if ($this->hasContent()) {
 		 		print "\n".$this->parseWikiText($this->cleanHTML($this->getContent()));
