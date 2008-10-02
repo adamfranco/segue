@@ -42,6 +42,12 @@
 		<fix author='adam' date='2008-10-02' ref='2131028' reftype='bug'>
 			UI2: Controls links now properly hide along with the bar.
 		</fix>
+		<fix author='adam' date='2008-10-02' ref='' reftype='bug'>
+			UI2: Controls-bar now spans the width of its item.
+		</fix>
+		<fix author='adam' date='2008-10-02' ref='' reftype='bug'>
+			UI2: Controls-bar now is fixed width. It right-aligned on wide items and left-aligned on items narrower than its width to always keep it close while 			still accessible.
+		</fix>
 	</version>
 	<version number="2.2.4.0" date="2008-09-24">
 		<releaseNotes>

@@ -82,7 +82,7 @@ class ControlsSiteVisitor
 		print " class='controls_form'";
 		print ">";
 		print "\n\t\t\t<div style='float: left;'>";
-		print "\n\t\t\t<table align='right' cellspacing='0' cellpadding='0'>";
+		print "\n\t\t\t<table align='right' cellspacing='0' cellpadding='0' style='width: 100%;'>";
 		
 // 		$harmoni->request->startNamespace('controls_form_'.$siteComponent->getId());
 		$this->printReorderJS();

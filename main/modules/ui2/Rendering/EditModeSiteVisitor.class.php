@@ -660,8 +660,8 @@ END;
 		
 		if (!$this->controlsAlwaysVisible())
 			print "visibility: hidden; ";
-		print "position: absolute; ";
-		print "z-index: 10; ";
+// 		print "position: absolute; ";
+// 		print "z-index: 10; ";
 		print "left: 0px; ";
 		
 		
@@ -719,15 +719,15 @@ END;
 							."-moz-opacity: .95; "
 							."opacity: .95; ";
 		
-		print "\n\t\t\t<div class='controls' style='display: none; border-top: 1px solid $dividerColor; background-color: $backgroundColor; ".$opacityStyles."' ";
+		print "\n\t\t\t<div class='controls' style='display: none; border-top: 1px solid $dividerColor; background-color: $backgroundColor; ".$opacityStyles." position: absolute; left: 0px; z-index: 10; text-align: left; width: 310px;' ";
 		print ">";
 		print $controlsHTML;
 		print "\n\t\t\t\t</div>";
 		
 		print "\n</div>";
-		if (!$float) {
-			print "\n<div style='display: block;' class='controls_spacer'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>";
-		}
+// 		if (!$float) {
+// 			print "\n<div style='display: block;' class='controls_spacer'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>";
+// 		}
 		
 		return ob_get_clean();
 	}
@@ -852,6 +852,25 @@ END;
 		mainElement.style.width = '';
 	}
 	
+	/**
+	 * Give the panel a z-index greater than any other item.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 9/24/08
+	 */
+	function moveControlsToFront (mainElement) {
+		var elements = document.getElementsByTagName("*");
+		var maxZIndex = 0;
+		for (var i = 0; i < elements.length; i++) {
+			if (elements[i] !== mainElement) {
+				maxZIndex = Math.max(elements[i].style.zIndex, maxZIndex);
+			}
+		}
+		
+		mainElement.style.zIndex = maxZIndex + 1;
+	}
+	
 	// -- Begin click-off hiding --
 	// The following function and onclick event work with the override in the
 	// options panel to hide options when clicks are made elsewhere on the page.
@@ -904,6 +923,19 @@ END;
 			
 			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 			controlsLink.innerHTML = '$hideControls';
+			
+// 			controls.style.left = '0px';
+// 			console.log('controls: ' + controls.offsetWidth);
+// 			console.log('parent: ' + mainElement.offsetWidth);
+			if (mainElement.offsetWidth > controls.offsetWidth) {
+				controls.style.left = null;
+				controls.style.right = '0px';
+			} else {
+				controls.style.left = '0px';
+				controls.style.right = null;
+			}
+			
+			moveControlsToFront(controls);
 		}
 		// if they are shown, hide them.
 		else {
