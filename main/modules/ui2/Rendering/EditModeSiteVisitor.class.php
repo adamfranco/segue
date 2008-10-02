@@ -668,6 +668,17 @@ END;
 		print "'";
 // 		print " onmouseover='showControlsLink(this)'"
 // 			." onmouseout='hideControlsLink(this)'";
+
+		// Any clicks on the page will hide all options panels.
+		// Prevent clicks within the panel from hiding it.
+		print " onclick='";
+		print	"if (event.stopPropagation) { ";
+		print		"event.stopPropagation(); ";
+		print	"} else if (window.event) { ";
+		print		"window.event.cancelBubble = true; ";
+		print	"}";
+		print "'";
+		
 		print ">";
 		print "\n<table border='0' cellpadding='0' cellspacing='0'"
 			." style='width: 100%; padding: 0px; margin: 0px; "
@@ -708,7 +719,8 @@ END;
 							."-moz-opacity: .95; "
 							."opacity: .95; ";
 		
-		print "\n\t\t\t<div class='controls' style='display: none; border-top: 1px solid $dividerColor; background-color: $backgroundColor; ".$opacityStyles."'>";
+		print "\n\t\t\t<div class='controls' style='display: none; border-top: 1px solid $dividerColor; background-color: $backgroundColor; ".$opacityStyles."' ";
+		print ">";
 		print $controlsHTML;
 		print "\n\t\t\t\t</div>";
 		
@@ -839,6 +851,26 @@ END;
 		
 		mainElement.style.width = '';
 	}
+	
+	// -- Begin click-off hiding --
+	// The following function and onclick event work with the override in the
+	// options panel to hide options when clicks are made elsewhere on the page.
+	function hideAllControls() {
+		var allControls = document.get_elements_by_class('controls_bar');
+		for (var i = 0; i < allControls.length; i++) {
+			var controlsBar = allControls[i];
+			var controls = getDescendentByClassName(controlsBar, 'controls');
+			
+			if (controls.style.display == 'block')
+				toggleControls(controlsBar);
+		}
+	}
+	
+	window.addOnLoad(function() {
+		document.body.onclick = hideAllControls;
+	});
+	// -- End click-off hiding --
+	
 		
 	function showControlsLink(mainElement) {
 		var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
