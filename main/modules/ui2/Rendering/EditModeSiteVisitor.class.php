@@ -903,7 +903,6 @@ END;
 			mainElement.style.zIndex = '11';
 			
 			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
-			controlsLink.style.visibility = 'visible';
 			controlsLink.innerHTML = '$hideControls';
 		}
 		// if they are shown, hide them.
