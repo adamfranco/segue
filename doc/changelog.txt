@@ -2,6 +2,83 @@
 Segue Change Log
 
 
+v. 2.2.4.1 (2008-10-03)
+----------------------------------------------------
+This bugfix release includes a number of small usability fixes to improve the user
+experience. See the change-log for details.
+
+Upgrades from versions prior to 2.2.4.0 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+This Segue release uses Harmoni 1.8.1 and Polyphony 1.4.6.
+		
+		
+	* Bug Fix: #2136177 
+		Tagging: Fixed erroneous title when viewing all tags added by everyone
+		within all of Segue.
+		(2008-09-30 - Adam Franco)
+		
+	* Bug Fix: 
+		Access Log: Fixed spelling mistake that was preventing a
+		DuplicateKeyDatabaseException from being caught.
+		(2008-09-30 - Adam Franco)
+		
+	* Bug Fix: #2138652 
+		Media: File URLs now include the file name at the end for clarity and to
+		support usage by the FlowPlayer.
+		(2008-09-30 - Adam Franco)
+		
+	* Bug Fix: #2136489 
+		Roles: Users now cannot accidentally revoke their own administrator access.
+		(2008-09-30 - Adam Franco)
+		
+	* Bug Fix: #2138946 
+		Text-Templates: GoogleCalendar text-template now works with multiple
+		calendars again. The issue was that the embed code was changed to drop the
+		"http:" at the beginning of the source url.
+		(2008-10-01 - Adam Franco)
+		(reported by Shel Sax of Middlebury College)
+		
+	* New feature: #2138942 
+		UI2: Can now open options-panel by holding down CTRL and SHIFT while
+		clicking on content or containers.
+		(2008-10-02 - Adam Franco)
+		(reported by Shel Sax of Middlebury College)
+		
+	* Change: #2138939 
+		UI2: Clicking off on an options panel now closes it.
+		(2008-10-02 - Adam Franco)
+		(reported by Shel Sax of Middlebury College)
+		
+	* Bug Fix: #2131028 
+		UI2: Controls links now properly hide along with the bar.
+		(2008-10-02 - Adam Franco)
+		
+	* Bug Fix: 
+		UI2: Controls-bar now spans the width of its item.
+		(2008-10-02 - Adam Franco)
+		
+	* Bug Fix: 
+		UI2: Controls-bar now is fixed width. It right-aligned on wide items and
+		left-aligned on items narrower than its width to always keep it close while
+		still accessible.
+		(2008-10-02 - Adam Franco)
+		
+	* Bug Fix: 
+		Portal: Folder icons now displayed again.
+		(2008-10-02 - Adam Franco)
+		
+	* Change: 
+		UI2: Tightened up margins and borders in arrange mode.
+		(2008-10-02 - Adam Franco)
+		
+	* Bug Fix: 
+		Themes: Removed extra padding around menus.
+		(2008-10-03 - Adam Franco)
+	
+
+
+
 v. 2.2.4.0 (2008-09-24)
 ----------------------------------------------------
 This release includes a large number of usability improvements that make Segue usage
@@ -153,7 +230,8 @@ This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.4.
 		(2008-09-12 - Alex Chapin)		
 		
 	* Bug Fix: #2094932 
-		UI2:title fields have been increased in size to accomodate more title text.
+		UI2: title fields have been increased in size to accommodate more title
+		text. 
 		(2008-09-12 - Alex Chapin)		
 		
 	* Bug Fix: #2094944 
