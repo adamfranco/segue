@@ -54,6 +54,9 @@
 		<change author='adam' date='2008-10-02'>
 			UI2: Tightened up margins and borders in arrange mode.
 		</change>
+		<fix author='adam' date='2008-10-03'>
+			Themes: Removed extra padding around menus.
+		</fix>
 	</version>
 	<version number="2.2.4.0" date="2008-09-24">
 		<releaseNotes>
