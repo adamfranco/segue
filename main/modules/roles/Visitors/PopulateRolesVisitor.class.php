@@ -166,6 +166,8 @@ class PopulateRolesVisitor
 		}
 		
 		// Disable options where modify_authorization is not allowed.
+		$authN = Services::getService('AuthN');
+		$adminRole = $roleMgr->getRole('admin');
 		if (!$authZ->isUserAuthorized(
 			$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
 			$qualifierId)) 
@@ -175,6 +177,16 @@ class PopulateRolesVisitor
 					_("You are not authorized to change authorization here."));
 			}
 		}
+		// Disable all options if the user is editing their own roles.
+		else if ($authN->getFirstUserId()->isEqual($this->agentId)) {
+			foreach($roleMgr->getRoles() as $role) {
+				if ($role->isLessThan($adminRole))
+					$this->property->makeDisabled(
+						$qualifierId->getIdString(), 
+						$role->getIdString(),
+						_("You cannot remove your own Administrator access."));
+			}
+		}
 		
 		// Disable the Administrator role for everyone and institute.
 		$nonAdminAgents = array();
@@ -182,7 +194,6 @@ class PopulateRolesVisitor
 		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.agents.anonymous');
 		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.agents.users');
 		$nonAdminAgents[] = $idMgr->getId('edu.middlebury.institute');
-		$adminRole = $roleMgr->getRole('admin');
 		foreach ($nonAdminAgents as $agentId) {
 			if ($agentId->isEqual($this->agentId)) {
 				$message = _("You cannot give the '%1' role to '%2' for security reasons.");
@@ -192,8 +203,6 @@ class PopulateRolesVisitor
 				break;
 			}
 		}
-		
-		
 	}
 	
 	/**

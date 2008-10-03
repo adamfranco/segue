@@ -425,7 +425,8 @@
 	}
 	
 	ul.portal_folders li {
-		list-style-image:  url(https://segue2.middlebury.edu//images/icons/16x16/folder_open.png);
+/* Added with proper URL via PHP in main/modules/portal/list.act.php */
+/*		list-style-image:  url(images/icons/16x16/folder_open.png); */
 		list-style-position: outside;
 		margin-bottom: 5px;
 		border: 0px;

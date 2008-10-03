@@ -383,7 +383,7 @@ abstract class SlotAbstract
 			$dbc = Services::getService('DBHandler');
 			try {
 				$result = $dbc->query($query, IMPORTER_CONNECTION);
-			} catch (DuplucateKeyDatabaseException $e) {
+			} catch (DuplicateKeyDatabaseException $e) {
 				throw new OperationFailedException("Owner already exists for slot, '".$this->getShortname()."'.", Slot::OWNER_EXISTS);
 			}
 			
@@ -643,7 +643,7 @@ abstract class SlotAbstract
 				else
 					$query->addValue('media_quota', $this->mediaQuota);
 				$dbc->query($query, IMPORTER_CONNECTION);
-			} catch (DuplucateKeyDatabaseException $e) {
+			} catch (DuplicateKeyDatabaseException $e) {
 				// Update row to the slot table
 				$query = new UpdateQuery;
 				$query->setTable('segue_slot');
@@ -670,7 +670,7 @@ abstract class SlotAbstract
 					$query->addValue('owner_id', $ownerId->getIdString());
 					try {
 						$dbc->query($query, IMPORTER_CONNECTION);
-					} catch (DuplucateKeyDatabaseException $e) {
+					} catch (DuplicateKeyDatabaseException $e) {
 						// If already there, just skip.
 					}
 				}

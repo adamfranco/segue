@@ -437,6 +437,13 @@ class listAction
 		
 		// ]]>
 		</script>
+		
+		<style type='text/css'>
+			/* Other portal styles are in the static CSS file, images/SegueCommon.css */
+			ul.portal_folders li {
+				list-style-image:  url(".MYPATH."/images/icons/16x16/folder_open.png);
+			}
+		</style>
 		";
 		
 		$handler = $harmoni->getOutputHandler();

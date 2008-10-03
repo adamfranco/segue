@@ -122,12 +122,12 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$block->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#090')
+			$controlsHTML = $this->getBarPreHTML('#090', $block)
 				.$this->getControlsHTML(
 					$block,
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true,
+					'#090', '#9F9', '#6C6', 0, '0px',
 					Segue_Selection::instance()->getAddLink($block))				."<br/>";
 			$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 			
@@ -254,12 +254,12 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$block->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#090')
+			$controlsHTML = $this->getBarPreHTML('#090', $block)
 				.$this->getControlsHTML(
 					$block,
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true,
+					'#090', '#9F9', '#6C6', 0, '0px',
 					Segue_Selection::instance()->getAddLink($block))				."<br/>";
 			$menuItem->setPreHTML($controlsHTML.$menuItem->getPreHTML($null = null));
 			
@@ -296,12 +296,12 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$navBlock->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#090')
+			$controlsHTML = $this->getBarPreHTML('#090', $navBlock)
 				.$this->getControlsHTML(
 					$navBlock,
 					"<em>".$label."</em>", 
 					$navBlock->acceptVisitor($this->_controlsVisitor), 
-					'#090', '#9F9', '#6C6', 0, true,
+					'#090', '#9F9', '#6C6', 0, '0px',
 					Segue_Selection::instance()->getAddLink($navBlock))
 				."<br/>";
 			$menuItems[0]->setPreHTML($controlsHTML.$menuItems[0]->getPreHTML($null = null));
@@ -410,7 +410,7 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#00F')
+			$controlsHTML = $this->getBarPreHTML('#00F', $organizer)
 				.$this->getControlsHTML(
 					$organizer,
 					"<em>".$this->_classNames['FlowOrganizer']."</em>", 
@@ -422,6 +422,21 @@ END;
 		}
 		
 		return $guiContainer;
+	}
+	/**
+	 * Add any needed markup to a gui component that is the child of a flow organizer
+	 * 
+	 * @param object FlowOrganizerSiteComponent $organizer
+	 * @param integer $cellIndex
+	 * @param object Component $guiComponent
+	 * @access protected
+	 * @since 12/18/07
+	 */
+	protected function addFlowChildWrapper (FlowOrganizerSiteComponent $organizer, $cellIndex, Component $guiComponent) {
+		$guiComponent = parent::addFlowChildWrapper($organizer, $cellIndex, $guiComponent);
+		$guiComponent->setPreHTML("<div style='margin: 3px;'>".$guiComponent->getPreHTML($null = null));
+		$guiComponent->setPostHTML($guiComponent->getPostHTML($null = null)."</div>");
+		return $guiComponent;
 	}
 	
 	/**
@@ -476,7 +491,7 @@ END;
 			$idManager->getId("edu.middlebury.authorization.modify"), 
 			$organizer->getQualifierId()))
 		{
-			$controlsHTML = $this->getBarPreHTML('#00F')
+			$controlsHTML = $this->getBarPreHTML('#00F', $organizer)
 				.$this->getControlsHTML(
 					$organizer,
 					"<em>".$this->_classNames['MenuOrganizer']."</em>", 
@@ -640,7 +655,7 @@ END;
 	 * @access public
 	 * @since 4/7/06
 	 */
-	function getControlsHTML (SiteComponent $siteComponent, $title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $float = 0, $selectionLinkHtml = null) {
+	function getControlsHTML (SiteComponent $siteComponent, $title, $controlsHTML, $borderColor, $backgroundColor, $dividerColor, $leftIndentLevel = 0, $borderWidth = '0px', $selectionLinkHtml = null) {
 		$halfLineWidth = 1;
 		$lineWidth = ($halfLineWidth * 2).'px'; $halfLineWidth = $halfLineWidth.'px';
 		
@@ -648,24 +663,44 @@ END;
 							."-moz-opacity: .70; "
 							."opacity: .70; ";
 		ob_start();
-		print "\n<div class='controls_bar' style='"
+		print "\n<div class='controls_bar' "
+			."id='".$siteComponent->getId()."__controls_bar' "
+			."style='"
 			."color: #000; "
+<<<<<<< HEAD:main/modules/ui2/Rendering/EditModeSiteVisitor.class.php
 			."min-width: 130px; "
 // 			."border-top: $lineWidth solid $borderColor; "
 // 			."border-left: $lineWidth solid $borderColor; "
 // 			."border-right: $lineWidth solid $borderColor; "
+=======
+			."min-width: 150px; "
+			."border-top: $borderWidth solid $borderColor; "
+			."border-left: $borderWidth solid $borderColor; "
+			."border-right: $borderWidth solid $borderColor; "
+>>>>>>> 8617d57a027f62d51c69cec948d9d4a6486f2b9e:main/modules/ui2/Rendering/EditModeSiteVisitor.class.php
 			.(($leftIndentLevel)?"margin-left: 10px; ":"");
 		
 		if (!$this->controlsAlwaysVisible())
 			print "visibility: hidden; ";
-		print "position: absolute; ";
-		print "z-index: 10; ";
+// 		print "position: absolute; ";
+// 		print "z-index: 10; ";
 		print "left: 0px; ";
 		
 		
 		print "'";
 // 		print " onmouseover='showControlsLink(this)'"
 // 			." onmouseout='hideControlsLink(this)'";
+
+		// Any clicks on the page will hide all options panels.
+		// Prevent clicks within the panel from hiding it.
+		print " onclick='";
+		print	"if (event.stopPropagation) { ";
+		print		"event.stopPropagation(); ";
+		print	"} else if (window.event) { ";
+		print		"window.event.cancelBubble = true; ";
+		print	"}";
+		print "'";
+		
 		print ">";
 		print "\n<table border='0' cellpadding='0' cellspacing='0'"
 			." style='width: 100%; padding: 0px; margin: 0px; "
@@ -706,14 +741,15 @@ END;
 							."-moz-opacity: .95; "
 							."opacity: .95; ";
 		
-		print "\n\t\t\t<div class='controls' style='display: none; border-top: 1px solid $dividerColor; background-color: $backgroundColor; ".$opacityStyles."'>";
+		print "\n\t\t\t<div class='controls' style='display: none; border-top: 1px solid $dividerColor; background-color: $backgroundColor; ".$opacityStyles." position: absolute; left: 0px; z-index: 10; text-align: left; width: 310px;' ";
+		print ">";
 		print $controlsHTML;
 		print "\n\t\t\t\t</div>";
 		
 		print "\n</div>";
-		if (!$float) {
-			print "\n<div style='display: block;' class='controls_spacer'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>";
-		}
+// 		if (!$float) {
+// 			print "\n<div style='display: block;' class='controls_spacer'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>";
+// 		}
 		
 		return ob_get_clean();
 	}
@@ -734,20 +770,33 @@ END;
 	 * controls-bar for the item
 	 * 
 	 * @param string $borderColor
+	 * @param SiteComponent $siteComponent
 	 * @return string
 	 * @access public
 	 * @since 1/16/07
 	 */
-	function getBarPreHTML ($borderColor) {
+	function getBarPreHTML ($borderColor, SiteComponent $siteComponent, $borderWidth = '2px') {
 		ob_start();
 		print "\n<div class='site_component_wrapper'";
 		if (!$this->controlsAlwaysVisible()) {
 			print " onmouseover='this.borderColor = \"$borderColor\"; showControls(this)'";
 			print " onmouseout='if (isValidMouseOut(this, event)) {hideControls(this);} '";
-			print " style='position: relative; border: 2px solid transparent;'";
+			print " style='position: relative; border: $borderWidth solid transparent;'";
 		} else {
-			print " style='position: relative; border: 2px solid $borderColor;'";
+			print " style='position: relative; border: $borderWidth solid $borderColor;'";
 		}
+		
+		print " onclick='";
+		print "if (event.shiftKey && (event.metaKey || event.ctrlKey)) { ";
+		print 		"toggleControls(document.get_element_by_id(\"".$siteComponent->getId()."__controls_bar\")); ";
+		print 		"if (event.stopPropagation) { ";
+		print			"event.stopPropagation(); ";
+		print 		"} else if (window.event) { ";
+		print 			"window.event.cancelBubble = true; ";
+		print 		"}";
+		print "}";
+		print "'";
+		
 		print ">";
 		return ob_get_clean();
 	}
@@ -824,6 +873,45 @@ END;
 		
 		mainElement.style.width = '';
 	}
+	
+	/**
+	 * Give the panel a z-index greater than any other item.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 9/24/08
+	 */
+	function moveControlsToFront (mainElement) {
+		var elements = document.getElementsByTagName("*");
+		var maxZIndex = 0;
+		for (var i = 0; i < elements.length; i++) {
+			if (elements[i] !== mainElement) {
+				maxZIndex = Math.max(elements[i].style.zIndex, maxZIndex);
+			}
+		}
+		
+		mainElement.style.zIndex = maxZIndex + 1;
+	}
+	
+	// -- Begin click-off hiding --
+	// The following function and onclick event work with the override in the
+	// options panel to hide options when clicks are made elsewhere on the page.
+	function hideAllControls() {
+		var allControls = document.get_elements_by_class('controls_bar');
+		for (var i = 0; i < allControls.length; i++) {
+			var controlsBar = allControls[i];
+			var controls = getDescendentByClassName(controlsBar, 'controls');
+			
+			if (controls.style.display == 'block')
+				toggleControls(controlsBar);
+		}
+	}
+	
+	window.addOnLoad(function() {
+		document.body.onclick = hideAllControls;
+	});
+	// -- End click-off hiding --
+	
 		
 	function showControlsLink(mainElement) {
 		var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
@@ -856,8 +944,20 @@ END;
 			mainElement.style.zIndex = '11';
 			
 			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
-			controlsLink.style.visibility = 'visible';
 			controlsLink.innerHTML = '$hideControls';
+			
+// 			controls.style.left = '0px';
+// 			console.log('controls: ' + controls.offsetWidth);
+// 			console.log('parent: ' + mainElement.offsetWidth);
+			if (mainElement.offsetWidth > controls.offsetWidth) {
+				controls.style.left = null;
+				controls.style.right = '0px';
+			} else {
+				controls.style.left = '0px';
+				controls.style.right = null;
+			}
+			
+			moveControlsToFront(controls);
 		}
 		// if they are shown, hide them.
 		else {

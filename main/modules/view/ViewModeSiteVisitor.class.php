@@ -850,4 +850,3 @@ class ViewModeSiteVisitor
 	}
 }
 
-?>

@@ -974,4 +974,3 @@ interface SeguePluginsAPI {
 
 }
 
-?>

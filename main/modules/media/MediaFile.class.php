@@ -247,7 +247,8 @@ class MediaFile {
 				array(
 					"repository_id" => $this->_getRepositoryIdString(),
 					"asset_id" => $this->_getAssetIdString(),
-					"record_id" => $this->_getRecordIdString()));
+					"record_id" => $this->_getRecordIdString(),
+					"file_name" => $this->getFilename()));
 		$harmoni->request->endNamespace();
 		
 		return $url;
@@ -273,7 +274,8 @@ class MediaFile {
 				array(
 					"repository_id" => $this->_getRepositoryIdString(),
 					"asset_id" => $this->_getAssetIdString(),
-					"record_id" => $this->_getRecordIdString()));
+					"record_id" => $this->_getRecordIdString(),
+					"file_name" => $this->getFilename()));
 		$harmoni->request->endNamespace();
 		
 		$url = $url->write();

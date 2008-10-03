@@ -571,7 +571,7 @@ class SlotManager {
 				$query->addValue('media_quota', $slot->getMediaQuota());
 						
 			$dbc->query($query, IMPORTER_CONNECTION);
-		} catch (DuplucateKeyDatabaseException $e) {
+		} catch (DuplicateKeyDatabaseException $e) {
 			// Update row to the slot table
 			$query = new UpdateQuery;
 			$query->setTable('segue_slot');

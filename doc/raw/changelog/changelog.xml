@@ -10,6 +10,51 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.4.1" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-09-30' ref='2136177' reftype='bug'>
+			Tagging: Fixed erroneous title when viewing all tags added by everyone within all of Segue.
+		</fix>
+		<fix author='adam' date='2008-09-30'>
+			Access Log: Fixed spelling mistake that was preventing a DuplicateKeyDatabaseException from being caught.
+		</fix>
+		<fix author='adam' date='2008-09-30' ref='2138652' reftype='bug'>
+			Media: File URLs now include the file name at the end for clarity and
+			to support usage by the FlowPlayer.
+		</fix>
+		<fix author='adam' date='2008-09-30' ref='2136489' reftype='bug'>
+			Roles: Users now cannot accidentally revoke their own administrator access.
+		</fix>
+		<fix author='adam' date='2008-10-01' ref='2138946' reftype='bug' reporter='shel_sax'>
+			Text-Templates: GoogleCalendar text-template now works with multiple calendars
+			again. The issue was that the embed code was changed to drop the "http:" 
+			at the beginning of the source url.
+		</fix>
+		<new author='adam' date='2008-10-02' ref='2138942' reftype='fr' reporter='shel_sax'>
+			UI2: Can now open options-panel by holding down CTRL and SHIFT while clicking 
+			on content or containers.
+		</new>
+		<change author='adam' date='2008-10-02' ref='2138939' reftype='fr' reporter='shel_sax'>
+			UI2: Clicking off on an options panel now closes it.
+		</change>
+		<fix author='adam' date='2008-10-02' ref='2131028' reftype='bug'>
+			UI2: Controls links now properly hide along with the bar.
+		</fix>
+		<fix author='adam' date='2008-10-02'>
+			UI2: Controls-bar now spans the width of its item.
+		</fix>
+		<fix author='adam' date='2008-10-02'>
+			UI2: Controls-bar now is fixed width. It right-aligned on wide items and left-aligned on items narrower than its width to always keep it close while 			still accessible.
+		</fix>
+		<fix author='adam' date='2008-10-02'>
+			Portal: Folder icons now displayed again.
+		</fix>
+		<change author='adam' date='2008-10-02'>
+			UI2: Tightened up margins and borders in arrange mode.
+		</change>
+	</version>
 	<version number="2.2.4.0" date="2008-09-24">
 		<releaseNotes>
 			This release includes a large number of usability improvements that
@@ -128,7 +173,7 @@
 			Roles: search field in Roles UI is now labelled and includes instructions for use.
 		</fix>		
 		<fix author='alex' date='2008-09-12' ref='2094932' reftype='bug'>
-			UI2: title fields have been increased in size to accomodate more title text.
+			UI2: title fields have been increased in size to accommodate more title text.
 		</fix>		
 		<fix author='alex' date='2008-09-12' ref='2094944' reftype='bug'>
 			UI2: options box title bar now no longer obscures block, page or section titles.
