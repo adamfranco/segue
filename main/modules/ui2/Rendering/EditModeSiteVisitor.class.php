@@ -128,7 +128,7 @@ END;
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, '0px',
-					Segue_Selection::instance()->getAddLink($block))				."<br/>";
+					Segue_Selection::instance()->getAddLink($block));
 			$guiContainer->setPreHTML($controlsHTML.$guiContainer->getPreHTML($null = null));
 			
 			$guiContainer->setPostHTML($this->getBarPostHTML());
@@ -260,7 +260,7 @@ END;
 					"<em>".$this->_classNames['Block']."</em>", 
 					$block->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, '0px',
-					Segue_Selection::instance()->getAddLink($block))				."<br/>";
+					Segue_Selection::instance()->getAddLink($block));
 			$menuItem->setPreHTML($controlsHTML.$menuItem->getPreHTML($null = null));
 			
 			$menuItem->setPostHTML($this->getBarPostHTML());
@@ -302,8 +302,7 @@ END;
 					"<em>".$label."</em>", 
 					$navBlock->acceptVisitor($this->_controlsVisitor), 
 					'#090', '#9F9', '#6C6', 0, '0px',
-					Segue_Selection::instance()->getAddLink($navBlock))
-				."<br/>";
+					Segue_Selection::instance()->getAddLink($navBlock));
 			$menuItems[0]->setPreHTML($controlsHTML.$menuItems[0]->getPreHTML($null = null));
 			
 			$menuItems[0]->setPostHTML($this->getBarPostHTML());
