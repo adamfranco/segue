@@ -667,17 +667,10 @@ END;
 			."id='".$siteComponent->getId()."__controls_bar' "
 			."style='"
 			."color: #000; "
-<<<<<<< HEAD:main/modules/ui2/Rendering/EditModeSiteVisitor.class.php
-			."min-width: 130px; "
-// 			."border-top: $lineWidth solid $borderColor; "
-// 			."border-left: $lineWidth solid $borderColor; "
-// 			."border-right: $lineWidth solid $borderColor; "
-=======
 			."min-width: 150px; "
 			."border-top: $borderWidth solid $borderColor; "
 			."border-left: $borderWidth solid $borderColor; "
 			."border-right: $borderWidth solid $borderColor; "
->>>>>>> 8617d57a027f62d51c69cec948d9d4a6486f2b9e:main/modules/ui2/Rendering/EditModeSiteVisitor.class.php
 			.(($leftIndentLevel)?"margin-left: 10px; ":"");
 		
 		if (!$this->controlsAlwaysVisible())
