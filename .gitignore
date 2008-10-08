@@ -8,3 +8,4 @@ config/*.conf.php
 # Ignore local Template and Theme directories.
 templates-local/*/
 themes-local/*/
+plugins-local/*/
