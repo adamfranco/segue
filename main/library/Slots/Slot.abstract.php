@@ -198,7 +198,12 @@ abstract class SlotAbstract
 		if ($this->getShortname() != $intSlot->getShortname())
 			throw new Exception("Cannot merge slots with differing shortnames. '".$this->getShortname()."' != '".$intSlot->getShortname()."'");
 		
-		$this->siteId = $intSlot->getSiteId();
+		if ($intSlot->isAlias())
+			$this->populateAlias($intSlot->getAliasTarget()->getShortname());
+		else
+			$this->populateSiteId($intSlot->getSiteId());
+		
+		
 		
 		foreach ($this->getOwners() as $key => $ownerId) {
 			// If this owner was intentionally removed, don't list them.
@@ -559,8 +564,10 @@ abstract class SlotAbstract
 	 * @since 10/8/08
 	 */
 	public function getAliasTarget () {
-		if (!$this->isAlias())
-			throw new OperationFailedException("Cannot get a target for a slot that is not an alias.");
+		if (!$this->isAlias()) {
+			printpre($this);
+			throw new OperationFailedException("Cannot get a target for a slot (".get_class($this).": ".$this->getShortname().") that is not an alias.");
+		}
 		
 		return SlotManager::instance()->getSlotByShortname($this->aliasTarget);
 	}
