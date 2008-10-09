@@ -757,8 +757,8 @@ abstract class SlotAbstract
 				$query = new InsertQuery;
 				$query->setTable('segue_slot');
 				$query->addValue('shortname', $this->getShortname());
-				if ($this->getSiteId())
-					$query->addValue('site_id', $this->getSiteId()->getIdString());
+				if ($this->siteId)
+					$query->addValue('site_id', $this->siteId->getIdString());
 				$query->addValue('type', $this->getType());
 				$query->addValue('location_category', $this->getLocationCategory());
 				if ($this->mediaQuota == self::$defaultMediaQuota)
@@ -771,8 +771,8 @@ abstract class SlotAbstract
 				$query = new UpdateQuery;
 				$query->setTable('segue_slot');
 				$query->addWhereEqual('shortname', $this->getShortname());
-				if ($this->getSiteId())
-					$query->addValue('site_id', $this->getSiteId()->getIdString());
+				if ($this->siteId)
+					$query->addValue('site_id', $this->siteId->getIdString());
 				$query->addValue('type', $this->getType());
 				$query->addValue('location_category', $this->getLocationCategory());
 				if ($this->mediaQuota == self::$defaultMediaQuota)

@@ -218,7 +218,7 @@ class SlotManager {
 		}
 		// Check our cache
 		foreach ($this->slots as $slot) {
-			if ($slot->getSiteId() == $siteId)
+			if ($slot->getSiteId() == $siteId && !$slot->isAlias())
 				return $slot;
 		}
 		
@@ -241,6 +241,43 @@ class SlotManager {
 		}
 		
 		return $slot;
+	}
+	
+	/**
+	 * Answer an array of slots that have sites and whose shortnames match a search string. 
+	 * Use '*' as the wildcard.
+	 * 
+	 * @param string $searchCriteria
+	 * @return array
+	 * @access public
+	 * @since 10/9/08
+	 */
+	public function getSlotsWithSitesBySearch ($searchCriteria) {
+		if (!strlen($searchCriteria))
+			return array();
+		
+		$searchCriteria = str_replace('*', '%', $searchCriteria);
+		
+		$query = new SelectQuery;
+		$query->addTable('segue_slot');
+		$query->addTable('segue_slot_owner AS all_owners', LEFT_JOIN, 'segue_slot.shortname = all_owners.shortname');
+		
+		$query->addColumn('segue_slot.shortname', 'shortname');
+		$query->addColumn('segue_slot.site_id', 'site_id');
+		$query->addColumn('segue_slot.alias_target', 'alias_target');
+		$query->addColumn('segue_slot.type', 'type');
+		$query->addColumn('segue_slot.location_category', 'location_category');
+		$query->addColumn('segue_slot.media_quota', 'media_quota');
+		$query->addColumn('all_owners.owner_id', 'owner_id');
+		$query->addColumn('all_owners.removed', 'removed');
+		
+		$query->addWhereLike('segue_slot.shortname', $searchCriteria);
+		
+// 		printpre($query->asString());
+		$dbc = Services::getService('DBHandler');
+		$result = $dbc->query($query, IMPORTER_CONNECTION);
+		
+		return $this->getSlotsFromQueryResult($result);
 	}
 	
 	/**

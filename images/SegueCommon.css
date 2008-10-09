@@ -432,6 +432,40 @@
 		margin-bottom: 5px;
 		border: 0px;
 	}
+	
+/*********************************************************
+ * Alias/Autocomplete styles
+ *********************************************************/
+.alias_panel .container {
+	height: 300px;
+}
+ 
+div.autocomplete {
+	position:absolute;
+	width:300px;
+	background-color:white;
+	border:1px solid #888;
+	margin:0px;
+	padding:0px;
+	height: 250px;
+	overflow: auto;
+}
+div.autocomplete ul {
+	list-style-type: none;
+	margin:0px;
+	padding:0px;
+}
+div.autocomplete ul li.selected {
+	background-color: #91C4FF;
+}
+div.autocomplete ul li {
+	list-style-type:none;
+	display:block;
+	margin:0;
+	padding:2px;
+	cursor:pointer;
+}
+
 
 /*********************************************************
  * Dataport Styles

@@ -213,8 +213,10 @@ class listAction
 		print "\n
 		
 		<script type='text/javascript' src='".MYPATH."/javascript/SiteCopyPanel.js'></script>
+ 		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js'></script>
+		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/src/scriptaculous.js'></script>
+		<script type='text/javascript' src='".MYPATH."/javascript/AliasPanel.js'></script>
 		<script type='text/javascript' src='".POLYPHONY_PATH."javascript/CenteredPanel.js'></script>
-		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js'></script>
 		
 		<script type='text/javascript'>
 		// <![CDATA[
@@ -569,7 +571,9 @@ class listAction
 		print " - ";
 		if ($slot->isUserOwner()) {
 			$harmoni = Harmoni::instance();
-			print " <a href='".$harmoni->request->quickURL($this->getUiModule(), 'add', array('slot' => $slot->getShortname()))."' class='create_site_link'>"._("Create Site")."</a>";
+			print " <a href='".$harmoni->request->quickURL($this->getUiModule(), 'add', array('slot' => $slot->getShortname()))."' class='create_site_link'>"._("create site")."</a>";
+			
+			print " | <a href='#' onclick='AliasPanel.run(\"".$slot->getShortname()."\", this); return false;' class='create_site_link'>"._("make alias")."</a>";
 			
 			$authN = Services::getService("AuthN");
 			try {
