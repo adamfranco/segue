@@ -259,6 +259,7 @@ class SlotManager {
 		
 		$query->addColumn('segue_slot.shortname', 'shortname');
 		$query->addColumn('segue_slot.site_id', 'site_id');
+		$query->addColumn('segue_slot.alias_target', 'alias_target');
 		$query->addColumn('segue_slot.type', 'type');
 		$query->addColumn('segue_slot.location_category', 'location_category');
 		$query->addColumn('segue_slot.media_quota', 'media_quota');
@@ -290,6 +291,7 @@ class SlotManager {
 			
 			$query->addColumn('segue_slot.shortname', 'shortname');
 			$query->addColumn('segue_slot.site_id', 'site_id');
+			$query->addColumn('segue_slot.alias_target', 'alias_target');
 			$query->addColumn('segue_slot.type', 'type');
 			$query->addColumn('segue_slot.location_category', 'location_category');
 			$query->addColumn('segue_slot.media_quota', 'media_quota');
@@ -332,6 +334,7 @@ class SlotManager {
 			
 			$query->addColumn('segue_slot.shortname', 'shortname');
 			$query->addColumn('segue_slot.site_id', 'site_id');
+			$query->addColumn('segue_slot.alias_target', 'alias_target');
 			$query->addColumn('segue_slot.type', 'type');
 			$query->addColumn('segue_slot.location_category', 'location_category');
 			$query->addColumn('segue_slot.media_quota', 'media_quota');
@@ -401,6 +404,7 @@ class SlotManager {
 		
 		$query->addColumn('segue_slot.shortname', 'shortname');
 		$query->addColumn('segue_slot.site_id', 'site_id');
+		$query->addColumn('segue_slot.alias_target', 'alias_target');
 		$query->addColumn('segue_slot.type', 'type');
 		$query->addColumn('segue_slot.location_category', 'location_category');
 		$query->addColumn('segue_slot.media_quota', 'media_quota');
@@ -442,6 +446,7 @@ class SlotManager {
 		
 		$query->addColumn('segue_slot.shortname', 'shortname');
 		$query->addColumn('segue_slot.site_id', 'site_id');
+		$query->addColumn('segue_slot.alias_target', 'alias_target');
 		$query->addColumn('segue_slot.type', 'type');
 		$query->addColumn('segue_slot.location_category', 'location_category');
 		$query->addColumn('segue_slot.media_quota', 'media_quota');
@@ -481,6 +486,11 @@ class SlotManager {
 				// Add site ids from DB if it exists
 				if ($result->field('site_id') !== '')
 					$slot->populateSiteId($result->field('site_id'));
+				
+				// Add the alias target
+				else if ($result->field('alias_target') !== '' 
+						&& !is_null($result->field('alias_target')))
+					$slot->populateAlias($result->field('alias_target'));
 					
 				// Add location category from DB if it exists
 				if ($result->field('location_category') !== '')
@@ -565,6 +575,8 @@ class SlotManager {
 			$query->addValue('shortname', $shortname);
 			if ($slot->getSiteId())
 				$query->addValue('site_id', $slot->getSiteId()->getIdString());
+			if ($slot->isAlias())
+				$query->addValue('alias_target', $slot->getAliasTarget()->getShortname());
 			$query->addValue('type', $type);
 			$query->addValue('location_category', $slot->getLocationCategory());
 			if (!$slot->usesDefaultMediaQuota())
