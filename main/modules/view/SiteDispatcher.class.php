@@ -244,7 +244,18 @@ class SiteDispatcher {
 				
 		// We are now going to ensure that the site name is always in the url
 		if ($nodeKey == 'site') {
-			return array('site' => $nodeVal);
+			// Ensure that the slot is not an alias to another slot
+			$slot = SlotManager::instance()->getSlotByShortname($nodeVal);
+			if (!$slot->isAlias())
+				return array('site' => $nodeVal);
+			
+			while ($slot) {
+				$slot = $slot->getAliasTarget();
+				if (!$slot->isAlias())
+					return array('site' => $slot->getShortname());
+			}
+			
+			throw new OperationFailedException('Never found a valid site id that was not an alias');
 		}
 		// If we have a node, look up its slot and add the name to the URL.
 		else {
