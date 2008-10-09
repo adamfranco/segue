@@ -539,7 +539,13 @@ abstract class SlotAbstract
 		$query->addValue('alias_target', $targetSlot->getShortname());
 		
 		$dbc = Services::getService('DBHandler');
-		$dbc->query($query, IMPORTER_CONNECTION);
+		
+		try {
+			$dbc->query($query, IMPORTER_CONNECTION);
+		} catch (QueryDatabaseException $e) {
+			$this->aliasTarget = null;
+			throw new OperationFailedException("Unknown target placeholder, '".$targetSlot->getShortname()."'.");
+		}
 	}
 	
 	/**

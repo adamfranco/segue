@@ -65,11 +65,13 @@ function AliasPanel ( slot, positionElement ) {
 								positionElement,
 								'alias_panel');
 		
+		var aliasPanel = this;
+		
 		// Build up the form
 		var form = document.createElement('form');
 		form.action = Harmoni.quickUrl('slots', 'make_alias');
 		form.method = 'POST';
-		
+				
 		var input = document.createElement('input');
 		input.name = 'slot';
 		input.type = 'hidden';
@@ -81,6 +83,15 @@ function AliasPanel ( slot, positionElement ) {
 		this.targetSlot.size = '40';
 		this.targetSlot.id = this.slot +'_alias_target';
 		this.targetSlot.type = 'text';
+		
+		this.targetSlot.onkeypress = function(e) {
+			// on enter button
+			if (e.which == 13) {
+				aliasPanel.submitForm(this.form);
+				return false;
+			}
+		}
+		
 		form.appendChild(this.targetSlot);
 		
 		var choices = document.createElement('div');
@@ -95,7 +106,6 @@ function AliasPanel ( slot, positionElement ) {
 		submit.type = 'button';
 		submit.value = "Make Alias »";
 		
-		var aliasPanel = this;
 		submit.onclick = function() {
 			aliasPanel.submitForm(this.form);
 			return false;
@@ -135,9 +145,9 @@ function AliasPanel ( slot, positionElement ) {
 		var url = form.action;
 		var params = this.getFormParams(form);
 		
-		var statusPanel = new CenteredPanel("Copy Status", 400, 800, this.positionElement);
+		var statusPanel = new CenteredPanel("Alias Status", 400, 800, this.positionElement);
 		statusPanel.cancel.parentNode.removeChild(statusPanel.cancel);
-		statusPanel.contentElement.innerHTML = "<img src='" + Harmoni.MYPATH + "/images/loading.gif' alt='Loading...' /><br/><span>Copying Site...</span>";
+		statusPanel.contentElement.innerHTML = "<img src='" + Harmoni.MYPATH + "/images/loading.gif' alt='Loading...' /><br/><span>Making Alias...</span>";
 		
 		var req = Harmoni.createRequest();
 		if (req) {

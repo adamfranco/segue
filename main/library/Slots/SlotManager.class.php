@@ -272,6 +272,7 @@ class SlotManager {
 		$query->addColumn('all_owners.removed', 'removed');
 		
 		$query->addWhereLike('segue_slot.shortname', $searchCriteria);
+		$query->addWhereNotEqual('segue_slot.site_id', '');
 		
 // 		printpre($query->asString());
 		$dbc = Services::getService('DBHandler');

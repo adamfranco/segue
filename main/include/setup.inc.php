@@ -143,6 +143,7 @@ $harmoni->ActionHandler->addRequestTokenRequiredActions(array(
 		"slots.delete",
 		"slots.edit",
 		"slots.make_alias",
+		"slots.remove_alias",
 		"ui1.add",
 		"ui1.add_wiki_component",
 		"ui1.addContent",

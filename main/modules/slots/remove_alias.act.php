@@ -12,7 +12,7 @@
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 
 /**
- * This action will return a listing of matching slots for making target aliases.
+ * This action will remove an alias from the slot
  * 
  * @since 10/9/08
  * @package segue.slots
@@ -22,7 +22,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
  *
  * @version $Id$
  */
-class make_aliasAction
+class remove_aliasAction
 	extends Action
 {
 		
@@ -46,22 +46,15 @@ class make_aliasAction
 	 * @since 10/9/08
 	 */
 	public function execute () {
-		header('Content-Type: text/plain;');
-		try {
-			if (!$this->isAuthorizedToExecute())
-				throw new PermissionDeniedException("You must be logged in.");
+		if (!$this->isAuthorizedToExecute())
+			throw new PermissionDeniedException("You must be logged in.");
 			
-			$mgr = SlotManager::instance();
-			$slot = $mgr->getSlotByShortname(RequestContext::value('slot'));
-			$slot->makeAlias($mgr->getSlotByShortname(RequestContext::value('target_slot')));
-			
-			print _("Success");
-		} catch (OperationFailedException $e) {
-			print $e->getMessage();
-		} catch (UnknownIdException $e) {
-			print $e->getMessage();
-		}
-		exit;
+		$mgr = SlotManager::instance();
+		$slot = $mgr->getSlotByShortname(RequestContext::value('slot'));
+		$slot->makeNotAlias();
+		
+		$harmoni = Harmoni::instance();
+		RequestContext::sendTo($harmoni->request->quickURL('portal', 'list'));
 	}
 	
 }
