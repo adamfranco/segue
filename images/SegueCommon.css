@@ -356,6 +356,7 @@
 
 	.portal_list_slotname {
 		float: right;
+		text-align: right;
 		font-size: smaller;
 	}
 

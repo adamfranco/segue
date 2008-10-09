@@ -551,14 +551,17 @@ class listAction
 	 * @since 8/22/07
 	 */
 	public function printSlot ( Slot $slot ) {
+		// Print an existing site.
 		if ($slot->getSiteId()) {
 			try {
-				return $this->printSiteShort($slot->getSiteAsset(), $this, 0);
+				return $this->printSiteShort($slot->getSiteAsset(), $this, 0, $slot);
 			} 
 			// Cached slot may not know that it's site was deleted.
 			catch(UnknownIdException $e) {
 			}
 		} 
+		
+		
 		// If no site is created
 
 		ob_start();
@@ -642,7 +645,7 @@ class listAction
 	 * @access public
 	 * @since 1/18/06
 	 */
-	public function printSiteShort(Asset $asset, $action, $num) {
+	public function printSiteShort(Asset $asset, $action, $num, Slot $otherSlot = null) {
 		$harmoni = Harmoni::instance();
 		$assetId = $asset->getId();
 		
@@ -667,15 +670,40 @@ class listAction
 		
 		$slotManager = SlotManager::instance();
 		try {
-			$slot = $slotManager->getSlotBySiteId($assetId);
+			$sitesTrueSlot = $slotManager->getSlotBySiteId($assetId);
 		} catch (Exception $e) {
 		}
 		
 		// Print out the content
 		ob_start();
 		print "\n\t<div class='portal_list_slotname'>";
-		if (isset($slot)) {
-			print $slot->getShortname();
+		if (isset($sitesTrueSlot)) {
+			if (is_null($otherSlot) || $sitesTrueSlot->getShortname() == $otherSlot->getShortname()) {
+				print $sitesTrueSlot->getShortname();
+			} else {
+				print $otherSlot->getShortname();
+				
+				$targets = array();
+				$target = $otherSlot->getAliasTarget();
+				while ($target) {
+					$targets[] = $target->getShortname();
+					if ($target->isAlias())
+						$target = $target->getAliasTarget();
+					else
+						$target = null;
+				}
+				
+				print "\n<br/>";
+				print str_replace('%1', implode(' &raquo; ', $targets), _("(an alias of %1)"));
+				// Add Alias info.
+// 				if ($otherSlot->isAlias()) {
+// 					ob_start();
+// 					
+// 					print _("This slot is an alias of ").$slot->getAliasTarget()->getShortname();
+// 					
+// 					$container->add(new UnstyledBlock(ob_get_clean()), "100%", null, LEFT, TOP);
+// 				}
+			}
 		} else {
 			print _("ID#").": ".$assetId->getIdString();
 		}
@@ -717,10 +745,10 @@ class listAction
 			// have its own authorization, but we'll use add_children/modify for now.
 			if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)) 
 			{
-				if (isset($slot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $slot->getShortname()) {
-					$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
-				} else if (isset($slot)) {
-					$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("select for copy")."</a>";
+				if (isset($sitesTrueSlot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $sitesTrueSlot->getShortname()) {
+					$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$sitesTrueSlot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
+				} else if (isset($sitesTrueSlot)) {
+					$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$sitesTrueSlot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("select for copy")."</a>";
 				}
 			}
 		}
