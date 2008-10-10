@@ -129,6 +129,7 @@ function AliasPanel ( slot, positionElement ) {
 			}
 		);
 		
+		this.targetSlot.focus();
 	}
 	
 	/**
@@ -183,9 +184,14 @@ function AliasPanel ( slot, positionElement ) {
 					button.onclick = function () {
 						window.location.reload();
 					};
+					button.onkeypress = function (e) {
+						if (e.which == 13)
+							window.location.reload();
+					};
 					statusPanel.contentElement.appendChild(document.createElement('br'));
 					statusPanel.contentElement.appendChild(document.createElement('br'));
 					statusPanel.contentElement.appendChild(button);
+					button.focus();
 				}
 			} 
 		
