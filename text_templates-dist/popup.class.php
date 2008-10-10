@@ -132,7 +132,7 @@ class Segue_TextTemplates_popup
 			throw new InvalidArgumentException("url is required.");
 		
 		// Validate our options
-		if (!preg_match('/^http:\/\/[a-z0-9_\.\/?&=,;:%+~-]+$/i', $paramList['url']))
+		if (!preg_match('/^https?:\/\/[a-z0-9_\.\/?&=,;:%+~-]+$/i', $paramList['url']))
 			throw new InvalidArgumentException("Invalid url.");
 		
 		if (!isset($paramList['text']) || !preg_match('/^.+$/i', $paramList['text']))
