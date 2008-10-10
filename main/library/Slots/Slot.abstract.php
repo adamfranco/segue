@@ -198,7 +198,12 @@ abstract class SlotAbstract
 		if ($this->getShortname() != $intSlot->getShortname())
 			throw new Exception("Cannot merge slots with differing shortnames. '".$this->getShortname()."' != '".$intSlot->getShortname()."'");
 		
-		$this->siteId = $intSlot->getSiteId();
+		if ($intSlot->isAlias())
+			$this->populateAlias($intSlot->getAliasTarget()->getShortname());
+		else
+			$this->populateSiteId($intSlot->getSiteId());
+		
+		
 		
 		foreach ($this->getOwners() as $key => $ownerId) {
 			// If this owner was intentionally removed, don't list them.
@@ -315,7 +320,9 @@ abstract class SlotAbstract
 	 * @since 7/30/07
 	 */
 	public function siteExists () {
-		if (is_null($this->siteId)) 
+		if ($this->isAlias())
+			return $this->getAliasTarget()->getSiteId();
+		else if (is_null($this->siteId)) 
 			return false;
 		else
 			return true;
@@ -329,9 +336,10 @@ abstract class SlotAbstract
 	 * @since 7/30/07
 	 */
 	public function getSiteId () {
-		if (!is_null($this->siteId)) {
+		if (!is_null($this->siteId))
 			return $this->siteId;		
-		}
+		else if ($this->isAlias())
+			return $this->getAliasTarget()->getSiteId();
 		
 		return null;
 	}
@@ -488,6 +496,127 @@ abstract class SlotAbstract
 	}
 	
 	/**
+	 * @var string $aliasTarget;  
+	 * @access private
+	 * @since 10/8/08
+	 */
+	private $aliasTarget;
+	
+	/**
+	 * Make this slot an alias of another slot. 
+	 * 
+	 * @param object Slot $targetSlot
+	 * @return void
+	 * @access public
+	 * @since 10/8/08
+	 */
+	public function makeAlias (Slot $targetSlot) {
+		if (!is_null($this->siteId))
+			throw new OperationFailedException("Cannot make a slot with an existing site an Alias.");
+		
+		if ($this->isAlias())
+			throw new OperationFailedException("This slot is already an Alias.");
+		
+		// Check for cycles in aliases.
+		$target = $targetSlot;
+		while ($target) {
+			if ($this->getShortname() == $target->getShortname())
+				throw new OperationFailedException("Cannot create loops of aliases.");
+			
+			if ($target->isAlias())
+				$target = $target->getAliasTarget();
+			else
+				$target = null;
+		}
+		
+		$this->aliasTarget = $targetSlot->getShortname();
+		
+		$this->recordInDB();
+			
+		$query = new UpdateQuery;
+		$query->setTable('segue_slot');
+		$query->addWhereEqual('shortname', $this->getShortname());
+		$query->addValue('alias_target', $targetSlot->getShortname());
+		
+		$dbc = Services::getService('DBHandler');
+		
+		try {
+			$dbc->query($query, IMPORTER_CONNECTION);
+		} catch (QueryDatabaseException $e) {
+			$this->aliasTarget = null;
+			throw new OperationFailedException("Unknown target placeholder, '".$targetSlot->getShortname()."'.");
+		}
+	}
+	
+	/**
+	 * Answer true if this slot is an alias to another slot.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 10/8/08
+	 */
+	public function isAlias () {
+		if (is_null($this->aliasTarget))
+			return false;
+		else
+			return true;
+	}
+	
+	/**
+	 * Answer the slot that is the target if this slot is an alias.
+	 * 
+	 * @return object Slot
+	 * @access public
+	 * @since 10/8/08
+	 */
+	public function getAliasTarget () {
+		if (!$this->isAlias()) {
+			printpre($this);
+			throw new OperationFailedException("Cannot get a target for a slot (".get_class($this).": ".$this->getShortname().") that is not an alias.");
+		}
+		
+		return SlotManager::instance()->getSlotByShortname($this->aliasTarget);
+	}
+	
+	/**
+	 * Make this slot no longer an alias of another slot.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 10/8/08
+	 */
+	public function makeNotAlias () {
+		$this->aliasTarget = null;
+		
+		$this->recordInDB();
+			
+		$query = new UpdateQuery;
+		$query->setTable('segue_slot');
+		$query->addWhereEqual('shortname', $this->getShortname());
+		$query->addRawValue('alias_target', 'NULL');
+		
+		$dbc = Services::getService('DBHandler');
+		$dbc->query($query, IMPORTER_CONNECTION);
+	}
+	
+	/**
+	 * Store a slot alias in this object, does not update the database.
+	 * This method is internal to this package and should not be used
+	 * by clients.
+	 * 
+	 * @param mixed string or null
+	 * @return void
+	 * @access public
+	 * @since 10/8/08
+	 */
+	public function populateAlias ($aliasTarget) {
+		if (is_null($aliasTarget))
+			return;
+		else
+			$this->aliasTarget = $aliasTarget;
+	}
+	
+	/**
 	 * Store a siteId in this object, does not update the database. 
 	 * This method is internal to this package and should not be used
 	 * by clients.
@@ -634,8 +763,8 @@ abstract class SlotAbstract
 				$query = new InsertQuery;
 				$query->setTable('segue_slot');
 				$query->addValue('shortname', $this->getShortname());
-				if ($this->getSiteId())
-					$query->addValue('site_id', $this->getSiteId()->getIdString());
+				if ($this->siteId)
+					$query->addValue('site_id', $this->siteId->getIdString());
 				$query->addValue('type', $this->getType());
 				$query->addValue('location_category', $this->getLocationCategory());
 				if ($this->mediaQuota == self::$defaultMediaQuota)
@@ -648,8 +777,8 @@ abstract class SlotAbstract
 				$query = new UpdateQuery;
 				$query->setTable('segue_slot');
 				$query->addWhereEqual('shortname', $this->getShortname());
-				if ($this->getSiteId())
-					$query->addValue('site_id', $this->getSiteId()->getIdString());
+				if ($this->siteId)
+					$query->addValue('site_id', $this->siteId->getIdString());
 				$query->addValue('type', $this->getType());
 				$query->addValue('location_category', $this->getLocationCategory());
 				if ($this->mediaQuota == self::$defaultMediaQuota)

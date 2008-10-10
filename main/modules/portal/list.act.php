@@ -213,8 +213,10 @@ class listAction
 		print "\n
 		
 		<script type='text/javascript' src='".MYPATH."/javascript/SiteCopyPanel.js'></script>
+ 		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js'></script>
+		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/src/scriptaculous.js'></script>
+		<script type='text/javascript' src='".MYPATH."/javascript/AliasPanel.js'></script>
 		<script type='text/javascript' src='".POLYPHONY_PATH."javascript/CenteredPanel.js'></script>
-		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js'></script>
 		
 		<script type='text/javascript'>
 		// <![CDATA[
@@ -551,22 +553,49 @@ class listAction
 	 * @since 8/22/07
 	 */
 	public function printSlot ( Slot $slot ) {
+		// Print an existing site.
 		if ($slot->getSiteId()) {
 			try {
-				return $this->printSiteShort($slot->getSiteAsset(), $this, 0);
+				return $this->printSiteShort($slot->getSiteAsset(), $this, 0, $slot);
 			} 
 			// Cached slot may not know that it's site was deleted.
 			catch(UnknownIdException $e) {
 			}
 		} 
+		
 		// If no site is created
-
 		ob_start();
+		
+		
+		if ($slot->isAlias()) {
+			// Print out the content
+		
+			print "\n\t<div class='portal_list_slotname'>";
+			print $slot->getShortname();
+					
+			$targets = array();
+			$target = $slot->getAliasTarget();
+			while ($target) {
+				$targets[] = $target->getShortname();
+				if ($target->isAlias())
+					$target = $target->getAliasTarget();
+				else
+					$target = null;
+			}
+			
+			print "\n<br/>";
+			print str_replace('%1', implode(' &raquo; ', $targets), _("(an alias of %1)"));
+			print "\n\t</div>";
+		}
+
+		$harmoni = Harmoni::instance();		
 		print $slot->getShortname();
 		print " - ";
-		if ($slot->isUserOwner()) {
-			$harmoni = Harmoni::instance();
-			print " <a href='".$harmoni->request->quickURL($this->getUiModule(), 'add', array('slot' => $slot->getShortname()))."' class='create_site_link'>"._("Create Site")."</a>";
+		if ($slot->isUserOwner() && !$slot->isAlias()) {
+
+			print " <a href='".$harmoni->request->quickURL($this->getUiModule(), 'add', array('slot' => $slot->getShortname()))."' class='create_site_link'>"._("create site")."</a>";
+			
+			print " | <a href='#' onclick='AliasPanel.run(\"".$slot->getShortname()."\", this); return false;' class='create_site_link'>"._("make alias")."</a>";
 			
 			$authN = Services::getService("AuthN");
 			try {
@@ -604,6 +633,15 @@ class listAction
 		} else {
 			print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
 		}
+		
+		if ($slot->isUserOwner() && $slot->isAlias()) {
+			print "\n\t<div class='portal_list_controls'>\n\t\t";
+			
+			print "<a href='".$harmoni->request->quickURL('slots', 'remove_alias', array('slot' => $slot->getShortname()))."' onclick=\"if (!confirm('".str_replace("%1", $slot->getShortname(), str_replace("%2", $slot->getAliasTarget()->getShortname(), _("Are you sure that you want \\'%1\\' to no longer be an alias of \\'%2\\'?")))."')) { return false; }\">"._("remove alias")."</a>";
+			
+			print "\n\t</div>";
+		}
+		
 		return new Block(ob_get_clean(), STANDARD_BLOCK);
 	}
 	
@@ -621,11 +659,15 @@ class listAction
 		
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
-		try {
+		try { 
 			// Since view AZs cascade up, just check at the node.
 			if ($authZ->isUserAuthorized($idManager->getId("edu.middlebury.authorization.view"), $slot->getSiteId()))
 			{
 				return TRUE;
+			} 
+			// allow owners of aliases to see the alias, even if they can't see anything else.
+			else if ($slot->isAlias() && $slot->isUserOwner()) {
+				return true;
 			} else {
 				return FALSE;
 			}
@@ -642,14 +684,15 @@ class listAction
 	 * @access public
 	 * @since 1/18/06
 	 */
-	public function printSiteShort(Asset $asset, $action, $num) {
+	public function printSiteShort(Asset $asset, $action, $num, Slot $otherSlot = null) {
 		$harmoni = Harmoni::instance();
 		$assetId = $asset->getId();
 		
 		$authZ = Services::getService('AuthZ');
 		$idMgr = Services::getService('Id');
 		
-		if (!$authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId))
+		if (!$authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId)
+				&& !$otherSlot->isUserOwner())
 			return new UnstyledBlock('', BLANK);
 						
 		$container = new Container(new YLayout, BLOCK, STANDARD_BLOCK);
@@ -667,33 +710,62 @@ class listAction
 		
 		$slotManager = SlotManager::instance();
 		try {
-			$slot = $slotManager->getSlotBySiteId($assetId);
+			$sitesTrueSlot = $slotManager->getSlotBySiteId($assetId);
 		} catch (Exception $e) {
 		}
 		
 		// Print out the content
 		ob_start();
 		print "\n\t<div class='portal_list_slotname'>";
-		if (isset($slot)) {
-			print $slot->getShortname();
+		if (isset($sitesTrueSlot)) {
+			if (is_null($otherSlot) || $sitesTrueSlot->getShortname() == $otherSlot->getShortname()) {
+				print $sitesTrueSlot->getShortname();
+			} else {
+				print $otherSlot->getShortname();
+				
+				$targets = array();
+				$target = $otherSlot->getAliasTarget();
+				while ($target) {
+					$targets[] = $target->getShortname();
+					if ($target->isAlias())
+						$target = $target->getAliasTarget();
+					else
+						$target = null;
+				}
+				
+				print "\n<br/>";
+				print str_replace('%1', implode(' &raquo; ', $targets), _("(an alias of %1)"));
+				// Add Alias info.
+// 				if ($otherSlot->isAlias()) {
+// 					ob_start();
+// 					
+// 					print _("This slot is an alias of ").$slot->getAliasTarget()->getShortname();
+// 					
+// 					$container->add(new UnstyledBlock(ob_get_clean()), "100%", null, LEFT, TOP);
+// 				}
+			}
 		} else {
 			print _("ID#").": ".$assetId->getIdString();
 		}
 		print "\n\t</div>";
 		print "\n\t<div class='portal_list_site_title'>";
-		print "\n\t\t<a href='".$viewUrl."'>";
-		print "\n\t\t\t<strong>".HtmlString::getSafeHtml($asset->getDisplayName())."</strong>";
-		print "\n\t\t</a>";
-		print "\n\t\t<br/>";
-		print "\n\t\t<a href='".$viewUrl."' style='font-size: smaller;'>";
-		print "\n\t\t\t".$viewUrl;
-		print "\n\t\t</a>";
+		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId)) {
+			print "\n\t\t<a href='".$viewUrl."'>";
+			print "\n\t\t\t<strong>".HtmlString::getSafeHtml($asset->getDisplayName())."</strong>";
+			print "\n\t\t</a>";
+			print "\n\t\t<br/>";
+			print "\n\t\t<a href='".$viewUrl."' style='font-size: smaller;'>";
+			print "\n\t\t\t".$viewUrl;
+			print "\n\t\t</a>";
+		}
 		print "\n\t</div>";
 		
 		print "\n\t<div class='portal_list_controls'>\n\t\t";
 		$controls = array();
 		
-		$controls[] = "<a href='".$viewUrl."'>"._("view")."</a>";
+		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId)) {
+			$controls[] = "<a href='".$viewUrl."'>"._("view")."</a>";
+		}
 		
 		// Hide all edit links if not authenticated to prevent web spiders from traversing them
 		if ($this->isAuthenticated) {
@@ -703,13 +775,17 @@ class listAction
 			// devolve into view-mode if no authorization is had by the user, just
 			// show the links all the time to cut page loads from 4-6 seconds to
 			// less than 1 second.
-			$controls[] = "<a href='".SiteDispatcher::quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
+			if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId)) {
+				$controls[] = "<a href='".SiteDispatcher::quickURL($action->getUiModule(), 'editview', array('node' => $assetId->getIdString()))."'>"._("edit")."</a>";
+			}
 		
 	// 		if ($action->getUiModule() == 'ui2') {
 	// 			$controls[] = "<a href='".SiteDispatcher::quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
 	// 		}
 			
-			if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
+			if (!is_null($otherSlot) && $otherSlot->isAlias() && $otherSlot->isUserOwner()) {
+				$controls[] = "<a href='".$harmoni->request->quickURL('slots', 'remove_alias', array('slot' => $otherSlot->getShortname()))."' onclick=\"if (!confirm('".str_replace("%1", $otherSlot->getShortname(), str_replace("%2", $otherSlot->getAliasTarget()->getShortname(), _("Are you sure that you want \\'%1\\' to no longer be an alias of \\'%2\\'?")))."')) { return false; }\">"._("remove alias")."</a>";
+			} else if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
 				$controls[] = "<a href='".$harmoni->request->quickURL($action->getUiModule(), 'deleteComponent', array('node' => $assetId->getIdString()))."' onclick=\"if (!confirm('"._("Are you sure that you want to permenantly delete this site?")."')) { return false; }\">"._("delete")."</a>";
 			
 			
@@ -717,10 +793,10 @@ class listAction
 			// have its own authorization, but we'll use add_children/modify for now.
 			if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)) 
 			{
-				if (isset($slot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $slot->getShortname()) {
-					$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
-				} else if (isset($slot)) {
-					$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$slot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("select for copy")."</a>";
+				if (isset($sitesTrueSlot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $sitesTrueSlot->getShortname()) {
+					$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$sitesTrueSlot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
+				} else if (isset($sitesTrueSlot)) {
+					$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$sitesTrueSlot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("select for copy")."</a>";
 				}
 			}
 		}
@@ -728,9 +804,11 @@ class listAction
 		print implode("\n\t\t | ", $controls);
 		print "\n\t</div>";
 		
-		$description = HtmlString::withValue($asset->getDescription());
-		$description->trim(25);
-		print  "\n\t<div class='portal_list_site_description'>".$description->asString()."</div>";	
+		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId)) {
+			$description = HtmlString::withValue($asset->getDescription());
+			$description->trim(25);
+			print  "\n\t<div class='portal_list_site_description'>".$description->asString()."</div>";	
+		}
 		print "\n\t<div style='clear: both;'></div>";
 		
 		$component = new UnstyledBlock(ob_get_clean());
