@@ -39,9 +39,9 @@ class MediaFile {
 	 * @static
 	 */
 	public static function withIdString ( $idString) {
-		if (preg_match('/^(?:(?:repositoryId=(.+)&(?:amp;)?)|(?:&(?:amp;)?))?assetId=(.+)&(?:amp;)?recordId=(.+)$/', $idString, $matches))
+		if (preg_match('/^(?:(?:repositoryId=(.+)&(?:amp;)?)|(?:&(?:amp;)?))?assetId=(.+)&(?:amp;)?recordId=([^&]+)/', $idString, $matches))
 			return MediaFile::withIdStrings($matches[1], $matches[2], $matches[3]);
-		else if (preg_match('/^(?:(?:repository_id=(.+)&(?:amp;)?)|(?:&(?:amp;)?))?asset_id=(.+)&(?:amp;)?record_id=(.+)$/', $idString, $matches))
+		else if (preg_match('/^(?:(?:repository_id=(.+)&(?:amp;)?)|(?:&(?:amp;)?))?asset_id=(.+)&(?:amp;)?record_id=([^&]+)/', $idString, $matches))
 			return MediaFile::withIdStrings($matches[1], $matches[2], $matches[3]);
 		else
 			throw new InvalidArgumentException("Invalid Id format, '".$idString."'");

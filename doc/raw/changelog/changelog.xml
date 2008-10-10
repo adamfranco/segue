@@ -24,6 +24,9 @@
 		<fix author='adam' date='2008-10-10' ref='2155588' reftype='bug' reporter='alex_chapin'>
 			Text-Templates: Pop-up window text-template now accepts https URLs.
 		</fix>
+		<fix author='adam' date='2008-10-10' ref='2155650' reftype='bug' reporter='alex_chapin'>
+			Media: File urls are now properly matched when a filename is appended to the URL.
+		</fix>
 	</version>
 	<version number="2.2.4.1" date="2008-10-03">
 		<releaseNotes>
