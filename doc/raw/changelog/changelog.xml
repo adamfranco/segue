@@ -19,6 +19,14 @@
 			This allows automatic redircts to the target site as well as allowing
 			sites to display under additional names in users' portals.
 		</new>
+		<new author='adam' date='2008-10-10' ref='2112728' reftype='fr'>
+			Placeholders: In addition to copying, sites can now be moved to a new
+			placeholder, keeping their node-ids and permalinks valid.
+		</new>
+		<change author='adam' date='2008-10-10'>
+			Site-Copy and Component-Copy are now unified and both use the selection
+			and paste panel for consistancy.
+		</change>
 		<change author='adam' date='2008-10-08'>
 			Plugins: Divided plugins into distributed and local directories.
 		</change>
