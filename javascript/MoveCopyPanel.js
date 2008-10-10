@@ -582,6 +582,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 					statusPanel.contentElement.appendChild(document.createElement('br'));
 					statusPanel.contentElement.appendChild(document.createElement('br'));
 					statusPanel.contentElement.appendChild(button);
+					
+					button.focus();
 				}
 			} 
 		
