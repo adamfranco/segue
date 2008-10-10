@@ -58,8 +58,11 @@ function AliasPanel ( slot, positionElement ) {
 	AliasPanel.prototype.init = function ( slot, positionElement ) {
 		this.slot = slot;
 		
+		var helpUrl = Harmoni.quickUrl('help', 'browse_help', {topic: 'Site Aliases'});
+		var helpLink = " &nbsp; &nbsp; (<a href='#' onclick=\"var helpWindow = window.open('" + helpUrl + "', 'help', 'width=700,height=600,scrollbars=yes,resizable=yes'); helpWindow.focus(); return false;\">Help</a>)";
+		
 		AliasPanel.superclass.init.call(this, 
-								"Make '" + slot + "' an alias of...",
+								"Make '" + slot + "' an alias of..." + helpLink,
 								15,
 								300,
 								positionElement,

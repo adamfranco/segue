@@ -14,6 +14,11 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<new author='adam' date='2008-10-10' ref='2112719' reftype='fr'>
+			Placeholders: Placeholders can now be made aliases of other placeholders.
+			This allows automatic redircts to the target site as well as allowing
+			sites to display under additional names in users' portals.
+		</new>
 		<change author='adam' date='2008-10-08'>
 			Plugins: Divided plugins into distributed and local directories.
 		</change>
