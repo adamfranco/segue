@@ -39,10 +39,18 @@ class copy_siteAction
 		$siteAsset = $this->getSourceSiteAsset();
 		$authZ = Services::getService("AuthZ");
 		$idMgr = Services::getService("Id");
-		if ($authZ->isUserAuthorized(
+		
+		if (RequestContext::value('command') == 'copy')
 			// Currently just check for modify to see if there is 'site-level editor' access.
 			// In the future, maybe this should be its own authorization.
-			$idMgr->getId('edu.middlebury.authorization.modify'), 
+			$toCheck = $idMgr->getId('edu.middlebury.authorization.modify');
+		else if (RequestContext::value('command') == 'move')
+			$toCheck = $idMgr->getId('edu.middlebury.authorization.delete');
+		else
+			throw new InvalidArgumentException("Invalid command. Must be move or copy.");
+			
+		if ($authZ->isUserAuthorized(
+			$toCheck, 
 			$siteAsset->getId()))
 		{
 			// Check to see that the user is an owner of the destination slot.
@@ -61,72 +69,89 @@ class copy_siteAction
 	 * @since 7/28/08
 	 */
 	public function execute () {
-		try {
+		if (!$this->isAuthorizedToExecute())
+			throw new PermissionDeniedException(_("Your are not authorized to copy this site here."));
 		
-			if (!$this->isAuthorizedToExecute())
-				throw new PermissionDeniedException(_("Your are not authorized to copy this site here."));
+		$srcSlot = $this->getSourceSlot();
+		$srcSiteAsset = $this->getSourceSiteAsset();
+		$director = SiteDispatcher::getSiteDirector();
+		$srcComponent = $director->getSiteComponentFromAsset($srcSiteAsset);
+		$destSlot = $this->getDestSlot();
+		
+		if (RequestContext::value('command') == 'copy') {
+			try {
+				/*********************************************************
+				 * Export the Site
+				 *********************************************************/
+				$exportDir = DATAPORT_TMP_DIR."/".$srcSlot->getShortname()."-".str_replace(':', '_', DateAndTime::now()->asString());
+				mkdir($exportDir);
+				
+				// Do the export
+				$visitor = new DomExportSiteVisitor($exportDir);
+				$visitor->enableStatusOutput(_("Exporting from original location."));
+				$srcComponent->acceptVisitor($visitor);
+				$doc = $visitor->doc;
+				
+				// Validate the result
+	// 			printpre(htmlentities($doc->saveXMLWithWhitespace()));
+	// 			$tmp = new Harmoni_DomDocument;
+	// 			$tmp->loadXML($doc->saveXMLWithWhitespace());
+	// 			$tmp->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+				
+				$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
+				
+	// 			printpre($this->listDir($exportDir));
+	// 			throw new Exception('test');
+				
+				/*********************************************************
+				 * Import the site
+				 *********************************************************/
+				$importer = new DomImportSiteVisitor($doc, $exportDir, $director);
+				if (RequestContext::value('copy_permissions') == 'true')
+					$importer->enableRoleImport();
+				
+				if (RequestContext::value('copy_discussions') != 'true')
+					$importer->disableCommentImport();
+				
+	// 			if (isset($values['owners'])) {
+	// 				$idMgr = Services::getService('Id');
+	// 				foreach($values['owners']['admins'] as $adminIdString)
+	// 					$importer->addSiteAdministrator($idMgr->getId($adminIdString));
+	// 			}
+				
+				$importer->enableStatusOutput(_("Importing into new location"));
+				$importer->makeUserSiteAdministrator();			
+				$site = $importer->importAtSlot($destSlot->getShortname());
+				
+				// Delete the decompressed Archive
+				$this->deleteRecursive($exportDir);
+				
+			} catch (Exception $e) {
+				$this->deleteRecursive($exportDir);
+				
+				if (file_exists($exportDir.".tar.gz"))
+					unlink($exportDir.".tar.gz");
+				
+				throw $e;
+			}
+		}
+		
+		// Move
+		else {
+			// Detach the site from the source slot.
+			$srcSlot->deleteSiteId();
 			
-			$srcSlot = $this->getSourceSlot();
-			$srcSiteAsset = $this->getSourceSiteAsset();
-			$director = SiteDispatcher::getSiteDirector();
-			$srcComponent = $director->getSiteComponentFromAsset($srcSiteAsset);
-			$destSlot = $this->getDestSlot();
+			// Attach the site to the dest slot.
+			$destSlot->setSiteId($srcSiteAsset->getId());
 			
-			/*********************************************************
-			 * Export the Site
-			 *********************************************************/
-			$exportDir = DATAPORT_TMP_DIR."/".$srcSlot->getShortname()."-".str_replace(':', '_', DateAndTime::now()->asString());
-			mkdir($exportDir);
-			
-			// Do the export
-			$visitor = new DomExportSiteVisitor($exportDir);
-			$visitor->enableStatusOutput(_("Exporting from original location."));
-			$srcComponent->acceptVisitor($visitor);
-			$doc = $visitor->doc;
-			
-			// Validate the result
-// 			printpre(htmlentities($doc->saveXMLWithWhitespace()));
-// 			$tmp = new Harmoni_DomDocument;
-// 			$tmp->loadXML($doc->saveXMLWithWhitespace());
-// 			$tmp->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
-			
-			$doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
-			
-// 			printpre($this->listDir($exportDir));
-// 			throw new Exception('test');
-			
-			/*********************************************************
-			 * Import the site
-			 *********************************************************/
-			$importer = new DomImportSiteVisitor($doc, $exportDir, $director);
-			if (RequestContext::value('copyPermissions') == 'true')
-				$importer->enableRoleImport();
-			
-			if (RequestContext::value('copyDiscussions') != 'true')
-				$importer->disableCommentImport();
-			
-// 			if (isset($values['owners'])) {
-// 				$idMgr = Services::getService('Id');
-// 				foreach($values['owners']['admins'] as $adminIdString)
-// 					$importer->addSiteAdministrator($idMgr->getId($adminIdString));
-// 			}
-			
-			$importer->enableStatusOutput(_("Importing into new location"));
-			$importer->makeUserSiteAdministrator();			
-			$site = $importer->importAtSlot($destSlot->getShortname());
-			
-			// Delete the decompressed Archive
-			$this->deleteRecursive($exportDir);
-			
-			
-			unset($_SESSION['portal_slot_selection']);
-		} catch (Exception $e) {
-			$this->deleteRecursive($exportDir);
-			
-			if (file_exists($exportDir.".tar.gz"))
-				unlink($exportDir.".tar.gz");
-			
-			throw $e;
+			// Make the source an alias of the destination so that links still work.
+			$srcSlot->makeAlias($destSlot);
+		}
+		
+		// Remove from selection?
+		if (RequestContext::value('remove_after_use') == 'remove') {
+			$selection = Segue_Selection::instance();
+			$selection->removeSiteComponent($srcComponent);
 		}
 		
 		print "\n"._("Done");

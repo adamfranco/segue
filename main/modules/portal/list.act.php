@@ -13,6 +13,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
 require_once(HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 require_once(MYDIR."/main/modules/window/display.act.php");
 require_once(HARMONI."GUIManager/StyleProperties/MinHeightSP.class.php");
+require_once(POLYPHONY.'/main/modules/user/UserDataHelper.class.php');
 
 require_once(dirname(__FILE__)."/PortalManager.class.php");
 
@@ -195,250 +196,16 @@ class listAction
 	 * @since 7/25/08
 	 */
 	protected function addHeadJs () {
+		UserDataHelper::writeHeadJs();
+		
 		$harmoni = Harmoni::instance();
 		ob_start();
 		
-		try {
-			$selectedSlot = $this->getSelectedSlot();
-			$selectedSlotname = $selectedSlot->getShortname();
-			$siteAsset = $selectedSlot->getSiteAsset();
-			$selectedSiteId = $siteAsset->getId()->getIdString();
-			$selectedSiteTitle = addslashes(HtmlString::getSafeHtml($siteAsset->getDisplayName()));
-		} catch (OperationFailedException $e) {
-			$selectedSlotname = '';
-			$selectedSiteId = '';
-			$selectedSiteTitle = '';
-		}
-		
 		print "\n
-		
-		<script type='text/javascript' src='".MYPATH."/javascript/SiteCopyPanel.js'></script>
  		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js'></script>
 		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/src/scriptaculous.js'></script>
 		<script type='text/javascript' src='".MYPATH."/javascript/AliasPanel.js'></script>
 		<script type='text/javascript' src='".POLYPHONY_PATH."javascript/CenteredPanel.js'></script>
-		
-		<script type='text/javascript'>
-		// <![CDATA[
-		
-		/**
-		 * Portal is a static class for namespacing portal-related functions
-		 *
-		 * @access public
-		 * @since 7/25/08
-		 */
-		function Portal () {
-		}
-		
-		Portal.selectedSlotname = '".$selectedSlotname."';
-		Portal.selectedSiteId = '".$selectedSiteId."';
-		Portal.selectedSiteTitle = '".$selectedSiteTitle."';
-		
-		/**
-		 * Set the selected slotname and sent an asynchronous request to set
-		 * the slotname in the session.
-		 * 
-		 * @param string slotName
-		 * @param string siteTitle	The title of the site selected
-		 * @param DOMElement link	The link clicked
-		 * @return void
-		 * @access public
-		 * @since 7/25/08
-		 */
-		Portal.setSelectedSlotname = function (slotName, siteId, siteTitle, link) {
-			Portal.selectedSlotname = slotName;
-			Portal.selectedSiteId = siteId;
-			Portal.selectedSiteTitle = siteTitle;
-			
-			// Send off an asynchronous request to record the selected slotname
-			// for future page-loads
-			var url = Harmoni.quickUrl('portal', 'select_for_copy', {'slot': slotName});
-			var req = Harmoni.createRequest();
-			if (req) {
-				
-				// Set a callback for displaying errors.
-				req.onreadystatechange = function () {
-					// only if req shows 'loaded'
-					if (req.readyState == 4) {
-						// only if we get a good load should we continue.
-						if (req.status == 200 && req.responseXML) {
-	// 						alert(req.responseText);
-							var errors = req.responseXML.getElementsByTagName('error');
-							if (errors.length) {
-								Portal.deselectForCopy(slotName, siteTitle, link);
-								
-								var error = errors[0];
-								alert(error.getAttribute('type') + ': ' + error.firstChild.nodeValue);
-								
-							}
-						} else {
-							alert(\"There was a problem retrieving the XML data:\\n\" +
-								req.statusText);
-						}
-					}
-				} 
-			
-				req.open('GET', url, true);
-				req.send(null);
-			} else {
-				alert(\"Error: Unable to execute AJAX request. \\nPlease upgrade your browser.\");
-			}	
-			
-		}
-		
-		/**
-		 * Unset the selected slotname and sent an asynchronous request to unset
-		 * the slotname in the session.
-		 * 
-		 * @return void
-		 * @access public
-		 * @since 7/25/08
-		 */
-		Portal.unsetSelectedSlotname = function () {
-			delete Portal.selectedSlotname;
-			delete Portal.selectedSiteId;
-			delete Portal.selectedSiteTitle;
-			
-			// Send off an asynchronous request to record the selected slotname
-			// for future page-loads
-			var url = Harmoni.quickUrl('portal', 'deselect_for_copy');
-			var req = Harmoni.createRequest();
-			if (req) {
-			
-				// Set a callback for displaying errors.
-				req.onreadystatechange = function () {
-					// only if req shows 'loaded'
-					if (req.readyState == 4) {
-						// only if we get a good load should we continue.
-						if (req.status == 200 && req.responseXML) {
-	// 						alert(req.responseText);
-							var errors = req.responseXML.getElementsByTagName('error');
-							if (errors.length) {
-								var error = errors[0];
-								alert(error.getAttribute('type') + ': ' + error.firstChild.nodeValue);
-							}
-						} else {
-							alert(\"There was a problem retrieving the XML data:\\n\" +
-								req.statusText);
-						}
-					}
-				} 
-			
-				req.open('GET', url, true);
-				req.send(null);
-			} else {
-				alert(\"Error: Unable to execute AJAX request. \\nPlease upgrade your browser.\");
-			}	
-		}
-		
-		/**
-		 * Select a site for copying.
-		 *
-		 * This will set up the placeholders on the current page as destinations
-		 * for the copied site as well as dish off an asynchronous request to 
-		 * set a session variable for the selected site so that future page loads
-		 * will have the site selected.
-		 * 
-		 * @param string slotName	The slot name to copy
-		 * @param string siteId		The site id selected
-		 * @param string siteTitle	The title of the site selected
-		 * @param DOMElement link	The link clicked
-		 * @return void
-		 * @access public
-		 * @since 7/25/08
-		 */
-		Portal.selectForCopy = function (slotName, siteId, siteTitle, link) {
-			// Set the selected slotname property, then send off an asynchronous 
-			// request to record the selected slotname for future page-loads
-			Portal.setSelectedSlotname(slotName, siteId, siteTitle, link);
-			
-			
-			// Cancel all other selections
-			var selectLinks = document.getElementsByClassName('portal_slot_select_link');
-			for (var i = 0; i < selectLinks.length; i++) {
-				var selectLink = selectLinks[i];
-				if (selectLink.innerHTML == '"._('cancel copy')."') {
-					selectLink.onclick();
-				}
-			}
-			
-			// Add 'paste' links to all of the placeholders 
-			var copyAreas = document.getElementsByClassName('portal_slot_copy_area');
-			for (var i = 0; i < copyAreas.length; i++) {
-				var area = copyAreas[i];
-				area.style.display = 'inline';
-				
-				var copyLink = area.getElementsByTagName('a').item(0);
-				var message = \""._("copy '%1' here...")."\";
-				copyLink.innerHTML = message.replace(/%1/, siteTitle);
-			}
-			
-			
-			
-			// Change the link to a cancel select link
-			link.innerHTML = '"._('cancel copy')."';
-			link.onclick = function () {
-				Portal.deselectForCopy(slotName, siteId, siteTitle, link);
-				return false;
-			}
-		}
-		
-		/**
-		 * Deselect the current site for copying
-		 *
-		 * 
-		 * 
-		 * @param string slotName	The slot name to copy
-		 * @param string siteId		The site id selected
-		 * @param string siteTitle	The title of the site selected
-		 * @param DOMElement link	The link clicked
-		 * @access public
-		 * @since 7/25/08
-		 */
-		Portal.deselectForCopy = function (slotName, siteId, siteTitle, link) {
-			// Remove 'paste' links to all of the placeholders 
-			var copyAreas = document.getElementsByClassName('portal_slot_copy_area');
-			for (var i = 0; i < copyAreas.length; i++) {
-				var area = copyAreas[i];
-				area.style.display = 'none';
-			}
-			
-			// Send off an asynchronous request to record the deselection of the slotname
-			// for future page-loads
-			if (Portal.selectedSlotname && Portal.selectedSlotname == slotName)
-				Portal.unsetSelectedSlotname();
-			
-			// Change the link to a select select link
-			link.innerHTML = '"._('select for copy')."';
-			link.onclick = function () {
-				Portal.selectForCopy(slotName, siteId, siteTitle, link);
-				return false;
-			}
-		}
-		
-		/**
-		 * Copy the selected site into a slot
-		 * 
-		 * @param string slotName	The slot name to copy
-		 * @param string srcSiteId
-		 * @param string srcTitle
-		 * @param DOMElement link	The link clicked
-		 * @return void
-		 * @access public
-		 * @since 7/28/08
-		 */
-		Portal.copyToSlot = function (slotName, link) {
-			if (!Portal.selectedSiteId)
-				throw 'Portal.selectedSiteId has no value';
-			
-			if (!Portal.selectedSiteTitle)
-				throw 'Portal.selectedSiteTitle has no value';
-				
-			SiteCopyPanel.run(slotName, Portal.selectedSiteId, Portal.selectedSiteTitle, link);
-		}
-		
-		// ]]>
-		</script>
 		
 		<style type='text/css'>
 			/* Other portal styles are in the static CSS file, images/SegueCommon.css */
@@ -450,54 +217,6 @@ class listAction
 		
 		$handler = $harmoni->getOutputHandler();
 		$handler->setHead($handler->getHead().ob_get_clean());
-	}
-	
-	/**
-	 * @var object Slot $selectedSlot;  
-	 * @access private
-	 * @since 7/25/08
-	 */
-	private $selectedSlot;
-	
-	/**
-	 * @var string $selectedSiteTitle;  
-	 * @access private
-	 * @since 7/25/08
-	 */
-	private $selectedSiteTitle;
-	
-	/**
-	 * Answer the selected slot or throw an OperationFailedException if none exists.
-	 * 
-	 * @return object Slot
-	 * @access protected
-	 * @since 7/25/08
-	 */
-	protected function getSelectedSlot () {
-		if (!isset($this->selectedSlot)) {
-			if (!isset($_SESSION['portal_slot_selection']) || !$_SESSION['portal_slot_selection'])
-				throw new OperationFailedException("No placeholder selected.");
-			
-			$slotMgr = SlotManager::instance();
-			$this->selectedSlot = $slotMgr->getSlotByShortname($_SESSION['portal_slot_selection']);
-		}
-		return $this->selectedSlot;
-	}
-	
-	/**
-	 * Answer the selected slot title  or throw an OperationFailedException if none exists.
-	 * 
-	 * @return string
-	 * @access protected
-	 * @since 7/25/08
-	 */
-	protected function getSelectedSiteTitle () {
-		if (!isset($this->selectedSiteTitle)) {
-			$slot = $this->getSelectedSlot();
-			$siteAsset = $slot->getSiteAsset();
-			$this->selectedSiteTitle = $siteAsset->getDisplayName();
-		}
-		return $this->selectedSiteTitle;
 	}
 	
 	/**
@@ -619,17 +338,7 @@ class listAction
 				$harmoni->request->endNamespace();
 			}
 			
-			try {
-				$selectedSlot = $this->getSelectedSlot();
-				$selectedTitle = str_replace('"', '&quot;', HtmlString::getSafeHtml($this->getSelectedSiteTitle()));
-				$siteId = $selectedSlot->getSiteAsset()->getId()->getIdString();
-				$display = 'inline';
-			} catch (OperationFailedException $e) {
-				$selectedTitle = '';
-				$siteId = '';
-				$display = 'none';
-			}
-			print "<span class='portal_slot_copy_area' style='display: ".$display."'> | <a href='#' class='portal_slot_copy_link' onclick=\"Portal.copyToSlot('".$slot->getShortname()."', this); return false;\">".str_replace('%1', $selectedTitle, _("copy '%1' here..."))."</a></span>";
+			print " | ".Segue_Selection::instance()->getSiteMoveCopyLink($slot);
 		} else {
 			print " <span class='site_not_created_message'>"._("No Site Created")."</span>";
 		}
@@ -793,10 +502,11 @@ class listAction
 			// have its own authorization, but we'll use add_children/modify for now.
 			if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId)) 
 			{
-				if (isset($sitesTrueSlot) && isset($_SESSION['portal_slot_selection']) && $_SESSION['portal_slot_selection'] == $sitesTrueSlot->getShortname()) {
-					$controls[] = "<a href='#' onclick=\"Portal.deselectForCopy('".$sitesTrueSlot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("cancel copy")."</a>";
-				} else if (isset($sitesTrueSlot)) {
-					$controls[] = "<a href='#' onclick=\"Portal.selectForCopy('".$sitesTrueSlot->getShortname()."', '".$assetId->getIdString()."', '".addslashes(str_replace('"', '&quot;', HtmlString::getSafeHtml($asset->getDisplayName())))."', this); return false;\" class='portal_slot_select_link'>"._("select for copy")."</a>";
+				 if (isset($sitesTrueSlot) 
+				 	&& (is_null($otherSlot) || $sitesTrueSlot->getShortname() == $otherSlot->getShortname())) 
+				 {
+					$controls[] = Segue_Selection::instance()->getAddLink(
+					SiteDispatcher::getSiteDirector()->getSiteComponentFromAsset($asset));
 				}
 			}
 		}

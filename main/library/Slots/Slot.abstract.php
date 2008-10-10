@@ -446,6 +446,8 @@ abstract class SlotAbstract
 	 * @since 8/22/07
 	 */
 	public function setSiteId ( Id $siteId ) {
+		$this->populateSiteId($siteId);
+		
 		$this->recordInDB();
 			
 		$query = new UpdateQuery;
@@ -465,6 +467,7 @@ abstract class SlotAbstract
 	 * @since 8/22/07
 	 */
 	public function deleteSiteId () {
+		$this->siteId = null;
 		$this->recordInDB();
 			
 		$query = new UpdateQuery;

@@ -197,6 +197,33 @@ class Segue_Selection
 	}
 	
 	/**
+	 * Answer a link to move/copy a site to a new slot.
+	 * 
+	 * @param object Slot $slot
+	 * @return string
+	 * @access public
+	 * @since 10/10/08
+	 */
+	public function getSiteMoveCopyLink (Slot $slot) {
+		$this->addHeadJavascript();
+		
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace("selection");
+		ob_start();
+		
+		print "<a ";
+		print " style='cursor: pointer;'";
+		print " class='Selection_MoveCopy_Link' ";
+		print " onclick=\"MoveCopyPanel.run('".$slot->getShortname()."', 'Slot', [], this); return false;\"";
+		print " title=\""._("Paste from your Selection")."\"";
+		print ">"._('Paste');
+		print "</a>";
+		
+		$harmoni->request->endNamespace();				
+		return ob_get_clean();
+	}
+	
+	/**
 	 * Add the javascript to the document head
 	 * 
 	 * @return void
