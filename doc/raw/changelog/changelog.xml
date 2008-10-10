@@ -17,6 +17,10 @@
 		<change author='adam' date='2008-10-08'>
 			Plugins: Divided plugins into distributed and local directories.
 		</change>
+		<fix author='adam' date='2008-10-10' ref='2155578' reftype='bug' reporter='alex_chapin'>
+			UI2: In the 'Paste' panel, the Move/Copy button label now properly 
+			reflects the selected action when the panel is first opened.
+		</fix>
 	</version>
 	<version number="2.2.4.1" date="2008-10-03">
 		<releaseNotes>

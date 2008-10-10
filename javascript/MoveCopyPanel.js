@@ -139,7 +139,10 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		// Submit button
 		this.submit = document.createElement('input');
 		this.submit.type = 'submit';
-		this.submit.value = 'Copy Checked »';
+		if (this.command.value == 'move')
+			this.submit.value = 'Move Checked »';
+		else
+			this.submit.value = 'Copy Checked »';
 		this.form.appendChild(this.submit);
 		
 		// Copy Permissions/Discussions
