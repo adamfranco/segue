@@ -316,7 +316,8 @@ class EduMiddleburyRssFeedPlugin
  				print "
  	var container = document.get_element_by_id('$id');
  	var reader = new RssFeedReader('".$this->_getFeedAccessUrl()."',
- 				{loadingImage: '".$this->getPublicFileUrl('loading.gif')."'";
+ 				{loadingImage: '".$this->getPublicFileUrl('loading.gif')."',
+ 				errorImage: '".$this->getPublicFileUrl('loading_stopped.gif')."'";
  				if ($this->_showChannelTitles())
  					print ",\n\t\t\t\tshowChannelTitles: true";
  				if ($this->_showChannelDescriptions())

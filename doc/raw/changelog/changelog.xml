@@ -27,6 +27,10 @@
 		<fix author='adam' date='2008-10-10' ref='2155650' reftype='bug' reporter='alex_chapin'>
 			Media: File urls are now properly matched when a filename is appended to the URL.
 		</fix>
+		<fix author='adam' date='2008-10-10' ref='2145261' reftype='bug'>
+			Plugins: RSS Feed plugin now doesn't display Javascript errors in Firefox
+			when navigating to another page before feeds have loaded.
+		</fix>
 	</version>
 	<version number="2.2.4.1" date="2008-10-03">
 		<releaseNotes>

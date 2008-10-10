@@ -136,11 +136,17 @@ function RssFeedReader ( url, options, altUrl ) {
 		var div = this.container.appendChild(document.createElement('div'));
 		div.className = 'RssFeedReader_loading';
 		if (this.options.errorImage)
-			var message = '<img src="' + this.options.loadingImage + '" align="center" alt="An error has occurred"/><br/>';
+			var message = '<img src="' + this.options.errorImage + '" align="center" alt="An error has occurred"/><br/>';
 		else
 			var message = '';
 		
 		e = String(e);
+		
+		// Replace the nasty Firefox 'Not Available' error that occurs when clicking
+		// on another link or otherwise canceling the request with a nicer one.
+		if (e.match(/NS_ERROR_NOT_AVAILABLE/))
+			e = "Loading canceled.";
+		
 		message += e.stripTags();
 		div.innerHTML = message;
 	}
