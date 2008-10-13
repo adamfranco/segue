@@ -47,6 +47,10 @@
 		<fix author='adam' date='2008-10-13' ref='2118177' reftype='bug' reporter='bryan_carson'>
 			Authentication: Now doesn't jump around to other pages when logging out.
 		</fix>
+		<fix author='adam' date='2008-10-13' ref='2153673' reftype='bug' reporter='alex_chapin'>
+			UI2: 'Read More' links are now shown and hidden dynamically after edits 
+			to reflect the current state of extended content.
+		</fix>
 	</version>
 	<version number="2.2.4.1" date="2008-10-03">
 		<releaseNotes>

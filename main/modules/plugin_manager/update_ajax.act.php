@@ -71,18 +71,34 @@ class update_ajaxAction
 		$harmoni->request->endNamespace();
 		
 		header("Content-type: text/xml");
-		print "<plugin>\n";
+		print "<plugin";
 		if (!is_object($plugin)) {
+			print ">\n";
 			print "\t<markup>\n\t\t<![CDATA[";
 			print $plugin;
 			print "]]>\n\t</markup>\n";
 		} else {
+			
 			if ($showExtended)
 				$markup = $plugin->executeAndGetExtendedMarkup(TRUE);
 			else
 				$markup = $plugin->executeAndGetMarkup(TRUE);
-				
-			print "\t<markup>\n\t\t<![CDATA[";
+			
+			if ($plugin->hasExtendedMarkup())
+				print " hasExtendedMarkup='true'";
+			else
+				print " hasExtendedMarkup='false'";
+			
+			print " id='".$plugin->getId()."'";
+			print ">\n";
+			
+			print "\t<markup";
+			if ($showExtended)
+				print " type='extended'";
+			else
+				print " type='primary'";
+			print ">";
+			print "\n\t\t<![CDATA[";
 			// CDATA sections cannot contain ']]>' and therefor cannot be nested
 			// get around this by replacing the ']]>' tags in the markup.
 			print preg_replace('/\]\]>/', '}}>', $markup);

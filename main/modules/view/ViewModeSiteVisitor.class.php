@@ -257,15 +257,16 @@ class ViewModeSiteVisitor
 		if (!is_null($attributionDisplay) && strlen($attributionDisplay)) {			
 			print $attributionDisplay;
 		}
-
 		
-		if ($plugin->hasExtendedMarkup()) {	
-			print "\n<div style='text-align: right;'>";
-			print "\n\t<a href='".$this->getDetailUrl($block->getId())."'>";
-			print $plugin->getExtendedLinkLabel();
-			print "</a>";
-			print "\n</div>";
-		}
+		print "\n<div class='extended_content_link' id='extended_content_link:".$block->getId()."' ";
+		print " style='text-align: right;";
+		if (!$plugin->hasExtendedMarkup())
+			print " display: none;";
+		print "'>";
+		print "\n\t<a href='".$this->getDetailUrl($block->getId())."'>";
+		print $plugin->getExtendedLinkLabel();
+		print "</a>";
+		print "\n</div>";
 		
 		print $this->getHistoryLink($block, $plugin);
 		
