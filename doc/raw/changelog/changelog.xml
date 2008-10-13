@@ -44,6 +44,9 @@
 			Plugins: RSS Feed plugin now doesn't display Javascript errors in Firefox
 			when navigating to another page before feeds have loaded.
 		</fix>
+		<fix author='adam' date='2008-10-13' ref='2118177' reftype='bug' reporter='bryan_carson'>
+			Authentication: Now doesn't jump around to other pages when logging out.
+		</fix>
 	</version>
 	<version number="2.2.4.1" date="2008-10-03">
 		<releaseNotes>

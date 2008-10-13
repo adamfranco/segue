@@ -273,6 +273,10 @@ class displayAction
 			}
 		}
 		print "\n<div class='login'>";
+		// set bookmarks for success and failure
+		$current = $harmoni->request->mkURLWithPassthrough();
+		$current->setValue('login_failed', null);
+		$harmoni->history->markReturnURL("polyphony/display_login", $current);
 		if ($users != '') {
 			
 			if (count(explode("+", $users)) == 1)
@@ -283,10 +287,6 @@ class displayAction
 			print " | <a href='".$harmoni->request->quickURL("auth",
 				"logout")."'>"._("Log Out")."</a>";
 		} else {
-			// set bookmarks for success and failure
-			$current = $harmoni->request->mkURLWithPassthrough();
-			$current->setValue('login_failed', null);
-			$harmoni->history->markReturnURL("polyphony/display_login", $current);
 			$harmoni->history->markReturnURL("polyphony/login_fail",
 				$harmoni->request->quickURL("user", "main", array('login_failed' => 'true')));
 
