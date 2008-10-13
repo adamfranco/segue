@@ -1,5 +1,5 @@
 
-Segue v. 2.2.4.1 (2008-10-03)
+Segue v. 2.2.5.0 (2008-10-13)
 =================================
 
 What is Segue?
@@ -17,13 +17,21 @@ be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 Current Version Notes
 ---------------------
-This bugfix release includes a number of small usability fixes to improve the user
-experience. See the change-log for details.
+This release add the ability to make empty site-placeholders aliases to placeholders
+that contain sites. This enables sites to be moved and have users redirected from
+the old urls. As well making multiple course-section-placeholders aliases to a
+single site for the course can allow that site to show up under the 'current
+classes' listing for students in all sections of the course.
 
-Upgrades from versions prior to 2.2.4.0 require running system updaters located
+The user interface for copying sites has now been merged with the user-interface
+for copying content for a more consistent user experience.
+
+See the change-log for details on additional fixes and improvements.
+
+Upgrades from versions prior to 2.2.5.0 require running system updaters located
 under Admin Tools --> Segue Updates.
 
-This Segue release uses Harmoni 1.8.1 and Polyphony 1.4.6.
+This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
 
 
 Downloads
@@ -65,9 +73,29 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 ===================================================================
 
 
+v. 2.2.5.0 (2008-10-13)
+----------------------------------------------------
+This release add the ability to make empty site-placeholders aliases to placeholders
+that contain sites. This enables sites to be moved and have users redirected from
+the old urls. As well making multiple course-section-placeholders aliases to a
+single site for the course can allow that site to show up under the 'current
+classes' listing for students in all sections of the course.
+
+The user interface for copying sites has now been merged with the user-interface
+for copying content for a more consistent user experience.
+
+See the change-log for details on additional fixes and improvements.
+
+Upgrades from versions prior to 2.2.5.0 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
+
+
+
 v. 2.2.4.1 (2008-10-03)
 ----------------------------------------------------
-This bugfix release includes a number of small usability fixes to improve the user
+This bug-fix release includes a number of small usability fixes to improve the user
 experience. See the change-log for details.
 
 Upgrades from versions prior to 2.2.4.0 require running system updaters located

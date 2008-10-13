@@ -23,9 +23,53 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.2.4.1</h2>
+<h2>Version 2.2.5.0</h2>
+<h3>2008-10-13</h3>
+<p>This release add the ability to make empty site-placeholders aliases to placeholders that contain sites. This enables sites to be moved and have users redirected from the old urls. As well making multiple course-section-placeholders aliases to a single site for the course can allow that site to show up under the 'current classes' listing for students in all sections of the course.
+<br>
+<br>The user interface for copying sites has now been merged with the user-interface for copying content for a more consistent user experience.
+<br>
+<br>See the change-log for details on additional fixes and improvements.
+<br>
+<br>Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates.
+<br>
+<br>This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2112719&amp;group_id=82171&amp;atid=565237">
+        			#2112719</a> Placeholders: Placeholders can now be made aliases of other placeholders. This allows automatic redirects to the target site as well as allowing sites to display under additional names in users' portals. (<em>2008-10-10 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2112728&amp;group_id=82171&amp;atid=565237">
+        			#2112728</a> Placeholders: In addition to copying, sites can now be moved to a new placeholder, keeping their node-ids and perma-links valid. (<em>2008-10-10 - Adam Franco</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Run the 'Aliases' updater under Admin Tools -&gt; Segue Updates. (<em>2008-10-13 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Site-Copy and Component-Copy are now unified and both use the selection and paste panel for consistency. (<em>2008-10-10 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Plugins: Divided plugins into distributed and local directories. (<em>2008-10-08 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2155578&amp;group_id=82171&amp;atid=565234">
+        			#2155578</a> UI2: In the 'Paste' panel, the Move/Copy button label now properly reflects the selected action when the panel is first opened. (<em>2008-10-10 - Adam Franco</em>)<br> (<em>reported by alex_chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2155588&amp;group_id=82171&amp;atid=565234">
+        			#2155588</a> Text-Templates: Pop-up window text-template now accepts https URLs. (<em>2008-10-10 - Adam Franco</em>)<br> (<em>reported by alex_chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2155650&amp;group_id=82171&amp;atid=565234">
+        			#2155650</a> Media: File urls are now properly matched when a filename is appended to the URL. (<em>2008-10-10 - Adam Franco</em>)<br> (<em>reported by alex_chapin</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2145261&amp;group_id=82171&amp;atid=565234">
+        			#2145261</a> Plugins: RSS Feed plugin now doesn't display Javascript errors in Firefox when navigating to another page before feeds have loaded. (<em>2008-10-10 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2118177&amp;group_id=82171&amp;atid=565234">
+        			#2118177</a> Authentication: Now doesn't jump around to other pages when logging out. (<em>2008-10-13 - Adam Franco</em>)<br> (<em>reported by Bryan Carson of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2153673&amp;group_id=82171&amp;atid=565234">
+        			#2153673</a> UI2: 'Read More' links are now shown and hidden dynamically after edits to reflect the current state of extended content. (<em>2008-10-13 - Adam Franco</em>)<br> (<em>reported by alex_chapin</em>)</li>
+	</ul>
+<br><h2>Version 2.2.4.1</h2>
 <h3>2008-10-03</h3>
-<p>This bugfix release includes a number of small usability fixes to improve the user experience. See the change-log for details.
+<p>This bug-fix release includes a number of small usability fixes to improve the user experience. See the change-log for details.
 <br>
 <br>Upgrades from versions prior to 2.2.4.0 require running system updaters located under Admin Tools --&gt; Segue Updates.
 <br>

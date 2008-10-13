@@ -2,9 +2,88 @@
 Segue Change Log
 
 
+v. 2.2.5.0 (2008-10-13)
+----------------------------------------------------
+This release add the ability to make empty site-placeholders aliases to placeholders
+that contain sites. This enables sites to be moved and have users redirected from
+the old urls. As well making multiple course-section-placeholders aliases to a
+single site for the course can allow that site to show up under the 'current
+classes' listing for students in all sections of the course.
+
+The user interface for copying sites has now been merged with the user-interface
+for copying content for a more consistent user experience.
+
+See the change-log for details on additional fixes and improvements.
+
+Upgrades from versions prior to 2.2.5.0 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
+		
+		
+	* New feature: #2112719 
+		Placeholders: Placeholders can now be made aliases of other placeholders.
+		This allows automatic redirects to the target site as well as allowing sites
+		to display under additional names in users' portals.
+		(2008-10-10 - Adam Franco)
+		
+	* New feature: #2112728 
+		Placeholders: In addition to copying, sites can now be moved to a new
+		placeholder, keeping their node-ids and perma-links valid.
+		(2008-10-10 - Adam Franco)
+		
+	**** IMPORTANT *** Change: 
+		Run the 'Aliases' updater under Admin Tools -> Segue Updates.
+		(2008-10-13 - Adam Franco)
+		
+	* Change: 
+		Site-Copy and Component-Copy are now unified and both use the selection and
+		paste panel for consistency.
+		(2008-10-10 - Adam Franco)
+		
+	* Change: 
+		Plugins: Divided plugins into distributed and local directories.
+		(2008-10-08 - Adam Franco)
+		
+	* Bug Fix: #2155578 
+		UI2: In the 'Paste' panel, the Move/Copy button label now properly reflects
+		the selected action when the panel is first opened.
+		(2008-10-10 - Adam Franco)
+		(reported by alex_chapin)
+		
+	* Bug Fix: #2155588 
+		Text-Templates: Pop-up window text-template now accepts https URLs.
+		(2008-10-10 - Adam Franco)
+		(reported by alex_chapin)
+		
+	* Bug Fix: #2155650 
+		Media: File urls are now properly matched when a filename is appended to the
+		URL. 
+		(2008-10-10 - Adam Franco)
+		(reported by alex_chapin)
+		
+	* Bug Fix: #2145261 
+		Plugins: RSS Feed plugin now doesn't display Javascript errors in Firefox
+		when navigating to another page before feeds have loaded.
+		(2008-10-10 - Adam Franco)
+		
+	* Bug Fix: #2118177 
+		Authentication: Now doesn't jump around to other pages when logging out.
+		(2008-10-13 - Adam Franco)
+		(reported by Bryan Carson of Middlebury College)
+		
+	* Bug Fix: #2153673 
+		UI2: 'Read More' links are now shown and hidden dynamically after edits to
+		reflect the current state of extended content.
+		(2008-10-13 - Adam Franco)
+		(reported by alex_chapin)
+	
+
+
+
 v. 2.2.4.1 (2008-10-03)
 ----------------------------------------------------
-This bugfix release includes a number of small usability fixes to improve the user
+This bug-fix release includes a number of small usability fixes to improve the user
 experience. See the change-log for details.
 
 Upgrades from versions prior to 2.2.4.0 require running system updaters located

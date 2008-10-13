@@ -10,22 +10,40 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.5.0" date="The Future">
+	<version number="2.2.5.0" date="2008-10-13">
 		<releaseNotes>
+			This release add the ability to make empty site-placeholders aliases to
+			placeholders that contain sites. This enables sites to be moved and have 
+			users redirected from the old urls. As well making multiple 
+			course-section-placeholders aliases to a single site for the course can
+			allow that site to show up under the 'current classes' listing for students
+			in all sections of the course.
 			
+			The user interface for copying sites has now been merged with the user-interface
+			for copying content for a more consistent user experience.
+			
+			See the change-log for details on additional fixes and improvements.
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+						
+			This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
 		</releaseNotes>
 		<new author='adam' date='2008-10-10' ref='2112719' reftype='fr'>
 			Placeholders: Placeholders can now be made aliases of other placeholders.
-			This allows automatic redircts to the target site as well as allowing
+			This allows automatic redirects to the target site as well as allowing
 			sites to display under additional names in users' portals.
 		</new>
 		<new author='adam' date='2008-10-10' ref='2112728' reftype='fr'>
 			Placeholders: In addition to copying, sites can now be moved to a new
-			placeholder, keeping their node-ids and permalinks valid.
+			placeholder, keeping their node-ids and perma-links valid.
 		</new>
+		<important author='adam' date='2008-10-13'>
+			Run the 'Aliases' updater under Admin Tools -&gt; Segue Updates.
+		</important>
 		<change author='adam' date='2008-10-10'>
 			Site-Copy and Component-Copy are now unified and both use the selection
-			and paste panel for consistancy.
+			and paste panel for consistency.
 		</change>
 		<change author='adam' date='2008-10-08'>
 			Plugins: Divided plugins into distributed and local directories.
@@ -54,11 +72,11 @@
 	</version>
 	<version number="2.2.4.1" date="2008-10-03">
 		<releaseNotes>
-			This bugfix release includes a number of small usability fixes to 
+			This bug-fix release includes a number of small usability fixes to 
 			improve the user experience. See the change-log for details.
 			
 			Upgrades from versions prior to 2.2.4.0 require running system
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 						
 			This Segue release uses Harmoni 1.8.1 and Polyphony 1.4.6.
 		</releaseNotes>
@@ -132,7 +150,7 @@
 			See the change log for more details and other improvements.
 			
 			Upgrades from versions prior to 2.2.4.0 require running system
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 			-------------
 						
 			This Segue 2 release uses Harmoni 1.8.0 and Polyphony 1.4.5.
@@ -449,7 +467,7 @@
 			http://www.php.net/manual/en/xsl.installation.php
 			
 			Upgrades from versions prior to beta 30 require running system
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 			
 			-------------
 			
@@ -575,7 +593,7 @@
 			http://www.php.net/manual/en/xsl.installation.php
 			
 			Upgrades from versions prior to beta 30 require running system
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 			
 			-------------
 			
@@ -646,7 +664,7 @@
 			http://www.php.net/manual/en/xsl.installation.php
 			
 			Upgrades from versions prior to beta 30 require running system
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 			
 			-------------
 			
@@ -720,7 +738,7 @@
 			http://www.php.net/manual/en/xsl.installation.php
 			
 			Upgrades from versions prior to beta 26 require running the RSS Feed
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 		</releaseNotes>
 		<new author='alex' date='2008-07-30'>
 			Themes: Added two new themes, RoundedBox and Midd.
@@ -793,7 +811,7 @@
 			http://www.php.net/manual/en/xsl.installation.php
 			
 			Upgrades from versions prior to beta 26 require running the RSS Feed
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 		</releaseNotes>
 		<new author='adam' date='2008-07-24'>
 			TextTemplates: New Text-Template for embedding Google Maps.
@@ -850,7 +868,7 @@
 			http://www.php.net/manual/en/xsl.installation.php
 			
 			Upgrades from versions prior to beta 26 require running the RSS Feed
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 		</releaseNotes>
 		<new author='adam' date='2008-07-21' ref='2021759' reftype='fr'>
 			WikiText: Wrapping wiki-links and text-template markup in &lt;nowiki&gt; 
@@ -924,7 +942,7 @@
 			http://www.php.net/manual/en/xsl.installation.php
 			
 			Upgrades from versions prior to beta 26 require running the RSS Feed
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 		</releaseNotes>
 		<new author='adam' date='2008-07-16'>
 			Text-Templates: New 'text-templates' extension system uses markup like
@@ -980,7 +998,7 @@
 			http://www.php.net/manual/en/xsl.installation.php
 			
 			Upgrades from versions prior to beta 26 require running the RSS Feed
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 			
 			-----------------------
 			
@@ -1016,7 +1034,7 @@
 			http://www.php.net/manual/en/xsl.installation.php
 			
 			Upgrades from versions prior to beta 26 require running the RSS Feed
-			updaters located under Admin Tools --> Segue Updates.
+			updaters located under Admin Tools --&gt; Segue Updates.
 			
 			Segue 2.0-beta-25 uses Harmoni 1.4.2 and Polyphony 1.2.7.
 		</releaseNotes>
@@ -1066,7 +1084,7 @@
 			- Major speed improvements for users viewing sites without editing access.
 			
 			Upgrades from versions prior to beta 25 require running the RSS Feed
-			updater	located under Admin Tools --> Segue Updates.
+			updater	located under Admin Tools --&gt; Segue Updates.
 			
 			Segue 2.0-beta-25 uses Harmoni 1.4.1 and Polyphony 1.2.7.
 		</releaseNotes>
@@ -1214,7 +1232,7 @@
 			Segue versions beta-20 through beta-22 included a bug in which cascading
 			authorizations for administrators were not created when new sites were
 			created. This version adds an updater that will rebuild missing authorizations.
-			This updater can be found under 'Admin Tools' --> 'Segue Updates' --> 
+			This updater can be found under 'Admin Tools' --&gt; 'Segue Updates' --&gt; 
 			'Rebuild Implicit AZs'.
 			
 			Notable changes from Harmoni and Polyphony:
@@ -1289,7 +1307,7 @@
 			This release also includes several new themes.
 			
 			Upgrades from versions prior to beta 22 require running the appropriate 
-			updater	located under Admin Tools --> Segue Updates. As well, the 
+			updater	located under Admin Tools --&gt; Segue Updates. As well, the 
 			authentication configuration files have change and will need to be updated.
 		</releaseNotes>
 		<important author='adam' date='2008-06-05'>
@@ -1366,7 +1384,7 @@
 			Missing theme images now do not fill the logs with errors.
 			
 			Upgrades from versions prior to beta 21 require running the appropriate 
-			updater	located under Admin Tools --> Segue Updates.
+			updater	located under Admin Tools --&gt; Segue Updates.
 		</releaseNotes>
 		<fix author='adam' date='2008-05-23'>
 			Config: Adding path-info URL configuration to action_default.conf.php
@@ -1387,7 +1405,7 @@
 			again.
 			
 			Upgrades from versions prior to beta 21 require running the appropriate 
-			updater	located under Admin Tools --> Segue Updates.
+			updater	located under Admin Tools --&gt; Segue Updates.
 		</releaseNotes>
 		<fix author='adam' date='2008-05-21'>
 			Themes: Fixed text-color on Rounded Corner theme to be more visible.
@@ -1421,7 +1439,7 @@
 			New themes in this release: Rounded Corners, Shadow Box, Tabs.
 			
 			Usage of this new theming system requires running the appropriate updater
-			located under Admin Tools --> Segue Updates.
+			located under Admin Tools --&gt; Segue Updates.
 		</releaseNotes>
 		<fix author='alex' date='2008-05-20'>
 			Themes: updated theme thumbnail images.
@@ -1447,7 +1465,7 @@
 			New themes in this release: Rounded Corners, Shadow Box, Tabs.
 			
 			Usage of this new theming system requires running the appropriate updater
-			located under Admin Tools --> Segue Updates.
+			located under Admin Tools --&gt; Segue Updates.
 		</releaseNotes>
 		<change author='alex' date='2008-05-15'>
 			Themes: added a number of CSS classes to UI elements so these could be themed.
@@ -1474,7 +1492,7 @@
 			site for which they are created.
 		</new>
 		<important author='adam' date='2008-05-20'>
-			New theming system requires updates be run under Admin Tools --> Segue Updates.
+			New theming system requires updates be run under Admin Tools --&gt; Segue Updates.
 		</important>
 		<fix author='adam' date='2008-05-13' ref='1962686' reftype='bug'>
 			ClassicMode: Site-Settings wizard now includes the site-width option.
@@ -1485,7 +1503,7 @@
 			This release of Segue 2.0 includes dramatic speed improvements over
 			beta 19.1 due to a new implementation of Harmoni's Authorization and Hierarchy
 			system. Usage of this new systems requires running the appropriate updater
-			located under Admin Tools --> Segue Updates. This updater will take several
+			located under Admin Tools --&gt; Segue Updates. This updater will take several
 			minutes to run and will make irrevocable changes to your database. Please
 			back up your database before running this updater.
 			
@@ -1504,7 +1522,7 @@
 			This release of Segue 2.0 includes dramatic speed improvements over
 			beta 19.1 due to a new implementation of Harmoni's Authorization and Hierarchy
 			system. Usage of this new systems requires running the appropriate updater
-			located under Admin Tools --> Segue Updates. This updater will take several
+			located under Admin Tools --&gt; Segue Updates. This updater will take several
 			minutes to run and will make irrevocable changes to your database. Please
 			back up your database before running this updater.
 			
@@ -1519,7 +1537,7 @@
 			expense of a small increase in writing time and storage space.
 			
 			Usage of this new systems requires running the appropriate updater
-			located under Admin Tools --> Segue Updates. This updater will take several
+			located under Admin Tools --&gt; Segue Updates. This updater will take several
 			minutes to run and will make irrevocable changes to your database. Please
 			back up your database before running this updater.
 			
@@ -1849,7 +1867,7 @@
 			
 			Upgrade Notes: 
 			For upgrades from releases prior to beta 15, please run the updates 
-			located under Admin Tools --> Segue Updates.  
+			located under Admin Tools --&gt; Segue Updates.  
 			
 			Segue 2.0 beta 15 uses Polyphony 1.0.4 and Harmoni 1.0.5.  
 		</releaseNotes>
