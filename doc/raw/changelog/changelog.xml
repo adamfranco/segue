@@ -42,6 +42,11 @@
 		<fix author='adam' date='2008-10-14'>
 			Installation: Plugin SQL files now get run automatically on install.
 		</fix>
+		<fix author='adam' date='2008-10-14'>
+			Installation: New installations now have a 'jadministrator-test_site' placeholder
+			added so that it is straightforward how to create a site and test if
+			Segue is operational.
+		</fix>
 	</version>
 	<version number="2.2.5.0" date="2008-10-13">
 		<releaseNotes>

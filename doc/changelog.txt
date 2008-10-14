@@ -36,6 +36,12 @@ This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
 	* Bug Fix: 
 		Installation: Plugin SQL files now get run automatically on install.
 		(2008-10-14 - Adam Franco)
+		
+	* Bug Fix: 
+		Installation: New installations now have a 'jadministrator-test_site'
+		placeholder added so that it is straightforward how to create a site and
+		test if Segue is operational.
+		(2008-10-14 - Adam Franco)
 	
 
 

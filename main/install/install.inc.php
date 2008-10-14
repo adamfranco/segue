@@ -365,7 +365,21 @@ if (!isset($_SESSION['table_setup_complete'])) {
 				$id = $idManager->getId("edu.middlebury.authorization.modify_group_membership");
 				$function = $authZManager->createFunction($id, "Modify Group Membership", "Modify Group membership.", $type, $qualifierHierarchyId);
 				$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);	
-	
+		
+		/*********************************************************
+		 * Add a site for the administrator user to use for testing
+		 * new installations.
+		 *********************************************************/
+			$slotMgr = SlotManager::instance();
+			$testSlot = $slotMgr->getSlotByShortname('jadministrator-test_site');
+			$testSlot->addOwner($adminAgent->getId());
+			$testSlot->setLocationCategory('community');
+			$slotMgr->convertSlotToType($testSlot, Slot::personal);
+			
+			// Set the 'personal' folder as the last visited so that admins logging into
+			// a new install will see their personal test site.
+			UserData::instance()->setPreference('segue_portal_last_folder', 'personal');
+			
 // 		print "\n<br> ...done";
 		$_SESSION['table_setup_complete'] = TRUE;
 		unset($_SESSION['installation_underway']);
