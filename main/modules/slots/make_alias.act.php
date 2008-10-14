@@ -56,6 +56,23 @@ class make_aliasAction
 			$slot->makeAlias($mgr->getSlotByShortname(RequestContext::value('target_slot')));
 			
 			print _("Success");
+			
+			/*********************************************************
+			 * Log the success
+			 *********************************************************/
+			if (Services::serviceRunning("Logging")) {
+				$loggingManager = Services::getService("Logging");
+				$log = $loggingManager->getLogForWriting("Segue");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+								"Normal events.");
+				
+				$item = new AgentNodeEntryItem("Alias Made", "'".$slot->getShortname()."' has been made an alias of '".RequestContext::value('target_slot')."'.");
+				$item->addNodeId($slot->getSiteId());
+				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			}
 		} catch (OperationFailedException $e) {
 			print $e->getMessage();
 		} catch (UnknownIdException $e) {

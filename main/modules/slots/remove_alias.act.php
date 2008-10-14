@@ -51,7 +51,25 @@ class remove_aliasAction
 			
 		$mgr = SlotManager::instance();
 		$slot = $mgr->getSlotByShortname(RequestContext::value('slot'));
+		$oldTarget = $slot->getAliasTarget();
 		$slot->makeNotAlias();
+		
+		/*********************************************************
+		 * Log the success
+		 *********************************************************/
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			$item = new AgentNodeEntryItem("Alias Removed", "'".$slot->getShortname()."' is no longer an alias of '".$oldTarget->getShortname()."'.");
+			$item->addNodeId($oldTarget->getSiteId());
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
 		
 		$harmoni = Harmoni::instance();
 		RequestContext::sendTo($harmoni->request->quickURL('portal', 'list'));

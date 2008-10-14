@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.5.2" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-10-14'>
+			Placeholders: Move Site, Copy Site, Make Alias, and Remove Alias actions
+			are now logged.
+		</fix>
+	</version>
 	<version number="2.2.5.1" date="2008-10-14">
 		<releaseNotes>
 			This release add the ability to make empty site-placeholders aliases to
@@ -2963,11 +2972,6 @@
 		for e-learning that combines the ease of use of course management systems 
 		with the flexibility of weblogs for creating various types of sites 
 		including course, news, and journal.
-		
-		This Segue 2.0 beta is capable of most of the site creation and editing needs of  
-		users. We are continually adding features to bring Segue 2 up to feature parity with  
-		Segue 1.x. See the Feature Request Tracker for a list of features that still need to  
-		be completed: https://sourceforge.net/tracker/?group_id=82171&amp;atid=565237
 	</about>
 	
 	<info>

@@ -126,6 +126,23 @@ class copy_siteAction
 				// Delete the decompressed Archive
 				$this->deleteRecursive($exportDir);
 				
+				/*********************************************************
+				 * Log the success
+				 *********************************************************/
+				if (Services::serviceRunning("Logging")) {
+					$loggingManager = Services::getService("Logging");
+					$log = $loggingManager->getLogForWriting("Segue");
+					$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+									"A format in which the acting Agent[s] and the target nodes affected are specified.");
+					$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+									"Normal events.");
+					
+					$item = new AgentNodeEntryItem("Copy Site", "Site copied from placeholder, '".$srcSlot->getShortname()."' to '".$destSlot->getShortname()."'.");
+					$item->addNodeId($site->getQualifierId());
+					
+					$log->appendLogWithTypes($item,	$formatType, $priorityType);
+				}
+				
 			} catch (Exception $e) {
 				$this->deleteRecursive($exportDir);
 				
@@ -146,6 +163,23 @@ class copy_siteAction
 			
 			// Make the source an alias of the destination so that links still work.
 			$srcSlot->makeAlias($destSlot);
+			
+			/*********************************************************
+			 * Log the success
+			 *********************************************************/
+			if (Services::serviceRunning("Logging")) {
+				$loggingManager = Services::getService("Logging");
+				$log = $loggingManager->getLogForWriting("Segue");
+				$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+								"A format in which the acting Agent[s] and the target nodes affected are specified.");
+				$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+								"Normal events.");
+				
+				$item = new AgentNodeEntryItem("Move Site", "Site moved from placeholder, '".$srcSlot->getShortname()."' to '".$destSlot->getShortname()."'.");
+				$item->addNodeId($destSlot->getSiteId());
+				
+				$log->appendLogWithTypes($item,	$formatType, $priorityType);
+			}
 		}
 		
 		// Remove from selection?
