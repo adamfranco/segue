@@ -30,7 +30,10 @@
 			This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
 		</releaseNotes>
 		<fix author='adam' date='2008-10-14'>
-			Placeholders: updated 'slot' table SQL so that updaters do not need to be run for new installations.
+			Installation: Updated 'slot' table SQL so that updaters do not need to be run for new installations.
+		</fix>
+		<fix author='adam' date='2008-10-14'>
+			Installation: Reordered SQL files so that new installations will succeed.
 		</fix>
 	</version>
 	<version number="2.2.5.0" date="2008-10-13">

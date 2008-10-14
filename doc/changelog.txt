@@ -22,8 +22,12 @@ This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
 		
 		
 	* Bug Fix: 
-		Placeholders: updated 'slot' table SQL so that updaters do not need to be
+		Installation: Updated 'slot' table SQL so that updaters do not need to be
 		run for new installations.
+		(2008-10-14 - Adam Franco)
+		
+	* Bug Fix: 
+		Installation: Reordered SQL files so that new installations will succeed.
 		(2008-10-14 - Adam Franco)
 	
 
