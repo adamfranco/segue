@@ -61,6 +61,41 @@ if (!isset($_SESSION['table_setup_complete'])) {
 				default:
 					throw new Exception("Database schemas are not defined for specified database type.");
 			}
+			
+			// Load SQL files for plugins.
+			$pluginDirs = array(	MYDIR.'/plugins-dist/SeguePlugins',
+									MYDIR.'/plugins-local/SeguePlugins'
+								);
+			
+			foreach ($pluginDirs as $base) {
+				foreach (scandir($base) as $pluginAuthor) {
+					if (!is_dir($base.'/'.$pluginAuthor))
+						continue;
+					foreach (scandir($base.'/'.$pluginAuthor) as $plugin) {
+						if (!is_dir($base.'/'.$pluginAuthor.'/'.$plugin))
+							continue;
+						if (file_exists($base.'/'.$pluginAuthor.'/'.$plugin.'/SQL')
+							&& is_dir($base.'/'.$pluginAuthor.'/'.$plugin.'/SQL'))
+						{
+							
+							switch ($dbHandler->getDatabaseType($dbID)) {
+								case MYSQL:
+									SQLUtils::runSQLdirWithExceptions($base.'/'.$pluginAuthor.'/'.$plugin."/SQL/MySQL", $exceptions, $dbID);
+									break;
+								case POSTGRESQL:
+									SQLUtils::runSQLdirWithExceptions($base.'/'.$pluginAuthor.'/'.$plugin."/SQL/PostgreSQL", $exceptions, $dbID);
+									break;
+								case ORACLE:
+									SQLUtils::runSQLdirWithExceptions($base.'/'.$pluginAuthor.'/'.$plugin."/SQL/PostgreSQL", $exceptions, $dbID);
+									break;
+								default:
+									throw new Exception("Database schemas are not defined for specified database type.");
+							}
+						}
+					}
+				}
+			}
+			
 			$dbHandler->commitTransaction($dbID);
 			
 			// Now that we have added our tables, re-run this script and finish installation

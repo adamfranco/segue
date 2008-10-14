@@ -341,16 +341,16 @@ class remote_feed
 		$dbc = Services::getService("DatabaseManager");
 		switch ($dbc->getDatabaseType(IMPORTER_CONNECTION)) {
 			case MYSQL:
-				$file = dirname(__FILE__).'/SQL/MySQL.sql';
+				$dir = dirname(__FILE__).'/SQL/MySQL';
 				break;
 			case POSTGRESQL:
 			case ORACLE:
-				$file = dirname(__FILE__).'/SQL/PostgreSQL.sql';
+				$dir = dirname(__FILE__).'/SQL/PostgreSQL';
 				break;
 			default:
 				throw new Exception("Database type is not supported.");
 		}
-		SQLUtils::runSQLfile($file, IMPORTER_CONNECTION);
+		SQLUtils::runSQLdir($dir, IMPORTER_CONNECTION);
 	}
 }
 

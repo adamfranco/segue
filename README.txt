@@ -26,6 +26,9 @@ classes' listing for students in all sections of the course.
 The user interface for copying sites has now been merged with the user-interface
 for copying content for a more consistent user experience.
 
+The 2.2.5.1 bug-fix release adds improvements to the installation process to help
+ensure that new installations are operational without running database updates.
+
 See the change-log for details on additional fixes and improvements.
 
 Upgrades from versions prior to 2.2.5.0 require running system updaters located
@@ -83,6 +86,9 @@ classes' listing for students in all sections of the course.
 
 The user interface for copying sites has now been merged with the user-interface
 for copying content for a more consistent user experience.
+
+The 2.2.5.1 bug-fix release adds improvements to the installation process to help
+ensure that new installations are operational without running database updates.
 
 See the change-log for details on additional fixes and improvements.
 
