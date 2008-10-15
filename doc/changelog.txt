@@ -33,6 +33,13 @@ This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
 		Tagging: Fixed file path in tag actions to point at new plugins-dist
 		directory. 
 		(2008-10-15 - Adam Franco)
+		(reported by alex_chapin)
+		
+	* Bug Fix: #2114311 
+		Attribution: Straightened out attribution printing so that authors could be
+		shown without dates.
+		(2008-10-15 - Adam Franco)
+		(reported by alex_chapin)
 	
 
 

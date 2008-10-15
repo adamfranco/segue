@@ -84,12 +84,13 @@ class AttributionPrinter {
 			print "</div>";
 		}
 		
-		if ($this->shouldShowCreatorName()) {
+		if (in_array($this->block->showAttribution(), array('creator', 'last_editor', 'both', 'all_editors'))) {
 			print "\n<div class='attribution_line'>";
 			print $this->getContributorsLine();
 			print "</div>";		
 		}
-	return ob_get_clean();
+		
+		return ob_get_clean();
 	}
 	
 	/**
@@ -184,7 +185,15 @@ class AttributionPrinter {
 				if ($n < count($contributors)) print "; ";
 				$n++;
 			}
+			
+			return;
 		}
+		
+		if ($this->shouldShowCreatorName())
+			$this->getCreationLine();
+			
+		if ($this->shouldShowEditorName())
+			$this->getModificationLine();
 			
 	}		
 
@@ -251,14 +260,18 @@ class AttributionPrinter {
 	 */
 	private function shouldShowEditorName() {
 		
-		if ($this->block->showAttribution() === 'last_editor' ||
-		 	$this->block->showAttribution() === 'both') {
+		if ($this->block->showAttribution() === 'last_editor')
+			return true;
+		
+		if ($this->block->showAttribution() === 'both') {
 		 	
 			$editors = $this->getEditors();
 			$creator = $this->getCreator();
 			if (isset($editors[0]) && $editors[0] != $creator) 
 				return true;
-		}		
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -278,6 +291,11 @@ class AttributionPrinter {
 					$contributors[] = $editor;
 				}
 			}
+		}
+		
+		$creator = $this->getCreator();
+		if (!in_array($creator, $contributors)) {
+			$contributors[] = $creator;
 		}
 		return $contributors;
 	}
