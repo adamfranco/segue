@@ -701,7 +701,7 @@ function AssetLibrary ( owner, assetId, caller, container ) {
 		this.addFieldToRow(row1, 'Source', 'text', 'source', '');
 		this.addFieldToRow(row2, 'Publisher', 'text', 'publisher', '');
 		this.addFieldToRow(row3, '[Pub.] Date', 'text', 'date', '');
-		this.addFieldToRow(row4, '', 'submit', 'submit', 'Submit');
+		this.addFieldToRow(row4, '', 'submit', 'submit', 'Upload');
 		
 		
 // 		var subDiv = this.uploadForm.appendChild(document.createElement('div'));
@@ -1228,7 +1228,7 @@ function MediaAsset ( assetId, xmlElement, library ) {
 		this.addFieldToRow(tbody.appendChild(document.createElement('tr')),
 			'[Pub.] Date', 'text', 'date', this.date || '');
 		this.addFieldToRow(tbody.appendChild(document.createElement('tr')),
-			'', 'submit', 'submit', 'Submit');
+			'', 'submit', 'submit', 'Save Changes');
 		
 		
 // 		var subDiv = this.uploadForm.appendChild(document.createElement('div'));
