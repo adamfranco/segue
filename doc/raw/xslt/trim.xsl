@@ -121,9 +121,7 @@
 				<xsl:value-of select="$stringIn"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
-	
-	
+	</xsl:template>	
 	
 	<xsl:template name="addNewlines">
 		<xsl:param name="completedLines" />

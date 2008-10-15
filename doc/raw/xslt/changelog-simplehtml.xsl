@@ -117,7 +117,7 @@
 ///////////////////////////////////////////////////////////////////////
 -->
 <xsl:template name="entry">
-	<xsl:if test="@ref">
+	<xsl:if test="@ref != ''">
 		<xsl:choose>
 			<xsl:when test="@reftype">
 				<xsl:variable name="reftype" select="@reftype" />
@@ -155,7 +155,7 @@
 		<xsl:text>)</xsl:text>
 	</xsl:if>
 	
-	<xsl:if test="@reporter">
+	<xsl:if test="@reporter != ''">
 		<br/>
 		<xsl:text> (</xsl:text>
 		<em>

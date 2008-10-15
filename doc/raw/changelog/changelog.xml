@@ -27,9 +27,13 @@
 			
 			See the change-log for details on additional fixes and improvements.
 			
+			----
+			
 			Upgrades from versions prior to 2.2.5.0 require running system
 			updaters located under Admin Tools --&gt; Segue Updates.
-						
+			
+			----
+			
 			This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
 		</releaseNotes>
 		<fix author='adam' date='2008-10-14'>
@@ -207,27 +211,22 @@
 			
 			Notable User-Facing changes:
 			
-			- New 'Recently Visited' folder
-			
-			- The current portal folder and many settings are now remembered.
-			
-			- New media library buttons in the Text and Images plugin make it 
+			* New 'Recently Visited' folder
+			* The current portal folder and many settings are now remembered.
+			* New media library buttons in the Text and Images plugin make it 
 			much easier to insert images and add links to files.
-			
-			- Permissions icons are now shown in edit-mode and in the media library.
-			
-			- The move/copy process has be renamed to better fit with the copy/paste
+			* Permissions icons are now shown in edit-mode and in the media library.
+			* The move/copy process has be renamed to better fit with the copy/paste
 			metaphor of usage.
-			
-			- The selection panel now is always shown.
-			
-			- The window now scrolls when dragging in Arrange mode.
+			* The selection panel now is always shown.
+			* The window now scrolls when dragging in Arrange mode.
 			
 			See the change log for more details and other improvements.
 			
 			Upgrades from versions prior to 2.2.4.0 require running system
 			updaters located under Admin Tools --&gt; Segue Updates.
-			-------------
+			
+			----
 						
 			This Segue 2 release uses Harmoni 1.8.0 and Polyphony 1.4.5.
 		</releaseNotes>
@@ -306,7 +305,7 @@
 		<releaseNotes>
 			This release fixes a number of small bugs and usability issues.
 			
-			-------------
+			----
 						
 			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.4.
 		</releaseNotes>
@@ -332,7 +331,7 @@
 		<releaseNotes>
 			This release fixes several issues that were in 2.2.1.
 			
-			-------------
+			----
 						
 			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
 		</releaseNotes>
@@ -352,14 +351,12 @@
 			as well as fixes a number of minor bugs.
 			
 			Notable user-facing changes:
-			
-			- speed improvements in the portal
-			
-			- Audio Clip plugin can now be used in comments.
+			* speed improvements in the portal
+			* Audio Clip plugin can now be used in comments.
 			
 			See the change log for more details on these and other fixes.
 			
-			-------------
+			----
 						
 			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
 		</releaseNotes>
@@ -389,16 +386,14 @@
 			
 			Notable User-facing changes:
 			
-			- New Audio Clip plugin
-			
-			- RSS feeds now include enclosures for File for Download and Audio Clip
+			* New Audio Clip plugin
+			* RSS feeds now include enclosures for File for Download and Audio Clip
 			plugins.
-			
-			- RSS feeds now include tags.
+			* RSS feeds now include tags.
 			
 			See the change log for more details on these and other fixes.
 			
-			-------------
+			----
 						
 			This Segue 2 release uses Harmoni 1.7.0 and Polyphony 1.4.3.
 		</releaseNotes>
@@ -461,7 +456,7 @@
 			
 			See the change-log for details of these fixes.
 			
-			-------------
+			----
 						
 			This Segue 2 release uses Harmoni 1.6.2 and Polyphony 1.4.2.
 		</releaseNotes>
@@ -503,7 +498,7 @@
 			
 			See the change-log for details of these fixes.
 			
-			-------------
+			----
 						
 			This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
 		</releaseNotes>
@@ -523,17 +518,14 @@
 			
 			Notable user-facing changes:
 			
-			- Now supports embedded GoogleCalendars.
-			
-			- Now supports links targeting pop-up windows.
-			
-			- YouTube videos now can be loaded in high quality using the fmt=18 option.
-			
-			- A warning is now given if leaving a page with a text-editor open.
+			* Now supports embedded GoogleCalendars.
+			* Now supports links targeting pop-up windows.
+			* YouTube videos now can be loaded in high quality using the fmt=18 option.
+			* A warning is now given if leaving a page with a text-editor open.
 			
 			See the change-log for details of these and other fixes.
 			
-			-------------
+			----
 			
 			Upgrades:
 			
@@ -545,7 +537,7 @@
 			Upgrades from versions prior to beta 30 require running system
 			updaters located under Admin Tools --&gt; Segue Updates.
 			
-			-------------
+			----
 			
 			This Segue 2 release uses Harmoni 1.6.1 and Polyphony 1.4.1.
 		</releaseNotes>
@@ -572,15 +564,12 @@
 			Re-applied a set of changes that should have been in beta 28, but that
 			got accidentally dropped during resolution of a merge conflict.
 			
-			 - Plugins: Text-Plugin now prompts with confirmation before unloading 
+			 * Plugins: Text-Plugin now prompts with confirmation before unloading 
 			 the page (back, refresh, link-click, etc) when the plugin is open for 
 			 editing in UI2.
-			 
-			 - Improved XML error checking in RSS feed display.
-			 
-			 - Removed debugging lines.
-			 
-			 - Placeholder admin screens now remember pagination state.
+			 * Improved XML error checking in RSS feed display.
+			 * Removed debugging lines.
+			 * Placeholder admin screens now remember pagination state.
 		</fix>
 		<fix author='adam' date='2008-08-19' ref='2060103' reftype='bug' reporter='shel_sax'>
 			UI2: Block controls now are above header so that they don't hide reorder
@@ -613,12 +602,10 @@
 			
 			Security issues fixed: 
 						
-			- Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
+			* Cross-Site Request Forgeries (CSRF) are now eliminated from data-modification
 			actions. Read about CSRF at: http://shiflett.org/articles/cross-site-request-forgeries
-			
-			- Segue can now be configured to use secure/http-only cookies. 
-			
-			- Admin actions are now restricted to prevent listing of users and
+			* Segue can now be configured to use secure/http-only cookies. 
+			* Admin actions are now restricted to prevent listing of users and
 			ids in the system.
 		</releaseNotes>
 		<fix author='adam' date='2008-08-14'>
@@ -649,17 +636,13 @@
 			
 			Notable User-Facing Changes:
 			
-			- Can now search for sites in the Portal by title, description, or placeholder
+			* Can now search for sites in the Portal by title, description, or placeholder
+			* More contextual help.
+			* New 'Blank' template.
+			* Can now set site-wide roles and theme when creating a site.
+			* Roles links have been moved to the top of the screen for easier access.
 			
-			- More contextual help.
-			
-			- New 'Blank' template.
-			
-			- Can now set site-wide roles and theme when creating a site.
-			
-			- Roles links have been moved to the top of the screen for easier access.
-			
-			-------------
+			----
 			
 			Upgrades:
 			
@@ -671,7 +654,7 @@
 			Upgrades from versions prior to beta 30 require running system
 			updaters located under Admin Tools --&gt; Segue Updates.
 			
-			-------------
+			----
 			
 			Segue 2.0.0 uses Harmoni 1.5.0 and Polyphony 1.3.3.
 		</releaseNotes>
@@ -726,11 +709,10 @@
 			
 			Notable User-Facing Changes:
 			
-			- New Move/Copy abilities
+			* New Move/Copy abilities
+			* New delete-confirmation dialog that shows the scope of the action.
 			
-			- New delete-confirmation dialog that shows the scope of the action.
-			
-			-------------
+			----
 			
 			Upgrades:
 			
@@ -742,7 +724,7 @@
 			Upgrades from versions prior to beta 30 require running system
 			updaters located under Admin Tools --&gt; Segue Updates.
 			
-			-------------
+			----
 			
 			Segue 2.0-beta-30 uses Harmoni 1.4.7 and Polyphony 1.3.2.
 		</releaseNotes>
@@ -781,20 +763,14 @@
 			
 			Notable User-facing changes:
 			
-			- Can now copy sites to empty placeholders in the portal.
-			
-			- Site-URLs are now printed in the portal.
-			
-			- Viewing of sites has now been dramatically sped-up for users without the
+			* Can now copy sites to empty placeholders in the portal.
+			* Site-URLs are now printed in the portal.
+			* Viewing of sites has now been dramatically sped-up for users without the
 			editer role.
-			
-			- Sections and Pages are now named with more clarity.
-			
-			- Many theme improvements.
-			
-			- Portal style-fixes MS Internet Explorer browser.
-			
-			- Better support for uploading multi-page PDFs.
+			* Sections and Pages are now named with more clarity.
+			* Many theme improvements.
+			* Portal style-fixes MS Internet Explorer browser.
+			* Better support for uploading multi-page PDFs.
 			
 			See the change log for more details and other fixes.
 			
@@ -804,7 +780,7 @@
 			
 			Segue 2.0-beta-28 uses Harmoni 1.4.6 and Polyphony 1.3.1.
 			
-			---------------------
+			----
 			
 			Upgrades:
 			
@@ -877,7 +853,7 @@
 			
 			Segue 2.0-beta-28 uses Harmoni 1.4.5 and Polyphony 1.3.0.
 			
-			---------------------
+			----
 			
 			Upgrades:
 			
@@ -934,7 +910,7 @@
 			
 			Segue 2.0-beta-27 uses Harmoni 1.4.4 and Polyphony 1.2.11.
 			
-			---------------------
+			----
 			
 			Upgrades:
 			
@@ -1008,7 +984,7 @@
 			
 			Segue 2.0-beta-27 uses Harmoni 1.4.3 and Polyphony 1.2.10.
 			
-			---------------------
+			----
 			
 			Upgrades:
 			
@@ -1064,7 +1040,7 @@
 		<releaseNotes>
 			This release fixes a few bugs that were not fixed in beta 26.
 			
-			---------------------
+			----
 			
 			From Beta 26:
 			
@@ -1076,7 +1052,7 @@
 			Upgrades from versions prior to beta 26 require running the RSS Feed
 			updaters located under Admin Tools --&gt; Segue Updates.
 			
-			-----------------------
+			----
 			
 			Segue 2.0-beta-26.1 uses Harmoni 1.4.2 and Polyphony 1.2.8.
 		</releaseNotes>
@@ -1154,10 +1130,10 @@
 			and fixes a wide range of bugs.
 			
 			Notable User-facing changes:
-			- Can now display RSS feeds in a site.
-			- 'New Mode' is now the default user interface.
-			- Migration fixes enable more sites to be successfully migrated.
-			- Major speed improvements for users viewing sites without editing access.
+			* Can now display RSS feeds in a site.
+			* 'New Mode' is now the default user interface.
+			* Migration fixes enable more sites to be successfully migrated.
+			* Major speed improvements for users viewing sites without editing access.
 			
 			Upgrades from versions prior to beta 25 require running the RSS Feed
 			updater	located under Admin Tools --&gt; Segue Updates.
@@ -1282,13 +1258,10 @@
 		<fix author='adam' date='2008-06-16' ref='1993889' reftype='bug'>
 			Export: The following issues have been fixed in site exporting:
 			
-			- ISO-8859-1 characters are now converted to UTF-8.
-			
-			- 'smart quotes' are now translated to basic quotes.
-			
-			- Roles for groups are now properly exported.
-			
-			- If no authorization to view roles, empty roles elements is added to
+			* ISO-8859-1 characters are now converted to UTF-8.
+			* 'smart quotes' are now translated to basic quotes.
+			* Roles for groups are now properly exported.
+			* If no authorization to view roles, empty roles elements is added to
 			export rather than dying.
 		</fix>
 		<change author='adam' date='2008-06-16' ref='1993278' reftype='bug'>
@@ -1312,9 +1285,7 @@
 			'Rebuild Implicit AZs'.
 			
 			Notable changes from Harmoni and Polyphony:
-			
 			* Visitor registrations are now logged.
-			
 			* Log-Browsing now allows for category selection and manual user selection.
 			
 			Segue 2.0-beta-23 uses Harmoni 1.3.5 and Polyphony 1.2.5.
@@ -1673,14 +1644,14 @@
 			This release fixes a number of bugs and adds the ability to tag content.
 			
 			Notable user-facing changes:
-			- Tagging system.
-			- Minor speed improvements to the portal
-			- Refined Migration UI.
-			- Role-Setting now works.
-			- Migration tools now work with more sites.
+			* Tagging system.
+			* Minor speed improvements to the portal
+			* Refined Migration UI.
+			* Role-Setting now works.
+			* Migration tools now work with more sites.
 			
 			Notable back-end changes:
-			- New Harmoni_Db system allows for usage of prepared statements for
+			* New Harmoni_Db system allows for usage of prepared statements for
 			improved database performance.
 			
 			Segue 2.0 beta 19 uses Polyphony 1.1.0 and Harmoni 1.1.0. 
@@ -1778,10 +1749,10 @@
 			This release fixes a number of bugs and adds a new Portal display.
 			
 			Notable user-facing changes:
-			- Portal 'Folders' to break up the lists of sites
-			- Major speed improvements to the portal
-			- Comment authors are now preserved when migrating from Segue 1
-			- URLs to elsewhere in Segue now work more reliably when migrating from Segue 1.
+			* Portal 'Folders' to break up the lists of sites
+			* Major speed improvements to the portal
+			* Comment authors are now preserved when migrating from Segue 1
+			* URLs to elsewhere in Segue now work more reliably when migrating from Segue 1.
 			
 			Segue 2.0 beta 17 uses Polyphony 1.0.6 and Harmoni 1.0.6. 
 		</releaseNotes>
@@ -1935,11 +1906,11 @@
 			of bugs.
 			 
 			Notable user-facing changes: 
-			- Migration tools for importing Segue 1 sites
-			- New plugins for Breadcrumbs and RSS links
-			- Improvements to UI2, 'New Mode' editing interface to reduce visual clutter.
-			- New Site-Map view.
-			- New version of FCK editor, now supports Safari.
+			* Migration tools for importing Segue 1 sites
+			* New plugins for Breadcrumbs and RSS links
+			* Improvements to UI2, 'New Mode' editing interface to reduce visual clutter.
+			* New Site-Map view.
+			* New version of FCK editor, now supports Safari.
 			
 			Upgrade Notes: 
 			For upgrades from releases prior to beta 15, please run the updates 
@@ -2113,9 +2084,9 @@
 			validation errors.
 			
 			Notable Changes:
-			- Permissions are more reliable cross-browser
-			- File downloads now work in IE
-			- Download Plugin description now updates immediately after change.
+			* Permissions are more reliable cross-browser
+			* File downloads now work in IE
+			* Download Plugin description now updates immediately after change.
 		</releaseNotes>
 		<fix author='adam' date='2008-03-06'>
 			Roles: Now include needed classes directly so that there are not errors
@@ -3039,7 +3010,15 @@
 			<name>Alex Chapin</name>
 			<institution>Middlebury College</institution>
 		</reporter>
+		<reporter short="alex_chapin">
+			<name>Alex Chapin</name>
+			<institution>Middlebury College</institution>
+		</reporter>
 		<reporter short="adam">
+			<name>Adam Franco</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="adam_franco">
 			<name>Adam Franco</name>
 			<institution>Middlebury College</institution>
 		</reporter>

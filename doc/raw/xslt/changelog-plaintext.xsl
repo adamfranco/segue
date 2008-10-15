@@ -90,7 +90,7 @@
 ///////////////////////////////////////////////////////////////////////
 -->
 <xsl:template name="entry">
-	<xsl:if test="@ref">#<xsl:value-of select="@ref" /><xsl:text> </xsl:text></xsl:if>
+	<xsl:if test="@ref != ''">#<xsl:value-of select="@ref" /><xsl:text> </xsl:text></xsl:if>
 	<xsl:text>&#x0A;&#x09;&#x09;</xsl:text>
 	<xsl:variable name='entryText'>
 		<xsl:call-template name="addNewlines">
@@ -116,7 +116,7 @@
 				
 		<xsl:text>)</xsl:text>
 	</xsl:if>
-	<xsl:if test="@reporter">
+	<xsl:if test="@reporter != ''">
 		<xsl:text>&#x0A;&#x09;&#x09;</xsl:text>
 		<xsl:text>(reported by </xsl:text>		
 		<xsl:call-template name="reporters">
