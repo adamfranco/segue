@@ -263,7 +263,7 @@ class EduMiddleburyRssFeedPlugin
  		
  		
  		print "\n\t<br/>";
- 		print "\n\t<input type='submit' name='".$this->getFieldName('submit_pressed')."' value='"._("Submit")."'/>";
+ 		print "\n\t<input type='submit' name='".$this->getFieldName('submit_pressed')."' value='"._("Save")."'/>";
  		print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
  		print "\n</form>";
  	}

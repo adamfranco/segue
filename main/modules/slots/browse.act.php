@@ -102,7 +102,7 @@ class browseAction
 		print "\n\t\t<div>";
 		print "\n\t\t\t"._("Placeholder Name").": ";
 		print "<input type='text' name='".RequestContext::name('name')."'/>";
-		print "\n\t\t\t<input type='submit' value='"._("Submit")."'/>";
+		print "\n\t\t\t<input type='submit' value='"._("Create/Edit &raquo;")."'/>";
 		print "\n\t\t</div>";
 		print "\n\t</form>";
 		$harmoni->request->endNamespace();

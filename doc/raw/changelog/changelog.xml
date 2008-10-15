@@ -43,6 +43,10 @@
 			Attribution: Straightened out attribution printing so that authors could 
 			be shown without dates.
 		</fix>
+		<fix author='adam' date='2008-10-15' ref='2033088' reftype='bug'>
+			All submit buttons have been labeled to reflect their action rather
+			than simply saying 'Submit'.
+		</fix>
 	</version>
 	<version number="2.2.5.1" date="2008-10-14">
 		<releaseNotes>

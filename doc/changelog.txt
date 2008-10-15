@@ -40,6 +40,11 @@ This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
 		shown without dates.
 		(2008-10-15 - Adam Franco)
 		(reported by alex_chapin)
+		
+	* Bug Fix: #2033088 
+		All submit buttons have been labeled to reflect their action rather than
+		simply saying 'Submit'.
+		(2008-10-15 - Adam Franco)
 	
 
 

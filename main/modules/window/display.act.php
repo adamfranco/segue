@@ -110,7 +110,7 @@ class displayAction
 		$languageText .= "\n\t</select>";
 		
 		
-		$languageText .= "\n\t<input class='button small' value='Set language'type='submit' />&nbsp;";
+		$languageText .= "\n\t<input class='button small' value='Set language' type='submit' />&nbsp;";
 		$languageText .= "\n\t</div>\n</form>";
 		
 		$languageBar = new Component($languageText, BLANK, 1);

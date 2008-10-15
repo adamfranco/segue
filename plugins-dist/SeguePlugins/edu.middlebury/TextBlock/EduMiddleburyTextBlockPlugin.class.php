@@ -300,7 +300,7 @@ class EduMiddleburyTextBlockPlugin
 		print "\n\t<br/>";
 		
 		print "\n\t<input type='hidden' value='' name='".$this->getFieldName('submit_pressed')."'/>";
-		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."' onclick='this.form.elements[\"".$this->getFieldName('submit_pressed')."\"].value = \"true\"; '/>";
+		print "\n\t<input type='submit' value='"._('Save')."' name='".$this->getFieldName('submit')."' onclick='this.form.elements[\"".$this->getFieldName('submit_pressed')."\"].value = \"true\"; '/>";
 		
 		print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
 				

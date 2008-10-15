@@ -82,7 +82,7 @@ class usageAction
 		}
 		print "\n\t</select>";
 		
-		print "\n\t<input type='submit'/>";
+		print "\n\t<input type='submit' value='"._('Set Date Range')."'/>";
 		
 		print "\n</form>";
 		print "\n<p>";

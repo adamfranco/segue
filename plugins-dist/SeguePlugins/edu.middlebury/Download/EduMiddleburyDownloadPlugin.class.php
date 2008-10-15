@@ -186,7 +186,7 @@ class EduMiddleburyDownloadPlugin
  			print $this->getWikiHelp();
  			
  			print "\n\t<br/>";
- 			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
+ 			print "\n\t<input type='submit' value='"._('Save')."' name='".$this->getFieldName('submit')."'/>";
  			
  			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
 
