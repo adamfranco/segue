@@ -10,13 +10,34 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.5.2" date="The Future">
+	<version number="2.2.5.2" date="2008-10-15">
 		<releaseNotes>
+			This release add the ability to make empty site-placeholders aliases to
+			placeholders that contain sites. This enables sites to be moved and have 
+			users redirected from the old urls. As well making multiple 
+			course-section-placeholders aliases to a single site for the course can
+			allow that site to show up under the 'current classes' listing for students
+			in all sections of the course.
 			
+			The user interface for copying sites has now been merged with the user-interface
+			for copying content for a more consistent user experience.
+			
+			The 2.2.5.2 bug-fix release adds logging to alias actions and fixes to the
+			tag-viewing actions.
+			
+			See the change-log for details on additional fixes and improvements.
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+						
+			This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
 		</releaseNotes>
 		<fix author='adam' date='2008-10-14'>
 			Placeholders: Move Site, Copy Site, Make Alias, and Remove Alias actions
 			are now logged.
+		</fix>
+		<fix author='adam' date='2008-10-15' ref='2166913' reftype='bug'>
+			Tagging: Fixed file path in tag actions to point at new plugins-dist directory.
 		</fix>
 	</version>
 	<version number="2.2.5.1" date="2008-10-14">

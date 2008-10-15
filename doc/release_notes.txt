@@ -1,5 +1,5 @@
 
-Segue v. 2.2.5.1 (2008-10-14)
+Segue v. 2.2.5.2 (2008-10-15)
 =================================
 
 What is Segue?
@@ -8,11 +8,6 @@ Segue is an open source collaborative content management system designed for
 e-learning that combines the ease of use of course management systems with the
 flexibility of weblogs for creating various types of sites including course, news,
 and journal.
-
-This Segue 2.0 beta is capable of most of the site creation and editing needs of
-users. We are continually adding features to bring Segue 2 up to feature parity with
-Segue 1.x. See the Feature Request Tracker for a list of features that still need to
-be completed: https://sourceforge.net/tracker/?group_id=82171&atid=565237
 
 
 Current Version Notes
@@ -26,8 +21,8 @@ classes' listing for students in all sections of the course.
 The user interface for copying sites has now been merged with the user-interface
 for copying content for a more consistent user experience.
 
-The 2.2.5.1 bug-fix release adds improvements to the installation process to help
-ensure that new installations are operational without running database updates.
+The 2.2.5.2 bug-fix release adds logging to alias actions and fixes to the
+tag-viewing actions.
 
 See the change-log for details on additional fixes and improvements.
 
@@ -74,6 +69,29 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.5.2 (2008-10-15)
+----------------------------------------------------
+This release add the ability to make empty site-placeholders aliases to placeholders
+that contain sites. This enables sites to be moved and have users redirected from
+the old urls. As well making multiple course-section-placeholders aliases to a
+single site for the course can allow that site to show up under the 'current
+classes' listing for students in all sections of the course.
+
+The user interface for copying sites has now been merged with the user-interface
+for copying content for a more consistent user experience.
+
+The 2.2.5.2 bug-fix release adds logging to alias actions and fixes to the
+tag-viewing actions.
+
+See the change-log for details on additional fixes and improvements.
+
+Upgrades from versions prior to 2.2.5.0 require running system updaters located
+under Admin Tools --> Segue Updates.
+
+This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
+
 
 
 v. 2.2.5.1 (2008-10-14)
