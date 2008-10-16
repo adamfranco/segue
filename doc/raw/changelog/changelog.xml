@@ -38,6 +38,10 @@
 		<fix author='adam' date='2008-10-16' ref='' reftype='bug'  reporter=''>
 			DataPort: Attribution settings now retained in import/export/copy.
 		</fix>
+		<fix author='adam' date='2008-10-15' ref='2114311' reftype='bug'>
+			Attribution: Further testing and fixes to attribution display to 
+			cover all possible cases.
+		</fix>
 	</version>
 	<version number="2.2.5.2" date="2008-10-15">
 		<releaseNotes>
