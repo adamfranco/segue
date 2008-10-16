@@ -229,6 +229,9 @@ class DomExportSiteVisitor
 		$element->setAttribute('commentsEnabled', $this->cascadingBooleanValue(
 			$siteComponent->commentsEnabled()));
 		$element->setAttribute('width', $siteComponent->getWidth());
+		
+		$element->setAttribute('showDates', $siteComponent->showDatesSetting());
+		$element->setAttribute('showAttribution', $siteComponent->showAttributionSetting());
 	}
 	
 	/**

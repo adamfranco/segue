@@ -615,6 +615,11 @@ class DomImportSiteVisitor
 			$siteComponent->updateCommentsEnabled($element->getAttribute('commentsEnabled'));
 		if ($element->hasAttribute('width'))
 			$siteComponent->updateWidth($element->getAttribute('width'));
+		
+		if ($element->hasAttribute('showDates'))
+			$siteComponent->updateShowDatesSetting($element->getAttribute('showDates'));
+			if ($element->hasAttribute('showAttribution'))
+			$siteComponent->updateShowAttributionSetting($element->getAttribute('showAttribution'));
 	}
 	
 	/**
