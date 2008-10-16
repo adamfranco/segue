@@ -102,13 +102,11 @@ class Update008_SiteThemesAction
 		$type = $dbc->getDatabaseType(IMPORTER_CONNECTION);
 		switch ($type) {
 			case MYSQL:
-				SQLUtils::runSQLfile(MYDIR."/main/SQL/MySQL/SiteThemes.sql", IMPORTER_CONNECTION);
-				break;
-			case POSTGRESQL:
-				SQLUtils::runSQLfile(MYDIR."/main/SQL/PostgreSQL/SiteThemes.sql", IMPORTER_CONNECTION);
+				SQLUtils::runSQLfile(MYDIR."/main/SQL/MySQL/04_SiteThemes.sql", IMPORTER_CONNECTION);
 				break;
 			case ORACLE:
-				SQLUtils::runSQLfile(MYDIR."/main/SQL/PostgreSQL/SiteThemes.sql", IMPORTER_CONNECTION);
+			case POSTGRESQL:
+				SQLUtils::runSQLfile(MYDIR."/main/SQL/PostgreSQL/04_SiteThemes.sql", IMPORTER_CONNECTION);
 				break;
 			default:
 				throw new Exception("Database schemas are not defined for specified database type.");

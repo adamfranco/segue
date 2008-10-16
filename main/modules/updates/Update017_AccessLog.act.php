@@ -98,13 +98,11 @@ class Update017_AccessLogAction
 		$type = $dbc->getDatabaseType(IMPORTER_CONNECTION);
 		switch ($type) {
 			case MYSQL:
-				SQLUtils::runSQLfile(MYDIR."/main/SQL/MySQL/AccessLog.sql", IMPORTER_CONNECTION);
-				break;
-			case POSTGRESQL:
-				SQLUtils::runSQLfile(MYDIR."/main/SQL/PostgreSQL/AccessLog.sql", IMPORTER_CONNECTION);
+				SQLUtils::runSQLfile(MYDIR."/main/SQL/MySQL/05_AccessLog.sql", IMPORTER_CONNECTION);
 				break;
 			case ORACLE:
-				SQLUtils::runSQLfile(MYDIR."/main/SQL/PostgreSQL/AccessLog.sql", IMPORTER_CONNECTION);
+			case POSTGRESQL:
+				SQLUtils::runSQLfile(MYDIR."/main/SQL/PostgreSQL/05_AccessLog.sql", IMPORTER_CONNECTION);
 				break;
 			default:
 				throw new Exception("Database schemas are not defined for specified database type.");

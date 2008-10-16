@@ -17,6 +17,9 @@
 		<fix author='adam' date='2008-10-16' ref='' reftype='bug'  reporter=''>
 			RSS: Comments feed now is titled 'Discussion' instead of 'Content'.
 		</fix>
+		<fix author='adam' date='2008-10-16' ref='' reftype='bug'  reporter='peter_wilkins'>
+			Installation: Updater scripts now have correct new paths to SQL files.
+		</fix>
 	</version>
 	<version number="2.2.5.3" date="2008-10-16">
 		<releaseNotes>
