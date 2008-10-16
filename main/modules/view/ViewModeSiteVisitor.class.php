@@ -733,26 +733,24 @@ class ViewModeSiteVisitor
 		}
 		
 		$hasChildComponents = false;
-		$numCells = $organizer->getTotalNumberOfCells();
-		for ($i = 0; $i < $numCells; $i++) {
-			$child = $organizer->getSubcomponentForCell($i);
-			if ($child) {
-				$childGuiComponents = $child->acceptVisitor($this, true);
-				if ($childGuiComponents === false || (is_array($childGuiComponents) && !count($childGuiComponents))) {
-					// do nothing
-				} else if (is_array($childGuiComponents)) {
-					$hasChildComponents = true;
-					// wrap the menu item if needed
-					$this->addFlowChildWrapper($organizer, $i, $childGuiComponents[0]);
-					
-					// Add each of the the menuItems/submenus
-					foreach (array_keys($childGuiComponents) as $key)
-						$guiContainer->add($childGuiComponents[$key]);
-				} else {
-					$hasChildComponents = true;
-					$guiContainer->add($this->addFlowChildWrapper($organizer, $i, $childGuiComponents));
-				}
+		$i = 0;
+		foreach ($organizer->getSortedSubcomponents() as $child) {
+			$childGuiComponents = $child->acceptVisitor($this, true);
+			if ($childGuiComponents === false || (is_array($childGuiComponents) && !count($childGuiComponents))) {
+				// do nothing
+			} else if (is_array($childGuiComponents)) {
+				$hasChildComponents = true;
+				// wrap the menu item if needed
+				$this->addFlowChildWrapper($organizer, $i, $childGuiComponents[0]);
+				
+				// Add each of the the menuItems/submenus
+				foreach (array_keys($childGuiComponents) as $key)
+					$guiContainer->add($childGuiComponents[$key]);
+			} else {
+				$hasChildComponents = true;
+				$guiContainer->add($this->addFlowChildWrapper($organizer, $i, $childGuiComponents));
 			}
+			$i++;
 		}
 		
 		// Add a placeholder if no content exists so that the screen doesn't stretch

@@ -42,6 +42,9 @@
 			Attribution: Further testing and fixes to attribution display to 
 			cover all possible cases.
 		</fix>
+		<fix author='adam' date='2008-10-16' ref='' reftype='bug'  reporter=''>
+			SiteDisplay: Menus items now respect sorting order.
+		</fix>
 	</version>
 	<version number="2.2.5.2" date="2008-10-15">
 		<releaseNotes>
