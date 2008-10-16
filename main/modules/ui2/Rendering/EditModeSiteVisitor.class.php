@@ -596,7 +596,7 @@ END;
 		print "\n\t\t</div>";
 		
 		print "\n\t\t<div style='white-space: nowrap; margin: 5px;'>";
-		print "\n\t\t\t<input type='button' value='"._('Submit')."'";
+		print "\n\t\t\t<input type='button' value='"._('Create')."'";
 		print " onclick='";
 		print "var hasTitle = false; ";
 		print "var regex = /[^\\s\\n\\t]+/; ";
