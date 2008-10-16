@@ -2,6 +2,18 @@
 Segue Change Log
 
 
+v. 2.2.5.4 (The Future)
+----------------------------------------------------
+
+		
+		
+	* Bug Fix: 
+		RSS: Comments feed now is titled 'Discussion' instead of 'Content'.
+		(2008-10-16 - Adam Franco)
+	
+
+
+
 v. 2.2.5.3 (2008-10-16)
 ----------------------------------------------------
 This release add the ability to make empty site-placeholders aliases to placeholders

@@ -1,5 +1,5 @@
 
-Segue v. 2.2.5.3 (2008-10-16)
+Segue v. 2.2.5.4 (The Future)
 =================================
 
 What is Segue?
@@ -12,27 +12,7 @@ and journal.
 
 Current Version Notes
 ---------------------
-This release add the ability to make empty site-placeholders aliases to placeholders
-that contain sites. This enables sites to be moved and have users redirected from
-the old urls. As well making multiple course-section-placeholders aliases to a
-single site for the course can allow that site to show up under the 'current
-classes' listing for students in all sections of the course.
 
-The user interface for copying sites has now been merged with the user-interface
-for copying content for a more consistent user experience.
-
-The 2.2.5.2 bug-fix release adds further fixes to the attribution display.
-
-See the change-log for details on additional fixes and improvements. 
-
-----
-
- Upgrades from versions prior to 2.2.5.0 require running system updaters
-located under Admin Tools --> Segue Updates. 
-
-----
-
- This Segue release uses Harmoni 1.8.3 and Polyphony 1.4.8.
 
 
 Downloads
@@ -72,6 +52,12 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.5.4 (The Future)
+----------------------------------------------------
+
+
 
 
 v. 2.2.5.3 (2008-10-16)
