@@ -34,7 +34,7 @@
 			
 			----
 			
-			This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
+			This Segue release uses Harmoni 1.8.3 and Polyphony 1.4.8.
 		</releaseNotes>
 		<fix author='adam' date='2008-10-14'>
 			Placeholders: Move Site, Copy Site, Make Alias, and Remove Alias actions

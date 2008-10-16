@@ -33,7 +33,7 @@ located under Admin Tools --> Segue Updates.
 
 ----
 
- This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
+ This Segue release uses Harmoni 1.8.3 and Polyphony 1.4.8.
 
 
 Downloads
@@ -98,7 +98,7 @@ located under Admin Tools --> Segue Updates.
 
 ----
 
- This Segue release uses Harmoni 1.8.2 and Polyphony 1.4.7.
+ This Segue release uses Harmoni 1.8.3 and Polyphony 1.4.8.
 
 
 
