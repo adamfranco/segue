@@ -134,12 +134,16 @@ class choose_agentAction
 					'site' => RequestContext::value('site'),
 					'returnModule' => $harmoni->request->getRequestedModule(),
 					'returnAction' => $harmoni->request->getRequestedAction()
-				));
-				print "\n\t\t\t <button onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>"._("Add/Remove Members")."</button>";
+					));
+					print "\n\t\t\t <button onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>"._("Add/Remove Members")."</button>";
+					print "\n<br/>";
+					print "\n<span style='font-size: smaller'>";
+					print _("This is a custom group of users that are associated with this site. Users and groups can manually be made site-members or users can self-register using the 'Join Site' plugin if it is enabled.");
+					print "</span>";
 				}
 				
 				print "\n\t\t</td>";
-				print "\n\t\t<td class='color$i' style='text-align: right;'>";
+				print "\n\t\t<td class='color$i' style='text-align: right; white-space: nowrap;'>";
 				$url = SiteDispatcher::quickURL('roles', 'modify', array(
 					'node' => SiteDispatcher::getCurrentNodeId(),
 					'agent' => $agent->getId()->getIdString()
