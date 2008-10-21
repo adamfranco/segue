@@ -108,14 +108,16 @@ class choose_agentAction
 		
 		$everyoneId = $idMgr->getId("edu.middlebury.agents.everyone");
 		$instituteId = $idMgr->getId("edu.middlebury.institute");
+		$membersId = $idMgr->getId("edu.middlebury.segue.site-members.".$this->getSiteId()->getIdString());
 		
 		$agents = array();
 		$agents[] = $agentMgr->getGroup($everyoneId);
 		$agents[] = $agentMgr->getGroup($instituteId);
+		$agents[] = $agentMgr->getGroup($membersId);
 		
 		$agentIdsWithRoles = $roleMgr->getAgentsWithRoleAtLeast($roleMgr->getRole('reader'), $this->getSiteId(), true);
 		foreach ($agentIdsWithRoles as $id) {
-			if (!$id->isEqual($everyoneId) && !$id->isEqual($instituteId))
+			if (!$id->isEqual($everyoneId) && !$id->isEqual($instituteId) && !$id->isEqual($membersId))
 				$agents[] = $agentMgr->getAgentOrGroup($id);
 		}
 		
@@ -126,6 +128,16 @@ class choose_agentAction
 				print "\n\t<tr class='search_result_item'>";
 				print "\n\t\t<td class='color$i'>";
 				print "\n\t\t\t".$agent->getDisplayName();
+				
+				if ($agent->getId()->isEqual($membersId)) {
+					$url = SiteDispatcher::quickURL('agent', 'modify_members', array(
+					'site' => RequestContext::value('site'),
+					'returnModule' => $harmoni->request->getRequestedModule(),
+					'returnAction' => $harmoni->request->getRequestedAction()
+				));
+				print "\n\t\t\t <button onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>"._("Add/Remove Members")."</button>";
+				}
+				
 				print "\n\t\t</td>";
 				print "\n\t\t<td class='color$i' style='text-align: right;'>";
 				$url = SiteDispatcher::quickURL('roles', 'modify', array(
