@@ -58,6 +58,11 @@ class editAction
 		$harmoni->request->passthrough("name");
 		$harmoni->request->endNamespace();
 		
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead(
+			$outputHandler->getHead()
+			."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/AgentInfoPanel.js'></script>");
+		
 		if (!preg_match('/^[a-z0-9_\-]+$/i', $name)) {
 			ob_start();
 			print _("Placeholder names can only contain letters, numbers, underscores, and dashes.");

@@ -202,14 +202,10 @@ class AgentSearchResult
 	 */
 	public function getMarkup () {
 		ob_start();
+		print "<a href='#' onclick=\"AgentInfoPanel.run('".addslashes($this->getIdString())."', '".addslashes($this->getName())."', this); return false;\">";
 		print $this->getName();
-		print " &nbsp; ";
-		print "<a href='#' onclick=\"alert('";
-		print _("Name").":\\n\\t".addslashes($this->getName());
-		print "\\n"._("Id").":\\n\\t".addslashes($this->getIdString());
-		if (isset($this->email))
-			print "\\n"._("Email").":\\n\\t".addslashes($this->email);
-		print "'); return false;\">"._("more info...")."</a>";
+		print "</a>";
+		
 		return ob_get_clean();
 	}
 	

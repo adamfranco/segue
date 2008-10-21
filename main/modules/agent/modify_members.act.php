@@ -84,6 +84,11 @@ class modify_membersAction
 		$harmoni->request->passthrough('returnModule');
 		$harmoni->request->passthrough('returnAction');
 		
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead(
+			$outputHandler->getHead()
+			."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/AgentInfoPanel.js'></script>");
+		
 		$this->runWizard (get_class($this).'_'.$this->getGroup()->getId()->getIdString(), $this->getActionRows());
 	}
 	
