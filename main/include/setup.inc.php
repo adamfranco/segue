@@ -74,6 +74,7 @@ $configs = array(
 					'action',
 					'database',
 					'id',
+                    'memcache',
 					'logging',
 					'recaptcha',
 					'authentication_setup',
