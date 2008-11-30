@@ -45,6 +45,8 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class
 class htmlAction
 	extends displayAction 
 {
+
+    var $_outputCache;
 	
 	/**
 	 * AuthZ
@@ -91,6 +93,8 @@ class htmlAction
 	 */
 	function execute () {
 		$harmoni = Harmoni::instance();
+        
+        $this->_outputCache = new PublicSiteOutputCache();
 		
 		/*********************************************************
 		 * Split sites based on their location-category
@@ -155,34 +159,47 @@ class htmlAction
 		} catch (UnknownIdException $e) {		// No slot for the site....
 		}
 
-        $authZ = Services::getService("AuthZ");
-        $recordManager = Services::getService("RecordManager");
-
-        //
-        // Begin Optimizations
-        //
-        // The code below queues up authorizations for all visible nodes, 
-        // as well as pre-fetches all of the RecordSets that have data
-        // specific to the visible nodes.
-        $visibleComponents = SiteDispatcher::getSiteDirector()->getVisibleComponents(SiteDispatcher::getCurrentNodeId());
-
-        $preCacheIds = array();
-        foreach ($visibleComponents as $component) {
-            $id = $component->getQualifierId();
-            $authZ->getIsAuthorizedCache()->queueId($id);
-            $preCacheIds[] = $id->getIdString();
+        // here, check if we have the content of this site cached yet. if so,
+        // we can use it
+        $shouldCache = false;
+        $content = null;
+        if ($this->_outputCache->shouldCache($harmoni)) {
+            $shouldCache = true;
+            $content = $this->_outputCache->fetch($harmoni);
         }
 
-        $recordManager->preCacheRecordsFromRecordSetIDs($preCacheIds);
-        //
-        // End Optimizations
-        //
-
 		$mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
-		
 		$allWrapper = $this->addHeaderControls($mainScreen);
-				
-		$this->addSiteContent($mainScreen);
+
+        if (!$content) {
+            $authZ = Services::getService("AuthZ");
+            $recordManager = Services::getService("RecordManager");
+
+            //
+            // Begin Optimizations
+            //
+            // The code below queues up authorizations for all visible nodes, 
+            // as well as pre-fetches all of the RecordSets that have data
+            // specific to the visible nodes.
+            $visibleComponents = SiteDispatcher::getSiteDirector()->getVisibleComponents(SiteDispatcher::getCurrentNodeId());
+
+            $preCacheIds = array();
+            foreach ($visibleComponents as $component) {
+                $id = $component->getQualifierId();
+                $authZ->getIsAuthorizedCache()->queueId($id);
+                $preCacheIds[] = $id->getIdString();
+            }
+
+            $recordManager->preCacheRecordsFromRecordSetIDs($preCacheIds);
+            //
+            // End Optimizations
+            //
+
+            $this->addSiteContent($mainScreen, $shouldCache);
+        } else {
+            $mainScreen->add(new UnstyledBlock($content));
+        }
+		
 		$this->addFooterControls($allWrapper);
 		
 		$this->mainScreen = $mainScreen;
@@ -294,14 +311,24 @@ class htmlAction
 	 * @access public
 	 * @since 4/7/08
 	 */
-	public function addSiteContent (Component $mainScreen) {
+	public function addSiteContent (Component $mainScreen, $shouldCache) {
 		$harmoni = Harmoni::instance();
 		if ($this->isAuthorizedToExecute()) {
 							
 			// :: Site ::
 			$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
 			$this->siteGuiComponent = $rootSiteComponent->acceptVisitor($this->getSiteVisitor());
-			$mainScreen->add($this->siteGuiComponent);
+            if ($shouldCache) {
+                ob_start();
+                $harmoni->getOutputHandler()->getCurrentTheme()->printPage($this->siteGuiComponent);
+                $content = ob_get_contents();
+                ob_end_clean();
+
+                $this->_outputCache->store($harmoni, $content);
+                $mainScreen->add(new UnstyledBlock($content));
+            } else {
+                $mainScreen->add($this->siteGuiComponent);
+            }
 		} else {
 			// Replace the title
 			$outputHandler = $harmoni->getOutputHandler();

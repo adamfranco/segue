@@ -132,12 +132,13 @@ abstract class SeguePluginsTemplate
  	 * as needed.
  	 * 
  	 * @param array $request
- 	 * @return void
+ 	 * @return boolean
  	 * @access public
  	 * @since 1/12/06
  	 */
  	public function update ( $request ) {
  		// Override as needed.
+        return false;
  	}
  	
  	/**

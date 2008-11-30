@@ -629,6 +629,10 @@ abstract class AssetSiteComponent
 				$element->ownerDocument->saveXMLWithWhitespace()));
 		
 		$this->clearDomCache();
+
+        // clear the public site output cache, since the structure
+        // of this site may have just changed.
+        PublicSiteOutputCache::invalidate();
 	}
 }
 

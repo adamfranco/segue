@@ -105,7 +105,7 @@ class EduMiddleburyAudioPlayerPlugin
  	 * as needed.
  	 * 
  	 * @param array $request
- 	 * @return void
+ 	 * @return boolean
  	 * @access public
  	 * @since 1/12/06
  	 */
@@ -115,7 +115,11 @@ class EduMiddleburyAudioPlayerPlugin
  			$this->setRawDescription($this->tokenizeLocalUrls($this->getFieldValue('description')));
  			$this->setShowDownloadLink(($this->getFieldValue('show_download_link') == 'true')?true:false);
  			$this->logEvent('Modify Content', 'File for download updated');
+
+            return true;
  		}
+
+        return false;
  	}
  	 	
  	/**

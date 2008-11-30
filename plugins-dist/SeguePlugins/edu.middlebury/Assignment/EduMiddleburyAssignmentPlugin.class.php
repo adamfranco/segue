@@ -42,7 +42,7 @@ class EduMiddleburyAssignmentPlugin
  	 * as needed.
  	 * 
  	 * @param array $request
- 	 * @return void
+ 	 * @return boolean
  	 * @access public
  	 * @since 1/12/06
  	 */
@@ -52,7 +52,11 @@ class EduMiddleburyAssignmentPlugin
 
   			$this->updateDataArray();
   			$this->updateDataRecords();
+
+            return true;
  		}
+
+        return false;
  	}
 
 	function updateDataArray () {

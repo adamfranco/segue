@@ -123,7 +123,8 @@ interface SeguePluginsAPI {
  	 * as needed.
  	 * 
  	 * @param array $request
- 	 * @return void
+ 	 * @return boolean - TRUE if changes were made to the stored state of this plugin.
+     *                   This is used to control various caching mechanisms.
  	 * @access public
  	 * @since 1/12/06
  	 */

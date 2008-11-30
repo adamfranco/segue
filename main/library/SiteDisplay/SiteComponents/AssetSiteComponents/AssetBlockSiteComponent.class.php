@@ -112,6 +112,7 @@ class AssetBlockSiteComponent
 	 */
 	function updateDisplayName ( $displayName ) {
 		$this->_asset->updateDisplayName(HtmlString::getSafeHtml($displayName));
+        PublicSiteOutputCache::invalidate();
 	}
 	
 	/**
@@ -135,6 +136,7 @@ class AssetBlockSiteComponent
 	 */
 	function updateDescription ( $description ) {
 		$this->_asset->updateDescription(HtmlString::getSafeHtml($description));
+        PublicSiteOutputCache::invalidate();
 	}
 	
 	/**
@@ -230,6 +232,7 @@ class AssetBlockSiteComponent
 	function updateContentMarkup ( $contentMarkup ) {
 		$content = Blob::fromString($contentMarkup);
 		$this->_asset->updateContent($content);
+        PublicSiteOutputCache::invalidate();
 	}
 	
 	/**

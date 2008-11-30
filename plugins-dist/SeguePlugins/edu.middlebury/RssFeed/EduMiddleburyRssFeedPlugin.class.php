@@ -124,7 +124,7 @@ class EduMiddleburyRssFeedPlugin
  	 * as needed.
  	 * 
  	 * @param array $request
- 	 * @return void
+ 	 * @return boolean
  	 * @access public
  	 * @since 1/12/06
  	 */
@@ -187,7 +187,10 @@ class EduMiddleburyRssFeedPlugin
 	 		$this->_setMaxItems(intval($this->getFieldValue('max_items')));
 	 		$this->_setExtendedMaxItems(intval($this->getFieldValue('extended_max_items')));
 	 		
+            return true;
  		}
+
+        return false;
  	}
  	
  	/**

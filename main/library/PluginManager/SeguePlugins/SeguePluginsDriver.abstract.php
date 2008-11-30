@@ -13,6 +13,7 @@ require_once (HARMONI."/Primitives/Collections-Text/HtmlString.class.php");
 require_once(MYDIR."/main/modules/media/MediaAsset.class.php");
 require_once(MYDIR."/main/library/Wiki/WikiResolver.class.php");
 require_once(MYDIR."/main/library/DiffEngine.php");
+require_once(MYDIR."/main/library/PublicSiteOutputCache.class.php");
 
 require_once(dirname(__FILE__)."/SeguePluginsDriverAPI.interface.php");
 require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
@@ -1380,6 +1381,7 @@ abstract class SeguePluginsDriver
 	 */
 	public function executeAndGetMarkup ( $showControls = false, $extended = false ) {
 		$obLevel = ob_get_level();
+        $clearCache = false;
 		try {
 			
 			$this->setShowControls($showControls);
@@ -1395,7 +1397,12 @@ abstract class SeguePluginsDriver
 				$this->_baseUrl = $harmoni->request->mkURL();
 			}
 			
-			$this->update($this->_getRequestData());
+            // update() returns TRUE when new data is saved to
+            // persistent storage. in that case, we
+            // probably need to clear the cache for this site.
+            if ($this->update($this->_getRequestData())) {
+                $clearCache = true;
+            }
 			
 			if ($extended)
 				$markup = $this->getExtendedMarkup();
@@ -1423,6 +1430,11 @@ abstract class SeguePluginsDriver
 			$markup = _("An Error has occured in the plugin with the following message: ");
 			$markup .= $e->getMessage();
 		}
+
+        if ($clearCache) {
+            PublicSiteOutputCache::invalidate();
+        }
+
 		return $markup;
 	}
 	

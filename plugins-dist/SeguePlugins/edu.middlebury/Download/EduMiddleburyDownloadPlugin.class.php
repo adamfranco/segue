@@ -107,7 +107,7 @@ class EduMiddleburyDownloadPlugin
  	 * as needed.
  	 * 
  	 * @param array $request
- 	 * @return void
+ 	 * @return boolean
  	 * @access public
  	 * @since 1/12/06
  	 */
@@ -116,7 +116,11 @@ class EduMiddleburyDownloadPlugin
  			$this->setContent($this->getFieldValue('file_id'));
  			$this->setRawDescription($this->tokenizeLocalUrls($this->getFieldValue('description')));
  			$this->logEvent('Modify Content', 'File for download updated');
+
+            return true;
  		}
+
+        return false;
  	}
  	 	
  	/**

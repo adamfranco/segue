@@ -118,7 +118,7 @@ class EduMiddleburyTextBlockPlugin
  	 * as needed.
  	 * 
  	 * @param array $request
- 	 * @return void
+ 	 * @return boolean
  	 * @access public
  	 * @since 1/12/06
  	 */
@@ -136,6 +136,7 @@ class EduMiddleburyTextBlockPlugin
  			else
 	 			$this->markVersion();
 	 		
+            return true;
  		} else if ($this->getFieldValue('editor')) {
 			$this->textEditor = $this->getFieldValue('editor');
 			UserData::instance()->setPreference('segue_text_editor', $this->textEditor);;
@@ -144,8 +145,8 @@ class EduMiddleburyTextBlockPlugin
 			$this->workingContent = $this->cleanHTML($this->getFieldValue('content'));
 			$this->workingAbstractLength = intval($this->getFieldValue('abstractLength'));
 		}
- 		
- 		
+
+        return false;
  	}
  	
  	/**
