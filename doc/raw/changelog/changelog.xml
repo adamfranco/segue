@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.5.6" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2008-12-04'>
+			Migration: Site XSD now allows colons and hyphens in the tag content to
+			match real allowed values.
+		</fix>
+	</version>
 	<version number="2.2.5.5" date="2008-10-22">
 		<releaseNotes>
 			This release add the ability to make empty site-placeholders aliases to
