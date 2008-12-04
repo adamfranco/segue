@@ -277,6 +277,7 @@ abstract class SeguePluginsDriver
 		$htmlStringObj->addSafeProtocal('[[fileurl');
 		$htmlStringObj->addSafeProtocal('[[localurl');
 		$htmlStringObj->cleanXSS();
+		$htmlStringObj->makeUtf8();
 		return $htmlStringObj->asString();
 	}
 	
@@ -298,6 +299,7 @@ abstract class SeguePluginsDriver
 		$htmlStringObj->addSafeProtocal('[[fileurl');
 		$htmlStringObj->addSafeProtocal('[[localurl');
 		$htmlStringObj->cleanXSS();
+		$htmlStringObj->makeUtf8();
  		$htmlStringObj->trim($maxWords, $addElipses);
  		return $htmlStringObj->asString();
 	}

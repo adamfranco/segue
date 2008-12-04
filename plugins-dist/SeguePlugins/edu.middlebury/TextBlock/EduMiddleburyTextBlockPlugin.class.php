@@ -649,7 +649,7 @@ class EduMiddleburyTextBlockPlugin
  		$version = $doc->appendChild($doc->createElement('version'));
  		
  		$content = $version->appendChild($doc->createElement('content'));
- 		$content->appendChild($doc->createCDATASection($this->tokenizeLocalUrls($this->getContent())));
+ 		$content->appendChild($doc->createCDATASection($this->tokenizeLocalUrls($this->cleanHTML($this->getContent()))));
  		
  		$version->appendChild($doc->createElement('abstractLength', $this->getRawDescription()));
  		
