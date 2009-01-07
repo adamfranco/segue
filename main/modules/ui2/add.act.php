@@ -249,6 +249,8 @@ class addAction
 		
 		print "\n<h2>"._("Choose Template")."</h2>";
 		
+		print "\n<p>"._("Templates are site 'starting points'. Each template provides you with a different starting set of sections and pages to help you get started. These pages can be renamed or deleted and new pages can always be added.")."</p>";
+		
 		$property = $step->addComponent('template', new WRadioList);
 		$templateMgr = Segue_Templates_TemplateManager::instance();
 		$templates = $templateMgr->getTemplates();
@@ -472,7 +474,7 @@ class addAction
 		ob_start();
 		print "\n<h2>"._("Theme")."</h2>";
 		print "\n<p>";
-		print _("Here you can set the theme for the site."); 
+		print _("Here you can set the theme for the site. The theme is the 'look and feel' of your site. Most themes allow you to change the text and background colors once the site has been created. You can change your site's theme at any time in the future."); 
 		print "\n</p>\n";
 		print "[[theme]]";
 		
