@@ -33,6 +33,9 @@
 			Roles: Choose-User list now doesn't crash if a deleted agent had been
 			given roles.
 		</fix>
+		<fix author='adam' date='2009-01-07' ref='' reftype='bug'  reporter='kateri_carmola'>
+			UI2: Add-site form now includes additional help text on setting site-wide roles.
+		</fix>
 	</version>
 	<version number="2.2.5.5" date="2008-10-22">
 		<releaseNotes>
@@ -3177,6 +3180,10 @@
 		</reporter>
 		<reporter short="priscilla_bremser">
 			<name>Priscilla Bremser</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="kateri_carmola">
+			<name>Kateri Carmola</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 		<reporter short="robyn_whyte">
