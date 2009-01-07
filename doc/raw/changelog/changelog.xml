@@ -29,6 +29,10 @@
 			Migration/Plugins: Export and HTML cleaning now convert text to UTF-8 
 			and strip control chars.
 		</fix>
+		<fix author='adam' date='2009-01-07' ref='2490323' reftype='bug'  reporter='priscilla_bremser'>
+			Roles: Choose-User list now doesn't crash if a deleted agent had been
+			given roles.
+		</fix>
 	</version>
 	<version number="2.2.5.5" date="2008-10-22">
 		<releaseNotes>
@@ -3169,6 +3173,10 @@
 		</reporter>
 		<reporter short="laurel_taylor">
 			<name>Laurel Taylor</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="priscilla_bremser">
+			<name>Priscilla Bremser</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 		<reporter short="robyn_whyte">
