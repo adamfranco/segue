@@ -42,6 +42,11 @@
 		<fix author='adam' date='2009-01-07' ref='2379006' reftype='bug'  reporter='adam'>
 			UI1: Paste-panel now works in Classic-mode.
 		</fix>
+		<fix author='adam' date='2009-01-07' ref='2210206' reftype='bug'  reporter='adam'>
+			SiteDisplay/UI2: Can no longer set fixed organizers to too few rows/columns.
+			The FixedOrganizerSiteComponent now checks for internal consistency when 
+			changing the number of rows and columns
+		</fix>
 	</version>
 	<version number="2.2.5.5" date="2008-10-22">
 		<releaseNotes>
