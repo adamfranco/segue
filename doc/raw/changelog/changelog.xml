@@ -39,6 +39,9 @@
 		<fix author='adam' date='2009-01-07' ref='' reftype='bug'  reporter='kateri_carmola'>
 			UI2: Add-site form now includes additional help text on templates and themes.
 		</fix>
+		<fix author='adam' date='2009-01-07' ref='2379006' reftype='bug'  reporter='adam'>
+			UI1: Paste-panel now works in Classic-mode.
+		</fix>
 	</version>
 	<version number="2.2.5.5" date="2008-10-22">
 		<releaseNotes>
