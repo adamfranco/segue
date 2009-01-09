@@ -1,5 +1,5 @@
 
-Segue v. 2.2.5.5 (2008-10-22)
+Segue v. 2.2.5.6 (2009-01-09)
 =================================
 
 What is Segue?
@@ -12,18 +12,9 @@ and journal.
 
 Current Version Notes
 ---------------------
-This release add the ability to make empty site-placeholders aliases to placeholders
-that contain sites. This enables sites to be moved and have users redirected from
-the old urls. As well making multiple course-section-placeholders aliases to a
-single site for the course can allow that site to show up under the 'current
-classes' listing for students in all sections of the course.
-
-The user interface for copying sites has now been merged with the user-interface
-for copying content for a more consistent user experience.
-
-The 2.2.5.5 bug-fix release adds further fixes authenticated RSS feeds
-
-See the change-log for details on additional fixes and improvements. 
+This release fixes a number of bugs found by users over the past few months,
+improving migration, the audio plugin, documentation, RSS display, and a few other
+issues. See the change-log for details. 
 
 ----
 
@@ -32,7 +23,7 @@ located under Admin Tools --> Segue Updates.
 
 ----
 
- This Segue release uses Harmoni 1.8.4 and Polyphony 1.4.8.
+ This Segue release uses Harmoni 1.8.5 and Polyphony 1.4.9.
 
 
 Downloads
@@ -72,6 +63,23 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.5.6 (2009-01-09)
+----------------------------------------------------
+This release fixes a number of bugs found by users over the past few months,
+improving migration, the audio plugin, documentation, RSS display, and a few other
+issues. See the change-log for details. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.8.5 and Polyphony 1.4.9.
+
 
 
 v. 2.2.5.5 (2008-10-22)

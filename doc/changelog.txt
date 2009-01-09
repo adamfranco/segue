@@ -2,6 +2,93 @@
 Segue Change Log
 
 
+v. 2.2.5.6 (2009-01-09)
+----------------------------------------------------
+This release fixes a number of bugs found by users over the past few months,
+improving migration, the audio plugin, documentation, RSS display, and a few other
+issues. See the change-log for details. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.8.5 and Polyphony 1.4.9.
+		
+		
+	* Bug Fix: 
+		Migration: Site XSD now allows colons and hyphens in the tag content to
+		match real allowed values.
+		(2008-12-04 - Adam Franco)
+		
+	* Bug Fix: 
+		Plugins: Audio plugin now allows choosing audio of MIME type audio/mpg as
+		well as audio/mpeg.
+		(2008-12-04 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: 
+		Migration: Export now skips media assets with no media file.
+		(2008-12-04 - Adam Franco)
+		
+	* Bug Fix: 
+		Migration/Plugins: Export and HTML cleaning now convert text to UTF-8 and
+		strip control chars.
+		(2008-12-04 - Adam Franco)
+		
+	* Bug Fix: #2490323 
+		Roles: Choose-User list now doesn't crash if a deleted agent had been given
+		roles. 
+		(2009-01-07 - Adam Franco)
+		(reported by Priscilla Bremser of Middlebury College)
+		
+	* Bug Fix: 
+		UI2: Add-site form now includes additional help text on setting site-wide
+		roles. 
+		(2009-01-07 - Adam Franco)
+		(reported by Kateri Carmola of Middlebury College)
+		
+	* Bug Fix: 
+		UI2: Add-site form now includes additional help text on templates and
+		themes. 
+		(2009-01-07 - Adam Franco)
+		(reported by Kateri Carmola of Middlebury College)
+		
+	* Bug Fix: #2379006 
+		UI1: Paste-panel now works in Classic-mode.
+		(2009-01-07 - Adam Franco)
+		(reported by Adam Franco of Middlebury College)
+		
+	* Bug Fix: #2210206 
+		SiteDisplay/UI2: Can no longer set fixed organizers to too few rows/columns.
+		The FixedOrganizerSiteComponent now checks for internal consistency when
+		changing the number of rows and columns
+		(2009-01-07 - Adam Franco)
+		(reported by Adam Franco of Middlebury College)
+		
+	* Bug Fix: #2189950 
+		RSS: The RSS Feed Display can now load protected feeds from alternate segue
+		location categories, allowing feeds from 'community' to be displayed in
+		'main'. 
+		(2009-01-09 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: 
+		Roles: Documented lack of effective-dates in Role-setting UI.
+		(2009-01-09 - Adam Franco)
+		(reported by Andy Wentink of Middlebury College)
+		
+	* Bug Fix: #2305904 
+		Plugins: Links to Segue simple-form urls (/sites/sitename) now do not get
+		stripped to the Segue base-URL when editing content.
+		(2009-01-09 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+	
+
+
+
 v. 2.2.5.5 (2008-10-22)
 ----------------------------------------------------
 This release add the ability to make empty site-placeholders aliases to placeholders

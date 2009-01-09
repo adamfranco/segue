@@ -10,9 +10,20 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.5.6" date="The Future">
+	<version number="2.2.5.6" date="2009-01-09">
 		<releaseNotes>
+			This release fixes a number of bugs found by users over the past few months,
+			improving migration, the audio plugin, documentation, RSS display, and a 
+			few other issues. See the change-log for details.
 			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.8.5 and Polyphony 1.4.9.
 		</releaseNotes>
 		<fix author='adam' date='2008-12-04'>
 			Migration: Site XSD now allows colons and hyphens in the tag content to

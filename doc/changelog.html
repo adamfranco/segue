@@ -23,7 +23,50 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.2.5.5</h2>
+<h2>Version 2.2.5.6</h2>
+<h3>2009-01-09</h3>
+<p>This release fixes a number of bugs found by users over the past few months, improving migration, the audio plugin, documentation, RSS display, and a few other issues. See the change-log for details. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.8.5 and Polyphony 1.4.9.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> Migration: Site XSD now allows colons and hyphens in the tag content to match real allowed values. (<em>2008-12-04 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Plugins: Audio plugin now allows choosing audio of MIME type audio/mpg as well as audio/mpeg. (<em>2008-12-04 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Export now skips media assets with no media file. (<em>2008-12-04 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration/Plugins: Export and HTML cleaning now convert text to UTF-8 and strip control chars. (<em>2008-12-04 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2490323&amp;group_id=82171&amp;atid=565234">
+        			#2490323</a> Roles: Choose-User list now doesn't crash if a deleted agent had been given roles. (<em>2009-01-07 - Adam Franco</em>)<br> (<em>reported by Priscilla Bremser of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: Add-site form now includes additional help text on setting site-wide roles. (<em>2009-01-07 - Adam Franco</em>)<br> (<em>reported by Kateri Carmola of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: Add-site form now includes additional help text on templates and themes. (<em>2009-01-07 - Adam Franco</em>)<br> (<em>reported by Kateri Carmola of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2379006&amp;group_id=82171&amp;atid=565234">
+        			#2379006</a> UI1: Paste-panel now works in Classic-mode. (<em>2009-01-07 - Adam Franco</em>)<br> (<em>reported by Adam Franco of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2210206&amp;group_id=82171&amp;atid=565234">
+        			#2210206</a> SiteDisplay/UI2: Can no longer set fixed organizers to too few rows/columns. The FixedOrganizerSiteComponent now checks for internal consistency when changing the number of rows and columns (<em>2009-01-07 - Adam Franco</em>)<br> (<em>reported by Adam Franco of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2189950&amp;group_id=82171&amp;atid=565234">
+        			#2189950</a> RSS: The RSS Feed Display can now load protected feeds from alternate segue location categories, allowing feeds from 'community' to be displayed in 'main'. (<em>2009-01-09 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> Roles: Documented lack of effective-dates in Role-setting UI. (<em>2009-01-09 - Adam Franco</em>)<br> (<em>reported by Andy Wentink of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2305904&amp;group_id=82171&amp;atid=565234">
+        			#2305904</a> Plugins: Links to Segue simple-form urls (/sites/sitename) now do not get stripped to the Segue base-URL when editing content. (<em>2009-01-09 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+	</ul>
+<br><h2>Version 2.2.5.5</h2>
 <h3>2008-10-22</h3>
 <p>This release add the ability to make empty site-placeholders aliases to placeholders that contain sites. This enables sites to be moved and have users redirected from the old urls. As well making multiple course-section-placeholders aliases to a single site for the course can allow that site to show up under the 'current classes' listing for students in all sections of the course.
 <br>
