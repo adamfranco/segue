@@ -47,6 +47,10 @@
 			The FixedOrganizerSiteComponent now checks for internal consistency when 
 			changing the number of rows and columns
 		</fix>
+		<fix author='adam' date='2009-01-09' ref='2189950' reftype='bug'  reporter='alex'>
+			RSS: The RSS Feed Display can now load protected feeds from alternate segue
+			location categories, allowing feeds from 'community' to be displayed in 'main'.
+		</fix>
 	</version>
 	<version number="2.2.5.5" date="2008-10-22">
 		<releaseNotes>
