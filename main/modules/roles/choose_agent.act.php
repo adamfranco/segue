@@ -124,6 +124,7 @@ class choose_agentAction
 				} catch (UnknownIdException $e) {
 					HarmoniErrorHandler::logException($e, 'Segue');
 				}
+			}
 		}
 		
 		if (count($agents)) {
