@@ -54,6 +54,10 @@
 		<fix author='adam' date='2009-01-09' ref='' reftype='bug'  reporter='andy_wentink'>
 			Roles: Documented lack of effective-dates in Role-setting UI.
 		</fix>
+		<fix author='adam' date='2009-01-09' ref='2305904' reftype='bug'  reporter='alex'>
+			Plugins: Links to Segue simple-form urls (/sites/sitename) now do not get stripped 
+			to the Segue base-URL when editing content.
+		</fix>
 	</version>
 	<version number="2.2.5.5" date="2008-10-22">
 		<releaseNotes>
