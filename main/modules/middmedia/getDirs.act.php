@@ -36,6 +36,12 @@ class getDirsAction
 	 */
 	public function execute () {
 		$this->start();
+		$mime = Services::getService("MIME");
+		foreach ($this->getTypes() as $type) {
+			print "\n<allowedFileType ";
+			print "mimeType=\"".$mime->getMIMETypeForExtension(trim($type))."\" ";
+			print "extension=\"".trim($type)."\" />";
+		}
 		foreach ($this->getDirs() as $dir) {
 			print "\n<directory ";
 			print "name=\"".$dir['name']."\" ";

@@ -132,6 +132,9 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 	 * @since 1/13/09
 	 */
 	MiddMediaLibrary.prototype.loadDirectories = function (xmldoc) {
+		// Load the list of allowed file types while we have the info.
+		this.loadAllowedFileTypes(xmldoc);
+		
 		this.directories = [];
 		var dirs = xmldoc.getElementsByTagName('directory');
 		for (var i = 0; i < dirs.length; i++) {
@@ -161,6 +164,24 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 			var option = this.directorySelect.appendChild(document.createElement('option'));
 			option.value = this.directories[i].name;
 			option.innerHTML = this.directories[i].name;
+		}
+	}
+	
+	/**
+	 * Load the allowed file types listed in the document
+	 * 
+	 * @param DOM_Document xmldoc
+	 * @return void
+	 * @access public
+	 * @since 1/13/09
+	 */
+	MiddMediaLibrary.prototype.loadAllowedFileTypes = function (xmldoc) {
+		this.allowedFileExtensions = [];
+		this.allowedMimeTypes = [];
+		var types = xmldoc.getElementsByTagName('allowedFileTypes');
+		for (var i = 0; i < types.length; i++) {
+			this.allowedFileExtensions.push(types[i].getAttribute('extension'));
+			this.allowedMimeTypes.push(types[i].getAttribute('mimeType'));
 		}
 	}
 
