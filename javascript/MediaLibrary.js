@@ -1758,3 +1758,43 @@ AIM = {
     }
 
 }
+
+
+/**
+ * Dynamically include scripts using the Prototype library.
+ * Script.include(url);
+ *
+ * by aemkei: http://stackoverflow.com/questions/21294/how-do-you-dynamically-load-a-javascript-file-think-cs-include#242607
+ * 
+ * @since 1/12/09
+ */
+var Script = {
+  _loadedScripts: [],
+  include: function(script){
+    // include script only once
+    if (this._loadedScripts.include(script)){
+      return false;
+    }
+    // request file synchronous
+    var request = new Ajax.Request(script, {
+      asynchronous: false, method: "GET",
+      evalJS: false, evalJSON: false
+    });
+    if (!request.success())
+    	throw "Error loading JS file '" + script + "'.";
+    var code = request.transport.responseText;
+    
+    // eval code on global level
+    if (Prototype.Browser.IE) {
+      window.execScript(code);
+    } else if (Prototype.Browser.WebKit){
+      $$("head").first().insert(Object.extend(
+        new Element("script", {type: "text/javascript"}), {text: code}
+      ));
+    } else {
+      window.eval(code);
+    }
+    // remember included script
+    this._loadedScripts.push(script);
+  }
+};
