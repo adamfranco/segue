@@ -90,8 +90,27 @@ abstract class MiddMediaAction
 	 * @since 1/13/09
 	 */
 	protected function getUserId () {
-		// for initial testing, just use my username
-		return 'afranco';
+		if (!isset($this->_userId)) {
+			$authN = Services::getService("AuthN");
+			$idManager = Services::getService("Id");
+			$agentManager = Services::getService("Agent");
+			
+			$userId = $authN->getFirstUserId();
+			
+			if ($userId->isEqual($idManager->getId("edu.middlebury.agents.anonymous")))
+				throw new PermissionDeniedException('You are not authorized to access MiddMedia');
+			
+			$agent = $agentManager->getAgent($userId);
+			$properties = $agent->getProperties();		
+			$username = null;
+			while ($properties->hasNext() && !$username) {
+				$username = $properties->next()->getProperty("username");
+			}
+		}
+		if (!$username)
+			throw new PermissionDeniedException('You are not authorized to access MiddMedia');
+		
+		return $username;
 	}
 	
 }
