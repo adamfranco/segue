@@ -9,6 +9,8 @@
  * @version $Id$
  */ 
 
+require_once(POLYPHONY_DIR.'/main/modules/user/UserDataHelper.class.php');
+
 /**
  * The MediaLibrary contains general methods for working with the javascript media library.
  * 
@@ -178,6 +180,8 @@ var newString = downloadBar.innerHTML;
 	 * @static
 	 */
 	public static function getHeadHtml () {
+		UserDataHelper::writeHeadJs();
+		
 		ob_start();
 		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/CenteredPanel.js'></script>";
 		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/TabbedContent.js'></script>";

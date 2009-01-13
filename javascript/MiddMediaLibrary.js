@@ -151,6 +151,7 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 		this.directorySelect = this.container.appendChild(document.createElement('select'));
 		var library = this;
 		this.directorySelect.onchange = function () {
+			UserData.instance().setPreference('MiddMedia_current_dir', this.value);
 			if (this.value) {
 				library.displayDirectory(this.value);
 			}
@@ -165,6 +166,10 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 			var option = this.directorySelect.appendChild(document.createElement('option'));
 			option.value = name;
 			option.innerHTML = name;
+			if (name == UserData.instance().getPreference('MiddMedia_current_dir')) {
+				option.selected = true;
+				library.displayDirectory(name);
+			}
 			numDirs++;
 		}
 		
