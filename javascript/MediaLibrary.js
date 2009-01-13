@@ -183,6 +183,8 @@ function FileLibrary ( owner, assetId, caller, container ) {
 		this.caller = caller;
 		this.container = container;
 		this.media = new Array();
+		
+		this.quotaTitle = "Media Quota for this site:";
 	}
 
 	/**
@@ -563,7 +565,7 @@ function AssetLibrary ( owner, assetId, caller, container ) {
 	AssetLibrary.prototype.createQuotaDisplay = function (container) {
 		this.quotaUsedDisplay = container.appendChild(document.createElement('div'));
 		this.quotaUsedDisplay.className = 'media_quota_title';
-		this.quotaUsedDisplay.innerHTML = "Media Quota for this site:";
+		this.quotaUsedDisplay.innerHTML = this.quotaTitle;
 		
 		this.quotaDisplay = document.createElement('div');
 		this.quotaDisplay.className = 'media_quota';

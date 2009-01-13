@@ -189,6 +189,25 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 			this.allowedMimeTypes.push(types[i].getAttribute('mimeType'));
 		}
 	}
+	
+	/**
+	 * Write out the contents and controls for a directory
+	 * 
+	 * @param string dirName
+	 * @return void
+	 * @access public
+	 * @since 1/13/09
+	 */
+	MiddMediaLibrary.prototype.displayDirectory = function (dirName) {
+		var dir = this.directories[dirName];
+		
+		if (this.dirContainer)
+			this.dirContainer.innerHTML = '';
+		else
+			this.dirContainer = this.container.appendChild(document.createElement('div'));
+		
+		dir.createQuotaDisplay(this.dirContainer);
+	}
 
 
 /**
@@ -223,6 +242,17 @@ function MiddMediaDirectory ( owner, name, bytesUsed, bytesAvailable ) {
 	MiddMediaDirectory.prototype.init = function ( owner, name, bytesUsed, bytesAvailable ) {
 		this.owner = owner;
 		this.name = name;
-		this.bytesUsed = bytesUsed;
-		this.bytesAvailable = bytesAvailable;
+		
+		this.quotaTitle = "Media quota for the '" + name + "' directory:";
+		
+		bytesUsed = new Number(bytesUsed);
+		bytesAvailable = new Number(bytesAvailable);
+		
+		this.quota = bytesUsed + bytesAvailable;
+		this.quotaUsed = bytesUsed;
 	}
+	
+	// Take on the quota-display methods of the AssetLibrary
+	MiddMediaDirectory.prototype.createQuotaDisplay = AssetLibrary.prototype.createQuotaDisplay;
+	MiddMediaDirectory.prototype.writeQuota = AssetLibrary.prototype.writeQuota;
+	MiddMediaDirectory.prototype.updateQuota = AssetLibrary.prototype.updateQuota;
