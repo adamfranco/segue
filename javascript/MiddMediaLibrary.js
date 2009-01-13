@@ -135,35 +135,40 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 		// Load the list of allowed file types while we have the info.
 		this.loadAllowedFileTypes(xmldoc);
 		
-		this.directories = [];
+		this.directories = {};
 		var dirs = xmldoc.getElementsByTagName('directory');
 		for (var i = 0; i < dirs.length; i++) {
-			this.directories.push(
+			this.directories[dirs[i].getAttribute('name')] =
 				new MiddMediaDirectory(this.owner,
 					dirs[i].getAttribute('name'),
 					dirs[i].getAttribute('bytesUsed'),
-					dirs[i].getAttribute('bytesAvailable')));
-		}
-		
-		if (!this.directories.length) {
-			this.container.innerHTML = "<p class='error'>Your account is not authorized to upload to the MiddMedia system.</p>";
-			return;
+					dirs[i].getAttribute('bytesAvailable'));
 		}
 		
 		// Make the directory-select menu.
-		var form = this.container.appendChild(document.createElement('form'));
-		form.action = '#';
-		form.type = 'get';
-		this.directorySelect = form.appendChild(document.createElement('select'));
+		this.directorySelect = this.container.appendChild(document.createElement('select'));
+		var library = this;
+		this.directorySelect.onchange = function () {
+			if (this.value) {
+				library.displayDirectory(this.value);
+			}
+		}
 		
 		var option = this.directorySelect.appendChild(document.createElement('option'));
 		option.value = null;
 		option.innerHTML = "Select a directory...";
 		
-		for (var i = 0; i < this.directories.length; i++) {
+		var numDirs = 0;
+		for (var name in this.directories) {
 			var option = this.directorySelect.appendChild(document.createElement('option'));
-			option.value = this.directories[i].name;
-			option.innerHTML = this.directories[i].name;
+			option.value = name;
+			option.innerHTML = name;
+			numDirs++;
+		}
+		
+		if (!numDirs) {
+			this.container.innerHTML = "<p class='error'>Your account is not authorized to upload to the MiddMedia system.</p>";
+			return;
 		}
 	}
 	
