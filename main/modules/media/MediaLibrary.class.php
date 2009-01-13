@@ -179,9 +179,7 @@ var newString = downloadBar.innerHTML;
 	 * @since 1/13/09
 	 * @static
 	 */
-	public static function getHeadHtml () {
-		UserDataHelper::writeHeadJs();
-		
+	public static function getHeadHtml () {		
 		ob_start();
 		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/CenteredPanel.js'></script>";
 		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/TabbedContent.js'></script>";

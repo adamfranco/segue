@@ -57,6 +57,7 @@ class viewpluginAction
 		print Segue_MediaLibrary::getHeadHtml();
 		
 		$outputHandler->setHead(ob_get_clean());
+		UserDataHelper::writeHeadJs();
 		
 		
 		// Get the plugin asset id

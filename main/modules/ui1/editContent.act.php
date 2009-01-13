@@ -54,6 +54,8 @@ class editContentAction
 		$harmoni = Harmoni::instance();
 		$outputHandler = $harmoni->getOutputHandler();
 		
+		UserDataHelper::writeHeadJs();
+		
 		ob_start();
 		print Segue_MediaLibrary::getHeadHtml();
 		

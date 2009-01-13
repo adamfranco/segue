@@ -70,6 +70,7 @@ class filebrowserAction
 END;
 	
 		require(POLYPHONY_DIR."/main/library/Harmoni.js.inc.php");
+		print UserDataHelper::getHeadJs();
 		print Segue_MediaLibrary::getHeadHtml();
 
 		print <<< END

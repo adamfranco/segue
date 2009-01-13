@@ -231,6 +231,9 @@ class htmlAction
 		
 		$outputHandler->setHead(ob_get_clean());
 		
+		UserDataHelper::writeHeadJs();
+
+		
 		
 		// Add the RSS head links
 		RssLinkPrinter::addHeadLinks(SiteDispatcher::getCurrentNode());
