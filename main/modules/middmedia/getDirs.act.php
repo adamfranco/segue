@@ -37,17 +37,21 @@ class getDirsAction
 	public function execute () {
 		$this->start();
 		$mime = Services::getService("MIME");
-		foreach ($this->getTypes() as $type) {
-			print "\n<allowedFileType ";
-			print "mimeType=\"".$mime->getMIMETypeForExtension(trim($type))."\" ";
-			print "extension=\"".trim($type)."\" />";
-		}
-		foreach ($this->getDirs() as $dir) {
-			print "\n<directory ";
-			print "name=\"".$dir['name']."\" ";
-			print "bytesUsed=\"".$dir['bytesused']."\" ";
-			print "bytesAvailable=\"".$dir['bytesavailable']."\" ";
-			print "/>";
+		try {
+			foreach ($this->getTypes() as $type) {
+				print "\n<allowedFileType ";
+				print "mimeType=\"".$mime->getMIMETypeForExtension(trim($type))."\" ";
+				print "extension=\"".trim($type)."\" />";
+			}
+			foreach ($this->getDirs() as $dir) {
+				print "\n<directory ";
+				print "name=\"".$dir['name']."\" ";
+				print "bytesUsed=\"".$dir['bytesused']."\" ";
+				print "bytesAvailable=\"".$dir['bytesavailable']."\" ";
+				print "/>";
+			}
+		} catch (PermissionDeniedException $e) {
+			$this->error($e->getMessage());
 		}
 		$this->end();
 	}

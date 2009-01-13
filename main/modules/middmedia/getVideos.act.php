@@ -36,15 +36,19 @@ class getVideosAction
 	 */
 	public function execute () {
 		$this->start();
-		foreach ($this->getVideos(RequestContext::value('directory')) as $file) {
-			print "\n<file ";
-			print "name=\"".$file['name']."\" ";
-			print "httpUrl=\"".$file['httpurl']."\" ";
-			print "rtmpUrl=\"".$file['rtmpurl']."\" ";
-			print "mimeType=\"".$file['mimetype']."\" ";
-			print "size=\"".$file['size']."\" ";
-			print "date=\"".$file['date']."\" ";
-			print "/>";
+		try {
+			foreach ($this->getVideos(RequestContext::value('directory')) as $file) {
+				print "\n<file ";
+				print "name=\"".$file['name']."\" ";
+				print "httpUrl=\"".$file['httpurl']."\" ";
+				print "rtmpUrl=\"".$file['rtmpurl']."\" ";
+				print "mimeType=\"".$file['mimetype']."\" ";
+				print "size=\"".$file['size']."\" ";
+				print "date=\"".$file['date']."\" ";
+				print "/>";
+			}
+		} catch (PermissionDeniedException $e) {
+			$this->error($e->getMessage());
 		}
 		$this->end();
 	}
