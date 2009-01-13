@@ -86,6 +86,8 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 		}
 	}
 	
+	MiddMediaLibrary.prototype.onUse = FileLibrary.prototype.onUse;
+	
 	/**
 	 * Fetch a list of directories and send them to our loading callback
 	 * 
@@ -139,7 +141,7 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 		var dirs = xmldoc.getElementsByTagName('directory');
 		for (var i = 0; i < dirs.length; i++) {
 			this.directories[dirs[i].getAttribute('name')] =
-				new MiddMediaDirectory(this.owner,
+				new MiddMediaDirectory(this,
 					dirs[i].getAttribute('name'),
 					dirs[i].getAttribute('bytesUsed'),
 					dirs[i].getAttribute('bytesAvailable'));
@@ -207,7 +209,12 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 			this.dirContainer = this.container.appendChild(document.createElement('div'));
 		
 		dir.createQuotaDisplay(this.dirContainer);
+		
+		dir.displayFiles(this.dirContainer);
 	}
+	
+	MiddMediaLibrary.prototype.getAllowedMimeTypes = FileLibrary.prototype.getAllowedMimeTypes;
+	MiddMediaLibrary.prototype.onContentChange = FileLibrary.prototype.onContentChange;
 
 
 /**
@@ -222,9 +229,9 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
  *
  * @version $Id$
  */
-function MiddMediaDirectory ( owner, name, bytesUsed, bytesAvailable ) {
+function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 	if ( arguments.length > 0 ) {
-		this.init( owner, name, bytesUsed, bytesAvailable );
+		this.init( library, name, bytesUsed, bytesAvailable );
 	}
 }
 
@@ -239,8 +246,8 @@ function MiddMediaDirectory ( owner, name, bytesUsed, bytesAvailable ) {
 	 * @access public
 	 * @since 1/13/09
 	 */
-	MiddMediaDirectory.prototype.init = function ( owner, name, bytesUsed, bytesAvailable ) {
-		this.owner = owner;
+	MiddMediaDirectory.prototype.init = function ( library, name, bytesUsed, bytesAvailable ) {
+		this.library = library;
 		this.name = name;
 		
 		this.quotaTitle = "Media quota for the '" + name + "' directory:";
@@ -256,3 +263,462 @@ function MiddMediaDirectory ( owner, name, bytesUsed, bytesAvailable ) {
 	MiddMediaDirectory.prototype.createQuotaDisplay = AssetLibrary.prototype.createQuotaDisplay;
 	MiddMediaDirectory.prototype.writeQuota = AssetLibrary.prototype.writeQuota;
 	MiddMediaDirectory.prototype.updateQuota = AssetLibrary.prototype.updateQuota;
+	
+	/**
+	 * Build a listing of the files in this directory
+	 * 
+	 * @param DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 1/13/09
+	 */
+	MiddMediaDirectory.prototype.displayFiles = function (container) {
+		if (!this.files) {
+			var req = Harmoni.createRequest();
+			var url = Harmoni.quickUrl('middmedia', 'getVideos', {directory: this.name});
+			if (req) {
+				// Define a variable to point at this MediaLibrary that will be in the
+				// scope of the request-processing function, since 'this' will (at that
+				// point) be that function.
+				var directory = this;
+	
+				req.onreadystatechange = function () {
+					// only if req shows "loaded"
+					if (req.readyState == 4) {
+						// only if we get a good load should we continue.
+						if (req.status == 200) {
+	// 						alert(req.responseText);
+							directory.loadFiles(req.responseXML);
+							directory.displayFiles(container);
+						} else {
+							throw new Error("There was a problem retrieving the XML data: " +
+								req.statusText);
+						}
+					}
+				} 
+				
+				req.open("GET", url, true);
+				req.send(null);
+			} else {
+				throw new Error("Error: Unable to execute AJAX request. Please upgrade your browser.");
+			}
+			
+			return;
+		}
+		
+		// Print out the listing of files.
+		this.mediaList = document.createElement('table');	
+		this.mediaList.className = 'medialist';
+		this.mediaListHead = this.mediaList.appendChild(document.createElement('thead'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode(' '));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('name'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('type'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('size'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('modification date'));
+		
+		this.mediaListBody = this.mediaList.appendChild(document.createElement('tbody'));
+		
+		container.appendChild(this.mediaList);
+		
+		
+		for (var i = 0; i < this.files.length; i++) {
+			this.mediaListBody.appendChild(this.files[i].getListingRow());
+		}
+		
+		this.library.onContentChange();
+	}
+	
+	/**
+	 * Load the file listing from the XML document
+	 * 
+	 * @param DOM_Document xmldoc
+	 * @return void
+	 * @access public
+	 * @since 1/13/09
+	 */
+	MiddMediaDirectory.prototype.loadFiles = function (xmldoc) {
+		this.files = [];
+		var files = xmldoc.getElementsByTagName('file');
+		for (var i = 0; i < files.length; i++) {
+			this.files.push(new MiddMediaFile(this.library, this, files[i]));
+		}
+	}
+
+
+MiddMediaFile.prototype = new MediaFile();
+MiddMediaFile.prototype.constructor = MiddMediaFile;
+MiddMediaFile.superclass = MediaFile.prototype;
+
+/**
+ * This class represents a media file in the MiddMedia system. 
+ * 
+ * To be transparently usable in segue it should support the same methods as the
+ * regular media file so as to not cause problems when it is selected and passed
+ * back to the calling client
+ * 
+ * @since 1/13/09
+ * @package segue.middmedia
+ * 
+ * @copyright Copyright &copy; 2005, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+function MiddMediaFile ( library, directory, xmlElement ) {
+	if ( arguments.length > 0 ) {
+		this.init( library, directory, xmlElement );
+	}
+}
+
+	/**
+	 * Initialize a new object
+	 * 
+	 * @param MiddMediaLibrary library
+	 * @param MiddMediaDirectory directory
+	 * @param DOM_Element xmlElement
+	 * @return void
+	 * @access public
+	 * @since 1/13/09
+	 */
+	MiddMediaFile.prototype.init = function ( library, directory, xmlElement ) {
+		this.library = library;
+		this.directory = directory;
+		
+		this.mimeType = xmlElement.getAttribute('mimeType');
+		this.name = xmlElement.getAttribute('name');
+		this.size = new Number(xmlElement.getAttribute('size'));
+		
+		this.url = xmlElement.getAttribute('httpUrl');
+		this.url = decodeURI(this.url);
+		this.url = this.url.urlDecodeAmpersands();
+		
+		this.date = Date.fromISO8601(xmlElement.getAttribute('date'));
+		
+// 		this.thumbnailUrl = xmlElement.getElementsByTagName('thumbnailUrl')[0].firstChild.data;
+// 		this.thumbnailUrl = decodeURI(this.thumbnailUrl);
+// 		this.thumbnailUrl = this.thumbnailUrl.urlDecodeAmpersands();
+	}
+	
+	/**
+	 * Answer a table row for this file
+	 * 
+	 * @return DOM_Element
+	 * @access public
+	 * @since 1/13/09
+	 */
+	MediaFile.prototype.getListingRow = function () {
+		var row = document.createElement('tr');
+		
+		// Use button
+		var datum = row.appendChild(document.createElement('td'));
+		datum.style.whiteSpace = 'nowrap';
+		
+		var useButton = datum.appendChild(document.createElement('button'));
+		useButton.innerHTML = 'use';
+		
+		var allowedTypes = this.library.getAllowedMimeTypes();
+		if (!allowedTypes || !allowedTypes.length 
+			|| allowedTypes.elementExists(this.mimeType))
+		{
+			useButton.onclick = this.library.onUse.bind(this.library, this);
+		} else {
+			useButton.disabled = true;
+		}
+		
+		datum.appendChild(document.createTextNode(' '));
+		var imageLink = datum.appendChild(document.createElement('a'));
+		imageLink.href = this.url;
+		
+		this.thumbnail = imageLink.appendChild(document.createElement('img'));
+		this.thumbnail.src = this.getThumbnailUrl();
+		this.thumbnail.align = 'center';
+		
+// 		var url = this.url;
+// 		this.img.onclick = function () {
+// 			window.open (url, this.recordId, "height=400,width=600,resizable=yes,scrollbars=yes");
+// 		}
+		this.thumbnail.className = 'thumbnail link';
+		
+		// Name
+		var datum = row.appendChild(document.createElement('td'));
+		datum.innerHTML = this.name;
+		
+		// MIME Type
+		var datum = row.appendChild(document.createElement('td'));
+		datum.innerHTML = this.mimeType;
+		
+		// Size
+		var datum = row.appendChild(document.createElement('td'));
+		datum.innerHTML = this.size.asByteSizeString();
+		
+		// Date
+		var datum = row.appendChild(document.createElement('td'));
+		datum.innerHTML = this.date.toFormatedString('E NNN dd, yyyy h:mm a');;
+		
+		return row;
+	}
+	
+/*********************************************************
+ * Begin - MediaFile public API
+ *
+ * The methods below comprise the public API for working
+ * with MediaFiles in Segue. These methods work hand-in-hand
+ * with the equivalent MediaFile PHP class.
+ *********************************************************/
+	/**
+	 * Answer a string identifier for this file
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getId = function () {
+		return this.url;
+	}
+	
+	/**
+	 * Answer the URL to the file
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getUrl = function () {
+		return this.url;
+	}
+	
+	/**
+	 * Answer the thumbnail URL
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getThumbnailUrl = function () {
+		if (this.thumbnailUrl)
+			return this.thumbnailUrl;
+		
+		base = Harmoni.POLYPHONY_PATH + '/icons/filetypes/';
+		switch(this.mimeType.split('/')[0]) {
+			case 'video':
+				return base + 'video.png';
+			case 'audio':
+				return base + 'sound.png';
+			default:
+				return base + 'unknown.png';
+		}
+	}
+	
+	/**
+	 * Answer the filename
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getFilename = function () {
+		return this.name;
+	}
+	
+	/**
+	 * Answer the size of the file in bytes
+	 * 
+	 * @return integer
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getSize = function () {
+		return this.size;
+	}
+	
+	/**
+	 * Answer the MIME type of the file
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getMimeType = function () {
+		return this.mimeType;
+	}
+	
+	/**
+	 * Answer the modification date
+	 * 
+	 * @return object Date
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getModificationDate = function () {
+		return this.date;
+	}
+	
+	/**
+	 * Answer an array of all titles
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getTitles = function () {
+		return [this.name];
+	}
+	
+	/**
+	 * Answer an array of all descriptions
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getDescriptions = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all creators
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getCreators = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all subjects
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getSubjects = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all contributors
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getContributors = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all Dates
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getDates = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all Formats
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getFormats = function () {
+		return [this.mimeType];
+	}
+	
+	/**
+	 * Answer an array of all Publishers
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getPublishers = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all languages
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getLanguages = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all types
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getTypes = function () {
+		return [this.mimeType];
+	}
+	
+	/**
+	 * Answer an array of all rights strings
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getRights = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all sources
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getSources = function () {
+		return [];
+	}
+	
+	/**
+	 * Answer an array of all relations
+	 * 
+	 * @return array
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.getRelations = function () {
+		return [];
+	}
+	
+	/**
+	 * Write a citation into the DOM element passed
+	 * 
+	 * @param object DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 4/30/07
+	 */
+	MediaFile.prototype.writeCitation = function (container) {
+		return this.name;
+	}
+
+/*********************************************************
+ * End - MediaFile public API
+ *********************************************************/
+
