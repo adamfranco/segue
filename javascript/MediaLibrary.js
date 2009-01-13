@@ -29,6 +29,8 @@ function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
 	}
 }
 
+	MediaLibrary.externalLibraries = [];
+
 	/**
 	 * Initialize this object
 	 * 
@@ -77,6 +79,28 @@ function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
 
 		tab.library = this.siteLibrary;
 		tab.onOpen = function () { this.library.onOpen() };
+
+	// Addtional external libraries
+		for ( var i = 0; i < MediaLibrary.externalLibraries.length; i++) {
+			var config = MediaLibrary.externalLibraries[i];
+			
+			// Include any needed class files.
+			if (!typeof config.class !== 'function') {
+				if (!config.jsSourceUrl)
+					throw "External library class " + config.class + " is not defined and a source URL is not specified.";
+				
+				Script.include(config.jsSourceUrl);
+			}
+			
+			var tab = this.tabs.addTab('ext_' + i, config.title);
+			eval('tab.library = new ' + config.class + '(this, config, this.caller, tab.wrapperElement);');
+			
+			tab.onOpen = function () { 
+				if (typeof this.library.onOpen == 'function')
+					this.library.onOpen();
+			};
+		}
+		
 	}
 	
 	/**
