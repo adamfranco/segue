@@ -69,16 +69,10 @@ class filebrowserAction
 
 END;
 	
-	require(POLYPHONY_DIR."/main/library/Harmoni.js.inc.php");
+		require(POLYPHONY_DIR."/main/library/Harmoni.js.inc.php");
+		print Segue_MediaLibrary::getHeadHtml();
 
 		print <<< END
-	<script type='text/javascript' src='$POLYPHONY_PATH/javascript/CenteredPanel.js'></script>
-	<script type='text/javascript' src='$POLYPHONY_PATH/javascript/TabbedContent.js'></script>
-	<script type='text/javascript' src='$POLYPHONY_PATH/javascript/prototype.js'></script>
-	<script type='text/javascript' src='$POLYPHONY_PATH/javascript/js_quicktags.js'></script>
-	<script type='text/javascript' src='$POLYPHONY_PATH/javascript/brwsniff.js'></script>
-	<script type='text/javascript' src='$MYPATH/javascript/MediaLibrary.js'></script>
-	<link rel='stylesheet' type='text/css' href='$MYPATH/javascript/MediaLibrary.css'/>
 	
 	<script type='text/javascript'>
 		// <![CDATA[
