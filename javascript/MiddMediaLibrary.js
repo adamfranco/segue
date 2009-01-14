@@ -95,7 +95,7 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 	 * @access public
 	 * @since 1/13/09
 	 */
-	MiddMediaLibrary.prototype.fetchDirectories = function () {
+	MiddMediaLibrary.prototype.fetchDirectories = function (callback) {
 		var req = Harmoni.createRequest();
 		var url = Harmoni.quickUrl('middmedia', 'getDirs');
 		if (req) {
@@ -103,14 +103,20 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 			// scope of the request-processing function, since 'this' will (at that
 			// point) be that function.
 			var library = this;
-
+			
+			if (!callback) {
+				callback = function (xmldoc) {
+					library.loadDirectories(xmldoc);
+				}
+			}
+			
 			req.onreadystatechange = function () {
 				// only if req shows "loaded"
 				if (req.readyState == 4) {
 					// only if we get a good load should we continue.
 					if (req.status == 200) {
 // 						alert(req.responseText);
-						library.loadDirectories(req.responseXML);
+						callback(req.responseXML);
 					} else {
 						throw new Error("There was a problem retrieving the XML data: " +
 							req.statusText);
@@ -180,6 +186,25 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 	}
 	
 	/**
+	 * Reload the quotas from the server
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/14/09
+	 */
+	MiddMediaLibrary.prototype.reloadQuotas = function () {
+		library = this;
+		var callback = function (xmldoc) {
+			var dirs = xmldoc.getElementsByTagName('directory');
+			for (var i = 0; i < dirs.length; i++) {
+				var dir = library.directories[dirs[i].getAttribute('name')];
+				dir.updateQuota(dirs[i].getAttribute('bytesUsed'), dirs[i].getAttribute('bytesAvailable'));
+			}
+		}
+		this.fetchDirectories(callback);
+	}
+	
+	/**
 	 * Load the allowed file types listed in the document
 	 * 
 	 * @param DOM_Document xmldoc
@@ -190,7 +215,7 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 	MiddMediaLibrary.prototype.loadAllowedFileTypes = function (xmldoc) {
 		this.allowedFileExtensions = [];
 		this.allowedMimeTypes = [];
-		var types = xmldoc.getElementsByTagName('allowedFileTypes');
+		var types = xmldoc.getElementsByTagName('allowedFileType');
 		for (var i = 0; i < types.length; i++) {
 			this.allowedFileExtensions.push(types[i].getAttribute('extension'));
 			this.allowedMimeTypes.push(types[i].getAttribute('mimeType'));
@@ -207,6 +232,7 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 	 */
 	MiddMediaLibrary.prototype.displayDirectory = function (dirName) {
 		var dir = this.directories[dirName];
+		this.currentDirectory = dir;
 		
 		if (this.dirContainer)
 			this.dirContainer.innerHTML = '';
@@ -214,6 +240,8 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 			this.dirContainer = this.container.appendChild(document.createElement('div'));
 		
 		dir.createQuotaDisplay(this.dirContainer);
+		
+		dir.createUploadForm(this.dirContainer);
 		
 		dir.displayFiles(this.dirContainer);
 	}
@@ -264,10 +292,172 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 		this.quotaUsed = bytesUsed;
 	}
 	
+	/**
+	 * Update Quota
+	 * 
+	 * @param int bytesUsed
+	 * @param int bytesAvailable
+	 * @return void
+	 * @access public
+	 * @since 1/14/09
+	 */
+	MiddMediaDirectory.prototype.updateQuota = function (bytesUsed, bytesAvailable) {
+		bytesUsed = new Number(bytesUsed);
+		bytesAvailable = new Number(bytesAvailable);
+		
+		this.quota = bytesUsed + bytesAvailable;
+		this.quotaUsed = bytesUsed;
+		
+		this.writeQuota();
+	}
+	
 	// Take on the quota-display methods of the AssetLibrary
 	MiddMediaDirectory.prototype.createQuotaDisplay = AssetLibrary.prototype.createQuotaDisplay;
 	MiddMediaDirectory.prototype.writeQuota = AssetLibrary.prototype.writeQuota;
-	MiddMediaDirectory.prototype.updateQuota = AssetLibrary.prototype.updateQuota;
+// 	MiddMediaDirectory.prototype.updateQuota = AssetLibrary.prototype.updateQuota;
+	
+	/**
+	 * Answer an upload form
+	 * 
+	 * @param DOM_Element container
+	 * @return void
+	 * @access public
+	 * @since 1/14/09
+	 */
+	MiddMediaDirectory.prototype.createUploadForm = function (container) {
+		var heading = container.appendChild(document.createElement('div'));
+		heading.className = 'media_quota_title';
+		heading.innerHTML = 'Upload an audio or video file:';
+		
+		this.uploadForm = document.createElement('form');
+		this.uploadForm.action = Harmoni.quickUrl('middmedia', 'addVideo', {'directory': this.name});
+		this.uploadForm.method = 'post';
+		this.uploadForm.enctype = 'multipart/form-data';
+		
+		// IE doesn't like the form as-is. It seems to need to have it written to
+		// a string and then re-loaded in order for everything to be submitted properly.
+		if (getBrowser()[2] == 'msie') {
+			var tempParent = document.createElement('div');
+			tempParent.appendChild(this.uploadForm);
+			var temp = tempParent.innerHTML;
+			tempParent.innerHTML = temp;
+			this.uploadForm = tempParent.getElementsByTagName('form')[0];
+		}
+		
+		// Set the submit actions
+		var directory = this;
+		this.uploadForm.onsubmit = function () {
+			var matches = this.media_file.value.match(/.+\.([a-z0-9]+)$/);
+			if (!matches) {
+				alert("Please choose a file");
+				return false;
+			}
+			
+			var extension = matches[1];
+			
+			if (!directory.library.allowedFileExtensions.elementExists(extension)) {
+				var message = "Only files of the following types can be uploaded to MiddMedia:\n\t";
+				for (var i = 0; i < directory.library.allowedFileExtensions.length; i++) {
+					message += "\n\t." + directory.library.allowedFileExtensions[i];
+					message += "\t\t(" + directory.library.allowedMimeTypes[i] + ")";
+				}
+				
+				message += "\n\n." + extension + " is now allowed.";
+				alert(message);
+				this.media_file.value = '';
+				return false;
+			}
+			
+			return AIM.submit(this, 
+				{'onStart' : function() {directory.startUploadCallback()}, 
+				'onComplete' : function(xmlDoc) {directory.completeUploadCallback(xmlDoc)}});
+		}
+		
+		this.uploadForm.innerHTML = "<input type='file' name='media_file' /> <input type='submit' value='Upload'/>";
+		
+		container.appendChild(this.uploadForm);
+	}
+	
+	/**
+	 * Start the upload callback process.
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 1/26/07
+	 */
+	MiddMediaDirectory.prototype.startUploadCallback = function () {
+		// IE 6 will not load properly, so set a timeout and reload soon after.
+		if (getBrowser()[2] == 'msie' && getMajorVersion(getBrowser()[3]) < 7) {
+			var currentObj = this;
+			window.setTimeout(function() {currentObj.forceReload();}, 15000);
+			alert("IE6 does not refresh properly. \nMediaLibrary will reload in 15 seconds. \nIf you file does not appear after the media library reloads, refresh the page and open the media library again.");
+		}
+		return true;
+	}
+	
+	/**
+	 * Finish the upload callback process.
+	 * 
+	 * @param 
+	 * @return boolean
+	 * @access public
+	 * @since 1/26/07
+	 */
+	MiddMediaDirectory.prototype.completeUploadCallback = function (xmldoc) {
+// 		alert('xmldoc = ' + xmldoc);
+// 		alert('xmldoc.firstChild = ' + xmldoc.firstChild);
+// 		alert('xmldoc.documentElement = ' + xmldoc.documentElement);
+// 		alert('xmldoc.documentElement.firstChild = ' + xmldoc.documentElement.firstChild);
+		try {
+			var responseElement = xmldoc.firstChild;
+			
+			var errors = responseElement.getElementsByTagName('error');
+			if (errors.length) {
+				for (var i = 0; i < errors.length; i++) {
+					if (errors[i].hasAttribute('type'))
+						var type = errors[i].getAttribute('type') + ": ";
+					else
+						var type = ''
+					alert(type + errors[i].firstChild.data);
+//					throw new Error( errors[i].firstChild.data );
+				}
+			}
+		} catch (error) {
+			alert (error);
+			
+// 			if (responseElement.xml)
+// 				alert(responseElement.xml);
+// 			else {
+// 				var xmlSerializer = new XMLSerializer();
+// 				alert(xmlSerializer.serializeToString(responseElement));
+// 			}
+			
+			return false;
+		}
+				
+// 		var xmlSerializer = new XMLSerializer();
+// 		alert(xmlSerializer.serializeToString(responseElement));
+			
+		var files = responseElement.getElementsByTagName('file');
+		if (files.length) {
+			for (var i = 0; i < files.length; i++) {
+				this.addMediaFile(new MiddMediaFile(this.library, this, files[i]));
+			}
+		} else if (getBrowser()[2] == 'msie') {
+			// IE Renders the iframe document and barfs up the xml. Just reinitialize
+			// the entire media library as that is easier
+			this.forceReload();
+// 			alert('Error in file upload response: no files listed. ');
+		}
+		
+		this.uploadForm.media_file.value = '';
+		
+		this.library.owner.center();
+		
+		this.library.reloadQuotas();
+		
+		return true;
+	}
 	
 	/**
 	 * Remove a file. This function will remove a file from the directory, but not 
@@ -285,6 +475,8 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 				newFiles.push(this.files[i]);
 		}
 		this.files = newFiles;
+		
+		this.library.reloadQuotas();
 	}
 	
 	/**
@@ -380,6 +572,19 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 		for (var i = 0; i < files.length; i++) {
 			this.files.push(new MiddMediaFile(this.library, this, files[i]));
 		}
+	}
+	
+	/**
+	 * Add a media file and add it to our output
+	 * 
+	 * @param MiddMediaFile file
+	 * @return void
+	 * @access public
+	 * @since 1/14/09
+	 */
+	MiddMediaDirectory.prototype.addMediaFile = function (file) {
+		this.files.push(file);
+		this.mediaListBody.insertBefore(file.getListingRow(), this.mediaListBody.firstChild);
 	}
 
 /**
