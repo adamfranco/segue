@@ -1513,6 +1513,19 @@ function MediaFile ( xmlElement, asset, library) {
 	}
 	
 	/**
+	 * Answer the text-template code used for embedding this file
+	 *
+	 * Will throw an exception if unsupported
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/14/09
+	 */
+	MediaFile.prototype.getEmbedTextTemplate = function () {
+		throw "Embedding local files is unsupported";
+	}
+	
+	/**
 	 * Answer the filename
 	 * 
 	 * @return string

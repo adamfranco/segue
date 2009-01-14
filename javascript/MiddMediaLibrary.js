@@ -359,11 +359,6 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 		}
 	}
 
-
-MiddMediaFile.prototype = new MediaFile();
-MiddMediaFile.prototype.constructor = MiddMediaFile;
-MiddMediaFile.superclass = MediaFile.prototype;
-
 /**
  * This class represents a media file in the MiddMedia system. 
  * 
@@ -421,7 +416,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 1/13/09
 	 */
-	MediaFile.prototype.getListingRow = function () {
+	MiddMediaFile.prototype.getListingRow = function () {
 		var row = document.createElement('tr');
 		
 		// Use button
@@ -487,7 +482,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getId = function () {
+	MiddMediaFile.prototype.getId = function () {
 		return this.url;
 	}
 	
@@ -498,7 +493,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getUrl = function () {
+	MiddMediaFile.prototype.getUrl = function () {
 		return this.url;
 	}
 	
@@ -509,7 +504,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getThumbnailUrl = function () {
+	MiddMediaFile.prototype.getThumbnailUrl = function () {
 		if (this.thumbnailUrl)
 			return this.thumbnailUrl;
 		
@@ -525,13 +520,35 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	}
 	
 	/**
+	 * Answer the text-template code used for embedding this file
+	 *
+	 * Will throw an exception if unsupported
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/14/09
+	 */
+	MiddMediaFile.prototype.getEmbedTextTemplate = function () {
+		switch(this.mimeType) {
+			case 'video/x-flv':
+				return '{{video|service=middtube|user=' + this.directory.name + '|id=' + this.name.replace(/.flv$/, '') + '}}';
+			case 'video/mp4':
+				return '{{video|service=middtube|user=' + this.directory.name + '|id=mp4:' + this.name.replace(/.mp4$/, '') + '}}';
+			case 'audio/mpeg':
+				return '{{video|service=middtube|user=' + this.directory.name + '|id=mp3:' + this.name.replace(/.mp3$/, '') + '}}';
+			default:
+				throw "Embedding '" + this.mimeType + "' files is unsupported";
+		}
+	}
+	
+	/**
 	 * Answer the filename
 	 * 
 	 * @return string
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getFilename = function () {
+	MiddMediaFile.prototype.getFilename = function () {
 		return this.name;
 	}
 	
@@ -542,7 +559,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getSize = function () {
+	MiddMediaFile.prototype.getSize = function () {
 		return this.size;
 	}
 	
@@ -553,7 +570,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getMimeType = function () {
+	MiddMediaFile.prototype.getMimeType = function () {
 		return this.mimeType;
 	}
 	
@@ -564,7 +581,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getModificationDate = function () {
+	MiddMediaFile.prototype.getModificationDate = function () {
 		return this.date;
 	}
 	
@@ -575,7 +592,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getTitles = function () {
+	MiddMediaFile.prototype.getTitles = function () {
 		return [this.name];
 	}
 	
@@ -586,7 +603,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getDescriptions = function () {
+	MiddMediaFile.prototype.getDescriptions = function () {
 		return [];
 	}
 	
@@ -597,7 +614,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getCreators = function () {
+	MiddMediaFile.prototype.getCreators = function () {
 		return [];
 	}
 	
@@ -608,7 +625,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getSubjects = function () {
+	MiddMediaFile.prototype.getSubjects = function () {
 		return [];
 	}
 	
@@ -619,7 +636,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getContributors = function () {
+	MiddMediaFile.prototype.getContributors = function () {
 		return [];
 	}
 	
@@ -630,7 +647,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getDates = function () {
+	MiddMediaFile.prototype.getDates = function () {
 		return [];
 	}
 	
@@ -641,7 +658,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getFormats = function () {
+	MiddMediaFile.prototype.getFormats = function () {
 		return [this.mimeType];
 	}
 	
@@ -652,7 +669,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getPublishers = function () {
+	MiddMediaFile.prototype.getPublishers = function () {
 		return [];
 	}
 	
@@ -663,7 +680,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getLanguages = function () {
+	MiddMediaFile.prototype.getLanguages = function () {
 		return [];
 	}
 	
@@ -674,7 +691,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getTypes = function () {
+	MiddMediaFile.prototype.getTypes = function () {
 		return [this.mimeType];
 	}
 	
@@ -685,7 +702,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getRights = function () {
+	MiddMediaFile.prototype.getRights = function () {
 		return [];
 	}
 	
@@ -696,7 +713,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getSources = function () {
+	MiddMediaFile.prototype.getSources = function () {
 		return [];
 	}
 	
@@ -707,7 +724,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.getRelations = function () {
+	MiddMediaFile.prototype.getRelations = function () {
 		return [];
 	}
 	
@@ -719,7 +736,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 4/30/07
 	 */
-	MediaFile.prototype.writeCitation = function (container) {
+	MiddMediaFile.prototype.writeCitation = function (container) {
 		return this.name;
 	}
 

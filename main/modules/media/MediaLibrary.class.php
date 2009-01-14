@@ -44,6 +44,7 @@ class Segue_MediaLibrary {
 		print "\n\t".self::getImageButton($libraryId, $writeJsCallback);
 		print "\n\t".self::getFileLinkButton($libraryId, $writeJsCallback);
 		print "\n\t".self::getFileThumbnailLinkButton($libraryId, $writeJsCallback);
+		print "\n\t".self::getEmbedAudioVideoButton($libraryId, $writeJsCallback);
 		return ob_get_clean();
 	}
 	
@@ -104,6 +105,33 @@ link.innerHTML = title;
 var newString = downloadBar.innerHTML;
 ";
 		return self::getButton($libraryId, _("Insert File Link"), $buildString, $writeJsCallback);
+	}
+	
+	/**
+	 * Answer the HTML for an insert embedded audio or video button.
+	 * 
+	 * @param string $libraryId The id of the component this library is attached to.
+	 * @param string $writeJsCallback	A Javascript function to execute to write out the
+	 *									results. Must take a single parameter which is an
+	 *									HTML string. Example:
+	 *									
+	 *		function (htmlString) { edInsertContent(document.get_element_by_id('12345'), htmlString); }
+	 *
+	 * @return string
+	 * @access public
+	 * @since 9/23/08
+	 * @static
+	 */
+	public static function getEmbedAudioVideoButton ($libraryId, $writeJsCallback) {
+		$buildString = "
+try {
+	var newString = mediaFile.getEmbedTextTemplate();
+} catch (e) {
+	alert(e);
+	var newString = '';
+}
+";
+		return self::getButton($libraryId, _("Embed Audio/Video"), $buildString, $writeJsCallback);
 	}
 	
 	/**
