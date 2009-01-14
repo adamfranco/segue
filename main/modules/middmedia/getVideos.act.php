@@ -45,6 +45,10 @@ class getVideosAction
 				print "mimeType=\"".$file['mimetype']."\" ";
 				print "size=\"".$file['size']."\" ";
 				print "date=\"".$file['date']."\" ";
+				if (isset($file['creator']))
+					print "creator=\"".$file['creator']."\" ";
+				else
+					print "creator=\"\" ";
 				print "/>";
 			}
 		} catch (PermissionDeniedException $e) {

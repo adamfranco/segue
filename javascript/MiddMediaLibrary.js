@@ -331,6 +331,9 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 		var element = this.mediaListHead.appendChild(document.createElement('th'));
 		element.appendChild(document.createTextNode('modification date'));
 		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
+		element.appendChild(document.createTextNode('creator'));
+		
 		this.mediaListBody = this.mediaList.appendChild(document.createElement('tbody'));
 		
 		container.appendChild(this.mediaList);
@@ -404,6 +407,8 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 		
 		this.date = Date.fromISO8601(xmlElement.getAttribute('date'));
 		
+		this.creator = xmlElement.getAttribute('creator');
+		
 // 		this.thumbnailUrl = xmlElement.getElementsByTagName('thumbnailUrl')[0].firstChild.data;
 // 		this.thumbnailUrl = decodeURI(this.thumbnailUrl);
 // 		this.thumbnailUrl = this.thumbnailUrl.urlDecodeAmpersands();
@@ -463,7 +468,11 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 		
 		// Date
 		var datum = row.appendChild(document.createElement('td'));
-		datum.innerHTML = this.date.toFormatedString('E NNN dd, yyyy h:mm a');;
+		datum.innerHTML = this.date.toFormatedString('E NNN dd, yyyy h:mm a');
+		
+		// Creator
+		var datum = row.appendChild(document.createElement('td'));
+		datum.innerHTML = this.creator;
 		
 		return row;
 	}
