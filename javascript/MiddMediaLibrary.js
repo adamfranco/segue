@@ -270,6 +270,24 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 	MiddMediaDirectory.prototype.updateQuota = AssetLibrary.prototype.updateQuota;
 	
 	/**
+	 * Remove a file. This function will remove a file from the directory, but not 
+	 * delete it. It is used by the file to unlink itself from the directory
+	 * 
+	 * @param string fileName
+	 * @return void
+	 * @access public
+	 * @since 1/14/09
+	 */
+	MiddMediaDirectory.prototype._removeFile = function (fileName) {
+		var newFiles = [];
+		for (var i = 0; i < this.files.length; i++) {
+			if (this.files[i].name != fileName)
+				newFiles.push(this.files[i]);
+		}
+		this.files = newFiles;
+	}
+	
+	/**
 	 * Build a listing of the files in this directory
 	 * 
 	 * @param DOM_Element container
@@ -333,6 +351,8 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 		
 		var element = this.mediaListHead.appendChild(document.createElement('th'));
 		element.appendChild(document.createTextNode('creator'));
+		
+		var element = this.mediaListHead.appendChild(document.createElement('th'));
 		
 		this.mediaListBody = this.mediaList.appendChild(document.createElement('tbody'));
 		
@@ -474,7 +494,68 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 		var datum = row.appendChild(document.createElement('td'));
 		datum.innerHTML = this.creator;
 		
+		// Delete link
+		var datum = row.appendChild(document.createElement('td'));
+		var link = datum.appendChild(document.createElement('a'));
+		link.href = '#';
+		link.innerHTML = 'delete';
+		var mediaFile = this;
+		link.onclick = function () {
+			if (!confirm("Deleting this file will remove it from the MiddMedia service. It will no longer be accessible from anywhere it has been used.\n\nAre you sure you want to delete?"))
+			{
+				return false;
+			}
+			
+			mediaFile.delete();
+			
+			var row = this.parentNode.parentNode;
+			row.parentNode.removeChild(row);
+			return false;
+		}
+		
 		return row;
+	}
+	
+	/**
+	 * Delete this file
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/14/09
+	 */
+	MiddMediaFile.prototype.delete = function () {
+		var req = Harmoni.createRequest();
+		var url = Harmoni.quickUrl('middmedia', 'delVideo', {directory: this.directory.name, file: this.name});
+		if (req) {
+			// Define a variable to point at this MediaLibrary that will be in the
+			// scope of the request-processing function, since 'this' will (at that
+			// point) be that function.
+			var directory = this.directory;
+			var fileName = this.name;
+
+			req.onreadystatechange = function () {
+				// only if req shows "loaded"
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200) {
+// 						alert(req.responseText);
+						var errors = req.responseXML.getElementsByTagName('error');
+						for (var i = 0; i < errors.length; i++) {
+							alert(errors[i].firstChild.nodeValue);
+						}
+						directory._removeFile(fileName);
+					} else {
+						throw new Error("There was a problem retrieving the XML data: " +
+							req.statusText);
+					}
+				}
+			} 
+			
+			req.open("GET", url, true);
+			req.send(null);
+		} else {
+			throw new Error("Error: Unable to execute AJAX request. Please upgrade your browser.");
+		}
 	}
 	
 /*********************************************************
