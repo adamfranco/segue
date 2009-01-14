@@ -23,9 +23,9 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  *
  * @version $Id: MediaLibrary.js,v 1.24 2008/04/11 21:50:56 adamfranco Exp $
  */
-function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
+function MediaLibrary ( assetId, callingElement, allowedMimeTypes, librariesConfig ) {
 	if ( arguments.length > 0 ) {
-		this.init( assetId, callingElement, allowedMimeTypes );
+		this.init( assetId, callingElement, allowedMimeTypes, librariesConfig );
 	}
 }
 
@@ -43,12 +43,22 @@ function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
 	 * @access public
 	 * @since 1/26/07
 	 */
-	MediaLibrary.prototype.init = function ( assetId, callingElement, allowedMimeTypes ) {
+	MediaLibrary.prototype.init = function ( assetId, callingElement, allowedMimeTypes, librariesConfig ) {
 		if (!assetId || !assetId.length) {
 			var message = "Required parameter, assetId, does not have a value";
 // 			alert(message);
 			throw message;
 		}
+		
+		// If we aren't specifying only certain libraries, enable all of them.
+		if (!librariesConfig)
+			librariesConfig = {all: true};
+		if (librariesConfig.all) {
+			librariesConfig.local = true;
+			for ( var i = 0; i < MediaLibrary.externalLibraries.length; i++) {
+				librariesConfig[MediaLibrary.externalLibraries[i].title] = true;
+			}
+		}		
 		
 		MediaLibrary.superclass.init.call(this, 
 								"Media Library",
@@ -65,40 +75,45 @@ function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
 		this.tabs.appendToContainer(this.contentElement);
 		
 	// Files attached to this asset
-		var tab = this.tabs.addTab('asset_media', "Files Here");
-		this.assetLibrary = new AssetLibrary(this, this.assetId, this.caller, tab.wrapperElement);
-		
-		tab.library = this.assetLibrary;
-		tab.onOpen = function () { this.library.onOpen() };
-		
-		this.tabs.selectTab('asset_media');
-		
-	// All Files in Site
-		var tab = this.tabs.addTab('site_media', "Other Files In Site");
-		this.siteLibrary = new SiteLibrary(this, this.assetId, this.caller, tab.wrapperElement);
-
-		tab.library = this.siteLibrary;
-		tab.onOpen = function () { this.library.onOpen() };
+		if (librariesConfig.local) {
+			var tab = this.tabs.addTab('asset_media', "Files Here");
+			this.assetLibrary = new AssetLibrary(this, this.assetId, this.caller, tab.wrapperElement);
+			
+			tab.library = this.assetLibrary;
+			tab.onOpen = function () { this.library.onOpen() };
+			
+			this.tabs.selectTab('asset_media');
+			
+		// All Files in Site
+			var tab = this.tabs.addTab('site_media', "Other Files In Site");
+			this.siteLibrary = new SiteLibrary(this, this.assetId, this.caller, tab.wrapperElement);
+	
+			tab.library = this.siteLibrary;
+			tab.onOpen = function () { this.library.onOpen() };
+		}
 
 	// Addtional external libraries
 		for ( var i = 0; i < MediaLibrary.externalLibraries.length; i++) {
 			var config = MediaLibrary.externalLibraries[i];
 			
-			// Include any needed class files.
-			if (!typeof config.class !== 'function') {
-				if (!config.jsSourceUrl)
-					throw "External library class " + config.class + " is not defined and a source URL is not specified.";
+			// Add the library if configured to do so.
+			if (librariesConfig[config.title]) {
+				// Include any needed class files.
+				if (!typeof config.class !== 'function') {
+					if (!config.jsSourceUrl)
+						throw "External library class " + config.class + " is not defined and a source URL is not specified.";
+					
+					Script.include(config.jsSourceUrl);
+				}
 				
-				Script.include(config.jsSourceUrl);
+				var tab = this.tabs.addTab('ext_' + i, config.title);
+				eval('tab.library = new ' + config.class + '(this, config, this.caller, tab.wrapperElement);');
+				
+				tab.onOpen = function () { 
+					if (typeof this.library.onOpen == 'function')
+						this.library.onOpen();
+				};
 			}
-			
-			var tab = this.tabs.addTab('ext_' + i, config.title);
-			eval('tab.library = new ' + config.class + '(this, config, this.caller, tab.wrapperElement);');
-			
-			tab.onOpen = function () { 
-				if (typeof this.library.onOpen == 'function')
-					this.library.onOpen();
-			};
 		}
 		
 	}
@@ -128,11 +143,11 @@ function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
 	 * @access public
 	 * @since  1/26/07
 	 */
-	MediaLibrary.run = function (assetId, callingElement, allowedMimeTypes ) {
+	MediaLibrary.run = function (assetId, callingElement, allowedMimeTypes, librariesConfig ) {
 		if (callingElement.panel) {
 			callingElement.panel.open();
 		} else {
-			var tmp = new MediaLibrary(assetId, callingElement, allowedMimeTypes );
+			var tmp = new MediaLibrary(assetId, callingElement, allowedMimeTypes, librariesConfig );
 		}
 	}
 	
