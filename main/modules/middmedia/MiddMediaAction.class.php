@@ -113,6 +113,35 @@ abstract class MiddMediaAction
 		return $username;
 	}
 	
+	/**
+	 * Execute this action
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 1/14/09
+	 */
+	final public function execute () {
+		$this->start();
+		try {
+			$this->buildXml();
+		} catch (PermissionDeniedException $e) {
+			$this->error($e->getMessage());
+		} catch (Exception $e) {
+			HarmoniErrorHandler::logException($e);
+			$this->error(get_class($e).": ".$e->getMessage());
+		}
+		$this->end();
+	}
+	
+	/**
+	 * Build the XML content for this action
+	 * 
+	 * @return void
+	 * @access protected
+	 * @since 1/14/09
+	 */
+	abstract protected function buildXml ();
+	
 }
 
 if ( false === function_exists('lcfirst') ):

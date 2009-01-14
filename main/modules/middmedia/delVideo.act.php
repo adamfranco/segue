@@ -27,22 +27,14 @@ class delVideoAction
 {
 		
 	/**
-	 * Execute this action
+	 * Build the XML content for this action
 	 * 
 	 * @return void
-	 * @access public
-	 * @since 1/13/09
+	 * @access protected
+	 * @since 1/14/09
 	 */
-	public function execute () {
-		$this->start();
-		try {
-			$this->delVideo(RequestContext::value('directory'), RequestContext::value('file'));
-		} catch (PermissionDeniedException $e) {
-			$this->error($e->getMessage());
-		} catch (SoapFault $e) {
-			$this->error($e->getMessage());
-		}
-		$this->end();
+	protected function buildXml () {
+		$this->delVideo(RequestContext::value('directory'), RequestContext::value('file'));
 	}
 	
 }

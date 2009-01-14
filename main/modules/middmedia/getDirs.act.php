@@ -28,32 +28,26 @@ class getDirsAction
 {
 		
 	/**
-	 * Execute this action
+	 * Build the XML content for this action
 	 * 
 	 * @return void
-	 * @access public
-	 * @since 1/13/09
+	 * @access protected
+	 * @since 1/14/09
 	 */
-	public function execute () {
-		$this->start();
+	protected function buildXml () {
 		$mime = Services::getService("MIME");
-		try {
-			foreach ($this->getTypes() as $type) {
-				print "\n<allowedFileType ";
-				print "mimeType=\"".$mime->getMIMETypeForExtension(trim($type))."\" ";
-				print "extension=\"".trim($type)."\" />";
-			}
-			foreach ($this->getDirs() as $dir) {
-				print "\n<directory ";
-				print "name=\"".$dir['name']."\" ";
-				print "bytesUsed=\"".$dir['bytesused']."\" ";
-				print "bytesAvailable=\"".$dir['bytesavailable']."\" ";
-				print "/>";
-			}
-		} catch (PermissionDeniedException $e) {
-			$this->error($e->getMessage());
+		foreach ($this->getTypes() as $type) {
+			print "\n<allowedFileType ";
+			print "mimeType=\"".$mime->getMIMETypeForExtension(trim($type))."\" ";
+			print "extension=\"".trim($type)."\" />";
 		}
-		$this->end();
+		foreach ($this->getDirs() as $dir) {
+			print "\n<directory ";
+			print "name=\"".$dir['name']."\" ";
+			print "bytesUsed=\"".$dir['bytesused']."\" ";
+			print "bytesAvailable=\"".$dir['bytesavailable']."\" ";
+			print "/>";
+		}
 	}
 	
 }

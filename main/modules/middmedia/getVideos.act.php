@@ -28,33 +28,27 @@ class getVideosAction
 {
 		
 	/**
-	 * Execute this action
+	 * Build the XML content for this action
 	 * 
 	 * @return void
-	 * @access public
-	 * @since 1/13/09
+	 * @access protected
+	 * @since 1/14/09
 	 */
-	public function execute () {
-		$this->start();
-		try {
-			foreach ($this->getVideos(RequestContext::value('directory')) as $file) {
-				print "\n<file ";
-				print "name=\"".$file['name']."\" ";
-				print "httpUrl=\"".$file['httpurl']."\" ";
-				print "rtmpUrl=\"".$file['rtmpurl']."\" ";
-				print "mimeType=\"".$file['mimetype']."\" ";
-				print "size=\"".$file['size']."\" ";
-				print "date=\"".$file['date']."\" ";
-				if (isset($file['creator']))
-					print "creator=\"".$file['creator']."\" ";
-				else
-					print "creator=\"\" ";
-				print "/>";
-			}
-		} catch (PermissionDeniedException $e) {
-			$this->error($e->getMessage());
+	protected function buildXml () {
+		foreach ($this->getVideos(RequestContext::value('directory')) as $file) {
+			print "\n<file ";
+			print "name=\"".$file['name']."\" ";
+			print "httpUrl=\"".$file['httpurl']."\" ";
+			print "rtmpUrl=\"".$file['rtmpurl']."\" ";
+			print "mimeType=\"".$file['mimetype']."\" ";
+			print "size=\"".$file['size']."\" ";
+			print "date=\"".$file['date']."\" ";
+			if (isset($file['creator']))
+				print "creator=\"".$file['creator']."\" ";
+			else
+				print "creator=\"\" ";
+			print "/>";
 		}
-		$this->end();
 	}
 	
 }
