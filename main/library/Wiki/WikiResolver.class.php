@@ -679,10 +679,19 @@ $		# Anchor for the end of the line
 		ob_start();
 		print "<a href='";
 		$harmoni->request->startNamespace(null);
-		print $harmoni->request->quickURL($this->addModule, $this->addAction, array('title' => $title, 'refNode' => $startingComponent->getId()));
+		try {
+			print SiteDispatcher::quickURL($this->addModule, $this->addAction, array(
+				'title' => $title, 
+				'refNode' => $startingComponent->getId()));
+		} catch (NullArgumentException $e) {
+			print $harmoni->request->quickURL($this->addModule, $this->addAction, array(
+				'title' => $title,
+				'node' => $startingComponent->getId(),
+				'refNode' => $startingComponent->getId()));
+		}
 		$harmoni->request->endNamespace();
 		print "'";
-		print " title='"._('Add a new component.')."'";
+		print " title=\"".str_replace('%1', strip_tags($title), _("Add '%1' as a new component."))."\"";
 		print ">";
 		print $display;
 		print " ?</a>";
