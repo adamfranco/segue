@@ -1,5 +1,5 @@
 
-Segue v. 2.2.5.7 (2009-01-12)
+Segue v. 2.2.6.0 (2009-01-12)
 =================================
 
 What is Segue?
@@ -12,8 +12,7 @@ and journal.
 
 Current Version Notes
 ---------------------
-This release fixes a character-encoding issue in which some Russian text became
-garbled due to incorrect encoding conversion. 
+This release adds support for creating new content through wiki-links. 
 
 ----
 
@@ -62,6 +61,21 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.6.0 (2009-01-12)
+----------------------------------------------------
+This release adds support for creating new content through wiki-links. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.8.6 and Polyphony 1.4.9.
+
 
 
 v. 2.2.5.7 (2009-01-12)

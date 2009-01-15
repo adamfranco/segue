@@ -2,6 +2,29 @@
 Segue Change Log
 
 
+v. 2.2.6.0 (2009-01-12)
+----------------------------------------------------
+This release adds support for creating new content through wiki-links. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.8.6 and Polyphony 1.4.9.
+		
+		
+	* New feature: 
+		Wiki: Wiki links to titles that do not match existing pages now link to a
+		form that allows creation of new pages, sections or content blocks.
+		(2009-01-15 - Adam Franco)
+		(reported by Shel Sax of Middlebury College)
+	
+
+
+
 v. 2.2.5.7 (2009-01-12)
 ----------------------------------------------------
 This release fixes a character-encoding issue in which some Russian text became

@@ -10,6 +10,24 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.6.0" date="2009-01-12">
+		<releaseNotes>
+			This release adds support for creating new content through wiki-links.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.8.6 and Polyphony 1.4.9.
+		</releaseNotes>
+		<new author='adam' date='2009-01-15' ref='' reftype='fr'  reporter='shel_sax'>
+			Wiki: Wiki links to titles that do not match existing pages now link
+			to a form that allows creation of new pages, sections or content blocks.
+		</new>
+	</version>
 	<version number="2.2.5.7" date="2009-01-12">
 		<releaseNotes>
 			This release fixes a character-encoding issue in which some Russian
