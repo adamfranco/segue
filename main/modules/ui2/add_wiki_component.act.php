@@ -10,6 +10,7 @@
  */ 
  
 require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php");
+require_once(dirname(__FILE__).'/process_add_wiki_component.act.php');
 
 /**
  * Action for adding components from wiki-links
@@ -87,14 +88,30 @@ class add_wiki_componentAction
 		$authZ = Services::getService('AuthZ');
 		$idManager = Services::getService("Id");
 		
-		if ($authZ->isUserAuthorized(
-			$idManager->getId("edu.middlebury.authorization.add_children"),
-			$refNode->getQualifierId()))
-		{
+		try {
+			$organizer = process_add_wiki_componentAction::getOrganizerForComponentType($refNode, 
+				new Type('SeguePlugins', 'edu.middlebury', 'TextBlock'));
+			$canAddContent = $authZ->isUserAuthorized(
+								$idManager->getId("edu.middlebury.authorization.add_children"),
+								$organizer->getQualifierId());
+		} catch (OperationFailedException $e) {
+			$canAddContent = false;
+		}
+		
+		try {
+			$organizer = process_add_wiki_componentAction::getOrganizerForComponentType($refNode, 
+				new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart'));
+			$canAddPages = $authZ->isUserAuthorized(
+								$idManager->getId("edu.middlebury.authorization.add_children"),
+								$organizer->getQualifierId());
+		} catch (OperationFailedException $e) {
+			$canAddPages = false;
+		}
+		
+		if ($canAddContent || $canAddPages) {
 			print "\n<form action='".SiteDispatcher::quickURL('ui2', 'process_add_wiki_component')."' method='post'>";
 			print "\n\t<input type='hidden' name='".RequestContext::name('displayName')."' value='".strip_tags(RequestContext::value('title'))."'/>";
 			print "\n\t<input type='hidden' name='".RequestContext::name('refNode')."' value='".$refNode->getId()."'/>";
-			
 			
 			
 			print "\n\t<p>";
@@ -102,16 +119,19 @@ class add_wiki_componentAction
 			
 			print "\n\t\t<select class='ui2_page_select' name='".RequestContext::name('componentType')."'>";
 			$allowed = array();
-			$allowed[] = _("Pages and Sections");
-			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart');
-			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
-			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
-			$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
-	
-	// 		$allowed[] = new Type('segue', 'edu.middlebury', 'NavBlock');
-			$allowed[] = _("Content Blocks");
-			$pluginManager = Services::getService("PluginManager");
-			$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
+			if ($canAddPages) {
+				$allowed[] = _("Pages and Sections");
+				$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'ContentPage_multipart');
+				$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SubMenu_multipart');
+				$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarSubMenu_multipart');
+				$allowed[] = new Type('segue-multipart', 'edu.middlebury', 'SidebarContentPage_multipart');
+			}
+			
+			if ($canAddContent) {
+				$allowed[] = _("Content Blocks");
+				$pluginManager = Services::getService("PluginManager");
+				$allowed = array_merge($allowed, $pluginManager->getEnabledPlugins());
+			}
 			
 			$inCat = false;
 			foreach ($allowed as $type) {
