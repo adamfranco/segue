@@ -168,11 +168,12 @@ class EduMiddleburyTagsPlugin
 			$items = array();
 	 		$director = SiteDispatcher::getSiteDirector();
 			$id = $this->getId();
-	 		
+	 		$targetId = $id;
 			if(!$this->getContent()){  
 				$node = $director->getSiteComponentById($this->getId());	
 			} else {
 				$node = $director->getSiteComponentById($this->getContent());
+				$targetId = $this->getContent();
 			}
 	
  			// Determine the navigational node above this tag cloud.
@@ -182,7 +183,6 @@ class EduMiddleburyTagsPlugin
  			$visitor = new TaggableItemVisitor;
 	 		$items = $parentNavNode->acceptVisitor($visitor);
  		
- 			//SiteDispatcher::passthroughContext();
  	
 
 			print "\n<div class='breadcrumbs' style='height: auto; margin-top: 1px; margin-bottom: 5px; border-bottom: 1px dotted; padding-bottom: 2px;'>";
@@ -192,7 +192,16 @@ class EduMiddleburyTagsPlugin
  			print "</div>";
 			print "\n<div style='text-align: justify;'>";
 			$tags = TagAction::getTagsFromItems($items);
-			print TagAction::getTagCloudDiv($tags, 'viewuser', null);
+ 			//SiteDispatcher::passthroughContext();
+			$tagData = TagAction::getTagCloudDiv($tags, 'sitetag',TagAction::getDefaultStyles());
+			$patterns = array();
+			$patterns[0] = '/href=\'([^\']*)\'/';
+			$patterns[1] = '/href=\"([^\"]*)\"/';
+			$replace = array();
+			$replace[0] = 'href=\'${1}&node='.$targetId.'\'';
+			$replace[1] = $replace[0];
+			print preg_replace($patterns,$replace,$tagData);
+ 			//SiteDispatcher::forgetContext();
 			print "</div>";
 			if($this->shouldShowControls()){
 				print "\n<div style='text-align: right; white-space: nowrap;'>";
@@ -209,7 +218,6 @@ class EduMiddleburyTagsPlugin
 			*/
 
 
- 			SiteDispatcher::forgetContext();
 
  		}
 				
