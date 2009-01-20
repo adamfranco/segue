@@ -61,6 +61,41 @@ if (!isset($_SESSION['table_setup_complete'])) {
 				default:
 					throw new Exception("Database schemas are not defined for specified database type.");
 			}
+			
+			// Load SQL files for plugins.
+			$pluginDirs = array(	MYDIR.'/plugins-dist/SeguePlugins',
+									MYDIR.'/plugins-local/SeguePlugins'
+								);
+			
+			foreach ($pluginDirs as $base) {
+				foreach (scandir($base) as $pluginAuthor) {
+					if (!is_dir($base.'/'.$pluginAuthor))
+						continue;
+					foreach (scandir($base.'/'.$pluginAuthor) as $plugin) {
+						if (!is_dir($base.'/'.$pluginAuthor.'/'.$plugin))
+							continue;
+						if (file_exists($base.'/'.$pluginAuthor.'/'.$plugin.'/SQL')
+							&& is_dir($base.'/'.$pluginAuthor.'/'.$plugin.'/SQL'))
+						{
+							
+							switch ($dbHandler->getDatabaseType($dbID)) {
+								case MYSQL:
+									SQLUtils::runSQLdirWithExceptions($base.'/'.$pluginAuthor.'/'.$plugin."/SQL/MySQL", $exceptions, $dbID);
+									break;
+								case POSTGRESQL:
+									SQLUtils::runSQLdirWithExceptions($base.'/'.$pluginAuthor.'/'.$plugin."/SQL/PostgreSQL", $exceptions, $dbID);
+									break;
+								case ORACLE:
+									SQLUtils::runSQLdirWithExceptions($base.'/'.$pluginAuthor.'/'.$plugin."/SQL/PostgreSQL", $exceptions, $dbID);
+									break;
+								default:
+									throw new Exception("Database schemas are not defined for specified database type.");
+							}
+						}
+					}
+				}
+			}
+			
 			$dbHandler->commitTransaction($dbID);
 			
 			// Now that we have added our tables, re-run this script and finish installation
@@ -330,7 +365,21 @@ if (!isset($_SESSION['table_setup_complete'])) {
 				$id = $idManager->getId("edu.middlebury.authorization.modify_group_membership");
 				$function = $authZManager->createFunction($id, "Modify Group Membership", "Modify Group membership.", $type, $qualifierHierarchyId);
 				$authZManager->createAuthorization($adminGroup->getId(), $function->getId(), $allOfSegueId);	
-	
+		
+		/*********************************************************
+		 * Add a site for the administrator user to use for testing
+		 * new installations.
+		 *********************************************************/
+			$slotMgr = SlotManager::instance();
+			$testSlot = $slotMgr->getSlotByShortname('jadministrator-test_site');
+			$testSlot->addOwner($adminAgent->getId());
+			$testSlot->setLocationCategory('community');
+			$slotMgr->convertSlotToType($testSlot, Slot::personal);
+			
+			// Set the 'personal' folder as the last visited so that admins logging into
+			// a new install will see their personal test site.
+			UserData::instance()->setPreference('segue_portal_last_folder', 'personal');
+			
 // 		print "\n<br> ...done";
 		$_SESSION['table_setup_complete'] = TRUE;
 		unset($_SESSION['installation_underway']);

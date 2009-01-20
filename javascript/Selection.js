@@ -364,6 +364,9 @@ function Segue_Selection () {
 			case 'Block':
 				var type = 'Content Block';
 				break;
+			case 'SiteNavBlock':
+				var type = 'Site';
+				break;
 			default:
 				throw "Unsupported component type: " + siteComponent.type;
 			

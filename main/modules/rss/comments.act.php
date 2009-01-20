@@ -28,6 +28,16 @@ class commentsAction
 	extends contentAction
 
 {
+	/**
+	 * Answer the title of this feed
+	 * 
+	 * @return string
+	 * @access protected
+	 * @since 10/16/08
+	 */
+	protected function getTitleLabel () {
+		return _("Discussion");
+	}
 	
 	/*********************************************************
 	 * Vistor methods

@@ -225,6 +225,39 @@ class Segue_Gui2_ThemeThumbnail
 	}
 	
 	/**
+	 * Answer true if the file is readable
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 11/19/08
+	 */
+	public function isReadable () {
+		return true;
+	}
+	
+	/**
+	 * Answer true if the file is writable
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 11/19/08
+	 */
+	public function isWritable () {
+		return true;
+	}
+	
+	/**
+	 * Answer true if the file is executable
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 11/19/08
+	 */
+	public function isExecutable () {
+		return false;
+	}
+	
+	/**
 	 * load the info for this file
 	 * 
 	 * @return null

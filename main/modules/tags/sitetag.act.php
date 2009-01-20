@@ -12,7 +12,7 @@
 // require_once(POLYPHONY."/main/library/ResultPrinter/IteratorResultPrinter.class.php");
 require_once(dirname(__FILE__)."/SegueSingleTagAction.abstract.php");
 require_once(dirname(__FILE__)."/TagModeSiteVisitor.class.php");
-require_once(MYDIR."/plugins/SeguePlugins/edu.middlebury/Tags/TaggableItemVisitor.class.php");
+require_once(MYDIR."/plugins-dist/SeguePlugins/edu.middlebury/Tags/TaggableItemVisitor.class.php");
 
 /**
  * This action all nodes in a given Segue site with a given tag.

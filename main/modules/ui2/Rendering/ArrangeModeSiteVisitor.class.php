@@ -592,8 +592,8 @@ class ArrangeModeSiteVisitor
 		
 		print "\n\t\t</select>";
 		
-		print "\n\t\t<div style='text-align: right;'>";
-		print "\n\t\t\t<input type='submit' value='"._('Submit')."'/>";
+		print "\n\t\t<div style=''>";
+		print "\n\t\t\t<input type='submit' value='"._('Create')."'/>";
 		print "\n\t\t\t<input type='button' ";
 		print "onclick='this.parentNode.parentNode.style.display=\"none\"; this.parentNode.parentNode.previousSibling.style.display=\"block\";'";
 		print " value='"._("Cancel")."'/>";

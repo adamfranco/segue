@@ -263,7 +263,7 @@ class EduMiddleburyRssFeedPlugin
  		
  		
  		print "\n\t<br/>";
- 		print "\n\t<input type='submit' name='".$this->getFieldName('submit_pressed')."' value='"._("Submit")."'/>";
+ 		print "\n\t<input type='submit' name='".$this->getFieldName('submit_pressed')."' value='"._("Save")."'/>";
  		print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
  		print "\n</form>";
  	}
@@ -316,7 +316,8 @@ class EduMiddleburyRssFeedPlugin
  				print "
  	var container = document.get_element_by_id('$id');
  	var reader = new RssFeedReader('".$this->_getFeedAccessUrl()."',
- 				{loadingImage: '".$this->getPublicFileUrl('loading.gif')."'";
+ 				{loadingImage: '".$this->getPublicFileUrl('loading.gif')."',
+ 				errorImage: '".$this->getPublicFileUrl('loading_stopped.gif')."'";
  				if ($this->_showChannelTitles())
  					print ",\n\t\t\t\tshowChannelTitles: true";
  				if ($this->_showChannelDescriptions())
@@ -441,11 +442,36 @@ class EduMiddleburyRssFeedPlugin
  		// For local-server urls, return the feed url
  		if ($this->isLocal($this->_getFeedUrl()) 
  				&& $this->isContentTrusted($this->_getFeedUrl()))
+ 		{
 	 		return $this->_getFeedUrl();
+ 		}
+ 		
+ 		// URLs to other location categories in the same segue instance.
+ 		// These can be rebuilt to go through our local host.
+ 		$pattern = '#((';
+		$pattern .= '('.str_replace('.', '\.', MYURL).')';
+		foreach (SlotAbstract::getLocationCategories() as $category) {
+			$pattern .= '|('.str_replace('.', '\.', SiteDispatcher::getBaseUrlForLocationCategory($category)).')';
+		}
+		$pattern .= ')[^\'"\s\]<>}]*)#i';
+		
+ 		if (preg_match($pattern, $this->_getFeedUrl(), $matches)) {
+ 			$harmoni = Harmoni::instance();
+ 			// Create a local-server version of the URL.
+ 			$harmoni->request->startNamespace(null);
+ 			$url = $harmoni->request->quickURL(
+ 				$harmoni->request->getModuleFromUrlWithBase($matches[2], $matches[0]),
+ 				$harmoni->request->getActionFromUrlWithBase($matches[2], $matches[0]),
+ 				$harmoni->request->getParameterArrayFromUrlWithBase($matches[2], $matches[0]));
+ 			$harmoni->request->endNamespace();
+ 			if ($this->isContentTrusted($url)) {
+ 				return $url;
+ 			}
+ 		}
+ 		
  		
  		// For remote urls, pass through a local data-fetching gateway.
- 		else
-	 		return $this->getPluginActionUrl('remote_feed', 
+ 		return $this->getPluginActionUrl('remote_feed', 
  				array('url' => $this->_getFeedUrl()));
  	}
  	
@@ -474,8 +500,8 @@ class EduMiddleburyRssFeedPlugin
  	protected function isLocal ($url) {
  		if (!preg_match('/^[a-z]{3,6}:\/\/([a-zA-Z0-9_.-]+)(:\/)?/i', $url, $matches))
  			throw new Exception("Invalid URL syntax: $url");
- 		$host = $matches[1];
- 		if (strtolower($host) == strtolower($_SERVER['HTTP_HOST'])) 
+ 		
+ 		if ($this->tokenizeLocalUrls($url) != $url)
 	 		return true;
 	 	else
 	 		return false;

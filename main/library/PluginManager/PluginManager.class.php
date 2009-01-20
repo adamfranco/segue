@@ -51,8 +51,11 @@ class PluginManager {
 		$this->_pluginClasses = array();
 		$this->_pluginDirs = array();
 
-		if (!isset($_SESSION['registered_plugins']))
-	 		$this->_registerPlugins(); // not installed, just in filesystem
+		if (!isset($_SESSION['registered_plugins'])) {
+			 // not installed, just in filesystem
+	 		$this->_registerPlugins('plugins-local');
+			$this->_registerPlugins('plugins-dist');
+	 	}
 
 		if (!isset($_SESSION['enabled_plugins']))
 			$this->_enabledPlugins = array();
@@ -198,18 +201,17 @@ class PluginManager {
 			throw new Exception("Invalid plugin keyword, '".$keyword."'.");
 		
 		
-		$pluginClassFile = $this->getPluginDir($type)
-			.$this->getPluginClass($type).".class.php";
-		
 		if ($this->isPluginDomain($domain)) {
-			if (!file_exists($pluginClassFile))
-				throw new Exception("Missing Plugin class file '$pluginClassFile'.");
-				
 			require_once(MYDIR."/main/library/PluginManager/"
 				.$domain."/include.php");
-			require_once($pluginClassFile);
 			
-
+			$pluginClassFile = $this->getPluginDir($type)
+				.$this->getPluginClass($type).".class.php";
+			
+			if (file_exists($pluginClassFile))
+				require_once($pluginClassFile);
+			else
+				throw new Exception("Missing Plugin class file '$pluginClassFile'.");
 		} else {
 			$plugins = $this->getRegisteredPlugins();
 			// Check to see if this plugin even exists
@@ -260,10 +262,13 @@ class PluginManager {
 	 * @access public
 	 * @since 2/23/06
 	 */
-	function _registerPlugins () {
+	function _registerPlugins ($directory) {
 		$_SESSION['registeredPlugins'] = array();
 		// open the plugin directory
-		$plugPath = MYDIR."/plugins/";
+		if ($directory != 'plugins-dist' && $directory != 'plugins-local')
+				throw new InvalidArgumentException("'$directory' should be 'plugins-dist' or 'plugins-local'");
+		
+		$plugPath = MYDIR."/".$directory."/";
 		$pDirHandle = openDir($plugPath);
 		// directories that should be there and are not plugins
 		$ignore = array(".", "..", "CVS");
@@ -317,8 +322,10 @@ class PluginManager {
 	 * @since 3/9/06
 	 */
 	function getRegisteredPlugins () {
-		if (!isset($_SESSION['registeredPlugins']))
-			$this->_registerPlugins();
+		if (!isset($_SESSION['registeredPlugins'])) {
+			$this->_registerPlugins('plugins-local');
+			$this->_registerPlugins('plugins-dist');
+		}
 		return $_SESSION['registeredPlugins'];
 	}
 
@@ -417,35 +424,56 @@ class PluginManager {
 		return $this->_pluginClasses[$type->asString()];
 	}
 	
+	
 	/**
-	 * Answer the Plugin class for a given type
+	 * Answer a plugin directory
+	 * 
+	 * @param object Type
+	 * @return string
+	 * @access public
+	 * @since 10/8/08
+	 */
+	public function getPluginDir (Type $type) {
+		$typeString = $type->asString();
+		if (!isset($this->pluginDirs[$typeString])) {
+			$localPluginDir = $this->_getPluginDir($type, 'plugins-local');
+			if (file_exists($localPluginDir))
+				$this->pluginDirs[$typeString] = $localPluginDir;
+			else
+				$this->pluginDirs[$typeString] = $this->_getPluginDir($type, 'plugins-dist');
+		}
+		return $this->pluginDirs[$typeString];
+	}
+	
+	/**
+	 * Answer the Plugin class for a given type and subdirectory
 	 * 
 	 * @param object Type $type
+	 * @param string $directory 'plugins-dist' or 'plugins-local'
 	 * @return string
 	 * @access public
 	 * @since 1/12/07
 	 */
-	function getPluginDir ( $type ) {
-		if (!isset($this->_pluginDirs[$type->asString()])) {
-			// Clean type components to safe strings.
-			$domain = $type->getDomain();
-			$authority = $type->getAuthority();
-			$keyword = $type->getKeyword();
-			
-			if (preg_match('/[^a-z0-9_\-\s]/i', $domain))
-				throw new Exception("Invalid plugin domain, '".$domain."'.");
-			
-			if (preg_match('/([^a-z0-9_\-\s\.]|\.{2,})/i', $authority))
-				throw new Exception("Invalid plugin authority, '".$authority."'.");
-				
-			if (preg_match('/[^a-z0-9_\-]/i', $keyword))
-				throw new Exception("Invalid plugin keyword, '".$keyword."'.");
-			
-			$this->_pluginDirs[$type->asString()] = MYDIR."/plugins/".$domain."/"
-						.$authority."/".$keyword."/";
-		}
+	private function _getPluginDir ( Type $type, $directory) {
+		if ($directory != 'plugins-dist' && $directory != 'plugins-local')
+			throw new InvalidArgumentException("'$directory' should be 'plugins-dist' or 'plugins-local'");
 		
-		return $this->_pluginDirs[$type->asString()];
+		// Clean type components to safe strings.
+		$domain = $type->getDomain();
+		$authority = $type->getAuthority();
+		$keyword = $type->getKeyword();
+		
+		if (preg_match('/[^a-z0-9_\-\s]/i', $domain))
+			throw new Exception("Invalid plugin domain, '".$domain."'.");
+		
+		if (preg_match('/([^a-z0-9_\-\s\.]|\.{2,})/i', $authority))
+			throw new Exception("Invalid plugin authority, '".$authority."'.");
+			
+		if (preg_match('/[^a-z0-9_\-]/i', $keyword))
+			throw new Exception("Invalid plugin keyword, '".$keyword."'.");
+			
+		return MYDIR."/".$directory."/".$domain."/".$authority."/".$keyword."/";
+		
 	}
 	
 	/**

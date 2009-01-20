@@ -49,6 +49,17 @@ class contentAction
 	}
 	
 	/**
+	 * Answer the title of this feed
+	 * 
+	 * @return string
+	 * @access protected
+	 * @since 10/16/08
+	 */
+	protected function getTitleLabel () {
+		return _("Content");
+	}
+	
+	/**
 	 * builds an RSS feed
 	 * 
 	 * @return void
@@ -61,7 +72,7 @@ class contentAction
 		$siteComponent = SiteDispatcher::getCurrentNode();
 		
 		// set feed channel title and url
-		$this->setTitle($siteComponent->getDisplayName()." - "._("Content"));
+		$this->setTitle($siteComponent->getDisplayName()." - ".$this->getTitleLabel());
 		$this->setLink(SiteDispatcher::quickURL("view","html",array("node" => $siteComponent->getId())));
 		
 		if (method_exists($siteComponent, 'getDescription'))

@@ -41,11 +41,20 @@ Quisque sed odio. Nullam posuere eleifend leo. Proin adipiscing nunc et pede.
 			<xsl:with-param name="substringOut" select="''"/>
 		</xsl:call-template>
 	</xsl:variable>
+    
+    <!-- Convert any Horizontal Rules to placeholders -->
+	<xsl:variable name="s1a">
+    	<xsl:call-template name="SubstringReplace">
+			<xsl:with-param name="stringIn" select="$s1"/>
+			<xsl:with-param name="substringIn" select="'&#x0A;----&#x0A;'"/>
+			<xsl:with-param name="substringOut" select="'##HR##'"/>
+		</xsl:call-template>
+    </xsl:variable>
 	
 	<!-- Convert double new-lines to placeholders -->
     <xsl:variable name="s2">
     	<xsl:call-template name="SubstringReplace">
-			<xsl:with-param name="stringIn" select="$s1"/>
+			<xsl:with-param name="stringIn" select="$s1a"/>
 			<xsl:with-param name="substringIn" select="'&#x0A;&#x0A;'"/>
 			<xsl:with-param name="substringOut" select="'##PARA##'"/>
 		</xsl:call-template>
@@ -68,28 +77,10 @@ Quisque sed odio. Nullam posuere eleifend leo. Proin adipiscing nunc et pede.
 			<xsl:with-param name="substringOut" select="'##LIST_ITEM##'"/>
 		</xsl:call-template>
     </xsl:variable>
-    
-    <!-- Convert any '-' list-markers to placeholders -->
-	<xsl:variable name="s2c">
-    	<xsl:call-template name="SubstringReplace">
-			<xsl:with-param name="stringIn" select="$s2b"/>
-			<xsl:with-param name="substringIn" select="'&#x0A;-'"/>
-			<xsl:with-param name="substringOut" select="'##LIST_ITEM##'"/>
-		</xsl:call-template>
-    </xsl:variable>
-    
-    <!-- Convert any ' -' list-markers to placeholders -->
-	<xsl:variable name="s2d">
-    	<xsl:call-template name="SubstringReplace">
-			<xsl:with-param name="stringIn" select="$s2c"/>
-			<xsl:with-param name="substringIn" select="'&#x0A; -'"/>
-			<xsl:with-param name="substringOut" select="'##LIST_ITEM##'"/>
-		</xsl:call-template>
-    </xsl:variable>
 	
 	 <!-- remove any remaining new-lines -->
     <xsl:variable name="s3">
-	    <xsl:value-of select="normalize-space(translate($s2d,'&#x0A;',' '))" />
+	    <xsl:value-of select="normalize-space(translate($s2b,'&#x0A;',' '))" />
     </xsl:variable>
     
     <!-- Put back the double newlines -->
@@ -108,13 +99,20 @@ Quisque sed odio. Nullam posuere eleifend leo. Proin adipiscing nunc et pede.
 	</xsl:variable>
 	
 	<!-- Put back the list-items -->
-	<xsl:call-template name="SubstringReplace">
-		<xsl:with-param name="stringIn" select="$s5"/>
-		<xsl:with-param name="substringIn" select="'##LIST_ITEM##'"/>
-		<xsl:with-param name="substringOut" select="'&#x0A;&#x0A; *'"/>
-	</xsl:call-template>
-
+	<xsl:variable name="s6">
+		<xsl:call-template name="SubstringReplace">
+			<xsl:with-param name="stringIn" select="$s5"/>
+			<xsl:with-param name="substringIn" select="'##LIST_ITEM##'"/>
+			<xsl:with-param name="substringOut" select="'&#x0A;&#x0A; *'"/>
+		</xsl:call-template>
+	</xsl:variable>
 	
+	<!-- Put back in the HRs -->
+	<xsl:call-template name="SubstringReplace">
+		<xsl:with-param name="stringIn" select="$s6"/>
+		<xsl:with-param name="substringIn" select="'##HR##'"/>
+		<xsl:with-param name="substringOut" select="'&#x0A;&#x0A;----&#x0A;&#x0A;'"/>
+	</xsl:call-template>
 </xsl:template>
 
 </xsl:stylesheet>

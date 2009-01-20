@@ -100,11 +100,9 @@ class Update018_UserDataAction
 			case MYSQL:
 				SQLUtils::runSQLfile(HARMONI_BASE."/SQL/MySQL/UserPrefs.sql", IMPORTER_CONNECTION);
 				break;
-			case POSTGRESQL:
-				SQLUtils::runSQLfile(HARMONI_BASE."/SQL/PostgreSQL/AccessLog.sql", IMPORTER_CONNECTION);
-				break;
 			case ORACLE:
-				SQLUtils::runSQLfile(HARMONI_BASE."/SQL/PostgreSQL/AccessLog.sql", IMPORTER_CONNECTION);
+			case POSTGRESQL:
+				SQLUtils::runSQLfile(HARMONI_BASE."/SQL/PostgreSQL/UserPrefs.sql", IMPORTER_CONNECTION);
 				break;
 			default:
 				throw new Exception("Database schemas are not defined for specified database type.");

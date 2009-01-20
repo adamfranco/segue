@@ -1,26 +1,26 @@
 <?php
 /**
- * @since 1/13/06
+ * @since 8/1/2008
  * @package segue.plugins.Segue
  * 
- * @copyright Copyright &copy; 2005, Middlebury College
+ * @copyright Copyright &copy; 2008, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
+ * @version $Id: EduMiddleburyAudioPlayerPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
  */
 
 /**
  * A Simple Plugin for making editable blocks of text
  * 
- * @since 1/13/06
+ * @since 8/1/2008
  * @package segue.plugins.Segue
  * 
- * @copyright Copyright &copy; 2005, Middlebury College
+ * @copyright Copyright &copy; 2008, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  *
- * @version $Id: EduMiddleburyDownloadPlugin.class.php,v 1.19 2008/03/18 17:32:12 adamfranco Exp $
+ * @version $Id: EduMiddleburyAudioPlayerPlugin.class.php,v 0.5 2008/03/18 17:32:12 davidfouhey Exp $
  */
-class EduMiddleburyDownloadPlugin
+class EduMiddleburyAudioPlayerPlugin
 	extends SegueAjaxPlugin
 // 	extends SeguePlugin
 {
@@ -34,7 +34,7 @@ class EduMiddleburyDownloadPlugin
  	 * @static
  	 */
  	static function getPluginDescription () {
- 		return _("The File download plugin allows you to chose a file-for-download and have a link to it displayed in a bar with a citation and a custom description. Use this plugin with audio files for creating podcasts.");
+ 		return _("The audio player plugin allows you to upload a clip that can be played in a user's browser.");
  	}
  	
  	/**
@@ -47,7 +47,7 @@ class EduMiddleburyDownloadPlugin
  	 * @static
  	 */
  	public static function getPluginDisplayName () {
- 		return _("File");
+ 		return _("Audio Clip");
  	}
  	
  	/**
@@ -60,7 +60,7 @@ class EduMiddleburyDownloadPlugin
  	 * @static
  	 */
  	public static function getPluginCreators () {
- 		return array("Adam Franco");
+ 		return array("David Fouhey");
  	}
  	
  	/**
@@ -72,20 +72,7 @@ class EduMiddleburyDownloadPlugin
  	 * @static
  	 */
  	public static function getPluginVersion () {
- 		return '1.0';
- 	}
- 	
- 	/**
- 	 * Answer the latest version of the plugin available. Null if no version information
- 	 * is available.
- 	 * 
- 	 * @return mixed a string or null
- 	 * @access public
- 	 * @since 12/19/07
- 	 * @static
- 	 */
- 	public static function getPluginVersionAvailable () {
- 		return null;
+ 		return '0.1';
  	}
 		
 	/**
@@ -98,7 +85,18 @@ class EduMiddleburyDownloadPlugin
  	 * @since 1/12/06
  	 */
  	function initialize () {
-		// Override as needed.
+ 		$this->doc = new Harmoni_DOMDocument;
+		$this->doc->preserveWhiteSpace = false;
+		if (strlen($this->getContent())) {
+			try {
+				$this->doc->loadXML($this->getContent());
+			} catch (DOMException $e) {
+				$this->doc->loadXML("<AudioPlayerPlugin></AudioPlayerPlugin>");
+			}
+	 	} else
+	 		$this->doc->loadXML("<AudioPlayerPlugin></AudioPlayerPlugin>");
+	 			
+ 		$this->xpath = new DOMXPath($this->doc);
  	}
  	
  	/**
@@ -113,8 +111,9 @@ class EduMiddleburyDownloadPlugin
  	 */
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) { 			
- 			$this->setContent($this->getFieldValue('file_id'));
+ 			$this->setFileId($this->getFieldValue('file_id'));
  			$this->setRawDescription($this->tokenizeLocalUrls($this->getFieldValue('description')));
+ 			$this->setShowDownloadLink(($this->getFieldValue('show_download_link') == 'true')?true:false);
  			$this->logEvent('Modify Content', 'File for download updated');
  		}
  	}
@@ -135,12 +134,11 @@ class EduMiddleburyDownloadPlugin
  		if ($this->getFieldValue('edit') && $this->canModify()) {
 			print "\n".$this->formStartTagWithAction();
  			
- 			print "\n\t<input name='".$this->getFieldName('file_id')."' type='hidden' value=\"".$this->getContent()."\"/>";
+ 			print "\n\t<input name='".$this->getFieldName('file_id')."' type='hidden' value=\"".$this->getFileId()."\"/>";
  			
- 			print "\n\t<h3>"._("File:")."</h3>";
-
  			// Select File button
- 			print "\n\t<input type='button' value='"._('Select File')."' onclick=\"";
+ 			print "\n\t<h3>"._("File:")."</h3>";
+ 			print "\n\t<input type='button' value='"._('Select MP3 File')."' onclick=\"";
  			print "this.onUse = function (mediaFile) { ";
  			
  			print 		"this.form.elements['".$this->getFieldName('file_id')."'].value = mediaFile.getId(); ";
@@ -157,7 +155,7 @@ class EduMiddleburyDownloadPlugin
  			print 		"img.alt = mediaFile.getTitles()[0]; ";
  			
  			print		"var downloadDiv = downloadBar.appendChild(document.createElement('div')); ";
- 			print		"downloadDiv.style.textAlign = 'center'; ";
+ 			print		"downloadDiv.style.textAlign = 'right'; ";
  			print		"var download = downloadDiv.appendChild(document.createElement('a')); ";
  			print 		"download.innerHTML = '"._("Download this file")."'; ";
  			print		"download.style.fontWeight = 'bold'; ";
@@ -171,11 +169,20 @@ class EduMiddleburyDownloadPlugin
  			
  			print 		"this.nextSibling.innerHTML = '<div>' + downloadBar.innerHTML + '<div style=\\'clear: both;\\'></div></div>'; ";
  			print "}; "; 
- 			print "MediaLibrary.run('".$this->getId()."', this); ";
+ 			print "MediaLibrary.run('".$this->getId()."', this, ['audio/mpeg', 'audio/mpg']); ";
  			print "\"/>";
  			
  			// Container for example download bar.
  			print "<div style='margin-top: 10px;'>".$this->getDownloadBar()."</div>";
+ 			
+ 			// Download link
+ 			print "\n\t<h3>"._("Options:")."</h3>";
+ 			print "\n\t<div>";
+ 			print "\n\t\t<input name='".$this->getFieldName('show_download_link')."' type='checkbox' value='true'";
+ 			if ($this->showDownloadLink()) 
+ 				print " checked='checked'";
+ 			print "/> "._("Show Download Link");
+ 			print "\n\t</div>";
  			
  			// Description
  			print "\n\t<h3>"._("Caption:")."</h3>";
@@ -183,10 +190,12 @@ class EduMiddleburyDownloadPlugin
  					$this->applyEditorSafeTextTemplates(
  						$this->cleanHTML($this->untokenizeLocalUrls(
  							$this->getRawDescription()))));
+ 			
  			print $this->getWikiHelp();
  			
+ 			
  			print "\n\t<br/>";
- 			print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."'/>";
+ 			print "\n\t<input type='submit' value='"._('Save')."' name='".$this->getFieldName('submit')."'/>";
  			
  			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
 
@@ -203,6 +212,7 @@ class EduMiddleburyDownloadPlugin
 	 		print "</div>";
 	 		
 	 		if ($this->getRawDescription()) {
+// 				print "\n<hr/>";
 				print "\n<div style='margin-top: 10px;'>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getRawDescription())))."</div>";
 			}
 	 		
@@ -229,8 +239,8 @@ class EduMiddleburyDownloadPlugin
  	 * @since 8/27/08
  	 */
  	public function getRelatedMediaFiles () {
- 		if ($this->getMediaFile())
-	 		return array($this->getMediaFile());
+ 		if ($this->getFileId())
+	 		return array(MediaFile::withIdString($this->getFileId()));
 	 	else
 	 		return array();
  	}
@@ -281,13 +291,6 @@ class EduMiddleburyDownloadPlugin
 		
 		$oFCKeditor->Create() ;
 		
-		$writeJsCallback = "function (htmlString) { "
-			."var oEditor = FCKeditorAPI.GetInstance('".$fieldname."'); "
-			."oEditor.InsertHtml(htmlString); "
-			."}";
-		
-		print "\n\t".Segue_MediaLibrary::getMediaButtons($this->getId(), $writeJsCallback);
-		
 		// Add an event check on back button to confirm that the user wants to
 		// leave with their editor open.
 		$string = _("You have edits open. Any changes will be lost.");
@@ -301,6 +304,7 @@ class EduMiddleburyDownloadPlugin
 </script>
 ";
  	}
+ 	
 	
 	/**
 	 * Answer the download bar.
@@ -315,34 +319,47 @@ class EduMiddleburyDownloadPlugin
 		$file = $this->getMediaFile();
 		if ($file) {
 			print "\n";	
+			$playerUrl = $this->getPublicFileUrl("player.swf");
+			$url = $file->getUrl();
+			$id = $this->getId();
+			//the url that comes back from getUrlForFlash contains html entities
+			//what we really want to handle the ampersands is url encoding, rather than
+			//&amp; That way we get the urls in a way so that flash won't think that the 
+			//variables in the url aren't for it, but in such a way that when the request
+			//gets sent, the variables will get to the server.
+			$flashUrl = urlencode(html_entity_decode($file->getUrlForFlash()));
 
-			print "\n\t\t<div style='float: right; margin-top: 12px;'>";
-			print "\n\t\t<img src='".MYPATH."/images/downarrow.gif' align='top' width='15' height='15' alt='"._('download')."'/>";
-			print "\n\t\t\t<a style='text-decoration: none;' href='";
-			print $file->getUrl();
-			print "'>";
-			print "<strong>"._("Download")."</strong>";
-			print "</a>";
-			
-			$size = $file->getSize();
-			
-			if ($size->value()) {
-				$sizeString = $size->asString();
-			} else {
-				$sizeString = _("unknown size");
+			print "\n\t<script type='text/javascript' src='".$this->getPublicFileUrl('audio-player.js')."'></script>";
+
+			if ($this->showDownloadLink()) {
+				print "\n\t\t<div style='float: right; margin-top: 12px;'>";
+				print "\n\t\t<img src='".MYPATH."/images/downarrow.gif' align='top' width='15' height='15' alt='"._('download')."'/>";
+				print "\n\t\t\t<a style='text-decoration: none;' href='";
+				print $file->getUrl();
+				print "'>";
+				print "<strong>"._("Download")."</strong>";
+				print "</a>";
+				
+				$size = $file->getSize();
+				
+				if ($size->value()) {
+					$sizeString = $size->asString();
+				} else {
+					$sizeString = _("unknown size");
+				}
+				print "\n\t\t<span style='font-size: 90%;'>(".$sizeString.")</span>";
+				print "\n\t</div>";	
 			}
-			print "\n\t\t<span style='font-size: 90%;'>(".$sizeString.")</span>";
-			print "\n\t</div>";	
 
 
 			print "\n<div style='float: left;'>";			
-			print "\n\t<a href='".$file->getUrl()."'>";
-			print "\n\t\t<img src='";
-			print $file->getThumbnailUrl();
-			print "' align='bottom' border='0' width='32' height='32' alt=\""._("Download '");
-			print str_replace('"', "'", strip_tags($file->getTitle()));
-			print "'\"/>";
-			print "\n\t</a>";
+                        print "\n\t<object width='290' height='24' id='audioplayer{$id}' data='{$playerUrl}' type='application/x-shockwave-flash'>";
+                        print "\n\t<param value='{$playerUrl}' name='movie' />";
+                        print "<param value='high' name='quality' /><param value='false' name='menu' /><param value='transparent' name='wmode' />\n";   
+                        print "<param value='soundFile={$flashUrl}' name='FlashVars' />\n";
+                        print "</object>\n";
+			print "<br/>\n";
+			
 			print "\n</div>";
 			
 			print "<div style='clear: both; margin-bottom: 6px;'>";
@@ -418,8 +435,8 @@ class EduMiddleburyDownloadPlugin
 	function getMediaFile () {
 		if (!isset($this->_mediaFile)) {
 			try {
-				if ($this->getContent())
-					$this->_mediaFile = MediaFile::withIdString($this->getContent());				
+				if ($this->getFileId())
+					$this->_mediaFile = MediaFile::withIdString($this->getFileId());				
 				else
 					return null;
 			} catch (InvalidArgumentException $e) {
@@ -453,6 +470,123 @@ class EduMiddleburyDownloadPlugin
  		return ob_get_clean();
  	}
  	
+ 	/**
+ 	 * Answer the file id or null.
+ 	 * 
+ 	 * @return mixed string or null
+ 	 * @access protected
+ 	 * @since 8/26/08
+ 	 */
+ 	protected function getFileId () {
+ 		$elements = $this->xpath->query('/AudioPlayerPlugin/File/Id');
+ 		if (!$elements->length)
+ 			return null;
+ 		
+ 		$id = $elements->item(0)->nodeValue;
+ 		if (strlen($id)) {
+ 			return str_replace('&amp;', '&', $id);
+ 		}
+ 		return null;
+ 	}
+ 	
+ 	/**
+ 	 * Answer the file id or null.
+ 	 * 
+ 	 * @param string $id
+ 	 * @return void
+ 	 * @access protected
+ 	 * @since 8/26/08
+ 	 */
+ 	protected function setFileId ($id) {
+ 		// Reencode ampersands for XML
+ 		$id = str_replace('&', '&amp;', $id);
+ 		
+ 		$fileElements = $this->xpath->query('/AudioPlayerPlugin/File');
+ 		if ($fileElements->length)
+ 			$fileElement = $fileElements->item(0);
+ 		else
+ 			$fileElement = $this->doc->documentElement->appendChild(
+ 				$this->doc->createElement('File'));
+ 		
+ 		$idElements = $this->xpath->query('./Id', $fileElement);
+ 		if ($idElements->length) {
+ 			$idElement = $idElements->item(0);
+ 			$idElement->nodeValue = $id;
+ 		} else
+ 			$fileElement->appendChild($this->doc->createElement('Id', $id));
+ 		
+ 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the download link should be shown.
+ 	 * 
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 8/26/08
+ 	 */
+ 	protected function showDownloadLink () {
+ 		return $this->_getBoolean('show_download_link', false);
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the download link should be shown.
+ 	 * 
+ 	 * @param boolean $bool
+ 	 * @return void
+ 	 * @access protected
+ 	 * @since 8/26/08
+ 	 */
+ 	protected function setShowDownloadLink ($bool) {
+ 		return $this->_setBoolean('show_download_link', $bool);
+ 	}
+	
+	/**
+ 	 * Answer a boolean option
+ 	 * 
+ 	 * @param string $name
+ 	 * @param optional $default
+ 	 * @return boolean
+ 	 * @access protected
+ 	 * @since 6/19/08
+ 	 */
+ 	protected function _getBoolean ($name, $default = true) {
+ 		$elements = $this->xpath->query('/AudioPlayerPlugin/File');
+ 		if (!$elements->length)
+ 			return $default;
+ 		
+ 		$elem = $elements->item(0);
+ 		if (!$elem->hasAttribute($name))
+ 			return $default;
+ 			
+ 		if ($elem->getAttribute($name) == 'false')
+ 			return false;
+ 		
+ 		return true;
+ 	}
+ 	
+ 	/**
+ 	 * Set a boolean option
+ 	 * 
+ 	 * @param string $name
+ 	 * @param boolean $value
+ 	 * @return void
+ 	 * @access protected
+ 	 * @since 6/19/08
+ 	 */
+ 	protected function _setBoolean ($name, $value) {
+ 		$feedElements = $this->xpath->query('/AudioPlayerPlugin/File');
+ 		if ($feedElements->length)
+ 			$feedElement = $feedElements->item(0);
+ 		else
+ 			$feedElement = $this->doc->documentElement->appendChild(
+ 				$this->doc->createElement('File'));
+ 		
+ 		$feedElement->setAttribute($name, (($value)?'true':'false'));
+ 		
+ 		$this->setContent($this->doc->saveXMLWithWhitespace());
+ 	}
+ 	
  	/*********************************************************
  	 * The following methods are needed to support restoring
  	 * from backups and importing/exporting plugin data.
@@ -470,8 +604,8 @@ class EduMiddleburyDownloadPlugin
  	 */
  	public function replaceIds (array $idMap) {
  		// Update the media-file mapping
- 		if (strlen(trim($this->getContent()))) {
-	 		$this->setContent(MediaFile::getMappedIdString($idMap, $this->getContent()));
+ 		if (strlen(trim($this->getFileId()))) {
+	 		$this->setFileId(MediaFile::getMappedIdString($idMap, $this->getFileId()));
  			unset($this->_mediaFile);
  		}
  		

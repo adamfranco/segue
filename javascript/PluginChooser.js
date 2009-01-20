@@ -246,10 +246,11 @@ function PluginChooser (callingElement, destUrl ) {
 		
 		// Stupid IE6 does not support setting of the input type.
 		if (getBrowser()[2] == 'msie') {
-			var submit = container.appendChild(document.createElement('<input type="submit">'));
+			var submit = container.appendChild(document.createElement('<input type="submit" value="Create Discussion Post »">'));
 		} else {
 			var submit = container.appendChild(document.createElement('input'));
 			submit.type = 'submit';
+			submit.value = "Create Discussion Post »";
 		}
 		
 		this.center();

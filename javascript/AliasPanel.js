@@ -1,5 +1,5 @@
 /**
- * @since 7/28/08
+ * @since 10/09/08
  * @package segue.portal
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
@@ -8,14 +8,14 @@
  * @version $Id$
  */
 
-SiteCopyPanel.prototype = new Panel();
-SiteCopyPanel.prototype.constructor = SiteCopyPanel;
-SiteCopyPanel.superclass = Panel.prototype;
+AliasPanel.prototype = new Panel();
+AliasPanel.prototype.constructor = AliasPanel;
+AliasPanel.superclass = Panel.prototype;
 
 /**
- * A panel for setting options and copying a site.
+ * A panel for creating aliases from an empty slot to another slot.
  * 
- * @since 7/28/08
+ * @since 10/09/08
  * @package segue.portal
  * 
  * @copyright Copyright &copy; 2005, Middlebury College
@@ -23,96 +23,94 @@ SiteCopyPanel.superclass = Panel.prototype;
  *
  * @version $Id$
  */
-function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
+function AliasPanel ( slot, positionElement ) {
 	if ( arguments.length > 0 ) {
-		this.init( destSlot, srcSiteId, srcTitle, positionElement );
+		this.init( slot, positionElement );
 	}
 }
 	
 	/**
-	 * Initialize and run the SiteCopyPanel
+	 * Initialize and run the AliasPanel
 	 * 
-	 * @param string destSlot
-	 * @param string srcSiteId
-	 * @param string srcTitle
+	 * @param string slot
 	 * @param DOMElement positionElement
 	 * @return void
 	 * @access public
-	 * @since 11/27/06
+	 * @since 10/09/08
 	 */
-	SiteCopyPanel.run = function (destSlot, srcSiteId, srcTitle, positionElement ) {
-		if (positionElement.panel && positionElement.panel.srcSiteId == srcSiteId) {
+	AliasPanel.run = function (slot, positionElement ) {
+		if (positionElement.panel) {
 			positionElement.panel.open();
 		} else {
-			var tmp = new SiteCopyPanel(destSlot, srcSiteId, srcTitle, positionElement );
+			var tmp = new AliasPanel(slot, positionElement );
 		}
 	}
 	
 	/**
 	 * Initialize the object
 	 * 
-	 * @param string destSlot
-	 * @param string srcSiteId
-	 * @param string srcTitle
+	 * @param string slot
 	 * @param DOMElement positionElement
 	 * @return void
 	 * @access public
-	 * @since 7/28/08
+	 * @since 10/09/08
 	 */
-	SiteCopyPanel.prototype.init = function ( destSlot, srcSiteId, srcTitle, positionElement ) {
-		this.destSlot = destSlot;
-		this.srcSiteId = srcSiteId;
-		this.srcTitle = srcTitle;
+	AliasPanel.prototype.init = function ( slot, positionElement ) {
+		this.slot = slot;
 		
-		SiteCopyPanel.superclass.init.call(this, 
-								"Copy <br/>&nbsp;&nbsp;&nbsp;&nbsp;'" + srcTitle + "' <br/>to <br/>&nbsp;&nbsp;&nbsp;&nbsp;'" + destSlot + "'",
+		var helpUrl = Harmoni.quickUrl('help', 'browse_help', {topic: 'Site Aliases'});
+		var helpLink = " &nbsp; &nbsp; (<a href='#' onclick=\"var helpWindow = window.open('" + helpUrl + "', 'help', 'width=700,height=600,scrollbars=yes,resizable=yes'); helpWindow.focus(); return false;\">Help</a>)";
+		
+		AliasPanel.superclass.init.call(this, 
+								"Make '" + slot + "' an alias of..." + helpLink,
 								15,
-								200,
-								positionElement);
+								300,
+								positionElement,
+								'alias_panel');
+		
+		var aliasPanel = this;
 		
 		// Build up the form
 		var form = document.createElement('form');
-		form.action = Harmoni.quickUrl('portal', 'copy_site');
+		form.action = Harmoni.quickUrl('slots', 'make_alias');
 		form.method = 'POST';
-		
+				
 		var input = document.createElement('input');
-		input.name = 'destSlot';
+		input.name = 'slot';
 		input.type = 'hidden';
-		input.value = destSlot;
+		input.value = slot;
 		form.appendChild(input);
 		
-		var input = document.createElement('input');
-		input.name = 'srcSiteId';
-		input.type = 'hidden';
-		input.value = srcSiteId;
-		form.appendChild(input);
+		this.targetSlot = document.createElement('input');
+		this.targetSlot.name = 'target_slot';
+		this.targetSlot.size = '40';
+		this.targetSlot.id = this.slot +'_alias_target';
+		this.targetSlot.type = 'text';
 		
-		var input = document.createElement('input');
-		input.name = 'copyPermissions';
-		input.type = 'checkbox';
-		input.value = 'true';
-		form.appendChild(input);
-		input.checked = 'checked';
-		form.appendChild(document.createTextNode(' Copy Roles?'));
-		form.appendChild(document.createElement('br'));
+		this.targetSlot.onkeypress = function(e) {
+			// on enter button
+			if (e.which == 13) {
+				aliasPanel.submitForm(this.form);
+				return false;
+			}
+		}
 		
-		var input = document.createElement('input');
-		input.name = 'copyDiscussions';
-		input.type = 'checkbox';
-		input.value = 'true';
-		form.appendChild(input);
-		input.checked = 'checked';
-		form.appendChild(document.createTextNode(' Copy Discussion Posts?'));
+		form.appendChild(this.targetSlot);
+		
+		var choices = document.createElement('div');
+		choices.id = this.slot +'_alias_target_choices';
+		choices.className = 'autocomplete';
+		form.appendChild(choices);
+		
 		form.appendChild(document.createElement('br'));
 		form.appendChild(document.createElement('br'));
 		
 		var submit = document.createElement('input');
 		submit.type = 'button';
-		submit.value = "Copy »";
+		submit.value = "Make Alias »";
 		
-		var siteCopyPanel = this;
 		submit.onclick = function() {
-			siteCopyPanel.submitForm(this.form);
+			aliasPanel.submitForm(this.form);
 			return false;
 		}
 		
@@ -122,6 +120,19 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 		form.appendChild(div);
 		
 		this.contentElement.appendChild(form);
+		
+		// Add the autocompleter 
+		new Ajax.Autocompleter(
+			this.slot +'_alias_target', 
+			this.slot +'_alias_target_choices',
+			Harmoni.quickUrl('slots', 'alias_targets', {slot: slot}),
+			{	paramName: 'search',
+				minChars: 2
+				
+			}
+		);
+		
+		this.targetSlot.focus();
 	}
 	
 	/**
@@ -130,17 +141,17 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 	 * @param DOMElement form
 	 * @return void
 	 * @access public
-	 * @since 7/28/08
+	 * @since 10/09/08
 	 */
-	SiteCopyPanel.prototype.submitForm = function (form) {
+	AliasPanel.prototype.submitForm = function (form) {
 		// Send off an asynchronous request to do the update and monitor the
 		// status in a new centered panel.
 		var url = form.action;
 		var params = this.getFormParams(form);
 		
-		var statusPanel = new CenteredPanel("Copy Status", 400, 800, this.positionElement);
+		var statusPanel = new CenteredPanel("Alias Status", 400, 800, this.positionElement);
 		statusPanel.cancel.parentNode.removeChild(statusPanel.cancel);
-		statusPanel.contentElement.innerHTML = "<img src='" + Harmoni.MYPATH + "/images/loading.gif' alt='Loading...' /><br/><span>Copying Site...</span>";
+		statusPanel.contentElement.innerHTML = "<img src='" + Harmoni.MYPATH + "/images/loading.gif' alt='Loading...' /><br/><span>Making Alias...</span>";
 		
 		var req = Harmoni.createRequest();
 		if (req) {
@@ -176,9 +187,14 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 					button.onclick = function () {
 						window.location.reload();
 					};
+					button.onkeypress = function (e) {
+						if (e.which == 13)
+							window.location.reload();
+					};
 					statusPanel.contentElement.appendChild(document.createElement('br'));
 					statusPanel.contentElement.appendChild(document.createElement('br'));
 					statusPanel.contentElement.appendChild(button);
+					button.focus();
 				}
 			} 
 		
@@ -198,9 +214,9 @@ function SiteCopyPanel ( destSlot, srcSiteId, srcTitle, positionElement ) {
 	 * @param DOMElement form
 	 * @return string
 	 * @access public
-	 * @since 7/29/08
+	 * @since 10/09/08
 	 */
-	SiteCopyPanel.prototype.getFormParams = function (form) {
+	AliasPanel.prototype.getFormParams = function (form) {
 		var params = '';
 		for (var i = 0; i < form.elements.length; i++) {
 			var elem = form.elements[i];

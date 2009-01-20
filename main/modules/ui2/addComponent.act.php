@@ -37,13 +37,41 @@ class addComponentAction
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");
 		
-		$director = $this->getSiteDirector();
-		
-		$organizer = $director->getSiteComponentById(RequestContext::value('organizerId'));
+		$organizer = $this->getTargetOrganizer();
 		
 		return $authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.add_children"),
 			$organizer->getQualifierId());
+	}
+	
+	/**
+	 * Answer the organizer that we will be inserting into.
+	 * 
+	 * @return object OrganizerSiteComponent
+	 * @access protected
+	 * @since 1/15/09
+	 */
+	protected function getTargetOrganizer () {
+		if (!isset($this->_organizer)) {
+			$director = $this->getSiteDirector();
+			$this->_organizer = $director->getSiteComponentById(RequestContext::value('organizerId'));
+		}
+		
+		return $this->_organizer;
+	}
+	
+	/**
+	 * Answer the cell that we will be inserting into
+	 * 
+	 * @return int
+	 * @access protected
+	 * @since 1/15/09
+	 */
+	protected function getTargetCell () {
+		if (is_null(RequestContext::value('cellIndex')))
+			return null;
+		else
+			return intval(RequestContext::value('cellIndex'));
 	}
 	
 	/**
@@ -56,12 +84,8 @@ class addComponentAction
 	 * @since 4/14/06
 	 */
 	function processChanges ( SiteDirector $director ) {
-		// Get the target organizer's Id & Cell
-		$targetOrgId = RequestContext::value('organizerId');
-		$targetCell = RequestContext::value('cellIndex');
-		
-		$organizer = $director->getSiteComponentById($targetOrgId);
-		$director->getRootSiteComponent($targetOrgId);
+		$targetCell = $this->getTargetCell();
+		$organizer = $this->getTargetOrganizer();
 		
 		$componentType = HarmoniType::fromString(RequestContext::value('componentType'));
 		if ($componentType->getDomain() == 'segue-multipart') {

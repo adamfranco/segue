@@ -300,7 +300,7 @@ class EduMiddleburyTextBlockPlugin
 		print "\n\t<br/>";
 		
 		print "\n\t<input type='hidden' value='' name='".$this->getFieldName('submit_pressed')."'/>";
-		print "\n\t<input type='submit' value='"._('Submit')."' name='".$this->getFieldName('submit')."' onclick='this.form.elements[\"".$this->getFieldName('submit_pressed')."\"].value = \"true\"; '/>";
+		print "\n\t<input type='submit' value='"._('Save')."' name='".$this->getFieldName('submit')."' onclick='this.form.elements[\"".$this->getFieldName('submit_pressed')."\"].value = \"true\"; '/>";
 		
 		print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
 				
@@ -649,7 +649,7 @@ class EduMiddleburyTextBlockPlugin
  		$version = $doc->appendChild($doc->createElement('version'));
  		
  		$content = $version->appendChild($doc->createElement('content'));
- 		$content->appendChild($doc->createCDATASection($this->tokenizeLocalUrls($this->getContent())));
+ 		$content->appendChild($doc->createCDATASection($this->tokenizeLocalUrls($this->cleanHTML($this->getContent()))));
  		
  		$version->appendChild($doc->createElement('abstractLength', $this->getRawDescription()));
  		

@@ -72,24 +72,25 @@ class AttributionPrinter {
 	public function getAttributionMarkUp () {
 		
 		ob_start();
-		if ($this->shouldShowCreateDate()) {
+		if ($this->shouldShowCreateDate() || $this->shouldShowCreatorName()) {
 			print "\n<div class='attribution_line'>";
 			print $this->getCreationLine();
 			print "</div>";
 		}
 		
-		if ($this->shouldShowModificationDate()) {
+		if ($this->shouldShowModificationDate() || $this->shouldShowEditorName()) {
 			print "\n<div class='attribution_line'>";
 			print $this->getModificationLine();
 			print "</div>";
 		}
 		
-		if ($this->shouldShowCreatorName()) {
+		if ($this->block->showAttribution() == 'all_editors') {
 			print "\n<div class='attribution_line'>";
 			print $this->getContributorsLine();
 			print "</div>";		
 		}
-	return ob_get_clean();
+		
+		return ob_get_clean();
 	}
 	
 	/**
@@ -100,22 +101,14 @@ class AttributionPrinter {
 	 * @since 3/24/08
 	 */
 	private function getCreationLine () {
-
 		$showCreateDate = $this->shouldShowCreateDate();		
 		$showCreatorName = $this->shouldShowCreatorName();
-// 		$showCreateDate = true;	
-// 		$showCreatorName = true;
 		
 		// get author name
 		$name = $this->getCreator();
-	
-// 		$agent = $this->agentManager->getAgent($creatorId);	
-// 		$name = $agent->getDisplayName();
 		
 		// get creation date and format
-		$dateObject = $this->block->getCreationDate();
-		$dateTime = $this->getDateTime($dateObject);
-		
+		$dateTime = $this->getDateTime($this->block->getCreationDate());
 		
 		if ($showCreateDate && $showCreatorName) {			
 			print "added by ".$name." on ".$dateTime;			
@@ -123,8 +116,6 @@ class AttributionPrinter {
 			print "added on ".$dateTime;
 		} else if ($showCreatorName) {
 			print "added by ".$name;
-		} else {
-			print "";
 		}
 			
 	}
@@ -137,31 +128,25 @@ class AttributionPrinter {
 	 * @since 3/24/08
 	 */
 	private function getModificationLine () {
-
 		$showModificationDate = $this->shouldShowModificationDate();		
 		$showEditorName = $this->shouldShowEditorName();
-// 		$showModificationDate = true;	
-// 		$showEditorName = true;
 		
 		// get last editor name
 		$contributors = $this->getEditors();
-		if (count($contributors) > 0) $name = $contributors[0];
+		if (count($contributors) > 0) 
+			$name = $contributors[0];
+		else
+			$showEditorName = false;
 				
 		// get modification date and format
-		$dateObject = $this->block->getModificationDate();
-		$dateTime = $this->getDateTime($dateObject);
+		$dateTime = $this->getDateTime($this->block->getModificationDate());
 		
-
-		if (isset($name)) {
-			if ($showModificationDate && $showEditorName) {			
-				print "updated by ".$name." on ".$dateTime;			
-			} else if ($showModificationDate) {
-				print "updated on ".$dateTime;
-			} else if ($showEditorName) {
-				print "updated by ".$name;
-			} else {
-				print "";
-			}
+		if ($showModificationDate && $showEditorName) {			
+			print "updated by ".$name." on ".$dateTime;			
+		} else if ($showModificationDate) {
+			print "updated on ".$dateTime;
+		} else if ($showEditorName) {
+			print "updated by ".$name;
 		}
 				
 	}
@@ -174,6 +159,7 @@ class AttributionPrinter {
 	 * @since 3/24/08
 	 */
 	private function getContributorsLine () {
+		print " ";
 		
 		if ($this->block->showAttribution() === 'all_editors') {	
 			$contributors = $this->getEditors();
@@ -184,7 +170,17 @@ class AttributionPrinter {
 				if ($n < count($contributors)) print "; ";
 				$n++;
 			}
+			
+			return;
 		}
+		
+		if ($this->shouldShowCreatorName()) {
+			$this->getCreationLine();
+			if ($this->shouldShowEditorName())
+				print ";";
+		}
+		if ($this->shouldShowEditorName())
+			$this->getModificationLine();
 			
 	}		
 
@@ -197,14 +193,8 @@ class AttributionPrinter {
 	 * @since 3/24/08
 	 */
 	private function shouldShowCreateDate() {
-		
-		 if ($this->block->showDates() === 'creation_date' ||
-		 	$this->block->showDates() === 'both') {
-		 	return true;
-		 } else {
-		 	return false;
-		 }
-		
+		return ($this->block->showDates() === 'creation_date' 
+					|| $this->block->showDates() === 'both');
 	}
 
 	/**
@@ -215,14 +205,8 @@ class AttributionPrinter {
 	 * @since 3/24/08
 	 */
 	private function shouldShowCreatorName() {
-		
-		 if ($this->block->showAttribution() === 'creator' ||
-		 	$this->block->showAttribution() === 'both') {
-		 	return true;
-		 } else {
-		 	return false;
-		 }
-		
+		return ($this->block->showAttribution() === 'creator' 
+					|| $this->block->showAttribution() === 'both');
 	}
 
 	/**
@@ -233,12 +217,8 @@ class AttributionPrinter {
 	 * @since 3/24/08
 	 */
 	private function shouldShowModificationDate() {
-		
-		 if ($this->block->showDates() === 'modification_date' || $this->block->showDates() === 'both') {
-		 	return true;
-		 } else {
-		 	return false;
-		 }
+		return ($this->block->showDates() === 'modification_date' 
+					|| $this->block->showDates() === 'both');
 		
 	}
 
@@ -250,15 +230,17 @@ class AttributionPrinter {
 	 * @since 3/24/08
 	 */
 	private function shouldShowEditorName() {
+		if ($this->block->showAttribution() === 'last_editor')
+			return true;
 		
-		if ($this->block->showAttribution() === 'last_editor' ||
-		 	$this->block->showAttribution() === 'both') {
-		 	
+		if ($this->block->showAttribution() === 'both') {
 			$editors = $this->getEditors();
 			$creator = $this->getCreator();
 			if (isset($editors[0]) && $editors[0] != $creator) 
 				return true;
-		}		
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -279,6 +261,11 @@ class AttributionPrinter {
 				}
 			}
 		}
+		
+		$creator = $this->getCreator();
+		if (!in_array($creator, $contributors)) {
+			$contributors[] = $creator;
+		}
 		return $contributors;
 	}
 
@@ -290,7 +277,6 @@ class AttributionPrinter {
 	 * @since 3/24/08
 	 */
 	private function getCreator () {
-	
 		$creatorId = $this->block->getCreator();
 		try {
 			$agent = $this->agentManager->getAgent($creatorId);	
@@ -305,12 +291,11 @@ class AttributionPrinter {
 	 * answer a formated date
 	 *
 	 * @param object DateAndTime $dateObject
-	 * @return strin
+	 * @return string
 	 * @access private
 	 * @since 3/24/08
 	 */
 	private function getDateTime (DateAndTime $dateObject) {
-	
 		$date = $dateObject->ymdString();
 		$time = $dateObject->asTime();
 		$time = $time->string12(false);			

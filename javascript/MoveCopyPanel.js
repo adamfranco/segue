@@ -45,8 +45,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 			throw "Invalid destination Id, '" + destId + "'.";
 		this.destId = destId;
 		
-		if (destType != 'MenuOrganizer' && destType != 'FlowOrganizer')
-			throw "Invalid destination type, '" + destType + "'. Must be 'MenuOrganizer' or 'ContentOrganizer'.";
+		if (destType != 'MenuOrganizer' && destType != 'FlowOrganizer' && destType != 'Slot')
+			throw "Invalid destination type, '" + destType + "'. Must be 'MenuOrganizer', 'ContentOrganizer', or 'Slot'.";
 		this.destType = destType;
 		
 		for (var i = 0; i < ancestors.length; i++) {
@@ -74,7 +74,11 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var panel = this;
 		
 		this.form = document.createElement('form');
-		this.form.action = Harmoni.quickUrl('selection', 'move_copy', {destId: this.destId});
+		if (this.destType == 'Slot') {
+			this.form.action = Harmoni.quickUrl('portal', 'copy_site', {destSlot: this.destId});
+		} else {
+			this.form.action = Harmoni.quickUrl('selection', 'move_copy', {destId: this.destId});
+		}
 		this.form.method = "POST";
 		// Submit checking.
 		this.form.onsubmit = function() {
@@ -139,7 +143,10 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		// Submit button
 		this.submit = document.createElement('input');
 		this.submit.type = 'submit';
-		this.submit.value = 'Copy Checked »';
+		if (this.command.value == 'move')
+			this.submit.value = 'Move Checked »';
+		else
+			this.submit.value = 'Copy Checked »';
 		this.form.appendChild(this.submit);
 		
 		// Copy Permissions/Discussions
@@ -221,27 +228,28 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 // 		this.form.appendChild(document.createTextNode(' \u00a0 \u00a0 '));
 		
 		// Check All/None
-		var div = document.createElement('div');
-		div.className = 'All_None';
-		var link = document.createElement('a');
-		link.innerHTML = "Check All";
-		link.onclick = function() {
-			panel.checkAll();
-			return false;
-		}
-		div.appendChild(link);
-		
-		div.appendChild(document.createTextNode(' \u00a0 / \u00a0 '));
-		
-		var link = document.createElement('a');
-		link.innerHTML = "Check None";
-		link.onclick = function() {
-			panel.checkNone();
-			return false;
-		}
-		div.appendChild(link);
-		this.form.appendChild(div);
-		
+		if (this.destType != 'Slot') {
+			var div = document.createElement('div');
+			div.className = 'All_None';
+			var link = document.createElement('a');
+			link.innerHTML = "Check All";
+			link.onclick = function() {
+				panel.checkAll();
+				return false;
+			}
+			div.appendChild(link);
+			
+			div.appendChild(document.createTextNode(' \u00a0 / \u00a0 '));
+			
+			var link = document.createElement('a');
+			link.innerHTML = "Check None";
+			link.onclick = function() {
+				panel.checkNone();
+				return false;
+			}
+			div.appendChild(link);
+			this.form.appendChild(div);
+		}		
 		
 		// Item list.
 		this.selectionList = document.createElement('ol');
@@ -254,6 +262,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		
 		if (this.destType == 'MenuOrganizer')
 			this.emptySelectionMessage.innerHTML = "No pages or content blocks are selected. Use the <strong>Copy</strong> links to select pages or content blocks so that they can be moved or copied here.";
+		else if (this.destType == 'Slot')
+			this.emptySelectionMessage.innerHTML = "No sites are selected. Use the <strong>Copy</strong> links to select sites so that they can be moved or copied here.";
 		else
 			this.emptySelectionMessage.innerHTML = "No content blocks are selected. Use the <strong>Copy</strong> links to select content blocks so that they can be moved or copied here.";
 		this.contentElement.appendChild(this.emptySelectionMessage);
@@ -356,14 +366,21 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		
 		// Checkbox
 		var elem = document.createElement('input');
-		elem.name = 'sourceIds[]';
-		elem.type = 'checkbox';
+		if (this.destType == 'Slot') {
+			elem.name = 'srcSiteId';
+			elem.type = 'radio';
+		} else {
+			elem.name = 'sourceIds[]';
+			elem.type = 'checkbox';
+		}
 		elem.value = siteComponent.id;
 		li.appendChild(elem);
 		
 		if (this.destId == siteComponent.id
 			|| (this.command.value == 'move' && this.isAncestor(siteComponent))
-			|| (this.destType == 'FlowOrganizer' && siteComponent.type != 'Block'))
+			|| (this.destType == 'FlowOrganizer' && siteComponent.type != 'Block')
+			|| (this.destType == 'MenuOrganizer' && siteComponent.type != 'Block' && siteComponent.type != 'NavBlock')
+			|| (this.destType == 'Slot' && siteComponent.type != 'SiteNavBlock'))
 		{
 			elem.disabled = true;
 			li.className = 'disabled';
@@ -392,6 +409,9 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 				break;
 			case 'Block':
 				var type = 'Content Block';
+				break;
+			case 'SiteNavBlock':
+				var type = 'Site';
 				break;
 			default:
 				throw "Unsupported component type: " + siteComponent.type;
@@ -461,7 +481,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var checked = new Array();
 		var boxes = this.selectionList.getElementsByTagName('input');
 		for (var i = 0; i < boxes.length; i++) {
-			if (boxes[i].type.toLowerCase() == 'checkbox' && boxes[i].checked)
+			var type = boxes[i].type.toLowerCase();
+			if ((type == 'checkbox' || type == 'radio') && boxes[i].checked)
 			{
 				checked.push(boxes[i].value);
 			}
@@ -561,6 +582,8 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 					statusPanel.contentElement.appendChild(document.createElement('br'));
 					statusPanel.contentElement.appendChild(document.createElement('br'));
 					statusPanel.contentElement.appendChild(button);
+					
+					button.focus();
 				}
 			} 
 		
@@ -586,7 +609,7 @@ function MoveCopyPanel ( destId, destType, ancestors, positionElement ) {
 		var params = '';
 		for (var i = 0; i < form.elements.length; i++) {
 			var elem = form.elements[i];
-			if (elem.name && (elem.type != 'checkbox' || elem.checked)) {
+			if (elem.name && (elem.type != 'checkbox' || elem.checked) && (elem.type != 'radio' || elem.checked)) {
 				if (params.length)
 					params += '&';
 				
