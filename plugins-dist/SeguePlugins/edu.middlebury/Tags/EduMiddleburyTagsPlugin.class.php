@@ -157,10 +157,12 @@ class EduMiddleburyTagsPlugin
 			print "\n".$this->formStartTagWithAction();
 			$visitor = new UmbrellaVisitor;
 			$node->acceptVisitor($visitor);
-			print "<div>Select the node: ";
+			print "<div>";
+			print _('Chose a section or page:');
 			print "<select name='".$this->getFieldName('tagNode')."'>";
 			$this->writeUmbrellaSelect($visitor->getNodeData(),$currentTarget);
-			print "</select>";
+			print "</select>\n";
+			print "<div class='tags_display_options'>"._('Only tags from your selected section or page will be displayed')."</div><br/>\n";
 			print "<input type='submit' value='Update' name='".$this->getFieldName('submit')."'>\n";
 			print "</div>";
 			print "</form>";
