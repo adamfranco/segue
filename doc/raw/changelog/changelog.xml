@@ -27,10 +27,10 @@
 			Wiki: Wiki links to titles that do not match existing pages now link
 			to a form that allows creation of new pages, sections or content blocks.
 		</new>
-		<change author='alex' date='2009-01-22'>
+		<fix author='alex' date='2009-01-22' ref='2520120' reftype='bug'  reporter='alex'>
 			Portal: Added folder title to Portal header and more prominent selected link styling
 			to help users better see current view of their portal
-		</change>
+		</fix>
 	</version>
 	<version number="2.2.5.7" date="2009-01-12">
 		<releaseNotes>
