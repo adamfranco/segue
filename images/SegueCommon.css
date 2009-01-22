@@ -395,14 +395,15 @@
 	}
 	
 	ul.portal_categories div.title {
-		font-weight: bolder;
+		font-size: normal;
 	}
 	
 	ul.portal_categories li {
 		list-style-type: none;
 		list-style-position: inside;
-		margin-bottom: 15px;
-		border-top: 1px dotted;
+		margin-bottom: 5px;
+		margin-top: 5px;
+		border-bottom: 1px dotted;
 	}
 	
 	ul.portal_categories div.description {
@@ -412,12 +413,32 @@
 	
 	ul.portal_folders div.title {
 		font-weight: normal;
+		font-size: normal;
+		padding-right: 5px;
+		padding-left: 3px;
+		border: 1px solid #FFF;
+	}
+
+	ul.portal_folders div.title:hover {
+		background-color: #F5F5F5;
+		border: 1px solid #979797;
+	}
+	
+	ul.portal_folders div.title a:hover {
+		text-decoration: none;
 	}
 	
 	ul.portal_categories li.current div.title {
-		font-weight: bolder;
+
+		background-color: #F5F5F5;
+		border: 1px solid #979797;
+		padding-right: 5px;
+		padding-left: 3px;
 	}
 	
+	ul.portal_categories li.current {
+		
+	}
 	
 	ul.portal_folders {
 		margin-top: 5px;
