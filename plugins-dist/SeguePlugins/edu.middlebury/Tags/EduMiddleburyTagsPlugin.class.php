@@ -205,7 +205,7 @@ class EduMiddleburyTagsPlugin
 			print "</div>";
 			if($this->shouldShowControls()){
 				print "\n<div style='text-align: right; white-space: nowrap;'>";
-				print "\n\t<a ".$this->href(array('edit' => 'true')).">".("Configure Tag Cloud")."</a>";
+				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._('edit')."</a>";
 				print "\n</div>";
 			}
 		
