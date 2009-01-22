@@ -23,7 +23,7 @@ require_once(dirname(__FILE__)."/Segue1To2Converter.abstract.php");
  * @version $Id: DownloadBlockSegue1To2Converter.class.php,v 1.3 2008/03/21 21:11:24 adamfranco Exp $
  */
 class AudioPlayerBlockSegue1To2Converter
-	extends BlockSegue1To2Converter
+	extends DownloadBlockSegue1To2Converter
 {
 	
 	/**
@@ -35,23 +35,6 @@ class AudioPlayerBlockSegue1To2Converter
 	 */
 	protected function createMyPluginType () {
 		return $this->createPluginType('AudioPlayer');
-	}
-	
-	/**
-	 * Answer a description element for this Block
-	 * 
-	 * @param object DOMElement $mediaElement
-	 * @return object DOMElement
-	 * @access protected
-	 * @since 2/12/08
-	 */
-	protected function getDescriptionElement (DOMElement $mediaElement) {
-		// Content/Description
-		$descElement = $this->sourceXPath->query('./description', $this->sourceElement)->item(0);
-		$descHtml = $this->getStringValue($descElement);
-		$descHtml = $this->rewriteLocalLinks($descHtml);
-		
-		return $this->createCDATAElement('description', $this->trimHtml($descHtml, 50));
 	}
 	
 	/**
@@ -101,19 +84,6 @@ class AudioPlayerBlockSegue1To2Converter
 		
 		return $currentContent;
 	}
-	
-	/**
-	 * Answer a element that represents the history for this Block, null if not
-	 * supported
-	 * 
-	 * @return object DOMElement
-	 * @access protected
-	 * @since 2/12/08
-	 */
-	protected function getHistoryElement (DOMElement $mediaElement) {
-		// @todo Fill history support
-	}
-	
 }
 
 ?>
