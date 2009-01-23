@@ -39,6 +39,10 @@ class testParticipationAction
 	public function execute () {
 		print "Testing participation view class...";
 		$site = SiteDispatcher::getCurrentRootNode();
+		
+		// make sure url contains node id
+		$currentNode = SiteDispatcher::getCurrentNode();
+	//	printpre($currentNode);
 		$participantId = 606;
 		$nodeId = 511205;
 				
@@ -49,6 +53,7 @@ class testParticipationAction
 		$participantName = $participant->getDisplayName();
 		$participantId = $participant->getId();
 		
+		printpre(get_class($participant));
 		printpre($participantName);
 		printpre($participantId);
 		
@@ -58,7 +63,12 @@ class testParticipationAction
 		printpre(get_class($action));
 		printpre($action->getId());
 	
-	
+		//get array of all actions on the site
+		$all_actions = $view->getActions();
+		printpre(get_class($all_actions));
+		
+		
+		printpre("done");
 		
 		
 		exit;

@@ -12,6 +12,9 @@ require_once(MYDIR."/main/modules/participation/Participant.class.php");
 require_once(MYDIR."/main/modules/participation/Participation_ModAction.abstract.php");
 require_once(MYDIR."/main/modules/participation/Participation_CreateAction.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
+require_once(MYDIR."/main/modules/participation/ParticipationSiteVisitor.class.php");
+
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 /**
  * get information about agent participation in a given site
@@ -75,9 +78,13 @@ class Participation_View {
 	 */
 	public function getActions () {
 		
+		// use a participation site visitor to visit all componenents
+		// and get participation info
+		// need to figure out how to a SiteComponent from a SiteNavBlockSiteComponent 
+		$currentNode = SiteDispatcher::getCurrentNode();
+		$currentNode->acceptVisitor(new ParticipationSiteVisitor());
 
-		
-		throw new UnimplementedException();
+		//throw new UnimplementedException();
 	}
 	
 	/**
