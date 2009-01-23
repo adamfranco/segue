@@ -362,7 +362,23 @@
 
 	.portal_list_site_title {
 		float: left;
+		border: 1px solid #FFF;
+		padding: 3px;
 	}
+	
+	.portal_list_site_title:hover {
+		float: left;
+		background-color: #FFF8C6;
+		border: 1px solid #CCCCCC;
+		padding: 3px;
+	}
+	
+	.portal_list_site_title a:hover {
+		float: left;
+		text-decoration: none;
+
+	}
+	
 	
 	.portal_list_controls {
 		text-align: right;
@@ -420,8 +436,8 @@
 	}
 
 	ul.portal_folders div.title:hover {
-		background-color: #F5F5F5;
-		border: 1px solid #979797;
+		background-color: #FFF8C6;
+		border: 1px solid #CCCCCC;
 	}
 	
 	ul.portal_folders div.title a:hover {
@@ -430,8 +446,11 @@
 	
 	ul.portal_categories li.current div.title {
 
-		background-color: #F5F5F5;
-		border: 1px solid #979797;
+		background-color: #FFF8C6;
+		border-right: 2px solid #999999;
+		border-left: 1px solid #CCCCCC;
+		border-top: 1px solid #CCCCCC;
+		border-bottom: 2px solid #999999;
 		padding-right: 5px;
 		padding-left: 3px;
 	}
