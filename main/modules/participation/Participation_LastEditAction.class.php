@@ -9,7 +9,8 @@
  * @version $Id$
  */ 
 
- require_once(MYDIR."/main/modules/participation/Participation_ModAction.abstract.php");
+require_once(dirname(__FILE__)."/Participation_ModAction.abstract.php");
+ 
  
 /**
  * get info about last edited modification action
@@ -36,6 +37,55 @@ class Participation_LastEditAction
 	protected function getIdPrefix () {
 		return "last_edit";
 	}
+	
+	/**
+	 * get timestamp of action (e.g. create, edit, comment...)
+	 * 
+	 * @return DateTime
+	 * @access public
+	 * @since 1/23/09
+	 */
+	public function getTimeStamp ()  {
+		return $this->_node->getModificationDate();
+	}
+	
+	/**
+	 * get last editor of action
+	 * 
+	 * @return DateTime
+	 * @access public
+	 * @since 1/23/09
+	 */
+	public function getParticipant ()  {
+		throw new UnimplementedException();
+	}
+
+	/**
+	 * get category of action (e.g. create, edit, comment...)
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/23/09
+	 */
+	public function getCategory () {
+		
+		return "Editor";
+	
+	}
+	
+	/**
+	 * get description of action (e.g. create, edit, comment...)
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/23/09
+	 */
+	public function getDescription ()  {
+		
+		return "last editor of this content.";
+	
+	}
+
 	
 }
 

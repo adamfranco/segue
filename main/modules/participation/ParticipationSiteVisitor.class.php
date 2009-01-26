@@ -11,6 +11,8 @@
  
 // require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
+require_once(dirname(__FILE__)."/Participation_LastEditAction.class.php");
+require_once(dirname(__FILE__)."/Participation_CreateAction.class.php");
 
 /**
  * transverse a site hierarchy getting information about participation
@@ -34,38 +36,32 @@ class ParticipationSiteVisitor
 	 * @access public
 	 * @since 4/3/06
 	 */
-	function ParticipationSiteVisitor () {
-		$this->_visibleComponents = array();
-		$this->_filledTargetIds = array();
+	function __construct () {
+		$this->_actions = array();
+	}
+	
+	/**
+	 * Answer the actions we've found
+	 * 
+	 * @return array of Action objects
+	 * @access public
+	 * @since 1/26/09
+	 */
+	public function getActions () {
+		return $this->_actions;
 	}
 
 	/**
-	 * Visit any kind of SiteComponent and record its visibility
-	 * 
-	 * @param object SiteComponent $siteComponent
-	 * @return array
-	 * @access public
-	 * @since 8/31/07
-	 */
-	private function visitSiteComponent ( SiteComponent $siteComponent) {
-		$this->_visibleComponents[$siteComponent->getId()] = $siteComponent;
-		$results = array();
-		$results['VisibleComponents'] = $this->_visibleComponents;
-		$results['FilledTargetIds'] = $this->_filledTargetIds;
-		return $results;
-	}
-		
-	/**
 	 * Visit a Block
 	 * 
 	 * @param object BlockSiteComponent $siteComponent
 	 * @return mixed
 	 * @access public
-	 * @since 8/31/07
+	 * @since 1/26/09
 	 */
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
-	
-		return $siteComponent->getDisplayName();		
+		return $this->getModDateAction($siteComponent);
+		
 	}
 	
 	/**
@@ -74,10 +70,10 @@ class ParticipationSiteVisitor
 	 * @param object BlockSiteComponent $siteComponent
 	 * @return mixed
 	 * @access public
-	 * @since 8/31/07
+	 * @since 1/26/09
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) {
-		throw new UnimplementedException();
+		$this->visitBlock($siteComponent);
 	}
 	
 	/**
@@ -86,11 +82,18 @@ class ParticipationSiteVisitor
 	 * @param object NavBlockSiteComponent $siteComponent
 	 * @return mixed
 	 * @access public
-	 * @since 8/31/07
+	 * @since 1/26/09
 	 */
 	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
+		$this->getModDateAction($siteComponent);
+		
 		$organizer = $siteComponent->getOrganizer();
 		$organizer->acceptVisitor($this);
+		
+		$nestedMenuOrganizer = $siteComponent->getNestedMenuOrganizer();
+		if (!is_null($nestedMenuOrganizer)) {
+			$nestedMenuOrganizer->acceptVisitor($this);
+		}
 	}
 	
 	/**
@@ -99,10 +102,10 @@ class ParticipationSiteVisitor
 	 * @param object SiteNavBlockSiteComponent $siteComponent
 	 * @return mixed
 	 * @access public
-	 * @since 8/31/07
+	 * @since 1/26/09
 	 */
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteComponent ) {
-		throw new UnimplementedException();
+		$this->visitNavBlock($siteComponent);
 	}
 
 	/**
@@ -112,7 +115,7 @@ class ParticipationSiteVisitor
 	 * @param object OrganizerSiteComponent $organizer
 	 * @return object Component
 	 * @access private
-	 * @since 4/3/06
+	 * @since 1/26/09
 	 */
 	private function visitOrganizer ( OrganizerSiteComponent $siteComponent ) {		
 		$numCells = $siteComponent->getTotalNumberOfCells();
@@ -121,8 +124,6 @@ class ParticipationSiteVisitor
 			if (is_object($child))
 				$child->acceptVisitor($this);
 		}
-		
-		return $this->visitSiteComponent($siteComponent);
 	}
 	
 	/**
@@ -131,7 +132,7 @@ class ParticipationSiteVisitor
 	 * @param object FixedOrganizerSiteComponent $siteComponent
 	 * @return mixed
 	 * @access public
-	 * @since 8/31/07
+	 * @since 1/26/09
 	 */
 	public function visitFixedOrganizer ( FixedOrganizerSiteComponent $siteComponent ) {
 		return $this->visitOrganizer($siteComponent);
@@ -143,7 +144,7 @@ class ParticipationSiteVisitor
 	 * @param object NavOrganizerSiteComponent $siteComponent
 	 * @return mixed
 	 * @access public
-	 * @since 8/31/07
+	 * @since 1/26/09
 	 */
 	public function visitNavOrganizer ( NavOrganizerSiteComponent $siteComponent ) {
 		$this->visitFixedOrganizer($siteComponent);
@@ -155,10 +156,10 @@ class ParticipationSiteVisitor
 	 * @param object FlowOrganizerSiteComponent $siteComponent
 	 * @return mixed
 	 * @access public
-	 * @since 8/31/07
+	 * @since 1/26/09
 	 */
 	public function visitFlowOrganizer ( FlowOrganizerSiteComponent $siteComponent ) {
-		throw new UnimplementedException();
+		return $this->visitOrganizer($siteComponent);
 	}
 	
 	/**
@@ -167,10 +168,30 @@ class ParticipationSiteVisitor
 	 * @param object MenuOrganizerSiteComponent $siteComponent
 	 * @return mixed
 	 * @access public
-	 * @since 8/31/07
+	 * @since 1/26/09
 	 */
 	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) {
-		throw new UnimplementedException();
+		return $this->visitOrganizer($siteComponent);
+	}
+
+
+	/**
+	 * Adds modification date to action array
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @return mixed
+	 * @access public
+	 * @since 1/26/09
+	 */
+	public function getModDateAction ( BlockSiteComponent $siteComponent ) {
+		$this->_actions[] = new Participation_CreateAction($siteComponent);
+		
+// 		if (!$siteComponent->getCreationDate()->isEqual(
+// 				$siteComponent->getModificationDate()))
+// 		{
+// 			$this->_actions[] = new Participation_LastEditAction($siteComponent);
+// 		}
+
 	}
 	
 }

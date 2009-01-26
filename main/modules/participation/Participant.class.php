@@ -28,14 +28,14 @@ class Participation_Participant {
 	 * Constructor
 	 * 
 	 * @param SiteNavBlockSiteComponent $site
-	 * @param string $id
+	 * @param Id $id
 	 * @return object
 	 * @access public
 	 * @since 4/3/06
 	 */
-	public function __construct (SiteNavBlockSiteComponent $site, $id) {
+	public function __construct (SiteNavBlockSiteComponent $site, Id $participantId) {
 		$this->_site = $site;
-		$this->_id = $id;
+		$this->_id = $participantId;
 	
 	}
 	
@@ -71,33 +71,59 @@ class Participation_Participant {
 	 * @access public
 	 * @since 1/23/09
 	 */
-	public function getDisplayName () {
-	
-		$harmoni = Harmoni::instance();
-		
-		$idManager = Services::getService("Id");
-		$agentID = $idManager->getId($this->_id);
-		
-		$agentManager = Services::getService("Agent");
-		
-		$agent = $agentManager->getAgent ($agentID);
-		
-		return $agent->getDisplayName();
-
-	//	throw new UnimplementedException();
+	public function getDisplayName () {	
+		return $this->getAgent()->getDisplayName();
 	}
 
 	/**
-	 * get all participants in the site
+	 * get all actions of a participant in a site
 	 * 
-	 * @return object Id
+	 * @return array of Participation_Action
 	 * @access public
 	 * @since 1/23/09
 	 */
 	public function getActions () {
+		$site_actions = new Participation_View($this->_site);
+		$all_actions = $site_actions->getActions();
+		$participantActions = array();
 		
-		
+		foreach ($all_actions as $action) {
+			try {
+				$ActionParticipant = $action->getParticipant();	
+			} catch (Exception $e) {
+			
+			}
+			
+			if ($ActionParticipant == $this) {
+				$participantActions[] = $action;			
+			}
+		}		
+		return $participantActions;
 	}
+	
+	
+	/**
+	 * Give us our agent (maybe from cache)
+	 * 
+	 * @return object Agent
+	 * @access private
+	 * @since 1/26/09
+	 */
+	private function getAgent () {
+		if (!isset($this->_agent)) {
+			$agentManager = Services::getService("Agent");		
+			$this->_agent = $agentManager->getAgent ($this->_id);
+		}
+		
+		return $this->_agent;
+	}
+	
+	/**
+	 * @var object Agent $_agent;  
+	 * @access private
+	 * @since 1/26/09
+	 */
+	private $_agent;
 
 }
 

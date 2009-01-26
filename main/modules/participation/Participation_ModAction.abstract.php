@@ -8,8 +8,8 @@
  *
  * @version $Id$
  */ 
- 
- require_once(MYDIR."/main/modules/participation/Participation_Action.interface.php");
+require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
+require_once(dirname(__FILE__)."/Participation_Action.interface.php");
 
 /**
  * gets information about a modification action
@@ -43,7 +43,7 @@ abstract class Participation_ModAction
 	 * @access private
 	 * @since 1/23/09
 	 */
-	private $_node;
+	protected $_node;
 
 		
 	/**
@@ -57,8 +57,7 @@ abstract class Participation_ModAction
 	public function getId () {
 		return $this->getIdPrefix()."::".$this->_node->getId();
 	}
-	
-	
+		
 	/**
 	 * get the id prefix depending no type of modication (e.g. create or edit)
 	 * 
@@ -76,13 +75,13 @@ abstract class Participation_ModAction
 	 * @access public
 	 * @since 1/23/09
 	 */
-	public function getParticipants () {
+	public function getParticipant () {
 		
-		throw new UnimplementedException();
+		//throw new UnimplementedException();
 	
 	}
 	
-		/**
+	/**
 	 * get category of action (e.g. create, edit, comment...)
 	 * 
 	 * @return string
@@ -109,19 +108,6 @@ abstract class Participation_ModAction
 	}
 
 	/**
-	 * get timestamp of action (e.g. create, edit, comment...)
-	 * 
-	 * @return DateTime
-	 * @access public
-	 * @since 1/23/09
-	 */
-	public function getTimeStamp ()  {
-		
-		throw new UnimplementedException();
-	
-	}
-
-	/**
 	 * get display name of node that action is applied to
 	 * 
 	 * @return string
@@ -129,9 +115,7 @@ abstract class Participation_ModAction
 	 * @since 1/23/09
 	 */
 	public function getTargetDisplayName ()  {
-		
-		throw new UnimplementedException();
-	
+		return $this->_node->getDisplayName();
 	}
 
 	/**
@@ -142,9 +126,8 @@ abstract class Participation_ModAction
 	 * @since 1/23/09
 	 */
 	public function getTargetUrl ()  {
-		
-		throw new UnimplementedException();
-	
+		return SiteDispatcher::quickURL('view','html', 
+			array('node' => $this->_node->getId()));
 	}
 
 

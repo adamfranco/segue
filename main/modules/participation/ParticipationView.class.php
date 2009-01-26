@@ -65,26 +65,37 @@ class Participation_View {
 	 * @since 1/23/09
 	 */
 	public function getParticipants () {
+		$actions = $this->getActions();
+		$participants = array();
 		
-		throw new UnimplementedException();
+		foreach ($actions as $action) {
+			try {
+				$participant = $action->getParticipant();	
+			} catch (Exception $e) {
+			
+			}
+			if (!in_array($participant,$participants)) {
+				$participants[] = $participant;			
+			}
+		}
+		
+		return $participants;
+		
+		//throw new UnimplementedException();
 	}
 
 	/**
-	 * get all participants in the site
+	 * get all action in the site
 	 * 
 	 * @return array of Participation_Action
 	 * @access public
 	 * @since 1/23/09
 	 */
 	public function getActions () {
-		
-		// use a participation site visitor to visit all componenents
-		// and get participation info
-		// need to figure out how to a SiteComponent from a SiteNavBlockSiteComponent 
-		$currentNode = SiteDispatcher::getCurrentNode();
-		$currentNode->acceptVisitor(new ParticipationSiteVisitor());
-
-		//throw new UnimplementedException();
+		$rootNode = SiteDispatcher::getCurrentRootNode();
+		$visitor = new ParticipationSiteVisitor();
+		$rootNode->acceptVisitor($visitor);
+		return $visitor->getActions();
 	}
 	
 	/**
@@ -95,9 +106,9 @@ class Participation_View {
 	 * @access public
 	 * @since 1/23/09
 	 */
-	public function getParticipant ($id) {		
-		$participant = new Participation_Participant($this->_site, $id);
-		return $participant;
+	public function getParticipant ($id) {
+		$idMgr = Services::getService('Id');
+		return new Participation_Participant($this->_site, $idMgr->getId($id));
 	}
 	
 	/**

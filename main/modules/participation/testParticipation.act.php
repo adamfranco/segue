@@ -47,8 +47,15 @@ class testParticipationAction
 		$nodeId = 511205;
 				
 		$view = new Participation_View($site);		
+
+		//get an action id for a site
+		print "<hr/>Action ID<hr/>";
+		$action = $view->getAction("create::".$nodeId);
+		printpre(get_class($action));
+		printpre($action->getId());
 		
 		//get participant
+		print "<hr/>Participant<hr/>";
 		$participant = $view->getParticipant($participantId);		
 		$participantName = $participant->getDisplayName();
 		$participantId = $participant->getId();
@@ -57,15 +64,60 @@ class testParticipationAction
 		printpre($participantName);
 		printpre($participantId);
 		
+
+		//get all actions of a given participant
+		print "<hr/>Participant Actions<hr/>";
+		$participantId = 606;
+		$idMgr = Services::getService('Id');			
+		$agent = $idMgr->getId($participantId);		
+// 		printpre($agent);
 		
-		//get an action id for a site
-		$action = $view->getAction("create::".$nodeId);
-		printpre(get_class($action));
-		printpre($action->getId());
+		$view2 = new Participation_Participant($site, $agent);
+		$participant2actions = $view2->getActions();		
+		printpre($view2->getDisplayName());	
+		
+		foreach ($participant2actions as $action) {
+			printpre($action->getTargetDisplayName());
+ 			//printpre($action->getTimeStamp());
+ 			//printpre($action->getCategory());			
+		}
+
+
+		
+		
+		//get all participants in a site		
+		print "<hr/>Participants<hr/>";
+		$participants = $view->getParticipants();		
+		foreach ($participants as $participant) {
+			printpre($participant->getDisplayName());
+		}
 	
 		//get array of all actions on the site
+		print "<hr/>Actions<hr/>";
 		$all_actions = $view->getActions();
-		printpre(get_class($all_actions));
+		
+		foreach ($all_actions as $action) {
+			//printpre(get_class($action));
+			printpre($action->getTargetDisplayName());
+			printpre($action->getId());
+			printpre($action->getTimeStamp());
+			printpre($action->getCategory());
+			printpre($action->getDescription());
+			printpre($action->getTargetUrl());
+			
+			try {
+				printpre($action->getParticipant()->getDisplayName());
+			} catch (Exception $e) {
+				printpre('Unknown');
+			}
+			
+			try {
+				printpre($action->getParticipant()->getId());
+			} catch (Exception $e) {
+				printpre('Unknown');
+			}
+			print "<hr/>";
+		}
 		
 		
 		printpre("done");

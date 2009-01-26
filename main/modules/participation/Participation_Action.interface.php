@@ -30,7 +30,7 @@ interface Participation_Action {
 	 * @access public
 	 * @since 1/23/09
 	 */
-	public function getParticipants ();
+	public function getParticipant ();
 	
 	/**
 	 * get action id
