@@ -42,11 +42,14 @@ class HistoryCompareSiteVisitor
 		$pluginManager = Services::getService('PluginManager');
 		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
-		if (!strlen(RequestContext::value('early_rev')) || !strlen(RequestContext::value('late_rev')))
+		if (!strlen(RequestContext::value('late_rev')))
 			return _("No version specified");
 		
-		$earlyVersion = $plugin->getVersion(RequestContext::value('early_rev'));
 		$lateVersion = $plugin->getVersion(RequestContext::value('late_rev'));
+		if (RequestContext::value('early_rev'))
+			$earlyVersion = $plugin->getVersion(RequestContext::value('early_rev'));
+		else
+			$earlyVersion = $lateVersion->getPrecedingVersion();
 		
 		ob_start();
 // 		print "\n<h3 class='diff_title'>"._("Selected Versions")."</h3>";
