@@ -30,6 +30,9 @@
 			User-Data: UserData javascript is now consistantly written once and only
 			once.
 		</change>
+		<new author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			Text-Templates: Added new Audio text-template for displaying MP3 files in-line.
+		</new>
 	</version>
 	<version number="2.2.5.7" date="2009-01-12">
 		<releaseNotes>

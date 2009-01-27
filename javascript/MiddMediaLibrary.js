@@ -830,7 +830,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 			case 'video/mp4':
 				return '{{video|service=middmedia|dir=' + this.directory.name + '|id=' + this.name + '}}';
 			case 'audio/mpeg':
-				return '{{audio|service=middmedia|dir=' + this.directory.name + '|id=' + this.name + '}}';
+				return '{{audio|url=' + this.url + '}}';
 			default:
 				throw "Embedding '" + this.mimeType + "' files is unsupported";
 		}
