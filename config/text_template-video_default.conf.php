@@ -114,7 +114,7 @@ $service->setHtmlIdRegex('/http:\/\/blip\.tv\/play\/([a-zA-Z0-9_-]+)/i');
 /*
 $service = $video->addService(new Segue_TextTemplates_Video_MiddMediaService(
         'middmedia',
-        '<embed src="http://middmedia.middlebury.edu/flowplayer/FlowPlayerLight.swf?config=%7Bembedded%3Atrue%2CstreamingServerURL%3A%27rtmp%3A%2F%2Fmiddmedia.middlebury.edu%2Fvod%27%2CautoPlay%3Afalse%2Cloop%3Afalse%2CinitialScale%3A%27fit%27%2CvideoFile%3A%27###GENERATED_ID###%27%7D" width="###WIDTH###" height="###HEIGHT###" scale="fit" bgcolor="#111111" type="application/x-shockwave-flash" allowFullScreen="true" allowNetworking="all" pluginspage="http://www.macromedia.com/go/getflashplayer"></embed>'
+        '<embed src="http://middmedia.middlebury.edu/flowplayer/FlowPlayerLight.swf?config=%7Bembedded%3Atrue%2CstreamingServerURL%3A%27rtmp%3A%2F%2Fmiddmedia.middlebury.edu%2Fvod%27%2CautoPlay%3Afalse%2Cloop%3Afalse%2CinitialScale%3A%27fit%27%2CvideoFile%3A%27###GENERATED_ID###%27###SPLASH_IMAGE_URL###%7D" width="###WIDTH###" height="###HEIGHT###" scale="fit" bgcolor="#111111" type="application/x-shockwave-flash" allowFullScreen="true" allowNetworking="all" pluginspage="http://www.macromedia.com/go/getflashplayer"></embed>'
 ));
 $service->setDefaultValue('width', '400');
 $service->setDefaultValue('height', '300');
