@@ -113,6 +113,30 @@ class SeguePluginVersion {
 	}
 	
 	/**
+	 * Answer the version before this one.
+	 * Throw an exception if this is the first version
+	 * 
+	 * @return SeguePluginVersion
+	 * @access public
+	 * @since 1/27/09
+	 */
+	public function getPrecedingVersion () {
+		$versions = $this->pluginInstance->getVersions();
+		reset($versions);
+		while ($version = current($versions)) {
+			if ($version->getVersionId() == $this->getVersionId()) {
+				$preceding = next($versions);
+				if (!$preceding)
+					throw new OperationFailedException("No preceding version");
+				return $preceding;
+			}
+			next($versions);
+		}
+		
+		throw new OperationFailedException("Couldn't find specified version");
+	}
+	
+	/**
 	 * Answer the timestamp at which this version was created.
 	 * 
 	 * @return DateAndTime
