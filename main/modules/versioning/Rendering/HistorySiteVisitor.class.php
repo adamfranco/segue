@@ -73,7 +73,7 @@ class HistorySiteVisitor
 		$plugin = $pluginManager->getPlugin($block->getAsset());
 		
 		ob_start();
-		print "\n<form action='".SiteDispatcher::quickURL('versioning', 'compare_versions', array('node' => SiteDispatcher::getCurrentNodeId()))."' method='get'>";
+		print "\n<form action='".SiteDispatcher::quickURL('versioning', 'compare_versions', array('node' => SiteDispatcher::getCurrentNodeId()))."' method='post'>";
 		print "\n\t<div style='float: right;'>";
 		print "\n\t<input type='submit' value='"._("Compare Selected Revisions &raquo;")."'";
 		if (count($plugin->getVersions()) <= 1) {
