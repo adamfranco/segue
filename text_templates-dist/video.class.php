@@ -743,7 +743,7 @@ class Segue_TextTemplates_Video_MiddMediaService
 		$parts = pathinfo($params['id']);
 		switch (strtolower($parts['extension'])) {
 			case 'flv':
-				return rawurlencode($dir->getBaseName().'/'.$parts['filename'].'.'.$parts['extension']);
+				return rawurlencode($params['dir'].'/'.$parts['filename']);
 			default:
 				return rawurlencode(
 					strtolower($parts['extension']).':'

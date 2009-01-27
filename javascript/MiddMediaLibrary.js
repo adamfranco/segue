@@ -826,11 +826,11 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	MiddMediaFile.prototype.getEmbedTextTemplate = function () {
 		switch(this.mimeType) {
 			case 'video/x-flv':
-				return '{{video|service=middtube|user=' + this.directory.name + '|id=' + this.name.replace(/.flv$/, '') + '}}';
+				return '{{video|service=middmedia|dir=' + this.directory.name + '|id=' + this.name + '}}';
 			case 'video/mp4':
-				return '{{video|service=middtube|user=' + this.directory.name + '|id=mp4:' + this.name.replace(/.mp4$/, '') + '}}';
+				return '{{video|service=middmedia|dir=' + this.directory.name + '|id=' + this.name + '}}';
 			case 'audio/mpeg':
-				return '{{video|service=middtube|user=' + this.directory.name + '|id=mp3:' + this.name.replace(/.mp3$/, '') + '}}';
+				return '{{audio|service=middmedia|dir=' + this.directory.name + '|id=' + this.name + '}}';
 			default:
 				throw "Embedding '" + this.mimeType + "' files is unsupported";
 		}
