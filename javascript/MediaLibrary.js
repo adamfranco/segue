@@ -1537,7 +1537,10 @@ function MediaFile ( xmlElement, asset, library) {
 	 * @since 1/14/09
 	 */
 	MediaFile.prototype.getEmbedTextTemplate = function () {
-		throw "Embedding local files is unsupported";
+		if (this.mimeType == 'audio/mpeg')
+			return '{{audio|url=' + this.url + '}}';
+		else
+			throw "Embedding local " + this.mimeType + " files is unsupported";
 	}
 	
 	/**
