@@ -13,6 +13,9 @@
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 require_once(dirname(__FILE__)."/Participation_LastEditAction.class.php");
 require_once(dirname(__FILE__)."/Participation_CreateAction.class.php");
+require_once(dirname(__FILE__)."/Participation_CommentAction.class.php");
+require_once(dirname(__FILE__)."/Participation_HistoryAction.class.php");
+require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
 
 /**
  * transverse a site hierarchy getting information about participation
@@ -60,8 +63,28 @@ class ParticipationSiteVisitor
 	 * @since 1/26/09
 	 */
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
-		return $this->getModDateAction($siteComponent);
+		// get create actions
+		$this->_actions[] = new Participation_CreateAction($siteComponent);
 		
+		// get comment actions
+		$commentsManager = CommentManager::instance();
+		$comments = $commentsManager->getAllComments($siteComponent->getAsset(), DESC);
+		
+		while ($comments->hasNext()) {
+			$comment = $comments->next();	
+			$this->_actions[] = new Participation_CommentAction($comment);
+		}
+		
+		// get history actions
+		$pluginManager = Services::getService('PluginManager');
+		$plugin = $pluginManager->getPlugin($siteComponent->getAsset());
+		
+		if ($plugin->supportsVersioning()) {		
+			$versions = $plugin->getVersions();
+			foreach ($versions as $version) {
+				$this->_actions[] = new Participation_HistoryAction($siteComponent, $version);				
+			}		
+		}
 	}
 	
 	/**
@@ -85,7 +108,6 @@ class ParticipationSiteVisitor
 	 * @since 1/26/09
 	 */
 	public function visitNavBlock ( NavBlockSiteComponent $siteComponent ) {
-		$this->getModDateAction($siteComponent);
 		
 		$organizer = $siteComponent->getOrganizer();
 		$organizer->acceptVisitor($this);
@@ -174,26 +196,6 @@ class ParticipationSiteVisitor
 		return $this->visitOrganizer($siteComponent);
 	}
 
-
-	/**
-	 * Adds modification date to action array
-	 * 
-	 * @param object BlockSiteComponent $siteComponent
-	 * @return mixed
-	 * @access public
-	 * @since 1/26/09
-	 */
-	public function getModDateAction ( BlockSiteComponent $siteComponent ) {
-		$this->_actions[] = new Participation_CreateAction($siteComponent);
-		
-// 		if (!$siteComponent->getCreationDate()->isEqual(
-// 				$siteComponent->getModificationDate()))
-// 		{
-// 			$this->_actions[] = new Participation_LastEditAction($siteComponent);
-// 		}
-
-	}
-	
 }
 
 ?>

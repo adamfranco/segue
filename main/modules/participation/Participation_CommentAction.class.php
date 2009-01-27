@@ -9,8 +9,7 @@
  * @version $Id$
  */ 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
-require_once(MYDIR."/main/modules/participation/Participant.class.php");
-require_once(dirname(__FILE__)."/Participation_ModAction.abstract.php");
+require_once(MYDIR."/main/modules/participation/Participation_Action.interface.php");
 require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  
 /**

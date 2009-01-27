@@ -85,7 +85,7 @@ class Participation_View {
 	}
 
 	/**
-	 * get all action in the site
+	 * get all actions in the site
 	 * 
 	 * @return array of Participation_Action
 	 * @access public
