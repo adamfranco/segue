@@ -27,6 +27,13 @@
 			Wiki: Wiki links to titles that do not match existing pages now link
 			to a form that allows creation of new pages, sections or content blocks.
 		</new>
+		<fix author='alex' date='2009-01-27' ref='2540837' reftype='fr'  reporter='alex'>
+			Comments: added anchor to comments to allow linking to individual comments
+		</fix>
+		<fix author='adam' date='2009-01-27' reporter='alex'>
+			History: changed the compare selected revisions form action to post so form fields
+			will work with urls that don't use path info
+		</fix>
 	</version>
 	<version number="2.2.5.7" date="2009-01-12">
 		<releaseNotes>
