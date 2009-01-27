@@ -266,8 +266,8 @@ class Segue_TextTemplates_Video_Service {
 				'height'	=> '/^[0-9]+$/'
 			);
 		
-		if (!preg_match('/###ID###/', $targetHtml))
-			throw new InvalidArgumentException('targetHtml is missing the required ###ID### placeholder');
+		if (!preg_match('/###ID###/', $targetHtml) && !preg_match('/###GENERATED_ID###/', $targetHtml))
+			throw new InvalidArgumentException('targetHtml is missing the required id placeholder, ###ID### or ###GENERATED_ID###');
 		$this->targetHtml = $targetHtml;
 		
 		$this->preText = array();
@@ -478,6 +478,11 @@ class Segue_TextTemplates_Video_Service {
 				$text = $text.$this->postText[$param];
 			
 			$output = str_replace('###'.strtoupper($param).'###', $text, $output);
+		}
+		
+		// Replace the generated_id placeholder if supported.
+		if (method_exists($this, 'generateId')) {
+			$output = str_replace('###GENERATED_ID###', $this->generateId($params), $output);
 		}
 		
 		return $output;
@@ -708,4 +713,70 @@ style=[\'"]		# Attribute start
 	}
 }
 
-?>
+/**
+ * This is a custom service for MiddMedia that does the extra work to configure our parameters
+ * 
+ * @since 1/27/09
+ * @package segue.wiki
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+class Segue_TextTemplates_Video_MiddMediaService
+	extends Segue_TextTemplates_Video_Service
+{
+		
+	/**
+	 * Based on the parameters listed, generate an identifier to use in the embed code.
+	 * 
+	 * @param array $params
+	 * @return string
+	 * @access public
+	 * @since 1/27/09
+	 */
+	public function generateId (array $params) {
+		$this->validateParam('id', $params['id']);
+		$this->validateParam('dir', $params['dir']);
+		
+		$parts = pathinfo($params['id']);
+		switch (strtolower($parts['extension'])) {
+			case 'flv':
+				return rawurlencode($dir->getBaseName().'/'.$parts['filename'].'.'.$parts['extension']);
+			default:
+				return rawurlencode(
+					strtolower($parts['extension']).':'
+					.$params['dir'].'/'
+					.$parts['filename'].'.'.$parts['extension']);
+		}
+	}
+	
+	/**
+	 * Answer a video id from an object or embed block of HTML. 
+	 * Throw an OperationFailedException if not matched.
+	 * 
+	 * @param string $embedHtml
+	 * @return string The id
+	 * @access protected
+	 * @since 7/15/08
+	 */
+	protected function getIdFromHtml ($embedHtml) {
+		return rawurldecode(parent::getIdFromHtml($embedHtml));
+	}
+	
+	/**
+	 * Answer an array of additional params found in the HTML
+	 * 
+	 * @param string $embedHtml
+	 * @return array
+	 * @access protected
+	 * @since 7/17/08
+	 */
+	protected function getAdditionalParamsFromHtml ($embedHtml) {
+		$params = parent::getAdditionalParamsFromHtml($embedHtml);
+		$params['dir'] = rawurldecode($params['dir']);
+		return $params;
+	}
+}
+
