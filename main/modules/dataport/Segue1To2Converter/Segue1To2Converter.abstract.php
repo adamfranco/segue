@@ -12,6 +12,7 @@
 require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/LinkBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/DownloadBlockSegue1To2Converter.class.php");
+require_once(dirname(__FILE__)."/AudioPlayerBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/HeadingBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/RssBlockSegue1To2Converter.class.php");
 require_once(dirname(__FILE__)."/ImageBlockSegue1To2Converter.class.php");
@@ -165,7 +166,13 @@ abstract class Segue1To2Converter {
 				$class = 'TextBlockSegue1To2Converter';
 				break;
 			case 'file':
-				$class = 'DownloadBlockSegue1To2Converter';
+				// determine of the filename contains .mp3 and use audio player for them.
+				$filename = $this->getStringValue($this->getSingleSourceElement('./filename', $sourceElement));
+				if (preg_match('/.+\.mp3$/i', $filename))
+					$class = 'AudioPlayerBlockSegue1To2Converter';
+				else
+					$class = 'DownloadBlockSegue1To2Converter';
+				
 				break;
 			case 'link':
 				$class = 'LinkBlockSegue1To2Converter';
