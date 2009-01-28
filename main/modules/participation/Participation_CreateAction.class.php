@@ -10,7 +10,7 @@
  */ 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(MYDIR."/main/modules/participation/Participant.class.php");
-require_once(dirname(__FILE__)."/Participation_ModAction.abstract.php");
+require_once(dirname(__FILE__)."/Participation_Action.interface.php");
  
 /**
  * get info about create modification action
@@ -24,8 +24,47 @@ require_once(dirname(__FILE__)."/Participation_ModAction.abstract.php");
  * @version $Id$
  */
 class Participation_CreateAction
-	extends Participation_ModAction
+	implements Participation_Action
 {
+
+	/**
+	 * Constructor
+	 * @param Participation_View $view
+	 * @param SiteComponent $node
+	 * @return object
+	 * @access public
+	 * @since 4/3/06
+	 */
+	public function __construct (Participation_View $view, SiteComponent $node) {
+		$this->_view = $view;
+		$this->_node = $node;
+	}
+	
+	/**
+	 * @var SiteComponent $_node
+	 * @access private
+	 * @since 1/23/09
+	 */
+	protected $_node;
+
+	/**
+	 * @var Participation_View $view
+	 * @access private
+	 * @since 1/23/09
+	 */
+	protected $_view;
+
+	/**
+	 * get the id of a action
+	 * 
+	 * @param <##>
+	 * @return string
+	 * @access public
+	 * @since 1/23/09
+	 */
+	public function getId () {
+		return $this->getIdPrefix()."::".$this->_node->getId();
+	}
 		
 	/**
 	 * get id prefix
@@ -56,29 +95,35 @@ class Participation_CreateAction
 	 * @access public
 	 * @since 1/23/09
 	 */
-	public function getParticipant ()  {	
-		$director = SiteDispatcher::getSiteDirector();	
-		
-		$participant = new Participation_Participant(
-			$director->getRootSiteComponent($this->_node->getId()), 
-			$this->_node->getCreator());
-				
-		return $participant;
+	public function getParticipant ()  {
+		$id = $this->_node->getCreator()->getIdString();
+		return $this->_view->getParticipant($id);
 	}
-	
+
 	/**
 	 * get category of action (e.g. create, edit, comment...)
 	 * 
 	 * @return string
 	 * @access public
-	 * @since 1/23/09
+	 * @since 1/26/09
 	 */
-	public function getCategory () {
-		
-		return "Author";
+	public function getCategoryId () {		
+		return "author";
 	
 	}
+
+	/**
+	 * get category of action (e.g. create, edit, comment...)
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/26/09
+	 */
+	public function getCategoryDisplayName () {		
+		return _("Author");
 	
+	}
+		
 	/**
 	 * get description of action (e.g. create, edit, comment...)
 	 * 
@@ -90,6 +135,29 @@ class Participation_CreateAction
 		
 		return "content created.";
 	
+	}
+
+	/**
+	 * get display name of node that action is applied to
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/23/09
+	 */
+	public function getTargetDisplayName ()  {
+		return $this->_node->getDisplayName();
+	}
+
+	/**
+	 * get url of node that action is applied to
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/23/09
+	 */
+	public function getTargetUrl ()  {
+		return SiteDispatcher::quickURL('view','html', 
+			array('node' => $this->_node->getId()));
 	}
 	
 	

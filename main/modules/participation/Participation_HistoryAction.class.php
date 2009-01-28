@@ -10,7 +10,6 @@
  */ 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(MYDIR."/main/modules/participation/Participation_Action.interface.php");
-require_once(dirname(__FILE__)."/Participation_ModAction.abstract.php");
 // require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  
 /**
@@ -31,19 +30,28 @@ class Participation_HistoryAction
 	/**
 	 * Constructor
 	 * 
-	 * @param SiteComponent $node 
+	 * @param Participation_View $view 
+	 * @param SiteComponent $node
 	 * @param SeguePluginVersion $version
 	 * @return object
 	 * @access public
 	 * @since 1/27/09
 	 */
-	public function __construct (SiteComponent $node, $version) {
+	public function __construct (Participation_View $view, SiteComponent $node, $version) {
+		$this->_view = $view;
 		$this->_node = $node;
 		$this->_version = $version;
 	}
 	
 	/**
 	 * @var SiteComponent $node
+	 * @access private
+	 * @since 1/27/09
+	 */
+	private $_view;
+
+	/**
+	 * @var SiteComponent $_node
 	 * @access private
 	 * @since 1/27/09
 	 */
@@ -98,15 +106,27 @@ class Participation_HistoryAction
 	 * @since 1/27/09
 	 */
 	public function getParticipant ()  {		
-		$director = SiteDispatcher::getSiteDirector();		
-		$site = $director->getRootSiteComponent($this->_node);
+// 		$director = SiteDispatcher::getSiteDirector();		
+// 		$site = $director->getRootSiteComponent($this->_view);
 		
-		$participant = new Participation_Participant($site, 
+		$participant = new Participation_Participant($this->_view, 
 			$this->_version->getAgentId());
 				
 		return $participant;
 	}
 	
+ 	/**
+	 * get category of action (e.g. create, edit, comment...)
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/26/09
+	 */
+	public function getCategoryId () {		
+		return "edit";
+	
+	}
+
 	/**
 	 * get category of action (e.g. create, edit, comment...)
 	 * 
@@ -114,9 +134,8 @@ class Participation_HistoryAction
 	 * @access public
 	 * @since 1/26/09
 	 */
-	public function getCategory () {
-		
-		return "Editor";
+	public function getCategoryDisplayName () {		
+		return _("Editor");
 	
 	}
 	

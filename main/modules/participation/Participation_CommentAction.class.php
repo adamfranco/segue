@@ -30,13 +30,15 @@ class Participation_CommentAction
 	/**
 	 * Constructor
 	 * 
+	 * @param Participation_View $view 
 	 * @param object Id 
 	 * @return object
 	 * @access public
 	 * @since 4/3/06
 	 */
-	public function __construct (CommentNode $comment) {
+	public function __construct (Participation_View $view, CommentNode $comment) {
 		$this->_comment = $comment;
+		$this->_view = $view;
 	}
 	
 	/**
@@ -45,6 +47,13 @@ class Participation_CommentAction
 	 * @since 1/27/09
 	 */
 	private $_comment;
+
+	/**
+	 * @var Participation_View $view
+	 * @access private
+	 * @since 1/27/09
+	 */
+	private $_view;
 	
 	/**
 	 * get the id of a comment action 
@@ -89,14 +98,7 @@ class Participation_CommentAction
 	 * @since 1/26/09
 	 */
 	public function getParticipant ()  {		
-		$commentsManager = CommentManager::instance();		
-		$director = SiteDispatcher::getSiteDirector();
-		$site = $director->getRootSiteComponent($commentsManager->getCommentParentAsset($this->_comment)->getId()->getIdString());
-		
-		$participant = new Participation_Participant($site, 
-			$this->_comment->getAuthor()->getId());
-				
-		return $participant;
+		return $this->_view->getParticipant($this->_comment->getAuthor()->getId()->getIdString());
 	}
 	
 	/**
@@ -106,9 +108,20 @@ class Participation_CommentAction
 	 * @access public
 	 * @since 1/26/09
 	 */
-	public function getCategory () {
-		
-		return "Commenter";
+	public function getCategoryId () {		
+		return "comment";
+	
+	}
+
+	/**
+	 * get category of action (e.g. create, edit, comment...)
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/26/09
+	 */
+	public function getCategoryDisplayName () {		
+		return _("Comment");
 	
 	}
 	
