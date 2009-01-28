@@ -11,7 +11,7 @@
  
 // require_once(dirname(__FILE__)."/SiteVisitor.interface.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
-require_once(dirname(__FILE__)."/Participation_LastEditAction.class.php");
+require_once(dirname(__FILE__)."/ParticipationView.class.php");
 require_once(dirname(__FILE__)."/Participation_CreateAction.class.php");
 require_once(dirname(__FILE__)."/Participation_CommentAction.class.php");
 require_once(dirname(__FILE__)."/Participation_HistoryAction.class.php");
@@ -63,8 +63,9 @@ class ParticipationSiteVisitor
 	 * @since 1/26/09
 	 */
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
+		$view = new Participation_View($siteComponent);
 		// get create actions
-		$this->_actions[] = new Participation_CreateAction($siteComponent);
+		$this->_actions[] = new Participation_CreateAction($view, $siteComponent);
 		
 		// get comment actions
 		$commentsManager = CommentManager::instance();
@@ -72,7 +73,7 @@ class ParticipationSiteVisitor
 		
 		while ($comments->hasNext()) {
 			$comment = $comments->next();	
-			$this->_actions[] = new Participation_CommentAction($comment);
+			$this->_actions[] = new Participation_CommentAction($view, $comment);
 		}
 		
 		// get history actions
@@ -82,7 +83,7 @@ class ParticipationSiteVisitor
 		if ($plugin->supportsVersioning()) {		
 			$versions = $plugin->getVersions();
 			foreach ($versions as $version) {
-				$this->_actions[] = new Participation_HistoryAction($siteComponent, $version);				
+				$this->_actions[] = new Participation_HistoryAction($view,  $siteComponent, $version);				
 			}		
 		}
 	}
