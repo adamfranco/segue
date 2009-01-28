@@ -321,6 +321,18 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 // 	MiddMediaDirectory.prototype.updateQuota = AssetLibrary.prototype.updateQuota;
 	
 	/**
+	 * Force-reload the whole media library. needed for IE crap.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/20/08
+	 */
+	MiddMediaDirectory.prototype.forceReload = function () {
+		this.files = null;
+		this.library.displayDirectory(this.name);
+	}
+	
+	/**
 	 * Answer an upload form
 	 * 
 	 * @param DOM_Element container
@@ -452,6 +464,7 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 			// the entire media library as that is easier
 			this.forceReload();
 // 			alert('Error in file upload response: no files listed. ');
+			return;
 		}
 		
 		this.uploadForm.media_file.value = '';
