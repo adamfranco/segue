@@ -46,6 +46,10 @@
 			Portal: Added folder title to Portal header and more prominent selected link styling
 			to help users better see current view of their portal
 		</fix>
+		<new author='alex' date='2009-01-22' ref='2079214' reftype='fr'  reporter='alex'>
+			Migration: Segue v1 file-for-download blocks with .mp3 files now converted to
+			v2 AudioPlayer plugin content blocks.
+		</new>
 	</version>
 	<version number="2.2.6.0" date="2009-01-12">
 		<releaseNotes>
@@ -64,11 +68,6 @@
 			Wiki: Wiki links to titles that do not match existing pages now link
 			to a form that allows creation of new pages, sections or content blocks.
 		</new>
-		<new author='alex' date='2009-01-22' ref='2079214' reftype='fr'  reporter='alex'>
-			Migration: Segue v1 file-for-download blocks with .mp3 files now converted to
-			v2 AudioPlayer plugin content blocks.
-		</new>
-		
 	</version>
 	<version number="2.2.5.7" date="2009-01-12">
 		<releaseNotes>
