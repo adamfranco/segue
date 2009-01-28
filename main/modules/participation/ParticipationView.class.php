@@ -9,7 +9,7 @@
  * @version $Id$
  */ 
 require_once(MYDIR."/main/modules/participation/Participant.class.php");
-require_once(MYDIR."/main/modules/participation/Participation_ModAction.abstract.php");
+require_once(MYDIR."/main/modules/participation/Participation_Action.interface.php");
 require_once(MYDIR."/main/modules/participation/Participation_CreateAction.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 require_once(MYDIR."/main/modules/participation/ParticipationSiteVisitor.class.php");
@@ -34,31 +34,32 @@ class Participation_View {
 	/**
 	 * Constructor
 	 * 
-	 * @param SiteNavBlockSiteComponent $site
+	 * @param SiteComponent $node
 	 * @return object
 	 * @access public
 	 * @since 4/3/06
 	 */
-	public function __construct (SiteNavBlockSiteComponent $site) {
-		$this->_site = $site;
+	public function __construct (SiteComponent $node) {
+		$this->_node = $node;
+		$this->_participants = array();
 	}
 	
 	/**
-	 * @var SiteNavBlockSiteComponent $_site
+	 * @var SiteComponent $_node
 	 * @access private
 	 * @since 1/23/09
 	 */
-	private $_site;
+	private $_node;
 	
 	/**
-	 * @var  string $_id
+	 * @var  array $_participants
 	 * @access private
-	 * @since 1/23/09
+	 * @since 1/28/09
 	 */
-	private $_id;
-
+	private $_participants;
+	
 	/**
-	 * get all participants in the site
+	 * get all participants in the node
 	 * 
 	 * @return array of Participation_Participant
 	 * @access public
@@ -69,32 +70,28 @@ class Participation_View {
 		$participants = array();
 		
 		foreach ($actions as $action) {
-			try {
-				$participant = $action->getParticipant();	
-			} catch (Exception $e) {
+			$participant = $action->getParticipant();	
 			
-			}
-			if (!in_array($participant,$participants)) {
-				$participants[] = $participant;			
+			if (!isset($participants[$participant->getId()->getIdString()])) {
+				$participants[$participant->getId()->getIdString()] = $participant;			
 			}
 		}
-		
+
 		return $participants;
 		
 		//throw new UnimplementedException();
 	}
 
 	/**
-	 * get all actions in the site
+	 * get all actions in the node
 	 * 
 	 * @return array of Participation_Action
 	 * @access public
 	 * @since 1/23/09
 	 */
 	public function getActions () {
-		$rootNode = SiteDispatcher::getCurrentRootNode();
 		$visitor = new ParticipationSiteVisitor();
-		$rootNode->acceptVisitor($visitor);
+		$this->_node->acceptVisitor($visitor);
 		return $visitor->getActions();
 	}
 	
@@ -107,8 +104,13 @@ class Participation_View {
 	 * @since 1/23/09
 	 */
 	public function getParticipant ($id) {
-		$idMgr = Services::getService('Id');
-		return new Participation_Participant($this->_site, $idMgr->getId($id));
+		ArgumentValidator::validate($id, StringValidatorRule::getRule());
+		
+		if (!isset($this->_participants[$id])) {
+			$idMgr = Services::getService('Id');
+			$this->_participants[$id] = new Participation_Participant($this, $idMgr->getId($id));
+		}
+		return $this->_participants[$id];
 	}
 	
 	/**
@@ -121,13 +123,11 @@ class Participation_View {
 	 */
 	public function getAction ($id) {
 		if (preg_match('/^create::.+/', $id))
-			return new Participation_CreateAction($this->_site, $id);
-		else if (preg_match('/^last_edit::.+/', $id))
-			return new Participation_LastEditAction($this->_site, $id);
+			return new Participation_CreateAction($this, $this->_node);
 		else if (preg_match('/^history::.+/', $id))
-			return new Participation_HistoryAction($this->_site, $id);
+			return new Participation_HistoryAction($this, $this->_node);
 		else if (preg_match('/^comment::.+/', $id))
-			return new Participation_HistoryAction($this->_site, $id);
+			return new Participation_HistoryAction($this, $this->_node);
 		
 		throw new UnknownIdException("Could not retrieve an action for id $id");
 	}
