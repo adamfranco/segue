@@ -23,11 +23,13 @@ MediaLibrary.superclass = CenteredPanel.prototype;
  *
  * @version $Id: MediaLibrary.js,v 1.24 2008/04/11 21:50:56 adamfranco Exp $
  */
-function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
+function MediaLibrary ( assetId, callingElement, allowedMimeTypes, librariesConfig ) {
 	if ( arguments.length > 0 ) {
-		this.init( assetId, callingElement, allowedMimeTypes );
+		this.init( assetId, callingElement, allowedMimeTypes, librariesConfig );
 	}
 }
+
+	MediaLibrary.externalLibraries = [];
 
 	/**
 	 * Initialize this object
@@ -41,12 +43,22 @@ function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
 	 * @access public
 	 * @since 1/26/07
 	 */
-	MediaLibrary.prototype.init = function ( assetId, callingElement, allowedMimeTypes ) {
+	MediaLibrary.prototype.init = function ( assetId, callingElement, allowedMimeTypes, librariesConfig ) {
 		if (!assetId || !assetId.length) {
 			var message = "Required parameter, assetId, does not have a value";
 // 			alert(message);
 			throw message;
 		}
+		
+		// If we aren't specifying only certain libraries, enable all of them.
+		if (!librariesConfig)
+			librariesConfig = {all: true};
+		if (librariesConfig.all) {
+			librariesConfig.local = true;
+			for ( var i = 0; i < MediaLibrary.externalLibraries.length; i++) {
+				librariesConfig[MediaLibrary.externalLibraries[i].title] = true;
+			}
+		}		
 		
 		MediaLibrary.superclass.init.call(this, 
 								"Media Library",
@@ -63,20 +75,47 @@ function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
 		this.tabs.appendToContainer(this.contentElement);
 		
 	// Files attached to this asset
-		var tab = this.tabs.addTab('asset_media', "Files Here");
-		this.assetLibrary = new AssetLibrary(this, this.assetId, this.caller, tab.wrapperElement);
-		
-		tab.library = this.assetLibrary;
-		tab.onOpen = function () { this.library.onOpen() };
-		
-		this.tabs.selectTab('asset_media');
-		
-	// All Files in Site
-		var tab = this.tabs.addTab('site_media', "Other Files In Site");
-		this.siteLibrary = new SiteLibrary(this, this.assetId, this.caller, tab.wrapperElement);
+		if (librariesConfig.local) {
+			var tab = this.tabs.addTab('asset_media', "Files Here");
+			this.assetLibrary = new AssetLibrary(this, this.assetId, this.caller, tab.wrapperElement);
+			
+			tab.library = this.assetLibrary;
+			tab.onOpen = function () { this.library.onOpen() };
+			
+			this.tabs.selectTab('asset_media');
+			
+		// All Files in Site
+			var tab = this.tabs.addTab('site_media', "Other Files In Site");
+			this.siteLibrary = new SiteLibrary(this, this.assetId, this.caller, tab.wrapperElement);
+	
+			tab.library = this.siteLibrary;
+			tab.onOpen = function () { this.library.onOpen() };
+		}
 
-		tab.library = this.siteLibrary;
-		tab.onOpen = function () { this.library.onOpen() };
+	// Addtional external libraries
+		for ( var i = 0; i < MediaLibrary.externalLibraries.length; i++) {
+			var config = MediaLibrary.externalLibraries[i];
+			
+			// Add the library if configured to do so.
+			if (librariesConfig[config.title]) {
+				// Include any needed class files.
+				if (typeof config.jsClass != 'function') {
+					if (!config.jsSourceUrl)
+						throw "External library class " + config.jsClass + " is not defined and a source URL is not specified.";
+					
+					Script.include(config.jsSourceUrl);
+				}
+				
+				var tab = this.tabs.addTab('ext_' + i, config.title);
+				eval('tab.library = new ' + config.jsClass + '(this, config, this.caller, tab.wrapperElement);');
+				
+				tab.onOpen = function () { 
+					if (typeof this.library.onOpen == 'function')
+						this.library.onOpen();
+				};
+			}
+		}
+		
 	}
 	
 	/**
@@ -104,11 +143,11 @@ function MediaLibrary ( assetId, callingElement, allowedMimeTypes ) {
 	 * @access public
 	 * @since  1/26/07
 	 */
-	MediaLibrary.run = function (assetId, callingElement, allowedMimeTypes ) {
+	MediaLibrary.run = function (assetId, callingElement, allowedMimeTypes, librariesConfig ) {
 		if (callingElement.panel) {
 			callingElement.panel.open();
 		} else {
-			var tmp = new MediaLibrary(assetId, callingElement, allowedMimeTypes );
+			var tmp = new MediaLibrary(assetId, callingElement, allowedMimeTypes, librariesConfig );
 		}
 	}
 	
@@ -159,6 +198,8 @@ function FileLibrary ( owner, assetId, caller, container ) {
 		this.caller = caller;
 		this.container = container;
 		this.media = new Array();
+		
+		this.quotaTitle = "Media Quota for this site:";
 	}
 
 	/**
@@ -468,6 +509,19 @@ function FileLibrary ( owner, assetId, caller, container ) {
 			}
 		}
 		
+		// In Safari, the FCKEditor area gets popped to the front, move our panel back in front
+		if (getBrowser()[0] == 'safari') {
+			var owner = this.owner;
+			window.setTimeout(function () {
+				owner.moveToFront();
+			}, 10);
+			
+			// Set a second timeout, just to be sure we don't miss it.
+			window.setTimeout(function () {
+				owner.moveToFront();
+			}, 700);
+		}
+		
 		this.owner.center();
 		
 		return true;
@@ -539,7 +593,7 @@ function AssetLibrary ( owner, assetId, caller, container ) {
 	AssetLibrary.prototype.createQuotaDisplay = function (container) {
 		this.quotaUsedDisplay = container.appendChild(document.createElement('div'));
 		this.quotaUsedDisplay.className = 'media_quota_title';
-		this.quotaUsedDisplay.innerHTML = "Media Quota for this site:";
+		this.quotaUsedDisplay.innerHTML = this.quotaTitle;
 		
 		this.quotaDisplay = document.createElement('div');
 		this.quotaDisplay.className = 'media_quota';
@@ -1487,6 +1541,22 @@ function MediaFile ( xmlElement, asset, library) {
 	}
 	
 	/**
+	 * Answer the text-template code used for embedding this file
+	 *
+	 * Will throw an exception if unsupported
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/14/09
+	 */
+	MediaFile.prototype.getEmbedTextTemplate = function () {
+		if (this.mimeType == 'audio/mpeg')
+			return '{{audio|url=' + this.url + '}}';
+		else
+			throw "Embedding local " + this.mimeType + " files is unsupported";
+	}
+	
+	/**
 	 * Answer the filename
 	 * 
 	 * @return string
@@ -1758,3 +1828,43 @@ AIM = {
     }
 
 }
+
+
+/**
+ * Dynamically include scripts using the Prototype library.
+ * Script.include(url);
+ *
+ * by aemkei: http://stackoverflow.com/questions/21294/how-do-you-dynamically-load-a-javascript-file-think-cs-include#242607
+ * 
+ * @since 1/12/09
+ */
+var Script = {
+  _loadedScripts: [],
+  include: function(script){
+    // include script only once
+    if (this._loadedScripts.include(script)){
+      return false;
+    }
+    // request file synchronous
+    var request = new Ajax.Request(script, {
+      asynchronous: false, method: "GET",
+      evalJS: false, evalJSON: false
+    });
+    if (!request.success())
+    	throw "Error loading JS file '" + script + "'.";
+    var code = request.transport.responseText;
+    
+    // eval code on global level
+    if (Prototype.Browser.IE) {
+      window.execScript(code);
+    } else if (Prototype.Browser.WebKit){
+      $$("head").first().insert(Object.extend(
+        new Element("script", {type: "text/javascript"}), {text: code}
+      ));
+    } else {
+      window.eval(code);
+    }
+    // remember included script
+    this._loadedScripts.push(script);
+  }
+};

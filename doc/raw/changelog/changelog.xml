@@ -10,6 +10,33 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.7.0" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: Added support for additional external MediaLibrary tabs.
+		</new>
+		<new author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: Added new MiddMedia tab for browsing the MiddMedia Service.
+		</new>
+		<new author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			Plugins: Added a button to embed audio/video into text areas.
+		</new>
+		<change author='adam' date='2009-01-27' ref='' reftype='bug'  reporter=''>
+			Text-Templates: Video template now supports new MiddMedia service
+		</change>
+		<change author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			User-Data: UserData javascript is now consistantly written once and only
+			once.
+		</change>
+		<new author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			Text-Templates: Added new Audio text-template for displaying MP3 files in-line.
+		</new>
+		<fix author='adam' date='2009-01-28' ref='' reftype='bug'  reporter=''>
+			MediaLibrary: After uploads in Safari, MediaLibrary panel is now moved to front again.
+		</fix>
+	</version>
 	<version number="2.2.6.0" date="2009-01-12">
 		<releaseNotes>
 			This release adds support for creating new content through wiki-links.

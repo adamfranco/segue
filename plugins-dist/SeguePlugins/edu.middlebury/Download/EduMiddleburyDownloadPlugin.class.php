@@ -171,7 +171,7 @@ class EduMiddleburyDownloadPlugin
  			
  			print 		"this.nextSibling.innerHTML = '<div>' + downloadBar.innerHTML + '<div style=\\'clear: both;\\'></div></div>'; ";
  			print "}; "; 
- 			print "MediaLibrary.run('".$this->getId()."', this); ";
+ 			print "MediaLibrary.run('".$this->getId()."', this, null, {local: true}); ";
  			print "\"/>";
  			
  			// Container for example download bar.
