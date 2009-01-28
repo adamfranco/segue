@@ -48,7 +48,16 @@ interface Participation_Action {
 	 * @access public
 	 * @since 1/23/09
 	 */
-	public function getCategory ();
+	public function getCategoryId ();
+
+	/**
+	 * get category of action (e.g. create, edit, comment...)
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/23/09
+	 */
+	public function getCategoryDisplayName ();
 
 	/**
 	 * get description of action (e.g. create, edit, comment...)
