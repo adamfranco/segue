@@ -36,6 +36,21 @@ class addVideoAction
 	 */
 	protected function buildXml () {
 		$upload = RequestContext::value('media_file');
+		if ($upload['error'])
+			throw new OperationFailedException("Upload Error: ".$upload['error']);
+		if (!$upload['size']) {
+			$postMax = ByteSize::fromString(ini_get('post_max_size'));
+			$uploadMax = ByteSize::fromString(ini_get('upload_max_filesize'));
+			$memoryLimit = ByteSize::fromString(ini_get('memory_limit'));
+			$min = $postMax;
+			if ($min->isGreaterThan($uploadMax))
+				$min = $uploadMax;
+			if ($min->isGreaterThan($memoryLimit))
+				$min = $memoryLimit;
+			
+			throw new OperationFailedException("No file uploaded or file too big. Max: ".$min->asString());
+		}
+				
 		$file = $this->addVideo(
 			RequestContext::value('directory'), 
 			base64_encode(file_get_contents($upload['tmp_name'])),
