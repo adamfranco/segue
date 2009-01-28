@@ -391,7 +391,15 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 		
 		this.uploadForm.innerHTML = "<input type='file' name='media_file' /> <input type='submit' value='Upload'/>";
 		
+		var note = document.createElement('div');
+		note.style.fontStyle = 'italic';
+		note.innerHTML = "For faster multi-file uploads use <a href='https://middmedia.middlebury.edu/' target='_blank'>MiddMeda</a> directly.";
+		container.appendChild(note);
+		
 		container.appendChild(this.uploadForm);
+		
+		note.style.cssFloat = 'right';
+		note.style.float = 'right';
 	}
 	
 	/**
