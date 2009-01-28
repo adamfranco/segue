@@ -99,15 +99,15 @@ function MediaLibrary ( assetId, callingElement, allowedMimeTypes, librariesConf
 			// Add the library if configured to do so.
 			if (librariesConfig[config.title]) {
 				// Include any needed class files.
-				if (!typeof config.class !== 'function') {
+				if (typeof config.jsClass != 'function') {
 					if (!config.jsSourceUrl)
-						throw "External library class " + config.class + " is not defined and a source URL is not specified.";
+						throw "External library class " + config.jsClass + " is not defined and a source URL is not specified.";
 					
 					Script.include(config.jsSourceUrl);
 				}
 				
 				var tab = this.tabs.addTab('ext_' + i, config.title);
-				eval('tab.library = new ' + config.class + '(this, config, this.caller, tab.wrapperElement);');
+				eval('tab.library = new ' + config.jsClass + '(this, config, this.caller, tab.wrapperElement);');
 				
 				tab.onOpen = function () { 
 					if (typeof this.library.onOpen == 'function')

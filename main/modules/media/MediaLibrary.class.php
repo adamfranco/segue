@@ -225,7 +225,7 @@ var newString = downloadBar.innerHTML;
 			print '
 		MediaLibrary.externalLibraries.push({
 			title: "'.$library['title'].'",
-			class: "'.$library['jsClass'].'",
+			jsClass: "'.$library['jsClass'].'",
 			jsSourceUrl: "'.$library['jsSourceUrl'].'"';
 			
 			foreach ($library['extraParams'] as $key => $val) {

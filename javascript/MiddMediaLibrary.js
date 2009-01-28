@@ -67,8 +67,12 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 		
 		if (!container)
 			throw "the container was not given.";
-		if (typeof container.appendChild != 'function')
+		if (typeof container.appendChild != 'function'
+			// IE case
+			&& typeof container.appendChild != 'object')
+		{
 			throw "container must support the appendChild() method";
+		}
 		this.container = container;
 	}
 	
@@ -711,7 +715,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 				return false;
 			}
 			
-			mediaFile.delete();
+			mediaFile.deleteSelf();
 			
 			var row = this.parentNode.parentNode;
 			row.parentNode.removeChild(row);
@@ -728,7 +732,7 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 	 * @access public
 	 * @since 1/14/09
 	 */
-	MiddMediaFile.prototype.delete = function () {
+	MiddMediaFile.prototype.deleteSelf = function () {
 		var req = Harmoni.createRequest();
 		var url = Harmoni.quickUrl('middmedia', 'delVideo', {directory: this.directory.name, file: this.name});
 		if (req) {
