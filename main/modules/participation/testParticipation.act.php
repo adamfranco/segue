@@ -43,8 +43,8 @@ class testParticipationAction
 		// make sure url contains node id
 		$currentNode = SiteDispatcher::getCurrentNode();
 	//	printpre($currentNode);
-		$participantId = 606;
-		$nodeId = 511205;
+		$participantId = "606";
+		$nodeId = "511205";
 				
 		$view = new Participation_View($site);		
 
@@ -72,9 +72,9 @@ class testParticipationAction
 		$agent = $idMgr->getId($participantId);		
 // 		printpre($agent);
 		
-		$view2 = new Participation_Participant($site, $agent);
-		$participant2actions = $view2->getActions();
-		printpre($view2->getDisplayName());	
+		$participant = new Participation_Participant($view, $agent);
+		$participant2actions = $participant->getActions();
+		printpre($participant->getDisplayName());	
 		
 		foreach ($participant2actions as $action) {
 			printpre($action->getTargetDisplayName());
@@ -100,7 +100,8 @@ class testParticipationAction
 				printpre($action->getTargetDisplayName());
 				printpre($action->getId());
 				printpre($action->getTimeStamp());
-				printpre($action->getCategory());
+				printpre($action->getCategoryDisplayName());
+				printpre($action->getCategoryId());
 				printpre($action->getDescription());
 				printpre($action->getTargetUrl());
 				
