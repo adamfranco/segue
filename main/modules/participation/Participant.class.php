@@ -27,24 +27,24 @@ class Participation_Participant {
 	/**
 	 * Constructor
 	 * 
-	 * @param SiteNavBlockSiteComponent $site
+	 * @param Participation_View $view
 	 * @param Id $id
 	 * @return object
 	 * @access public
 	 * @since 4/3/06
 	 */
-	public function __construct (SiteNavBlockSiteComponent $site, Id $participantId) {
-		$this->_site = $site;
+	public function __construct (Participation_View $view, Id $participantId) {
+		$this->_view = $view;
 		$this->_id = $participantId;
 	
 	}
 	
 	/**
-	 * @var  SiteNavBlockSiteComponent $_site
+	 * @var  Participation_View $view
 	 * @access private
 	 * @since 1/23/09
 	 */
-	private $_site;
+	private $_view;
 	
 	/**
 	 * @var  string $_id 
@@ -54,7 +54,7 @@ class Participation_Participant {
 	private $_id;
 
 	/**
-	 * get the id of a participant in the site
+	 * get the id of a participant in the node
 	 * 
 	 * @return object Id
 	 * @access public
@@ -65,7 +65,7 @@ class Participation_Participant {
 	}
 
 	/**
-	 * get the display name of a participant in the site
+	 * get the display name of a participant in the node
 	 * 
 	 * @return object Id
 	 * @access public
@@ -76,29 +76,45 @@ class Participation_Participant {
 	}
 
 	/**
-	 * get all actions of a participant in a site
+	 * get all actions of a participant in a node
 	 * 
 	 * @return array of Participation_Action
 	 * @access public
 	 * @since 1/23/09
 	 */
 	public function getActions () {
-		$site_actions = new Participation_View($this->_site);
-		$all_actions = $site_actions->getActions();
+		$all_actions = $this->_view->getActions();
 		$participantActions = array();
 		
 		foreach ($all_actions as $action) {
-			try {
-				$ActionParticipant = $action->getParticipant();	
-			} catch (Exception $e) {
-			
-			}
-			
+			$ActionParticipant = $action->getParticipant($this->_id);	
 			if ($ActionParticipant == $this) {
 				$participantActions[] = $action;			
 			}
 		}		
 		return $participantActions;
+	}
+	
+	/**
+	 * get the number of actions of participant by category
+	 * 
+	 * @param string $category
+	 * @param optional string $nodeId
+	 * @return integer
+	 * @access public
+	 * @since 1/28/09
+	 */
+	public function getNumActionsByCategory ($category) {
+		$actions = $this->getActions();
+		$num = 0;
+		
+		foreach($actions as $action) {
+			if ($action->getCategoryId() == $category) {
+				$num++;
+			}
+			
+		}
+		return $num;
 	}
 	
 	
