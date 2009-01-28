@@ -107,7 +107,6 @@ $service->setHtmlPlayerRegex('/http:\/\/blip\.tv\/play\//');
 $service->setHtmlIdRegex('/http:\/\/blip\.tv\/play\/([a-zA-Z0-9_-]+)/i');
 
 
-
 /*********************************************************
  * MiddMedia
  *********************************************************/
@@ -134,8 +133,11 @@ $service->setHtmlIdRegex('/
 	(?: \/|%2F)
 	
 	
-	# File-name with extension
-	([a-zA-Z0-9_%\.-]+\.[a-zA-Z0-9]+)
+	# File-name with optional extension
+	(
+		[a-zA-Z0-9_%\.-]+
+		(?: \.[a-zA-Z0-9]+)?
+	)
 	
 	# end quote
 	%27
@@ -143,7 +145,7 @@ $service->setHtmlIdRegex('/
 /x');
 $service->setParamRegex('id', '/^[a-z0-9%\._\s-]+\.[a-z0-9]+$/i');
 
-$service->addParam('dir', '/^[a-z0-9\._-]+$/', 'unknown_dir');
+$service->addParam('dir', '/^[a-z0-9\._-]+$/i', 'unknown_dir');
 $harmoni = Harmoni::instance();
 $service->addParam('splash_image_url', 
 '/^((https?:\/\/[a-z0-9\.\/_&=%+~-]*.jpg)|('.str_replace('.', '\.', str_replace('/', '\/', $harmoni->request->quickURL('repository', 'viewfile'))).'[a-z0-9\.\/_&=%+~-]*))?$/i', '', '%2CsplashImageFile%3A%27', '%27');
