@@ -174,6 +174,72 @@ $service->setHtmlParamsRegex('/
 	array(1 => 'dir'));
 */
 
+/*********************************************************
+ * Redirected Middtube
+ *********************************************************/
+/*
+$service = $video->addService(new Segue_TextTemplates_Video_MiddTubeService(
+        'middtube',
+        '<embed src="http://middmedia.middlebury.edu/flowplayer/FlowPlayerLight.swf?config=%7Bembedded%3Atrue%2CstreamingServerURL%3A%27rtmp%3A%2F%2Fmiddmedia.middlebury.edu%2Fvod%27%2CautoPlay%3Afalse%2Cloop%3Afalse%2CinitialScale%3A%27fit%27%2CvideoFile%3A%27###GENERATED_ID###%27###SPLASH_IMAGE_URL###%7D" width="###WIDTH###" height="###HEIGHT###" scale="fit" bgcolor="#111111" type="application/x-shockwave-flash" allowFullScreen="true" allowNetworking="all" pluginspage="http://www.macromedia.com/go/getflashplayer"></embed>'
+));
+$service->setDefaultValue('width', '400');
+$service->setDefaultValue('height', '300');
+$service->setHtmlPlayerRegex('/src=[\'"]http:\/\/middtube\.middlebury\.edu\/flowplayer\/FlowPlayerLight\.swf/');
+$service->setHtmlIdRegex('/
+	# param name
+	videoFile%3A%27
+	
+	# optional type and delimiter
+	(?:
+		(?: mp3|mp4)
+		(?: :|%3A)
+	)?
+	
+	# Directory followed by a slash
+	(?: [a-zA-Z0-9_%\.-]+)
+	(?: \/|%2F)
+	
+	
+	# File-name with optional extension
+	(
+		[a-zA-Z0-9_%\.-]+
+		(?: \.[a-zA-Z0-9]+)?
+	)
+	
+	# end quote
+	%27
+	
+/x');
+$service->setParamRegex('id', '/^[a-z0-9:%\._\s-]+$/i');
+
+$service->addParam('user', '/^[a-z0-9\._-]+$/i', 'unknown_dir');
+$harmoni = Harmoni::instance();
+$service->addParam('splash_image_url', 
+'/^((https?:\/\/[a-z0-9\.\/_&=%+~-]*.jpg)|('.str_replace('.', '\.', str_replace('/', '\/', $harmoni->request->quickURL('repository', 'viewfile'))).'[a-z0-9\.\/_&=%+~-]*))?$/i', '', '%2CsplashImageFile%3A%27', '%27');
+$service->setHtmlParamsRegex('/
+	# param name
+	videoFile%3A%27
+	
+	# optional type and delimiter
+	(?:
+		(?: mp3|mp4)
+		(?: :|%3A)
+	)?
+	
+	# Directory followed by a slash
+	([a-zA-Z0-9_%\.-]+)
+	(?: \/|%2F)
+	
+	
+	# File-name with extension
+	([a-zA-Z0-9_%\.-]+\.[a-zA-Z0-9]+)
+	
+	# end quote
+	%27
+	
+/x', 
+	array(1 => 'user'));
+*/
 
 /*********************************************************
  * MiddTube

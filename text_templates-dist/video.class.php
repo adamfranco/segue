@@ -780,3 +780,53 @@ class Segue_TextTemplates_Video_MiddMediaService
 	}
 }
 
+/**
+ * This is a custom service for migrating the MiddTube service to use videos now hosted 
+ * on the new MiddMedia service.
+ * 
+ * @since 1/28/09
+ * @package segue.wiki
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+class Segue_TextTemplates_Video_MiddTubeService
+	extends Segue_TextTemplates_Video_Service
+{
+		
+	/**
+	 * Based on the parameters listed, generate an identifier to use in the embed code.
+	 * 
+	 * @param array $params
+	 * @return string
+	 * @access public
+	 * @since 1/28/09
+	 */
+	public function generateId (array $params) {
+		$this->validateParam('id', $params['id']);
+		$this->validateParam('user', $params['user']);
+		
+		preg_match('/(?:(mp4|mp3)(?::|%3A))?(.+)/i', $params['id'], $matches);
+		
+		$filename = $matches[2];
+		$parts = pathinfo($filename);		
+		if (!isset($parts['extension'])) {
+			if (!$matches[1])
+				$parts['extension'] = 'flv';
+			else
+				$parts['extension'] = $matches[1];
+		}
+		
+		switch (strtolower($parts['extension'])) {
+			case 'flv':
+				return rawurlencode($params['user'].'/'.$parts['filename']);
+			default:
+				return rawurlencode(
+					strtolower($parts['extension']).':'
+					.$params['user'].'/'
+					.$parts['filename'].'.'.$parts['extension']);
+		}
+	}
+}
