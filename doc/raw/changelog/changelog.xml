@@ -33,6 +33,9 @@
 		<new author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
 			Text-Templates: Added new Audio text-template for displaying MP3 files in-line.
 		</new>
+		<fix author='adam' date='2009-01-28' ref='' reftype='bug'  reporter=''>
+			MediaLibrary: After uploads in Safari, MediaLibrary panel is now moved to front again.
+		</fix>
 	</version>
 	<version number="2.2.5.7" date="2009-01-12">
 		<releaseNotes>

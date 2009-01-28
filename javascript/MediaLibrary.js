@@ -509,6 +509,19 @@ function FileLibrary ( owner, assetId, caller, container ) {
 			}
 		}
 		
+		// In Safari, the FCKEditor area gets popped to the front, move our panel back in front
+		if (getBrowser()[0] == 'safari') {
+			var owner = this.owner;
+			window.setTimeout(function () {
+				owner.moveToFront();
+			}, 10);
+			
+			// Set a second timeout, just to be sure we don't miss it.
+			window.setTimeout(function () {
+				owner.moveToFront();
+			}, 700);
+		}
+		
 		this.owner.center();
 		
 		return true;
