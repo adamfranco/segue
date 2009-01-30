@@ -66,7 +66,7 @@ class testParticipationAction
 		
 
 		//get all actions of a given participant		
-		$participantId = 20217;
+		$participantId = 606;
 		print "<hr/>Participant (".$participantId.") Actions<hr/>";
 		$idMgr = Services::getService('Id');			
 		$agent = $idMgr->getId($participantId);		
