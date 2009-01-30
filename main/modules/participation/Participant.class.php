@@ -87,8 +87,9 @@ class Participation_Participant {
 		$participantActions = array();
 		
 		foreach ($all_actions as $action) {
-			$ActionParticipant = $action->getParticipant($this->_id);	
-			if ($ActionParticipant == $this) {
+			$ActionParticipant = $action->getParticipant($this->_id)->getId();
+
+			if ($ActionParticipant == $this->_id) {
 				$participantActions[] = $action;			
 			}
 		}		
