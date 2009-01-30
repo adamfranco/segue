@@ -123,7 +123,7 @@ class Participation_HistoryAction
 	 * @since 1/26/09
 	 */
 	public function getCategoryId () {		
-		return "edit";
+		return "editor";
 	
 	}
 

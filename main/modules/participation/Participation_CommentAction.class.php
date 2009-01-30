@@ -109,7 +109,7 @@ class Participation_CommentAction
 	 * @since 1/26/09
 	 */
 	public function getCategoryId () {		
-		return "comment";
+		return "commenter";
 	
 	}
 
@@ -121,7 +121,7 @@ class Participation_CommentAction
 	 * @since 1/26/09
 	 */
 	public function getCategoryDisplayName () {		
-		return _("Comment");
+		return _("Commenter");
 	
 	}
 	
