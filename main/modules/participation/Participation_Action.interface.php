@@ -23,7 +23,7 @@
 interface Participation_Action {
 		
 	/**
-	 * get participatnts
+	 * get participant
 	 * 
 	 * @param array 
 	 * @return array
