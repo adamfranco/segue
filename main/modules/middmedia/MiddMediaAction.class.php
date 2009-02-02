@@ -52,6 +52,9 @@ abstract class MiddMediaAction
 		if (!defined('MIDDMEDIA_WSDL_URL'))
 			throw new ConfigurationErrorException('MIDDMEDIA_WSDL_URL is not defined.');
 		
+		if (!class_exists('SoapClient'))  
+			throw new ConfigurationErrorException('SOAP not available');
+		
 		$this->_client = new SoapClient(MIDDMEDIA_WSDL_URL);
 		$this->_soapFunctions = array();
 		foreach ($this->_client->__getfunctions() as $funcDesc) {
