@@ -349,6 +349,9 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 		this.uploadForm.action = Harmoni.quickUrl('middmedia', 'addVideo', {'directory': this.name});
 		this.uploadForm.method = 'post';
 		this.uploadForm.enctype = 'multipart/form-data';
+		this.uploadForm.style.whiteSpace = 'nowrap';
+		this.uploadForm.style.cssFloat = 'left';
+		this.uploadForm.style.float = 'left';
 		
 		// IE doesn't like the form as-is. It seems to need to have it written to
 		// a string and then re-loaded in order for everything to be submitted properly.
@@ -393,6 +396,10 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 		
 		var note = document.createElement('div');
 		note.style.fontStyle = 'italic';
+		note.style.whiteSpace = 'normal';
+		if (getBrowser()[2] != 'msie') {
+			note.style.maxWidth = '300px';
+		}
 		var message = "Only files of the following types can be uploaded to MiddMedia:\n\t";
 		for (var i = 0; i < directory.library.allowedFileExtensions.length; i++) {
 			message += "\n\t<br/>&nbsp; &nbsp; &nbsp; &nbsp;." + directory.library.allowedFileExtensions[i];
