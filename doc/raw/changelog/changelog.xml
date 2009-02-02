@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2009-02-02' ref='' reftype='bug'  reporter=''>
+			MediaLibrary: Fixed Javascript error in IE 7 that occurred when opening a plugin for editing.
+		</fix>
 		<new author='adam' date='2009-02-02' ref='' reftype='fr'  reporter=''>
 			MediaLibrary: MiddMedia library now displays thumbnails for videos.
 		</new>
