@@ -405,7 +405,7 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 			message += "\n\t<br/>&nbsp; &nbsp; &nbsp; &nbsp;." + directory.library.allowedFileExtensions[i];
 			message += "\t\t(" + directory.library.allowedMimeTypes[i] + ")";
 		}
-		note.innerHTML = message + " <br/>See <a href='https://mediawiki.middlebury.edu/wiki/LIS/MiddMedia' target='_blank'>MiddMeda Help</a> for more information.\n<br/><br/>For faster multi-file uploads use <a href='https://middmedia.middlebury.edu/' target='_blank'>MiddMeda</a> directly.";
+		note.innerHTML = message + " <br/>See <a href='https://mediawiki.middlebury.edu/wiki/LIS/MiddMedia' target='_blank'>MiddMedia Help</a> for more information.\n<br/><br/>For faster multi-file uploads use <a href='https://middmedia.middlebury.edu/' target='_blank'>MiddMedia</a> directly.";
 		container.appendChild(note);
 		
 		container.appendChild(this.uploadForm);
