@@ -735,13 +735,13 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 						var objects = this.contentElement.getElementsByTagName("embed");
 						for (var i=0; i < objects.length; i++) {
 							// It seems that setting the src attribute to null is the only way to stop the Flow player
+							// This doesn't seem to stop the video in IE 7
 							objects[i].src = null;
-							objects[i] = null;
 						}
 
 						this.contentElement = null;
 						this.screen.style.display = 'none';
-						delete this.positionElement.panel;
+						this.positionElement.panel = null;
 					}
 				}
 				
