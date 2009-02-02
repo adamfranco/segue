@@ -167,6 +167,17 @@ function MiddMediaLibrary ( owner, config, caller, container ) {
 			}
 		}
 		
+		this.container.appendChild(document.createTextNode('   '));
+		var refresh = this.container.appendChild(document.createElement('button'));
+		refresh.innerHTML = 'Refresh File List';
+		refresh.onclick = function () {
+			if (library.directorySelect.value) {
+				var directory = library.directories[library.directorySelect.value]
+				directory.forceReload();
+			}
+			return false;
+		}
+		
 		var option = this.directorySelect.appendChild(document.createElement('option'));
 		option.value = null;
 		option.innerHTML = "Select a directory...";
@@ -392,7 +403,8 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 				'onComplete' : function(xmlDoc) {directory.completeUploadCallback(xmlDoc)}});
 		}
 		
-		this.uploadForm.innerHTML = "<input type='file' name='media_file' /> <input type='submit' value='Upload'/>";
+		this.uploadForm.innerHTML = "<input type='file' name='media_file' /> <input type='submit' value='Upload'/><br/>";
+		
 		
 		var note = document.createElement('div');
 		note.style.fontStyle = 'italic';
