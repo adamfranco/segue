@@ -393,7 +393,12 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 		
 		var note = document.createElement('div');
 		note.style.fontStyle = 'italic';
-		note.innerHTML = "For faster multi-file uploads use <a href='https://middmedia.middlebury.edu/' target='_blank'>MiddMeda</a> directly.";
+		var message = "Only files of the following types can be uploaded to MiddMedia:\n\t";
+		for (var i = 0; i < directory.library.allowedFileExtensions.length; i++) {
+			message += "\n\t<br/>&nbsp; &nbsp; &nbsp; &nbsp;." + directory.library.allowedFileExtensions[i];
+			message += "\t\t(" + directory.library.allowedMimeTypes[i] + ")";
+		}
+		note.innerHTML = message + " <br/>See <a href='https://mediawiki.middlebury.edu/wiki/LIS/MiddMedia' target='_blank'>MiddMeda Help</a> for more information.\n<br/><br/>For faster multi-file uploads use <a href='https://middmedia.middlebury.edu/' target='_blank'>MiddMeda</a> directly.";
 		container.appendChild(note);
 		
 		container.appendChild(this.uploadForm);
