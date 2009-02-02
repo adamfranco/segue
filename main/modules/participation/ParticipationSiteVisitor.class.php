@@ -82,8 +82,11 @@ class ParticipationSiteVisitor
 		
 		if ($plugin->supportsVersioning()) {		
 			$versions = $plugin->getVersions();
+			$firstVersion = 0;
 			foreach ($versions as $version) {
-				$this->_actions[] = new Participation_HistoryAction($view,  $siteComponent, $version);				
+				if ($version->getNumber() != 1) {
+					$this->_actions[] = new Participation_HistoryAction($view,  $siteComponent, $version);
+				}
 			}		
 		}
 	}
