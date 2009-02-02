@@ -709,7 +709,43 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 		
 		datum.appendChild(document.createTextNode(' '));
 		var imageLink = datum.appendChild(document.createElement('a'));
-		imageLink.href = this.url;
+		if (this.embedCode) {
+			imageLink.href = '#';
+			var file = this;
+			imageLink.onclick = function() {
+				if (this.panel) {
+					this.panel.open();
+				} else {
+					var panel = new CenteredPanel('Previewing ' + file.getTitles()[0], 400, 500, this);
+					panel.contentElement.style.textAlign = 'center';
+					
+					var mediaContainer = panel.contentElement.appendChild(document.createElement('p'));
+					mediaContainer.innerHTML = file.embedCode;
+					
+					this.panel.open();
+					
+					// Force the panel to clear the embed code and delete itself to 
+					// stop any playing media. Otherwise media keeps playing in the background
+					panel.onClose = function () {
+						var objects = this.contentElement.getElementsByTagName("embed");
+						for (var i=0; i < objects.length; i++) {
+							// It seems that setting the src attribute to null is the only way to stop the Flow player
+							objects[i].src = null;
+							objects[i] = null;
+						}
+
+						this.contentElement = null;
+						this.screen.style.display = 'none';
+						delete this.positionElement.panel;
+					}
+				}
+				
+				return false;
+			}
+		} else {
+			imageLink.href = this.url;
+			imageLink.target = '_blank';	
+		}
 		
 		this.thumbnail = imageLink.appendChild(document.createElement('img'));
 		this.thumbnail.src = this.getThumbnailUrl();

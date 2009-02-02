@@ -17,6 +17,9 @@
 		<new author='adam' date='2009-02-02' ref='' reftype='fr'  reporter=''>
 			MediaLibrary: MiddMedia library now displays thumbnails for videos.
 		</new>
+		<new author='adam' date='2009-02-02' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: MiddMedia library now displayes embeded previews of media.
+		</new>
 	</version>
 	<version number="2.2.7.0" date="2009-01-28">
 		<releaseNotes>
