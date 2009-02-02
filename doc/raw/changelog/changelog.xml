@@ -10,9 +10,21 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.7.1" date="The Future">
+	<version number="2.2.7.1" date="2009-02-02">
 		<releaseNotes>
+			This release fixes a few minor issues with the media library and improves
+			support for Middlebury's MiddMedia service.
 			
+			See the change log for more details.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.10.
 		</releaseNotes>
 		<fix author='adam' date='2009-02-02' ref='' reftype='bug'  reporter=''>
 			MediaLibrary: Fixed Javascript error in IE 7 that occurred when opening a plugin for editing.

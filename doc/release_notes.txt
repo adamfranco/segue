@@ -1,5 +1,5 @@
 
-Segue v. 2.2.7.0 (2009-01-28)
+Segue v. 2.2.7.1 (2009-02-02)
 =================================
 
 What is Segue?
@@ -12,12 +12,8 @@ and journal.
 
 Current Version Notes
 ---------------------
-This release adds support for external media libraries with support for Middlebury's
-new MiddMedia service included. A new 'audio' text-template is included for
-embedding an MP3 player in TextAndImages blocks and text-areas now get an 'Embed
-Audio/Video' button. When migrating sites from Segue1 installations, mp3 downloads
-are now converted to AudioPlayer plugins. The Portal styling has been updated to
-better highlight the selected folder.
+This release fixes a few minor issues with the media library and improves support
+for Middlebury's MiddMedia service.
 
 See the change log for more details. 
 
@@ -28,7 +24,7 @@ located under Admin Tools --> Segue Updates.
 
 ----
 
- This Segue release uses Harmoni 1.9.2 and Polyphony 1.4.10.
+ This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.10.
 
 
 Downloads
@@ -68,6 +64,24 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.7.1 (2009-02-02)
+----------------------------------------------------
+This release fixes a few minor issues with the media library and improves support
+for Middlebury's MiddMedia service.
+
+See the change log for more details. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.10.
+
 
 
 v. 2.2.7.0 (2009-01-28)

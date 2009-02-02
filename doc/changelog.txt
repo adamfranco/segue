@@ -2,6 +2,47 @@
 Segue Change Log
 
 
+v. 2.2.7.1 (2009-02-02)
+----------------------------------------------------
+This release fixes a few minor issues with the media library and improves support
+for Middlebury's MiddMedia service.
+
+See the change log for more details. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.10.
+		
+		
+	* Bug Fix: 
+		MediaLibrary: Fixed Javascript error in IE 7 that occurred when opening a
+		plugin for editing.
+		(2009-02-02 - Adam Franco)
+		
+	* New feature: 
+		MediaLibrary: MiddMedia library now displays thumbnails for videos.
+		(2009-02-02 - Adam Franco)
+		
+	* New feature: 
+		MediaLibrary: MiddMedia library now displays embeded previews of media.
+		(2009-02-02 - Adam Franco)
+		
+	* New feature: 
+		MediaLibrary:MiddMedia library now displays a link to help in the LIS wiki.
+		(2009-02-02 - Adam Franco)
+		
+	* New feature: 
+		MediaLibrary: MiddMedia library now allows refreshing of the file list.
+		(2009-02-02 - Adam Franco)
+	
+
+
+
 v. 2.2.7.0 (2009-01-28)
 ----------------------------------------------------
 This release adds support for external media libraries with support for Middlebury's
