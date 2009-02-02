@@ -672,9 +672,13 @@ function MiddMediaFile ( library, directory, xmlElement ) {
 		
 		this.creator = xmlElement.getAttribute('creator');
 		
-// 		this.thumbnailUrl = xmlElement.getElementsByTagName('thumbnailUrl')[0].firstChild.data;
-// 		this.thumbnailUrl = decodeURI(this.thumbnailUrl);
-// 		this.thumbnailUrl = this.thumbnailUrl.urlDecodeAmpersands();
+		if (xmlElement.getAttribute('thumbUrl').length > 0) {
+			this.thumbnailUrl = xmlElement.getAttribute('thumbUrl');
+			this.thumbnailUrl = decodeURI(this.thumbnailUrl);
+			this.thumbnailUrl = this.thumbnailUrl.urlDecodeAmpersands();
+		}
+		
+		this.embedCode = xmlElement.getElementsByTagName('embedCode')[0].firstChild.data;
 	}
 	
 	/**

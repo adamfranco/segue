@@ -69,7 +69,25 @@ class addVideoAction
 			print "creator=\"".$file['creator']."\" ";
 		else
 			print "creator=\"\" ";
-		print "/>";
+		if (isset($file['fullframeurl']))
+			print "fullframeUrl=\"".$file['fullframeurl']."\" ";
+		else
+			print "fullframeUrl=\"\" ";
+		
+		if (isset($file['thumburl']))
+			print "thumbUrl=\"".$file['thumburl']."\" ";
+		else
+			print "thumbUrl=\"\" ";
+			
+		if (isset($file['splashurl']))
+			print "splashUrl=\"".$file['splashurl']."\" ";
+		else
+			print "splashUrl=\"\" ";
+		print ">";
+		print "\n\t<embedCode><![CDATA[";
+		print $file['embedcode'];
+		print "]]></embedCode>";
+		print "</file>";
 	}
 	
 }

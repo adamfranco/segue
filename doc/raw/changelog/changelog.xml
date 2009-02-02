@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.7.1" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='adam' date='2009-02-02' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: MiddMedia library now displays thumbnails for videos.
+		</new>
+	</version>
 	<version number="2.2.7.0" date="2009-01-28">
 		<releaseNotes>
 			This release adds support for external media libraries with support for
