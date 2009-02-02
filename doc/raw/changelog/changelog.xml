@@ -24,8 +24,15 @@
 			
 			----
 			
-			This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.10.
+			This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.
 		</releaseNotes>
+		<fix author='adam' date='2009-02-02' ref='' reftype='bug'  reporter='alex'>
+			MediaLibrary: File library now reloads every time the media library opens.
+			
+			When repeatedly adding files and making both image and text-links to them
+			the listings in the two panels would get out of sync. Now they are reloaded
+			every time the panel is opened.
+		</fix>
 		<fix author='adam' date='2009-02-02' ref='' reftype='bug'  reporter=''>
 			MediaLibrary: Fixed Javascript error in IE 7 that occurred when opening a plugin for editing.
 		</fix>

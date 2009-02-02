@@ -161,6 +161,27 @@ function MediaLibrary ( assetId, callingElement, allowedMimeTypes, librariesConf
 	MediaLibrary.prototype.onContentChange = function () {
 		this.center();
 	}
+	
+	/**
+	 * Actions to run when the library is opened
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/2/09
+	 */
+	MediaLibrary.prototype.onOpen = function () {
+		MediaLibrary.superclass.onOpen.call(this);
+		
+		if (this.tabs) {
+			try {
+				var current = this.tabs.getSelected();
+				if (typeof current.onOpen == 'function') {
+					current.onOpen();
+				}
+			} catch (e) {
+			}
+		}
+	}
 
 /**
  * <##>
@@ -266,7 +287,24 @@ function FileLibrary ( owner, assetId, caller, container ) {
 		element.appendChild(document.createTextNode('permissions'));
 		element.className = 'perms_col';
 		
+		this.mediaListBody = this.mediaList.appendChild(document.createElement('tbody'));
+		
 		container.appendChild(this.mediaList);
+	}
+	
+	/**
+	 * Clear the media list
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/2/09
+	 */
+	FileLibrary.prototype.clearMediaList = function () {
+		if (this.mediaListBody) {
+			while (this.mediaListBody.childNodes.length) {
+				this.mediaListBody.removeChild(this.mediaListBody.childNodes[0]);
+			}
+		}
 	}
 	
 	/**
@@ -291,6 +329,7 @@ function FileLibrary ( owner, assetId, caller, container ) {
 	 * @since 1/29/07
 	 */
 	FileLibrary.prototype.fetchMedia = function () {
+		this.clearMediaList();
 		var req = Harmoni.createRequest();
 		var url = this.getMediaListUrl();
 		if (req) {
@@ -369,7 +408,7 @@ function FileLibrary ( owner, assetId, caller, container ) {
 	 * @since 1/26/07
 	 */
 	FileLibrary.prototype.addMediaAsset = function (mediaAsset) {
-		this.mediaList.appendChild(mediaAsset.getEntryElement());
+		this.mediaListBody.appendChild(mediaAsset.getEntryElement());
 		this.owner.center();
 		
 		this.media.push(mediaAsset);
@@ -567,8 +606,8 @@ function AssetLibrary ( owner, assetId, caller, container ) {
 			this.createQuotaDisplay(this.container);
 			this.createForm(this.container);
 			this.createMediaList(this.container);
-			this.fetchMedia();
 		}
+		this.fetchMedia();
 	}
 	
 	/**
@@ -801,8 +840,8 @@ function SiteLibrary ( owner, assetId, caller, container ) {
 	SiteLibrary.prototype.onOpen = function () {
 		if (!this.mediaList) {			
 			this.createMediaList(this.container);
-			this.fetchMedia();
 		}
+		this.fetchMedia();
 	}
 	
 	/**
@@ -921,14 +960,14 @@ function MediaAsset ( assetId, xmlElement, library ) {
 	MediaAsset.prototype.getEntryElement = function () {
 		// if our entry element doesn't exist, create it
 		if (!this.entryElement) {
-			this.entryElement = document.createElement('tbody');
+			this.entryElement = document.createElement('tr');
 		}
 		// if it exists, clear out its contents
 		else {
 			this.entryElement.innerHTML = '';
 		}
 		
-		var row = this.entryElement.appendChild(document.createElement('tr'));
+		var row = this.entryElement;
 		
 		var filesElement = row.appendChild(document.createElement('td'));
 		if (this.files.length) {
