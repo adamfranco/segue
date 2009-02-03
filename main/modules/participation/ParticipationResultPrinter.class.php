@@ -32,8 +32,8 @@ class ParticipationResultPrinter
 	 * @access public
 	 * @since 1/30/09
 	 */
-	public function __construct (array $actions, $headRow, $callback) {
-		parent::EmbeddedArrayResultPrinter($actions, 1, 30, $callback);
+	public function __construct (array $actions, $headRow, $numRows, $callback) {
+		parent::EmbeddedArrayResultPrinter($actions, 1, $numRows, $callback);
 		$this->headRow = $headRow;
 	}
 		
