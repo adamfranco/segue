@@ -46,8 +46,8 @@ class summaryAction
 		$azMgr = Services::getService('AuthZ');
 		// Since view AZs cascade up, just check at the node.
 		return $azMgr->isUserAuthorized(
-			$idMgr->getId('edu.middlebury.authorization.view'),
-			SiteDispatcher::getCurrentRootNode()->getQualifierId());
+			$idMgr->getId('edu.middlebury.authorization.modify'),
+			SiteDispatcher::getCurrentNode()->getQualifierId());
 	}
 	
 	/**
