@@ -754,7 +754,7 @@ END;
 	 * @since 12/17/07
 	 */
 	protected function controlsAlwaysVisible () {
-		return false;
+		return true;
 	}
 	
 	/**
@@ -775,7 +775,7 @@ END;
 			print " onmouseout='if (isValidMouseOut(this, event)) {hideControls(this);} '";
 			print " style='position: relative; border: $borderWidth solid transparent;'";
 		} else {
-			print " style='position: relative; border: $borderWidth solid $borderColor;'";
+			print " style='position: relative; margin: 1px; border: $borderWidth solid $borderColor;'";
 		}
 		
 		print " onclick='";
