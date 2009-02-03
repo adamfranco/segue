@@ -2,6 +2,44 @@
 Segue Change Log
 
 
+v. 2.2.7.2 (2009-02-03)
+----------------------------------------------------
+This release fixes a number of issues with editing in Internet Explorer 7. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.
+		
+		
+	* Bug Fix: 
+		UI2: Fixed up options panel styles for IE 7. Now has nicer padding around
+		the edges.
+		(2009-02-03 - Adam Franco)
+		
+	* Bug Fix: #1855103 
+		UI2: New-mode options panels now display properly in IE 7, no longer falling
+		behind other elements.
+		(2009-02-03 - Adam Franco)
+		
+	* Change: #2157377 
+		UI2: New-mode editing interface now always shows borders and controls to
+		improve speed. The browser no longer has to process hundreds of
+		mouse-over/mouse-out events when moving the mouse or scrolling.
+		(2009-02-03 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: 
+		MediaLibrary: Fixed Safari CSS issue in the MiddMedia library.
+		(2009-02-03 - Adam Franco)
+	
+
+
+
 v. 2.2.7.1 (2009-02-02)
 ----------------------------------------------------
 This release fixes a few minor issues with the media library and improves support

@@ -10,9 +10,18 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.8.0" date="The Future">
+	<version number="2.2.7.2" date="2009-02-03">
 		<releaseNotes>
+			This release fixes a number of issues with editing in Internet Explorer 7.
 			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.
 		</releaseNotes>
 		<fix author='adam' date='2009-02-03' ref='' reftype='bug'  reporter=''>
 			UI2: Fixed up options panel styles for IE 7. Now has nicer padding around the edges.

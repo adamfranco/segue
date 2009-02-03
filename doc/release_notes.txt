@@ -1,5 +1,5 @@
 
-Segue v. 2.2.7.1 (2009-02-02)
+Segue v. 2.2.7.2 (2009-02-03)
 =================================
 
 What is Segue?
@@ -12,10 +12,7 @@ and journal.
 
 Current Version Notes
 ---------------------
-This release fixes a few minor issues with the media library and improves support
-for Middlebury's MiddMedia service.
-
-See the change log for more details. 
+This release fixes a number of issues with editing in Internet Explorer 7. 
 
 ----
 
@@ -64,6 +61,21 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.7.2 (2009-02-03)
+----------------------------------------------------
+This release fixes a number of issues with editing in Internet Explorer 7. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.
+
 
 
 v. 2.2.7.1 (2009-02-02)
