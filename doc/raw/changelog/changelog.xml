@@ -14,6 +14,9 @@
 		<releaseNotes>
 			
 		</releaseNotes>
+		<fix author='adam' date='2009-02-03' ref='1855103' reftype='bug'  reporter=''>
+			UI2: New-mode options panels now display properly in IE 7, no longer falling behind other elements.
+		</fix>
 		<change author='adam' date='2009-02-03' ref='2157377' reftype='fr'  reporter='alex'>
 			UI2: New-mode editing interface now always shows borders and controls to improve speed. The browser no longer has to process hundreds of mouse-over/mouse-out events when moving the mouse or scrolling.
 		</change>

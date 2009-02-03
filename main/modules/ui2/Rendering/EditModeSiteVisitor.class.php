@@ -883,6 +883,43 @@ END;
 		}
 		
 		mainElement.style.zIndex = maxZIndex + 1;
+		
+		// IE has a bug in its z-index implementation that we must work around.
+		if (getBrowser()[2] == 'msie') {
+			rewritePositionedZIndexesUp(mainElement, maxZIndex + 1);
+			
+			// IE also doesn't re-flow the page and let z-index changes take effect.
+			// We must momentarily change the width of an element to get it to re-flow
+			// the page.
+			var tmp = document.body.style.width;
+			mainElement.parentNode.style.width = '10px';
+			mainElement.parentNode.style.width = tmp;
+		}
+	}
+	
+	/**
+	 * IE 7 and prior calculate z-index in an invalid way -- scoped within relative-positioned elements.
+	 * this function will recurse up the DOM tree and set the z-index on every
+	 * positioned element above the current one to force the element to the front.
+	 * 
+	 * @param DOM_Element element
+	 * @param int zIndex
+	 * @return void
+	 * @access public
+	 * @since 2/3/09
+	 */
+	function rewritePositionedZIndexesUp(element, zIndex) {
+		if (getBrowser()[2] != 'msie')
+			return;
+		
+		if (element.nodeType != 1)
+			return;
+			
+		if (element.style.position != '') {
+			element.style.zIndex = zIndex;
+		}
+		
+		rewritePositionedZIndexesUp(element.parentNode, zIndex);
 	}
 	
 	// -- Begin click-off hiding --
@@ -933,7 +970,7 @@ END;
 		// if controls aren't show, show them
 		if (controls.style.display != 'block') {
 			controls.style.display = 'block';
-			mainElement.style.zIndex = '11';
+// 			mainElement.style.zIndex = '11';
 			
 			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 			controlsLink.innerHTML = '$hideControls';
@@ -955,7 +992,7 @@ END;
 		else {
 			var controls = getDescendentByClassName(mainElement, 'controls');
 			controls.style.display = 'none';
-			mainElement.style.zIndex = '10';
+// 			mainElement.style.zIndex = '10';
 			
 			var controlsLink = getDescendentByClassName(mainElement, 'controls_link');
 			controlsLink.innerHTML = '$showControls';
