@@ -147,12 +147,8 @@ class Participation_CommentAction
 	 */
 	public function getTargetDisplayName ()  {
 		$node = $this->getNode();
-		$commentsManager = CommentManager::instance();
-		$nodeId = $commentsManager->getCommentParentAsset($this->_comment)->getId()->getIdString(); 
-		$commentId = $this->_comment->getId()->getIdString();
-		$commentSubject = $this->_comment->getSubject();
 		$blockUrl = $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($node));
-		$commentUrl = " &raquo; <a href='".$this->getTargetUrl()."'>".$commentSubject."</a>";
+		$commentUrl = " &raquo; ".$this->getTargetUrl();
 				
 		return $blockUrl.$commentUrl;
 	}
@@ -182,10 +178,13 @@ class Participation_CommentAction
 		$commentsManager = CommentManager::instance();
 		$nodeId = $commentsManager->getCommentParentAsset($this->_comment)->getId()->getIdString(); 
 		$commentId = $this->_comment->getId()->getIdString();
+		$commentSubject = $this->_comment->getSubject();
 		
-		// need to add to url #commentId
-		return SiteDispatcher::quickURL('view','html', 
-			array('node' => $nodeId)).'#'.$commentId;
+		$url = "<a href='".SiteDispatcher::quickURL('view','html', array('node' => $nodeId)).'#'.$commentId."'";
+		$url .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
+		$url .=	"return false; }\" title='"._("View this node")."'>".$commentSubject."</a>";
+
+		return $url;
 	}
 	
 	

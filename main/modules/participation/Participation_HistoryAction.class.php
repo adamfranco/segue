@@ -146,10 +146,8 @@ class Participation_HistoryAction
 	 * @access public
 	 * @since 1/26/09
 	 */
-	public function getDescription ()  {
-		
-		return "an editor of this content.";
-	
+	public function getDescription ()  {		
+		return "an editor of this content.";	
 	}
 	
 	/**
@@ -162,7 +160,7 @@ class Participation_HistoryAction
 	public function getTargetDisplayName ()  {	
 		$versionNumber = $this->_version->getNumber();
 		$nodeUrl = $this->_node->acceptVisitor(new ParticipationBreadCrumbsVisitor($this->_node));
-		$versionUrl =  " (<a href='".$this->getTargetUrl()."'> Version: ".$versionNumber."</a>)";
+		$versionUrl =  " (".$this->getTargetUrl().")";
 		return $nodeUrl.$versionUrl;
 	}
 
@@ -174,8 +172,12 @@ class Participation_HistoryAction
 	 * @since 1/23/09
 	 */
 	public function getTargetUrl () {	
-		return SiteDispatcher::quickURL('versioning','compare_versions', 
-			array('node' => $this->_node->getId(), 'late_rev' => $this->_version->getVersionId()));
+		
+		$url = "<a href='".SiteDispatcher::quickURL('versioning','compare_versions', array('node' => $this->_node->getId(), 'late_rev' => $this->_version->getVersionId()))."'";
+		$url .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
+		$url .=	"return false; }\" title='"._("View this version")."'>Version: ".$this->_version->getNumber()."</a>";
+
+		return $url;
 	}
 	
 	
