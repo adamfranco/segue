@@ -342,9 +342,17 @@
  *********************************************************/
 
 	.participation_row {
+		font-size: 10px;
 		border-bottom: 1px dotted;
 		padding: 3px;		
 	}
+	
+	.participant_row {
+		font-size: 12px;
+		border-bottom: 1px dotted;
+		padding: 3px;		
+	}
+
 	
 /*********************************************************
  * Comments
