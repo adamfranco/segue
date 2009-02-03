@@ -11,6 +11,7 @@
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(MYDIR."/main/modules/participation/Participant.class.php");
 require_once(dirname(__FILE__)."/Participation_Action.interface.php");
+
  
 /**
  * get info about create modification action
@@ -145,9 +146,9 @@ class Participation_CreateAction
 	 * @since 1/23/09
 	 */
 	public function getTargetDisplayName ()  {
-		return $this->_node->getDisplayName();
+		return $this->_node->acceptVisitor(new ParticipationBreadCrumbsVisitor($this->_node));
 	}
-
+	
 	/**
 	 * get url of node that action is applied to
 	 * 

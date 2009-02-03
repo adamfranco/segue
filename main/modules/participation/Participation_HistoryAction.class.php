@@ -159,11 +159,11 @@ class Participation_HistoryAction
 	 * @access public
 	 * @since 1/23/09
 	 */
-	public function getTargetDisplayName ()  {
-	
+	public function getTargetDisplayName ()  {	
 		$versionNumber = $this->_version->getNumber();
-		$nodeTitle = $this->_node->getDisplayName();
-		return $nodeTitle." (version: ".$versionNumber.")";
+		$nodeUrl = $this->_node->acceptVisitor(new ParticipationBreadCrumbsVisitor($this->_node));
+		$versionUrl =  " (<a href='".$this->getTargetUrl()."'> Version: ".$versionNumber."</a>)";
+		return $nodeUrl.$versionUrl;
 	}
 
 	/**

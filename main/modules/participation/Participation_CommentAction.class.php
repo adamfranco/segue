@@ -146,7 +146,25 @@ class Participation_CommentAction
 	 * @since 1/23/09
 	 */
 	public function getTargetDisplayName ()  {
-		return $this->_comment->getSubject();
+		$node = $this->getNode();
+		$commentsManager = CommentManager::instance();
+		$nodeId = $commentsManager->getCommentParentAsset($this->_comment)->getId()->getIdString(); 
+		$commentId = $this->_comment->getId()->getIdString();		
+		return $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($node)).'#'.$commentId;
+	}
+
+	/**
+	 * get node that action applied to
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/23/09
+	 */
+	public function getNode () {	
+		$commentsManager = CommentManager::instance();
+		$nodeId = $commentsManager->getCommentParentAsset($this->_comment)->getId()->getIdString();		
+		$siteDirector = SiteDispatcher::getSiteDirector();				
+		return  $siteDirector->getSiteComponentById($nodeId);
 	}
 
 	/**
