@@ -79,32 +79,24 @@ class actionsAction
 	 * @since 3/14/08
 	 */
 	public function buildContent () {
-		$actionRows = $this->getActionRows();				
+		//$actionRows = $this->getActionRows();				
 				
 		$node = SiteDispatcher::getCurrentNode();
 		$actionRows = $this->getActionRows();
-		$breadcrumbs = $node->acceptVisitor(new BreadCrumbsVisitor($node));
 		
+		// print out link to site map
+		$siteMapUrl = SiteDispatcher::quickURL("view", "map", array('node' => $node->getId()));
+		$links = "<a href='".$siteMapUrl."'>"._("Site Map")."</a> | "._("Tracking");		
+		$actionRows->add(new Block($links, STANDARD_BLOCK));
+		
+		// print out breadcrumbs to current node
+		$breadcrumbs = $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($node, TRUE));
 		$actionRows->add(new Heading(_("Participation: ").$breadcrumbs, 2));
 		
-		
-		//$actionRows->add ( new Block($this->getViewOptions(), STANDARD_BLOCK));
-				
+		// get list of actions
 		$actionRows->add ( new Block($this->getActionsList(), STANDARD_BLOCK));		
 	}
 
-
-	/**
-	 * Display a list of participants with summary of their contributions
-	 * 
-	 * @param string $id
-	 * @return string XHTML markup
-	 * @access private
-	 * @since 1/28/09
-	 */
-	private function getViewOptions () {
-
-	}
 	
 	/**
 	 * Display a list of participants with summary of their contributions
@@ -117,6 +109,8 @@ class actionsAction
 	private function getActionsList () {
 		$node = SiteDispatcher::getCurrentNode();
 		$view = new Participation_View($node);	
+		
+		$actionRows = $this->getActionRows();				
 
 		if (RequestContext::value('sort'))
 			$sort = RequestContext::value('sort');
@@ -211,22 +205,12 @@ class actionsAction
 			print $displayValue;
 			print "</option>";		
 		}
-		print "\n\t</select>";		
-
-
-		
-		// print out summary of participant's actions
-		if (isset($participant) && $participant != 'all') {		
-			$idMgr = Services::getService('Id');
-			$participantId = $idMgr->getId($participant);
-			$participantView = new Participation_Participant($view, $participantId);
-			$commenterActions = $participantView->getNumActionsByCategory("commenter");
-			$authorActions = $participantView->getNumActionsByCategory("author");
-			$editorActions = $participantView->getNumActionsByCategory("editor");
-			print " (".$commenterActions."-comments, ".$authorActions."-new, ".$editorActions."-edits)";
-		}
+		print "\n\t</select>";	
 		print "\n\t</form>";
 		
+		$actionRows->add ( new Block(ob_get_clean(), STANDARD_BLOCK));
+		ob_start();
+
 		// create an array of reorder urls
 		$sortValues = array('timestamp', 'contributor', 'contribution', 'role');
 		
@@ -236,7 +220,7 @@ class actionsAction
 				'sort' => $sortValue, 'direction' => $reorder, 'participant' => $participant, 'role' => $role));
 		}
 
-		
+		// header row for list of actions
 		ob_start();
 		print "\n\t<thead>";
 		print "\n\t\t<tr>";		
@@ -335,12 +319,6 @@ class actionsAction
 		print "\n\t\t\t</td>";
 		print "\n\t\t\t<td class = 'participation_row'>";
 		print  $action->getTargetDisplayName();
-// 		
-// 		$node = $action->getNode();
-// 		print $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($action->getNode()));
-// 		if ($action->getCategoryId() == "editor") {
-// 			print " (<a href='".$action->getTargetUrl()."'>Version: ".$action->getVersionNumber()."</a>)";
-// 		}		
 		print "\n\t\t\t</td>";
 		print "\n\t\t\t<td class='participation_row'>".$action->getCategoryDisplayName()."</td>";
 	

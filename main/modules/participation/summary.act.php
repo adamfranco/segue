@@ -16,6 +16,7 @@ require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsHeaderFooterSiteVisito
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(dirname(__FILE__)."/ParticipationView.class.php");
 require_once(dirname(__FILE__)."/ParticipationResultPrinter.class.php");
+require_once(dirname(__FILE__)."/ParticipationBreadCrumbsVisitor.class.php");
 
 /**
  * View the participation of a participant
@@ -79,10 +80,19 @@ class summaryAction
 		$actionRows = $this->getActionRows();				
 		
 		
-		$site = SiteDispatcher::getCurrentRootNode();
+		$node = SiteDispatcher::getCurrentNode();
 		$actionRows = $this->getActionRows();
-		$actionRows->add(new Heading(_("Participation for: ").$site->getDisplayName(), 2));
-				
+		
+		// print out link to site map
+		$siteMapUrl = SiteDispatcher::quickURL("view", "map", array('node' => $node->getId()));
+		$links = "<a href='".$siteMapUrl."'>"._("Site Map")."</a> | "._("Tracking");		
+		$actionRows->add(new Block($links, STANDARD_BLOCK));
+		
+		// print out breadcrumbs to current node
+		$breadcrumbs = $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($node, TRUE));
+		$actionRows->add(new Heading(_("Participation: ").$breadcrumbs, 2));
+		
+		// get list of participants
 		$actionRows->add ( new Block($this->getParticipantsList(), STANDARD_BLOCK));		
 	}
 	
@@ -117,9 +127,9 @@ class summaryAction
 				$reorderFlag = 'v';
 			}
 		} else {
-			$direction = SORT_DESC;
-			$reorder = 'DESC';
-			$reorderFlag = 'v';
+			$direction = SORT_ASC;
+			$reorder = 'ASC';
+			$reorderFlag = '&#94;';
 		}
 
 		// create an array of reorder urls
@@ -131,17 +141,8 @@ class summaryAction
 				'sort' => $sortValue, 'direction' => $reorder));
 		}
 		
-		ob_start();
-
-// 		print "\n\t<thead>";
-// 		print "\n\t\t<tr>";
-// 		print "\n\t\t\t<th>"._("Participants")."</th>";
-// 		print "\n\t\t\t<th>"._("Commenter")."</th>";
-// 		print "\n\t\t\t<th>"._("Author")."</th>";
-// 		print "\n\t\t\t<th>"._("Editor")."</th>";
-// 		print "\n\t\t</tr>";
-// 		print "\n\t</thead>";
-		
+		// print out header row for list of participants
+		ob_start();		
 		print "\n\t<thead>";
 		print "\n\t\t<tr>";		
 		print "\n\t\t\t<th><a href='";
@@ -157,11 +158,9 @@ class summaryAction
 		print $reorderUrl['editor'];
 		print "'>"._("Editor")." ".(($sort == 'editor')?$reorderFlag:"")."</a></th>";
 		print "\n\t</thead>";
-
 		$headRow = ob_get_clean();
 		
 		//get list of participants in site
-	//	$view = new Participation_View($node);
 		$participants = $view->getParticipants();	
 
 
@@ -197,8 +196,6 @@ class summaryAction
  		$this->_node = $node;
  		$this->_sortValue = $sortValue;
  		$this->_reorder = $reorder;
-// 		$this->_participant = $participant;
-// 		$this->_role = $role;
 		
 		$printer = new ParticipationResultPrinter($participants, $headRow, 30, array($this, 'printAction'));
 		print $printer->getMarkup();
@@ -254,21 +251,7 @@ class summaryAction
 		print "\n\t\t</tr>";
 	
 		return ob_get_clean();
-	}
-
-
-	/**
-	 * Display contributions of a given participant
-	 * 
-	 * @return string XHTML markup
-	 * @access private
-	 * @since 1/28/09
-	 */
-	private function getParticipantActions () {
-	
-	}
-
-	
+	}	
 }
 
 ?>
