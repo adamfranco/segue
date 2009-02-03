@@ -98,6 +98,12 @@ class mapAction
 	 */
 	public function buildContent () {
 		$actionRows = $this->getActionRows();
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		
+		// print out link to tracking
+		$trackingUrl = SiteDispatcher::quickURL("participation", "summary", array('node' => $rootSiteComponent->getId()));
+		$links = _("Site Map")." | <a href='".$trackingUrl."'>"._("Tracking")."</a>";		
+		$actionRows->add(new Block($links, STANDARD_BLOCK));
 				
 		ob_start();
 		
@@ -159,7 +165,7 @@ class mapAction
 		print "\n\t<button onclick='expandAllSiteMapChildren(document.get_element_by_id(\"site_children\"));'>"._("Expand All")."</button>";
 		print "\n\t<button onclick='collapseAllSiteMapChildren(document.get_element_by_id(\"site_children\"));'>"._("Collapse All")."</button>";
 						
-		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		
 		
 		$this->isHeaderFooterVisitor = new isHeaderFooterSiteVisitor();
 		
