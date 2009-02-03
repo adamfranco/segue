@@ -410,7 +410,7 @@ function MiddMediaDirectory ( library, name, bytesUsed, bytesAvailable ) {
 		note.style.fontStyle = 'italic';
 		note.style.whiteSpace = 'normal';
 		if (getBrowser()[2] != 'msie') {
-			note.style.maxWidth = '300px';
+			note.style.maxWidth = '275px';
 		}
 		var message = "Only files of the following types can be uploaded to MiddMedia:\n\t";
 		for (var i = 0; i < directory.library.allowedFileExtensions.length; i++) {
