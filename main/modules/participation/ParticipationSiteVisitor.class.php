@@ -64,16 +64,25 @@ class ParticipationSiteVisitor
 	 */
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
 		$view = new Participation_View($siteComponent);
-		// get create actions
-		$this->_actions[] = new Participation_CreateAction($view, $siteComponent);
+				
+		$idMgr = Services::getService('Id');
+		$azMgr = Services::getService('AuthZ');
+
+		
+		// get create actions	
+		if ($azMgr->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'),
+			$siteComponent->getQualifierId()) == TRUE) 
+			$this->_actions[] = new Participation_CreateAction($view, $siteComponent);
 		
 		// get comment actions
 		$commentsManager = CommentManager::instance();
 		$comments = $commentsManager->getAllComments($siteComponent->getAsset(), DESC);
 		
 		while ($comments->hasNext()) {
-			$comment = $comments->next();	
-			$this->_actions[] = new Participation_CommentAction($view, $comment);
+			$comment = $comments->next();
+			if ($azMgr->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.comment'),
+				$siteComponent->getQualifierId()) == TRUE) 
+				$this->_actions[] = new Participation_CommentAction($view, $comment);
 		}
 		
 		// get history actions
@@ -85,7 +94,9 @@ class ParticipationSiteVisitor
 			$firstVersion = 0;
 			foreach ($versions as $version) {
 				if ($version->getNumber() != 1) {
-					$this->_actions[] = new Participation_HistoryAction($view,  $siteComponent, $version);
+					if ($azMgr->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'),
+						$siteComponent->getQualifierId()) == TRUE) 
+						$this->_actions[] = new Participation_HistoryAction($view,  $siteComponent, $version);
 				}
 			}		
 		}
