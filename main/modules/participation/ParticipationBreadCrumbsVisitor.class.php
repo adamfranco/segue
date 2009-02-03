@@ -27,22 +27,6 @@ class ParticipationBreadCrumbsVisitor
 {
 
 	/**
-	 * Visit a block 
-	 * 
-	 * @param object BlockSiteComponent $block
-	 * @return boolean
-	 * @access public
-	 * @since 5/31/07
-	 */
-	public function visitBlock ( BlockSiteComponent $block ) {
-		$this->addLink($block);
-		
-		$parent = $block->getParentComponent();
-		return $parent->acceptVisitor($this);
-	}
-
-	
-	/**
 	 * Visit a SiteNavBlock
 	 * 
 	 * @param object SiteNavBlockSiteComponent

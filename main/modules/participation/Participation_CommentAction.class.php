@@ -149,8 +149,12 @@ class Participation_CommentAction
 		$node = $this->getNode();
 		$commentsManager = CommentManager::instance();
 		$nodeId = $commentsManager->getCommentParentAsset($this->_comment)->getId()->getIdString(); 
-		$commentId = $this->_comment->getId()->getIdString();		
-		return $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($node)).'#'.$commentId;
+		$commentId = $this->_comment->getId()->getIdString();
+		$commentSubject = $this->_comment->getSubject();
+		$blockUrl = $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($node));
+		$commentUrl = " &raquo; <a href='".$this->getTargetUrl()."'>".$commentSubject."</a>";
+				
+		return $blockUrl.$commentUrl;
 	}
 
 	/**
