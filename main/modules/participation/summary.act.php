@@ -15,6 +15,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/MainWindowAction.class.php
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/IsHeaderFooterSiteVisitor.class.php");
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(dirname(__FILE__)."/ParticipationView.class.php");
+require_once(dirname(__FILE__)."/ParticipationResultPrinter.class.php");
 
 /**
  * View the participation of a participant
@@ -93,40 +94,168 @@ class summaryAction
 	 * @access private
 	 * @since 1/28/09
 	 */
-	private function getParticipantsList ($participant, $action='all') {
+	private function getParticipantsList ($action='all') {
 		ob_start();
 		
-		$site = SiteDispatcher::getCurrentRootNode();
-		print "\n<table class='history_list'>";
-		print "\n\t<thead>";
-		print "\n\t\t<tr>";
-		print "\n\t\t\t<th colspan='2'>"._("Participants")."</th>";
-		print "\n\t\t\t<th>"._("Commenter")."</th>";
-		print "\n\t\t\t<th>"._("Author")."</th>";
-		print "\n\t\t\t<th>"._("Editor")."</th>";
-		print "\n\t\t</tr>";
-		print "\n\t</thead>";
-		print "\n\t<tbody>";
+		//$site = SiteDispatcher::getCurrentRootNode();
+		$node = SiteDispatcher::getCurrentNode();
+		$view = new Participation_View($node);	
 		
-		//get list of participants in site
-		$view = new Participation_View($site);
-		$participants = $view->getParticipants();		
+		if (RequestContext::value('sort'))
+			$sort = RequestContext::value('sort');
+		else
+			$sort = 'name';
 
+		if (RequestContext::value('direction')) {
+			if (RequestContext::value('direction') == 'DESC') {
+				$direction = SORT_DESC;
+				$reorder = 'ASC';
+				$reorderFlag = '&#94;';
+			} else {
+				$direction = SORT_ASC;
+				$reorder = 'DESC';
+				$reorderFlag = 'v';
+			}
+		} else {
+			$direction = SORT_DESC;
+			$reorder = 'DESC';
+			$reorderFlag = 'v';
+		}
+
+		// create an array of reorder urls
+		$sortValues = array('name', 'commenter', 'author', 'editor');
 		
-		// print out list of participants
-		foreach ($participants as $participant) {
-			print "\n\t\t<tr>";
-			print "\n\t\t\t<td>";
-			print $participant->getDisplayName();
-			print "\n\t\t\t</td>";
-			print "\n\t\t</tr>";
-			
+		$reorderUrl = array();
+		foreach ($sortValues as $sortValue) {
+			$reorderUrl[$sortValue] = SiteDispatcher::quickURL('participation','summary', array('node' => $node->getId(),
+				'sort' => $sortValue, 'direction' => $reorder));
 		}
 		
-		print "\n\t</tbody>";
-		print "\n</table>";
+		ob_start();
+
+// 		print "\n\t<thead>";
+// 		print "\n\t\t<tr>";
+// 		print "\n\t\t\t<th>"._("Participants")."</th>";
+// 		print "\n\t\t\t<th>"._("Commenter")."</th>";
+// 		print "\n\t\t\t<th>"._("Author")."</th>";
+// 		print "\n\t\t\t<th>"._("Editor")."</th>";
+// 		print "\n\t\t</tr>";
+// 		print "\n\t</thead>";
+		
+		print "\n\t<thead>";
+		print "\n\t\t<tr>";		
+		print "\n\t\t\t<th><a href='";
+		print $reorderUrl['name'];
+		print "'>"._("Participants")." ".(($sort == 'name')?$reorderFlag:"")."</a></th>";
+		print "\n\t\t\t<th><a href='";
+		print $reorderUrl['commenter'];
+		print "'>"._("Commenter")." ".(($sort == 'commenter')?$reorderFlag:"")."</a></th>";
+		print "\n\t\t\t<th><a href='";
+		print $reorderUrl['author'];
+		print "'>"._("Author")." ".(($sort == 'author')?$reorderFlag:"")."</a></th>";		
+		print "\n\t\t\t<th><a href='";
+		print $reorderUrl['editor'];
+		print "'>"._("Editor")." ".(($sort == 'editor')?$reorderFlag:"")."</a></th>";
+		print "\n\t</thead>";
+
+		$headRow = ob_get_clean();
+		
+		//get list of participants in site
+	//	$view = new Participation_View($node);
+		$participants = $view->getParticipants();	
+
+
+		// sort actions by sort key
+		$sortKeys = array();
+		if ($sort == 'name') {
+			foreach ($participants as $participant) {
+				$sortKeys[] = $participant->getDisplayName();			
+			}
+		} else if ($sort == 'commenter') {
+			foreach ($participants as $participant) {
+				$participantView = new Participation_Participant($view, $participant->getId());
+				$sortKeys[] = $participantView->getNumActionsByCategory('commenter');			
+			}
+		} else if ($sort == 'author') {
+			foreach ($participants as $participant) {
+				$participantView = new Participation_Participant($view, $participant->getId());
+				$sortKeys[] = $participantView->getNumActionsByCategory('author');			
+			}
+		} else if ($sort == 'editor') {
+			foreach ($participants as $participant) {
+				$participantView = new Participation_Participant($view, $participant->getId());
+				$sortKeys[] = $participantView->getNumActionsByCategory('editor');			
+			}
+		
+		} else {
+			throw new InvalidArguementException("Unknown sort field $sort");
+		}
+		
+		array_multisort($sortKeys, $direction, array_keys($participants), SORT_ASC, $participants);
+		
+ 		$this->_view = $view;
+ 		$this->_node = $node;
+ 		$this->_sortValue = $sortValue;
+ 		$this->_reorder = $reorder;
+// 		$this->_participant = $participant;
+// 		$this->_role = $role;
+		
+		$printer = new ParticipationResultPrinter($participants, $headRow, 30, array($this, 'printAction'));
+		print $printer->getMarkup();
+
 		return ob_get_clean();
 	}
+	
+	/**
+	 * Print out a row.
+	 * 
+	 * @param Participation_Participant $participant
+	 * @return string
+	 * @access public
+	 * @since 1/30/09
+	 */
+	public function printAction (Participation_Participant $participants) {
+		$participant = $participants->getId()->getIdString();
+		$participantView = new Participation_Participant($this->_view, $participants->getId());
+		
+		ob_start();
+		print "\n\t\t<tr>";
+		print "\n\t\t\t<td class='participant_row'>";
+		print "<a href='";
+		print SiteDispatcher::quickURL('participation','actions', array('node' => $this->_node->getId(),
+			'sort' => 'timestamp', 'direction' => 'DESC', 'participant' => $participant))."'>";		
+		print $participants->getDisplayName();
+		print "</a>";
+		print "\n\t\t\t</td>";
+
+		print "\n\t\t\t<td class='participant_row'>";
+		print "<a href='";
+		print SiteDispatcher::quickURL('participation','actions', array('node' => $this->_node->getId(),
+			'sort' => 'timestamp', 'direction' => 'DESC', 'participant' => $participant, 'role' => 'commenter'))."'>";		
+		print $participantView->getNumActionsByCategory('commenter');
+		print "</a>";
+		print "\n\t\t\t</td>";
+
+		print "\n\t\t\t<td class='participant_row'>";
+		print "<a href='";
+		print SiteDispatcher::quickURL('participation','actions', array('node' => $this->_node->getId(),
+			'sort' => 'timestamp', 'direction' => 'DESC', 'participant' => $participant, 'role' => 'author'))."'>";		
+		print $participantView->getNumActionsByCategory('author');
+		print "</a>";
+		print "\n\t\t\t</td>";
+
+		print "\n\t\t\t<td class='participant_row'>";
+		print "<a href='";
+		print SiteDispatcher::quickURL('participation','actions', array('node' => $this->_node->getId(),
+			'sort' => 'timestamp', 'direction' => 'DESC', 'participant' => $participant, 'role' => 'editor'))."'>";		
+		print $participantView->getNumActionsByCategory('editor');
+		print "</a>";
+		print "\n\t\t\t</td>";
+		print "\n\t\t</tr>";
+	
+		return ob_get_clean();
+	}
+
 
 	/**
 	 * Display contributions of a given participant
