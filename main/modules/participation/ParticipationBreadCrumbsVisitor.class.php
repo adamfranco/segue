@@ -27,6 +27,56 @@ class ParticipationBreadCrumbsVisitor
 {
 
 	/**
+	 * Constructor
+	 * 
+	 * @param object SiteComponent $currentSiteComponent
+	 * @return void
+	 * @access public
+	 * @since 5/31/07
+	 */
+	function ParticipationBreadCrumbsVisitor (SiteComponent $currentSiteComponent, $showRootNode = FALSE) {
+		
+		$this->_links = array();
+		$this->_separator = " &raquo; ";
+		$this->currentSiteComponent = $currentSiteComponent;
+		
+		$this->allowedModules = array('view', 'ui1', 'ui2');
+		$this->defaultModule = 'view';
+		$this->defaultAction = 'html';
+		$this->_showRootNode = $showRootNode;
+	}
+
+	/**
+	 * Add a link for a node
+	 * 
+	 * @param object SiteComponent $node
+	 * @return void
+	 * @access public
+	 * @since 5/31/07
+	 */
+	function addLink ( $node ) {
+		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
+		
+		$nodeType = explode("::", HarmoniType::typeToString($node->getContentType()));
+		//printpre ($nodeType[2]);
+		
+		if ($nodeType[2] != "NavBlock" && $this->_showRootNode == FALSE) {
+		$url = "<a href='".SiteDispatcher::quickUrl($this->getModule(),$this->getAction(),
+				array('node' => $node->getId()))."'";
+		$url .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
+		$url .=	"return false; }\" title='"._("View this node")."'>".$node->getDisplayName()."</a>";				
+				
+		} else {
+			$url = "<a href='".SiteDispatcher::quickUrl("participation","actions",
+				array('node' => $node->getId()))."'>".$node->getDisplayName()."</a>";			
+		}
+		
+		$this->_links[] = $url;
+		$harmoni->request->endNamespace();
+	}
+
+	/**
 	 * Visit a SiteNavBlock
 	 * 
 	 * @param object SiteNavBlockSiteComponent
@@ -35,7 +85,7 @@ class ParticipationBreadCrumbsVisitor
 	 * @since 5/31/07
 	 */
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteNavBlock ) {
-		//$this->addLink($siteNavBlock);
+		if ($this->_showRootNode == TRUE) $this->addLink($siteNavBlock);
 		
 		ob_start();
 		$links = array_reverse($this->_links);
@@ -48,6 +98,37 @@ class ParticipationBreadCrumbsVisitor
 		}
 		return ob_get_clean();
 	}
+
+	/**
+	 * Answer the module to use in the links
+	 * 
+	 * @return string
+	 * @access private
+	 * @since 4/10/08
+	 */
+	private function getModule () {
+		$harmoni = Harmoni::instance();
+		if (in_array($harmoni->request->getRequestedModule(), $this->allowedModules))
+			return $harmoni->request->getRequestedModule();
+		else
+			return $this->defaultModule;
+	}
+
+	/**
+	 * Answer the action to use in the links
+	 * 
+	 * @return string
+	 * @access private
+	 * @since 4/10/08
+	 */
+	private function getAction () {
+		$harmoni = Harmoni::instance();
+		if (in_array($harmoni->request->getRequestedModule(), $this->allowedModules))
+			return $harmoni->request->getRequestedAction();
+		else
+			return $this->defaultAction;
+	}
+
 	
 }
 
