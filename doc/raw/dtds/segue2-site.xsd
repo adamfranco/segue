@@ -733,7 +733,7 @@ elementFormDefault="qualified">
 
 <xs:simpleType name='tag_content'>
 	<xs:restriction base="xs:string">
-		<xs:pattern value="[a-zA-Z0-9_]+"/>
+		<xs:pattern value="[a-zA-Z0-9_\-:]+"/>
 	</xs:restriction>
 </xs:simpleType>
 

@@ -82,8 +82,14 @@ class listAction
 		print $this->getUiSwitchForm();
 	
 		$authN = Services::getService("AuthN");
+		
+		// get current category/folder and put into header
+		$portalMgr = PortalManager::instance();
+		$currentFolder = $portalMgr->getFolder($this->getCurrentFolderId());
+		
 		if ($authN->isUserAuthenticatedWithAnyType()) {
 			print _("Your Portal");
+			print " &raquo; ".$currentFolder->getDisplayName();
 		} else {
 			print _("Portal (log in to see your own portal)");
 		}
@@ -149,7 +155,7 @@ class listAction
 			print "\n\t</li>";
 		}
 		print "\n</ul>";
-		$portalWrapper->add(new Block(ob_get_clean(), STANDARD_BLOCK), "150px", null, CENTER, TOP);
+		$portalWrapper->add(new Block(ob_get_clean(), STANDARD_BLOCK), "175px", null, CENTER, TOP);
 		
 		/*********************************************************
 		 * Sites in the current folder.

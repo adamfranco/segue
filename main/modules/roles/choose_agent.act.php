@@ -122,8 +122,16 @@ class choose_agentAction
 		
 		$agentIdsWithRoles = $roleMgr->getAgentsWithRoleAtLeast($roleMgr->getRole('reader'), $this->getSiteId(), true);
 		foreach ($agentIdsWithRoles as $id) {
-			if (!$id->isEqual($everyoneId) && !$id->isEqual($instituteId) && !$id->isEqual($membersId))
-				$agents[] = $agentMgr->getAgentOrGroup($id);
+			if (!$id->isEqual($everyoneId) && !$id->isEqual($instituteId) && !$id->isEqual($membersId)) {
+				// We ran into a case where roles weren't clearing when an agent
+				// was deleted, log this issue and skip rather than crashing the
+				// choose agent screen.
+				try {
+					$agents[] = $agentMgr->getAgentOrGroup($id);
+				} catch (UnknownIdException $e) {
+					HarmoniErrorHandler::logException($e, 'Segue');
+				}
+			}
 		}
 		
 		if (count($agents)) {

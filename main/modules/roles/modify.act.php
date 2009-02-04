@@ -124,6 +124,10 @@ class modifyAction
 		print "\n</p>\n";
 		
 		print "\n<p>";
+		print _("Note: Segue 2 does not currently support role-effective dates.");
+		print "\n</p>\n";
+		
+		print "\n<p>";
 		print _("Tip: Hold down the <em>SHIFT</em> key while clicking to revoke roles from child-nodes.");
 		print "\n</p>\n";
 		

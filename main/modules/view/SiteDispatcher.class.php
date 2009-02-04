@@ -389,6 +389,22 @@ class SiteDispatcher {
 	}
 	
 	/**
+	 * Get the base-url (MYURL equivalent) to use for a particular location-category.
+	 * 
+	 * @param string $locationCategory
+	 * @return void
+	 * @access public
+	 * @since 8/7/08
+	 * @static
+	 */
+	public static function getBaseUrlForLocationCategory ($locationCategory) {
+		if (!in_array($locationCategory, SlotAbstract::getLocationCategories()))
+			throw new Exception("Invalid category, '$locationCategory'.");
+		
+		return self::$locationCategoryUrls[$locationCategory];
+	}
+	
+	/**
 	 * Answer the baseURL to use for a slot
 	 * 
 	 * @param object Slot $slot
@@ -403,6 +419,8 @@ class SiteDispatcher {
 		}
 		return MYURL;
 	}
+	
+	
 }
 
 ?>

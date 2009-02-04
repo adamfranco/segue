@@ -543,6 +543,7 @@ class DomExportSiteVisitor
 				try {
 					$element->appendChild($this->getMediaAsset($child));
 				} catch (PermissionDeniedException $e) {
+				} catch (OperationFailedException $e) {
 				}
 			}
 		}
@@ -574,6 +575,9 @@ class DomExportSiteVisitor
 		// File Records
 		$idMgr = Services::getService("Id");
 		$fileRecords = $asset->getRecordsByRecordStructure($idMgr->getId('FILE'));
+		if (!$fileRecords->hasNext()) {
+			throw new OperationFailedException("No file records found. Incomplete media asset.");
+		}
 		while ($fileRecords->hasNext()) {
 			$fileRecord = $fileRecords->next();
 			$fileElement = $element->appendChild($this->doc->createElement('file'));

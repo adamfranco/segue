@@ -277,6 +277,7 @@ abstract class SeguePluginsDriver
 		$htmlStringObj->addSafeProtocal('[[fileurl');
 		$htmlStringObj->addSafeProtocal('[[localurl');
 		$htmlStringObj->cleanXSS();
+		$htmlStringObj->makeUtf8();
 		return $htmlStringObj->asString();
 	}
 	
@@ -298,6 +299,7 @@ abstract class SeguePluginsDriver
 		$htmlStringObj->addSafeProtocal('[[fileurl');
 		$htmlStringObj->addSafeProtocal('[[localurl');
 		$htmlStringObj->cleanXSS();
+		$htmlStringObj->makeUtf8();
  		$htmlStringObj->trim($maxWords, $addElipses);
  		return $htmlStringObj->asString();
 	}
@@ -407,6 +409,11 @@ abstract class SeguePluginsDriver
 					$htmlString = $this->str_replace_once($url, '[[fileurl:'.MediaFile::getIdStringFromUrl($url).']]', $htmlString);
 				}
 				
+				// /sites/sitename urls
+				else if ($harmoni->request->getModuleFromUrl($url) == 'sites') {
+					$htmlString = $this->str_replace_once($url, '[[localurl:module=view&amp;action=html&amp;site='.$harmoni->request->getActionFromUrl($url).']]', $htmlString);
+				}
+				
 				// other local urls
 				else {
 					$htmlString = $this->str_replace_once($url, '[[localurl:'.$paramString.']]', $htmlString);
@@ -454,6 +461,12 @@ abstract class SeguePluginsDriver
 					$action = $value;
 				else
 					$args[$key] = $value;
+			}
+			
+			// /sites/sitename urls
+			if ($module == 'sites' && !count($args)) {
+				$args['site'] = $action;
+				unset($module, $action);
 			}
 			
 			if (!count($args)) {

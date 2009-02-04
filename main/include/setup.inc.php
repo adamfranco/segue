@@ -101,7 +101,8 @@ $configs = array(
 					'templates',
 					'themes',
 					'uploads',
-					'welcome'
+					'welcome',
+					'media_libraries'
 				);
 
 foreach ($configs as $config) {

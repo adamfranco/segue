@@ -9,6 +9,8 @@
  * @version $Id$
  */ 
 
+require_once(POLYPHONY_DIR.'/main/modules/user/UserDataHelper.class.php');
+
 /**
  * The MediaLibrary contains general methods for working with the javascript media library.
  * 
@@ -42,6 +44,7 @@ class Segue_MediaLibrary {
 		print "\n\t".self::getImageButton($libraryId, $writeJsCallback);
 		print "\n\t".self::getFileLinkButton($libraryId, $writeJsCallback);
 		print "\n\t".self::getFileThumbnailLinkButton($libraryId, $writeJsCallback);
+		print "\n\t".self::getEmbedAudioVideoButton($libraryId, $writeJsCallback);
 		return ob_get_clean();
 	}
 	
@@ -102,6 +105,33 @@ link.innerHTML = title;
 var newString = downloadBar.innerHTML;
 ";
 		return self::getButton($libraryId, _("Insert File Link"), $buildString, $writeJsCallback);
+	}
+	
+	/**
+	 * Answer the HTML for an insert embedded audio or video button.
+	 * 
+	 * @param string $libraryId The id of the component this library is attached to.
+	 * @param string $writeJsCallback	A Javascript function to execute to write out the
+	 *									results. Must take a single parameter which is an
+	 *									HTML string. Example:
+	 *									
+	 *		function (htmlString) { edInsertContent(document.get_element_by_id('12345'), htmlString); }
+	 *
+	 * @return string
+	 * @access public
+	 * @since 9/23/08
+	 * @static
+	 */
+	public static function getEmbedAudioVideoButton ($libraryId, $writeJsCallback) {
+		$buildString = "
+try {
+	var newString = mediaFile.getEmbedTextTemplate();
+} catch (e) {
+	alert(e);
+	var newString = '';
+}
+";
+		return self::getButton($libraryId, _("Embed Audio/Video"), $buildString, $writeJsCallback);
 	}
 	
 	/**
@@ -167,6 +197,76 @@ var newString = downloadBar.innerHTML;
 		$js = preg_replace("/\s+/", " ", ob_get_clean());
 		
 		return "<input type='button' value='".$buttonTitle."' onclick=\"".$js."\" />";
+	}
+	
+	/**
+	 * Answer the HEAD html for the media library javascript
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 1/13/09
+	 * @static
+	 */
+	public static function getHeadHtml () {		
+		ob_start();
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/CenteredPanel.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/TabbedContent.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/prototype.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/js_quicktags.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/brwsniff.js'></script>";
+		print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/MediaLibrary.js'></script>";
+		print "\n\t\t<link rel='stylesheet' type='text/css' href='".MYPATH."/javascript/MediaLibrary.css'/>";
+		
+		print "
+		<script type='text/javascript'>
+		// <![CDATA[";
+		
+		foreach (self::$externalLibraries as $library) {
+			print '
+		MediaLibrary.externalLibraries.push({
+			title: "'.$library['title'].'",
+			jsClass: "'.$library['jsClass'].'",
+			jsSourceUrl: "'.$library['jsSourceUrl'].'"';
+			
+			foreach ($library['extraParams'] as $key => $val) {
+				print ',
+			'.$key.': "'.$val.'"';
+			}
+			print '
+		});';
+			
+		}
+		
+		print "
+		// ]]>
+		</script>";
+		return ob_get_clean();
+	}
+	
+	private static $externalLibraries = array();
+	
+	/**
+	 * Add an external library to our configuration
+	 * 
+	 * @param string $title
+	 * @param string $jsClass The javascript class of the library.
+	 * @param string $jsSourceUrl The path to the javascript file that defines the $jsClass.
+	 * @param array $extraParams An associative array of other parameters to pass to the library.
+	 * @return void
+	 * @access public
+	 * @since 1/13/09
+	 * @static
+	 */
+	public static function addExternalLibrary ($title, $jsClass, $jsSourceUrl, array $extraParams = array()) {
+		ArgumentValidator::validate($title, NonzeroLengthStringValidatorRule::getRule());
+		ArgumentValidator::validate($jsClass, NonzeroLengthStringValidatorRule::getRule());
+		ArgumentValidator::validate($jsSourceUrl, NonzeroLengthStringValidatorRule::getRule());
+		
+		self::$externalLibraries[] = array(
+			'title' => $title,
+			'jsClass' => $jsClass,
+			'jsSourceUrl' => $jsSourceUrl,
+			'extraParams' => $extraParams);
 	}
 	
 }

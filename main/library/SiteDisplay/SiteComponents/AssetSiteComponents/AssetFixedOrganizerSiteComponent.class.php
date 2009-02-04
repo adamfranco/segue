@@ -187,6 +187,9 @@ class AssetFixedOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateNumRows ( $newRows, $initialCreation = FALSE ) {
+		if (!$initialCreation && ($newRows * $this->getNumColumns()) < $this->getMinNumCells())
+			throw new OperationFailedException("New number ($newRows) of rows will result in less than the needed number of cells.");
+		
 		parent::updateNumRows($newRows);
 		
 		$this->normalizeCells($initialCreation);
@@ -204,6 +207,9 @@ class AssetFixedOrganizerSiteComponent
 	 * @since 3/31/06
 	 */
 	function updateNumColumns ( $newColumns, $initialCreation = FALSE ) {
+		if (!$initialCreation && ($newColumns * $this->getNumRows()) < $this->getMinNumCells())
+			throw new OperationFailedException("New number ($newColumns) of columns will result in less than the needed number of cells.");
+		
 		parent::updateNumColumns($newColumns);
 		
 		$this->normalizeCells($initialCreation);	

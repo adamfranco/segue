@@ -210,12 +210,19 @@ class ModifySettingsSiteVisitor
 	 * @since 4/17/06
 	 */
 	function applyRowsColumns ( $siteComponent ) {
-		if(RequestContext::value('rows') != $siteComponent->getNumRows()) {
+		// We need to set the value that is increasing first, so that we always
+		// have at least our minimum number of cells. Set rows first if it is 
+		// increasing, second otherwise.
+		if(RequestContext::value('rows') > $siteComponent->getNumRows()) {
 			$siteComponent->updateNumRows(RequestContext::value('rows'));
 		}
 		
 		if(RequestContext::value('columns') != $siteComponent->getNumColumns()) {
 			$siteComponent->updateNumColumns(RequestContext::value('columns'));
+		}
+		
+		if(RequestContext::value('rows') < $siteComponent->getNumRows()) {
+			$siteComponent->updateNumRows(RequestContext::value('rows'));
 		}
 	}
 	

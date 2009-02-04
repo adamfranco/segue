@@ -23,13 +23,203 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.2.5.4</h2>
+<h2>Version 2.2.7.2</h2>
+<h3>2009-02-03</h3>
+<p>This release fixes a number of issues with editing in Internet Explorer 7. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> UI2: Fixed up options panel styles for IE 7. Now has nicer padding around the edges. (<em>2009-02-03 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1855103&amp;group_id=82171&amp;atid=565234">
+        			#1855103</a> UI2: New-mode options panels now display properly in IE 7, no longer falling behind other elements. (<em>2009-02-03 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2157377&amp;group_id=82171&amp;atid=565237">
+        			#2157377</a> UI2: New-mode editing interface now always shows borders and controls to improve speed. The browser no longer has to process hundreds of mouse-over/mouse-out events when moving the mouse or scrolling. (<em>2009-02-03 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> MediaLibrary: Fixed Safari CSS issue in the MiddMedia library. (<em>2009-02-03 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.2.7.1</h2>
+<h3>2009-02-02</h3>
+<p>This release fixes a few minor issues with the media library and improves support for Middlebury's MiddMedia service.
+<br>
+<br>See the change log for more details. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> MediaLibrary: File library now reloads every time the media library opens.
+<br>
+<br>When repeatedly adding files and making both image and text-links to them the listings in the two panels would get out of sync. Now they are reloaded every time the panel is opened. (<em>2009-02-02 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> MediaLibrary: Fixed Javascript error in IE 7 that occurred when opening a plugin for editing. (<em>2009-02-02 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> MediaLibrary: MiddMedia library now displays thumbnails for videos. (<em>2009-02-02 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> MediaLibrary: MiddMedia library now displays embeded previews of media. (<em>2009-02-02 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> MediaLibrary: MiddMedia library now displays a link to help in the LIS wiki. (<em>2009-02-02 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> MediaLibrary: MiddMedia library now allows refreshing of the file list. (<em>2009-02-02 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.2.7.0</h2>
+<h3>2009-01-28</h3>
+<p>This release adds support for external media libraries with support for Middlebury's new MiddMedia service included. A new 'audio' text-template is included for embedding an MP3 player in TextAndImages blocks and text-areas now get an 'Embed Audio/Video' button. When migrating sites from Segue1 installations, mp3 downloads are now converted to AudioPlayer plugins. The Portal styling has been updated to better highlight the selected folder.
+<br>
+<br>See the change log for more details. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.9.2 and Polyphony 1.4.10.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b> MediaLibrary: Added support for additional external MediaLibrary tabs. (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> MediaLibrary: Added new MiddMedia tab for browsing the MiddMedia Service. (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> MediaLibrary: After uploads in Safari, MediaLibrary panel is now moved to front again. (<em>2009-01-28 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> MediaLibrary: Now supports configuration of which libraries to enable.
+<br>
+<br>This allows some plugins (such as file for download) to restrict to only local files. (<em>2009-01-28 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Plugins: Added a button to embed audio/video into text areas. (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Text-Templates: Video template now supports new MiddMedia service (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Text-Templates: Added new Audio text-template for displaying MP3 files in-line. (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> User-Data: UserData javascript is now consistantly written once and only once. (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2520120&amp;group_id=82171&amp;atid=565234">
+        			#2520120</a> Portal: Added folder title to Portal header and more prominent selected link styling to help users better see current view of their portal (<em>2009-01-22 - Alex Chapin</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2079214&amp;group_id=82171&amp;atid=565237">
+        			#2079214</a> Migration: Segue v1 file-for-download blocks with .mp3 files now converted to v2 AudioPlayer plugin content blocks. (<em>2009-01-22 - Alex Chapin</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+	</ul>
+<br><h2>Version 2.2.6.0</h2>
+<h3>2009-01-12</h3>
+<p>This release adds support for creating new content through wiki-links. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.8.6 and Polyphony 1.4.9.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b> Wiki: Wiki links to titles that do not match existing pages now link to a form that allows creation of new pages, sections or content blocks. (<em>2009-01-15 - Adam Franco</em>)<br> (<em>reported by Shel Sax of Middlebury College</em>)</li>
+	</ul>
+<br><h2>Version 2.2.5.7</h2>
+<h3>2009-01-12</h3>
+<p>This release fixes a character-encoding issue in which some Russian text became garbled due to incorrect encoding conversion. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.8.6 and Polyphony 1.4.9.</p>
+<ul>
+		
+	</ul>
+<br><h2>Version 2.2.5.6</h2>
+<h3>2009-01-09</h3>
+<p>This release fixes a number of bugs found by users over the past few months, improving migration, the audio plugin, documentation, RSS display, and a few other issues. See the change-log for details. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.8.5 and Polyphony 1.4.9.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> Migration: Site XSD now allows colons and hyphens in the tag content to match real allowed values. (<em>2008-12-04 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Plugins: Audio plugin now allows choosing audio of MIME type audio/mpg as well as audio/mpeg. (<em>2008-12-04 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration: Export now skips media assets with no media file. (<em>2008-12-04 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> Migration/Plugins: Export and HTML cleaning now convert text to UTF-8 and strip control chars. (<em>2008-12-04 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2490323&amp;group_id=82171&amp;atid=565234">
+        			#2490323</a> Roles: Choose-User list now doesn't crash if a deleted agent had been given roles. (<em>2009-01-07 - Adam Franco</em>)<br> (<em>reported by Priscilla Bremser of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: Add-site form now includes additional help text on setting site-wide roles. (<em>2009-01-07 - Adam Franco</em>)<br> (<em>reported by Kateri Carmola of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI2: Add-site form now includes additional help text on templates and themes. (<em>2009-01-07 - Adam Franco</em>)<br> (<em>reported by Kateri Carmola of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2379006&amp;group_id=82171&amp;atid=565234">
+        			#2379006</a> UI1: Paste-panel now works in Classic-mode. (<em>2009-01-07 - Adam Franco</em>)<br> (<em>reported by Adam Franco of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2210206&amp;group_id=82171&amp;atid=565234">
+        			#2210206</a> SiteDisplay/UI2: Can no longer set fixed organizers to too few rows/columns. The FixedOrganizerSiteComponent now checks for internal consistency when changing the number of rows and columns (<em>2009-01-07 - Adam Franco</em>)<br> (<em>reported by Adam Franco of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2189950&amp;group_id=82171&amp;atid=565234">
+        			#2189950</a> RSS: The RSS Feed Display can now load protected feeds from alternate segue location categories, allowing feeds from 'community' to be displayed in 'main'. (<em>2009-01-09 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> Roles: Documented lack of effective-dates in Role-setting UI. (<em>2009-01-09 - Adam Franco</em>)<br> (<em>reported by Andy Wentink of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2305904&amp;group_id=82171&amp;atid=565234">
+        			#2305904</a> Plugins: Links to Segue simple-form urls (/sites/sitename) now do not get stripped to the Segue base-URL when editing content. (<em>2009-01-09 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+	</ul>
+<br><h2>Version 2.2.5.5</h2>
+<h3>2008-10-22</h3>
+<p>This release add the ability to make empty site-placeholders aliases to placeholders that contain sites. This enables sites to be moved and have users redirected from the old urls. As well making multiple course-section-placeholders aliases to a single site for the course can allow that site to show up under the 'current classes' listing for students in all sections of the course.
+<br>
+<br>The user interface for copying sites has now been merged with the user-interface for copying content for a more consistent user experience.
+<br>
+<br>The 2.2.5.5 bug-fix release adds further fixes authenticated RSS feeds
+<br>
+<br>See the change-log for details on additional fixes and improvements. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.8.4 and Polyphony 1.4.8.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2187465&amp;group_id=82171&amp;atid=565234">
+        			#2187465</a> RSS: Authenticated RSS feeds now work again due to a fix in Harmoni 1.8.4. (<em>2008-10-22 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.2.5.4</h2>
 <h3>2008-10-16</h3>
 <p>This release add the ability to make empty site-placeholders aliases to placeholders that contain sites. This enables sites to be moved and have users redirected from the old urls. As well making multiple course-section-placeholders aliases to a single site for the course can allow that site to show up under the 'current classes' listing for students in all sections of the course.
 <br>
 <br>The user interface for copying sites has now been merged with the user-interface for copying content for a more consistent user experience.
 <br>
-<br>The 2.2.5.5 bug-fix release adds further fixes upgrade mechanisms.
+<br>The 2.2.5.4 bug-fix release adds further fixes upgrade mechanisms.
 <br>
 <br>See the change-log for details on additional fixes and improvements. 
 <br>

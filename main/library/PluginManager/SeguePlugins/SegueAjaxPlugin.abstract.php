@@ -256,8 +256,7 @@ abstract class SegueAjaxPlugin
 									// Update the 'Read More' link to show or hide depending if 
 									// there is extended markup or not.
 									var extendedLink = document.get_element_by_id('extended_content_link:' + pluginResponseElement.getAttribute('id'));
-									if (pluginResponseElement.hasAttribute('hasExtendedMarkup') 
-										&& pluginResponseElement.getAttribute('hasExtendedMarkup') == 'true')
+									if (pluginResponseElement.getAttribute('hasExtendedMarkup') == 'true')
 									{
 										extendedLink.style.display = 'block';
 									} else {
