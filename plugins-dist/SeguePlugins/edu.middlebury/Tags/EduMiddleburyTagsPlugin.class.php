@@ -101,7 +101,25 @@ class EduMiddleburyTagsPlugin
 			$this->setContent($this->getFieldValue('tagNode'));	
 		} 
 	}
-
+	
+	/**
+	 * Answer the target node id
+	 * 
+	 * @return string
+	 * @access protected
+	 * @since 2/4/09
+	 */
+	protected function getTargetNodeId () {
+		if($this->getContent()){
+			return $this->getContent();
+		} else {
+			$visitor = new TagCloudNavParentVisitor;
+			$director = SiteDispatcher::getSiteDirector();
+			$node = $director->getSiteComponentById($this->getId());
+			$parentNavNode = $node->acceptVisitor($visitor);
+			return $parentNavNode->getId();
+		}
+	}
 
 	/**
 	 * Helper methods, writes out options for a selection box given 
@@ -145,14 +163,7 @@ class EduMiddleburyTagsPlugin
 			$director = SiteDispatcher::getSiteDirector();
 			$node = $director->getSiteComponentById($this->getId());	
 
-			$currentTarget = $this->getId();
-			if($this->getContent()){
-				$currentTarget = $this->getContent();
-			} else {
-				$visitor = new TagCloudNavParentVisitor;
-				$parentNavNode = $node->acceptVisitor($visitor);
-				$currentTarget = $parentNavNode->getId();
-			}		
+			$currentTarget = $this->getTargetNodeId();
  			$node = $director->getSiteComponentById($this->getId());
 			print "\n".$this->formStartTagWithAction();
 			$visitor = new UmbrellaVisitor;
@@ -169,26 +180,15 @@ class EduMiddleburyTagsPlugin
 		} else if ($this->canView()) {
 			$items = array();
 	 		$director = SiteDispatcher::getSiteDirector();
-			$id = $this->getId();
-	 		$targetId = $id;
-			if(!$this->getContent()){  
-				$node = $director->getSiteComponentById($this->getId());	
-			} else {
-				$node = $director->getSiteComponentById($this->getContent());
-				$targetId = $this->getContent();
-			}
-	
- 			// Determine the navigational node above this tag cloud.
-	 		$visitor = new TagCloudNavParentVisitor;
- 			$parentNavNode = $node->acceptVisitor($visitor);
+	 		$node = $director->getSiteComponentById($this->getTargetNodeId());
  			 			
  			$visitor = new TaggableItemVisitor;
-	 		$items = $parentNavNode->acceptVisitor($visitor);
+	 		$items = $node->acceptVisitor($visitor);
  		
  	
 
 			print "\n<div class='breadcrumbs' style='height: auto; margin-top: 1px; margin-bottom: 5px; border-bottom: 1px dotted; padding-bottom: 2px;'>";
- 			print str_replace('%1', $parentNavNode->acceptVisitor(new BreadCrumbsVisitor($parentNavNode)),
+ 			print str_replace('%1', $node->acceptVisitor(new BreadCrumbsVisitor($node)),
  			_("Tags within: %1"));
 
  			print "</div>";
@@ -200,7 +200,7 @@ class EduMiddleburyTagsPlugin
 			$patterns[0] = '/href=\'([^\']*)\'/';
 			$patterns[1] = '/href=\"([^\"]*)\"/';
 			$replace = array();
-			$replace[0] = 'href=\'${1}&node='.$targetId.'\'';
+			$replace[0] = 'href=\'${1}&node='.$this->getTargetNodeId().'\'';
 			$replace[1] = $replace[0];
 			print preg_replace($patterns,$replace,$tagData);
  			//SiteDispatcher::forgetContext();
