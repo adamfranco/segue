@@ -102,11 +102,10 @@ class mapAction
 		
 		// print out link to tracking
 		$trackingUrl = SiteDispatcher::quickURL("participation", "summary", array('node' => $rootSiteComponent->getId()));
-		$tagsUrl = SiteDispatcher::quickURL("tags", "node", array('node' => $rootSiteComponent->getId()));
 				
 		$links = _("map");	
 		$links .= " | <a href='".$trackingUrl."'>"._("track")."</a>";
-//		$links .= " | <a href='".$tagsUrl."'>"._("tags")."</a>";		
+	
 		
 		$actionRows->add(new Block($links, STANDARD_BLOCK));
 				

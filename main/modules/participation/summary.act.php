@@ -84,13 +84,10 @@ class summaryAction
 		$actionRows = $this->getActionRows();
 		
 		// print out link to site map
-		$siteMapUrl = SiteDispatcher::quickURL("view", "map", array('node' => $node->getId()));
- 	//	$tagsUrl = SiteDispatcher::quickURL("tags", "node", array('node' => $node->getId()));				
+		$siteMapUrl = SiteDispatcher::quickURL("view", "map", array('node' => $node->getId()));				
 
 		$links = "<a href='".$siteMapUrl."'>"._("map")."</a>";	
-		$links .= " | "._("track")."</a>";
-//		$links .= " | <a href='".$tagsUrl."'>"._("tags")."</a>";	
-				
+		$links .= " | "._("track")."</a>";					
 		
 		$actionRows->add(new Block($links, STANDARD_BLOCK));
 		

@@ -82,11 +82,9 @@ class actionsAction
 		
 		// print out link to site map
 		$siteMapUrl = SiteDispatcher::quickURL("view", "map", array('node' => $node->getId()));
-// 		$tagsUrl = SiteDispatcher::quickURL("tags", "node", array('node' => $node->getId()));
 				
 		$links = "<a href='".$siteMapUrl."'>"._("map")."</a>";
 		$links .= " | "._("track");		
-//		$links .= " | <a href='".$tagsUrl."'>"._("tags")."</a>";	
 		
 		$actionRows->add(new Block($links, STANDARD_BLOCK));
 		
