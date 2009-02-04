@@ -97,9 +97,115 @@ class EduMiddleburyTagsPlugin
 	 */
 
 	public function update( $request ) {
-		if($this->getFieldValue('tagNode')){
-			$this->setContent($this->getFieldValue('tagNode'));	
+		if ($this->getFieldValue('tagNode')) {
+			$this->writeOption('targetNodeId', $this->getFieldValue('tagNode'));	
 		} 
+	}
+	
+	/**
+	 * @var array $_defaults;  
+	 * @access private
+	 * @since 2/4/09
+	 */
+	private $_defaults;
+	
+	/**
+	 * @var array $_allowedOptions;  
+	 * @access private
+	 * @since 2/4/09
+	 */
+	private $_allowedOptions;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @access public
+	 * @since 2/4/09
+	 */
+	public function initialize () {
+		$this->_defaults = array(
+			'defaultSortMethod' => 'alpha',
+			'defaultDisplayType' => 'cloud'
+		);
+		$this->_allowedOptions = array(
+			'targetNodeId',
+			'defaultSortMethod',
+			'defaultDisplayType'
+		);
+	}
+	
+	/**
+	 * Read an option
+	 * 
+	 * @param string $key
+	 * @return string
+	 * @access protected
+	 * @since 2/4/09
+	 */
+	protected function readOption ($key) {
+		$doc = new Harmoni_DOMDocument();
+		try {
+			$doc->loadXML($this->getContent());
+			$xpath = new DOMXPath($doc);
+			$elements = $xpath->query('/options/'.$key);
+			
+			if ($elements->length)
+				return $elements->item(0)->nodeValue;
+			
+		} catch (DOMException $e) {
+		}
+		
+		if (isset($this->_defaults[$key]))
+			return $this->_defaults[$key];
+		
+		throw new OperationFailedException('No default specified for "'.$key.'".', 9784689);
+	}
+	
+	/**
+	 * Write an option
+	 * 
+	 * @param string $key
+	 * @param string $val
+	 * @return void
+	 * @access protected
+	 * @since 2/4/09
+	 */
+	protected function writeOption ($key, $val) {
+		// The options will look like:
+		/*
+<options>
+	<targetNodeId>12345</targetNodeId>
+	<defaultSortMethod>alpha</defaultSortMethod>
+	<defaultDisplayType>cloud</defaultDisplayType>
+</options>
+		*/
+		
+		if (!in_array($key, $this->_allowedOptions))
+			throw new InvalidArgumentException("Unknown option, $key");
+		
+		
+		$doc = new Harmoni_DOMDocument();
+		try {
+			$doc->loadXML($this->getContent());
+		} catch (DOMException $e) {
+			$doc->appendChild($doc->createElement('options'));
+		}
+		
+		if (!$doc->documentElement->nodeName == 'options')
+			throw new OperationFailedException('Expection root-node "options", found "'.$doc->documentElement->nodeName.'".');
+		
+		// Fetch the existing element or create a new one for this key
+		$xpath = new DOMXPath($doc);
+		$elements = $xpath->query('/options/'.$key);
+		if ($elements->length)
+			$element = $elements->item(0);
+		else
+			$element = $doc->documentElement->appendChild($doc->createElement($key));
+		
+		
+		// Set the value and save
+		$element->nodeValue = $val;
+		$this->setContent($doc->saveXMLWithWhitespace());
 	}
 	
 	/**
@@ -110,9 +216,9 @@ class EduMiddleburyTagsPlugin
 	 * @since 2/4/09
 	 */
 	protected function getTargetNodeId () {
-		if($this->getContent()){
-			return $this->getContent();
-		} else {
+		try {
+			return $this->readOption('targetNodeId');
+		} catch (OperationFailedException $e) {
 			$visitor = new TagCloudNavParentVisitor;
 			$director = SiteDispatcher::getSiteDirector();
 			$node = $director->getSiteComponentById($this->getId());
@@ -222,7 +328,7 @@ class EduMiddleburyTagsPlugin
 
 
  		}
-				
+ 						
 		return ob_get_clean();
  	} 
 
