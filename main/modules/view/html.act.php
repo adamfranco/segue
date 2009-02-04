@@ -336,7 +336,7 @@ class htmlAction
 		
 		// Home
 		print "<a href='".$harmoni->request->quickURL('portal', 'list')."' title='"._("List of Segue sites")."'>";
-		print _("Home")."</a> | ";
+		print _("home")."</a> | ";
 	
 		// Help LInk
 		print Help::link();
@@ -350,7 +350,7 @@ class htmlAction
 		print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
 		print "return false;";
 		print '"';
-		print ">"._("Site Map")."</a>";
+		print ">"._("map")."</a>";
 
 		
 		// Tracking
@@ -362,7 +362,7 @@ class htmlAction
 		print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
 		print "return false;";
 		print '"';
-		print ">"._("Tracking")."</a>";
+		print ">"._("track")."</a>";
 		print "</div>";
 		
 		
@@ -406,7 +406,7 @@ class htmlAction
 			
 		// Home
 		print "<a href='".$harmoni->request->quickURL('portal', 'list')."' title='"._("List of Segue sites")."'>";
-		print _("Home")."</a> | ";
+		print _("home")."</a> | ";
 
 		// Help
 		print Help::link();
@@ -420,7 +420,7 @@ class htmlAction
 		print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
 		print "return false;";
 		print '"';
-		print ">"._("Site Map")."</a>";
+		print ">"._("map")."</a>";
 				
 		// Tracking
 		$trackingUrl = $harmoni->request->quickURL("participation", "actions", array('node' => SiteDispatcher::getCurrentNodeId()));
@@ -431,7 +431,7 @@ class htmlAction
 		print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
 		print "return false;";
 		print '"';
-		print ">"._("Tracking")."</a>";
+		print ">"._("track")."</a>";
 		print "</div>";
 
 		print "</div>";

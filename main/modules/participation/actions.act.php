@@ -17,8 +17,6 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(dirname(__FILE__)."/ParticipationView.class.php");
 require_once(dirname(__FILE__)."/ParticipationResultPrinter.class.php");
 require_once(dirname(__FILE__)."/ParticipationBreadCrumbsVisitor.class.php");
-//require_once(MYDIR."/main/library/SiteDisplay/Rendering/BreadCrumbsVisitor.class.php");
-//require_once(MYDIR."harmoni/core/Primitives/Chronology/DateAndTime.class.php")
 
 /**
  * View the participation of a participant
@@ -78,15 +76,18 @@ class actionsAction
 	 * @access public
 	 * @since 3/14/08
 	 */
-	public function buildContent () {
-		//$actionRows = $this->getActionRows();				
-				
+	public function buildContent () {				
 		$node = SiteDispatcher::getCurrentNode();
-		$actionRows = $this->getActionRows();
+		$actionRows = $this->getActionRows();		
 		
 		// print out link to site map
 		$siteMapUrl = SiteDispatcher::quickURL("view", "map", array('node' => $node->getId()));
-		$links = "<a href='".$siteMapUrl."'>"._("Site Map")."</a> | "._("Tracking");		
+// 		$tagsUrl = SiteDispatcher::quickURL("tags", "node", array('node' => $node->getId()));
+				
+		$links = "<a href='".$siteMapUrl."'>"._("map")."</a>";
+		$links .= " | "._("track");		
+//		$links .= " | <a href='".$tagsUrl."'>"._("tags")."</a>";	
+		
 		$actionRows->add(new Block($links, STANDARD_BLOCK));
 		
 		// print out breadcrumbs to current node
