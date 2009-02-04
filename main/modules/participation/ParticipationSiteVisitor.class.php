@@ -63,12 +63,10 @@ class ParticipationSiteVisitor
 	 * @since 1/26/09
 	 */
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
-		$view = new Participation_View($siteComponent);
-				
-		$idMgr = Services::getService('Id');
-		$azMgr = Services::getService('AuthZ');
-
+		$view = new Participation_View($siteComponent);				
 		
+		$idMgr = Services::getService('Id');
+		$azMgr = Services::getService('AuthZ');		
 		// get create actions	
 		if ($azMgr->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'),
 			$siteComponent->getQualifierId()) == TRUE) 
