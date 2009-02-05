@@ -80,10 +80,9 @@ class actionsAction
 		$node = SiteDispatcher::getCurrentNode();
 		$actionRows = $this->getActionRows();		
 		
-		// print out link to site map
-		$siteMapUrl = SiteDispatcher::quickURL("view", "map", array('node' => $node->getId()));
-				
-		$links = "<a href='".$siteMapUrl."'>"._("map")."</a>";
+		// print out link to site map			
+		$links = "<a href='".SiteDispatcher::quickURL("view", "map", array('node' => $node->getId()));
+		$links .= "'>"._("map")."</a>";
 		$links .= " | "._("track");		
 		
 		$actionRows->add(new Block($links, STANDARD_BLOCK));
@@ -92,66 +91,65 @@ class actionsAction
 		$breadcrumbs = $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($node, TRUE));
 		$actionRows->add(new Heading(_("Participation: ").$breadcrumbs, 2));
 		
+		// get getActionDisplayOptions
+		$actionRows->add ( new Block($this->getActionDisplayOptions(), STANDARD_BLOCK));
+		
 		// get list of actions
 		$actionRows->add ( new Block($this->getActionsList(), STANDARD_BLOCK));		
 	}
 
-	
+
 	/**
-	 * Display a list of participants with summary of their contributions
+	 * answer an action filter form
 	 * 
-	 * @param string $id
 	 * @return string XHTML markup
-	 * @access private
-	 * @since 1/28/09
+	 * @access public
+	 * @since 2/5/09
 	 */
-	private function getActionsList () {
+	public function getActionDisplayOptions () {
 		$node = SiteDispatcher::getCurrentNode();
 		$view = new Participation_View($node);	
-		
-		$actionRows = $this->getActionRows();				
 
 		if (RequestContext::value('sort'))
-			$sort = RequestContext::value('sort');
+			$this->_sort = RequestContext::value('sort');
 		else
-			$sort = 'timestamp';
+			$this->_sort = 'timestamp';
 
 		if (RequestContext::value('participant'))
-			$participant = RequestContext::value('participant');
+			$this->_participant = RequestContext::value('participant');
 		else
-			$participant = 'all';
+			$this->_participant = 'all';
 
 		if (RequestContext::value('role'))
-			$role = RequestContext::value('role');
+			$this->_role = RequestContext::value('role');
 		else
-			$role = 'all';
+			$this->_role = 'all';
 
 		if (RequestContext::value('display'))
-			$display = RequestContext::value('display');
+			$this->_display = RequestContext::value('display');
 		else
-			$display = '20';
+			$this->_display = '20';
 
 
 		if (RequestContext::value('direction')) {
 			if (RequestContext::value('direction') == 'DESC') {
-				$direction = SORT_DESC;
-				$reorder = 'ASC';
-				$reorderFlag = '&#94;';
+				$this->_direction = SORT_DESC;
+				$this->_reorder = 'ASC';
+				$this->_reorderFlag = '&#94;';
 			} else {
-				$direction = SORT_ASC;
-				$reorder = 'DESC';
-				$reorderFlag = 'v';
+				$this->_direction = SORT_ASC;
+				$this->_reorder = 'DESC';
+				$this->_reorderFlag = 'v';
 			}
 		} else {
-			$direction = SORT_DESC;
-			$reorder = 'ASC';
-			$reorderFlag = '&#94;';
-		}
-
-		$participants = $view->getParticipants();
-		
+			$this->_direction = SORT_DESC;
+			$this->_reorder = 'ASC';
+			$this->_reorderFlag = '&#94;';
+ 		}
+ 		
+ 		$participants = $view->getParticipants();
+ 		
 		ob_start();
-
 		print "<form action='";
 		print SiteDispatcher::quickURL('participation','actions', array('node' => $node->getId(), 'sort' => 'timestamp', 'direction' => 'DESC'));
 		print "' method='post'>";
@@ -207,6 +205,24 @@ class actionsAction
 		print "\n\t</select>";	
 		print "\n\t</form>";
 		
+		return ob_get_clean();
+		
+	}
+	
+	/**
+	 * Display a list of participants with summary of their contributions
+	 * 
+	 * @param string $id
+	 * @return string XHTML markup
+	 * @access private
+	 * @since 1/28/09
+	 */
+	private function getActionsList () {
+		$node = SiteDispatcher::getCurrentNode();
+		$view = new Participation_View($node);			
+		$actionRows = $this->getActionRows();				
+		$participants = $view->getParticipants();		
+		
 		$actionRows->add ( new Block(ob_get_clean(), STANDARD_BLOCK));
 		ob_start();
 
@@ -216,7 +232,7 @@ class actionsAction
 		$reorderUrl = array();
 		foreach ($sortValues as $sortValue) {
 			$reorderUrl[$sortValue] = SiteDispatcher::quickURL('participation','actions', array('node' => $node->getId(),
-				'sort' => $sortValue, 'direction' => $reorder, 'participant' => $participant, 'role' => $role));
+				'sort' => $sortValue, 'direction' => $this->_reorder, 'participant' => $this->_participant, 'role' => $this->_role));
 		}
 
 		// header row for list of actions
@@ -225,23 +241,23 @@ class actionsAction
 		print "\n\t\t<tr>";		
 		print "\n\t\t\t<th><a href='";
 		print $reorderUrl['timestamp'];
-		print "'>"._("Time")." ".(($sort == 'timestamp')?$reorderFlag:"")."</a></th>";
+		print "'>"._("Time")." ".(($this->_sort == 'timestamp')?$this->_reorderFlag:"")."</a></th>";
 		print "\n\t\t\t<th><a href='";
 		print $reorderUrl['contributor'];
-		print "'>"._("Contributor")." ".(($sort == 'contributor')?$reorderFlag:"")."</a></th>";
+		print "'>"._("Contributor")." ".(($this->_sort == 'contributor')?$this->_reorderFlag:"")."</a></th>";
 		print "\n\t\t\t<th><a href='";
 		print $reorderUrl['contribution'];
-		print "'>"._("Contribution")." ".(($sort == 'contribution')?$reorderFlag:"")."</a></th>";		
+		print "'>"._("Contribution")." ".(($this->_sort == 'contribution')?$this->_reorderFlag:"")."</a></th>";		
 		print "\n\t\t\t<th><a href='";
 		print $reorderUrl['role'];
-		print "'>"._("Role")." ".(($sort == 'role')?$reorderFlag:"")."</a></th>";
+		print "'>"._("Role")." ".(($this->_sort == 'role')?$this->_reorderFlag:"")."</a></th>";
 		print "\n\t</thead>";
 		$headRow = ob_get_clean();
 		
 		// if participant specified get their actions
-		if (isset($participant) && $participant != 'all') {		
+		if (isset($this->_participant) && $this->_participant != 'all') {		
 			$idMgr = Services::getService('Id');
-			$participantId = $idMgr->getId($participant);
+			$participantId = $idMgr->getId($this->_participant);
 			$participantView = new Participation_Participant($view, $participantId);
 			$actions = $participantView->getActions();
 			
@@ -252,19 +268,19 @@ class actionsAction
 				
 		// sort actions by sort key
 		$sortKeys = array();
-		if ($sort == 'timestamp') {
+		if ($this->_sort == 'timestamp') {
 			foreach ($actions as $action) {
 				$sortKeys[] = $action->getTimeStamp()->asString();			
 			}
-		} else if ($sort == 'contributor') {
+		} else if ($this->_sort == 'contributor') {
 			foreach ($actions as $action) {
 				$sortKeys[] = $action->getParticipant()->getDisplayName();			
 			}
-		} else if ($sort == 'contribution') {
+		} else if ($this->_sort == 'contribution') {
 			foreach ($actions as $action) {
 				$sortKeys[] = $action->getTargetDisplayName();			
 			}
-		} else if ($sort == 'role') {
+		} else if ($this->_sort == 'role') {
 			foreach ($actions as $action) {
 				$sortKeys[] = $action->getCategoryDisplayName();			
 			}
@@ -273,27 +289,24 @@ class actionsAction
 			throw new InvalidArguementException("Unknown sort field $sort");
 		}
 		
-		array_multisort($sortKeys, $direction, array_keys($actions), SORT_ASC, $actions);
+		array_multisort($sortKeys, $this->_direction, array_keys($actions), SORT_ASC, $actions);
 		
 		// if role action specified then filter actions
 		$selectedActions = array();
-		if ($role != 'all') {
+		if ($this->_role != 'all') {
 			foreach ($actions as $action) {
-				if ($action->getCategoryId() == $role)
+				if ($action->getCategoryId() == $this->_role)
 					$selectedActions[] = $action;			
 			}
 		} else {
 			$selectedActions = $actions;
 		}
-		
-		
+				
 		$this->_node = $node;
 		$this->_sortValue = $sortValue;
-		$this->_reorder = $reorder;
-		$this->_participant = $participant;
-		$this->_role = $role;
+
 		
-		$printer = new ParticipationResultPrinter($selectedActions, $headRow, $display, array($this, 'printAction'));
+		$printer = new ParticipationResultPrinter($selectedActions, $headRow, $this->_display, array($this, 'printAction'));
 		print $printer->getMarkup();
 		return ob_get_clean();
 	}
@@ -322,17 +335,6 @@ class actionsAction
 		print "\n\t\t\t<td class='participation_row'>".$action->getCategoryDisplayName()."</td>";
 	
 		return ob_get_clean();
-	}
-
-	/**
-	 * Display contributions of a given participant
-	 * 
-	 * @return string XHTML markup
-	 * @access private
-	 * @since 1/28/09
-	 */
-	private function getParticipantActions () {
-	
 	}
 
 	
