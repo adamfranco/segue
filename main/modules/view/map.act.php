@@ -101,7 +101,7 @@ class mapAction
 		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
 		
 		// print out link to tracking
-		$trackingUrl = SiteDispatcher::quickURL("participation", "summary", array('node' => $rootSiteComponent->getId()));
+		$trackingUrl = SiteDispatcher::quickURL("participation", "actions", array('node' => $rootSiteComponent->getId()));
 				
 		$links = _("map");	
 		$links .= " | <a href='".$trackingUrl."'>"._("track")."</a>";
