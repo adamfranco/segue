@@ -34,7 +34,7 @@ class ParticipationBreadCrumbsVisitor
 	 * @access public
 	 * @since 5/31/07
 	 */
-	function ParticipationBreadCrumbsVisitor (SiteComponent $currentSiteComponent, $showRootNode = FALSE) {
+	public function __construct (SiteComponent $currentSiteComponent, $showRootNode = FALSE) {
 		
 		$this->_links = array();
 		$this->_separator = " &raquo; ";
@@ -59,10 +59,9 @@ class ParticipationBreadCrumbsVisitor
 		$harmoni->request->startNamespace(null);
 		
 		$nodeType = explode("::", HarmoniType::typeToString($node->getContentType()));
-		//printpre ($nodeType[2]);
 		
 		if ($nodeType[2] != "NavBlock" && $this->_showRootNode == FALSE) {
-		$url = "<a href='".SiteDispatcher::quickUrl($this->getModule(),$this->getAction(),
+		$url = "<a href='".SiteDispatcher::quickUrl('view','html',
 				array('node' => $node->getId()))."'";
 		$url .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
 		$url .=	"return false; }\" title='"._("View this node")."'>".$node->getDisplayName()."</a>";				
@@ -97,36 +96,6 @@ class ParticipationBreadCrumbsVisitor
 			print "</span>";
 		}
 		return ob_get_clean();
-	}
-
-	/**
-	 * Answer the module to use in the links
-	 * 
-	 * @return string
-	 * @access private
-	 * @since 4/10/08
-	 */
-	private function getModule () {
-		$harmoni = Harmoni::instance();
-		if (in_array($harmoni->request->getRequestedModule(), $this->allowedModules))
-			return $harmoni->request->getRequestedModule();
-		else
-			return $this->defaultModule;
-	}
-
-	/**
-	 * Answer the action to use in the links
-	 * 
-	 * @return string
-	 * @access private
-	 * @since 4/10/08
-	 */
-	private function getAction () {
-		$harmoni = Harmoni::instance();
-		if (in_array($harmoni->request->getRequestedModule(), $this->allowedModules))
-			return $harmoni->request->getRequestedAction();
-		else
-			return $this->defaultAction;
 	}
 
 	
