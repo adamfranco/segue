@@ -39,8 +39,8 @@ class modify_membersAction
  		$authZManager = Services::getService("AuthZ");
  		$idMgr = Services::getService("IdManager");
  		return $authZManager->isUserAuthorized(
- 					$idMgr->getId("edu.middlebury.authorization.modify_group_membership"),
- 					$this->getGroup()->getId());
+ 					$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
+ 					$this->getSite()->getQualifierId());
 	}
 	
 	/**
@@ -52,23 +52,25 @@ class modify_membersAction
 	 */
 	protected function getGroup () {
 		if (!isset($this->_group)) {
-			$slotname = RequestContext::value('site');
-			// Validate the site Id.
-			$slot = SlotManager::instance()->getSlotByShortname($slotname);
-			
-			$agentMgr = Services::getService('Agent');
-	 		$idMgr = Services::getService("IdManager");
-	 		
-			try {
-				$this->_group = $agentMgr->getGroup($idMgr->getId(
-					'edu.middlebury.segue.site-members.'
-					.$slot->getSiteId()->getIdString()));
-			} catch (UnknownIdException $e) {
-				throw $e;
-			}
+			$this->_group = $this->getSite()->getMembersGroup();
 		}
 		
 		return $this->_group;
+	}
+	
+	/**
+	 * Anser the site
+	 * 
+	 * @return object SiteNavBlockSiteComponent
+	 * @access protected
+	 * @since 2/5/09
+	 */
+	protected function getSite () {
+		if (!isset($this->_site)) {
+	 		$this->_site = SiteDispatcher::getCurrentRootNode();
+		}
+		
+		return $this->_site;
 	}
 	
 	/**

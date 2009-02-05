@@ -113,8 +113,8 @@ class choose_agentAction
 		
 		$everyoneId = $idMgr->getId("edu.middlebury.agents.everyone");
 		$instituteId = $idMgr->getId("edu.middlebury.institute");
-		$membersId = $idMgr->getId("edu.middlebury.segue.site-members.".$this->getSiteId()->getIdString());
-		
+		$membersId = $this->getSite()->getMembersGroup()->getId();
+				
 		$agents = array();
 		$agents[] = $agentMgr->getGroup($everyoneId);
 		$agents[] = $agentMgr->getGroup($instituteId);

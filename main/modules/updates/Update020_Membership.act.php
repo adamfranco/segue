@@ -109,28 +109,11 @@ class Update020_MembershipAction
 		$folder = new AllVisiblePortalFolder();
 		$slots = $folder->getSlots();
 		$status = new StatusStars(_("Checking Nodes"));
-		$status->initializeStatistics($slots->count());
+		$status->initializeStatistics(count($slots));
+		$director = SiteDispatcher::getSiteDirector();
 		foreach ($slots as $slot) {
-			$suffix = $slot->getSiteId()->getIdString();
-			
-			$id = $idMgr->getId('edu.middlebury.segue.site-members.'.$suffix);
-			
-			try {
-				$group = $agentMgr->getGroup($id);
-			} catch (UnknownIdException $e) {
-				$group = $agentMgr->createGroup('Site-Members', 
-					$groupType, 
-					'The agents associated with the site "'.$suffix.'" at "'.$slot->getShortname().'".',
-					$nullProperties,
-					$id);
-			}
-			
-			try {
-				$containerGroup->add($group);
-			} catch (AlreadyAddedException $e) {
-				// Continue if it already exists.
-			}
-			
+			$site = $director->getSiteComponentById($slot->getSiteId());
+			$site->getMembersGroup();
 			$status->updateStatistics();
 		}
 		

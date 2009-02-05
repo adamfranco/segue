@@ -44,6 +44,16 @@ interface SiteNavBlockSiteComponent
 	 */
 	function getSlot () ;
 	
+	
+	/**
+	 * Answer a group that represents the site-membership
+	 * 
+	 * @return object Group
+	 * @access public
+	 * @since 2/4/09
+	 */
+	public function getMembersGroup ();
+	
 	/*********************************************************
 	 * Themes
 	 *********************************************************/
