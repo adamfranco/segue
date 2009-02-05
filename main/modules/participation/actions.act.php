@@ -153,9 +153,18 @@ class actionsAction
 		print "<form action='";
 		print SiteDispatcher::quickURL('participation','actions', array('node' => $node->getId(), 'sort' => 'timestamp', 'direction' => 'DESC'));
 		print "' method='post'>";
-		print "<a href = '";
-		print SiteDispatcher::quickURL('participation','summary', array('node' => $node->getId(), 'sort' => 'name', 'direction' => 'ASC'));
-		print "'>"._("Summary")."</a> | ";		
+		
+		$idMgr = Services::getService('Id');
+		$azMgr = Services::getService('AuthZ');
+		$rootNode = SiteDispatcher::getCurrentRootNode();
+		if ($azMgr->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'),
+			$rootNode->getQualifierId()) == TRUE) {
+			print "<a href = '";
+			print SiteDispatcher::quickURL('participation','summary', array('node' => $node->getId(), 'sort' => 'name', 'direction' => 'ASC'));
+			print "'>"._("Summary")."</a> | ";
+		}
+		
+		
 		// get a list of all participants
 		print "\n\t<select name='participant'";
 		print " onchange='this.form.submit();'";
@@ -219,12 +228,8 @@ class actionsAction
 	 */
 	private function getActionsList () {
 		$node = SiteDispatcher::getCurrentNode();
-		$view = new Participation_View($node);			
-		$actionRows = $this->getActionRows();				
+		$view = new Participation_View($node);							
 		$participants = $view->getParticipants();		
-		
-		$actionRows->add ( new Block(ob_get_clean(), STANDARD_BLOCK));
-		ob_start();
 
 		// create an array of reorder urls
 		$sortValues = array('timestamp', 'contributor', 'contribution', 'role');
