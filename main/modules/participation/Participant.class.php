@@ -9,8 +9,6 @@
  * @version $Id$
  */ 
 
-//require_once(POLYPHONY.'/main/library/AbstractActions/Action.class.php');
-
 /**
  * get information about a given agent's participation in a given site
  * 

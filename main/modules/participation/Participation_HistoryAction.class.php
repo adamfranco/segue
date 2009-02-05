@@ -10,7 +10,6 @@
  */ 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(MYDIR."/main/modules/participation/Participation_Action.interface.php");
-// require_once(MYDIR."/main/library/Comments/CommentManager.class.php");
  
 /**
  * get info about create modification action
@@ -106,13 +105,8 @@ class Participation_HistoryAction
 	 * @since 1/27/09
 	 */
 	public function getParticipant ()  {		
-// 		$director = SiteDispatcher::getSiteDirector();		
-// 		$site = $director->getRootSiteComponent($this->_view);
-		
-		$participant = new Participation_Participant($this->_view, 
+		return new Participation_Participant($this->_view, 
 			$this->_version->getAgentId());
-				
-		return $participant;
 	}
 	
  	/**
@@ -171,8 +165,7 @@ class Participation_HistoryAction
 	 * @access public
 	 * @since 1/23/09
 	 */
-	public function getTargetUrl () {	
-		
+	public function getTargetUrl () {			
 		$url = "<a href='".SiteDispatcher::quickURL('versioning','compare_versions', array('node' => $this->_node->getId(), 'late_rev' => $this->_version->getVersionId()))."'";
 		$url .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
 		$url .=	"return false; }\" title='"._("View this version")."'>Version: ".$this->_version->getNumber()."</a>";

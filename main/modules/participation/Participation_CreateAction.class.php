@@ -11,6 +11,7 @@
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 require_once(MYDIR."/main/modules/participation/Participant.class.php");
 require_once(dirname(__FILE__)."/Participation_Action.interface.php");
+require_once(dirname(__FILE__)."/ParticipationBreadCrumbsVisitor.class.php");
 
  
 /**
@@ -58,8 +59,7 @@ class Participation_CreateAction
 	/**
 	 * get the id of a action
 	 * 
-	 * @param <##>
-	 * @return string
+	 * @return object $id
 	 * @access public
 	 * @since 1/23/09
 	 */
@@ -132,10 +132,8 @@ class Participation_CreateAction
 	 * @access public
 	 * @since 1/23/09
 	 */
-	public function getDescription ()  {
-		
-		return "content created.";
-	
+	public function getDescription ()  {		
+		return "content created.";	
 	}
 
 	/**

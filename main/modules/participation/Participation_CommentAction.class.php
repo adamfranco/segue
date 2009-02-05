@@ -58,8 +58,7 @@ class Participation_CommentAction
 	/**
 	 * get the id of a comment action 
 	 * 
-	 * @param <##>
-	 * @return array of comment ids
+	 * @return object $id
 	 * @access public
 	 * @since 1/23/09
 	 */
@@ -91,7 +90,7 @@ class Participation_CommentAction
 	}
 	
 	/**
-	 * get creator of action
+	 * get creator of comment
 	 * 
 	 * @return Participation_Participant
 	 * @access public
@@ -132,10 +131,8 @@ class Participation_CommentAction
 	 * @access public
 	 * @since 1/26/09
 	 */
-	public function getDescription ()  {
-		
-		return "comment on content.";
-	
+	public function getDescription ()  {		
+		return "comment on content.";	
 	}
 	
 	/**

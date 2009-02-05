@@ -66,7 +66,8 @@ class ParticipationSiteVisitor
 		$view = new Participation_View($siteComponent);				
 		
 		$idMgr = Services::getService('Id');
-		$azMgr = Services::getService('AuthZ');		
+		$azMgr = Services::getService('AuthZ');	
+		
 		// get create actions	
 		if ($azMgr->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'),
 			$siteComponent->getQualifierId()) == TRUE) 
