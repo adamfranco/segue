@@ -13,7 +13,6 @@ require_once(MYDIR."/main/modules/participation/Participation_Action.interface.p
 require_once(MYDIR."/main/modules/participation/Participation_CreateAction.class.php");
 require_once(MYDIR."/main/library/SiteDisplay/Rendering/SiteVisitor.interface.php");
 require_once(MYDIR."/main/modules/participation/ParticipationSiteVisitor.class.php");
-
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
 
 /**
@@ -29,7 +28,6 @@ require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
  */
 class Participation_View {
 		
-
 
 	/**
 	 * Constructor
@@ -59,7 +57,7 @@ class Participation_View {
 	private $_participants;
 	
 	/**
-	 * get all participants in the node
+	 * get all participants for node
 	 * 
 	 * @return array of Participation_Participant
 	 * @access public
@@ -70,16 +68,12 @@ class Participation_View {
 		$participants = array();
 		
 		foreach ($actions as $action) {
-			$participant = $action->getParticipant();	
-			
+			$participant = $action->getParticipant();				
 			if (!isset($participants[$participant->getId()->getIdString()])) {
 				$participants[$participant->getId()->getIdString()] = $participant;			
 			}
 		}
-
 		return $participants;
-		
-		//throw new UnimplementedException();
 	}
 
 	/**
