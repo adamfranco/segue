@@ -99,13 +99,11 @@ function SiteMemberPanel ( callingElement, writableField ) {
 	 * @since 2/5/09
 	 */
 	SiteMemberPanel.prototype.decodeValue = function (value) {
-// 		var matches = value.match(/(?:&|&amp;)?([^=]+)=([^&]+)/g);
-// 		console.log(matches);
-		var pairs = value.split('&');
 		var hash = {};
-		for (var i = 0; i < pairs.length; i++) {
-			var matches = pairs[i].match(/(?:&|&amp;)?([^=]+)=([^&]+)/);
-			hash[unescape(matches[1])] = unescape(matches[2]);
+		var regex = /(?:&|&amp;)?([^=]+)=([^&]+)/g;
+		var match;
+		while (match = regex.exec(value)) {
+			hash[unescape(match[1])] = unescape(match[2]);
 		}
 		return hash;
 	}
