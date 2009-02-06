@@ -10,6 +10,23 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.8.0" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='alex' date='2009-02-105' ref='2112768' reftype='fr'>
+			Tracking: Have added a participation module that allows any user to track their
+			contributions to a site and allows site editors to view all contributions to nodes
+			they are editors of.
+		</new>
+		<fix author='alex' date='2009-01-27' ref='2540837' reftype='fr'  reporter='alex'>
+			Comments: added anchor to comments to allow linking to individual comments
+		</fix>
+		<fix author='adam' date='2009-01-27' reporter='alex'>
+			History: changed the compare selected revisions form action to post so form fields
+			will work with urls that don't use path info
+		</fix>
+	</version>
 	<version number="2.2.7.2" date="2009-02-03">
 		<releaseNotes>
 			This release fixes a number of issues with editing in Internet Explorer 7.
@@ -150,18 +167,6 @@
 			Wiki: Wiki links to titles that do not match existing pages now link
 			to a form that allows creation of new pages, sections or content blocks.
 		</new>
-		<new author='alex' date='2009-02-105' ref='2112768' reftype='fr'>
-			Tracking: Have added a participation module that allows any user to track their
-			contributions to a site and allows site editors to view all contributions to nodes
-			they are editors of.
-		</new>
-		<fix author='alex' date='2009-01-27' ref='2540837' reftype='fr'  reporter='alex'>
-			Comments: added anchor to comments to allow linking to individual comments
-		</fix>
-		<fix author='adam' date='2009-01-27' reporter='alex'>
-			History: changed the compare selected revisions form action to post so form fields
-			will work with urls that don't use path info
-		</fix>
 	</version>
 	<version number="2.2.5.7" date="2009-01-12">
 		<releaseNotes>
