@@ -92,7 +92,7 @@ class summaryAction
 		
 		// print out breadcrumbs to current node
 		$breadcrumbs = $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($node, TRUE));
-		$actionRows->add(new Heading(_("Participation: ").$breadcrumbs, 2));
+		$actionRows->add(new Heading(_("Participation in ").$breadcrumbs, 2));
 		
 		// get list of participants
 		$actionRows->add ( new Block($this->getParticipantsList(), STANDARD_BLOCK));		
