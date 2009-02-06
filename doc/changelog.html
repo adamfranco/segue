@@ -23,7 +23,101 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.2.6.0</h2>
+<h2>Version 2.2.7.2</h2>
+<h3>2009-02-03</h3>
+<p>This release fixes a number of issues with editing in Internet Explorer 7. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> UI2: Fixed up options panel styles for IE 7. Now has nicer padding around the edges. (<em>2009-02-03 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1855103&amp;group_id=82171&amp;atid=565234">
+        			#1855103</a> UI2: New-mode options panels now display properly in IE 7, no longer falling behind other elements. (<em>2009-02-03 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2157377&amp;group_id=82171&amp;atid=565237">
+        			#2157377</a> UI2: New-mode editing interface now always shows borders and controls to improve speed. The browser no longer has to process hundreds of mouse-over/mouse-out events when moving the mouse or scrolling. (<em>2009-02-03 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> MediaLibrary: Fixed Safari CSS issue in the MiddMedia library. (<em>2009-02-03 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.2.7.1</h2>
+<h3>2009-02-02</h3>
+<p>This release fixes a few minor issues with the media library and improves support for Middlebury's MiddMedia service.
+<br>
+<br>See the change log for more details. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> MediaLibrary: File library now reloads every time the media library opens.
+<br>
+<br>When repeatedly adding files and making both image and text-links to them the listings in the two panels would get out of sync. Now they are reloaded every time the panel is opened. (<em>2009-02-02 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> MediaLibrary: Fixed Javascript error in IE 7 that occurred when opening a plugin for editing. (<em>2009-02-02 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> MediaLibrary: MiddMedia library now displays thumbnails for videos. (<em>2009-02-02 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> MediaLibrary: MiddMedia library now displays embeded previews of media. (<em>2009-02-02 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> MediaLibrary: MiddMedia library now displays a link to help in the LIS wiki. (<em>2009-02-02 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> MediaLibrary: MiddMedia library now allows refreshing of the file list. (<em>2009-02-02 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.2.7.0</h2>
+<h3>2009-01-28</h3>
+<p>This release adds support for external media libraries with support for Middlebury's new MiddMedia service included. A new 'audio' text-template is included for embedding an MP3 player in TextAndImages blocks and text-areas now get an 'Embed Audio/Video' button. When migrating sites from Segue1 installations, mp3 downloads are now converted to AudioPlayer plugins. The Portal styling has been updated to better highlight the selected folder.
+<br>
+<br>See the change log for more details. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.5.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.9.2 and Polyphony 1.4.10.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b> MediaLibrary: Added support for additional external MediaLibrary tabs. (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> MediaLibrary: Added new MiddMedia tab for browsing the MiddMedia Service. (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> MediaLibrary: After uploads in Safari, MediaLibrary panel is now moved to front again. (<em>2009-01-28 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> MediaLibrary: Now supports configuration of which libraries to enable.
+<br>
+<br>This allows some plugins (such as file for download) to restrict to only local files. (<em>2009-01-28 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Plugins: Added a button to embed audio/video into text areas. (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Text-Templates: Video template now supports new MiddMedia service (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b> Text-Templates: Added new Audio text-template for displaying MP3 files in-line. (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> User-Data: UserData javascript is now consistantly written once and only once. (<em>2009-01-27 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2520120&amp;group_id=82171&amp;atid=565234">
+        			#2520120</a> Portal: Added folder title to Portal header and more prominent selected link styling to help users better see current view of their portal (<em>2009-01-22 - Alex Chapin</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2079214&amp;group_id=82171&amp;atid=565237">
+        			#2079214</a> Migration: Segue v1 file-for-download blocks with .mp3 files now converted to v2 AudioPlayer plugin content blocks. (<em>2009-01-22 - Alex Chapin</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+	</ul>
+<br><h2>Version 2.2.6.0</h2>
 <h3>2009-01-12</h3>
 <p>This release adds support for creating new content through wiki-links. 
 <br>

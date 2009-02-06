@@ -169,7 +169,7 @@ class EduMiddleburyAudioPlayerPlugin
  			
  			print 		"this.nextSibling.innerHTML = '<div>' + downloadBar.innerHTML + '<div style=\\'clear: both;\\'></div></div>'; ";
  			print "}; "; 
- 			print "MediaLibrary.run('".$this->getId()."', this, ['audio/mpeg', 'audio/mpg']); ";
+ 			print "MediaLibrary.run('".$this->getId()."', this, ['audio/mpeg', 'audio/mpg'], {local: true}); ";
  			print "\"/>";
  			
  			// Container for example download bar.

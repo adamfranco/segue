@@ -23,6 +23,7 @@
 
 .medialibrary .medialist {
 	width: 100%;
+	clear: both;
 }
 
 .medialibrary .medialist .displayName {
