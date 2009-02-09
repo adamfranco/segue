@@ -251,6 +251,11 @@
 
 	}
 	
+	.controls_bar .controls {
+		width: 310px;
+		*padding-right: 5px;
+	}
+	
 /*********************************************************
  * Plugin Manager Admin CSS
  *********************************************************/
@@ -353,6 +358,24 @@
 		padding: 3px;		
 	}
 
+	.participation_profile {
+		text-align: center;
+		font-size: 9px;
+		border-bottom: 1px dotted;
+	}
+
+	.pushdown a {
+		border: 1px dotted #CCCCCC;
+		float: right;
+		clear: none;
+	}
+
+	.pushdown a:hover {
+		border: 1px solid #990000;
+		float: right;
+		clear: none;
+	}
+
 	
 /*********************************************************
  * Comments
@@ -379,7 +402,23 @@
 
 	.portal_list_site_title {
 		float: left;
+		border: 1px solid #FFF;
+		padding: 3px;
 	}
+	
+	.portal_list_site_title:hover {
+		float: left;
+		background-color: #FFF8C6;
+		border: 1px solid #CCCCCC;
+		padding: 3px;
+	}
+	
+	.portal_list_site_title a:hover {
+		float: left;
+		text-decoration: none;
+
+	}
+	
 	
 	.portal_list_controls {
 		text-align: right;
@@ -412,14 +451,15 @@
 	}
 	
 	ul.portal_categories div.title {
-		font-weight: bolder;
+		font-size: normal;
 	}
 	
 	ul.portal_categories li {
 		list-style-type: none;
 		list-style-position: inside;
-		margin-bottom: 15px;
-		border-top: 1px dotted;
+		margin-bottom: 5px;
+		margin-top: 5px;
+		border-bottom: 1px dotted;
 	}
 	
 	ul.portal_categories div.description {
@@ -429,12 +469,35 @@
 	
 	ul.portal_folders div.title {
 		font-weight: normal;
+		font-size: normal;
+		padding-right: 5px;
+		padding-left: 3px;
+		border: 1px solid #FFF;
+	}
+
+	ul.portal_folders div.title:hover {
+		background-color: #FFF8C6;
+		border: 1px solid #CCCCCC;
+	}
+	
+	ul.portal_folders div.title a:hover {
+		text-decoration: none;
 	}
 	
 	ul.portal_categories li.current div.title {
-		font-weight: bolder;
+
+		background-color: #FFF8C6;
+		border-right: 2px solid #999999;
+		border-left: 1px solid #CCCCCC;
+		border-top: 1px solid #CCCCCC;
+		border-bottom: 2px solid #999999;
+		padding-right: 5px;
+		padding-left: 3px;
 	}
 	
+	ul.portal_categories li.current {
+		
+	}
 	
 	ul.portal_folders {
 		margin-top: 5px;
@@ -594,9 +657,25 @@ div.autocomplete ul li {
 	
 	div.siteMap div.expand {
 		float: left;
-		width: 12px;
+		width: 8px;
 		cursor: pointer;
+		border: 1px solid #CCCCCC;
+		margin-right: 3px;
+		padding-left: 1px;
+		padding-right: 1px;
 	}
+
+	div.siteMap div.expand:hover {
+		color: #990000;
+		float: left;
+		width: 8px;
+		cursor: pointer;
+		border: 1px solid #990000;
+		margin-right: 3px;
+		padding-left: 1px;
+		padding-right: 1px;
+	}
+
 	
 	div.siteMap div.title {
 		float: left;

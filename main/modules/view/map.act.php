@@ -100,14 +100,8 @@ class mapAction
 		$actionRows = $this->getActionRows();
 		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
 		
-		// print out link to tracking
-		$trackingUrl = SiteDispatcher::quickURL("participation", "actions", array('node' => $rootSiteComponent->getId()));
-				
-		$links = _("map");	
-		$links .= " | <a href='".$trackingUrl."'>"._("track")."</a>";
-	
-		
-		$actionRows->add(new Block($links, STANDARD_BLOCK));
+		// print out related links
+		$actionRows->add (new Block($this->getRelatedLinks($rootSiteComponent), STANDARD_BLOCK));
 				
 		ob_start();
 		
@@ -182,6 +176,22 @@ class mapAction
 		$actionRows->add ( new Block(ob_get_clean(), STANDARD_BLOCK));
 		
 	}
+
+	/**
+	 * get links to track and roles
+	 * 
+	 * @return string XHTML markup
+	 * @access public
+	 * @since 2/5/09
+	 */
+	public function getRelatedLinks ($node) {
+		$links = _("map");
+		$links .= " | <a href='".SiteDispatcher::quickURL("participation", "actions", array('node' => $node->getId()));
+		$links .= "'>"._("track")."</a>";	
+			
+		return $links;
+	}
+
 	
 	/**
 	 * answer a string of tabs

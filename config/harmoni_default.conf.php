@@ -48,7 +48,8 @@
 									"help.*",
 									"view.*",
 									"tags.*",
-									"participation.*"
+									"participation.*",
+									"roles.*"
 									
 								);
 	

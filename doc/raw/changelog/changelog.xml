@@ -10,6 +10,146 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.8.0" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<new author='alex' date='2009-02-105' ref='2112768' reftype='fr'>
+			Tracking: Have added a participation module that allows any user to track their
+			contributions to a site and allows site editors to view all contributions to nodes
+			they are editors of.
+		</new>
+		<fix author='alex' date='2009-01-27' ref='2540837' reftype='fr'  reporter='alex'>
+			Comments: added anchor to comments to allow linking to individual comments
+		</fix>
+		<fix author='adam' date='2009-01-27' reporter='alex'>
+			History: changed the compare selected revisions form action to post so form fields
+			will work with urls that don't use path info
+		</fix>
+	</version>
+	<version number="2.2.7.2" date="2009-02-03">
+		<releaseNotes>
+			This release fixes a number of issues with editing in Internet Explorer 7.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.
+		</releaseNotes>
+		<fix author='adam' date='2009-02-03' ref='' reftype='bug'  reporter=''>
+			UI2: Fixed up options panel styles for IE 7. Now has nicer padding around the edges.
+		</fix>
+		<fix author='adam' date='2009-02-03' ref='1855103' reftype='bug'  reporter=''>
+			UI2: New-mode options panels now display properly in IE 7, no longer falling behind other elements.
+		</fix>
+		<change author='adam' date='2009-02-03' ref='2157377' reftype='fr'  reporter='alex'>
+			UI2: New-mode editing interface now always shows borders and controls to improve speed. The browser no longer has to process hundreds of mouse-over/mouse-out events when moving the mouse or scrolling.
+		</change>
+		<fix author='adam' date='2009-02-03' ref='' reftype='bug'  reporter=''>
+			MediaLibrary: Fixed Safari CSS issue in the MiddMedia library.
+		</fix>
+	</version>
+	<version number="2.2.7.1" date="2009-02-02">
+		<releaseNotes>
+			This release fixes a few minor issues with the media library and improves
+			support for Middlebury's MiddMedia service.
+			
+			See the change log for more details.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.
+		</releaseNotes>
+		<fix author='adam' date='2009-02-02' ref='' reftype='bug'  reporter='alex'>
+			MediaLibrary: File library now reloads every time the media library opens.
+			
+			When repeatedly adding files and making both image and text-links to them
+			the listings in the two panels would get out of sync. Now they are reloaded
+			every time the panel is opened.
+		</fix>
+		<fix author='adam' date='2009-02-02' ref='' reftype='bug'  reporter=''>
+			MediaLibrary: Fixed Javascript error in IE 7 that occurred when opening a plugin for editing.
+		</fix>
+		<new author='adam' date='2009-02-02' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: MiddMedia library now displays thumbnails for videos.
+		</new>
+		<new author='adam' date='2009-02-02' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: MiddMedia library now displays embeded previews of media.
+		</new>
+		<new author='adam' date='2009-02-02' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: MiddMedia library now displays a link to help in the LIS wiki.
+		</new>
+		<new author='adam' date='2009-02-02' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: MiddMedia library now allows refreshing of the file list.
+		</new>
+	</version>
+	<version number="2.2.7.0" date="2009-01-28">
+		<releaseNotes>
+			This release adds support for external media libraries with support for
+			Middlebury's new MiddMedia service included. A new 'audio' text-template
+			is included for embedding an MP3 player in TextAndImages blocks and
+			text-areas now get an 'Embed Audio/Video' button. When migrating sites
+			from Segue1 installations, mp3 downloads are now converted to AudioPlayer
+			plugins. The Portal styling has been updated to better highlight the 
+			selected folder.
+			
+			See the change log for more details.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.2 and Polyphony 1.4.10.
+		</releaseNotes>
+		<new author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: Added support for additional external MediaLibrary tabs.
+		</new>
+		<new author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: Added new MiddMedia tab for browsing the MiddMedia Service.
+		</new>
+		<fix author='adam' date='2009-01-28' ref='' reftype='bug'  reporter=''>
+			MediaLibrary: After uploads in Safari, MediaLibrary panel is now moved to front again.
+		</fix>
+		<change author='adam' date='2009-01-28' ref='' reftype='fr'  reporter=''>
+			MediaLibrary: Now supports configuration of which libraries to enable.
+			
+			This allows some plugins (such as file for download) to restrict to only
+			local files.
+		</change>
+		<new author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			Plugins: Added a button to embed audio/video into text areas.
+		</new>
+		<change author='adam' date='2009-01-27' ref='' reftype='bug'  reporter=''>
+			Text-Templates: Video template now supports new MiddMedia service
+		</change>
+		<new author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			Text-Templates: Added new Audio text-template for displaying MP3 files in-line.
+		</new>
+		<change author='adam' date='2009-01-27' ref='' reftype='fr'  reporter=''>
+			User-Data: UserData javascript is now consistantly written once and only
+			once.
+		</change>
+		<fix author='alex' date='2009-01-22' ref='2520120' reftype='bug'  reporter='alex'>
+			Portal: Added folder title to Portal header and more prominent selected link styling
+			to help users better see current view of their portal
+		</fix>
+		<new author='alex' date='2009-01-22' ref='2079214' reftype='fr'  reporter='alex'>
+			Migration: Segue v1 file-for-download blocks with .mp3 files now converted to
+			v2 AudioPlayer plugin content blocks.
+		</new>
+	</version>
 	<version number="2.2.6.0" date="2009-01-12">
 		<releaseNotes>
 			This release adds support for creating new content through wiki-links.
@@ -27,18 +167,6 @@
 			Wiki: Wiki links to titles that do not match existing pages now link
 			to a form that allows creation of new pages, sections or content blocks.
 		</new>
-		<new author='alex' date='2009-02-105' ref='2112768' reftype='fr'>
-			Tracking: Have added a participation module that allows any user to track their
-			contributions to a site and allows site editors to view all contributions to nodes
-			they are editors of.
-		</new>
-		<fix author='alex' date='2009-01-27' ref='2540837' reftype='fr'  reporter='alex'>
-			Comments: added anchor to comments to allow linking to individual comments
-		</fix>
-		<fix author='adam' date='2009-01-27' reporter='alex'>
-			History: changed the compare selected revisions form action to post so form fields
-			will work with urls that don't use path info
-		</fix>
 	</version>
 	<version number="2.2.5.7" date="2009-01-12">
 		<releaseNotes>

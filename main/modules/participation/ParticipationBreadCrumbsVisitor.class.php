@@ -55,24 +55,38 @@ class ParticipationBreadCrumbsVisitor
 	 * @since 5/31/07
 	 */
 	function addLink ( $node ) {
-		$harmoni = Harmoni::instance();
-		$harmoni->request->startNamespace(null);
+		$this->_links[] = "<a href='".SiteDispatcher::quickUrl("participation","actions",
+				array('node' => $node->getId()))."'>".$node->getDisplayName()."</a>";	
+	}
+
+	/**
+	 * Visit a block 
+	 * 
+	 * @param object BlockSiteComponent $block
+	 * @return boolean
+	 * @access public
+	 * @since 5/31/07
+	 */
+	public function visitBlock ( BlockSiteComponent $block ) {
+		$this->addLink($block);
 		
-		$nodeType = explode("::", HarmoniType::typeToString($node->getContentType()));
+		$parent = $block->getParentComponent();
+		return $parent->acceptVisitor($this);
+	}
+	
+	/**
+	 * Visit a nav block
+	 * 
+	 * @param object NavBlockSiteComponent $navBlock
+	 * @return boolean
+	 * @access public
+	 * @since 5/31/07
+	 */
+	public function visitNavBlock ( NavBlockSiteComponent $navBlock ) {		
+		$this->addLink($navBlock);
 		
-		if ($nodeType[2] != "NavBlock" && $this->_showRootNode == FALSE) {
-		$url = "<a href='".SiteDispatcher::quickUrl('view','html',
-				array('node' => $node->getId()))."'";
-		$url .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
-		$url .=	"return false; }\" title='"._("View this node")."'>".$node->getDisplayName()."</a>";				
-				
-		} else {
-			$url = "<a href='".SiteDispatcher::quickUrl("participation","actions",
-				array('node' => $node->getId()))."'>".$node->getDisplayName()."</a>";			
-		}
-		
-		$this->_links[] = $url;
-		$harmoni->request->endNamespace();
+		$parent = $navBlock->getParentComponent();
+		return $parent->acceptVisitor($this);
 	}
 
 	/**
@@ -84,7 +98,9 @@ class ParticipationBreadCrumbsVisitor
 	 * @since 5/31/07
 	 */
 	public function visitSiteNavBlock ( SiteNavBlockSiteComponent $siteNavBlock ) {
-		if ($this->_showRootNode == TRUE) $this->addLink($siteNavBlock);
+		if ($this->_showRootNode) {
+			$this->addLink($siteNavBlock);
+		}
 		
 		ob_start();
 		$links = array_reverse($this->_links);

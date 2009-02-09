@@ -74,7 +74,7 @@ class Participation_CommentAction
 	 * @access protected
 	 * @since 1/26/09
 	 */
-	protected function getIdPrefix () {
+	public function getIdPrefix () {
 		return "comment";
 	}
 	
@@ -145,7 +145,13 @@ class Participation_CommentAction
 	public function getTargetDisplayName ()  {
 		$node = $this->getNode();
 		$blockUrl = $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($node));
-		$commentUrl = " &raquo; ".$this->getTargetUrl();
+
+		$commentsManager = CommentManager::instance();
+		$nodeId = $commentsManager->getCommentParentAsset($this->_comment)->getId()->getIdString();
+		$commentId = $this->_comment->getId()->getIdString();
+		$commentSubject = $this->_comment->getSubject();
+
+		$commentUrl = " &raquo; ".$commentSubject;
 				
 		return $blockUrl.$commentUrl;
 	}
@@ -160,7 +166,8 @@ class Participation_CommentAction
 	public function getNode () {	
 		$commentsManager = CommentManager::instance();
 		$nodeId = $commentsManager->getCommentParentAsset($this->_comment)->getId()->getIdString();		
-		$siteDirector = SiteDispatcher::getSiteDirector();				
+		$siteDirector = SiteDispatcher::getSiteDirector();
+
 		return  $siteDirector->getSiteComponentById($nodeId);
 	}
 
@@ -175,13 +182,8 @@ class Participation_CommentAction
 		$commentsManager = CommentManager::instance();
 		$nodeId = $commentsManager->getCommentParentAsset($this->_comment)->getId()->getIdString(); 
 		$commentId = $this->_comment->getId()->getIdString();
-		$commentSubject = $this->_comment->getSubject();
 		
-		$url = "<a href='".SiteDispatcher::quickURL('view','html', array('node' => $nodeId)).'#'.$commentId."'";
-		$url .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
-		$url .=	"return false; }\" title='"._("View this node")."'>".$commentSubject."</a>";
-
-		return $url;
+		return SiteDispatcher::quickURL('view','html', array('node' => $nodeId)).'#'.$commentId;
 	}
 	
 	

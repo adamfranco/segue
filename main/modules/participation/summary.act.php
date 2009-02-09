@@ -92,7 +92,7 @@ class summaryAction
 		
 		// print out breadcrumbs to current node
 		$breadcrumbs = $node->acceptVisitor(new ParticipationBreadCrumbsVisitor($node, TRUE));
-		$actionRows->add(new Heading(_("Participation: ").$breadcrumbs, 2));
+		$actionRows->add(new Heading(_("Participation in ").$breadcrumbs, 2));
 		
 		// get list of participants
 		$actionRows->add ( new Block($this->getParticipantsList(), STANDARD_BLOCK));		
@@ -147,16 +147,16 @@ class summaryAction
 		ob_start();		
 		print "\n\t<thead>";
 		print "\n\t\t<tr>";		
-		print "\n\t\t\t<th><a href='";
+		print "\n\t\t\t<th style='border-bottom: 1px dotted'><a href='";
 		print $reorderUrl['name'];
 		print "'>"._("Participants")." ".(($sort == 'name')?$reorderFlag:"")."</a></th>";
-		print "\n\t\t\t<th><a href='";
+		print "\n\t\t\t<th style='border-bottom: 1px dotted'><a href='";
 		print $reorderUrl['commenter'];
 		print "'>"._("Commenter")." ".(($sort == 'commenter')?$reorderFlag:"")."</a></th>";
-		print "\n\t\t\t<th><a href='";
+		print "\n\t\t\t<th style='border-bottom: 1px dotted'><a href='";
 		print $reorderUrl['author'];
 		print "'>"._("Author")." ".(($sort == 'author')?$reorderFlag:"")."</a></th>";		
-		print "\n\t\t\t<th><a href='";
+		print "\n\t\t\t<th style='border-bottom: 1px dotted'><a href='";
 		print $reorderUrl['editor'];
 		print "'>"._("Editor")." ".(($sort == 'editor')?$reorderFlag:"")."</a></th>";
 		print "\n\t</thead>";
@@ -216,10 +216,19 @@ class summaryAction
 	public function printAction (Participation_Participant $participants) {
 		$participant = $participants->getId()->getIdString();
 		$participantView = new Participation_Participant($this->_view, $participants->getId());
+
+		// determine color of current row
+		if ($this->_rowColor == "#F6F6F6") {
+			$rowColor = "#FFFFFF";
+			$this->_rowColor = "#FFFFFF";
+		} else {
+			$rowColor = "#F6F6F6";
+			$this->_rowColor = "#F6F6F6";
+		}
 		
 		ob_start();
 		print "\n\t\t<tr>";
-		print "\n\t\t\t<td class='participant_row'>";
+		print "\n\t\t\t<td class='participant_row' style='background-color: ".$rowColor."'>";
 		print "<a href='";
 		print SiteDispatcher::quickURL('participation','actions', array('node' => $this->_node->getId(),
 			'sort' => 'timestamp', 'direction' => 'DESC', 'participant' => $participant))."'>";		
@@ -227,7 +236,7 @@ class summaryAction
 		print "</a>";
 		print "\n\t\t\t</td>";
 
-		print "\n\t\t\t<td class='participant_row'>";
+		print "\n\t\t\t<td class='participant_row' style='background-color: ".$rowColor."'>";
 		print "<a href='";
 		print SiteDispatcher::quickURL('participation','actions', array('node' => $this->_node->getId(),
 			'sort' => 'timestamp', 'direction' => 'DESC', 'participant' => $participant, 'role' => 'commenter'))."'>";		
@@ -235,7 +244,7 @@ class summaryAction
 		print "</a>";
 		print "\n\t\t\t</td>";
 
-		print "\n\t\t\t<td class='participant_row'>";
+		print "\n\t\t\t<td class='participant_row' style='background-color: ".$rowColor."'>";
 		print "<a href='";
 		print SiteDispatcher::quickURL('participation','actions', array('node' => $this->_node->getId(),
 			'sort' => 'timestamp', 'direction' => 'DESC', 'participant' => $participant, 'role' => 'author'))."'>";		
@@ -243,7 +252,7 @@ class summaryAction
 		print "</a>";
 		print "\n\t\t\t</td>";
 
-		print "\n\t\t\t<td class='participant_row'>";
+		print "\n\t\t\t<td class='participant_row' style='background-color: ".$rowColor."'>";
 		print "<a href='";
 		print SiteDispatcher::quickURL('participation','actions', array('node' => $this->_node->getId(),
 			'sort' => 'timestamp', 'direction' => 'DESC', 'participant' => $participant, 'role' => 'editor'))."'>";		

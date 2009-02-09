@@ -54,17 +54,10 @@ class editContentAction
 		$harmoni = Harmoni::instance();
 		$outputHandler = $harmoni->getOutputHandler();
 		
-		ob_start();
-		// Add our common Harmoni javascript libraries
-		require(POLYPHONY_DIR."/main/library/Harmoni.js.inc.php");
+		UserDataHelper::writeHeadJs();
 		
-		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/CenteredPanel.js'></script>";
-		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/TabbedContent.js'></script>";
-		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/prototype.js'></script>";
-		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/js_quicktags.js'></script>";
-		print "\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/brwsniff.js'></script>";
-		print "\n\t\t<script type='text/javascript' src='".MYPATH."/javascript/MediaLibrary.js'></script>";
-		print "\n\t\t<link rel='stylesheet' type='text/css' href='".MYPATH."/javascript/MediaLibrary.css'/>";
+		ob_start();
+		print Segue_MediaLibrary::getHeadHtml();
 		
 		$outputHandler->setHead($outputHandler->getHead().ob_get_clean());
 		
