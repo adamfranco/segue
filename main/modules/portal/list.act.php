@@ -492,6 +492,20 @@ class listAction
 	// 			$controls[] = "<a href='".SiteDispatcher::quickURL($action->getUiModule(), 'arrangeview', array('node' => $assetId->getIdString()))."'>"._("arrange")."</a>";
 	// 		}
 			
+			// add link to tracking
+			if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId)) {
+				$trackUrl = $harmoni->request->quickURL("participation", "actions", array('node' => $assetId->getIdString()));
+				ob_start();
+				print " <a target='_blank' href='".$trackUrl."'";				
+				print ' onclick="';
+				print "var url = '".$trackUrl."'; ";
+				print "window.open(url, 'site_map', 'width=600,height=600,resizable=yes,scrollbars=yes'); ";
+				print "return false;";
+				print '"';
+				print ">"._("track")."</a>";
+				$controls[] = ob_get_clean();
+			}	
+			
 			if (!is_null($otherSlot) && $otherSlot->isAlias() && $otherSlot->isUserOwner()) {
 				$controls[] = "<a href='".$harmoni->request->quickURL('slots', 'remove_alias', array('slot' => $otherSlot->getShortname()))."' onclick=\"if (!confirm('".str_replace("%1", $otherSlot->getShortname(), str_replace("%2", $otherSlot->getAliasTarget()->getShortname(), _("Are you sure that you want \\'%1\\' to no longer be an alias of \\'%2\\'?")))."')) { return false; }\">"._("remove alias")."</a>";
 			} else if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.delete'), $assetId))
