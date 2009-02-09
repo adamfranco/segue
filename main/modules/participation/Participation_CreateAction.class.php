@@ -74,7 +74,7 @@ class Participation_CreateAction
 	 * @access protected
 	 * @since 1/23/09
 	 */
-	protected function getIdPrefix () {
+	public function getIdPrefix () {
 		return "create";
 	}
 	
