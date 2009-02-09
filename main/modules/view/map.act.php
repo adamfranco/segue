@@ -98,6 +98,10 @@ class mapAction
 	 */
 	public function buildContent () {
 		$actionRows = $this->getActionRows();
+		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		
+		// print out related links
+		$actionRows->add (new Block($this->getRelatedLinks($rootSiteComponent), STANDARD_BLOCK));
 				
 		ob_start();
 		
@@ -159,7 +163,7 @@ class mapAction
 		print "\n\t<button onclick='expandAllSiteMapChildren(document.get_element_by_id(\"site_children\"));'>"._("Expand All")."</button>";
 		print "\n\t<button onclick='collapseAllSiteMapChildren(document.get_element_by_id(\"site_children\"));'>"._("Collapse All")."</button>";
 						
-		$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+		
 		
 		$this->isHeaderFooterVisitor = new isHeaderFooterSiteVisitor();
 		
@@ -172,6 +176,22 @@ class mapAction
 		$actionRows->add ( new Block(ob_get_clean(), STANDARD_BLOCK));
 		
 	}
+
+	/**
+	 * get links to track and roles
+	 * 
+	 * @return string XHTML markup
+	 * @access public
+	 * @since 2/5/09
+	 */
+	public function getRelatedLinks ($node) {
+		$links = _("map");
+		$links .= " | <a href='".SiteDispatcher::quickURL("participation", "actions", array('node' => $node->getId()));
+		$links .= "'>"._("track")."</a>";	
+			
+		return $links;
+	}
+
 	
 	/**
 	 * answer a string of tabs

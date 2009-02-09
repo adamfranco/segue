@@ -23,6 +23,18 @@
 			from which to display tags. As well, the Tags plugin now supports display
 			options for ordering, cloud versus list, and number of items to show.
 		</new>
+		<new author='alex' date='2009-02-105' ref='2112768' reftype='fr'>
+			Tracking: Have added a participation module that allows any user to track their
+			contributions to a site and allows site editors to view all contributions to nodes
+			they are editors of.
+		</new>
+		<fix author='alex' date='2009-01-27' ref='2540837' reftype='fr'  reporter='alex'>
+			Comments: added anchor to comments to allow linking to individual comments
+		</fix>
+		<fix author='adam' date='2009-01-27' reporter='alex'>
+			History: changed the compare selected revisions form action to post so form fields
+			will work with urls that don't use path info
+		</fix>
 	</version>
 	<version number="2.2.7.2" date="2009-02-03">
 		<releaseNotes>

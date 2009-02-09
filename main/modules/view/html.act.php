@@ -326,11 +326,15 @@ class htmlAction
 		
 		$footer = $mainScreen->add(
 			new Container (new XLayout, BLANK, 1),
-			$rootSiteComponent->getWidth(), null, CENTER, BOTTOM);
-		
+			$rootSiteComponent->getWidth(), null, CENTER, BOTTOM);		
 		
 		ob_start();
 		print "<div class='seguefooter_left'>";
+		
+		// Home
+		print "<a href='".$harmoni->request->quickURL('portal', 'list')."' title='"._("List of Segue sites")."'>";
+		print _("home")."</a> | ";
+	
 		// Help LInk
 		print Help::link();
 		
@@ -343,8 +347,21 @@ class htmlAction
 		print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
 		print "return false;";
 		print '"';
-		print ">"._("Site Map")."</a>";
+		print ">"._("map")."</a>";
+
+		
+		// Tracking
+		$trackingUrl = $harmoni->request->quickURL("participation", "actions", array('node' => SiteDispatcher::getCurrentNodeId()));
+		print " | <a target='_blank' href='".$trackingUrl."'";
+		
+		print ' onclick="';
+		print "var url = '".$trackingUrl."'; ";
+		print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
+		print "return false;";
+		print '"';
+		print ">"._("track")."</a>";
 		print "</div>";
+		
 		
 				
 		$footer->add(new UnstyledBlock(ob_get_clean()), "50%", null, LEFT, BOTTOM);
@@ -383,15 +400,36 @@ class htmlAction
 		$harmoni = Harmoni::instance();
 		ob_start();
 		print "<div class='seguelinks'>";
-		
+			
+		// Home
 		print "<a href='".$harmoni->request->quickURL('portal', 'list')."' title='"._("List of Segue sites")."'>";
 		print _("home")."</a> | ";
+
+		// Help
+		print Help::link();
 		
-		//print "<a href='".$harmoni->request->quickURL('directory', 'users')."' title='"._("Segue User Directory")."'>";
-		print _("directory");
+		// Site Map
+		$siteMapUrl = $harmoni->request->quickURL("view", "map", array('node' => SiteDispatcher::getCurrentNodeId()));
+		print " | <a target='_blank' href='".$siteMapUrl."'";
 		
-// 		print "<a href='".$harmoni->request->quickURL('about', 'welcome')."' title='"._("The Segue homepage")."'>";
-// 		print _("about")."</a>";
+		print ' onclick="';
+		print "var url = '".$siteMapUrl."'; ";
+		print "window.open(url, 'site_map', 'width=700,height=600,resizable=yes,scrollbars=yes'); ";
+		print "return false;";
+		print '"';
+		print ">"._("map")."</a>";
+				
+		// Tracking
+		$trackingUrl = $harmoni->request->quickURL("participation", "actions", array('node' => SiteDispatcher::getCurrentNodeId()));
+		print " | <a target='_blank' href='".$trackingUrl."'";
+		
+		print ' onclick="';
+		print "var url = '".$trackingUrl."'; ";
+		print "window.open(url, 'site_map', 'width=700,height=600,resizable=yes,scrollbars=yes'); ";
+		print "return false;";
+		print '"';
+		print ">"._("track")."</a>";
+		print "</div>";
 
 		print "</div>";
 		

@@ -47,7 +47,10 @@
 									"versioning.*",
 									"help.*",
 									"view.*",
-									"tags.*"
+									"tags.*",
+									"participation.*",
+									"roles.*"
+									
 								);
 	
 	$harmoni->setPostProcessAction("window.display", $postProcessIgnoreList);
