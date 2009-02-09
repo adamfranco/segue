@@ -151,9 +151,7 @@ class Participation_CommentAction
 		$commentId = $this->_comment->getId()->getIdString();
 		$commentSubject = $this->_comment->getSubject();
 
-		$commentUrl = " &raquo; <a href='".$this->getTargetUrl()."'";
-		$commentUrl .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
-		$commentUrl .=	"return false; }\" title='"._("View this comment")."'>".$commentSubject."</a>";
+		$commentUrl = " &raquo; ".$commentSubject;
 				
 		return $blockUrl.$commentUrl;
 	}
