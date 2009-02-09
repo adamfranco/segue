@@ -1,5 +1,5 @@
 
-Segue v. 2.2.7.2 (2009-02-03)
+Segue v. 2.2.8.0 (2009-02-09)
 =================================
 
 What is Segue?
@@ -12,7 +12,16 @@ and journal.
 
 Current Version Notes
 ---------------------
-This release fixes a number of issues with editing in Internet Explorer 7. 
+This release adds a new tracking module to allow users to see their own actions
+within a site and editors to see all of the actions within a site.
+
+The Tags plugin has been significantly improved to allow choosing of the part of
+the site from which tags are displayed. This could be the entire site or just a
+section or page. The Tags plugin also gains display-options for ordering,
+display-style (cloud/list), and number of tags to show.
+
+This release also fixes a number of additional minor bugs. See the change-log for
+details. 
 
 ----
 
@@ -21,7 +30,7 @@ located under Admin Tools --> Segue Updates.
 
 ----
 
- This Segue release uses Harmoni 1.9.3 and Polyphony 1.4.11.
+ This Segue release uses Harmoni 1.9.4 and Polyphony 1.5.0.
 
 
 Downloads
@@ -61,6 +70,30 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.8.0 (2009-02-09)
+----------------------------------------------------
+This release adds a new tracking module to allow users to see their own actions
+within a site and editors to see all of the actions within a site.
+
+The Tags plugin has been significantly improved to allow choosing of the part of
+the site from which tags are displayed. This could be the entire site or just a
+section or page. The Tags plugin also gains display-options for ordering,
+display-style (cloud/list), and number of tags to show.
+
+This release also fixes a number of additional minor bugs. See the change-log for
+details. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.4 and Polyphony 1.5.0.
+
 
 
 v. 2.2.7.2 (2009-02-03)

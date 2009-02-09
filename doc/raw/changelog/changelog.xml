@@ -10,8 +10,18 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.8.0" date="The Future">
+	<version number="2.2.8.0" date="2009-02-09">
 		<releaseNotes>
+			This release adds a new tracking module to allow users to see their own
+			actions within a site and editors to see all of the actions within a site.
+			
+			The Tags plugin has been significantly improved to allow choosing of the 
+			part of the site from which tags are displayed. This could be the entire
+			site or just a section or page. The Tags plugin also gains display-options
+			for ordering, display-style (cloud/list), and number of tags to show.
+			
+			This release also fixes a number of additional minor bugs. 
+			See the change-log for details.
 			
 			----
 			
@@ -20,13 +30,13 @@
 			
 			----
 			
-			This Segue release uses Harmoni 1.9.3 and Polyphony 1.5.0.
+			This Segue release uses Harmoni 1.9.4 and Polyphony 1.5.0.
 		</releaseNotes>
 		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
 			UI1: Classic-mode plugin editing now doesn't get a javascript error 
 			for plugins that do not natively support the wizard.
 		</fix>
-		<new author='david,adam,alex' date='2009-02-09' ref='' reftype='fr'  reporter='1940491'>
+		<new author='david,adam,alex' date='2009-02-09' ref='1940491' reftype='fr'  reporter=''>
 			Tags: The Tags plugin now supports selection of the part of the site
 			from which to display tags.
 		</new>
@@ -48,6 +58,9 @@
 		</fix>
 		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
 			Portal: Page title now doesn't have form-text in it.
+		</fix>
+		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
+			UI2: Fixed XHTML validation error in edit-mode output.
 		</fix>
 	</version>
 	<version number="2.2.7.2" date="2009-02-03">
@@ -3357,6 +3370,7 @@
 		<name short="adam">Adam Franco</name>
 		<name short="alex">Alex Chapin</name>
 		<name short="chris">Christopher Shubert</name>
+		<name short="david">David Fouhey</name>
 	</authors>
 	<reporters>
 		<reporter short="alex">

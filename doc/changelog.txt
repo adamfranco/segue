@@ -2,6 +2,72 @@
 Segue Change Log
 
 
+v. 2.2.8.0 (2009-02-09)
+----------------------------------------------------
+This release adds a new tracking module to allow users to see their own actions
+within a site and editors to see all of the actions within a site.
+
+The Tags plugin has been significantly improved to allow choosing of the part of
+the site from which tags are displayed. This could be the entire site or just a
+section or page. The Tags plugin also gains display-options for ordering,
+display-style (cloud/list), and number of tags to show.
+
+This release also fixes a number of additional minor bugs. See the change-log for
+details. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.4 and Polyphony 1.5.0.
+		
+		
+	* Bug Fix: 
+		UI1: Classic-mode plugin editing now doesn't get a javascript error for
+		plugins that do not natively support the wizard.
+		(2009-02-09 - Adam Franco)
+		
+	* New feature: #1940491 
+		Tags: The Tags plugin now supports selection of the part of the site from
+		which to display tags.
+		(2009-02-09 - David Fouhey, Adam Franco, Alex Chapin)
+		
+	* New feature: 
+		Tags: The Tags plugin now supports display options for ordering, cloud
+		versus list, and number of items to show.
+		(2009-02-09 - Adam Franco)
+		
+	* New feature: #2112768 
+		Tracking: Have added a participation module that allows any user to track
+		their contributions to a site and allows site editors to view all
+		contributions to nodes they are editors of.
+		(2009-02-105 - Alex Chapin)
+		
+	* Bug Fix: #2540837 
+		Comments: added anchor to comments to allow linking to individual comments
+		(2009-01-27 - Alex Chapin)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: 
+		History: changed the compare selected revisions form action to post so form
+		fields will work with urls that don't use path info
+		(2009-01-27 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: 
+		Portal: Page title now doesn't have form-text in it.
+		(2009-02-09 - Adam Franco)
+		
+	* Bug Fix: 
+		UI2: Fixed XHTML validation error in edit-mode output.
+		(2009-02-09 - Adam Franco)
+	
+
+
+
 v. 2.2.7.2 (2009-02-03)
 ----------------------------------------------------
 This release fixes a number of issues with editing in Internet Explorer 7. 
