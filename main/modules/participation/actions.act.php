@@ -76,7 +76,8 @@ class actionsAction
 	 * @access public
 	 * @since 3/14/08
 	 */
-	public function buildContent () {				
+	public function buildContent () {	
+		$this->_rowColor = "#FFFFFF";
 		$node = SiteDispatcher::getCurrentNode();
 		$actionRows = $this->getActionRows();		
 		
