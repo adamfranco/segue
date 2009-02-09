@@ -301,14 +301,8 @@ class EduMiddleburyTagsPlugin
 			print "\n<div style='text-align: justify;'>";
 			$tags = TagAction::getTagsFromItems($items);
  			//SiteDispatcher::passthroughContext();
-			$tagData = TagAction::getTagCloudDiv($tags, 'sitetag',TagAction::getDefaultStyles());
-			$patterns = array();
-			$patterns[0] = '/href=\'([^\']*)\'/';
-			$patterns[1] = '/href=\"([^\"]*)\"/';
-			$replace = array();
-			$replace[0] = 'href=\'${1}&node='.$this->getTargetNodeId().'\'';
-			$replace[1] = $replace[0];
-			print preg_replace($patterns,$replace,$tagData);
+			print TagAction::getTagCloudDiv($tags, 'sitetag', TagAction::getDefaultStyles(), array(), array(null => array('node' => $this->getTargetNodeId())));
+			
  			//SiteDispatcher::forgetContext();
 			print "</div>";
 			if($this->shouldShowControls()){
