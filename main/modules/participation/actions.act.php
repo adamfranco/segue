@@ -443,7 +443,7 @@ class actionsAction
 		// pushdown icon link
 		$pushDownUrl = "<div class='pushdown'><a href='".$action->getTargetUrl()."'";
 		$pushDownUrl .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
-		$pushDownUrl .=	"return false; }\" title='"._("Go to site")."'>";
+		$pushDownUrl .=	"return false; }\" title='"._("review this in site")."'>";
 		$pushDownUrl .= "\n\t\t\t<img src='".MYPATH."/images/pushdown.png' alt='site link' style='border: 0; vertical-align: middle;'/></a></div>";
 		
 		print "\n\t\t\t<td valign='top' class = 'participation_row' style='white-space: nowrap; background-color: ".$rowColor.";'>";
