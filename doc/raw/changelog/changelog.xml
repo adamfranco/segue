@@ -46,6 +46,9 @@
 			History: changed the compare selected revisions form action to post so form fields
 			will work with urls that don't use path info
 		</fix>
+		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
+			Portal: Page title now doesn't have form-text in it.
+		</fix>
 	</version>
 	<version number="2.2.7.2" date="2009-02-03">
 		<releaseNotes>

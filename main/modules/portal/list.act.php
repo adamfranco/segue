@@ -81,6 +81,21 @@ class listAction
 		// print the ui-mode changing form
 		print $this->getUiSwitchForm();
 	
+		print $this->getTitleText();
+		print "\n\t<div style='clear: both; height: 0px;'>&nbsp;</div>";
+		
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Return the title-text for this action, or an empty string.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/9/09
+	 */
+	function getTitleText () {
+		ob_start();
 		$authN = Services::getService("AuthN");
 		
 		// get current category/folder and put into header
@@ -93,8 +108,6 @@ class listAction
 		} else {
 			print _("Portal (log in to see your own portal)");
 		}
-		print "\n\t<div style='clear: both; height: 0px;'>&nbsp;</div>";
-		
 		return ob_get_clean();
 	}
 	
