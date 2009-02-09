@@ -82,7 +82,7 @@ class Participation_HistoryAction
 	 * @access protected
 	 * @since 1/27/09
 	 */
-	protected function getIdPrefix () {
+	public function getIdPrefix () {
 		return "version";
 	}
 	
