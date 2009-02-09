@@ -79,7 +79,7 @@ class summaryAction
 	public function buildContent () {
 		$actionRows = $this->getActionRows();				
 		
-		
+		$this->_rowColor = "#FFFFFF";
 		$node = SiteDispatcher::getCurrentNode();
 		$actionRows = $this->getActionRows();
 		
