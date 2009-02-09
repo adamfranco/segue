@@ -70,7 +70,7 @@ class EduMiddleburyTagsPlugin
  	 * @static
  	 */
  	public static function getPluginCreators () {
- 		return array("Alex Chapin");
+ 		return array("Alex Chapin", "Adam Franco", "David Fouhey");
  	}
  	
  	/**
@@ -97,9 +97,14 @@ class EduMiddleburyTagsPlugin
 	 */
 
 	public function update( $request ) {
-		if ($this->getFieldValue('tagNode')) {
-			$this->writeOption('targetNodeId', $this->getFieldValue('tagNode'));	
-		} 
+		if ($this->getFieldValue('tagNode'))
+			$this->writeOption('targetNodeId', $this->getFieldValue('tagNode'));
+		
+		if ($this->getFieldValue('defaultSortMethod')) {
+			$this->writeOption('defaultSortMethod', $this->getFieldValue('defaultSortMethod'));	
+			$this->writeOption('defaultDisplayType', $this->getFieldValue('defaultDisplayType'));	
+			$this->writeOption('defaultListLimit', $this->getFieldValue('defaultListLimit'));	
+		}
 	}
 	
 	/**
@@ -125,12 +130,14 @@ class EduMiddleburyTagsPlugin
 	public function initialize () {
 		$this->_defaults = array(
 			'defaultSortMethod' => 'alpha',
-			'defaultDisplayType' => 'cloud'
+			'defaultDisplayType' => 'cloud',
+			'defaultListLimit' => '15'
 		);
 		$this->_allowedOptions = array(
 			'targetNodeId',
 			'defaultSortMethod',
-			'defaultDisplayType'
+			'defaultDisplayType',
+			'defaultListLimit'
 		);
 	}
 	
@@ -149,7 +156,7 @@ class EduMiddleburyTagsPlugin
 			$xpath = new DOMXPath($doc);
 			$elements = $xpath->query('/options/'.$key);
 			
-			if ($elements->length)
+			if ($elements->length && strlen($elements->item(0)->nodeValue))
 				return $elements->item(0)->nodeValue;
 			
 		} catch (DOMException $e) {
@@ -185,6 +192,7 @@ class EduMiddleburyTagsPlugin
 		
 		
 		$doc = new Harmoni_DOMDocument();
+		$doc->preserveWhiteSpace = false;
 		try {
 			$doc->loadXML($this->getContent());
 		} catch (DOMException $e) {
@@ -263,8 +271,7 @@ class EduMiddleburyTagsPlugin
  	 */
  	public function getMarkup () {
 		ob_start();
-	
-
+		
 		if($this->getFieldValue('edit') && $this->canModify()){
 			$director = SiteDispatcher::getSiteDirector();
 			$node = $director->getSiteComponentById($this->getId());	
@@ -275,12 +282,60 @@ class EduMiddleburyTagsPlugin
 			$visitor = new UmbrellaVisitor;
 			$node->acceptVisitor($visitor);
 			print "<div>";
+			
 			print _('Chose a section or page:');
 			print "<select name='".$this->getFieldName('tagNode')."'>";
 			$this->writeUmbrellaSelect($visitor->getNodeData(),$currentTarget);
 			print "</select>\n";
 			print "<div class='tags_display_options'>"._('Only tags from your selected section or page will be displayed')."</div><br/>\n";
+			
+			print "<select name='".$this->getFieldName('defaultSortMethod')."'>";
+			print "\n\t<option value='alpha' ";
+			if ($this->readOption('defaultSortMethod') == 'alpha')
+				print "selected='selected'";
+			print ">"._('sort tags alphabetically')."</option>";
+			print "\n\t<option value='freq' ";
+			if ($this->readOption('defaultSortMethod') == 'freq')
+				print "selected='selected'";
+			print ">"._('sort tags by frequency')."</option>";
+			print "</select>\n";
+			
+			print "<br/>";
+			print "<select name='".$this->getFieldName('defaultDisplayType')."'>";
+			print "\n\t<option value='cloud' ";
+			if ($this->readOption('defaultDisplayType') == 'cloud')
+				print "selected='selected'";
+			print ">"._('display as cloud')."</option>";
+			print "\n\t<option value='list' ";
+			if ($this->readOption('defaultDisplayType') == 'list')
+				print "selected='selected'";
+			print ">"._('display as list')."</option>";
+			print "</select>\n";
+			
+			print "<br/>";
+			print "<select name='".$this->getFieldName('defaultListLimit')."'>";
+			print "\n\t<option value='0' ";
+			if ($this->readOption('defaultListLimit') == '0')
+				print "selected='selected'";
+			print ">"._('in list show: all')."</option>";
+			for ($i = 5; $i < 25; $i = $i + 5) {
+				print "\n\t<option value='$i' ";
+				if (intval($this->readOption('defaultListLimit')) == $i)
+					print "selected='selected'";
+				print ">".str_replace('%1', $i, _('in list show: %1'))."</option>";
+			}
+			for ($i = 25; $i <= 300; $i = $i + 25) {
+				print "\n\t<option value='$i' ";
+				if (intval($this->readOption('defaultListLimit')) == $i)
+					print "selected='selected'";
+				print ">".str_replace('%1', $i, _('in list show: %1'))."</option>";
+			}
+			print "</select>\n";
+			
+			print "<br/>";
+			print "<br/>";
 			print "<input type='submit' value='Update' name='".$this->getFieldName('submit')."'>\n";
+			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
 			print "</div>";
 			print "</form>";
 		} else if ($this->canView()) {
@@ -298,12 +353,36 @@ class EduMiddleburyTagsPlugin
  			_("Tags within: %1"));
 
  			print "</div>";
-			print "\n<div style='text-align: justify;'>";
+			print "\n<div style='text-align: justify;' id='tag_cloud_container-".$this->getId()."'>";
 			$tags = TagAction::getTagsFromItems($items);
  			//SiteDispatcher::passthroughContext();
 			print TagAction::getTagCloudDiv($tags, 'sitetag', TagAction::getDefaultStyles(), array(), array(null => array('node' => $this->getTargetNodeId())));
 			
  			//SiteDispatcher::forgetContext();
+ 			?>
+ 	
+ 	<script type="text/javascript">
+ 	// <![CDATA[
+ 	
+ 	var cloudParent = document.get_element_by_id('tag_cloud_container-<?php print $this->getId(); ?>');
+ 	var clouds = cloudParent.getElementsByClassName('tag_cloud');
+ 	var cloud = TagCloud.forContainer(clouds[0]);
+ 	
+ 			<?php
+ 			if ($this->readOption('defaultListLimit') != 15)
+ 				print "\n\tcloud.tagList.setLimit(".$this->readOption('defaultListLimit').");";
+ 			if ($this->readOption('defaultSortMethod') == 'freq')
+ 				print "\n\tcloud.orderFreq();";
+ 			if ($this->readOption('defaultDisplayType') == 'list')
+ 				print "\n\tcloud.showList();";
+ 	
+ 			?>
+ 	
+ 	// ]]>
+ 	</script>
+ 	
+ 			
+ 			<?php
 			print "</div>";
 			if($this->shouldShowControls()){
 				print "\n<div style='text-align: right; white-space: nowrap;'>";
