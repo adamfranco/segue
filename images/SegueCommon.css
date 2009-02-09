@@ -662,6 +662,11 @@ div.autocomplete ul li {
 		border-bottom: 1px solid #000000;
 	}
 
+	.tag_cloud {
+		text-decoration: none;
+		text-align: justify;
+	}
+
 	.tag_cloud a {
 		text-decoration: none;
 		text-align: justify;
@@ -676,9 +681,15 @@ div.autocomplete ul li {
 		margin-top: 10px;
 		padding-top: 3px;
 		border-top: 1px dotted #aaa;
-
 	}
 	
+	.tags_display_options  {
+		font-size: 11px;
+		text-align: left;
+		margin-top: 10px;
+		margin-bottom: 2px;
+	}
+
 	.tagging_options  {
 		font-size: 9px;
 		border-bottom: 1px dotted #aaa;
