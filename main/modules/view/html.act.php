@@ -414,7 +414,7 @@ class htmlAction
 		
 		print ' onclick="';
 		print "var url = '".$siteMapUrl."'; ";
-		print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
+		print "window.open(url, 'site_map', 'width=700,height=600,resizable=yes,scrollbars=yes'); ";
 		print "return false;";
 		print '"';
 		print ">"._("map")."</a>";
@@ -425,7 +425,7 @@ class htmlAction
 		
 		print ' onclick="';
 		print "var url = '".$trackingUrl."'; ";
-		print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
+		print "window.open(url, 'site_map', 'width=700,height=600,resizable=yes,scrollbars=yes'); ";
 		print "return false;";
 		print '"';
 		print ">"._("track")."</a>";
