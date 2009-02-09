@@ -58,23 +58,7 @@ class ParticipationBreadCrumbsVisitor
 		$this->_links[] = "<a href='".SiteDispatcher::quickUrl("participation","actions",
 				array('node' => $node->getId()))."'>".$node->getDisplayName()."</a>";	
 	}
-	
-	/**
-	 * Add a link to the opener window
-	 * 
-	 * @param object SiteComponent $node
-	 * @return void
-	 * @access protected
-	 * @since 2/6/09
-	 */
-	protected function addOpenerLink (SiteComponent $node) {
-		$url = "<a href='".SiteDispatcher::quickUrl('view','html',
-				array('node' => $node->getId()))."'";
-		$url .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
-		$url .=	"return false; }\" title='"._("View this node")."'>".$node->getDisplayName()."</a>";
-		$this->_links[] = $url;
-	}
-	
+
 	/**
 	 * Visit a block 
 	 * 
@@ -84,7 +68,7 @@ class ParticipationBreadCrumbsVisitor
 	 * @since 5/31/07
 	 */
 	public function visitBlock ( BlockSiteComponent $block ) {
-		$this->addOpenerLink($block);
+		$this->addLink($block);
 		
 		$parent = $block->getParentComponent();
 		return $parent->acceptVisitor($this);
