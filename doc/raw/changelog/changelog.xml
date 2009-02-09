@@ -18,6 +18,11 @@
 			UI1: Classic-mode plugin editing now doesn't get a javascript error 
 			for plugins that do not natively support the wizard.
 		</fix>
+		<new author='adam' date='2009-02-09' ref='' reftype='fr'  reporter=''>
+			Tags: The Tags plugin now supports selection of the part of the site
+			from which to display tags. As well, the Tags plugin now supports display
+			options for ordering, cloud versus list, and number of items to show.
+		</new>
 	</version>
 	<version number="2.2.7.2" date="2009-02-03">
 		<releaseNotes>
