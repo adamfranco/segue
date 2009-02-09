@@ -429,7 +429,6 @@ class htmlAction
 		print "return false;";
 		print '"';
 		print ">"._("track")."</a>";
-		print "</div>";
 
 		print "</div>";
 		
