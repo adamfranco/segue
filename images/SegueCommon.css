@@ -358,6 +358,24 @@
 		padding: 3px;		
 	}
 
+	.participation_profile {
+		text-align: center;
+		font-size: 9px;
+		border-bottom: 1px dotted;
+	}
+
+	.pushdown a {
+		border: 1px dotted #CCCCCC;
+		float: right;
+		clear: none;
+	}
+
+	.pushdown a:hover {
+		border: 1px solid #990000;
+		float: right;
+		clear: none;
+	}
+
 	
 /*********************************************************
  * Comments
@@ -639,9 +657,25 @@ div.autocomplete ul li {
 	
 	div.siteMap div.expand {
 		float: left;
-		width: 12px;
+		width: 8px;
 		cursor: pointer;
+		border: 1px solid #CCCCCC;
+		margin-right: 3px;
+		padding-left: 1px;
+		padding-right: 1px;
 	}
+
+	div.siteMap div.expand:hover {
+		color: #990000;
+		float: left;
+		width: 8px;
+		cursor: pointer;
+		border: 1px solid #990000;
+		margin-right: 3px;
+		padding-left: 1px;
+		padding-right: 1px;
+	}
+
 	
 	div.siteMap div.title {
 		float: left;
