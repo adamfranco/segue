@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.8.0" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
+			UI1: Classic-mode plugin editing now doesn't get a javascript error 
+			for plugins that do not natively support the wizard.
+		</fix>
+	</version>
 	<version number="2.2.7.2" date="2009-02-03">
 		<releaseNotes>
 			This release fixes a number of issues with editing in Internet Explorer 7.
