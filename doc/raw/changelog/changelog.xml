@@ -13,15 +13,26 @@
 	<version number="2.2.8.0" date="The Future">
 		<releaseNotes>
 			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.3 and Polyphony 1.5.0.
 		</releaseNotes>
 		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
 			UI1: Classic-mode plugin editing now doesn't get a javascript error 
 			for plugins that do not natively support the wizard.
 		</fix>
-		<new author='adam' date='2009-02-09' ref='' reftype='fr'  reporter=''>
+		<new author='david,adam,alex' date='2009-02-09' ref='' reftype='fr'  reporter='1940491'>
 			Tags: The Tags plugin now supports selection of the part of the site
-			from which to display tags. As well, the Tags plugin now supports display
-			options for ordering, cloud versus list, and number of items to show.
+			from which to display tags.
+		</new>
+		<new author='adam' date='2009-02-09' ref='' reftype='fr'  reporter=''>
+			Tags: The Tags plugin now supports display options for ordering, 
+			cloud versus list, and number of items to show.
 		</new>
 		<new author='alex' date='2009-02-105' ref='2112768' reftype='fr'>
 			Tracking: Have added a participation module that allows any user to track their
