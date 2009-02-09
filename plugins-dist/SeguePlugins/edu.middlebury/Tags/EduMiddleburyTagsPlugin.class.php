@@ -365,7 +365,7 @@ class EduMiddleburyTagsPlugin
  	// <![CDATA[
  	
  	var cloudParent = document.get_element_by_id('tag_cloud_container-<?php print $this->getId(); ?>');
- 	var clouds = cloudParent.getElementsByClassName('tag_cloud');
+ 	var clouds = document.get_elements_by_class('tag_cloud', cloudParent);
  	var cloud = TagCloud.forContainer(clouds[0]);
  	
  			<?php
@@ -377,7 +377,7 @@ class EduMiddleburyTagsPlugin
  				print "\n\tcloud.showList();";
  	
  			?>
- 	
+
  	// ]]>
  	</script>
  	
