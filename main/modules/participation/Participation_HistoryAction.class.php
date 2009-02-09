@@ -166,9 +166,7 @@ class Participation_HistoryAction
 	 * @since 1/23/09
 	 */
 	public function getTargetUrl () {			
-		$url = "<a href='".SiteDispatcher::quickURL('versioning','compare_versions', array('node' => $this->_node->getId(), 'late_rev' => $this->_version->getVersionId()))."'";
-		$url .= " onclick=\"if (window.opener) { window.opener.location = this.href;";
-		$url .=	"return false; }\" title='"._("View this version")."'>Version: ".$this->_version->getNumber()."</a>";
+		$url = SiteDispatcher::quickURL('versioning','compare_versions', array('node' => $this->_node->getId(), 'late_rev' => $this->_version->getVersionId()));
 
 		return $url;
 	}
