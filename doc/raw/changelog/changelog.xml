@@ -18,6 +18,10 @@
 			CourseManagement: Updated the winter/spring-term change-over to reflect
 			Midd's dates this year.
 		</fix>
+		<fix author='adam' date='2009-02-10' ref='' reftype='bug'  reporter=''>
+			Migration: Migration now won't die on corrupted Segue 1 exports that 
+			include empty agent ids.
+		</fix>
 	</version>
 	<version number="2.2.8.0" date="2009-02-09">
 		<releaseNotes>

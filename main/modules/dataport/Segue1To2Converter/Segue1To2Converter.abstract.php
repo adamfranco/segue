@@ -287,7 +287,8 @@ abstract class Segue1To2Converter {
 			foreach ($agentsHavingPerm as $agent) {
 				$agentId = trim($agent->nodeValue);
 				if (!$agentId)
-					throw new Exception("Unknown agent id '".$agentId."'.");
+					continue;
+// 					throw new Exception("Unknown agent id '".$agentId."'.");
 				switch ($perm->nodeName) {
 					case 'view_permission':
 						$agents[$agentId][] = 'view';
@@ -361,6 +362,8 @@ abstract class Segue1To2Converter {
 	 * @since 2/5/08
 	 */
 	protected function addRoleForAgent ($agentId, $role, DOMElement $destElement) {
+		if (!$agentId)
+			return;
 		try {
 			$rolesElement = $this->getSingleElement('./roles', $destElement);
 		} catch (MissingNodeException $e) {
@@ -381,6 +384,8 @@ abstract class Segue1To2Converter {
 	 * @since 2/13/08
 	 */
 	protected function addAgent ($agentId) {
+		if (!$agentId)
+			return;
 		switch ($agentId) {
 			case 'everyone':
 				$agentId = 'edu.middlebury.agents.everyone';
