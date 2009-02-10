@@ -22,6 +22,9 @@
 			Migration: Migration now won't die on corrupted Segue 1 exports that 
 			include empty agent ids.
 		</fix>
+		<fix author='adam' date='2009-02-10' ref='2585563' reftype='bug'  reporter='alex'>
+			Plugins: TextBlock plugin now doesn't show the "read more" link always.
+		</fix>
 	</version>
 	<version number="2.2.8.0" date="2009-02-09">
 		<releaseNotes>
