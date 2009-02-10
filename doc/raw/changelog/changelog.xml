@@ -10,9 +10,19 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.8.1" date="The Future">
+	<version number="2.2.8.1" date="2009-02-10">
 		<releaseNotes>
+			This release also fixes a number of of minor bugs.
+			See the change-log for details.
 			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.4 and Polyphony 1.5.1.
 		</releaseNotes>
 		<fix author='adam' date='2009-02-10' ref='' reftype='bug'  reporter=''>
 			CourseManagement: Updated the winter/spring-term change-over to reflect

@@ -2,6 +2,43 @@
 Segue Change Log
 
 
+v. 2.2.8.1 (2009-02-10)
+----------------------------------------------------
+This release also fixes a number of of minor bugs. See the change-log for details. 
+
+----
+
+ Upgrades from versions prior to 2.2.5.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.4 and Polyphony 1.5.1.
+		
+		
+	* Bug Fix: 
+		CourseManagement: Updated the winter/spring-term change-over to reflect
+		Midd's dates this year.
+		(2009-02-10 - Adam Franco)
+		
+	* Bug Fix: 
+		Migration: Migration now won't die on corrupted Segue 1 exports that include
+		empty agent ids.
+		(2009-02-10 - Adam Franco)
+		
+	* Bug Fix: #2585563 
+		Plugins: TextBlock plugin now doesn't show the "read more" link always.
+		(2009-02-10 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: #2585564 
+		Wiki: Wiki-links that include diacritics now resolve properly.
+		(2009-02-10 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+	
+
+
+
 v. 2.2.8.0 (2009-02-09)
 ----------------------------------------------------
 This release adds a new tracking module to allow users to see their own actions
