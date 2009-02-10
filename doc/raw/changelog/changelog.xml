@@ -10,6 +10,15 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.8.1" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2009-02-10' ref='' reftype='bug'  reporter=''>
+			CourseManagement: Updated the winter/spring-term change-over to reflect
+			Midd's dates this year.
+		</fix>
+	</version>
 	<version number="2.2.8.0" date="2009-02-09">
 		<releaseNotes>
 			This release adds a new tracking module to allow users to see their own
