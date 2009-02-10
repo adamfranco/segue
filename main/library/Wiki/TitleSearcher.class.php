@@ -48,7 +48,7 @@ class TitleSearcher
 		
 		$this->visited = array();
 		$this->title = html_entity_decode($title);
-		$this->title = mb_convert_encoding($this->title, 'UTF-8', mb_detect_encoding($this->title, "ASCII,JIS,UTF-8,EUC-JP,SJIS, ISO-8859-1"));
+		$this->title = mb_convert_encoding($this->title, 'UTF-8', mb_detect_encoding($this->title, "ASCII,UTF-8,ISO-8859-1,JIS,EUC-JP,SJIS"));
 		$this->title = mb_strtolower($this->title, 'UTF-8');
 		$this->title = trim($this->title);
 		
@@ -109,7 +109,7 @@ class TitleSearcher
 		$this->visited[] = $siteComponent->getId();
 		
 		$name = html_entity_decode($siteComponent->getDisplayName());
-		$name = mb_convert_encoding($name, 'UTF-8', mb_detect_encoding($name, "ASCII,JIS,UTF-8,EUC-JP,SJIS, ISO-8859-1"));
+		$name = mb_convert_encoding($name, 'UTF-8', mb_detect_encoding($name, "ASCII,UTF-8,ISO-8859-1,JIS,EUC-JP,SJIS"));
 		$name = mb_strtolower($name, 'UTF-8');
 		$name = trim($name);
 		

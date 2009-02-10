@@ -42,7 +42,7 @@ class SearchPortalFolder
 		$this->query = strip_tags($query);
 		
 		$this->queryParts = explode(' ', 
-			mb_convert_encoding($this->query, 'UTF-8', mb_detect_encoding($this->query, "ASCII,JIS,UTF-8,EUC-JP,SJIS, ISO-8859-1")));
+			mb_convert_encoding($this->query, 'UTF-8', mb_detect_encoding($this->query, "ASCII,UTF-8,ISO-8859-1,JIS,EUC-JP,SJIS")));
 		
 		$this->id = urlencode($this->query);
 		
@@ -209,7 +209,7 @@ class SearchPortalFolder
 	 * @since 8/11/08
 	 */
 	protected function match ($input) {
-		$encoding = mb_detect_encoding($input);
+		$encoding = mb_detect_encoding($input, "ASCII,UTF-8,ISO-8859-1,JIS,EUC-JP,SJIS");
 		$input = mb_convert_encoding($input, 'UTF-8', $encoding);
 		foreach ($this->queryParts as $part) {
 			// Return false if we are missing one of the parts.
