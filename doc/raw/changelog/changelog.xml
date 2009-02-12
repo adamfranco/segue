@@ -10,6 +10,14 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.8.2" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2009-02-12' ref='' reftype='bug'  reporter='brian_robison'>
+			Plugins: Audio Player now allows use of 'audio/mpeg3' MIME type sometimes used by OS X.
+		</fix>
+	</version>
 	<version number="2.2.8.1" date="2009-02-10">
 		<releaseNotes>
 			This release also fixes a number of of minor bugs.
@@ -3485,6 +3493,10 @@
 		<reporter short="josh_abraham">
 			<name>Josh Abraham</name>
 			<institution>Rapid7, LLC.</institution>
+		</reporter>
+		<reporter short="brian_robison">
+			<name>Brian Robison</name>
+			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>
 	<reftypes>
