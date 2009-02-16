@@ -55,8 +55,11 @@ function SiteMemberPanel ( callingElement, writableField ) {
 		
 // 		console.log(this.members);
 		
-		// @todo create a form for searching, adding, and removing members.
+		// @todo create a form for searching and adding members.
+
+		this.listing = this.contentElement.appendChild(document.createElement('ul'));
 		
+		this.printMembers();		
 	}
 	
 	/**
@@ -123,4 +126,30 @@ function SiteMemberPanel ( callingElement, writableField ) {
 		}
 		
 		return pairs.join('&');
+	}
+	
+	/**
+	 * Print out a listing of the current members
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/16/09
+	 */
+	SiteMemberPanel.prototype.printMembers = function () {
+		this.listing.innerHTML = "";
+		for (var id in this.members) {
+			var entry = this.listing.appendChild(document.createElement('li'));
+			entry.innerHTML = this.members[id] + " &nbsp; ";
+			var remove = entry.appendChild(document.createElement('a'));
+			remove.href = '#';
+			remove.innerHTML = 'remove';
+			remove.title = 'Remove ' + this.members[id] + ' from the Site-Members group.';
+			remove.user_id = id;
+			remove.panel = this;
+			remove.onclick = function() {
+				delete this.panel.members[this.user_id];
+				this.panel.printMembers();
+				return false;
+			}
+		}
 	}

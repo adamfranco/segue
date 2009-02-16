@@ -40,8 +40,8 @@ class MembershipButton
 		ob_start();
 		print "\n\t\t\t <button onclick='SiteMemberPanel.run(this, this.form[\"".$name."\"]); return false;'>"._("Add/Remove Members")."</button>";
 		$val = htmlspecialchars($this->_value, ENT_QUOTES);
-// 		print "<input type='hidden' name='$name' id='$name' value='$val' />";
-		print "<input type='hidden' name='$name' id='$name' value='1111342=Adam%20Franco&348572=Bob%20Jones' />";
+		print "<input type='hidden' name='$name' id='$name' value='$val' />";
+// 		print "<input type='hidden' name='$name' id='$name' value='1111342=Adam%20Franco&amp;348572=Bob%20Jones&amp;321231=Linda%20Smith' />";
 		
 		return ob_get_clean();
 	}
