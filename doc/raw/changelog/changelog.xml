@@ -10,6 +10,96 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.8.2" date="The Future">
+		<releaseNotes>
+			
+		</releaseNotes>
+		<fix author='adam' date='2009-02-12' ref='' reftype='bug'  reporter='brian_robison'>
+			Plugins: Audio Player now allows use of 'audio/mpeg3' MIME type sometimes used by OS X.
+		</fix>
+	</version>
+	<version number="2.2.8.1" date="2009-02-10">
+		<releaseNotes>
+			This release also fixes a number of of minor bugs.
+			See the change-log for details.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.4 and Polyphony 1.5.1.
+		</releaseNotes>
+		<fix author='adam' date='2009-02-10' ref='' reftype='bug'  reporter=''>
+			CourseManagement: Updated the winter/spring-term change-over to reflect
+			Midd's dates this year.
+		</fix>
+		<fix author='adam' date='2009-02-10' ref='' reftype='bug'  reporter=''>
+			Migration: Migration now won't die on corrupted Segue 1 exports that 
+			include empty agent ids.
+		</fix>
+		<fix author='adam' date='2009-02-10' ref='2585563' reftype='bug'  reporter='alex'>
+			Plugins: TextBlock plugin now doesn't show the "read more" link always.
+		</fix>
+		<fix author='adam' date='2009-02-10' ref='2585564' reftype='bug'  reporter='alex'>
+			Wiki: Wiki-links that include diacritics now resolve properly.
+		</fix>
+	</version>
+	<version number="2.2.8.0" date="2009-02-09">
+		<releaseNotes>
+			This release adds a new tracking module to allow users to see their own
+			actions within a site and editors to see all of the actions within a site.
+			
+			The Tags plugin has been significantly improved to allow choosing of the 
+			part of the site from which tags are displayed. This could be the entire
+			site or just a section or page. The Tags plugin also gains display-options
+			for ordering, display-style (cloud/list), and number of tags to show.
+			
+			This release also fixes a number of additional minor bugs. 
+			See the change-log for details.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.5.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.4 and Polyphony 1.5.0.
+		</releaseNotes>
+		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
+			UI1: Classic-mode plugin editing now doesn't get a javascript error 
+			for plugins that do not natively support the wizard.
+		</fix>
+		<new author='david,adam,alex' date='2009-02-09' ref='1940491' reftype='fr'  reporter=''>
+			Tags: The Tags plugin now supports selection of the part of the site
+			from which to display tags.
+		</new>
+		<new author='adam' date='2009-02-09' ref='' reftype='fr'  reporter=''>
+			Tags: The Tags plugin now supports display options for ordering, 
+			cloud versus list, and number of items to show.
+		</new>
+		<new author='alex' date='2009-02-105' ref='2112768' reftype='fr'>
+			Tracking: Have added a participation module that allows any user to track their
+			contributions to a site and allows site editors to view all contributions to nodes
+			they are editors of.
+		</new>
+		<fix author='alex' date='2009-01-27' ref='2540837' reftype='fr'  reporter='alex'>
+			Comments: added anchor to comments to allow linking to individual comments
+		</fix>
+		<fix author='adam' date='2009-01-27' reporter='alex'>
+			History: changed the compare selected revisions form action to post so form fields
+			will work with urls that don't use path info
+		</fix>
+		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
+			Portal: Page title now doesn't have form-text in it.
+		</fix>
+		<fix author='adam' date='2009-02-09' ref='' reftype='bug'  reporter=''>
+			UI2: Fixed XHTML validation error in edit-mode output.
+		</fix>
+	</version>
 	<version number="2.2.7.2" date="2009-02-03">
 		<releaseNotes>
 			This release fixes a number of issues with editing in Internet Explorer 7.
@@ -3317,6 +3407,7 @@
 		<name short="adam">Adam Franco</name>
 		<name short="alex">Alex Chapin</name>
 		<name short="chris">Christopher Shubert</name>
+		<name short="david">David Fouhey</name>
 	</authors>
 	<reporters>
 		<reporter short="alex">
@@ -3402,6 +3493,10 @@
 		<reporter short="josh_abraham">
 			<name>Josh Abraham</name>
 			<institution>Rapid7, LLC.</institution>
+		</reporter>
+		<reporter short="brian_robison">
+			<name>Brian Robison</name>
+			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>
 	<reftypes>

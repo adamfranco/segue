@@ -380,7 +380,7 @@ class SegueCourseSection {
 			case 1:
 				return DateAndTime::fromString($info['year']."-01-01T00:00:00");
 			case 2:
-				return DateAndTime::fromString($info['year']."-02-10T00:00:00");
+				return DateAndTime::fromString($info['year']."-02-08T00:00:00");
 			case 3:
 				return DateAndTime::fromString($info['year']."-05-20T00:00:00");
 			case 4:
@@ -403,7 +403,7 @@ class SegueCourseSection {
 		
 		switch($info['semester_order']) {
 			case 1:
-				return DateAndTime::fromString($info['year']."-02-10T00:00:00");
+				return DateAndTime::fromString($info['year']."-02-08T00:00:00");
 			case 2:
 				return DateAndTime::fromString($info['year']."-05-20T00:00:00");
 			case 3:

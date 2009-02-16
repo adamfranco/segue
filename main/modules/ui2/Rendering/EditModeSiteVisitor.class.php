@@ -663,7 +663,7 @@ END;
 							."opacity: .70; ";
 		ob_start();
 		print "\n<div class='controls_bar' "
-			."id='".$siteComponent->getId()."__controls_bar' "
+			."id='controls_bar__".$siteComponent->getId()."' "
 			."style='"
 			."color: #000; "
 			."min-width: 150px; "
@@ -779,8 +779,8 @@ END;
 		}
 		
 		print " onclick='";
-		print "if (event.shiftKey && (event.metaKey || event.ctrlKey)) { ";
-		print 		"toggleControls(document.get_element_by_id(\"".$siteComponent->getId()."__controls_bar\")); ";
+		print "if (shiftAndMetaOrControl(event)) { ";
+		print 		"toggleControls(document.get_element_by_id(\"controls_bar__".$siteComponent->getId()."\")); ";
 		print 		"if (event.stopPropagation) { ";
 		print			"event.stopPropagation(); ";
 		print 		"} else if (window.event) { ";
@@ -820,7 +820,7 @@ END;
 
 <script type='text/javascript'>
 /* <![CDATA[ */
-
+	
 	function showControls(mainElement) {
  		mainElement.style.borderColor = mainElement.borderColor;
 		var controls = getDescendentByClassName(mainElement, 'controls_bar');
@@ -849,6 +849,19 @@ END;
 		if (windowRight < rightEdge) {
 			window.scrollBy(rightEdge - windowRight, 0);
 		}
+	}
+	
+	/**
+	 * Test an event for shift and meta-keys.
+	 * This is done here to prevent in-line '&&' symbols 
+	 * 
+	 * @param Event event
+	 * @return boolean
+	 * @access public
+	 * @since 2/9/09
+	 */
+	function shiftAndMetaOrControl (event) {
+		return (event.shiftKey && (event.metaKey || event.ctrlKey));
 	}
 	
 	function hideControls(mainElement) {

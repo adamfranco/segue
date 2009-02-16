@@ -343,6 +343,41 @@
 	}
 	
 /*********************************************************
+ * Participation
+ *********************************************************/
+
+	.participation_row {
+		font-size: 10px;
+		border-bottom: 1px dotted;
+		padding: 3px;		
+	}
+	
+	.participant_row {
+		font-size: 12px;
+		border-bottom: 1px dotted;
+		padding: 3px;		
+	}
+
+	.participation_profile {
+		text-align: center;
+		font-size: 9px;
+		border-bottom: 1px dotted;
+	}
+
+	.pushdown a {
+		border: 1px dotted #CCCCCC;
+		float: right;
+		clear: none;
+	}
+
+	.pushdown a:hover {
+		border: 1px solid #990000;
+		float: right;
+		clear: none;
+	}
+
+	
+/*********************************************************
  * Comments
  *********************************************************/
 	div.comment_help {
@@ -622,9 +657,25 @@ div.autocomplete ul li {
 	
 	div.siteMap div.expand {
 		float: left;
-		width: 12px;
+		width: 8px;
 		cursor: pointer;
+		border: 1px solid #CCCCCC;
+		margin-right: 3px;
+		padding-left: 1px;
+		padding-right: 1px;
 	}
+
+	div.siteMap div.expand:hover {
+		color: #990000;
+		float: left;
+		width: 8px;
+		cursor: pointer;
+		border: 1px solid #990000;
+		margin-right: 3px;
+		padding-left: 1px;
+		padding-right: 1px;
+	}
+
 	
 	div.siteMap div.title {
 		float: left;
@@ -662,6 +713,11 @@ div.autocomplete ul li {
 		border-bottom: 1px solid #000000;
 	}
 
+	.tag_cloud {
+		text-decoration: none;
+		text-align: justify;
+	}
+
 	.tag_cloud a {
 		text-decoration: none;
 		text-align: justify;
@@ -676,9 +732,15 @@ div.autocomplete ul li {
 		margin-top: 10px;
 		padding-top: 3px;
 		border-top: 1px dotted #aaa;
-
 	}
 	
+	.tags_display_options  {
+		font-size: 11px;
+		text-align: left;
+		margin-top: 10px;
+		margin-bottom: 2px;
+	}
+
 	.tagging_options  {
 		font-size: 9px;
 		border-bottom: 1px dotted #aaa;

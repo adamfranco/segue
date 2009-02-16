@@ -160,12 +160,14 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function getMarkup () {
  		ob_start();
+ 		
+		print $this->getJS();
  		 		
  		if ($this->editing && $this->canModify()) {
 			$this->printEditForm();
  		} else if ($this->canView()) {
  			if ($this->shouldShowControls()) {
-				print "\n<div onclick='if (event.shiftKey && !(event.metaKey || event.ctrlKey)) { ".$this->locationSend(array('edit' => 'true'))."}'>";
+				print "\n<div onclick='if (shiftAndNotMetaOrControl(event)) { ".$this->locationSend(array('edit' => 'true'))."}'>";
  			}
  			
  			if ($this->hasContent()) {
@@ -211,11 +213,13 @@ class EduMiddleburyTextBlockPlugin
  	function getExtendedMarkup () {
  		ob_start();
  		
+ 		print $this->getJS();
+ 		
  		if ($this->editing && $this->canModify()) {
 			$this->printEditForm();
  		} else if ($this->canView()) {
  			if ($this->shouldShowControls()) {
-				print "\n<div onclick='if (event.shiftKey && !(event.metaKey || event.ctrlKey)) { ".$this->locationSend(array('edit' => 'true'))." event.stopPropagation();}'>";
+				print "\n<div onclick='if (shiftAndNotMetaOrControl(event)) { ".$this->locationSend(array('edit' => 'true'))." event.stopPropagation();}'>";
  			}
  			if ($this->hasContent()) {
 		 		print "\n".$this->parseWikiText($this->cleanHTML($this->getContent()));
@@ -238,6 +242,38 @@ class EduMiddleburyTextBlockPlugin
  		}
  		
  		return ob_get_clean();
+ 	}
+ 	
+ 	/**
+ 	 * answer Javascript needed
+ 	 * 
+ 	 * @return string
+ 	 * @access protected
+ 	 * @since 2/10/09
+ 	 */
+ 	protected function getJS () {
+ 		return <<<END
+
+ 	<script type="text/javascript">
+ 	// <![CDATA[
+ 	
+	/**
+	 * Test an event for shift and not meta or control keys.
+	 * This is done here to prevent in-line '&&' symbols 
+	 * 
+	 * @param Event event
+	 * @return boolean
+	 * @access public
+	 * @since 2/9/09
+	 */
+	function shiftAndNotMetaOrControl (event) {
+		return (event.shiftKey && !(event.metaKey || event.ctrlKey));
+	}
+	 	
+ 	// ]]>
+ 	</script>
+
+END;
  	}
  	
  	/**

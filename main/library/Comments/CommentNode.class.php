@@ -366,6 +366,7 @@ class CommentNode {
 		
 		ob_start();
 		print "\n\t<div class='comment' id='comment_".$this->getIdString()."'>";
+		print "<a name='".$this->getIdString()."'></a>";
 		
 		if ($this->_enableEditForm) {
 			print "<a name='".RequestContext::name('current')."'></a>";
