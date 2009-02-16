@@ -202,7 +202,7 @@ class addAction
 			$rolesProperty->addField($agentId->getIdString(), $agent->getDisplayName(), 'no_access');
 		}
 		
-		$membersProperty = $step->addComponent('site_members', new MembershipButton);
+		$membersProperty = $step->addComponent('site_members', new MembershipButton($this->getSlot()->getShortname()));
 		
 		ob_start();
 		print _("Site-Members");

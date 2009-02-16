@@ -27,9 +27,9 @@ SiteMemberPanel.superclass = CenteredPanel.prototype;
  *
  * @version $Id$
  */
-function SiteMemberPanel ( callingElement, writableField ) {
+function SiteMemberPanel ( callingElement, writableField, slot ) {
 	if ( arguments.length > 0 ) {
-		this.init( callingElement, writableField );
+		this.init( callingElement, writableField, slot );
 	}
 }
 
@@ -42,7 +42,7 @@ function SiteMemberPanel ( callingElement, writableField ) {
 	 * @access public
 	 * @since 2/5/09
 	 */
-	SiteMemberPanel.prototype.init = function ( callingElement, writableField ) {
+	SiteMemberPanel.prototype.init = function ( callingElement, writableField, slot ) {
 		SiteMemberPanel.superclass.init.call(this,
 									"Add Members to this Site",
 									15,
@@ -50,13 +50,43 @@ function SiteMemberPanel ( callingElement, writableField ) {
 									callingElement,
 									'site_members_panel');
 		this.writableField = writableField;
+		this.slot = slot;
 		
 		this.members = this.decodeValue(this.writableField.value);
 		
 // 		console.log(this.members);
 		
-		// @todo create a form for searching and adding members.
+	// The search and add form
+		this.addForm = this.contentElement.appendChild(document.createElement('form'));
+		this.addForm.action = '#';
+		
+		this.newUserField = this.addForm.appendChild(document.createElement('input'));
+		this.newUserField.type = 'text';
+		this.newUserField.id = 'autocomplete';
+		this.newUserField.name = 'new_user';
+		
+		var loadingIndicator = this.addForm.appendChild(document.createElement('span'));
+		loadingIndicator.id = 'indicator1';
+		loadingIndicator.style.display = 'none';
+		loadingIndicator.innerHTML = '<img src="' + Harmoni.MYPATH + '/images/loading.gif" alt="Working..." />';
+		
+		var submit = this.addForm.appendChild(document.createElement('input'));
+		submit.type = 'submit'; 
+		submit.value = 'Add to Site-Members';
+		
+		var choices = this.addForm.appendChild(document.createElement('div'));
+		choices.id = "autocomplete_choices";
+		choices.className = 'autocomplete';
+		
+		new Ajax.Autocompleter("autocomplete", "autocomplete_choices", Harmoni.quickUrl("ui2", "add_site_search_agents", {slot: this.slot}), {
+		  paramName: "query", 
+		  minChars: 2, 
+// 		  updateElement: addItemToList, 
+		  indicator: "indicator1"
+		});
+		
 
+	// The listing
 		this.listing = this.contentElement.appendChild(document.createElement('ul'));
 		
 		this.printMembers();		
@@ -85,11 +115,11 @@ function SiteMemberPanel ( callingElement, writableField ) {
 	 * @access public
 	 * @since 2/6/09
 	 */
-	SiteMemberPanel.run = function ( callingElement, writableField ) {
+	SiteMemberPanel.run = function ( callingElement, writableField, slot ) {
 		if (callingElement.panel) {
 			callingElement.panel.open();
 		} else {
-			var tmp = new SiteMemberPanel( callingElement, writableField );
+			var tmp = new SiteMemberPanel( callingElement, writableField, slot );
 		}
 	}
 	
