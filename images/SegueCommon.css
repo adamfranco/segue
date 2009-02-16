@@ -358,6 +358,13 @@
 		padding: 3px;		
 	}
 
+	.participant_list {
+		font-size: 11px;
+		border-bottom: 1px dotted;
+		padding: 3px;		
+	}
+
+
 	.participation_profile {
 		text-align: center;
 		font-size: 9px;
