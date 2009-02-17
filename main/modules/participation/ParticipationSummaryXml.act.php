@@ -44,7 +44,7 @@ class ParticipationSummaryXmlAction
 	}
 	
 	/**
-	 * Execute this action.
+	 * Execute this action for generating an XML response with participation summary information
 	 * 
 	 * @return mixed
 	 * @access public
