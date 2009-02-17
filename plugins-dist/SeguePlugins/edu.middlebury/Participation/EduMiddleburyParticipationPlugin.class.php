@@ -148,10 +148,18 @@ class EduMiddleburyParticipationPlugin
 		$participants = $view->getParticipants();
 		
 		ob_start();
+		
+		// sort actions by sort key
+		$sortKeys = array();	
 		foreach ($participants as $participant) {
-			$participantName = $participant->getDisplayName();
+			$sortKeys[] = $participant->getDisplayName();			
+		}
+		
+		array_multisort($sortKeys, array_keys($participants), SORT_ASC, $participants);
+
+		foreach ($participants as $participant) {
 			print "<div class='participant_list'>";
-			print $participantName;
+			print $participant->getDisplayName();
 			print "</div>";
 		} 	
  		return ob_get_clean();
@@ -174,6 +182,15 @@ class EduMiddleburyParticipationPlugin
 		$participants = $view->getParticipants();
 		
 		ob_start();
+		
+		// sort actions by sort key
+		$sortKeys = array();	
+		foreach ($participants as $participant) {
+			$sortKeys[] = $participant->getDisplayName();			
+		}
+		
+		array_multisort($sortKeys, array_keys($participants), SORT_ASC, $participants);
+		
 		foreach ($participants as $participant) {
 		
  			$harmoni = Harmoni::instance();
@@ -209,10 +226,9 @@ class EduMiddleburyParticipationPlugin
 				$role = "reader";
 			}
 
-		
-			$participantName = $participant->getDisplayName();
+	
 			print "<div class='participant_list'>";
-			print $participantName." - ".$role;
+			print $participant->getDisplayName()." - ".$role;
 			print "</div>";
 		}
  	
