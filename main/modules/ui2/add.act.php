@@ -207,6 +207,7 @@ class addAction
 		ob_start();
 		print _("Site-Members");
 		print " [[site_members]]";
+		print " (".Help::link('Site-Members').")";
 		print "\n<div style='font-size: smaller; font-weight: normal; width: 300px;'>";
 		print _("This is a custom group of users that are associated with this site. Users and groups can manually be made site-members or users can self-register using the 'Join Site' plugin if it is enabled.");
 		print "</div>";

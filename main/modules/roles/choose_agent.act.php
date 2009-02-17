@@ -149,6 +149,7 @@ class choose_agentAction
 					'returnAction' => $harmoni->request->getRequestedAction()
 					));
 					print "\n\t\t\t <button onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>"._("Add/Remove Members")."</button>";
+					print " (".Help::link('Site-Members').")";
 					print "\n<br/>";
 					print "\n<span style='font-size: smaller'>";
 					print _("This is a custom group of users that are associated with this site. Users and groups can manually be made site-members or users can self-register using the 'Join Site' plugin if it is enabled.");

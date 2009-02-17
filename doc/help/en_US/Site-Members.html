@@ -1,0 +1,74 @@
+<html>
+<head>
+	<title>Site-Members</title>
+	<style type='text/css'>
+		.note {
+			background-color: #FDD;
+			padding: 5px;
+		}
+	</style>
+</head>
+<body>
+	<h1>About Site-Members</h1>
+	<p><em>Site-Members</em> is a custom group for each site that you can use to assign the same roles to many users without having to set the roles for them individually. It also allows users and/or groups of users to be 'associated' with a site.</p>
+	
+	<p>The <em>Site-Members</em> group has the following features:</p>
+	<ul>
+		<li>Setting roles for the <em>Site-Members</em> group allows the same roles to be applied to multiple users and/or groups at the same time.</li>
+		<li>The users in the <em>Site-Members</em> group will be displayed in the <em>Participants</em> plugin (if enabled) along with other users who have taken some action on a site.</li>
+		<li>Self registration to the site can be achieved by using the <em>Join Site</em> plugin to allow users to add themselves (pending approval) to the <em>Site-Members</em> group.</li>
+	</ul>
+	
+	
+	<h1>Example: Using Site-Members for a course with several sections</h1>
+	<p>Lets say that you are teaching a course that has several sections as well a few students who are informally auditing the class and not part of the official course groups. You can use the Site-Members group to simplify role-setting.</p>
+	<ol style='list-style-type: upper-alpha'>
+		<li>If you have already created your site...
+			<ol>
+				<li>Click on the <strong>roles</strong> link in the top right to go to the <em>Roles</em> wizard</li>
+				<li>Click on the <strong>Add/Remove Members</strong> button next to the <em>Site-Members</em> group.</li>
+				<li>Search for users or groups (such as groups matching the course-code) and click the <strong>Add</strong> button for each to add them to the <em>Site-Members</em> group.</li>
+				<li>Click the <strong>Save</strong> button.</li>
+			</ol>
+		</li>
+		<li>If you have not yet created your site...
+			<ol>
+				<li>Go to your [[Portal]] and click the <strong>create site</strong> link for a placeholder to start creating a site.</li>
+				<li>Give your new site a name and description and continue to the <em>Roles</em> step.</li>
+				<li>Click on the <strong>Add/Remove Members</strong> button next to the <em>Site-Members</em> group.</li>
+				<li>Search for users or groups (such as groups matching the course-code) and click on the search results to add them to the <em>Site-Members</em> group.</li>
+				<li>Click the <strong>close</strong> button to close the panel.</li>
+				<li>Continue through the rest of the site-creation steps.</li>
+			</ol>
+		</li>
+	</ol>
+	<p>Once you have added users and/or groups to the <em>Site-Members</em> group, any roles that you give to the <em>Site-Members</em> group will apply to everyone in it.</p>
+	<ol>
+		<li>If you are not already there, click on the <strong>roles</strong> link to go to the <em>Roles</em> wizard.</li>
+		<li>Click on the <strong>Modify Roles &gt;&gt;</strong> button next to the <em>Site-Members</em> group</li>
+		<li>Use the radio buttons to set the desired roles for the <em>Site-Members</em> group, and by extension, all of its members</li>
+		<li>Click the <strong>Save</strong> or <strong>Save and Choose User</strong> button to save your changes.</li>
+	</ol>
+	<p>At any time you can add more users and groups to the <em>Site-Members</em> group and those users or groups will inherit the roles given to the <em>Site-Members</em> group. This can make it much easier to set complex roles on a site without having to individually set roles on each user. </p>
+	
+	<h1>Example: Self registration</h1>
+	<p>The <em>Site-Members</em> group can be used to enable self-registration to a site. This may be useful for providing restricted access to a number of collaborators who do not yet have Segue accounts. This example will walk you through the process of providing restricted access to a site using the <em>Site-Members</em> group and the <em>Join Site</em> plugin.</p>
+	<ol>
+		<li>Create your site and give only the <em>Site-Members</em> group the <em>Commenter</em> role. (<em>Author</em> or <em>Editor</em> roles could be used instead)</li>
+		<li>In the menu of your site, click the <strong>+ Page</strong> link, then choose <em>Join Site</em> from the drop-down menu</li>
+		<li>Give a title such as "Sign Up" and click the <strong>Create</strong> button to create the <em>Join Site</em> plugin.</li>
+		<li>Click on the <strong>roles</strong> link in the top-right to go to the <em>Roles</em> wizard</li>
+		<li>Click the <strong>Modify Roles &gt;&gt;</strong> button next to the <em>Everyone</em> group.</li>
+		<li>Scroll down the site-outline until you find the "Sign Up" row. Click the radio-button for the <em>Viewer</em> role just for the "Sign Up" row. This will make only the <em>Join Site</em> plugin visible to the world, the rest of the site will remain hidden to everyone except site members.</li>
+		<li>Click the <strong>Save</strong> button to save your changes and return to the site.</li>
+	</ol>
+	<p>You have now set up your site for self registration. Now you just need to get the word out and approve new members.</p>
+	<ol>
+		<li>Copy the link to the site and email it to your collaborators with instructions to click the <strong>Join Site</strong> button.</li>
+		<li>When your collaborators go to your site, all they will see is the <strong>Join Site</strong> button. Upon clicking on it they will be asked to create an account and/or log in.</li>
+		<li>Once logged in, your collaborators will be asked to confirm that they wish to join your site. If they choose "yes", then you will be sent and email with links to approve or deny their request to join the site.</li>
+		<li>After you make your approval, they will be added to the <em>Site-Members</em> group. They will also be emailed an approval note with a link back to your site.</li>
+		<li>When they return to your site they will now have access to view all of it (or whatever roles you set for the <em>Site-Members</em> group).</li>
+	</ol>
+</body>
+</html>
