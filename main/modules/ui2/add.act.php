@@ -219,6 +219,16 @@ class addAction
 			$rolesProperty->addField($agentId->getIdString(), $agent->getDisplayName(), 'admin');
 		}
 		
+		// Class
+		if (method_exists($this->getSlot(), 'getCourse')) {
+			try {
+				$course = $this->getSlot()->getCourse();
+				$rolesProperty->addField($course->getGroupId()->getIdString(), $course->getDisplayName(), 'no_access');
+			} catch (Exception $e) {
+				HarmoniErrorHandler::logException($e, 'Segue');
+			}
+		}
+		
 		$rolesProperty->makeDisabled('edu.middlebury.agents.everyone', 'admin');
 		$rolesProperty->makeDisabled('edu.middlebury.institute', 'admin');
 		
