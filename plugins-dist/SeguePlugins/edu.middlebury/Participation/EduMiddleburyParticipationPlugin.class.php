@@ -143,13 +143,28 @@ class EduMiddleburyParticipationPlugin
  	 * @since 1/12/06
  	 */
  	public function getMarkup () {
+		$harmoni = Harmoni::instance();
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$harmoni->request->startNamespace(null);
+
  		$node = SiteDispatcher::getCurrentRootNode();
  		$view = new Participation_View($node);							
 		$participants = $view->getParticipants();
-		
+
+		if ($authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.modify"),
+			SiteDispatcher::getCurrentNode()->getQualifierId()))
+		{
+			$showTrackLink = TRUE;
+		} else {
+			$showTrackLink = FALSE;
+		}
+
+			
 		ob_start();
 		
-		// sort actions by sort key
+		// sort participants by display name
 		$sortKeys = array();	
 		foreach ($participants as $participant) {
 			$sortKeys[] = $participant->getDisplayName();			
@@ -159,9 +174,23 @@ class EduMiddleburyParticipationPlugin
 
 		foreach ($participants as $participant) {
 			print "<div class='participant_list'>";
-			print $participant->getDisplayName();
+			
+			if ($showTrackLink == TRUE) {
+				print "<a href='";
+				$trackUrl = SiteDispatcher::quickURL('participation','actions', 
+				array('node' => $node->getId(), 'participant' => $participant->getId()->getIdString()));				
+				
+				print "<a target='_blank' href='".$trackUrl."'";
+				print ' onclick="';
+				print "var url = '".$trackUrl."'; ";
+				print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
+				print "return false;";
+				print '"';
+				print ">".$participant->getDisplayName()."</a>";
+			}
 			print "</div>";
 		} 	
+		$harmoni->request->endNamespace();
  		return ob_get_clean();
  	}
  	
