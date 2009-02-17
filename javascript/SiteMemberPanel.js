@@ -45,13 +45,15 @@ function SiteMemberPanel ( callingElement, writableField, slot ) {
 	SiteMemberPanel.prototype.init = function ( callingElement, writableField, slot ) {
 		SiteMemberPanel.superclass.init.call(this,
 									"Add Members to this Site",
-									15,
+									400,
 									600,
 									callingElement,
 									'site_members_panel');
 		this.writableField = writableField;
 		this.slot = slot;
 		
+		this.mainElement.style.minHeight = this.height + 'px';
+
 		this.members = this.decodeValue(this.writableField.value);
 		
 // 		console.log(this.members);
@@ -59,31 +61,43 @@ function SiteMemberPanel ( callingElement, writableField, slot ) {
 	// The search and add form
 		this.addForm = this.contentElement.appendChild(document.createElement('form'));
 		this.addForm.action = '#';
+		this.addForm.onsubmit = function () {return false;};
 		
 		this.newUserField = this.addForm.appendChild(document.createElement('input'));
 		this.newUserField.type = 'text';
 		this.newUserField.id = 'autocomplete';
 		this.newUserField.name = 'new_user';
+		this.newUserField.size = 50;
 		
-		var loadingIndicator = this.addForm.appendChild(document.createElement('span'));
+		this.addForm.appendChild(document.createTextNode(' '));
+		
+		var loadingIndicator = this.addForm.appendChild(document.createElement('img'));
 		loadingIndicator.id = 'indicator1';
 		loadingIndicator.style.display = 'none';
-		loadingIndicator.innerHTML = '<img src="' + Harmoni.MYPATH + '/images/loading.gif" alt="Working..." />';
+		loadingIndicator.src = Harmoni.MYPATH + '/images/loading.gif';
+		loadingIndicator.style.height = '20px';
+		loadingIndicator.style.verticalAlign = 'middle';
 		
-		var submit = this.addForm.appendChild(document.createElement('input'));
-		submit.type = 'submit'; 
-		submit.value = 'Add to Site-Members';
+		var note = this.addForm.appendChild(document.createElement('em'));
+		note.innerHTML = '<br/> Start typing a name to search, choose a result to add.';
 		
 		var choices = this.addForm.appendChild(document.createElement('div'));
 		choices.id = "autocomplete_choices";
 		choices.className = 'autocomplete';
 		
+		var panel = this;
 		new Ajax.Autocompleter("autocomplete", "autocomplete_choices", Harmoni.quickUrl("ui2", "add_site_search_agents", {slot: this.slot}), {
 		  paramName: "query", 
-		  minChars: 2, 
-// 		  updateElement: addItemToList, 
+		  minChars: 3, 
+		  updateElement: function (li) {
+		  	panel.members[li.id] = li.firstChild.nodeValue;
+		  	panel.newUserField.value = '';
+		  	panel.printMembers();
+		  }, 
 		  indicator: "indicator1"
 		});
+		
+		this.newUserField.focus();
 		
 
 	// The listing
@@ -104,6 +118,19 @@ function SiteMemberPanel ( callingElement, writableField, slot ) {
 		
 // 		console.log(this.encodeValue(this.members));
 		this.writableField.value = this.encodeValue(this.members);
+	}
+	
+	/**
+	 * Actions to take on opening the panel
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/17/09
+	 */
+	SiteMemberPanel.prototype.onOpen = function () {
+		SiteMemberPanel.superclass.onOpen.call(this);
+		
+		this.newUserField.focus();
 	}
 	
 	/**

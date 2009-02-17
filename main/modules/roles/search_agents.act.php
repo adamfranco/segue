@@ -23,7 +23,7 @@ require_once(POLYPHONY."/main/library/AbstractActions/XmlAction.class.php");
  * @version $Id$
  */
 class search_agentsAction
-	extends XmlAction
+	extends Action
 {
 	
 	/**
@@ -61,11 +61,21 @@ class search_agentsAction
 	 * @since 2/16/09
 	 */
 	public function execute () {
-		$this->start();
-		if (!$this->isAuthorizedToExecute())
-			$this->error($this->getUnauthorizedMessage());
-		
-		$this->end();
+		if (!$this->isAuthorizedToExecute()) {
+			print $this->getUnauthorizedMessage();
+			exit;
+		}
+		$query = trim(preg_replace('/[^\w_.\'\s-]/i', '', RequestContext::value('query')));
+		print "\n<ul query=\"".$query."\">";
+		if (strlen($query) >= 2) {
+			$source = new AgentSearchSource();
+			$results = $source->getResults($query);
+			foreach ($results as $result) {
+				print "\n\t<li id=\"".$result->getIdString()."\">".$result->getName()."</li>";
+			}
+		}
+		print "\n</ul>";
+		exit;
 	}
 	
 }

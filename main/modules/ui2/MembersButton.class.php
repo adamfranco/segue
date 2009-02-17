@@ -21,7 +21,7 @@
  * @version $Id$
  */
 class MembershipButton
-	extends WHiddenField
+	extends WizardComponent
 {
 	/**
 	 * Constructor
@@ -34,6 +34,51 @@ class MembershipButton
 	public function __construct ($slotName) {
 		ArgumentValidator::validate($slotName, NonzeroLengthStringValidatorRule::getRule());
 		$this->slot = $slotName;
+		$this->_value = '';
+	}
+	
+	/**
+	 * Tells the wizard component to update itself - this may include getting
+	 * form post data or validation - whatever this particular component wants to
+	 * do every pageload. 
+	 * @param string $fieldName The field name to use when outputting form data or
+	 * similar parameters/information.
+	 * @access public
+	 * @return boolean - TRUE if everything is OK
+	 */
+	function update ($fieldName) {
+		$val = RequestContext::value($fieldName);
+		if ($val !== false && $val !== null) $this->_value = $val;
+	}
+	
+	/**
+	 * Sets the value of this hidden field.
+	 * @param string $value
+	 * @access public
+	 * @return void
+	 */
+	function addValue ($id, $name) {
+		ArgumentValidator::validate($id, NonzeroLengthStringValidatorRule::getRule());
+		ArgumentValidator::validate($name, NonzeroLengthStringValidatorRule::getRule());
+		
+		if (strlen($this->_value))
+			$this->_value .= '&';
+		
+		$this->_value .= rawurlencode($id).'='.rawurlencode($name);
+	}
+	
+	/**
+	 * Returns the values of wizard-components. Should return an array if children are involved,
+	 * otherwise a whatever type of object is expected.
+	 * 
+	 * In this case, a "1" or a "0" is returned, depending on the checked state of the checkbox.
+	 * @access public
+	 * @return mixed
+	 */
+	function getAllValues () {
+		$values = array();
+		parse_str($this->_value, $values);
+		return $values;
 	}
 	
 	/**

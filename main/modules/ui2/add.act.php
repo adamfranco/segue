@@ -365,11 +365,11 @@ class addAction
 		/*********************************************************
 		 * Add any specified users to the site-members group.
 		 *********************************************************/
-		$members = explode('&', $properties['roles']['members']);
+		$members = $properties['roles']['site_members'];
 		$membersGroup = $site->getMembersGroup();
 		$agentMgr = Services::getService('Agent');
-		foreach ($members as $key => $encodedIdString) {
-			$membersGroup->add($agentMgr->getAgentOrGroup($idManager->getId(urldecode($encodedIdString))));
+		foreach ($members as $idString => $name) {
+			$membersGroup->add($agentMgr->getAgentOrGroup($idManager->getId($idString)));
 		}
 		
 		/*********************************************************
