@@ -206,62 +206,7 @@ class EduMiddleburyParticipationPlugin
  	 * @since 5/23/07
  	 */
  	public function getExtendedMarkup () {
- 		$node = SiteDispatcher::getCurrentRootNode();
- 		$view = new Participation_View($node);							
-		$participants = $view->getParticipants();
-		
-		ob_start();
-		
-		// sort actions by sort key
-		$sortKeys = array();	
-		foreach ($participants as $participant) {
-			$sortKeys[] = $participant->getDisplayName();			
-		}
-		
-		array_multisort($sortKeys, array_keys($participants), SORT_ASC, $participants);
-		
-		foreach ($participants as $participant) {
-		
- 			$harmoni = Harmoni::instance();
-			$authZ = Services::getService("AuthZ");
-			$idManager = Services::getService("Id");
-	
-			// get site participation profile if user is a site editor
-			if ($authZ->isAuthorizedBelow(
-				$participant->getId(),
-				$idManager->getId("edu.middlebury.authorization.view_authorizations"),
-				SiteDispatcher::getCurrentRootNode()->getQualifierId()))
-			{
-				$role = "admin";
-			} else if ($authZ->isAuthorizedBelow(
-				$participant->getId(),
-				$idManager->getId("edu.middlebury.authorization.modify"),
-				SiteDispatcher::getCurrentRootNode()->getQualifierId()))
-			{ 
-				$role = "editor";
-			} else if ($authZ->isAuthorizedBelow(
-				$participant->getId(),
-				$idManager->getId("edu.middlebury.authorization.add_children"),
-				SiteDispatcher::getCurrentRootNode()->getQualifierId()))
-			{ 
-				$role = "author";
-			} else if ($authZ->isAuthorizedBelow(
-				$participant->getId(),
-				$idManager->getId("edu.middlebury.authorization.comment"),
-				SiteDispatcher::getCurrentRootNode()->getQualifierId()))
-			{ 
-				$role = "commenter";
-			} else {
-				$role = "reader";
-			}
-
-	
-			print "<div class='participant_list'>";
-			print $participant->getDisplayName()." - ".$role;
-			print "</div>";
-		}
- 	
- 		return ob_get_clean();
+		return $this->getMarkup();
  	}
  	
  	/**
