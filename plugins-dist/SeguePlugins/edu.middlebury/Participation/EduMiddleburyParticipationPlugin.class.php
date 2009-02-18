@@ -116,7 +116,9 @@ class EduMiddleburyParticipationPlugin
  	 * @since 1/12/06
  	 */
  	public function initialize () {
-		// Override as needed.
+		$this->_node = SiteDispatcher::getCurrentRootNode();
+ 		$this->_view = new Participation_View($this->_node);
+ 		$this->_printedParticipants = array();
  	}
  	
  	/**
@@ -143,55 +145,131 @@ class EduMiddleburyParticipationPlugin
  	 * @since 1/12/06
  	 */
  	public function getMarkup () {
-		$harmoni = Harmoni::instance();
 		$authZ = Services::getService("AuthZ");
-		$idManager = Services::getService("Id");
-		$harmoni->request->startNamespace(null);
-
- 		$node = SiteDispatcher::getCurrentRootNode();
- 		$view = new Participation_View($node);							
-		$participants = $view->getParticipants();
-
+		$idManager = Services::getService("Id");		
+		
+		// check if user is editor and thus can see link to participant information panel
 		if ($authZ->isUserAuthorized(
 			$idManager->getId("edu.middlebury.authorization.modify"),
 			SiteDispatcher::getCurrentNode()->getQualifierId()))
 		{
-			$showTrackLink = TRUE;
+			$this->_showTrackLink = true;
 		} else {
-			$showTrackLink = FALSE;
+			$this->_showTrackLink = false;
 		}
-
 			
 		ob_start();
 		
-		// sort participants by display name
-		$sortKeys = array();	
+		// get all site members
+		$group = $this->_node->getMembersGroup();
+		
+		// Direct members of the group
+		$title = "<div class='participant_header'>"._("Site Members")."</div>";
+		print $this->printMemberIterator($group->getMembers(false), $title);
+		
+		// Members of sub-groups
+		$subgroups = $group->getGroups(false);
+		
+		while ($subgroups->hasNext()) {
+			$subgroup = $subgroups->next();
+			$title = "<div class='participant_group_header'>".$subgroup->getDisplayName()."</div>";
+			print $this->printMemberIterator($subgroup->getMembers(false), $title);
+		}
+		
+		// Other Participants
+		$notPrintedParticipants = array();
+		foreach ($this->_view->getParticipants() as $participant) {
+			if (!in_array($participant->getId()->getIdString(), $this->_printedParticipants)) {
+				$notPrintedParticipants[] = $participant;
+			}
+		}
+		$title = "<br/><div class='participant_header'>"._("Other Participants")."</div>";
+		print $this->printParticipants($notPrintedParticipants, $title);
+
+ 		return ob_get_clean();
+ 	}
+ 	
+ 	/**
+ 	 * Print out the members in an iterator
+ 	 * 
+ 	 * @param object $groupMembers
+ 	 * @param string $title
+ 	 * @return string
+ 	 * @access protected
+ 	 * @since 2/18/09
+ 	 */
+ 	protected function printMemberIterator ($groupMembers, $title) {
+ 		$members = array();
+		while ($groupMembers->hasNext()) {
+			$members[] = $groupMembers->next();
+		}
+		return $this->printParticipants($members, $title);
+ 	}
+ 	
+ 	/**
+ 	 * Print out an array of Agents or Particapnts
+ 	 * 
+ 	 * @param array $participants Agent objects or Particpation_Particpant objects
+ 	 * @param string $title
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 2/18/09
+ 	 */
+ 	public function printParticipants (array $participants, $title) {
+ 		ob_start();
+ 		
+ 		$sortKeys = array();	
 		foreach ($participants as $participant) {
 			$sortKeys[] = $participant->getDisplayName();			
 		}
 		
 		array_multisort($sortKeys, array_keys($participants), SORT_ASC, $participants);
-
+		
+		print $title;
+		
 		foreach ($participants as $participant) {
-			print "<div class='participant_list'>";
-			
-			if ($showTrackLink == TRUE) {
-				print "<a href='";
-				$trackUrl = SiteDispatcher::quickURL('participation','actions', 
-				array('node' => $node->getId(), 'participant' => $participant->getId()->getIdString()));				
-				
-				print "<a target='_blank' href='".$trackUrl."'";
-				print ' onclick="';
-				print "var url = '".$trackUrl."'; ";
-				print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
-				print "return false;";
-				print '"';
-				print ">".$participant->getDisplayName()."</a>";
-			}
-			print "</div>";
-		} 	
-		$harmoni->request->endNamespace();
- 		return ob_get_clean();
+			print $this->printParticipant ($participant);
+			$this->_printedParticipants[] = $participant->getId()->getIdString();
+		}
+		
+		return ob_get_clean();
+ 	}
+ 	
+ 	/**
+ 	 * print out participant
+ 	 * 
+ 	 * @param object $agent
+ 	 * @return string
+ 	 * @access public
+ 	 * @since 2/18/09
+ 	 */
+ 	public function printParticipant ($participant) { 
+ 		$harmoni = Harmoni::instance();
+ 		$harmoni->request->startNamespace(null);
+ 		ob_start();
+ 		
+		print "<div class='participant_list'>";
+		
+		// show link to more info only if authenticated user is an editor
+		if ($this->_showTrackLink == true) {
+			$trackUrl = SiteDispatcher::quickURL('participation','actions', 
+			array('node' => $this->_node->getId(), 'participant' => $participant->getId()->getIdString()));				
+
+			//print "<a href='";			
+			print "<a target='_blank' href='".$trackUrl."'";
+			print ' onclick="';
+			print "var url = '".$trackUrl."'; ";
+			print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
+			print "return false;";
+			print '"';
+			print ">".$participant->getDisplayName()."</a>";
+		} else {
+			print $participant->getDisplayName();
+		}
+		print "</div>";
+
+		$harmoni->request->endNamespace();		
+ 		return ob_get_clean();		
  	}
  	
  	/**
