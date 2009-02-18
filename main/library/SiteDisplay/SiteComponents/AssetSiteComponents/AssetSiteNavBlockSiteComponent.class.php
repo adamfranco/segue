@@ -178,6 +178,71 @@ class AssetSiteNavBlockSiteComponent
 		return $slotManager->getSlotBySiteId($this->getId());
 	}
 	
+	/**
+	 * Answer a group that represents the site-membership
+	 * 
+	 * @return object Group
+	 * @access public
+	 * @since 2/4/09
+	 */
+	public function getMembersGroup () {
+		$agentMgr = Services::getService('Agent');
+		$idMgr = Services::getService('Id');
+		
+		$membersId = $idMgr->getId("edu.middlebury.segue.site-members.".$this->getId());
+		try {
+			return $agentMgr->getGroup($membersId);
+		} catch (UnknownIdException $e) {
+			$groupType = new Type ("System", "edu.middlebury.harmoni", "ApplicationGroups", "");
+			$nullType = new Type ("System", "edu.middlebury.harmoni", "NULL");
+			$nullProperties = new HarmoniProperties($nullType);
+			
+			$containerGroup = $agentMgr->getGroup($idMgr->getId('edu.middlebury.segue.site-members'));
+			$group = $agentMgr->createGroup('Site-Members', 
+					$groupType, 
+					'The agents associated with the site "'.$this->getId().'" at "'.$this->getSlot()->getShortname().'".',
+					$nullProperties,
+					$membersId);
+			
+			$containerGroup->add($group);
+			
+			return $group;
+		}
+	}
+	
+	/**
+	 * Delete any stored data needed as part of the delete process
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 10/16/06
+	 */
+	function deleteAndCleanUpData () {
+		// Delete our group.
+		$group = $this->getMembersGroup();
+		$members = $group->getMembers(FALSE);
+		while ($members->hasNext()) {
+			$group->remove($members->next());
+		}
+		$childGroups = $group->getGroups(FALSE);
+		while ($childGroups->hasNext()) {
+			$group->remove($childGroups->next());
+		}
+		$agentMgr = Services::getService('Agent');
+		$agentMgr->deleteGroup($group->getId());
+		
+		// Unhitch from our slot.
+		$slotMgr = SlotManager::instance();
+		$idMgr = Services::getService("Id");
+		try {
+			$slot = $slotMgr->getSlotBySiteId($idMgr->getId(SiteDispatcher::getCurrentNodeId()));
+			$slot->deleteSiteId();
+		} catch (Exception $e) {
+		}
+		
+		parent::deleteAndCleanUpData();
+	}
+	
 	/*********************************************************
 	 * Themes
 	 *********************************************************/

@@ -202,10 +202,31 @@ class addAction
 			$rolesProperty->addField($agentId->getIdString(), $agent->getDisplayName(), 'no_access');
 		}
 		
+		$membersProperty = $step->addComponent('site_members', new MembershipButton($this->getSlot()->getShortname()));
+		
+		ob_start();
+		print _("Site-Members");
+		print " [[site_members]]";
+		print " (".Help::link('Site-Members').")";
+		print "\n<div style='font-size: smaller; font-weight: normal; width: 300px;'>";
+		print _("This is a custom group of users that are associated with this site. Users and groups can manually be made site-members or users can self-register using the 'Join Site' plugin if it is enabled.");
+		print "</div>";
+		$rolesProperty->addField('edu.middlebury.site-members.temp', ob_get_clean(), 'commenter');
+		
 		// Other owners
 		foreach ($this->getOwners() as $agentId) {
 			$agent = $agentMgr->getAgentOrGroup($agentId);
 			$rolesProperty->addField($agentId->getIdString(), $agent->getDisplayName(), 'admin');
+		}
+		
+		// Class
+		if (method_exists($this->getSlot(), 'getCourse')) {
+			try {
+				$course = $this->getSlot()->getCourse();
+				$rolesProperty->addField($course->getGroupId()->getIdString(), $course->getDisplayName(), 'no_access');
+			} catch (Exception $e) {
+				HarmoniErrorHandler::logException($e, 'Segue');
+			}
 		}
 		
 		$rolesProperty->makeDisabled('edu.middlebury.agents.everyone', 'admin');
@@ -221,8 +242,8 @@ class addAction
 		ob_start();
 		print "\n<h2>"._("Site-wide Roles")."</h2>";
 		print "\n<p>"._("Below you can set site-wide roles for users and groups over the entire site. Once the site is created you can use the <strong>Roles</strong> button (at the top of the page) to set the roles that users and groups have on various parts of the site.")."</p>";
-		print "\n<p>"._("<strong>Roles are always additive:</strong> <ul><li>The Commenter role includes the Reader role, and the Author role is a superset of the Reader and Commenter roles. Click on the role-headings for more details.</li><li>Groups and individuals can later be given additional roles on particular sections or pages of the site, but site-wide roles can not reduced on particular sections or pages.</li></ul>")."</p>";
-		print "\n<p>[[roles]]</p>";
+		print "\n<p><strong>"._("Roles are always additive:")."</strong></p> <ul><li>"._("The Commenter role includes the Reader role, and the Author role is a superset of the Reader and Commenter roles. Click on the role-headings for more details.")."</li><li>"._("Groups and individuals can later be given additional roles on particular sections or pages of the site, but site-wide roles can not reduced on particular sections or pages.")."</li></ul>";
+		print "\n[[roles]]";
 		print "\n<p>"._("Search for users or groups:")."[[search]]";
 		print "\n<br/>"._("<em>If you wish to give a role to a class, search for its course code, for example: </em> <code>span0101a-f08</code>");
 		print "</p>";
@@ -333,7 +354,11 @@ class addAction
 		 * Set site-wide roles for other users
 		 *********************************************************/
 		foreach ($properties['roles']['roles'] as $agentIdString => $roleId) {
-			$agentId = $idManager->getId($agentIdString);
+			if ($agentIdString == 'edu.middlebury.site-members.temp') {
+				$agentId = $site->getMembersGroup()->getId();
+			} else {
+				$agentId = $idManager->getId($agentIdString);
+			}
 			$role = $roleMgr->getRole($roleId);
 			$role->apply($agentId, $site->getQualifierId());
 		}
@@ -346,6 +371,17 @@ class addAction
 		$admin = $roleMgr->getRole('admin');
 		if ($role->isLessThan($admin))
 			$admin->applyToUser($site->getQualifierId(), true);
+		
+		
+		/*********************************************************
+		 * Add any specified users to the site-members group.
+		 *********************************************************/
+		$members = $properties['roles']['site_members'];
+		$membersGroup = $site->getMembersGroup();
+		$agentMgr = Services::getService('Agent');
+		foreach ($members as $idString => $name) {
+			$membersGroup->add($agentMgr->getAgentOrGroup($idManager->getId($idString)));
+		}
 		
 		/*********************************************************
 		 * Theme

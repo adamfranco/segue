@@ -225,6 +225,18 @@ class CourseSlot
 		}
 		return parent::getOwners();
 	}
+	
+	/**
+	 * Answer the course associated with this slot.
+	 * 
+	 * @return object SegueCourseSection
+	 * @access public
+	 * @since 2/17/09
+	 */
+	public function getCourse () {
+		$idMgr = Services::getService("Id");
+		return SegueCourseManager::instance()->getCourse($idMgr->getId($this->getShortname()));
+	}
 }
 
 ?>

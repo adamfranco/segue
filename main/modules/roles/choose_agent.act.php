@@ -58,6 +58,11 @@ class choose_agentAction
 		$harmoni->request->passthrough("returnModule");
 		$harmoni->request->passthrough("returnAction");
 		
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead(
+			$outputHandler->getHead()
+			."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/AgentInfoPanel.js'></script>");
+		
 		$centerPane = $this->getActionRows();
 		$qualifierId = $this->getSiteId();
 		$cacheName = get_class($this).'_'.$qualifierId->getIdString();
@@ -108,14 +113,16 @@ class choose_agentAction
 		
 		$everyoneId = $idMgr->getId("edu.middlebury.agents.everyone");
 		$instituteId = $idMgr->getId("edu.middlebury.institute");
-		
+		$membersId = $this->getSite()->getMembersGroup()->getId();
+				
 		$agents = array();
 		$agents[] = $agentMgr->getGroup($everyoneId);
 		$agents[] = $agentMgr->getGroup($instituteId);
+		$agents[] = $agentMgr->getGroup($membersId);
 		
 		$agentIdsWithRoles = $roleMgr->getAgentsWithRoleAtLeast($roleMgr->getRole('reader'), $this->getSiteId(), true);
 		foreach ($agentIdsWithRoles as $id) {
-			if (!$id->isEqual($everyoneId) && !$id->isEqual($instituteId)) {
+			if (!$id->isEqual($everyoneId) && !$id->isEqual($instituteId) && !$id->isEqual($membersId)) {
 				// We ran into a case where roles weren't clearing when an agent
 				// was deleted, log this issue and skip rather than crashing the
 				// choose agent screen.
@@ -134,8 +141,23 @@ class choose_agentAction
 				print "\n\t<tr class='search_result_item'>";
 				print "\n\t\t<td class='color$i'>";
 				print "\n\t\t\t".$agent->getDisplayName();
+				
+				if ($agent->getId()->isEqual($membersId)) {
+					$url = SiteDispatcher::quickURL('agent', 'modify_members', array(
+					'site' => RequestContext::value('site'),
+					'returnModule' => $harmoni->request->getRequestedModule(),
+					'returnAction' => $harmoni->request->getRequestedAction()
+					));
+					print "\n\t\t\t <button onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>"._("Add/Remove Members")."</button>";
+					print " (".Help::link('Site-Members').")";
+					print "\n<br/>";
+					print "\n<span style='font-size: smaller'>";
+					print _("This is a custom group of users that are associated with this site. Users and groups can manually be made site-members or users can self-register using the 'Join Site' plugin if it is enabled.");
+					print "</span>";
+				}
+				
 				print "\n\t\t</td>";
-				print "\n\t\t<td class='color$i' style='text-align: right;'>";
+				print "\n\t\t<td class='color$i' style='text-align: right; white-space: nowrap;'>";
 				$url = SiteDispatcher::quickURL('roles', 'modify', array(
 					'node' => SiteDispatcher::getCurrentNodeId(),
 					'agent' => $agent->getId()->getIdString()
