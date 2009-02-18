@@ -112,7 +112,7 @@ class Update020_MembershipAction
 		$status->initializeStatistics(count($slots));
 		$director = SiteDispatcher::getSiteDirector();
 		foreach ($slots as $slot) {
-			$site = $director->getSiteComponentById($slot->getSiteId());
+			$site = $director->getSiteComponentById($slot->getSiteId()->getIdString());
 			$site->getMembersGroup();
 			$status->updateStatistics();
 		}
