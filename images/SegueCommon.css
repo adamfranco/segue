@@ -363,8 +363,20 @@
 		border-bottom: 1px dotted;
 		padding: 3px;		
 	}
+	
+	.participant_header {
+		font-size: 12px;
+		border-bottom: 1px solid;
+		padding-top: 1px;		
+	}
 
-
+	.participant_group_header {
+		font-style: italic;
+		font-size: 11px;
+		border-bottom: 1px solid;
+		padding: 3px;		
+	}
+	
 	.participation_profile {
 		text-align: center;
 		font-size: 9px;
