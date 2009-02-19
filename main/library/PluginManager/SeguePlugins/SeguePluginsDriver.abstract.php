@@ -578,7 +578,7 @@ abstract class SeguePluginsDriver
 	final public function canModify () {
 		if (isset($this->_canModifyFunction)) {
 			$function = $this->_canModifyFunction;
-			return $function($this);
+			return call_user_func($function, $this);
 		} else {
 			$azManager = Services::getService("AuthZ");
 			$idManager = Services::getService("Id");
@@ -598,7 +598,7 @@ abstract class SeguePluginsDriver
 	final public function canView () {
 		if (isset($this->_canViewFunction)) {
 			$function = $this->_canViewFunction;
-			return $function($this);
+			return call_user_func($function, $this);
 		} else {
 			$azManager = Services::getService("AuthZ");
 			$idManager = Services::getService("Id");
