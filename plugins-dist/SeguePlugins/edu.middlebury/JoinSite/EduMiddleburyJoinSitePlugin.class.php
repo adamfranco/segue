@@ -107,6 +107,7 @@ class EduMiddleburyJoinSitePlugin
  	 * @since 1/12/06
  	 */
  	public function initialize () {
+ 		// Initialize our data store.
 		$this->doc = new Harmoni_DOMDocument;
 		$this->doc->preserveWhiteSpace = false;
 		if (strlen($this->getContent())) {
@@ -119,6 +120,63 @@ class EduMiddleburyJoinSitePlugin
 	 		$this->doc->loadXML("<JoinSitePlugin></JoinSitePlugin>");
 	 			
  		$this->xpath = new DOMXPath($this->doc);
+ 		
+//  		printpre(htmlentities($this->doc->saveXMLWithWhitespace()));
+ 		
+ 		
+ 		// Initialize our current user.
+ 		$authNMgr = Services::getService("AuthN");
+		$agentMgr = Services::getService("Agent");
+ 		$this->currentUser = $agentMgr->getAgent($authNMgr->getFirstUserId());
+ 		
+ 		// Authorizations
+ 		$this->setCanModifyFunction(array($this, 'canApproveRequests'));
+ 		
+ 		$this->messages = array();
+ 	}
+ 	
+ 	/**
+ 	 * Answer true if the user can modify this plugin
+ 	 * 
+ 	 * @param <##>
+ 	 * @return boolean
+ 	 * @access public
+ 	 * @since 2/19/09
+ 	 */
+ 	public function canApproveRequests () {
+ 		$authZ = Services::getService("AuthZ");
+ 		return $authZ->isUserAuthorized(
+ 			new HarmoniId('edu.middlebury.authorization.view_authorizations'),
+ 			new HarmoniId($this->getId()));
+ 	}
+ 	
+ 	/**
+ 	 * Add Messages to the message queue
+ 	 * 
+ 	 * @param string $message
+ 	 * @return void
+ 	 * @access protected
+ 	 * @since 2/19/09
+ 	 */
+ 	protected function addMessage ($message) {
+ 		$this->messages[] = $message;
+ 	}
+ 	
+ 	/**
+ 	 * Print out our messages
+ 	 * 
+ 	 * @return void
+ 	 * @access protected
+ 	 * @since 2/19/09
+ 	 */
+ 	protected function printMessages () {
+ 		if (!count($this->messages))
+ 			return;
+ 		print "\n<ul>";
+ 		foreach ($this->messages as $message) {
+ 			print "\n\t<li>$message</li>";
+ 		}
+ 		print "\n</ul>";
  	}
  	
  	/**
@@ -132,7 +190,22 @@ class EduMiddleburyJoinSitePlugin
  	 * @since 1/12/06
  	 */
  	public function update ( $request ) {
- 		// Override as needed.
+ 		try {
+			if ($this->canModify() && $this->getFieldValue('change')) {
+				$agentMgr = Services::getService("Agent");
+				$agent = $agentMgr->getAgent(new HarmoniId($this->getFieldValue('agent_id')));
+					
+				if ($this->getFieldValue('change') == 'approve') {
+					$this->approveAgent($agent);
+					$this->addMessage(str_replace('%1', $agent->getDisplayName(), _('%1 approved and added to site-members. %1 has been notified by email.')));
+				} else if ($this->getFieldValue('change') == 'deny') {
+					$this->denyAgent($agent);
+					$this->addMessage(str_replace('%1', $agent->getDisplayName(), _('Request by %1 to join this site denied. %1 has been notified by email.')));
+				}
+			}
+		} catch (OperationFailedException $e) {
+			$this->addMessage($e->getMessage());
+		}
  	}
  	
  	/**
@@ -145,35 +218,64 @@ class EduMiddleburyJoinSitePlugin
  	 * @since 1/12/06
  	 */
  	public function getMarkup () {
- 		return _("<p>Override this method to display your plugin.</p>");
- 	}
- 	
- 	/**
- 	 * Return the markup that represents the plugin in and expanded form.
- 	 * This method will be called when looking at a "detail view" of the plugin
- 	 * where the representation of the plugin will be the focus of the page
- 	 * rather than just one of many elements.
- 	 * Override this method in your plugin as needed.
- 	 * 
- 	 * @return string
- 	 * @access public
- 	 * @since 5/23/07
- 	 */
- 	public function getExtendedMarkup () {
- 		return $this->getMarkup();
- 	}
- 	
- 	/**
- 	 * Answer the label to use when linking to the plugin's extented markup.
- 	 * For a text-based plugin this may be the default, 'read more >>', for
- 	 * an image plugin it might be something like "Large View", etc.
- 	 * 
- 	 * @return string
- 	 * @access public
- 	 * @since 5/23/07
- 	 */
- 	public function getExtendedLinkLabel () {
- 		return _("read more &raquo;");
+ 		ob_start();
+ 		
+ 		$this->printMessages();
+ 		
+ 		switch ($this->getFieldValue('mode')) {
+ 			case 'join':
+ 				if ($this->currentUser->getId()->isEqual(new HarmoniId('edu.middlebury.agents.anonymous'))) {
+ 					// Prompt for login or registration
+ 					print "<strong>To do....</strong>";
+ 				} else if ($this->isAwaitingApproval($this->currentUser->getId())) {
+ 					print _("Your request has already been submitted and is awaiting approval from the site administrator.");
+ 					print "\n<br/>";
+ 					print _("You will receive an email when your request is approved.");
+ 				} else {
+ 					// Add to the queue
+ 					$this->join();
+ 					print _("Your request has been submitted and is awaiting approval from the site administrator.");
+ 					print "\n<br/>";
+ 					print _("You will receive an email when your request is approved.");
+ 				}
+ 				break;
+ 			default:
+ 				if ($this->isUserMember()) {
+ 					print "<button disabled='disabled'>"._('Join Site')."</button>";
+ 				} else {
+					print "\n<a href='";
+					print $this->url(array('mode' => 'join'));
+					print "'><button>"._('Join Site')."</button></a>";
+				}
+ 				
+				if ($this->canModify()) {
+					$awaitingApproval = $this->getAgentsAwaitingApproval();
+					if (count($awaitingApproval)) {
+						print "\n<h4>"._('Awaiting Approval').'</h4>';
+						print "\n<ul>";
+						foreach ($awaitingApproval as $agent) {
+							print "\n\t<li>";
+							print $agent->getDisplayName();
+							
+							print "\n\t\t<a href='";
+							print $this->url(array('change' => 'approve', 'agent_id' => $agent->getId()->getIdString()));
+							print "'>"._('Approve')."</a>";
+							
+							print "\n\t\t<a href='";
+							print $this->url(array('change' => 'deny', 'agent_id' => $agent->getId()->getIdString()));
+							print "'>"._('Deny')."</a>";
+							
+							print "\n\t</li>";
+						}
+						print "\n</ul>";
+					} else {
+						print "\n<h4>"._('No users are currently awaiting approval').'</h4>';
+					}
+				}
+		}
+ 		
+ 		
+ 		return ob_get_clean();
  	}
  	
  	/**
@@ -187,7 +289,7 @@ class EduMiddleburyJoinSitePlugin
  	 * @since 5/22/07
  	 */
  	public function generateDescription () {
- 		return $this->getRawDescription();
+ 		return _("Self registration to the site.");
  	}
  	
  	/**
@@ -205,21 +307,6 @@ class EduMiddleburyJoinSitePlugin
  	public function hasContent () {
  		// Override as needed
  		return true;
- 	}
- 	
- 	/**
- 	 * Answer an array of MediaFiles that should be referenced along with the plugin
- 	 * representation in RSS feed enclosures or other similar uses.
- 	 *
- 	 * Throw an UnimplementedException if not implemented.
- 	 * 
- 	 * @return array of MediaFile objects
- 	 * @access public
- 	 * @since 8/27/08
- 	 */
- 	public function getRelatedMediaFiles () {
- 		// Override if supported.
- 		throw new UnimplementedException();
  	}
  	
  	/*********************************************************
@@ -448,19 +535,40 @@ class EduMiddleburyJoinSitePlugin
 	 * @access protected
 	 * @since 2/19/09
 	 */
-	protected function getAgentsNeedingApproval () {		
+	protected function getAgentsAwaitingApproval () {		
 		$elements = $this->xpath->query('/JoinSitePlugin/approvalQueue/agent');
 		$agentMgr = Services::getService('Agent');
 		
 		$agents = array();
 		foreach ($elements as $element) {
 			try {
-				$agents[] = $agentMgr->getAgent(new HarmoniId($element->getAttribute('Id')));
+				$agents[] = $agentMgr->getAgent(new HarmoniId($element->getAttribute('id')));
 			} catch (UnknownIdException $e) {
 				throw $e; //temporary, in the future, lets log this or display an error message.
 			}
 		}
 		return $agents;
+	}
+	
+	/**
+	 * Sign up the current user.
+	 * 
+	 * @return void
+	 * @access protected
+	 * @since 2/19/09
+	 */
+	protected function join () {
+		if ($this->currentUser->getId()->isEqual(new HarmoniId('edu.middlebury.agents.anonymous')))
+ 			throw new PermissionDeniedException("You must log in to join this site.");
+ 					
+ 		if ($this->isAwaitingApproval($this->currentUser->getId()))
+			throw new OperationFailedException("Your request has already been submitted, you will receive an email upon approval.");
+		
+		if ($this->isUserMember())
+			throw new OperationFailedException("You are already a member of this site.");
+			
+		$this->addToApprovalQueue($this->currentUser->getId());
+		$this->sendApprovalWaitingNotice($this->currentUser);
 	}
 	
 	/**
@@ -533,7 +641,7 @@ class EduMiddleburyJoinSitePlugin
 	 * @since 2/19/09
 	 */
 	protected function isAwaitingApproval (Id $agentId) {
-		$elements = $this->xpath->query('/JoinSitePlugin/approvalQueue/agent[id="'.$agentId->getIdString().'"]');
+		$elements = $this->xpath->query('/JoinSitePlugin/approvalQueue/agent[@id="'.$agentId->getIdString().'"]');
 		return ($elements->length > 0);
 	}
 	
@@ -546,9 +654,8 @@ class EduMiddleburyJoinSitePlugin
 	 * @since 2/19/09
 	 */
 	protected function addToApprovalQueue (Id $agentId) {
-		// Check that the agent is not already a member
-		if ($this->getSiteMembersGroup()->contains($agent, false)) 
-			throw new OperationFailedException("Agent already is a Site-Member.");
+		if ($this->isAwaitingApproval($agentId))
+			throw new OperationFailedException("Already awaiting approval.");
 		
 		// Ensure that our queue exists
 		$queueElements = $this->xpath->query('/JoinSitePlugin/approvalQueue');
@@ -573,7 +680,7 @@ class EduMiddleburyJoinSitePlugin
 	 * @since 2/19/09
 	 */
 	protected function removeFromApprovalQueue (Id $agentId) {
-		$elements = $this->xpath->query('/JoinSitePlugin/approvalQueue/agent[id="'.$agentId->getIdString().'"]');
+		$elements = $this->xpath->query('/JoinSitePlugin/approvalQueue/agent[@id="'.$agentId->getIdString().'"]');
 		if (!$elements->length)
 			throw new UnknownIdException("No agent queued with id, '".$agentId->getIdString()."'");
 		
@@ -768,7 +875,7 @@ class EduMiddleburyJoinSitePlugin
 	 * @since 2/19/09
 	 */
 	protected function getSiteMembersGroup () {
-		return $this->getSiteNode()->getSiteMembersGroup();
+		return $this->getSiteNode()->getMembersGroup();
 	}
 	
 	/**
@@ -780,6 +887,17 @@ class EduMiddleburyJoinSitePlugin
 	 */
 	protected function getSiteNode () {
 		return SiteDispatcher::getCurrentRootNode();
+	}
+	
+	/**
+	 * Answer true if the current user is already a site member
+	 * 
+	 * @return boolean
+	 * @access protected
+	 * @since 2/19/09
+	 */
+	protected function isUserMember () {
+		return $this->getSiteMembersGroup()->contains($this->currentUser, true);
 	}
 	
 	/**
@@ -801,7 +919,7 @@ class EduMiddleburyJoinSitePlugin
 			// was deleted, log this issue and skip rather than crashing the
 			// choose agent screen.
 			try {
-				$agents[] = $agentMgr->getAgentOrGroup($id);
+				$admins[] = $agentMgr->getAgentOrGroup($id);
 			} catch (UnknownIdException $e) {
 				HarmoniErrorHandler::logException($e, 'Segue');
 			}
