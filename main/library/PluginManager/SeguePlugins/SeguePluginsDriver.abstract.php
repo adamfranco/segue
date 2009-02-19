@@ -1403,9 +1403,9 @@ abstract class SeguePluginsDriver
 			
 			if (isset($this->localModule) && $this->localModule && isset($this->localAction) && $this->localAction) 
 			{
-				$this->_baseUrl = $harmoni->request->mkURL($this->localModule, $this->localAction);
+				$this->_baseUrl = SiteDispatcher::mkURL($this->localModule, $this->localAction);
 			} else {
-				$this->_baseUrl = $harmoni->request->mkURL();
+				$this->_baseUrl = SiteDispatcher::mkURL();
 			}
 			
 			$this->update($this->_getRequestData());
@@ -2043,7 +2043,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace(
 			get_class($this).':'.$this->getId());
-		$this->_baseUrl = $harmoni->request->mkURL();
+		$this->_baseUrl = SiteDispatcher::mkURL();
 		
 		$markup = $this->getVersionMarkup($versionXml);		
 		

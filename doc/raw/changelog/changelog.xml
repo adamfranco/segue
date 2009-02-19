@@ -21,6 +21,9 @@
 		<change author='adam' date='2009-02-17' ref='' reftype='fr'  reporter='shel_sax'>
 			Create Site: Class-sites now have the class group added by default.
 		</change>
+		<change author='adam' date='2009-02-19' ref='' reftype='fr'  reporter=''>
+			Plugins: Plugin internal links now include site parameters.
+		</change>
 	</version>
 	<version number="2.2.8.2" date="The Future">
 		<releaseNotes>
