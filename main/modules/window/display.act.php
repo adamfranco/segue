@@ -324,17 +324,22 @@ class displayAction
 	 */
 	public function getLoginFormHtml () {
 		$harmoni = Harmoni::instance();
-		$harmoni->history->markReturnURL("polyphony/login_fail",
-			$harmoni->request->quickURL("user", "main", array('login_failed' => 'true')));
+		$harmoni->history->markReturnURL("polyphony/login_fail", $harmoni->request->mkURLWithPassthrough());
 
 		$harmoni->request->startNamespace("harmoni-authentication");
 		$usernameField = $harmoni->request->getName("username");
 		$passwordField = $harmoni->request->getName("password");
 		$harmoni->request->endNamespace();
 		$harmoni->request->startNamespace("polyphony");
+		
+		if (PolyphonyLogin::instance()->hasLoginFailed())
+			$message = "<span class='error'>"._("Login Failed")."</span> &nbsp; &nbsp;";
+		else
+			$message = "";
+		
 		$html = "\n<form action='".
 			$harmoni->request->quickURL("auth", "login").
-			"' method='post'>".
+			"' method='post'>".$message.
 			"\n\t"._("Username/email:")." <input class='small' type='text' size='8' 
 				name='$usernameField'/>".
 			"\n\t"._("Password:")." <input class='small' type='password' size ='8' 
