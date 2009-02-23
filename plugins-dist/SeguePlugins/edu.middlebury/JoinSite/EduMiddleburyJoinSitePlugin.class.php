@@ -226,7 +226,20 @@ class EduMiddleburyJoinSitePlugin
  			case 'join':
  				if ($this->currentUser->getId()->isEqual(new HarmoniId('edu.middlebury.agents.anonymous'))) {
  					// Prompt for login or registration
- 					print "<strong>To do....</strong>";
+ 					print "<h4>"._("Please log in:")."</h4>";
+ 					
+ 					$action = new displayAction;
+ 					print "\n<div style='margin-left: 30px;'>";
+ 					print $action->getLoginFormHtml();
+ 					print "\n</div>";
+ 					
+ 					print "<h4>"._("Or create a visitor account:")."</h4>";
+ 					print "\n<div style='margin-left: 30px;'>";
+ 					print $action->getVisitorRegistrationLink();
+ 					print "\n</div>";
+ 					
+ 					
+ 					
  				} else if ($this->isAwaitingApproval($this->currentUser->getId())) {
  					print _("Your request has already been submitted and is awaiting approval from the site administrator.");
  					print "\n<br/>";
