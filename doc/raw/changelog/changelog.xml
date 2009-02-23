@@ -18,8 +18,17 @@
 			New "Site-Members" group enables: associating users with a site, setting 
 			roles for many users at once, and provides support for self-registration.
 		</new>
+		<new author='adam' date='2009-02-23' ref='1820897' reftype='fr'  reporter=''>
+			Plugins: New "Join Site" plugin allows for self-registration to the "Site-Members" group.
+		</new>
 		<change author='adam' date='2009-02-17' ref='' reftype='fr'  reporter='shel_sax'>
 			Create Site: Class-sites now have the class group added by default.
+		</change>
+		<change author='adam' date='2009-02-19' ref='' reftype='fr'  reporter=''>
+			Plugins: Plugin internal links now include site parameters.
+		</change>
+		<change author='adam' date='2009-02-19' ref='' reftype='fr'  reporter=''>
+			Plugins: Plugin authorization callbacks can now be object methods.
 		</change>
 	</version>
 	<version number="2.2.8.2" date="The Future">

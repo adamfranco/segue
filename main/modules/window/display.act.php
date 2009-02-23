@@ -247,6 +247,17 @@ class displayAction
 	 * @since 3/13/06
 	 */
 	function getLoginComponent () {
+		return new Component($this->getLoginHtml(), BLANK, 2);
+	}
+	
+	/**
+	 * Answer the HTML for the login/logout form
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/23/09
+	 */
+	public function getLoginHtml () {
 		ob_start();
 		$harmoni = Harmoni::instance();
 		$authN = Services::getService("AuthN");
@@ -286,26 +297,69 @@ class displayAction
 			
 			print " | <a href='".$harmoni->request->quickURL("auth",
 				"logout")."'>"._("Log Out")."</a>";
-		} else {
-			$harmoni->history->markReturnURL("polyphony/login_fail",
-				$harmoni->request->quickURL("user", "main", array('login_failed' => 'true')));
-
-			$harmoni->request->startNamespace("harmoni-authentication");
-			$usernameField = $harmoni->request->getName("username");
-			$passwordField = $harmoni->request->getName("password");
-			$harmoni->request->endNamespace();
-			$harmoni->request->startNamespace("polyphony");
-			print "\n<form action='".
-				$harmoni->request->quickURL("auth", "login").
-				"' style='text-align: right' method='post'><small>".
-				"\n\t"._("Username/email:")." <input class='small' type='text' size='8' 
-					name='$usernameField'/>".
-				"\n\t"._("Password:")." <input class='small' type='password' size ='8' 
-					name='$passwordField'/>".
-				"\n\t <input class='button small' type='submit' value='Log in' />".
-				"\n</small></form>";
-			$harmoni->request->endNamespace();
+		}
+		// Login Form
+		else {
+			print "\n<div style='text-align: right; font-size: xx-small;'>";
+			print $this->getLoginFormHtml();
+			print "\n</div>";
 		}		
+		
+		// Visitor Registration Link
+		$link = $this->getVisitorRegistrationLink();
+		if (strlen($link)) {
+			print "\n<div class='visitor_reg_link'>".$link."\n</div>";
+		}
+		
+		print "\n</div>";
+		return ob_get_clean();
+	}
+	
+	/**
+	 * Answer the HTML string for the login form.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/23/09
+	 */
+	public function getLoginFormHtml () {
+		$harmoni = Harmoni::instance();
+		$harmoni->history->markReturnURL("polyphony/login_fail", $harmoni->request->mkURLWithPassthrough());
+
+		$harmoni->request->startNamespace("harmoni-authentication");
+		$usernameField = $harmoni->request->getName("username");
+		$passwordField = $harmoni->request->getName("password");
+		$harmoni->request->endNamespace();
+		$harmoni->request->startNamespace("polyphony");
+		
+		if (PolyphonyLogin::instance()->hasLoginFailed())
+			$message = "<span class='error'>"._("Login Failed")."</span> &nbsp; &nbsp;";
+		else
+			$message = "";
+		
+		$html = "\n<form action='".
+			$harmoni->request->quickURL("auth", "login").
+			"' method='post'>".$message.
+			"\n\t"._("Username/email:")." <input class='small' type='text' size='8' 
+				name='$usernameField'/>".
+			"\n\t"._("Password:")." <input class='small' type='password' size ='8' 
+				name='$passwordField'/>".
+			"\n\t <input class='button small' type='submit' value='Log in' />".
+			"\n</form>";
+		$harmoni->request->endNamespace();
+		return $html;
+	}
+	
+	/**
+	 * Answer the HTML string for the visitor registration link if available, null otherwise.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/23/09
+	 */
+	public function getVisitorRegistrationLink () {
+		$harmoni = Harmoni::instance();
+		$authN = Services::getService("AuthN");
 		
 		// Visitor Registration Link
 		$authTypes = $authN->getAuthenticationTypes();
@@ -319,6 +373,8 @@ class displayAction
 			}
 		}
 		if ($hasVisitorType && !$authN->isUserAuthenticatedWithAnyType()) {
+			$harmoni->request->startNamespace(null);
+			
 			$url = $harmoni->request->mkURL("user", "visitor_reg");
 			
 			// Add return info to the visitor registration url
@@ -330,17 +386,12 @@ class displayAction
 				$url->setValue('returnValue', SiteDispatcher::getCurrentNodeId());
 			}
 			
-			print "\n<div class='visitor_reg_link'>".
-				"\n\t<a href='".$url->write()."'>".
-				_("Visitor Registration").
-				"</a>".
-				"\n</div>";
+			$harmoni->request->endNamespace();
+			
+			return "\n\t<a href='".$url->write()."'>"._("Visitor Registration")."</a>";
 		}
-
-		print "\n</div>";
-		$loginForm = new Component(ob_get_clean(), BLANK, 2);
 		
-		return $loginForm;
+		return null;
 	}
 	
 	/**
