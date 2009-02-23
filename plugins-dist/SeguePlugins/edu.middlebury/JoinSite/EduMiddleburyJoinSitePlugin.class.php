@@ -258,7 +258,7 @@ class EduMiddleburyJoinSitePlugin
  				} else {
 					print "\n<a href='";
 					print $this->url(array('mode' => 'join'));
-					print "'><button>"._('Join Site')."</button></a>";
+					print "'><button onclick='window.location = this.parentNode.href;'>"._('Join Site')."</button></a>";
 				}
  				
 				if ($this->canModify()) {
