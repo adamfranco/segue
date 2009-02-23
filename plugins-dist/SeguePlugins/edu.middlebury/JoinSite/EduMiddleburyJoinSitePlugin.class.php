@@ -756,19 +756,13 @@ class EduMiddleburyJoinSitePlugin
 		
 		$body = '
 	<p>'._('%2 has requested to join %1.').'</p>
-	<p>'._('To approve this request, click here: %3').'
-	<br/>'._('To deny this request, click here: %4').'</p>
-	<p>'._('To access the site, please go to %5 and log in.').'</p>
+	<p>'._('To approve or deny this request, please go to %5 and log in.').'</p>
 
 ';
-		$approvalLink = '<a href="'.$this->getApprovalUrl($newAgent).'">'._('Approve').'</a>';
-		$denialLink = '<a href="'.$this->getDenialUrl($newAgent).'">'._('Deny').'</a>';
 		$manageLink = '<a href="'.$this->getManageUrl().'">'.$this->getSiteTitle().'</a>';
 		
 		$body = str_replace('%1', $this->getSiteTitle(), $body);
 		$body = str_replace('%2', $newAgent->getDisplayName(), $body);
-		$body = str_replace('%3', $approvalLink, $body);
-		$body = str_replace('%4', $denialLink, $body);
 		$body = str_replace('%5', $manageLink, $body);
 		
 		$this->sendEmail($this->getAdministrators(), $subject, $body);
