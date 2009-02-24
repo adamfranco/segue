@@ -30,6 +30,10 @@
 		<change author='adam' date='2009-02-19' ref='' reftype='fr'  reporter=''>
 			Plugins: Plugin authorization callbacks can now be object methods.
 		</change>
+		<fix author='adam' date='2009-02-24' ref='' reftype='bug'  reporter=''>
+			UI1: Fixed classic-mode error when displaying a page with content in the
+			menu that is not visible.
+		</fix>
 	</version>
 	<version number="2.2.8.2" date="The Future">
 		<releaseNotes>

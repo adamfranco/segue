@@ -246,6 +246,8 @@ END;
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $block ) {
 		$menuItem = parent::visitBlockInMenu($block);
+		if (!$menuItem)
+			return $menuItem;
 		
 		// Add controls bar and border
 		$authZ = Services::getService("AuthZ");
