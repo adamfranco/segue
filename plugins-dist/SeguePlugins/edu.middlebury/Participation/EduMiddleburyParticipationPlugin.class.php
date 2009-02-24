@@ -120,6 +120,113 @@ class EduMiddleburyParticipationPlugin
  		$this->_view = new Participation_View($this->_node);
  		$this->_printedParticipants = array();
  	}
+ 	 	
+ 	/**
+	 * Write an option
+	 * 
+	 * @param string $groupId
+	 * @return void
+	 * @access protected
+	 * @since 2/4/09
+	 */
+	protected function getOptions () {
+		$doc = new Harmoni_DOMDocument();
+		$doc->preserveWhiteSpace = false;
+		try {
+			$doc->loadXML($this->getContent());
+		} catch (DOMException $e) {
+			$doc->appendChild($doc->createElement('options'));
+		}
+		
+		if (!$doc->documentElement->nodeName == 'options')
+			throw new OperationFailedException('Expection root-node "options", found "'.$doc->documentElement->nodeName.'".');
+			
+		return $doc;
+	}
+	
+	/**
+	 * Add a group to the list of groups to not show members
+	 * 
+	 * @param string $groupIdString
+	 * @return void
+	 * @access protected
+	 * @since 2/4/09
+	 */
+	protected function addMembersHiddenGroup ($groupIdString) {
+		// The options will look like:
+		/*
+		<options>
+			<groupMembersHidden>
+				<groupId>12345654</groupId>
+				<groupId>1234sdrf4</groupId>
+				<groupId>asdfsdf5654</groupId>
+			</groupMemversHidden>
+			<mergeMembers>all</mergeMembers>
+			...
+		</options>
+		*/
+		$doc = $this->getOptions();
+		$xpath = new DOMXPath($doc);
+		
+		$elements = $xpath->query('/options/groupMembersHidden');
+		if ($elements->length)
+			$groupMembersHiddenElement = $elements->item(0);
+		else
+			$groupMembersHiddenElement = $doc->documentElement->appendChild($doc->createElement('groupMembersHidden'));
+
+		$elements = $xpath->query('/options/groupMembersHidden/groupId[.="'.$groupIdString.'"]');
+
+		if ($elements->length)
+			return;
+		
+		$element = $groupMembersHiddenElement->appendChild($doc->createElement('groupId'));
+		$element->nodeValue = $groupIdString;
+		
+		$this->setContent($doc->saveXMLWithWhitespace());
+	}
+
+	/**
+	 * Add a group to the list of groups to not show members
+	 * 
+	 * @param string $groupIdString
+	 * @return void
+	 * @access protected
+	 * @since 2/4/09
+	 */
+	protected function removeMembersHiddenGroup ($groupIdString) {
+
+		$doc = $this->getOptions();
+		$xpath = new DOMXPath($doc);
+			
+		$elements = $xpath->query('/options/groupMembersHidden/groupId[.="'.$groupIdString.'"]');
+		
+		foreach ($elements as $element) {
+			$element->parentNode->removeChild($element);
+		}
+		
+		$this->setContent($doc->saveXMLWithWhitespace());
+	}
+
+	/**
+	 * Add a group to the list of groups to not show members
+	 * 
+	 * @return array
+	 * @access protected
+	 * @since 2/4/09
+	 */
+	protected function getMembersHiddenGroups () {
+		
+		$doc = $this->getOptions();
+		$xpath = new DOMXPath($doc);
+		
+		$elements = $xpath->query('/options/groupMembersHidden/groupId');
+		$groupIds = array();
+		foreach ($elements as $element)
+			$groupIds[] = $element->nodeValue;
+					
+		return $groupIds;
+	}
+
  	
  	/**
  	 * Update from environmental ($_REQUEST) data.
@@ -132,7 +239,23 @@ class EduMiddleburyParticipationPlugin
  	 * @since 1/12/06
  	 */
  	public function update ( $request ) {
- 		// Override as needed.
+ 		
+ 		if ($this->getFieldValue('submit')) {
+			// get all site members
+			$group = $this->_node->getMembersGroup();				
+			// get all sub-groups in site members group
+			$subgroups = $group->getGroups(false);
+	
+			while ($subgroups->hasNext()) {
+				$subgroup = $subgroups->next();
+				
+				if ($this->getFieldValue($subgroup->getId()->getIdString()) == "true") {
+					$this->addMembersHiddenGroup($subgroup->getId()->getIdString());
+				} else {
+					$this->removeMembersHiddenGroup($subgroup->getId()->getIdString());
+				}
+			}
+		}
  	}
  	
  	/**
@@ -145,6 +268,7 @@ class EduMiddleburyParticipationPlugin
  	 * @since 1/12/06
  	 */
  	public function getMarkup () {
+ 		
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");		
 		
@@ -162,29 +286,68 @@ class EduMiddleburyParticipationPlugin
 		
 		// get all site members
 		$group = $this->_node->getMembersGroup();
-		
-		// Direct members of the group
-		$title = "<div class='participant_header'>"._("Site Members")."</div>";
-		print $this->printMemberIterator($group->getMembers(false), $title);
-		
-		// Members of sub-groups
+				
+		// get all sub-groups in site members group
 		$subgroups = $group->getGroups(false);
 		
-		while ($subgroups->hasNext()) {
-			$subgroup = $subgroups->next();
-			$title = "<div class='participant_group_header'>".$subgroup->getDisplayName()."</div>";
-			print $this->printMemberIterator($subgroup->getMembers(false), $title);
-		}
-		
-		// Other Participants
-		$notPrintedParticipants = array();
-		foreach ($this->_view->getParticipants() as $participant) {
-			if (!in_array($participant->getId()->getIdString(), $this->_printedParticipants)) {
-				$notPrintedParticipants[] = $participant;
+		// get member hidden groups
+		$hiddenGroups = $this->getMembersHiddenGroups();
+			
+		if ($this->getFieldValue('edit') && $this->canModify()) {			
+			
+			print "<div class='participant_group_header'>"._("Show Members of Group?")."</div>";
+			print "\n".$this->formStartTagWithAction();
+			print "<div>";
+
+			while ($subgroups->hasNext()) {
+				$subgroup = $subgroups->next();
+				print "<div class='participant_list'>";
+				print "\n\t<input name='".$this->getFieldName($subgroup->getId()->getIdString())."' value='true' type='checkbox' ";
+				if (in_array($subgroup->getId()->getIdString(), $hiddenGroups))
+					print " checked";				
+				print ">".$subgroup->getDisplayName();
+				print "</div>";
+				
 			}
+			print "<br/>";
+			print "<br/>";
+			print "<input type='submit' value='Update' name='".$this->getFieldName('submit')."'>\n";
+			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
+			print "</div>";
+			print "</form>";
+		
+		} else if ($this->canView()) {
+
+			// Direct members of the group
+			$title = "<div class='participant_header'>"._("Site Members")."</div>";
+			print $this->printMemberIterator($group->getMembers(false), $title);
+
+			// Members of subgroups
+			while ($subgroups->hasNext()) {
+				$subgroup = $subgroups->next();
+				
+				// if 
+				$title = "<div class='participant_group_header'>".$subgroup->getDisplayName()."</div>";
+				print $this->printMemberIterator($subgroup->getMembers(false), $title);
+			}
+			
+			// Other Participants
+			$notPrintedParticipants = array();
+			foreach ($this->_view->getParticipants() as $participant) {
+				if (!in_array($participant->getId()->getIdString(), $this->_printedParticipants)) {
+					$notPrintedParticipants[] = $participant;
+				}
+			}
+			$title = "<br/><div class='participant_header'>"._("Other Participants")."</div>";
+			print $this->printParticipants($notPrintedParticipants, $title);
+			
+			if($this->shouldShowControls()){
+				print "\n<div style='text-align: right; white-space: nowrap;'>";
+				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._('edit')."</a>";
+				print "\n</div>";
+			}
+
 		}
-		$title = "<br/><div class='participant_header'>"._("Other Participants")."</div>";
-		print $this->printParticipants($notPrintedParticipants, $title);
 
  		return ob_get_clean();
  	}
@@ -297,7 +460,7 @@ class EduMiddleburyParticipationPlugin
  	 * @since 5/23/07
  	 */
  	public function getExtendedLinkLabel () {
- 		return _("details &raquo;");
+ 		
  	}
  	
  	/**
@@ -390,111 +553,6 @@ class EduMiddleburyParticipationPlugin
  		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
  	}
  	
- 	/*********************************************************
- 	 * The following methods are used to support versioning of
- 	 * the plugin instance
- 	 *********************************************************/
- 	/**
- 	 * Answer true if this plugin supports versioning. 
- 	 * Override to return true if you implement the exportVersion(), 
- 	 * and applyVersion() methods.
- 	 * 
- 	 * @return boolean
- 	 * @access public
- 	 * @since 1/4/08
- 	 */
- 	public function supportsVersioning () {
- 		return false;
- 	}
- 	
- 	/**
- 	 * Answer a DOMDocument representation of the current plugin state.
- 	 *
- 	 * @return DOMDocument
- 	 * @access public
- 	 * @since 1/4/08
- 	 */
- 	public function exportVersion () {
- 		throw new UnimplementedException();
- 	}
- 	
- 	/**
- 	 * Update the plugin state to match the representation passed in the DOMDocument.
- 	 * The DOM Element passed will have been exported using the exportVersion() method.
- 	 *
- 	 * Do not mark a new version in the implementation of this method. If necessary this
- 	 * will be done by the driver.
- 	 * 
- 	 * @param object DOMDocument $version
- 	 * @return void
- 	 * @access public
- 	 * @since 1/4/08
- 	 */
- 	public function applyVersion (DOMDocument $version) {
- 		throw new UnimplementedException();
- 	}
-	
-	/**
- 	 * Answer a string of XHTML markup that displays the plugin state representation
- 	 * in the DOMDocument passed. This markup will be used in displaying a version history.
- 	 * The DOM Element passed will have been exported using the exportVersion() method.
- 	 * 
- 	 * @param object DOMDocument $version
- 	 * @return string
- 	 * @access public
- 	 * @since 1/4/08
- 	 */
- 	public function getVersionMarkup (DOMDocument $version) {
- 		throw new UnimplementedException();
- 	}
- 	
- 	/**
- 	 * Answer a difference between two versions. Should return an XHTML-formatted
- 	 * list or table of differences.
- 	 * 
- 	 * @param object DOMDocument $oldVersion
- 	 * @param object DOMDocument $newVersion
- 	 * @return string
- 	 * @access public
- 	 * @since 1/7/08
- 	 */
- 	public function getVersionDiff (DOMDocument $oldVersion, DOMDocument $newVersion) {
- 		throw new UnimplementedException();
- 	}
- 	
- 	/*********************************************************
- 	 * The following methods are needed to support restoring
- 	 * from backups and importing/exporting plugin data.
- 	 *********************************************************/
- 	
- 	/**
- 	 * Given an associative array of old Id strings and new Id strings.
- 	 * Update any of the old Ids that this plugin instance recognizes to their
- 	 * new value.
- 	 * 
- 	 * @param array $idMap An associative array of old id-strings to new id-strings.
- 	 * @return void
- 	 * @access public
- 	 * @since 1/24/08
- 	 */
- 	public function replaceIds (array $idMap) {
- 		throw new UnimplementedException();
- 	}
- 	
- 	/**
- 	 * Given an associative array of old Id strings and new Id strings.
- 	 * Update any of the old Ids in ther version XML to their new value.
- 	 * This method is only needed if versioning is supported.
- 	 * 
- 	 * @param array $idMap An associative array of old id-strings to new id-strings.
- 	 * @param object DOMDocument $version
- 	 * @return void
- 	 * @access public
- 	 * @since 1/24/08
- 	 */
- 	public function replaceIdsInVersion (array $idMap, DOMDocument $version) {
- 		throw new UnimplementedException();
- 	}
 }
 
 ?>
