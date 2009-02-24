@@ -34,6 +34,9 @@
 			UI1: Fixed classic-mode error when displaying a page with content in the
 			menu that is not visible.
 		</fix>
+		<change author='adam' date='2009-02-24' ref='' reftype='fr'  reporter=''>
+			Roles: Choose-Agent window now includes Agent-info links for all agents, not just search results.
+		</change>
 	</version>
 	<version number="2.2.8.2" date="The Future">
 		<releaseNotes>
