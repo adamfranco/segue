@@ -159,7 +159,7 @@ class EduMiddleburyParticipationPlugin
 		}
 		
 		$this->addHeadJavascript('ParticipantPanel.js');
-		$this->addHeadCss('ParticipantPanel.css');
+		$this->addHeadCss('Participation.css');
 			
 		ob_start();
 		
