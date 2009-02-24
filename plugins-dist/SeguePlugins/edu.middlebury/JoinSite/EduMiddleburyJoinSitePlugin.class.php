@@ -256,9 +256,7 @@ class EduMiddleburyJoinSitePlugin
  				if ($this->isUserMember()) {
  					print "<button disabled='disabled'>"._('Join Site')."</button>";
  				} else {
-					print "\n<a href='";
-					print $this->url(array('mode' => 'join'));
-					print "'><button onclick='window.location = this.parentNode.href;'>"._('Join Site')."</button></a>";
+					print "\n<button onclick='window.location = \"".$this->url(array('mode' => 'join'))."\".urlDecodeAmpersands();'>"._('Join Site')."</button>";
 				}
  				
 				if ($this->canModify()) {
