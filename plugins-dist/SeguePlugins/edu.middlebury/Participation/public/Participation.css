@@ -62,3 +62,15 @@
 	.participant_panel h4:first-child {
 		margin-top: 3px;
 	}
+	
+	.participant_panel .info {
+		margin-left: 10px;
+	}
+	
+	.participant_panel .tracking {
+		margin-left: 10px;
+	}
+	
+	.participant_panel .roles {
+		margin-left: 10px;
+	}

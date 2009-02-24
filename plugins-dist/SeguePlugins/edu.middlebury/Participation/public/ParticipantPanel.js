@@ -58,8 +58,8 @@ function ParticipantPanel ( name, id, nodeId, rolesUrl, positionElement ) {
 	 * @since 2/24/09
 	 */
 	ParticipantPanel.prototype.init = function ( name, id, nodeId, rolesUrl, positionElement ) {
-		this.participantName = name;
-		this.participantId = id;
+		this.agentName = name;
+		this.agentId = id;
 		this.nodeId = nodeId;
 		
 		ParticipantPanel.superclass.init.call(this, 
@@ -81,13 +81,14 @@ function ParticipantPanel ( name, id, nodeId, rolesUrl, positionElement ) {
 		heading.innerHTML = "Tracking";
 		
 		var link =  this.contentElement.appendChild(document.createElement('a'));
-		link.href = Harmoni.quickUrl('participation', 'actions', {node: this.nodeId, participant: this.participantId});
+		link.href = Harmoni.quickUrl('participation', 'actions', {node: this.nodeId, participant: this.agentId});
 		link.onclick = function () {
 			var siteMapWindow = window.open(this.href, 'site_map', 'width=600,height=600,resizable=yes,scrollbars=yes');
 			siteMapWindow.focus();
 			return false;
 		}
 		link.innerHTML = "Actions on this site";
+		link.className = 'tracking';
 		
 		this.trackingContainer = this.contentElement.appendChild(document.createElement('div'));
 		this.trackingContainer.className = 'tracking';
@@ -98,9 +99,45 @@ function ParticipantPanel ( name, id, nodeId, rolesUrl, positionElement ) {
 		
 		var link =  this.contentElement.appendChild(document.createElement('a'));
 		link.href = rolesUrl;
-		link.innerHTML = "View and modify roles for " + name + " &raquo;";
+		link.innerHTML = "View and modify roles &raquo;";
+		link.className = 'roles';
 		
 		
-// 		this.loadInfo();
+		this.loadInfo();
 // 		this.loadTrackingSummary();
+	}
+
+	/**
+	 * Load the agent information and write it to our container.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/24/09
+	 */
+	ParticipantPanel.prototype.loadInfo = AgentInfoPanel.prototype.loadInfo;
+	
+	/**
+	 * Write out the agent info to its container.
+	 * 
+	 * @param DOMDocument xmldoc
+	 * @return void
+	 * @access public
+	 * @since 2/24/09
+	 */
+	ParticipantPanel.prototype.writeInfo = function (xmldoc) {
+		var elements = xmldoc.getElementsByTagName('email');
+		if (elements.length) {
+			var email = elements.item(0).firstChild.nodeValue;
+			if (email) {
+				this.infoContainer.innerHTML = 'Email: <a href="mailto:' + email + '">' + email + '</a>';
+			}
+		}
+		
+		var elements = xmldoc.getElementsByTagName('description');
+		if (elements.length) {
+			var description = elements.item(0).firstChild.nodeValue;
+			if (description) {
+				this.infoContainer.innerHTML = this.infoContainer.innerHTML + '<br/>Description: <em>' + description + '</em>';
+			}
+		}
 	}
