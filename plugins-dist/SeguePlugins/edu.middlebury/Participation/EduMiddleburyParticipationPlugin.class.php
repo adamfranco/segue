@@ -249,7 +249,7 @@ class EduMiddleburyParticipationPlugin
 			while ($subgroups->hasNext()) {
 				$subgroup = $subgroups->next();
 				
-				if ($this->getFieldValue($subgroup->getId()->getIdString()) == "true") {
+				if ($this->getFieldValue($subgroup->getId()->getIdString()) != "true") {
 					$this->addMembersHiddenGroup($subgroup->getId()->getIdString());
 				} else {
 					$this->removeMembersHiddenGroup($subgroup->getId()->getIdString());
@@ -313,7 +313,7 @@ class EduMiddleburyParticipationPlugin
 				$subgroup = $subgroups->next();
 				print "<div class='participant_list'>";
 				print "\n\t<input name='".$this->getFieldName($subgroup->getId()->getIdString())."' value='true' type='checkbox' ";
-				if (in_array($subgroup->getId()->getIdString(), $hiddenGroups))
+				if (!in_array($subgroup->getId()->getIdString(), $hiddenGroups))
 					print " checked";				
 				print ">".$subgroup->getDisplayName();
 				print "</div>";
