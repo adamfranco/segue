@@ -255,7 +255,7 @@ class EduMiddleburyParticipationPlugin
 		
 		// show link to more info only if authenticated user is an editor
 		if ($this->_showTrackLink == true) {
-			print "\n\t\t<a href='#' onclick=\"ParticipantPanel.run('".addslashes($participant->getDisplayName())."', '".addslashes($participant->getId()->getIdString())."', '".addslashes($this->_node->getId())."', this); return false;\">";
+			print "\n\t\t<a href='#' onclick=\"ParticipantPanel.run('".addslashes($participant->getDisplayName())."', '".addslashes($participant->getId()->getIdString())."', '".addslashes($this->_node->getId())."', '".SiteDispatcher::quickURL('roles', 'modify', array('agent' => $participant->getId()->getIdString(), 'returnModule' => $harmoni->request->getRequestedModule(), 'returnAction' => $harmoni->request->getRequestedAction()))."'.urlDecodeAmpersands(), this); return false;\">";
 			print $participant->getDisplayName()."</a>";
 		} else {
 			print $participant->getDisplayName();
