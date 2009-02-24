@@ -157,9 +157,11 @@ class EduMiddleburyParticipationPlugin
 		} else {
 			$this->_showTrackLink = false;
 		}
+		
+		$this->addHeadJavascript('ParticipantPanel.js');
+		$this->addHeadCss('ParticipantPanel.css');
 			
 		ob_start();
-		print "\n<script type='text/javascript' src='".$this->getPublicFileUrl('ParticipantPanel.js')."'></script>";
 		
 		// get all site members
 		$group = $this->_node->getMembersGroup();
