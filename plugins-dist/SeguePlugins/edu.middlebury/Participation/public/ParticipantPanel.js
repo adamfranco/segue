@@ -87,7 +87,7 @@ function ParticipantPanel ( name, id, nodeId, rolesUrl, positionElement ) {
 			siteMapWindow.focus();
 			return false;
 		}
-		link.innerHTML = "All actions on this site";
+		link.innerHTML = "All contributions on this site";
 		link.className = 'tracking';
 		
 		this.trackingContainer = this.contentElement.appendChild(document.createElement('div'));
