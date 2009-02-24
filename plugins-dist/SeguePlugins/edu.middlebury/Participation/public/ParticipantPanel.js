@@ -87,7 +87,7 @@ function ParticipantPanel ( name, id, nodeId, rolesUrl, positionElement ) {
 			siteMapWindow.focus();
 			return false;
 		}
-		link.innerHTML = "Actions on this site";
+		link.innerHTML = "All actions on this site";
 		link.className = 'tracking';
 		
 		this.trackingContainer = this.contentElement.appendChild(document.createElement('div'));
@@ -104,17 +104,49 @@ function ParticipantPanel ( name, id, nodeId, rolesUrl, positionElement ) {
 		
 		
 		this.loadInfo();
-// 		this.loadTrackingSummary();
+		this.loadTrackingSummary();
 	}
 
 	/**
-	 * Load the agent information and write it to our container.
+	 * Load information about the agent.
 	 * 
 	 * @return void
 	 * @access public
 	 * @since 2/24/09
 	 */
-	ParticipantPanel.prototype.loadInfo = AgentInfoPanel.prototype.loadInfo;
+	ParticipantPanel.prototype.loadInfo = function () {
+		// Get the new tags and re-call this method with the tags
+		var req = Harmoni.createRequest();
+		var url = Harmoni.quickUrl('agents', 'agent_info', {'agent_id': this.agentId});
+// 		var newWindow = window.open(url);
+
+		if (req) {
+			// Define a variable to point at this object that will be in the
+			// scope of the request-processing function, since 'this' will (at that
+			// point) be that function.
+			var authZViewer = this;
+
+			req.onreadystatechange = function () {
+				// only if req shows "loaded"
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200) {
+// 						alert(req.responseText);
+						authZViewer.writeInfo(req.responseXML);
+					} else {
+						alert("There was a problem retrieving the XML data:\n" +
+							req.statusText);
+					}
+				}
+			} 
+			
+			req.open("GET", url, true);
+			req.send(null);
+			
+		} else {
+			alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
+		}	
+	}
 	
 	/**
 	 * Write out the agent info to its container.
@@ -140,4 +172,101 @@ function ParticipantPanel ( name, id, nodeId, rolesUrl, positionElement ) {
 				this.infoContainer.innerHTML = this.infoContainer.innerHTML + '<br/>Description: <em>' + description + '</em>';
 			}
 		}
+	}
+	
+	/**
+	 * Load tracking information about the agent.
+	 * 
+	 * @return void
+	 * @access public
+	 * @since 2/24/09
+	 */
+	ParticipantPanel.prototype.loadTrackingSummary = function () {
+		// Get the new tags and re-call this method with the tags
+		var req = Harmoni.createRequest();
+		var url = Harmoni.quickUrl('participation', 'ParticipationSummaryXml', {participant: this.agentId, node: this.nodeId});
+
+		if (req) {
+			// Define a variable to point at this object that will be in the
+			// scope of the request-processing function, since 'this' will (at that
+			// point) be that function.
+			var panel = this;
+
+			req.onreadystatechange = function () {
+				// only if req shows "loaded"
+				if (req.readyState == 4) {
+					// only if we get a good load should we continue.
+					if (req.status == 200) {
+// 						alert(req.responseText);
+						panel.writeTrackingInfo(req.responseXML);
+					} else {
+						alert("There was a problem retrieving the XML data:\n" +
+							req.statusText);
+					}
+				}
+			} 
+			
+			req.open("GET", url, true);
+			req.send(null);
+			
+		} else {
+			alert("Error: Unable to execute AJAX request. \nPlease upgrade your browser.");
+		}	
+	}
+	
+	/**
+	 * Write out the tracking info for the user
+	 * 
+	 * @param DOMDocument xmldoc
+	 * @return void
+	 * @access public
+	 * @since 2/24/09
+	 */
+	ParticipantPanel.prototype.writeTrackingInfo = function (xmldoc) {
+		var roles = xmldoc.getElementsByTagName('role');
+		for (var i = 0; i < roles.length; i++) {
+			switch (roles[i].getAttribute('id')) {
+				case 'comments':
+					var numComments = new Number(roles[i].getAttribute('number'));
+					break;
+				case 'author':
+					var numAuthor = new Number(roles[i].getAttribute('number'));
+					break;
+				case 'editor':
+					var numEditor = new Number(roles[i].getAttribute('number'));
+					break;
+			}
+		}
+		
+		this.trackingContainer.appendChild(document.createTextNode('Commenter: '));
+		this.trackingContainer.appendChild(this.getActionsLink('commenter', numComments));
+		
+		this.trackingContainer.appendChild(document.createElement('br'));
+		this.trackingContainer.appendChild(document.createTextNode('Author: '));
+		this.trackingContainer.appendChild(this.getActionsLink('author', numAuthor));
+		
+		this.trackingContainer.appendChild(document.createElement('br'));
+		this.trackingContainer.appendChild(document.createTextNode('Editor: '));
+		this.trackingContainer.appendChild(this.getActionsLink('editor', numEditor));
+	}
+	
+	/**
+	 * Answer a html link to the participation window
+	 * 
+	 * @param string role
+	 * @param int num
+	 * @return string
+	 * @access public
+	 * @since 2/24/09
+	 */
+	ParticipantPanel.prototype.getActionsLink = function (role, num) {
+		var link = document.createElement('a');
+		link.href = Harmoni.quickUrl('participation', 'actions', {participant: this.agentId, node: this.nodeId, role:role});
+		link.innerHTML = num;
+		link.onclick = function () {
+			var siteMapWindow = window.open(this.href, 'site_map', 'width=600,height=600,resizable=yes,scrollbars=yes');
+			siteMapWindow.focus();
+			return false;
+		}
+		return link;
 	}
