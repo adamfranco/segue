@@ -58,3 +58,7 @@
 	.participant_panel h4 {
 		margin-bottom: 3px;
 	}
+	
+	.participant_panel h4:first-child {
+		margin-top: 3px;
+	}
