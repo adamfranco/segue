@@ -282,13 +282,6 @@ class EduMiddleburyParticipationPlugin
 			$this->_showTrackLink = false;
 		}
 		
-		// Make sure that the Polyphony AgentInfo javascript is available.
-		$harmoni = Harmoni::instance();
-		$outputHandler = $harmoni->getOutputHandler();
-		$outputHandler->setHead(
-			$outputHandler->getHead()
-			."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/AgentInfoPanel.js'></script>");
-		
 		$this->addHeadJavascript('ParticipantPanel.js');
 		$this->addHeadCss('Participation.css');
 			
