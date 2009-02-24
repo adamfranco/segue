@@ -367,7 +367,7 @@ END;
 	 */
 	private function _ajaxUrl ( $parameters = array() ) {
 		$harmoni = Harmoni::instance();
-		$url = $harmoni->request->mkURL($this->updateModule, $this->updateAction);
+		$url = SiteDispatcher::mkURL($this->updateModule, $this->updateAction);
 	
 		$harmoni->request->startNamespace('plugin_manager');
 		
