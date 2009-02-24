@@ -305,7 +305,7 @@ class EduMiddleburyParticipationPlugin
 			
 		if ($this->getFieldValue('edit') && $this->canModify()) {			
 			
-			print "<div class='participant_group_header'>"._("Show Members of Group?")."</div>";
+			print "<div class='participant_group_header'>"._("Show members of following groups.")."</div>";
 			print "\n".$this->formStartTagWithAction();
 			print "<div>";
 
@@ -329,16 +329,18 @@ class EduMiddleburyParticipationPlugin
 		} else if ($this->canView()) {
 
 			// Direct members of the group
-			$title = "<div class='participant_header'>"._("Site Members")."</div>";
-			print $this->printMemberIterator($group->getMembers(false), $title);
+			print "<div class='participant_header'>"._("Site Members")."</div>";
+			print $this->printMemberIterator($group->getMembers(false));
 
 			// Members of subgroups
 			while ($subgroups->hasNext()) {
 				$subgroup = $subgroups->next();
 				
-				// if 
-				$title = "<div class='participant_group_header'>".$subgroup->getDisplayName()."</div>";
-				print $this->printMemberIterator($subgroup->getMembers(false), $title);
+				print "<div class='participant_group_header'>".$subgroup->getDisplayName()."</div>";
+				
+				if (!in_array($subgroup->getId()->getIdString(), $hiddenGroups)) {
+					print $this->printMemberIterator($subgroup->getMembers(false));
+				}
 			}
 			
 			// Other Participants
@@ -348,8 +350,9 @@ class EduMiddleburyParticipationPlugin
 					$notPrintedParticipants[] = $participant;
 				}
 			}
-			$title = "<br/><div class='participant_header'>"._("Other Participants")."</div>";
-			print $this->printParticipants($notPrintedParticipants, $title);
+			
+			print "<br/><div class='participant_header'>"._("Other Participants")."</div>";
+			print $this->printParticipants($notPrintedParticipants);
 			
 			if($this->shouldShowControls()){
 				print "\n<div style='text-align: right; white-space: nowrap;'>";
@@ -371,12 +374,12 @@ class EduMiddleburyParticipationPlugin
  	 * @access protected
  	 * @since 2/18/09
  	 */
- 	protected function printMemberIterator ($groupMembers, $title) {
+ 	protected function printMemberIterator ($groupMembers) {
  		$members = array();
 		while ($groupMembers->hasNext()) {
 			$members[] = $groupMembers->next();
 		}
-		return $this->printParticipants($members, $title);
+		return $this->printParticipants($members);
  	}
  	
  	/**
@@ -388,7 +391,7 @@ class EduMiddleburyParticipationPlugin
  	 * @access public
  	 * @since 2/18/09
  	 */
- 	public function printParticipants (array $participants, $title) {
+ 	public function printParticipants (array $participants) {
  		ob_start();
  		
  		$sortKeys = array();	
@@ -398,7 +401,7 @@ class EduMiddleburyParticipationPlugin
 		
 		array_multisort($sortKeys, array_keys($participants), SORT_ASC, $participants);
 		
-		print $title;
+		//print $title;
 		
 		foreach ($participants as $participant) {
 			print $this->printParticipant ($participant);
