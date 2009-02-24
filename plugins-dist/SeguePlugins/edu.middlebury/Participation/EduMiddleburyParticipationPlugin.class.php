@@ -1,7 +1,7 @@
 <?php
 /**
  * @since 10/25/07
- * @package segue.plugin_manager
+ * @package segue.plugins.Segue
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/participation/ParticipationView.class.php");
  * use of, please see the SeguePluginsAPI.abstract.php
  * 
  * @since 10/25/07
- * @package segue.plugin_manager
+ * @package segue.plugins.Segue
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
