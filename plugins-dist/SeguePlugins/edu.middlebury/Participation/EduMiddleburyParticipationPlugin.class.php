@@ -159,12 +159,13 @@ class EduMiddleburyParticipationPlugin
 		}
 			
 		ob_start();
+		print "\n<script type='text/javascript' src='".$this->getPublicFileUrl('ParticipantPanel.js')."'></script>";
 		
 		// get all site members
 		$group = $this->_node->getMembersGroup();
 		
 		// Direct members of the group
-		$title = "<div class='participant_header'>"._("Site Members")."</div>";
+		$title = "\n<div class='participant_header'>"._("Site Members")."</div>";
 		print $this->printMemberIterator($group->getMembers(false), $title);
 		
 		// Members of sub-groups
@@ -248,21 +249,15 @@ class EduMiddleburyParticipationPlugin
  		$harmoni->request->startNamespace(null);
  		ob_start();
  		
-		print "<div class='participant_list'>";
+		print "\n\t<div class='participant_list'>";
 		
 		// show link to more info only if authenticated user is an editor
 		if ($this->_showTrackLink == true) {
 			$trackUrl = SiteDispatcher::quickURL('participation','actions', 
 			array('node' => $this->_node->getId(), 'participant' => $participant->getId()->getIdString()));				
 
-			//print "<a href='";			
-			print "<a target='_blank' href='".$trackUrl."'";
-			print ' onclick="';
-			print "var url = '".$trackUrl."'; ";
-			print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
-			print "return false;";
-			print '"';
-			print ">".$participant->getDisplayName()."</a>";
+			print "\n\t\t<a href='#' onclick=\"ParticipantPanel.run('".addslashes($participant->getDisplayName())."', '".addslashes($participant->getId()->getIdString())."', this); return false;\">";
+			print $participant->getDisplayName()."</a>";
 		} else {
 			print $participant->getDisplayName();
 		}
