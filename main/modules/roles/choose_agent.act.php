@@ -140,7 +140,10 @@ class choose_agentAction
 			foreach ($agents as $agent) {
 				print "\n\t<tr class='search_result_item'>";
 				print "\n\t\t<td class='color$i'>";
-				print "\n\t\t\t".$agent->getDisplayName();
+				print "\n\t\t\t<a href='#' onclick=\"AgentInfoPanel.run('".addslashes($agent->getId()->getIdString())."', '".addslashes($agent->getDisplayName())."', this); return false;\">";
+				print $agent->getDisplayName();
+				print "</a>";
+				
 				
 				if ($agent->getId()->isEqual($membersId)) {
 					$url = SiteDispatcher::quickURL('agent', 'modify_members', array(

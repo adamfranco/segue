@@ -1,7 +1,7 @@
 <?php
 /**
  * @since 10/25/07
- * @package segue.plugin_manager
+ * @package segue.plugins.Segue
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
@@ -22,7 +22,7 @@ require_once(MYDIR."/main/modules/participation/ParticipationView.class.php");
  * use of, please see the SeguePluginsAPI.abstract.php
  * 
  * @since 10/25/07
- * @package segue.plugin_manager
+ * @package segue.plugins.Segue
  * 
  * @copyright Copyright &copy; 2007, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
@@ -281,6 +281,16 @@ class EduMiddleburyParticipationPlugin
 		} else {
 			$this->_showTrackLink = false;
 		}
+		
+		// Make sure that the Polyphony AgentInfo javascript is available.
+		$harmoni = Harmoni::instance();
+		$outputHandler = $harmoni->getOutputHandler();
+		$outputHandler->setHead(
+			$outputHandler->getHead()
+			."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/AgentInfoPanel.js'></script>");
+		
+		$this->addHeadJavascript('ParticipantPanel.js');
+		$this->addHeadCss('Participation.css');
 			
 		ob_start();
 		
@@ -411,21 +421,12 @@ class EduMiddleburyParticipationPlugin
  		$harmoni->request->startNamespace(null);
  		ob_start();
  		
-		print "<div class='participant_list'>";
+		print "\n\t<div class='participant_list'>";
 		
 		// show link to more info only if authenticated user is an editor
 		if ($this->_showTrackLink == true) {
-			$trackUrl = SiteDispatcher::quickURL('participation','actions', 
-			array('node' => $this->_node->getId(), 'participant' => $participant->getId()->getIdString()));				
-
-			//print "<a href='";			
-			print "<a target='_blank' href='".$trackUrl."'";
-			print ' onclick="';
-			print "var url = '".$trackUrl."'; ";
-			print "window.open(url, 'site_map', 'width=500,height=600,resizable=yes,scrollbars=yes'); ";
-			print "return false;";
-			print '"';
-			print ">".$participant->getDisplayName()."</a>";
+			print "\n\t\t<a href='#' onclick=\"ParticipantPanel.run('".addslashes($participant->getDisplayName())."', '".addslashes($participant->getId()->getIdString())."', '".addslashes($this->_node->getId())."', '".SiteDispatcher::quickURL('roles', 'modify', array('agent' => $participant->getId()->getIdString(), 'returnModule' => $harmoni->request->getRequestedModule(), 'returnAction' => $harmoni->request->getRequestedAction()))."'.urlDecodeAmpersands(), this); return false;\">";
+			print $participant->getDisplayName()."</a>";
 		} else {
 			print $participant->getDisplayName();
 		}

@@ -346,60 +346,6 @@
 	}
 	
 /*********************************************************
- * Participation
- *********************************************************/
-
-	.participation_row {
-		font-size: 10px;
-		border-bottom: 1px dotted;
-		padding: 3px;		
-	}
-	
-	.participant_row {
-		font-size: 12px;
-		border-bottom: 1px dotted;
-		padding: 3px;		
-	}
-
-	.participant_list {
-		font-size: 11px;
-		border-bottom: 1px dotted;
-		padding: 3px;		
-	}
-	
-	.participant_header {
-		font-size: 12px;
-		border-bottom: 1px solid;
-		padding-top: 1px;		
-	}
-
-	.participant_group_header {
-		font-style: italic;
-		font-size: 11px;
-		border-bottom: 1px solid;
-		padding: 3px;		
-	}
-	
-	.participation_profile {
-		text-align: center;
-		font-size: 9px;
-		border-bottom: 1px dotted;
-	}
-
-	.pushdown a {
-		border: 1px dotted #CCCCCC;
-		float: right;
-		clear: none;
-	}
-
-	.pushdown a:hover {
-		border: 1px solid #990000;
-		float: right;
-		clear: none;
-	}
-
-	
-/*********************************************************
  * Comments
  *********************************************************/
 	div.comment_help {
