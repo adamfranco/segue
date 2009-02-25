@@ -54,6 +54,11 @@
 		<fix author='adam' date='2009-02-25' ref='2614017' reftype='bug'  reporter='claudia_cooper'>
 			Text-Editor: EMail "mailto:" links now use plain HTML and are not stripped out by security checks.
 		</fix>
+		<important author='adam' date='2009-02-25' ref='' reftype='fr'  reporter='alex'>
+			Size of agent_external_children columns has been increased from 70 characters to 140 characters to prevent long DNs from being truncated.
+			
+			Run the "agent_external_children field length" updater under Admin Tools --&gt; Segue Updates to make this change on existing systems.
+		</important>
 	</version>
 	<version number="2.2.8.2" date="The Future">
 		<releaseNotes>
