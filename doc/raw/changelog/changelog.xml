@@ -46,6 +46,11 @@
 		<fix author='adam' date='2009-02-25' ref='2526864' reftype='bug'  reporter='alex'>
 			UI2: Fixed issue where the header-footer mode would revert to edit mode after making changes to the header.
 		</fix>
+		<fix author='adam' date='2009-02-25' ref='2549745' reftype='bug'  reporter='alex'>
+			Text-Templates/Wiki: Custom video splash-images hosted in Segue now work. 
+			The video player requires a filename with the .jpg extension for splash images.
+			The wiki-resolver now uses the global media-file url-builder which includes the file name at the end of the URL. 
+		</fix>
 	</version>
 	<version number="2.2.8.2" date="The Future">
 		<releaseNotes>
