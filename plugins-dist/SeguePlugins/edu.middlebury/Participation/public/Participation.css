@@ -26,6 +26,12 @@
 		margin-top: 10px;
 	}
 	
+	.participant_plugin_list {
+/*		border-bottom: 1px dotted;*/
+		font-size: 11px;
+		padding: 3px;
+	}
+	
 /*********************************************************
  * Participant Panel
  *********************************************************/

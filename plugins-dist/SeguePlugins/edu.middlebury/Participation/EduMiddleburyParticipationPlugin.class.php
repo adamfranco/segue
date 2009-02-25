@@ -469,7 +469,7 @@ class EduMiddleburyParticipationPlugin
  		$harmoni->request->startNamespace(null);
  		ob_start();
  		
-		print "\n\t<div class='participant_list'>";
+		print "\n\t<div class='participant_plugin_list'>";
 		
 		// show link to more info only if authenticated user is an editor
 		if ($this->_showTrackLink == true) {
