@@ -10,9 +10,22 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.9.0" date="The Future">
+	<version number="2.2.9.0" date="2009-02-25">
 		<releaseNotes>
+			This release of Segue adds a new "Site-Members" feature. Every site has
+			a "Site-Members" group that can be used for setting the roles on many users
+			at once. It can also be used in conjunction with the new "Join Site" plugin
+			to enable self-registration (with moderation) to the site. This release also
+			fixes a large number of bugs. See the change log for more details.
 			
+			----
+			
+			Upgrades from versions prior to 2.2.9.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
 		</releaseNotes>
 		<new author='adam' date='2009-02-17' ref='748534' reftype='fr'  reporter=''>
 			New "Site-Members" group enables: associating users with a site, setting 
@@ -59,11 +72,6 @@
 			
 			Run the "agent_external_children field length" updater under Admin Tools --&gt; Segue Updates to make this change on existing systems.
 		</important>
-	</version>
-	<version number="2.2.8.2" date="The Future">
-		<releaseNotes>
-			
-		</releaseNotes>
 		<fix author='adam' date='2009-02-12' ref='' reftype='bug'  reporter='brian_robison'>
 			Plugins: Audio Player now allows use of 'audio/mpeg3' MIME type sometimes used by OS X.
 		</fix>
