@@ -40,6 +40,9 @@
 		<fix author='adam' date='2009-02-25' ref='2593676' reftype='bug'  reporter='alex'>
 			Text-Templates: Audio text-template now doesn't cause the 'read more' links to appear.
 		</fix>
+		<fix author='adam' date='2009-02-25' ref='2613501' reftype='bug'  reporter='alex'>
+			Roles: Roles wizard now doesn't loose the current editing module when changing site-membership.
+		</fix>
 	</version>
 	<version number="2.2.8.2" date="The Future">
 		<releaseNotes>
