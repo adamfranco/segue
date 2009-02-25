@@ -75,6 +75,9 @@
 		<fix author='adam' date='2009-02-12' ref='' reftype='bug'  reporter='brian_robison'>
 			Plugins: Audio Player now allows use of 'audio/mpeg3' MIME type sometimes used by OS X.
 		</fix>
+		<fix author='adam' date='2009-02-25' ref='' reftype='bug'  reporter='stephanie_monasky'>
+			Site Display: Invalid menu items now log errors, but do not kill the site rendering process. 
+		</fix>
 	</version>
 	<version number="2.2.8.1" date="2009-02-10">
 		<releaseNotes>
@@ -3554,6 +3557,10 @@
 		</reporter>
 		<reporter short="brian_robison">
 			<name>Brian Robison</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short='stephanie_monasky'>
+			<name>Stephanie Monasky</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>

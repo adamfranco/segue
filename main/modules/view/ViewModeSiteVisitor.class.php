@@ -735,6 +735,13 @@ class ViewModeSiteVisitor
 		$hasChildComponents = false;
 		$i = 0;
 		foreach ($organizer->getSortedSubcomponents() as $child) {
+			try {
+				ArgumentValidator::validate($child, ExtendsValidatorRule::getRule('SiteComponent'));
+			} catch (Exception $e) {
+				HarmoniErrorHandler::logException($e);
+				continue;
+			}
+			
 			$childGuiComponents = $child->acceptVisitor($this, true);
 			if ($childGuiComponents === false || (is_array($childGuiComponents) && !count($childGuiComponents))) {
 				// do nothing
