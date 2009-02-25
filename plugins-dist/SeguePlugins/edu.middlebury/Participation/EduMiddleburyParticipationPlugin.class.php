@@ -30,7 +30,7 @@ require_once(MYDIR."/main/modules/participation/ParticipationView.class.php");
  * @version $Id: SeguePluginsTemplate.abstract.php,v 1.5 2008/01/25 18:47:03 adamfranco Exp $
  */
 class EduMiddleburyParticipationPlugin
-	extends SeguePlugin
+	extends SegueAjaxPlugin
 {
 
 	
@@ -122,7 +122,7 @@ class EduMiddleburyParticipationPlugin
  	/**
  	 * Answer the node
  	 * 
- 	 * @return Participation_View
+ 	 * @return SiteComponent
  	 * @access private
  	 * @since 2/25/09
  	 */
@@ -292,7 +292,7 @@ class EduMiddleburyParticipationPlugin
  	 * @since 1/12/06
  	 */
  	public function getMarkup () {
- 		
+ 		$harmoni = Harmoni::instance();
 		$authZ = Services::getService("AuthZ");
 		$idManager = Services::getService("Id");		
 		
@@ -313,6 +313,7 @@ class EduMiddleburyParticipationPlugin
 		
 		// get all site members
 		$group = $this->getNode()->getMembersGroup();
+		//printpre ($group);
 				
 		// get all sub-groups in site members group
 		$subgroups = $group->getGroups(false);
@@ -324,8 +325,9 @@ class EduMiddleburyParticipationPlugin
 			
 			print "<div class='participant_group_header'>"._("Show members of following groups:")."</div>";
 			print "\n".$this->formStartTagWithAction();
-			print "<div>";
-
+			print "<div>";			
+			
+			$memberCount = 0;
 			while ($subgroups->hasNext()) {
 				$subgroup = $subgroups->next();
 				print "<div class='participant_list'>";
@@ -334,9 +336,23 @@ class EduMiddleburyParticipationPlugin
 					print " checked";				
 				print ">".$subgroup->getDisplayName();
 				print "</div>";
-				
+				$memberCount++;
 			}
+			
+			$memberCount = $memberCount + $this->getMemberCount($group->getMembers(false));
+			if ($memberCount == 0) {
+			
+				print "\n<div style='font-size: smaller'>";
+				print "no members have been added to the site member group";
+				print "</div>";
+			}
+			$url = SiteDispatcher::quickURL('agent', 'modify_members', array(
+			'site' => RequestContext::value('site'),
+			'returnModule' => $harmoni->request->getRequestedModule(),
+			'returnAction' => $harmoni->request->getRequestedAction()
+			));
 			print "<br/>";
+			print "<div align='left'><a href='".$url."'>"._("Add/Edit Members")."</a></div>";
 			print "<br/>";
 			print "<input type='submit' value='Update' name='".$this->getFieldName('submit')."'>\n";
 			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
@@ -382,11 +398,28 @@ class EduMiddleburyParticipationPlugin
  		return ob_get_clean();
  	}
  	
+
+ 	/**
+ 	 * Get all members of the site
+ 	 * 
+ 	 * @param object $groupMembers
+ 	 * @param string $title
+ 	 * @return string
+ 	 * @access protected
+ 	 * @since 2/18/09
+ 	 */
+ 	protected function getMemberCount ($groupMembers) {
+ 		$members = array();
+		while ($groupMembers->hasNext()) {
+			$members[] = $groupMembers->next();
+		}
+		return count($members);
+ 	}
+
  	/**
  	 * Print out the members in an iterator
  	 * 
  	 * @param object $groupMembers
- 	 * @param string $title
  	 * @return string
  	 * @access protected
  	 * @since 2/18/09
@@ -403,7 +436,6 @@ class EduMiddleburyParticipationPlugin
  	 * Print out an array of Agents or Particapnts
  	 * 
  	 * @param array $participants Agent objects or Particpation_Particpant objects
- 	 * @param string $title
  	 * @return string
  	 * @access public
  	 * @since 2/18/09
@@ -417,8 +449,6 @@ class EduMiddleburyParticipationPlugin
 		}
 		
 		array_multisort($sortKeys, array_keys($participants), SORT_ASC, $participants);
-		
-		//print $title;
 		
 		foreach ($participants as $participant) {
 			print $this->printParticipant ($participant);
