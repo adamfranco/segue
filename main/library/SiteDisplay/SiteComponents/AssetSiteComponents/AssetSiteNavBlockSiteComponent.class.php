@@ -198,9 +198,14 @@ class AssetSiteNavBlockSiteComponent
 			$nullProperties = new HarmoniProperties($nullType);
 			
 			$containerGroup = $agentMgr->getGroup($idMgr->getId('edu.middlebury.segue.site-members'));
+			try {
+				$slotName = $this->getSlot()->getShortname();
+			} catch (Exception $e) {
+				$slotName = 'Unknown';
+			}
 			$group = $agentMgr->createGroup('Site-Members', 
 					$groupType, 
-					'The agents associated with the site "'.$this->getId().'" at "'.$this->getSlot()->getShortname().'".',
+					'The agents associated with the site "'.$this->getId().'" at "'.$slotName.'".',
 					$nullProperties,
 					$membersId);
 			
@@ -219,6 +224,7 @@ class AssetSiteNavBlockSiteComponent
 	 */
 	function deleteAndCleanUpData () {
 		// Delete our group.
+		
 		$group = $this->getMembersGroup();
 		$members = $group->getMembers(FALSE);
 		while ($members->hasNext()) {
