@@ -99,6 +99,12 @@ located under Admin Tools --> Segue Updates.
 		used by OS X.
 		(2009-02-12 - Adam Franco)
 		(reported by Brian Robison of Middlebury College)
+		
+	* Bug Fix: 
+		Site Display: Invalid menu items now log errors, but do not kill the site
+		rendering process.
+		(2009-02-25 - Adam Franco)
+		(reported by Stephanie Monasky of Middlebury College)
 	
 
 
