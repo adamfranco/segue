@@ -321,42 +321,40 @@ class EduMiddleburyParticipationPlugin
 		// get member hidden groups
 		$hiddenGroups = $this->getMembersHiddenGroups();
 			
-		if ($this->getFieldValue('edit') && $this->canModify()) {			
+		if ($this->getFieldValue('edit') && $this->canModify()) {
+			$harmoni = Harmoni::instance();
+			$harmoni->request->startNamespace(null);
+			$membersUrl = SiteDispatcher::quickURL('agent', 'modify_members', array(
+				'returnModule' => $this->localModule,
+				'returnAction' => $this->localAction
+				));
+			$rolesUrl = SiteDispatcher::quickURL('roles', 'modify', array(
+				'agent' => $group->getId()->getIdString(),
+				'returnModule' => $this->localModule,
+				'returnAction' => $this->localAction
+				));
+			$harmoni->request->endNamespace();
+			print "\n<div class='participation_ext_link'><a href='".$membersUrl."'>"._("Add/Edit Site-Members &raquo;")."</a></div>";
+			print "\n<div class='participation_ext_link'><a href='".$rolesUrl."'>"._("View/Edit Roles of Site-Members &raquo;")."</a></div>";
 			
-			print "<div class='participant_group_header'>"._("Show members of following groups:")."</div>";
-			print "\n".$this->formStartTagWithAction();
-			print "<div>";			
+			print "\n".$this->formStartTagWithAction();	
 			
-			$memberCount = 0;
-			while ($subgroups->hasNext()) {
-				$subgroup = $subgroups->next();
-				print "<div class='participant_list'>";
-				print "\n\t<input name='".$this->getFieldName($subgroup->getId()->getIdString())."' value='true' type='checkbox' ";
-				if (!in_array($subgroup->getId()->getIdString(), $hiddenGroups))
-					print " checked";				
-				print ">".$subgroup->getDisplayName();
-				print "</div>";
-				$memberCount++;
+			if ($subgroups->hasNext()) {
+				print "\n<div class='participant_group_header'>"._("Show members of following groups:")."</div>";
+				
+				while ($subgroups->hasNext()) {
+					$subgroup = $subgroups->next();
+					print "\n<div class='participant_list'>";
+					print "\n\t<input name='".$this->getFieldName($subgroup->getId()->getIdString())."' value='true' type='checkbox' ";
+					if (!in_array($subgroup->getId()->getIdString(), $hiddenGroups))
+						print " checked";				
+					print ">".$subgroup->getDisplayName();
+					print "\n</div>";
+				}
 			}
 			
-			$memberCount = $memberCount + $this->getMemberCount($group->getMembers(false));
-			if ($memberCount == 0) {
-			
-				print "\n<div style='font-size: smaller'>";
-				print "no members have been added to the site member group";
-				print "</div>";
-			}
-			$url = SiteDispatcher::quickURL('agent', 'modify_members', array(
-			'site' => RequestContext::value('site'),
-			'returnModule' => $harmoni->request->getRequestedModule(),
-			'returnAction' => $harmoni->request->getRequestedAction()
-			));
-			print "<br/>";
-			print "<div align='left'><a href='".$url."'>"._("Add/Edit Members")."</a></div>";
-			print "<br/>";
-			print "<input type='submit' value='Update' name='".$this->getFieldName('submit')."'>\n";
-			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/>";
-			print "</div>";
+			print "\n<div class='participation_buttons'>\n\t<input type='submit' value='Update' name='".$this->getFieldName('submit')."'>\n";
+			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/></div>";
 			print "</form>";
 		
 		} else if ($this->canView()) {
@@ -475,7 +473,7 @@ class EduMiddleburyParticipationPlugin
 		
 		// show link to more info only if authenticated user is an editor
 		if ($this->_showTrackLink == true) {
-			print "\n\t\t<a href='#' onclick=\"ParticipantPanel.run('".addslashes($participant->getDisplayName())."', '".addslashes($participant->getId()->getIdString())."', '".addslashes($this->getNode()->getId())."', '".SiteDispatcher::quickURL('roles', 'modify', array('agent' => $participant->getId()->getIdString(), 'returnModule' => $harmoni->request->getRequestedModule(), 'returnAction' => $harmoni->request->getRequestedAction()))."'.urlDecodeAmpersands(), this); return false;\">";
+			print "\n\t\t<a href='#' onclick=\"ParticipantPanel.run('".addslashes($participant->getDisplayName())."', '".addslashes($participant->getId()->getIdString())."', '".addslashes($this->getNode()->getId())."', '".SiteDispatcher::quickURL('roles', 'modify', array('agent' => $participant->getId()->getIdString(), 'returnModule' => $this->localModule, 'returnAction' => $this->localAction))."'.urlDecodeAmpersands(), this); return false;\">";
 			print $participant->getDisplayName()."</a>";
 		} else {
 			print $participant->getDisplayName();

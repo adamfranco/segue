@@ -1405,6 +1405,8 @@ abstract class SeguePluginsDriver
 			{
 				$this->_baseUrl = SiteDispatcher::mkURL($this->localModule, $this->localAction);
 			} else {
+				$this->localModule = $harmoni->request->getRequestedModule();
+				$this->localAction = $harmoni->request->getRequestedAction();
 				$this->_baseUrl = SiteDispatcher::mkURL();
 			}
 			

@@ -17,7 +17,15 @@
 		border-bottom: 1px solid;
 		padding: 3px;		
 	}
-
+	
+	.participation_ext_link {
+		margin-bottom: 5px;
+	}
+	
+	.participation_buttons {
+		margin-top: 10px;
+	}
+	
 /*********************************************************
  * Participant Panel
  *********************************************************/
