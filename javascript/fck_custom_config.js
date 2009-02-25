@@ -22,6 +22,8 @@ FCKConfig.FlashUpload = false ;
 FCKConfig.LinkBrowser = false ;
 FCKConfig.FlashBrowser = false ;
 
+FCKConfig.EMailProtection = 'none' ; // 'none' | 'encode' | 'function'
+
 FCKConfig.ToolbarSets["ContentBlock"] = [
 	['FitWindow','Source','-','Preview','-','Templates'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-'],

@@ -51,6 +51,9 @@
 			The video player requires a filename with the .jpg extension for splash images.
 			The wiki-resolver now uses the global media-file url-builder which includes the file name at the end of the URL. 
 		</fix>
+		<fix author='adam' date='2009-02-25' ref='2614017' reftype='bug'  reporter='claudia_cooper'>
+			Text-Editor: EMail "mailto:" links now use plain HTML and are not stripped out by security checks.
+		</fix>
 	</version>
 	<version number="2.2.8.2" date="The Future">
 		<releaseNotes>
