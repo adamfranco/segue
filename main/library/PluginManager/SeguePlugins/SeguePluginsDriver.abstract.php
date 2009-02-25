@@ -385,6 +385,38 @@ abstract class SeguePluginsDriver
 	}
 	
 	/**
+	 * Answer the local module to use in non-internal-to-the-plugin links.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/25/09
+	 */
+	final public function getLocalModule () {
+		if (isset($this->localModule) && $this->localModule && isset($this->localAction) && $this->localAction) {
+			return $this->localModule;
+		} else {
+			$harmoni = Harmoni::instance();
+			return $harmoni->request->getRequestedModule();
+		}
+	}
+	
+	/**
+	 * Answer the local action to use in non-internal-to-the-plugin links.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/25/09
+	 */
+	public function getLocalAction () {
+		if (isset($this->localModule) && $this->localModule && isset($this->localAction) && $this->localAction) {
+			return $this->localModule;
+		} else {
+			$harmoni = Harmoni::instance();
+			return $harmoni->request->getRequestedAction();
+		}
+	}
+	
+	/**
 	 * Given a block of HTML text, replace any local-system urls with tokenized
 	 * placeholders. These placeholders can the be translated back at display time
 	 * in order to match the current system base-url 
@@ -1405,8 +1437,6 @@ abstract class SeguePluginsDriver
 			{
 				$this->_baseUrl = SiteDispatcher::mkURL($this->localModule, $this->localAction);
 			} else {
-				$this->localModule = $harmoni->request->getRequestedModule();
-				$this->localAction = $harmoni->request->getRequestedAction();
 				$this->_baseUrl = SiteDispatcher::mkURL();
 			}
 			

@@ -325,13 +325,13 @@ class EduMiddleburyParticipationPlugin
 			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace(null);
 			$membersUrl = SiteDispatcher::quickURL('agent', 'modify_members', array(
-				'returnModule' => $this->localModule,
-				'returnAction' => $this->localAction
+				'returnModule' => $this->getLocalModule(),
+				'returnAction' => $this->getLocalAction()
 				));
 			$rolesUrl = SiteDispatcher::quickURL('roles', 'modify', array(
 				'agent' => $group->getId()->getIdString(),
-				'returnModule' => $this->localModule,
-				'returnAction' => $this->localAction
+				'returnModule' => $this->getLocalModule(),
+				'returnAction' => $this->getLocalAction()
 				));
 			$harmoni->request->endNamespace();
 			print "\n<div class='participation_ext_link'><a href='".$membersUrl."'>"._("Add/Edit Site-Members &raquo;")."</a></div>";
@@ -473,7 +473,7 @@ class EduMiddleburyParticipationPlugin
 		
 		// show link to more info only if authenticated user is an editor
 		if ($this->_showTrackLink == true) {
-			print "\n\t\t<a href='#' onclick=\"ParticipantPanel.run('".addslashes($participant->getDisplayName())."', '".addslashes($participant->getId()->getIdString())."', '".addslashes($this->getNode()->getId())."', '".SiteDispatcher::quickURL('roles', 'modify', array('agent' => $participant->getId()->getIdString(), 'returnModule' => $this->localModule, 'returnAction' => $this->localAction))."'.urlDecodeAmpersands(), this); return false;\">";
+			print "\n\t\t<a href='#' onclick=\"ParticipantPanel.run('".addslashes($participant->getDisplayName())."', '".addslashes($participant->getId()->getIdString())."', '".addslashes($this->getNode()->getId())."', '".SiteDispatcher::quickURL('roles', 'modify', array('agent' => $participant->getId()->getIdString(), 'returnModule' => $this->getLocalModule(), 'returnAction' => $this->getLocalAction()))."'.urlDecodeAmpersands(), this); return false;\">";
 			print $participant->getDisplayName()."</a>";
 		} else {
 			print $participant->getDisplayName();
@@ -576,7 +576,7 @@ class EduMiddleburyParticipationPlugin
  	 * @since 5/9/07
  	 */
  	public function supportsWizard () {
- 		return false;
+ 		return true;
  	}
  	/**
  	 * Return the a {@link WizardComponent} to allow editing of your
@@ -587,7 +587,46 @@ class EduMiddleburyParticipationPlugin
  	 * @since 5/8/07
  	 */
  	public function getWizardComponent () {
- 		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
+ 		$wrapper = new WComponentCollection;
+ 		ob_start();
+ 		
+ 		$group = $this->getNode()->getMembersGroup();
+		$subgroups = $group->getGroups(false);
+		$hiddenGroups = $this->getMembersHiddenGroups();
+ 		
+ 		$harmoni = Harmoni::instance();
+		$harmoni->request->startNamespace(null);
+		$membersUrl = SiteDispatcher::quickURL('agent', 'modify_members', array(
+			'returnModule' => $this->getLocalModule(),
+			'returnAction' => $this->getLocalAction()
+			));
+		$rolesUrl = SiteDispatcher::quickURL('roles', 'modify', array(
+			'agent' => $group->getId()->getIdString(),
+			'returnModule' => $this->getLocalModule(),
+			'returnAction' => $this->getLocalAction()
+			));
+		$harmoni->request->endNamespace();
+		print "\n<p class='participation_ext_link'><a href='".$membersUrl."'>"._("Add/Edit Site-Members &raquo;")."</a></p>";
+		print "\n<p class='participation_ext_link'><a href='".$rolesUrl."'>"._("View/Edit Roles of Site-Members &raquo;")."</a></p>";
+				
+		if ($subgroups->hasNext()) {
+			print "\n<h4>"._("Show members of following groups:")."</h4>";
+			
+			while ($subgroups->hasNext()) {
+				$subgroup = $subgroups->next();
+				
+				$propertyId = md5($subgroup->getId()->getIdString());
+				$property = $wrapper->addComponent($propertyId,
+					WCheckBox::withLabel($subgroup->getDisplayName()));
+				if (!in_array($subgroup->getId()->getIdString(), $hiddenGroups))
+					$property->setChecked(true);
+				
+				print "\n\n[[".$propertyId."]]<br/>";
+			}
+		}
+		
+		$wrapper->setContent(ob_get_clean());
+ 		return $wrapper;
  	}
  	
  	/**
@@ -599,7 +638,19 @@ class EduMiddleburyParticipationPlugin
  	 * @since 5/8/07
  	 */
  	public function updateFromWizard ( $values ) {
- 		print "<p>Override ".__CLASS__."::".__FUNCTION__."() to enable editing of your pluggin in Segue Classic Mode.</p>";
+ 		// get all site members
+		$group = $this->getNode()->getMembersGroup();				
+		// get all sub-groups in site members group
+		$subgroups = $group->getGroups(false);
+		while ($subgroups->hasNext()) {
+			$subgroup = $subgroups->next();
+			
+			if (!$values[md5($subgroup->getId()->getIdString())]) {
+				$this->addMembersHiddenGroup($subgroup->getId()->getIdString());
+			} else {
+				$this->removeMembersHiddenGroup($subgroup->getId()->getIdString());
+			}
+		}
  	}
  	
 }
