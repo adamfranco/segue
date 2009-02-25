@@ -64,10 +64,20 @@ class choose_agentAction
 			."\n\t\t<script type='text/javascript' src='".POLYPHONY_PATH."/javascript/AgentInfoPanel.js'></script>");
 		
 		$centerPane = $this->getActionRows();
-		$qualifierId = $this->getSiteId();
-		$cacheName = get_class($this).'_'.$qualifierId->getIdString();
 		
-		$this->runWizard ( $cacheName, $centerPane );
+		$this->runWizard ( $this->getCacheName(), $centerPane );
+	}
+	
+	/**
+	 * Answer the cache name for this wizard
+	 * 
+	 * @return string
+	 * @access protected
+	 * @since 2/25/09
+	 */
+	protected function getCacheName () {
+		$qualifierId = $this->getSiteId();
+		return get_class($this).'_'.$qualifierId->getIdString();
 	}
 	
 	/**
@@ -93,6 +103,9 @@ class choose_agentAction
 				"<div>\n" .
 				"[[_steps]]" .
 				"</div>\n");
+		
+		$wizard->_returnModule = RequestContext::value('returnModule');
+		$wizard->_returnAction = RequestContext::value('returnAction');
 		
 		$cancelButton = $wizard->getChild('_cancel');
 		$cancelButton->setLabel(_("Close"));
@@ -146,11 +159,14 @@ class choose_agentAction
 				
 				
 				if ($agent->getId()->isEqual($membersId)) {
-					$url = SiteDispatcher::quickURL('agent', 'modify_members', array(
-					'site' => RequestContext::value('site'),
-					'returnModule' => $harmoni->request->getRequestedModule(),
-					'returnAction' => $harmoni->request->getRequestedAction()
-					));
+					$harmoni->request->forget('returnAction');
+					$harmoni->request->forget('returnModule');
+					$harmoni->request->forget('agent');
+					$url = SiteDispatcher::quickURL('agent', 'modify_members');
+					$harmoni->request->passthrough('returnAction');
+					$harmoni->request->passthrough('returnModule');
+					$harmoni->request->passthrough('agent');
+					
 					print "\n\t\t\t <button onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>"._("Add/Remove Members")."</button>";
 					print " (".Help::link('Site-Members').")";
 					print "\n<br/>";
@@ -196,14 +212,19 @@ class choose_agentAction
 	 */
 	function getReturnUrl () {		
 		$harmoni = Harmoni::instance();
-
+		$wizard = $this->getWizard($this->getCacheName());
+	
 		if (RequestContext::value('returnModule'))
 			$module = RequestContext::value('returnModule');
+		else if (isset($wizard->_returnModule) && $wizard->_returnModule)
+			$module = $wizard->_returnModule;
 		else
 			$module = 'ui1';
 		
 		if (RequestContext::value('returnAction'))
 			$action = RequestContext::value('returnAction');
+		else if (isset($wizard->_returnAction) && $wizard->_returnAction)
+			$action = $wizard->_returnAction;
 		else
 			$action = 'editview';
 			

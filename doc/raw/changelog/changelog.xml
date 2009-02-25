@@ -37,6 +37,28 @@
 		<change author='adam' date='2009-02-24' ref='' reftype='fr'  reporter=''>
 			Roles: Choose-Agent window now includes Agent-info links for all agents, not just search results.
 		</change>
+		<fix author='adam' date='2009-02-25' ref='2593676' reftype='bug'  reporter='alex'>
+			Text-Templates: Audio text-template now doesn't cause the 'read more' links to appear.
+		</fix>
+		<fix author='adam' date='2009-02-25' ref='2613501' reftype='bug'  reporter='alex'>
+			Roles: Roles wizard now doesn't loose the current editing module when changing site-membership.
+		</fix>
+		<fix author='adam' date='2009-02-25' ref='2526864' reftype='bug'  reporter='alex'>
+			UI2: Fixed issue where the header-footer mode would revert to edit mode after making changes to the header.
+		</fix>
+		<fix author='adam' date='2009-02-25' ref='2549745' reftype='bug'  reporter='alex'>
+			Text-Templates/Wiki: Custom video splash-images hosted in Segue now work. 
+			The video player requires a filename with the .jpg extension for splash images.
+			The wiki-resolver now uses the global media-file url-builder which includes the file name at the end of the URL. 
+		</fix>
+		<fix author='adam' date='2009-02-25' ref='2614017' reftype='bug'  reporter='claudia_cooper'>
+			Text-Editor: EMail "mailto:" links now use plain HTML and are not stripped out by security checks.
+		</fix>
+		<important author='adam' date='2009-02-25' ref='' reftype='fr'  reporter='alex'>
+			Size of agent_external_children columns has been increased from 70 characters to 140 characters to prevent long DNs from being truncated.
+			
+			Run the "agent_external_children field length" updater under Admin Tools --&gt; Segue Updates to make this change on existing systems.
+		</important>
 	</version>
 	<version number="2.2.8.2" date="The Future">
 		<releaseNotes>

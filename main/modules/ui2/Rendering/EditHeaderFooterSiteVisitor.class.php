@@ -45,6 +45,8 @@ class EditHeaderFooterSiteVisitor
 		
 		$this->editModeVisitor = new EditModeSiteVisitor;
 		
+		$this->editModeVisitor->_action = 'headerfooter';
+		$this->editModeVisitor->_controlsVisitor->setReturnAction('headerfooter');
 	}
 	
 	/**

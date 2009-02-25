@@ -82,9 +82,12 @@ class modify_membersAction
 	 */
 	public function buildContent () {
 		$harmoni = Harmoni::instance();
-		$harmoni->request->passthrough('site');
-		$harmoni->request->passthrough('returnModule');
-		$harmoni->request->passthrough('returnAction');
+		$harmoni->request->passthrough("node");
+		$harmoni->request->passthrough("site");
+		$harmoni->request->passthrough("agent");
+		$harmoni->request->passthrough("returnNode");
+		$harmoni->request->passthrough("returnModule");
+		$harmoni->request->passthrough("returnAction");
 		
 		$outputHandler = $harmoni->getOutputHandler();
 		$outputHandler->setHead(
