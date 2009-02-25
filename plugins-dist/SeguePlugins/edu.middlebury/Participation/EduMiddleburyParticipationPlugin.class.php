@@ -116,9 +116,33 @@ class EduMiddleburyParticipationPlugin
  	 * @since 1/12/06
  	 */
  	public function initialize () {
-		$this->_node = SiteDispatcher::getCurrentRootNode();
- 		$this->_view = new Participation_View($this->_node);
  		$this->_printedParticipants = array();
+ 	}
+
+ 	/**
+ 	 * Answer the node
+ 	 * 
+ 	 * @return Participation_View
+ 	 * @access private
+ 	 * @since 2/25/09
+ 	 */
+ 	private function getNode () {
+ 		if (!isset($this->_node))
+ 			$this->_node = SiteDispatcher::getCurrentRootNode();
+ 		return $this->_node;
+ 	}
+ 	
+ 	/**
+ 	 * Answer the view
+ 	 * 
+ 	 * @return Participation_View
+ 	 * @access private
+ 	 * @since 2/25/09
+ 	 */
+ 	private function getView () {
+ 		if (!isset($this->_view))
+ 			$this->_view = new Participation_View($this->getNode());
+ 		return $this->_view;
  	}
  	 	
  	/**
@@ -242,7 +266,7 @@ class EduMiddleburyParticipationPlugin
  		
  		if ($this->getFieldValue('submit')) {
 			// get all site members
-			$group = $this->_node->getMembersGroup();				
+			$group = $this->getNode()->getMembersGroup();				
 			// get all sub-groups in site members group
 			$subgroups = $group->getGroups(false);
 	
@@ -288,7 +312,7 @@ class EduMiddleburyParticipationPlugin
 		ob_start();
 		
 		// get all site members
-		$group = $this->_node->getMembersGroup();
+		$group = $this->getNode()->getMembersGroup();
 				
 		// get all sub-groups in site members group
 		$subgroups = $group->getGroups(false);
@@ -298,7 +322,7 @@ class EduMiddleburyParticipationPlugin
 			
 		if ($this->getFieldValue('edit') && $this->canModify()) {			
 			
-			print "<div class='participant_group_header'>"._("Show members of following groups.")."</div>";
+			print "<div class='participant_group_header'>"._("Show members of following groups:")."</div>";
 			print "\n".$this->formStartTagWithAction();
 			print "<div>";
 
@@ -338,7 +362,7 @@ class EduMiddleburyParticipationPlugin
 			
 			// Other Participants
 			$notPrintedParticipants = array();
-			foreach ($this->_view->getParticipants() as $participant) {
+			foreach ($this->getView()->getParticipants() as $participant) {
 				if (!in_array($participant->getId()->getIdString(), $this->_printedParticipants)) {
 					$notPrintedParticipants[] = $participant;
 				}
@@ -421,7 +445,7 @@ class EduMiddleburyParticipationPlugin
 		
 		// show link to more info only if authenticated user is an editor
 		if ($this->_showTrackLink == true) {
-			print "\n\t\t<a href='#' onclick=\"ParticipantPanel.run('".addslashes($participant->getDisplayName())."', '".addslashes($participant->getId()->getIdString())."', '".addslashes($this->_node->getId())."', '".SiteDispatcher::quickURL('roles', 'modify', array('agent' => $participant->getId()->getIdString(), 'returnModule' => $harmoni->request->getRequestedModule(), 'returnAction' => $harmoni->request->getRequestedAction()))."'.urlDecodeAmpersands(), this); return false;\">";
+			print "\n\t\t<a href='#' onclick=\"ParticipantPanel.run('".addslashes($participant->getDisplayName())."', '".addslashes($participant->getId()->getIdString())."', '".addslashes($this->getNode()->getId())."', '".SiteDispatcher::quickURL('roles', 'modify', array('agent' => $participant->getId()->getIdString(), 'returnModule' => $harmoni->request->getRequestedModule(), 'returnAction' => $harmoni->request->getRequestedAction()))."'.urlDecodeAmpersands(), this); return false;\">";
 			print $participant->getDisplayName()."</a>";
 		} else {
 			print $participant->getDisplayName();
