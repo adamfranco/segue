@@ -409,7 +409,7 @@ abstract class SeguePluginsDriver
 	 */
 	public function getLocalAction () {
 		if (isset($this->localModule) && $this->localModule && isset($this->localAction) && $this->localAction) {
-			return $this->localModule;
+			return $this->localAction;
 		} else {
 			$harmoni = Harmoni::instance();
 			return $harmoni->request->getRequestedAction();

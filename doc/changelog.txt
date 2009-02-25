@@ -2,6 +2,32 @@
 Segue Change Log
 
 
+v. 2.2.9.1 (2009-02-25)
+----------------------------------------------------
+This release of Segue adds a new "Site-Members" feature. Every site has a
+"Site-Members" group that can be used for setting the roles on many users at once.
+It can also be used in conjunction with the new "Join Site" plugin to enable
+self-registration (with moderation) to the site. This release also fixes a large
+number of bugs. See the change log for more details. 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		
+		
+	* Bug Fix: 
+		Plugins: getLocalAction() now returns the proper string.
+		(2009-02-25 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+	
+
+
+
 v. 2.2.9.0 (2009-02-25)
 ----------------------------------------------------
 This release of Segue adds a new "Site-Members" feature. Every site has a
