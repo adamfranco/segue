@@ -337,6 +337,8 @@ class EduMiddleburyParticipationPlugin
 			print "\n<div class='participation_ext_link'><a href='".$membersUrl."'>"._("Add/Edit Site-Members &raquo;")."</a></div>";
 			print "\n<div class='participation_ext_link'><a href='".$rolesUrl."'>"._("View/Edit Roles of Site-Members &raquo;")."</a></div>";
 			
+			print "<p>(".Help::link('Site-Members').")</p>";
+			
 			print "\n".$this->formStartTagWithAction();	
 			
 			if ($subgroups->hasNext()) {

@@ -253,6 +253,9 @@ class EduMiddleburyJoinSitePlugin
  				}
  				break;
  			default:
+ 				if ($this->canModify()) {
+					print "<div style='float: right'>(".Help::link('Site-Members').")</div>";
+				}
  				if ($this->isUserMember()) {
  					print "<button disabled='disabled'>"._('Join Site')."</button>";
  				} else {

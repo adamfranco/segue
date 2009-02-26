@@ -134,6 +134,7 @@ class modify_membersAction
 		print "\n</p>\n<p>";
 		print _("By adding users and groups to the list of site members, these users can all be given the same roles in one step. Additional roles can always be given to individual users or groups as well.");
 		print "</p>";
+		print "<p>".str_replace('%1', Help::link('Site-Members'), _("For more details, see: %1"))."</p>";
 		print "[[members]]";
 		
 		$step->setContent(ob_get_clean());
