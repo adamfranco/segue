@@ -23,8 +23,19 @@ require_once(dirname(__FILE__)."/TextBlockSegue1To2Converter.class.php");
  * @version $Id: ParticipantListBlockSegue1To2Converter.class.php,v 1.1 2008/03/19 17:02:03 adamfranco Exp $
  */
 class ParticipantListBlockSegue1To2Converter
-	extends TextBlockSegue1To2Converter
+	extends BlockSegue1To2Converter
 {
+
+	/**
+	 * Answer a new Type DOMElement for this plugin
+	 * 
+	 * @return DOMElement
+	 * @access protected
+	 * @since 2/12/08
+	 */
+	protected function createMyPluginType () {
+		return $this->createPluginType('Participation');
+	}
 	
 	/**
 	 * Answer a description element for this Block.
@@ -46,17 +57,23 @@ class ParticipantListBlockSegue1To2Converter
 	 * @since 3/19/08
 	 */
 	protected function getContentElement (DOMElement $mediaElement) {		
-		$currentVersion = $this->doc->createElement('currentVersion');
-		$version = $currentVersion->appendChild($this->doc->createElement('version'));
+		$currentContent = $this->doc->createElement('currentContent');
+		$content = $currentContent->appendChild($this->createCDATAElement('content', ''));
+		$rawDesc = $currentContent->appendChild($this->createCDATAElement('rawDescription', ''));
 		
-		ob_start();
-		print _("The Participant List is not yet supported in Segue 2. This content block is just a placeholder and can be deleted. Add a new Participant List when it becomes available.");
-		
-		$version->appendChild($this->createCDATAElement('content', 
-		ob_get_clean()));
-		$version->appendChild($this->doc->createElement('abstractLength', 0));
-		
-		return $currentVersion;
+		return $currentContent;
+	}
+	
+	/**
+	 * Answer a element that represents the history for this Block, null if not
+	 * supported
+	 * 
+	 * @return object DOMElement
+	 * @access protected
+	 * @since 2/12/08
+	 */
+	protected function getHistoryElement (DOMElement $mediaElement) {
+		// @todo Fill history support
 	}
 	
 }
