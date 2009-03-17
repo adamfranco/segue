@@ -27,6 +27,10 @@
 			
 			This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
 		</releaseNotes>
+		<new author='alex' date='2009-02-25' ref='1908166' reftype='fr'  reporter=''>
+			Plugins: added a participant list plugin which displays all members of a site
+			as well as all participants on the site (users who have posted comments).
+		</new>
 		<new author='adam' date='2009-02-17' ref='748534' reftype='fr'  reporter=''>
 			New "Site-Members" group enables: associating users with a site, setting 
 			roles for many users at once, and provides support for self-registration.
