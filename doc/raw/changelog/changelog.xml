@@ -10,7 +10,7 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.9.1" date="2009-03-18">
+	<version number="2.2.9.3" date="2009-03-20">
 		<releaseNotes>
 			This release of Segue updates the Segue v1 to v2 migration code to support
 			the migration of v1 file metadata			
@@ -26,6 +26,9 @@
 		<fix author='alex' date='2009-03-18' ref='2692537' reftype='bug'  reporter='dick_forman'>
 			Migration: file metadata is now migration from v1 to v2.
 		</fix>
+		<change author='alex' date='2009-03-17'>
+			Migration: v1 participant lists now being imported at participation plugins.
+		</change>
 
 	</version>
 	<version number="2.2.9.0" date="2009-02-25">
