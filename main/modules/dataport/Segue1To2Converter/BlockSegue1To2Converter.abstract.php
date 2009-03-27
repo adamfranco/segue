@@ -504,9 +504,59 @@ abstract class BlockSegue1To2Converter
 		
 		$element = $this->doc->createElement('mediaAsset');
 		$element->setAttribute('id', $this->createId());
-		$element->appendChild($this->createCDATAElement('displayName', $filename));
-		$element->appendChild($this->createCDATAElement('description', ''));
 		
+		
+		// get title whole = Journal or book title
+		try {
+			$titleWholeElements = $this->sourceXPath->query('./title_whole', $sourceFile);
+
+			if ($titleWholeElements->length) {
+				$titleWhole = $this->getStringValue($titleWholeElements->item(0));
+
+			} else {
+				$titleWhole = '';
+			}
+		} catch (Exception $e) {
+			$titleWhole = '';
+		}
+		
+		// get title part = article title
+		try {
+			$titlePartElements = $this->sourceXPath->query('./title_part', $sourceFile);
+
+			if ($titlePartElements->length) {
+				$titlePart = $this->getStringValue($titlePartElements->item(0));
+
+			} else {
+				$titlePart = $filename;
+			}
+		} catch (Exception $e) {
+			$titlePart = '';
+		}
+		
+		// set file displayName = dc title otherwise set it to filename
+		if (strlen($titlePart) && strlen($titleWhole)) {
+			$title = $titlePart.". ".$titleWhole;
+		} else if (!strlen($titleWhole)) {
+			$title = $titlePart;
+		} else if (!strlen($titlePart)) {
+			$title = $titleWhole;
+		}
+		
+		if (!strlen($title))
+			$title = $filename;
+		
+		$element->appendChild($this->createCDATAElement('displayName', $title));
+
+		
+		// Make file description be dc description otherwise set it to null
+		if (isset($description)) {
+			$element->appendChild($this->createCDATAElement('description', $description));
+		} else {
+			$element->appendChild($this->createCDATAElement('description', ''));
+		}
+				
+		// get file name and path
 		$fileElement = $element->appendChild($this->doc->createElement('file'));
 		$fileElement->setAttribute('id', $this->createId());
 		$fileElement->appendChild($this->createCDATAElement('name', $filename));
@@ -514,6 +564,74 @@ abstract class BlockSegue1To2Converter
 		// move the media file and get its path
 		$newPath = $this->director->copyFile($filename);
 		$fileElement->appendChild($this->createCDATAElement('path', $newPath));
+		
+		// create dublin core element
+		$dublinCoreElement = $element->appendChild($this->doc->createElement('dublinCore'));
+		$dublinCoreElement->setAttribute('id', $this->createId());
+		
+		// set title
+		$dublinCoreElement->appendChild($this->createCDATAElement('title', $title));
+		
+		// get author
+		try {
+			$authorElements = $this->sourceXPath->query('./author', $sourceFile);
+			if ($authorElements->length)
+				$author = $this->getStringValue($authorElements->item(0));
+			else
+				$author = '';
+		} catch (Exception $e) {
+			$author = '';
+		}
+		
+		$dublinCoreElement->appendChild($this->createCDATAElement('creator', $author));
+
+		// get page range and put into source field					
+		try {
+			$pagerangeElements = $this->sourceXPath->query('./pagerange', $sourceFile);
+			if ($pagerangeElements->length)
+				$pagerange = $this->getStringValue($pagerangeElements->item(0));
+			else
+				$pagerange = '';
+		} catch (Exception $e) {
+			$pagerange = '';
+		}
+
+		if (strlen($pagerange)) {
+			$source = "(".$pagerange.")";		
+			$dublinCoreElement->appendChild($this->createCDATAElement('source', $source));
+		}
+
+		// get publisher
+		try {
+			$publisherElements = $this->sourceXPath->query('./publisher', $sourceFile);
+			if ($publisherElements->length)
+				$publisher = $this->getStringValue($publisherElements->item(0));
+			else
+				$publisher = '';
+		} catch (Exception $e) {
+			$publisher = '';
+		}
+		
+		$dublinCoreElement->appendChild($this->createCDATAElement('publisher', $publisher));
+
+		// get publication date
+		try {
+			$pubyearElements = $this->sourceXPath->query('./pubyear', $sourceFile);
+			if ($pubyearElements->length)
+				$pubyear = $this->getStringValue($pubyearElements->item(0));
+			else
+				$pubyear = '';
+		} catch (Exception $e) {
+			$pubyear = '';
+		}
+
+		// need to validate date
+		if ($pubyear != "") {
+			$dateAndTime = DateAndTime::fromString($pubyear);
+			if ($dateAndTime) {
+				$dublinCoreElement->appendChild($this->createCDATAElement('date', $dateAndTime->asString()));
+			}
+		}
 		
 		// Create-info
 		try {
