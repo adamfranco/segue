@@ -2,6 +2,33 @@
 Segue Change Log
 
 
+v. 2.2.9.3 (2009-03-20)
+----------------------------------------------------
+This release of Segue updates the Segue v1 to v2 migration code to support the
+migration of v1 file metadata 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		
+		
+	* Bug Fix: #2692537 
+		Migration: file metadata is now migration from v1 to v2.
+		(2009-03-18 - Alex Chapin)
+		(reported by Dick Forman of Middlebury College)
+		
+	* Change: 
+		Migration:v1 participant lists now being imported at participation plugins.
+		(2009-03-17 - Alex Chapin)
+	
+
+
+
 v. 2.2.9.2 (2009-02-26)
 ----------------------------------------------------
 This release of Segue adds a new "Site-Members" feature. Every site has a
@@ -71,6 +98,12 @@ located under Admin Tools --> Segue Updates.
 
  This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
 		
+		
+	* New feature: #1908166 
+		Plugins: added a participant list plugin which displays all members of a
+		site as well as all participants on the site (users who have posted
+		comments). 
+		(2009-02-25 - Alex Chapin)
 		
 	* New feature: #748534 
 		New "Site-Members" group enables: associating users with a site, setting
