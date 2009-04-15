@@ -30,7 +30,10 @@
 			Participation plugin: added option to show or hide "other participants" (i.e. those
 			participants who are not site members.
 		</change>
-	</version>	
+		<change author='alex' date='2009-04-15' reporter='bryan_carson'>
+			tags display: changed how tagged items are displayed so is more flexible and works
+			with various site layouts.
+		</change>	</version>	
 	<version number="2.2.9.3" date="2009-03-20">
 		<releaseNotes>
 			This release of Segue updates the Segue v1 to v2 migration code to support
