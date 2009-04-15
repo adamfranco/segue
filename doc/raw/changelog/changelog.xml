@@ -26,7 +26,10 @@
 		<change author='alex' date='2009-04-15'>
 			Roles UI: Site members now listed in initial roles UI
 		</change>
-
+		<change author='alex' date='2009-04-15'>
+			Participation plugin: added option to show or hide "other participants" (i.e. those
+			participants who are not site members.
+		</change>
 	</version>	
 	<version number="2.2.9.3" date="2009-03-20">
 		<releaseNotes>
