@@ -250,6 +250,66 @@ class EduMiddleburyParticipationPlugin
 					
 		return $groupIds;
 	}
+	
+	/**
+	 * show or hide other participants (i.e. those not in site member group)
+	 * 
+	 * @param boolean 
+	 * @return void
+	 * @access protected
+	 * @since 2/4/09
+	 */
+	protected function setOtherParticipantsDisplay ($display) {
+		// The options will look like:
+		/*
+		<options>
+			<showOtherParticipants>false</showOtherParticipants>
+			...
+		</options>
+		*/
+		$doc = $this->getOptions();
+		$xpath = new DOMXPath($doc);
+		
+		$elements = $xpath->query('/options/showOtherParticipants');
+		if ($elements->length) {
+			$showOtherParticipants = $elements->item(0);
+		} else {
+			$showOtherParticipants = $doc->documentElement->appendChild($doc->createElement('showOtherParticipants'));
+		}
+		
+		if ($display == "true") {
+			$showOtherParticipants->nodeValue = "true";
+		} else {
+			$showOtherParticipants->nodeValue = "false";
+		}
+		
+		
+		$this->setContent($doc->saveXMLWithWhitespace());
+	}
+
+	/**
+	 * answer whether to show or hide other participants (i.e. those not in site member group)
+	 * 
+	 * @return booleen
+	 * @access protected
+	 * @since 2/4/09
+	 */
+	protected function getOtherParticipantsDisplay () {
+		
+		$doc = $this->getOptions();
+		$xpath = new DOMXPath($doc);
+		
+		$elements = $xpath->query('/options/showOtherParticipants');
+		if ($elements->length) {
+			$otherParticipantsDisplay = $elements->item(0);
+			$display = $otherParticipantsDisplay->nodeValue;
+		} else {
+			$display = "true";
+		}
+					
+		return $display;
+	}
+
 
  	
  	/**
@@ -278,6 +338,12 @@ class EduMiddleburyParticipationPlugin
 				} else {
 					$this->removeMembersHiddenGroup($subgroup->getId()->getIdString());
 				}
+			}
+			
+			if ($this->getFieldValue('other_participants') == "true") {
+				$this->setOtherParticipantsDisplay("true");
+			} else {
+				$this->setOtherParticipantsDisplay("false");
 			}
 		}
  	}
@@ -341,6 +407,7 @@ class EduMiddleburyParticipationPlugin
 			
 			print "\n".$this->formStartTagWithAction();	
 			
+			// print out sub group checkboxes
 			if ($subgroups->hasNext()) {
 				print "\n<div class='participant_group_header'>"._("Show members of following groups:")."</div>";
 				
@@ -354,6 +421,15 @@ class EduMiddleburyParticipationPlugin
 					print "\n</div>";
 				}
 			}
+			
+			// print out Other Participants checkbox
+			print "\n<div class='participant_list'>";
+			print "\n\t<input name='".$this->getFieldName('other_participants')."' value='true' type='checkbox' ";
+			if ($this->getOtherParticipantsDisplay() == "true")
+				print " checked";				
+			print ">"._("Other Participants");
+			print "<br/>("._("those who are NOT site members").")";
+			print "\n</div>";			
 			
 			print "\n<div class='participation_buttons'>\n\t<input type='submit' value='Update' name='".$this->getFieldName('submit')."'>\n";
 			print "\n\t<input type='button' value='"._('Cancel')."' onclick=".$this->locationSendString()."/></div>";
@@ -377,21 +453,24 @@ class EduMiddleburyParticipationPlugin
 			}
 			
 			// Other Participants
-			$notPrintedParticipants = array();
-			foreach ($this->getView()->getParticipants() as $participant) {
-				if (!in_array($participant->getId()->getIdString(), $this->_printedParticipants)) {
-					$notPrintedParticipants[] = $participant;
+			if ($this->getOtherParticipantsDisplay() == "true") { 
+				$notPrintedParticipants = array();
+				foreach ($this->getView()->getParticipants() as $participant) {
+					if (!in_array($participant->getId()->getIdString(), $this->_printedParticipants)) {
+						$notPrintedParticipants[] = $participant;
+					}
 				}
+				
+				print "<br/><div class='participant_header'>"._("Other Participants")."</div>";
+				print $this->printParticipants($notPrintedParticipants);
 			}
-			
-			print "<br/><div class='participant_header'>"._("Other Participants")."</div>";
-			print $this->printParticipants($notPrintedParticipants);
-			
+				
 			if($this->shouldShowControls()){
 				print "\n<div style='text-align: right; white-space: nowrap;'>";
 				print "\n\t<a ".$this->href(array('edit' => 'true')).">"._('edit')."</a>";
 				print "\n</div>";
 			}
+			
 
 		}
 
