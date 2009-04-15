@@ -157,7 +157,7 @@ class choose_agentAction
 				print $agent->getDisplayName();
 				print "</a>";
 				
-				
+				// print out site members
 				if ($agent->getId()->isEqual($membersId)) {
 					$harmoni->request->forget('returnAction');
 					$harmoni->request->forget('returnModule');
@@ -165,7 +165,7 @@ class choose_agentAction
 					$url = SiteDispatcher::quickURL('agent', 'modify_members');
 					$harmoni->request->passthrough('returnAction');
 					$harmoni->request->passthrough('returnModule');
-					$harmoni->request->passthrough('agent');
+					$harmoni->request->passthrough('agent');					
 					
 					print "\n\t\t\t <button onclick='window.location = \"$url\".urlDecodeAmpersands(); return false;'>"._("Add/Remove Members")."</button>";
 					print " (".Help::link('Site-Members').")";
@@ -173,10 +173,32 @@ class choose_agentAction
 					print "\n<span style='font-size: smaller'>";
 					print _("This is a custom group of users that are associated with this site. Users and groups can manually be made site-members or users can self-register using the 'Join Site' plugin if it is enabled.");
 					print "</span>";
+					
+					$subGroups = $getGroup->getGroups(true);
+
+					print "\n<table width='100%' class='search_results' cellspacing='0'>";
+					while ($subGroups->hasNext()) {
+						print "\n\t<tr class='search_result_item'>";
+						print "\n\t\t<td>";
+						print "&nbsp;&nbsp;".$subGroups->next()->getDisplayName();
+						print "\n\t\t</td></tr>";
+
+					}					
+					
+					$getGroup = $this->getSite()->getMembersGroup();
+					$members = $getGroup->getMembers(false);
+					while ($members->hasNext()) {
+						print "\n\t<tr class='search_result_item'>";
+						print "\n\t\t<td>";
+						print "&nbsp;&nbsp;".$members->next()->getDisplayName();
+						print "\n\t\t</td></tr>";
+					}
+					
+					print "\n</table><br/>";
 				}
 				
 				print "\n\t\t</td>";
-				print "\n\t\t<td class='color$i' style='text-align: right; white-space: nowrap;'>";
+				print "\n\t\t<td valign='top' class='color$i' style='text-align: right; white-space: nowrap;'>";
 				$url = SiteDispatcher::quickURL('roles', 'modify', array(
 					'node' => SiteDispatcher::getCurrentNodeId(),
 					'agent' => $agent->getId()->getIdString()

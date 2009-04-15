@@ -10,6 +10,24 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.9.4" date="the future">
+		<releaseNotes>
+			This release of Segue includes refinements to the roles UI and ... 			
+
+			----
+			
+			Upgrades from versions prior to 2.2.9.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		</releaseNotes>
+		<change author='alex' date='2009-04-15'>
+			Roles UI: Site members now listed in initial roles UI
+		</change>
+
+	</version>	
 	<version number="2.2.9.3" date="2009-03-20">
 		<releaseNotes>
 			This release of Segue updates the Segue v1 to v2 migration code to support
