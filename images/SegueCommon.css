@@ -116,6 +116,9 @@
 		font-weight: bold;
 	}
 
+	.error {
+		color: #F00;
+	}
 		
 /*********************************************************
  * UI1 CSS
@@ -343,7 +346,16 @@
 	}
 	
 /*********************************************************
- * Participation
+ * Comments
+ *********************************************************/
+	div.comment_help {
+		font-size: smaller;
+		border: 0px;
+		font-style: italic;
+	}
+	
+/*********************************************************
+ * Participation Plugin
  *********************************************************/
 
 	.participation_row {
@@ -358,6 +370,12 @@
 		padding: 3px;		
 	}
 
+	.participant_list {
+		font-size: 11px;
+		border-bottom: 1px dotted;
+		padding: 3px;		
+	}
+	
 	.participation_profile {
 		text-align: center;
 		font-size: 9px;
@@ -376,15 +394,6 @@
 		clear: none;
 	}
 
-	
-/*********************************************************
- * Comments
- *********************************************************/
-	div.comment_help {
-		font-size: smaller;
-		border: 0px;
-		font-style: italic;
-	}
 	
 /*********************************************************
  * Portal UI CSS

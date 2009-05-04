@@ -380,6 +380,7 @@ class EduMiddleburyParticipationPlugin
 		// get site admins
 		 $siteAdmins = $this->getSiteAdmins();
 		
+
 		// get all site members
 		$group = $this->getNode()->getMembersGroup();
 		//printpre ($group);
@@ -444,6 +445,7 @@ class EduMiddleburyParticipationPlugin
 			print "<div class='participant_header'>"._("Site Administrators")."</div>";			
 			print $this->printSiteAdminsIterator($siteAdmins);
 
+
 			// Direct members of the group
 			print "<div class='participant_header'>"._("Site Members")."</div>";
 			print $this->printMemberIterator($group->getMembers(false));
@@ -507,6 +509,8 @@ class EduMiddleburyParticipationPlugin
 		return $siteAdmins;
 	} 	
 
+ 	
+
  	/**
  	 * Get all members of the site
  	 * 
@@ -523,6 +527,7 @@ class EduMiddleburyParticipationPlugin
 		}
 		return count($members);
  	}
+
  
   	/**
  	 * Print out the site admins in an iterator
@@ -551,7 +556,6 @@ class EduMiddleburyParticipationPlugin
  	 * @param object $groupMembers
  	 * @return string
  	 * @access protected
- 	 * @since 4/29/09
  	 */
  	protected function printMemberIterator ($groupMembers) {
  		$members = array();

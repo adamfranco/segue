@@ -385,6 +385,38 @@ abstract class SeguePluginsDriver
 	}
 	
 	/**
+	 * Answer the local module to use in non-internal-to-the-plugin links.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/25/09
+	 */
+	final public function getLocalModule () {
+		if (isset($this->localModule) && $this->localModule && isset($this->localAction) && $this->localAction) {
+			return $this->localModule;
+		} else {
+			$harmoni = Harmoni::instance();
+			return $harmoni->request->getRequestedModule();
+		}
+	}
+	
+	/**
+	 * Answer the local action to use in non-internal-to-the-plugin links.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/25/09
+	 */
+	public function getLocalAction () {
+		if (isset($this->localModule) && $this->localModule && isset($this->localAction) && $this->localAction) {
+			return $this->localAction;
+		} else {
+			$harmoni = Harmoni::instance();
+			return $harmoni->request->getRequestedAction();
+		}
+	}
+	
+	/**
 	 * Given a block of HTML text, replace any local-system urls with tokenized
 	 * placeholders. These placeholders can the be translated back at display time
 	 * in order to match the current system base-url 
@@ -578,7 +610,7 @@ abstract class SeguePluginsDriver
 	final public function canModify () {
 		if (isset($this->_canModifyFunction)) {
 			$function = $this->_canModifyFunction;
-			return $function($this);
+			return call_user_func($function, $this);
 		} else {
 			$azManager = Services::getService("AuthZ");
 			$idManager = Services::getService("Id");
@@ -598,7 +630,7 @@ abstract class SeguePluginsDriver
 	final public function canView () {
 		if (isset($this->_canViewFunction)) {
 			$function = $this->_canViewFunction;
-			return $function($this);
+			return call_user_func($function, $this);
 		} else {
 			$azManager = Services::getService("AuthZ");
 			$idManager = Services::getService("Id");
@@ -1403,9 +1435,9 @@ abstract class SeguePluginsDriver
 			
 			if (isset($this->localModule) && $this->localModule && isset($this->localAction) && $this->localAction) 
 			{
-				$this->_baseUrl = $harmoni->request->mkURL($this->localModule, $this->localAction);
+				$this->_baseUrl = SiteDispatcher::mkURL($this->localModule, $this->localAction);
 			} else {
-				$this->_baseUrl = $harmoni->request->mkURL();
+				$this->_baseUrl = SiteDispatcher::mkURL();
 			}
 			
 			$this->update($this->_getRequestData());
@@ -2043,7 +2075,7 @@ $changes[$this->_data_ids[$rs][$instance][$ps][$key]->getIdString()] = $value;
 		$harmoni = Harmoni::instance();
 		$harmoni->request->startNamespace(
 			get_class($this).':'.$this->getId());
-		$this->_baseUrl = $harmoni->request->mkURL();
+		$this->_baseUrl = SiteDispatcher::mkURL();
 		
 		$markup = $this->getVersionMarkup($versionXml);		
 		

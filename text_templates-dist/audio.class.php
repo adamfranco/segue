@@ -114,7 +114,7 @@ class Segue_TextTemplates_audio
 		$playerUrl = $this->getPublicFileUrl("player.swf");
 		print "<script type='text/javascript' src='".$this->getPublicFileUrl('audio-player.js')."'></script>";
 		print '
-<object width="290" height="24" id="audio_'.rand(1,10000000).'" data="'.$playerUrl.'" type="application/x-shockwave-flash">
+<object width="290" height="24" id="audio_'.md5($paramList['url']).'" data="'.$playerUrl.'" type="application/x-shockwave-flash">
 	<param value="'.$playerUrl.'" name="movie" />
 	<param value="high" name="quality" />
 	<param value="false" name="menu" />

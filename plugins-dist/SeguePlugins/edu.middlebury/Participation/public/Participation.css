@@ -1,0 +1,57 @@
+/*********************************************************
+ * Participation Plugin
+ *
+ * Other participation styles shared with the participation
+ * module are in SegueCommon.css
+ *********************************************************/
+	
+	.participant_header {
+		font-size: 12px;
+		border-bottom: 1px solid;
+		padding-top: 1px;		
+	}
+
+	.participant_group_header {
+		font-style: italic;
+		font-size: 11px;
+		border-bottom: 1px solid;
+		padding: 3px;		
+	}
+	
+	.participation_ext_link {
+		margin-bottom: 5px;
+	}
+	
+	.participation_buttons {
+		margin-top: 10px;
+	}
+	
+	.participant_plugin_list {
+/*		border-bottom: 1px dotted;*/
+		font-size: 11px;
+		padding: 3px;
+	}
+	
+/*********************************************************
+ * Participant Panel
+ *********************************************************/
+ 
+	.participant_panel h4 {
+		margin-bottom: 3px;
+	}
+	
+	.participant_panel h4:first-child {
+		margin-top: 3px;
+	}
+	
+	.participant_panel .info {
+		margin-left: 10px;
+	}
+	
+	.participant_panel .tracking {
+		margin-left: 10px;
+	}
+	
+	.participant_panel .roles {
+		margin-left: 10px;
+	}

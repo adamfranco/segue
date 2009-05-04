@@ -40,30 +40,22 @@ abstract class SegueTagsAction
 		
 		// implemented in parent class htmlAction
 		$allWrapper = $this->addHeaderControls($mainScreen);
-		
-		// implemented by this class
-		try {
-			$mainScreen->add($this->getSiteHeader());
-		} catch (UnimplementedException $e) {
-		}		
-		
+				
 		$taggingColumns = $mainScreen->add(new Container(new XLayout, BLANK, 1));	
 		
 		$harmoni = Harmoni::instance();
 		SiteDispatcher::passthroughContext();
 		$harmoni->request->startNamespace('polyphony-tags');
 		
-		$taggingColumns->add($this->getItemsMenu(), "150px", null, LEFT, TOP);
+		$taggingColumns->add($this->getMenu(), "150px", null, LEFT, TOP);
 		
 		// implemented by child classes
 		$taggingResultColumn = $taggingColumns->add(new Container(new YLayout, BLANK, 1));	
-		$taggingResultColumn->add($this->getResultTitle(), null, null, LEFT, CENTER);
+		$taggingResultColumn->add($this->getResultTitle(), null, null, LEFT, TOP);
 		
-		$taggingResultColumn->add($this->getResult(), null, null, LEFT, CENTER);
+		$taggingResultColumn->add($this->getResult(), null, null, LEFT, TOP);
 		 
- 		$taggingColumns->add($this->getTagsMenu(), "150px", null, LEFT, TOP);
-
-		
+ 		//$taggingColumns->add($this->getTagsMenu(), "150px", null, LEFT, TOP);
 				
 		$harmoni->request->endNamespace();
 		SiteDispatcher::forgetContext();
@@ -117,6 +109,21 @@ abstract class SegueTagsAction
 	 */
 	abstract public function getResultTitle ();
 	
+	/**
+	 * Answer a menu for the all tags
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 11/8/06
+	 */
+	public function getMenu () {
+	
+		$menu = $this->getItemsMenu();
+		$menu .= "<br/><br/>";
+		$menu .= $this->getTagsMenu();
+		
+		return new Block($menu, STANDARD_BLOCK);
+	}
 	
 	/**
 	 * Answer a menu for the tagging system
@@ -297,7 +304,7 @@ abstract class SegueTagsAction
 			}
 			
 		}		
-		return new Block(ob_get_clean(), STANDARD_BLOCK);
+		return ob_get_clean();
 	}
 	
 	/**
@@ -419,7 +426,7 @@ abstract class SegueTagsAction
 		print "</div>";	
 		
 		$tagsMenu = ob_get_clean();		
-		return new Block($tagsMenu, STANDARD_BLOCK);
+		return $tagsMenu;
 	}	
 	
 	/**

@@ -204,6 +204,8 @@ END;
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $block ) {
 		$menuItem = parent::visitBlockInMenu($block);
+		if (!$menuItem)
+			return $menuItem;
 		
 		// Create and return the component
 		ob_start();

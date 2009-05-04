@@ -2,6 +2,198 @@
 Segue Change Log
 
 
+v. 2.2.9.3 (2009-03-20)
+----------------------------------------------------
+This release of Segue updates the Segue v1 to v2 migration code to support the
+migration of v1 file metadata 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		
+		
+	* Bug Fix: #2692537 
+		Migration: file metadata is now migration from v1 to v2.
+		(2009-03-18 - Alex Chapin)
+		(reported by Dick Forman of Middlebury College)
+		
+	* Change: 
+		Migration:v1 participant lists now being imported at participation plugins.
+		(2009-03-17 - Alex Chapin)
+	
+
+
+
+v. 2.2.9.2 (2009-02-26)
+----------------------------------------------------
+This release of Segue adds a new "Site-Members" feature. Every site has a
+"Site-Members" group that can be used for setting the roles on many users at once.
+It can also be used in conjunction with the new "Join Site" plugin to enable
+self-registration (with moderation) to the site. This release also fixes a large
+number of bugs. See the change log for more details. 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		
+		
+	* Change: 
+		Help: added a number of "Help" links to the Site-Membership and Join Site
+		interfaces. 
+		(2009-02-26 - Adam Franco)
+	
+
+
+
+v. 2.2.9.1 (2009-02-25)
+----------------------------------------------------
+This release of Segue adds a new "Site-Members" feature. Every site has a
+"Site-Members" group that can be used for setting the roles on many users at once.
+It can also be used in conjunction with the new "Join Site" plugin to enable
+self-registration (with moderation) to the site. This release also fixes a large
+number of bugs. See the change log for more details. 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		
+		
+	* Bug Fix: 
+		Plugins: getLocalAction() now returns the proper string.
+		(2009-02-25 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+	
+
+
+
+v. 2.2.9.0 (2009-02-25)
+----------------------------------------------------
+This release of Segue adds a new "Site-Members" feature. Every site has a
+"Site-Members" group that can be used for setting the roles on many users at once.
+It can also be used in conjunction with the new "Join Site" plugin to enable
+self-registration (with moderation) to the site. This release also fixes a large
+number of bugs. See the change log for more details. 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		
+		
+	* New feature: #1908166 
+		Plugins: added a participant list plugin which displays all members of a
+		site as well as all participants on the site (users who have posted
+		comments). 
+		(2009-02-25 - Alex Chapin)
+		
+	* New feature: #748534 
+		New "Site-Members" group enables: associating users with a site, setting
+		roles for many users at once, and provides support for self-registration.
+		(2009-02-17 - Adam Franco)
+		
+	* New feature: #1820897 
+		Plugins: New "Join Site" plugin allows for self-registration to the
+		"Site-Members" group.
+		(2009-02-23 - Adam Franco)
+		
+	* Change: 
+		Create Site: Class-sites now have the class group added by default.
+		(2009-02-17 - Adam Franco)
+		(reported by Shel Sax of Middlebury College)
+		
+	* Change: 
+		Plugins: Plugin internal links now include site parameters.
+		(2009-02-19 - Adam Franco)
+		
+	* Change: 
+		Plugins: Plugin authorization callbacks can now be object methods.
+		(2009-02-19 - Adam Franco)
+		
+	* Bug Fix: 
+		UI1: Fixed classic-mode error when displaying a page with content in the
+		menu that is not visible.
+		(2009-02-24 - Adam Franco)
+		
+	* Change: 
+		Roles: Choose-Agent window now includes Agent-info links for all agents, not
+		just search results.
+		(2009-02-24 - Adam Franco)
+		
+	* Bug Fix: #2593676 
+		Text-Templates: Audio text-template now doesn't cause the 'read more' links
+		to appear.
+		(2009-02-25 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: #2613501 
+		Roles: Roles wizard now doesn't loose the current editing module when
+		changing site-membership.
+		(2009-02-25 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: #2526864 
+		UI2: Fixed issue where the header-footer mode would revert to edit mode
+		after making changes to the header.
+		(2009-02-25 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: #2549745 
+		Text-Templates/Wiki: Custom video splash-images hosted in Segue now work.
+		The video player requires a filename with the .jpg extension for splash
+		images. The wiki-resolver now uses the global media-file url-builder which
+		includes the file name at the end of the URL.
+		(2009-02-25 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: #2614017 
+		Text-Editor: EMail "mailto:" links now use plain HTML and are not stripped
+		out by security checks.
+		(2009-02-25 - Adam Franco)
+		(reported by claudia_cooper)
+		
+	**** IMPORTANT *** Change: 
+		Size of agent_external_children columns has been increased from 70
+		characters to 140 characters to prevent long DNs from being truncated.
+		
+		Run the "agent_external_children field length" updater under Admin Tools
+		--> Segue Updates to make this change on existing systems.
+		(2009-02-25 - Adam Franco)
+		(reported by Alex Chapin of Middlebury College)
+		
+	* Bug Fix: 
+		Plugins: Audio Player now allows use of 'audio/mpeg3' MIME type sometimes
+		used by OS X.
+		(2009-02-12 - Adam Franco)
+		(reported by Brian Robison of Middlebury College)
+		
+	* Bug Fix: 
+		Site Display: Invalid menu items now log errors, but do not kill the site
+		rendering process.
+		(2009-02-25 - Adam Franco)
+		(reported by Stephanie Monasky of Middlebury College)
+	
+
+
+
 v. 2.2.8.1 (2009-02-10)
 ----------------------------------------------------
 This release also fixes a number of of minor bugs. See the change-log for details. 

@@ -23,7 +23,114 @@
 </head>
 <body>
 <h1>Segue Change Log</h1>
-<h2>Version 2.2.8.1</h2>
+<h2>Version 2.2.9.3</h2>
+<h3>2009-03-20</h3>
+<p>This release of Segue updates the Segue v1 to v2 migration code to support the migration of v1 file metadata 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.9.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2692537&amp;group_id=82171&amp;atid=565234">
+        			#2692537</a> Migration: file metadata is now migration from v1 to v2. (<em>2009-03-18 - Alex Chapin</em>)<br> (<em>reported by Dick Forman of Middlebury College</em>)</li>
+		<li>
+<b>Change:</b> Migration: v1 participant lists now being imported at participation plugins. (<em>2009-03-17 - Alex Chapin</em>)</li>
+	</ul>
+<br><h2>Version 2.2.9.2</h2>
+<h3>2009-02-26</h3>
+<p>This release of Segue adds a new "Site-Members" feature. Every site has a "Site-Members" group that can be used for setting the roles on many users at once. It can also be used in conjunction with the new "Join Site" plugin to enable self-registration (with moderation) to the site. This release also fixes a large number of bugs. See the change log for more details. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.9.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.</p>
+<ul>
+		
+		<li>
+<b>Change:</b> Help: added a number of "Help" links to the Site-Membership and Join Site interfaces. (<em>2009-02-26 - Adam Franco</em>)</li>
+	</ul>
+<br><h2>Version 2.2.9.1</h2>
+<h3>2009-02-25</h3>
+<p>This release of Segue adds a new "Site-Members" feature. Every site has a "Site-Members" group that can be used for setting the roles on many users at once. It can also be used in conjunction with the new "Join Site" plugin to enable self-registration (with moderation) to the site. This release also fixes a large number of bugs. See the change log for more details. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.9.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.</p>
+<ul>
+		
+		<li>
+<b>Bug Fix:</b> Plugins: getLocalAction() now returns the proper string. (<em>2009-02-25 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+	</ul>
+<br><h2>Version 2.2.9.0</h2>
+<h3>2009-02-25</h3>
+<p>This release of Segue adds a new "Site-Members" feature. Every site has a "Site-Members" group that can be used for setting the roles on many users at once. It can also be used in conjunction with the new "Join Site" plugin to enable self-registration (with moderation) to the site. This release also fixes a large number of bugs. See the change log for more details. 
+<br>
+<br>----
+<br>
+<br> Upgrades from versions prior to 2.2.9.0 require running system updaters located under Admin Tools --&gt; Segue Updates. 
+<br>
+<br>----
+<br>
+<br> This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.</p>
+<ul>
+		
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1908166&amp;group_id=82171&amp;atid=565237">
+        			#1908166</a> Plugins: added a participant list plugin which displays all members of a site as well as all participants on the site (users who have posted comments). (<em>2009-02-25 - Alex Chapin</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=748534&amp;group_id=82171&amp;atid=565237">
+        			#748534</a> New "Site-Members" group enables: associating users with a site, setting roles for many users at once, and provides support for self-registration. (<em>2009-02-17 - Adam Franco</em>)</li>
+		<li>
+<b>New feature:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1820897&amp;group_id=82171&amp;atid=565237">
+        			#1820897</a> Plugins: New "Join Site" plugin allows for self-registration to the "Site-Members" group. (<em>2009-02-23 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Create Site: Class-sites now have the class group added by default. (<em>2009-02-17 - Adam Franco</em>)<br> (<em>reported by Shel Sax of Middlebury College</em>)</li>
+		<li>
+<b>Change:</b> Plugins: Plugin internal links now include site parameters. (<em>2009-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Plugins: Plugin authorization callbacks can now be object methods. (<em>2009-02-19 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b> UI1: Fixed classic-mode error when displaying a page with content in the menu that is not visible. (<em>2009-02-24 - Adam Franco</em>)</li>
+		<li>
+<b>Change:</b> Roles: Choose-Agent window now includes Agent-info links for all agents, not just search results. (<em>2009-02-24 - Adam Franco</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2593676&amp;group_id=82171&amp;atid=565234">
+        			#2593676</a> Text-Templates: Audio text-template now doesn't cause the 'read more' links to appear. (<em>2009-02-25 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2613501&amp;group_id=82171&amp;atid=565234">
+        			#2613501</a> Roles: Roles wizard now doesn't loose the current editing module when changing site-membership. (<em>2009-02-25 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2526864&amp;group_id=82171&amp;atid=565234">
+        			#2526864</a> UI2: Fixed issue where the header-footer mode would revert to edit mode after making changes to the header. (<em>2009-02-25 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2549745&amp;group_id=82171&amp;atid=565234">
+        			#2549745</a> Text-Templates/Wiki: Custom video splash-images hosted in Segue now work. The video player requires a filename with the .jpg extension for splash images. The wiki-resolver now uses the global media-file url-builder which includes the file name at the end of the URL. (<em>2009-02-25 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b><a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2614017&amp;group_id=82171&amp;atid=565234">
+        			#2614017</a> Text-Editor: EMail "mailto:" links now use plain HTML and are not stripped out by security checks. (<em>2009-02-25 - Adam Franco</em>)<br> (<em>reported by claudia_cooper</em>)</li>
+		<li>
+<span style="color: red">*** IMPORTANT ***</span><b>Change:</b> Size of agent_external_children columns has been increased from 70 characters to 140 characters to prevent long DNs from being truncated.
+<br>
+<br>Run the "agent_external_children field length" updater under Admin Tools --&gt; Segue Updates to make this change on existing systems. (<em>2009-02-25 - Adam Franco</em>)<br> (<em>reported by Alex Chapin of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> Plugins: Audio Player now allows use of 'audio/mpeg3' MIME type sometimes used by OS X. (<em>2009-02-12 - Adam Franco</em>)<br> (<em>reported by Brian Robison of Middlebury College</em>)</li>
+		<li>
+<b>Bug Fix:</b> Site Display: Invalid menu items now log errors, but do not kill the site rendering process. (<em>2009-02-25 - Adam Franco</em>)<br> (<em>reported by Stephanie Monasky of Middlebury College</em>)</li>
+	</ul>
+<br><h2>Version 2.2.8.1</h2>
 <h3>2009-02-10</h3>
 <p>This release also fixes a number of of minor bugs. See the change-log for details. 
 <br>

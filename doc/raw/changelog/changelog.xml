@@ -10,24 +10,164 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.9.0" date="The Future">
+	<version number="2.2.9.4" date="the future">
 		<releaseNotes>
+			This release of Segue includes refinements to the roles UI and ... 			
+
+			----
 			
+			Upgrades from versions prior to 2.2.9.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
 		</releaseNotes>
+		<change author='alex' date='2009-04-15'>
+			Roles UI: Site members now listed in initial roles UI
+		</change>
+		<change author='alex' date='2009-04-15'>
+			Participation plugin: added option to show or hide "other participants" (i.e. those
+			participants who are not site members.
+		</change>
+		<change author='alex' date='2009-04-15' reporter='bryan_carson'>
+			tags display: changed how tagged items are displayed so is more flexible and works
+			with various site layouts.
+		</change>	</version>	
+	<version number="2.2.9.3" date="2009-03-20">
+		<releaseNotes>
+			This release of Segue updates the Segue v1 to v2 migration code to support
+			the migration of v1 file metadata			
+
+			----
+			
+			Upgrades from versions prior to 2.2.9.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		</releaseNotes>
+		<fix author='alex' date='2009-03-18' ref='2692537' reftype='bug'  reporter='dick_forman'>
+			Migration: file metadata is now migration from v1 to v2.
+		</fix>
+		<change author='alex' date='2009-03-17'>
+			Migration: v1 participant lists now being imported at participation plugins.
+		</change>
+	</version>
+	<version number="2.2.9.2" date="2009-02-26">
+		<releaseNotes>
+			This release of Segue adds a new "Site-Members" feature. Every site has
+			a "Site-Members" group that can be used for setting the roles on many users
+			at once. It can also be used in conjunction with the new "Join Site" plugin
+			to enable self-registration (with moderation) to the site. This release also
+			fixes a large number of bugs. See the change log for more details.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.9.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		</releaseNotes>
+		<change author='adam' date='2009-02-26' ref='' reftype='fr'  reporter=''>
+			Help: added a number of "Help" links to the Site-Membership and Join Site interfaces.
+		</change>
+	</version>
+	<version number="2.2.9.1" date="2009-02-25">
+		<releaseNotes>
+			This release of Segue adds a new "Site-Members" feature. Every site has
+			a "Site-Members" group that can be used for setting the roles on many users
+			at once. It can also be used in conjunction with the new "Join Site" plugin
+			to enable self-registration (with moderation) to the site. This release also
+			fixes a large number of bugs. See the change log for more details.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.9.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		</releaseNotes>
+		<fix author='adam' date='2009-02-25' ref='' reftype='bug'  reporter='alex'>
+			Plugins: getLocalAction() now returns the proper string.
+		</fix>
+	</version>
+	<version number="2.2.9.0" date="2009-02-25">
+		<releaseNotes>
+			This release of Segue adds a new "Site-Members" feature. Every site has
+			a "Site-Members" group that can be used for setting the roles on many users
+			at once. It can also be used in conjunction with the new "Join Site" plugin
+			to enable self-registration (with moderation) to the site. This release also
+			fixes a large number of bugs. See the change log for more details.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.9.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		</releaseNotes>
+		<new author='alex' date='2009-02-25' ref='1908166' reftype='fr'  reporter=''>
+			Plugins: added a participant list plugin which displays all members of a site
+			as well as all participants on the site (users who have posted comments).
+		</new>
 		<new author='adam' date='2009-02-17' ref='748534' reftype='fr'  reporter=''>
 			New "Site-Members" group enables: associating users with a site, setting 
 			roles for many users at once, and provides support for self-registration.
 		</new>
+		<new author='adam' date='2009-02-23' ref='1820897' reftype='fr'  reporter=''>
+			Plugins: New "Join Site" plugin allows for self-registration to the "Site-Members" group.
+		</new>
 		<change author='adam' date='2009-02-17' ref='' reftype='fr'  reporter='shel_sax'>
 			Create Site: Class-sites now have the class group added by default.
 		</change>
-	</version>
-	<version number="2.2.8.2" date="The Future">
-		<releaseNotes>
+		<change author='adam' date='2009-02-19' ref='' reftype='fr'  reporter=''>
+			Plugins: Plugin internal links now include site parameters.
+		</change>
+		<change author='adam' date='2009-02-19' ref='' reftype='fr'  reporter=''>
+			Plugins: Plugin authorization callbacks can now be object methods.
+		</change>
+		<fix author='adam' date='2009-02-24' ref='' reftype='bug'  reporter=''>
+			UI1: Fixed classic-mode error when displaying a page with content in the
+			menu that is not visible.
+		</fix>
+		<change author='adam' date='2009-02-24' ref='' reftype='fr'  reporter=''>
+			Roles: Choose-Agent window now includes Agent-info links for all agents, not just search results.
+		</change>
+		<fix author='adam' date='2009-02-25' ref='2593676' reftype='bug'  reporter='alex'>
+			Text-Templates: Audio text-template now doesn't cause the 'read more' links to appear.
+		</fix>
+		<fix author='adam' date='2009-02-25' ref='2613501' reftype='bug'  reporter='alex'>
+			Roles: Roles wizard now doesn't loose the current editing module when changing site-membership.
+		</fix>
+		<fix author='adam' date='2009-02-25' ref='2526864' reftype='bug'  reporter='alex'>
+			UI2: Fixed issue where the header-footer mode would revert to edit mode after making changes to the header.
+		</fix>
+		<fix author='adam' date='2009-02-25' ref='2549745' reftype='bug'  reporter='alex'>
+			Text-Templates/Wiki: Custom video splash-images hosted in Segue now work. 
+			The video player requires a filename with the .jpg extension for splash images.
+			The wiki-resolver now uses the global media-file url-builder which includes the file name at the end of the URL. 
+		</fix>
+		<fix author='adam' date='2009-02-25' ref='2614017' reftype='bug'  reporter='claudia_cooper'>
+			Text-Editor: EMail "mailto:" links now use plain HTML and are not stripped out by security checks.
+		</fix>
+		<important author='adam' date='2009-02-25' ref='' reftype='fr'  reporter='alex'>
+			Size of agent_external_children columns has been increased from 70 characters to 140 characters to prevent long DNs from being truncated.
 			
-		</releaseNotes>
+			Run the "agent_external_children field length" updater under Admin Tools --&gt; Segue Updates to make this change on existing systems.
+		</important>
 		<fix author='adam' date='2009-02-12' ref='' reftype='bug'  reporter='brian_robison'>
 			Plugins: Audio Player now allows use of 'audio/mpeg3' MIME type sometimes used by OS X.
+		</fix>
+		<fix author='adam' date='2009-02-25' ref='' reftype='bug'  reporter='stephanie_monasky'>
+			Site Display: Invalid menu items now log errors, but do not kill the site rendering process. 
 		</fix>
 	</version>
 	<version number="2.2.8.1" date="2009-02-10">
@@ -3508,6 +3648,14 @@
 		</reporter>
 		<reporter short="brian_robison">
 			<name>Brian Robison</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short='stephanie_monasky'>
+			<name>Stephanie Monasky</name>
+			<institution>Middlebury College</institution>
+		</reporter>
+		<reporter short="dick_forman">
+			<name>Dick Forman</name>
 			<institution>Middlebury College</institution>
 		</reporter>
 	</reporters>

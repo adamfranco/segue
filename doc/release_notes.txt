@@ -1,5 +1,5 @@
 
-Segue v. 2.2.8.1 (2009-02-10)
+Segue v. 2.2.9.3 (2009-03-20)
 =================================
 
 What is Segue?
@@ -12,16 +12,17 @@ and journal.
 
 Current Version Notes
 ---------------------
-This release also fixes a number of of minor bugs. See the change-log for details. 
+This release of Segue updates the Segue v1 to v2 migration code to support the
+migration of v1 file metadata 
 
 ----
 
- Upgrades from versions prior to 2.2.5.0 require running system updaters
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
 located under Admin Tools --> Segue Updates. 
 
 ----
 
- This Segue release uses Harmoni 1.9.4 and Polyphony 1.5.1.
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
 
 
 Downloads
@@ -61,6 +62,79 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.9.3 (2009-03-20)
+----------------------------------------------------
+This release of Segue updates the Segue v1 to v2 migration code to support the
+migration of v1 file metadata 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+
+
+
+v. 2.2.9.2 (2009-02-26)
+----------------------------------------------------
+This release of Segue adds a new "Site-Members" feature. Every site has a
+"Site-Members" group that can be used for setting the roles on many users at once.
+It can also be used in conjunction with the new "Join Site" plugin to enable
+self-registration (with moderation) to the site. This release also fixes a large
+number of bugs. See the change log for more details. 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+
+
+
+v. 2.2.9.1 (2009-02-25)
+----------------------------------------------------
+This release of Segue adds a new "Site-Members" feature. Every site has a
+"Site-Members" group that can be used for setting the roles on many users at once.
+It can also be used in conjunction with the new "Join Site" plugin to enable
+self-registration (with moderation) to the site. This release also fixes a large
+number of bugs. See the change log for more details. 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+
+
+
+v. 2.2.9.0 (2009-02-25)
+----------------------------------------------------
+This release of Segue adds a new "Site-Members" feature. Every site has a
+"Site-Members" group that can be used for setting the roles on many users at once.
+It can also be used in conjunction with the new "Join Site" plugin to enable
+self-registration (with moderation) to the site. This release also fixes a large
+number of bugs. See the change log for more details. 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+
 
 
 v. 2.2.8.1 (2009-02-10)

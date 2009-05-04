@@ -49,7 +49,8 @@
 									"view.*",
 									"tags.*",
 									"participation.*",
-									"roles.*"
+									"roles.*",
+									"agent.*"
 									
 								);
 	

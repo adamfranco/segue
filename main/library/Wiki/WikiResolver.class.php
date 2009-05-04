@@ -521,51 +521,12 @@ $		# Anchor for the end of the line
 		
 		// Check for a link to a file url:
 		// [[fileurl:repository_id=123&amp;asset_id=1234&amp;record_id=12345]]
-		if (preg_match($fileUrlRegexp, $wikiText, $matches)) {			
-			preg_match_all('/(&(amp;)?)?([^&=]+)=([^&=]+)/', $matches[1], $paramMatches);
-			$args = array();
-			
-			// Default repository Id:
-			$args['repository_id'] = 'edu.middlebury.segue.sites_repository';
-			
-			for ($i = 0; $i < count($paramMatches[1]); $i++) {
-				$key = $paramMatches[3][$i];
-				$value = $paramMatches[4][$i];
-				
-				switch ($key) {
-					// Filtered Keys
-					case 'module':
-					case 'action':
-						break;
-					case 'repositoryId':
-					case 'repository_id':
-						$args['repository_id'] = $value;
-						break;
-					case 'assetId':
-					case 'asset_id':
-						$args['asset_id'] = $value;
-						break;
-					case 'recordId':
-					case 'record_id':
-						$args['record_id'] = $value;
-						break;
-					default:
-						$args[$key] = $value;
-				}
-				
+		if (preg_match($fileUrlRegexp, $wikiText, $matches)) {
+			try {
+				return MediaFile::withIdString($matches[1])->getUrl();
+			} catch (InvalidArgumentException $e) {
+			} catch (UnknownIdException $e) {
 			}
-			
-			if (!isset($module))
-				$module = 'repository';
-			if (!isset($action))
-				$action = 'viewfile';	
-			
-			$harmoni = Harmoni::instance();
-			$harmoni->request->startNamespace('polyphony-repository');
-			$newUrl = $harmoni->request->mkURLWithoutContext($module, $action, $args);
-			$harmoni->request->endNamespace();
-			
-			return $newUrl->write();
 		}
 		
 		// Links of the form [[Assignments]]

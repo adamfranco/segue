@@ -30,16 +30,6 @@ require_once(dirname(__FILE__)."/SeguePluginsDriver.abstract.php");
 abstract class SeguePluginsTemplate
 	extends SeguePluginsDriver
 {
-
-/*********************************************************
- * Object Variables - API
- *********************************************************/
-	/**
-	 * @var array $data; 4-dimensional array holding plugin data 
-	 * @access protected
-	 * @since 3/1/06
-	 */
-	protected $data;
 	
 /*********************************************************
  * Instance Methods - API - Override in Children

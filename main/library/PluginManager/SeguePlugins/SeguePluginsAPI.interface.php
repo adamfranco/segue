@@ -610,6 +610,24 @@ interface SeguePluginsAPI {
 	public function applyEditorSafeTextTemplates($text);
 	
 	/**
+	 * Answer the local module to use in non-internal-to-the-plugin links.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/25/09
+	 */
+	public function getLocalModule ();
+	
+	/**
+	 * Answer the local action to use in non-internal-to-the-plugin links.
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 2/25/09
+	 */
+	public function getLocalAction ();
+	
+	/**
 	 * Given a block of HTML text, replace any local-system urls with tokenized
 	 * placeholders. These placeholders can the be translated back at display time
 	 * in order to match the current system base-url 
