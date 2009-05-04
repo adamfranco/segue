@@ -502,10 +502,7 @@ class EduMiddleburyParticipationPlugin
 		$siteAdmins = $authZ->getExplicitAZs(null,
 			$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
 			SiteDispatcher::getCurrentRootNode()->getQualifierId(), TRUE);
-		
 
-			
-//		printpre($siteAdmins);
 		return $siteAdmins;
 	} 	
 
