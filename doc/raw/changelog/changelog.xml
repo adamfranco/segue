@@ -24,6 +24,9 @@
 			This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
 		</releaseNotes>
 		<change author='alex' date='2009-04-15'>
+			Participation plugin: plugin now displays list of Site Administrators.
+		</change>
+		<change author='alex' date='2009-04-15'>
 			Roles UI: Site members now listed in initial roles UI
 		</change>
 		<change author='alex' date='2009-04-15'>

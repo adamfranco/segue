@@ -377,6 +377,10 @@ class EduMiddleburyParticipationPlugin
 			
 		ob_start();
 		
+		// get site admins
+		 $siteAdmins = $this->getSiteAdmins();
+		
+
 		// get all site members
 		$group = $this->getNode()->getMembersGroup();
 		//printpre ($group);
@@ -436,6 +440,11 @@ class EduMiddleburyParticipationPlugin
 			print "</form>";
 		
 		} else if ($this->canView()) {
+		
+			// Site Admins
+			print "<div class='participant_header'>"._("Site Administrators")."</div>";			
+			print $this->printSiteAdminsIterator($siteAdmins);
+
 
 			// Direct members of the group
 			print "<div class='participant_header'>"._("Site Members")."</div>";
@@ -476,6 +485,27 @@ class EduMiddleburyParticipationPlugin
 
  		return ob_get_clean();
  	}
+
+
+	/**
+	 * get all admins of the site
+	 * 
+	 * @return array of Agent objects
+	 * @access public
+	 * @since 4/29/09
+	 */
+	public function getSiteAdmins () {
+		$agentMgr = Services::getService('Agent');
+		$authZ = Services::getService("AuthZ");
+		$idMgr = Services::getService('Id');
+
+		$siteAdmins = $authZ->getExplicitAZs(null,
+			$idMgr->getId("edu.middlebury.authorization.modify_authorizations"),
+			SiteDispatcher::getCurrentRootNode()->getQualifierId(), TRUE);
+
+		return $siteAdmins;
+	} 	
+
  	
 
  	/**
@@ -495,13 +525,34 @@ class EduMiddleburyParticipationPlugin
 		return count($members);
  	}
 
+ 
+  	/**
+ 	 * Print out the site admins in an iterator
+ 	 * 
+ 	 * @param object $siteAdmins
+ 	 * @return string
+ 	 * @access protected
+ 	 * @since 2/18/09
+ 	 */
+ 	protected function printSiteAdminsIterator ($siteAdmins) {
+ 		$admins = array();
+		while ($siteAdmins->hasNext()) {
+			$admin = $siteAdmins->next();
+			$adminId = $admin->getAgentId();
+			$participant_view = new Participation_View(SiteDispatcher::getCurrentRootNode());
+			if (!in_array($adminId, $admins))
+				$admins[] = $participant_view->getParticipant($adminId->getIdString());
+		}
+		return $this->printParticipants($admins);
+ 	}
+
+
  	/**
  	 * Print out the members in an iterator
  	 * 
  	 * @param object $groupMembers
  	 * @return string
  	 * @access protected
- 	 * @since 2/18/09
  	 */
  	protected function printMemberIterator ($groupMembers) {
  		$members = array();
