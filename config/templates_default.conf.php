@@ -32,7 +32,7 @@
  * the list.
  *********************************************************/
 $templateMgr->setOrder(array(
- 	"Basic", "Blog", "Course-Basic", "Course-Standard"
+ 	"Basic", "Blog", "Community", "Course-Basic", "Course-Standard"
 ));
 
 /*********************************************************

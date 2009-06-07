@@ -1,0 +1,488 @@
+<?xml version="1.0"?>
+<Segue2 export_date="2009-06-07T17:04:49-04:00" segue_version="2.2.9.4" segue_export_version="2.0">
+	<SiteNavBlock slot_name="community" id="86337" showDisplayNames="true" showHistory="false" sortMethod="custom" commentsEnabled="false" width="950px" showDates="none" showAttribution="none" create_date="2009-06-07T16:50:20-04:00" create_agent="3" modify_date="2009-06-07T16:50:20-04:00">
+		<displayName><![CDATA[#SITE_NAME#]]></displayName>
+		<description><![CDATA[#SITE_DESCRIPTION#]]></description>
+		<roles>
+			<entry role="commenter" agent_id="edu.middlebury.segue.site-members.86337"/>
+		</roles>
+		<theme id="ShadowBox"/>
+		<NavOrganizer id="86337----86341" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="3" cols="1" direction="Left-Right/Top-Bottom">
+			<cell>
+				<FixedOrganizer id="86337----86378" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="2" cols="1" direction="Left-Right/Top-Bottom">
+					<cell>
+						<FlowOrganizer id="86337----86397" showDisplayNames="false" showHistory="false" sortMethod="default" commentsEnabled="false" width="" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+							<cell>
+								<Block id="86412" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:21-04:00" create_agent="3" modify_date="2009-06-07T16:50:37-04:00" blockDisplayType="Header" headingDisplayType="Heading_3">
+									<type>
+										<domain>SeguePlugins</domain>
+										<authority>edu.middlebury</authority>
+										<keyword>TextBlock</keyword>
+									</type>
+									<displayName><![CDATA[Site Header]]></displayName>
+									<description><![CDATA[<span style="font-size: large;">#SITE_NAME#</span>]]></description>
+									<roles/>
+									<currentVersion>
+										<version>
+											<content><![CDATA[<span style="font-size: large;">#SITE_NAME#</span>]]></content>
+											<abstractLength>0</abstractLength>
+										</version>
+									</currentVersion>
+									<history/>
+									<comments/>
+									<attachedMedia/>
+									<tags/>
+								</Block>
+							</cell>
+						</FlowOrganizer>
+					</cell>
+					<cell>
+						<FixedOrganizer id="86337----86439" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="2" direction="Left-Right/Top-Bottom">
+							<cell>
+								<FlowOrganizer id="86337----86458" showDisplayNames="false" showHistory="false" sortMethod="default" commentsEnabled="false" width="" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+									<cell>
+										<Block id="86473" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:22-04:00" create_agent="3" modify_date="2009-06-07T16:50:22-04:00" blockDisplayType="Header" headingDisplayType="Heading_3">
+											<type>
+												<domain>SeguePlugins</domain>
+												<authority>edu.middlebury</authority>
+												<keyword>Breadcrumbs</keyword>
+											</type>
+											<displayName><![CDATA[Breadcrumbs]]></displayName>
+											<description></description>
+											<roles/>
+											<currentContent>
+												<content></content>
+												<rawDescription></rawDescription>
+											</currentContent>
+											<comments/>
+											<attachedMedia/>
+											<tags/>
+										</Block>
+									</cell>
+								</FlowOrganizer>
+							</cell>
+							<cell>
+								<FlowOrganizer id="86337----86498" showDisplayNames="false" showHistory="false" sortMethod="default" commentsEnabled="false" width="250px" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+									<cell>
+										<Block id="86515" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:23-04:00" create_agent="3" modify_date="2009-06-07T16:50:23-04:00" blockDisplayType="Header" headingDisplayType="Heading_3">
+											<type>
+												<domain>SeguePlugins</domain>
+												<authority>edu.middlebury</authority>
+												<keyword>Rsslinks</keyword>
+											</type>
+											<displayName><![CDATA[RSS Links]]></displayName>
+											<description></description>
+											<roles/>
+											<currentContent>
+												<content></content>
+												<rawDescription></rawDescription>
+											</currentContent>
+											<comments/>
+											<attachedMedia/>
+											<tags/>
+										</Block>
+									</cell>
+								</FlowOrganizer>
+							</cell>
+						</FixedOrganizer>
+					</cell>
+				</FixedOrganizer>
+			</cell>
+			<cell>
+				<FixedOrganizer id="86337----86540" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="2" cols="1" direction="Left-Right/Top-Bottom">
+					<cell>
+						<MenuOrganizer id="86337----86559" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" direction="Left-Right/Top-Bottom" overflowStyle="Paginate" target_id="86337----86540_cell:1" menuDisplayType="Menu_Top">
+							<cell>
+								<NavBlock id="86574" showDisplayNames="default" showHistory="default" sortMethod="create_date_desc" commentsEnabled="true" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:24-04:00" create_agent="3" modify_date="2009-06-07T16:51:26-04:00">
+									<displayName><![CDATA[News]]></displayName>
+									<description><![CDATA[News posts about the community]]></description>
+									<roles/>
+									<NavOrganizer id="86574----86578" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="3" direction="Left-Right/Top-Bottom">
+										<cell>
+											<FlowOrganizer id="86574----86613" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="true" width="" showDates="creation_date" showAttribution="creator" rows="10" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+												<cell>
+													<Block id="86630" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:25-04:00" create_agent="3" modify_date="2009-06-07T16:50:25-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+														<type>
+															<domain>SeguePlugins</domain>
+															<authority>edu.middlebury</authority>
+															<keyword>TextBlock</keyword>
+														</type>
+														<displayName><![CDATA[Hello world!]]></displayName>
+														<description><![CDATA[Welcome to your new community site. Click the <strong>edit</strong> link above to go into edit-mode.&nbsp; Then click the <strong>+ Content</strong> link to add news posts. Every post on this page will have comments enabled and attribution shown. <br />
+<br />
+Click the <strong>roles</strong> link above to enable more people to view, comment on...]]></description>
+														<roles/>
+														<currentVersion>
+															<version>
+																<content><![CDATA[Welcome to your new community site. Click the <strong>edit</strong> link above to go into edit-mode.&nbsp; Then click the <strong>+ Content</strong> link to add news posts. Every post on this page will have comments enabled and attribution shown. <br />
+<br />
+Click the <strong>roles</strong> link above to enable more people to view, comment on or even edit your posts or create new posts.<br />
+<br />
+<div align="right"><em>You can delete this content block, it is just here for information.</em></div>]]></content>
+																<abstractLength>0</abstractLength>
+															</version>
+														</currentVersion>
+														<history/>
+														<comments/>
+														<attachedMedia/>
+														<tags/>
+													</Block>
+												</cell>
+											</FlowOrganizer>
+										</cell>
+										<cell>
+											<FlowOrganizer id="86574----86657" showDisplayNames="default" showHistory="false" sortMethod="custom" commentsEnabled="false" width="200px" showDates="none" showAttribution="none" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+												<cell>
+													<Block id="86674" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:26-04:00" create_agent="3" modify_date="2009-06-07T16:50:48-04:00" blockDisplayType="Block_Sidebar" headingDisplayType="Heading_3">
+														<type>
+															<domain>SeguePlugins</domain>
+															<authority>edu.middlebury</authority>
+															<keyword>RssFeed</keyword>
+														</type>
+														<displayName><![CDATA[Recent News]]></displayName>
+														<description><![CDATA[A display of an RSS feed: http://localhost/~achapin/segue2/index.php/rss/content/site/course-language01/node/86574]]></description>
+														<roles/>
+														<currentContent>
+															<content><![CDATA[<RssFeedPlugin>
+	<RssFeed showChannelTitles="false" showChannelDescriptions="false" showChannelDivider="false" showItemTitles="true" showItemDescriptions="false" showItemDivider="true" showAttribution="false" showDates="false" showCommentLinks="false" maxItems="5" extendedMaxItems="5">
+		<Url>[[localurl:module=rss&amp;amp;action=content&amp;amp;site=course-language01&amp;amp;node=86574]]</Url>
+	</RssFeed>
+</RssFeedPlugin>]]></content>
+															<rawDescription></rawDescription>
+														</currentContent>
+														<comments/>
+														<attachedMedia/>
+														<tags/>
+													</Block>
+												</cell>
+												<cell>
+													<Block id="86701" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:26-04:00" create_agent="3" modify_date="2009-06-07T16:50:48-04:00" blockDisplayType="Block_Sidebar" headingDisplayType="Heading_3">
+														<type>
+															<domain>SeguePlugins</domain>
+															<authority>edu.middlebury</authority>
+															<keyword>RssFeed</keyword>
+														</type>
+														<displayName><![CDATA[Recent Contributions]]></displayName>
+														<description><![CDATA[A display of an RSS feed: http://localhost/~achapin/segue2/index.php/rss/content/site/community/node/86982]]></description>
+														<roles/>
+														<currentContent>
+															<content><![CDATA[<RssFeedPlugin>
+	<RssFeed showChannelTitles="false" showChannelDescriptions="false" showChannelDivider="false" showItemTitles="true" showItemDescriptions="false" showItemDivider="true" showAttribution="false" showDates="false" showCommentLinks="false" maxItems="5" extendedMaxItems="5">
+		<Url>[[localurl:module=rss&amp;amp;action=content&amp;amp;site=community&amp;amp;node=86982]]</Url>
+	</RssFeed>
+</RssFeedPlugin>]]></content>
+															<rawDescription></rawDescription>
+														</currentContent>
+														<comments/>
+														<attachedMedia/>
+														<tags/>
+													</Block>
+												</cell>
+											</FlowOrganizer>
+										</cell>
+										<cell>
+											<FlowOrganizer id="86574----86728" showDisplayNames="default" showHistory="default" sortMethod="custom" commentsEnabled="false" width="200px" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+												<cell>
+													<Block id="86745" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:27-04:00" create_agent="3" modify_date="2009-06-07T16:50:48-04:00" blockDisplayType="Block_Sidebar" headingDisplayType="Heading_3">
+														<type>
+															<domain>SeguePlugins</domain>
+															<authority>edu.middlebury</authority>
+															<keyword>RssFeed</keyword>
+														</type>
+														<displayName><![CDATA[Recent Discussion]]></displayName>
+														<description><![CDATA[A display of an RSS feed: http://localhost/~achapin/segue2/index.php/rss/comments/site/community/node/86337]]></description>
+														<roles/>
+														<currentContent>
+															<content><![CDATA[<RssFeedPlugin>
+	<RssFeed showChannelTitles="false" showChannelDescriptions="false" showChannelDivider="false" showItemTitles="true" showItemDescriptions="false" showItemDivider="true" showAttribution="false" showDates="false" showCommentLinks="false" maxItems="10" extendedMaxItems="10">
+		<Url>[[localurl:module=rss&amp;amp;action=comments&amp;amp;site=community&amp;amp;node=86337]]</Url>
+	</RssFeed>
+</RssFeedPlugin>]]></content>
+															<rawDescription></rawDescription>
+														</currentContent>
+														<comments/>
+														<attachedMedia/>
+														<tags/>
+													</Block>
+												</cell>
+											</FlowOrganizer>
+										</cell>
+									</NavOrganizer>
+								</NavBlock>
+							</cell>
+							<cell>
+								<NavBlock id="86772" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:27-04:00" create_agent="3" modify_date="2009-06-07T16:57:46-04:00">
+									<displayName><![CDATA[Resources]]></displayName>
+									<description></description>
+									<roles/>
+									<NavOrganizer id="86772----86776" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="2" direction="Left-Right/Top-Bottom">
+										<cell>
+											<MenuOrganizer id="86772----86811" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="200px" showDates="default" showAttribution="default" direction="Top-Bottom/Left-Right" overflowStyle="Paginate" target_id="86772----86776_cell:1" menuDisplayType="Menu_Left">
+												<cell>
+													<NavBlock id="86830" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:28-04:00" create_agent="3" modify_date="2009-06-07T16:50:28-04:00">
+														<displayName><![CDATA[Overview]]></displayName>
+														<description></description>
+														<roles/>
+														<NavOrganizer id="86830----86834" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="2" direction="Left-Right/Top-Bottom">
+															<cell>
+																<FlowOrganizer id="86830----86869" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+																	<cell>
+																		<Block id="86884" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:29-04:00" create_agent="3" modify_date="2009-06-07T17:02:54-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+																			<type>
+																				<domain>SeguePlugins</domain>
+																				<authority>edu.middlebury</authority>
+																				<keyword>TextBlock</keyword>
+																			</type>
+																			<displayName><![CDATA[Community Resources]]></displayName>
+																			<description><![CDATA[<font size="4">This section of the site contains resources being developed by the community.&nbsp; These resources could include sub-sections, pages and content (text and images, files, audio, video etc...).<br />
+<br />
+To contribute to this community, see: <a href="http://localhost/~achapin/segue2/index.php/view/html/site/community/node/87115">Join Community</a>.<br />
+<br />
+</font>
+<div align="left"><font size="2"><em>Delete the overview page if this introduction to community resources is not needed.&nbsp; Click on...</em></font></div>]]></description>
+																			<roles/>
+																			<currentVersion>
+																				<version>
+																					<content><![CDATA[<font size="4">This section of the site contains resources being developed by the community.&nbsp; These resources could include sub-sections, pages and content (text and images, files, audio, video etc...).<br />
+<br />
+To contribute to this community, see: [[Join Community]].<br />
+<br />
+</font>
+<div align="left"><font size="2"><em>Delete the overview page if this introduction to community resources is not needed.&nbsp; Click on the link to &quot;roles&quot; above if you want to restrict access to &quot;Site Members&quot;<br />
+</em></font></div>]]></content>
+																					<abstractLength>0</abstractLength>
+																				</version>
+																			</currentVersion>
+																			<history>
+																				<entry number="2" time_stamp="2009-06-07T17:02:49-04:00" agent_id="3" isCurrent="true">
+																					<comment></comment>
+																					<version>
+																						<content><![CDATA[<font size="4">This section of the site contains resources being developed by the community.&nbsp; These resources could include sub-sections, pages and content (text and images, files, audio, video etc...).<br />
+<br />
+To contribute to this community, see: [[Join Community]].<br />
+<br />
+</font>
+<div align="left"><font size="2"><em>Delete the overview page if this introduction to community resources is not needed.&nbsp; Click on the link to &quot;roles&quot; above if you want to restrict access to &quot;Site Members&quot;<br />
+</em></font></div>]]></content>
+																						<abstractLength>0</abstractLength>
+																					</version>
+																				</entry>
+																				<entry number="1" time_stamp="2009-06-07T17:00:25-04:00" agent_id="3" isCurrent="false">
+																					<comment></comment>
+																					<version>
+																						<content><![CDATA[<font size="4">This section of the site contains resources being developed by the community.&nbsp; These resources could include sub-sections, pages and content (text and images, files, audio, video etc...).<br />
+<br />
+</font>
+<div align="right"><font size="2"><em>Delete the overview page if you this introduction to community resources is not needed</em></font></div>]]></content>
+																						<abstractLength>0</abstractLength>
+																					</version>
+																				</entry>
+																			</history>
+																			<comments/>
+																			<attachedMedia/>
+																			<tags/>
+																		</Block>
+																	</cell>
+																</FlowOrganizer>
+															</cell>
+															<cell>
+																<FlowOrganizer id="86830----86911" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="200px" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+																	<cell>
+																		<Block id="86928" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:30-04:00" create_agent="3" modify_date="2009-06-07T16:51:53-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+																			<type>
+																				<domain>SeguePlugins</domain>
+																				<authority>edu.middlebury</authority>
+																				<keyword>RssFeed</keyword>
+																			</type>
+																			<displayName><![CDATA[Recent Contributions]]></displayName>
+																			<description><![CDATA[A display of an RSS feed: http://localhost/~achapin/segue2/index.php/rss/content/site/community/node/86982]]></description>
+																			<roles/>
+																			<currentContent>
+																				<content><![CDATA[<RssFeedPlugin>
+	<RssFeed showChannelTitles="false" showChannelDescriptions="false" showChannelDivider="false" showItemTitles="true" showItemDescriptions="false" showItemDivider="true" showAttribution="false" showDates="false" showCommentLinks="false" maxItems="5" extendedMaxItems="5">
+		<Url>[[localurl:module=rss&amp;amp;action=content&amp;amp;site=community&amp;amp;node=86982]]</Url>
+	</RssFeed>
+</RssFeedPlugin>]]></content>
+																				<rawDescription></rawDescription>
+																			</currentContent>
+																			<comments/>
+																			<attachedMedia/>
+																			<tags/>
+																		</Block>
+																	</cell>
+																</FlowOrganizer>
+															</cell>
+														</NavOrganizer>
+													</NavBlock>
+												</cell>
+												<cell>
+													<NavBlock id="86982" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:31-04:00" create_agent="3" modify_date="2009-06-07T16:50:31-04:00">
+														<displayName><![CDATA[Resource Pages]]></displayName>
+														<description></description>
+														<roles/>
+														<NavOrganizer id="86982----86986" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="1" direction="Left-Right/Top-Bottom">
+															<cell/>
+														</NavOrganizer>
+														<MenuOrganizer id="86982----87017" showDisplayNames="default" showHistory="true" sortMethod="custom" commentsEnabled="true" width="" showDates="modification_date" showAttribution="all_editors" direction="Top-Bottom/Left-Right" overflowStyle="Paginate" target_id="86982----86986_cell:0" menuDisplayType="Menu_Left">
+															<cell>
+																<NavBlock id="87034" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:31-04:00" create_agent="3" modify_date="2009-06-07T16:55:26-04:00">
+																	<displayName><![CDATA[New Resource]]></displayName>
+																	<description></description>
+																	<roles/>
+																	<NavOrganizer id="87034----87038" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="1" direction="Left-Right/Top-Bottom">
+																		<cell>
+																			<FlowOrganizer id="87034----87069" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+																				<cell>
+																					<Block id="87084" showDisplayNames="default" showHistory="false" sortMethod="default" commentsEnabled="false" width="" showDates="none" showAttribution="none" create_date="2009-06-07T16:50:32-04:00" create_agent="3" modify_date="2009-06-07T16:50:49-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+																						<type>
+																							<domain>SeguePlugins</domain>
+																							<authority>edu.middlebury</authority>
+																							<keyword>TextBlock</keyword>
+																						</type>
+																						<displayName><![CDATA[Introduction]]></displayName>
+																						<description><![CDATA[This is a new post on the first resource page created on this site.]]></description>
+																						<roles/>
+																						<currentVersion>
+																							<version>
+																								<content><![CDATA[This is a new post on the first resource page created on this site.]]></content>
+																								<abstractLength>0</abstractLength>
+																							</version>
+																						</currentVersion>
+																						<history/>
+																						<comments/>
+																						<attachedMedia/>
+																						<tags/>
+																					</Block>
+																				</cell>
+																			</FlowOrganizer>
+																		</cell>
+																	</NavOrganizer>
+																</NavBlock>
+															</cell>
+														</MenuOrganizer>
+													</NavBlock>
+												</cell>
+											</MenuOrganizer>
+										</cell>
+										<cell/>
+									</NavOrganizer>
+								</NavBlock>
+							</cell>
+							<cell>
+								<NavBlock id="87115" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:32-04:00" create_agent="3" modify_date="2009-06-07T16:50:32-04:00">
+									<displayName><![CDATA[Join Community]]></displayName>
+									<description></description>
+									<roles/>
+									<NavOrganizer id="87115----87119" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="2" direction="Left-Right/Top-Bottom">
+										<cell>
+											<FlowOrganizer id="87115----87154" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+												<cell>
+													<Block id="87169" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:34-04:00" create_agent="3" modify_date="2009-06-07T16:50:49-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+														<type>
+															<domain>SeguePlugins</domain>
+															<authority>edu.middlebury</authority>
+															<keyword>TextBlock</keyword>
+														</type>
+														<displayName><![CDATA[Join Community]]></displayName>
+														<description><![CDATA[<font size="4">Welcome to the community site.&nbsp; If you are interested in joining this community, click on the Join Site button below...</font>]]></description>
+														<roles/>
+														<currentVersion>
+															<version>
+																<content><![CDATA[<font size="4">Welcome to the community site.&nbsp; If you are interested in joining this community, click on the Join Site button below...</font>]]></content>
+																<abstractLength>0</abstractLength>
+															</version>
+														</currentVersion>
+														<history/>
+														<comments/>
+														<attachedMedia/>
+														<tags/>
+													</Block>
+												</cell>
+												<cell>
+													<Block id="87196" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:34-04:00" create_agent="3" modify_date="2009-06-07T16:50:49-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+														<type>
+															<domain>SeguePlugins</domain>
+															<authority>edu.middlebury</authority>
+															<keyword>JoinSite</keyword>
+														</type>
+														<displayName><![CDATA[Request Membership]]></displayName>
+														<description><![CDATA[Self registration to the site.]]></description>
+														<roles/>
+														<currentContent>
+															<content></content>
+															<rawDescription></rawDescription>
+														</currentContent>
+														<comments/>
+														<attachedMedia/>
+														<tags/>
+													</Block>
+												</cell>
+											</FlowOrganizer>
+										</cell>
+										<cell>
+											<FlowOrganizer id="87115----87221" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="300px" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+												<cell>
+													<Block id="87238" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-07T16:50:35-04:00" create_agent="3" modify_date="2009-06-07T16:50:49-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+														<type>
+															<domain>SeguePlugins</domain>
+															<authority>edu.middlebury</authority>
+															<keyword>Participation</keyword>
+														</type>
+														<displayName><![CDATA[Community Members]]></displayName>
+														<description></description>
+														<roles/>
+														<currentContent>
+															<content><![CDATA[<options>
+	<showOtherParticipants>false</showOtherParticipants>
+</options>]]></content>
+															<rawDescription></rawDescription>
+														</currentContent>
+														<comments/>
+														<attachedMedia/>
+														<tags/>
+													</Block>
+												</cell>
+											</FlowOrganizer>
+										</cell>
+									</NavOrganizer>
+								</NavBlock>
+							</cell>
+						</MenuOrganizer>
+					</cell>
+					<cell/>
+				</FixedOrganizer>
+			</cell>
+			<cell>
+				<FlowOrganizer id="86337----87267" showDisplayNames="false" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate"/>
+			</cell>
+		</NavOrganizer>
+	</SiteNavBlock>
+	<agents>
+		<agent id="3">
+			<displayName><![CDATA[John Administrator]]></displayName>
+			<property>
+				<key><![CDATA[name]]></key>
+				<string><![CDATA[Administrator, John]]></string>
+			</property>
+			<property>
+				<key><![CDATA[first_name]]></key>
+				<string><![CDATA[John]]></string>
+			</property>
+			<property>
+				<key><![CDATA[last_name]]></key>
+				<string><![CDATA[Administrator]]></string>
+			</property>
+			<property>
+				<key><![CDATA[email]]></key>
+				<string><![CDATA[jadministrator@xxxxxxxxx.edu]]></string>
+			</property>
+			<property>
+				<key><![CDATA[status]]></key>
+				<string><![CDATA[Not a real person.]]></string>
+			</property>
+		</agent>
+		<agent id="edu.middlebury.segue.site-members.86337">
+			<displayName><![CDATA[Site-Members]]></displayName>
+		</agent>
+	</agents>
+</Segue2>
