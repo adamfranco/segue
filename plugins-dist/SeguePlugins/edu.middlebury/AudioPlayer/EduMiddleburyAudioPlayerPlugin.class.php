@@ -213,7 +213,7 @@ class EduMiddleburyAudioPlayerPlugin
 	 		
 	 		if ($this->getRawDescription()) {
 // 				print "\n<hr/>";
-				print "\n<div style='margin-top: 10px;'>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getRawDescription())))."</div>";
+				print "\n<div style='margin-top: 10px;'>".$this->parseWikiText($this->cleanHTML($this->untokenizeLocalUrls($this->getRawDescription())))."</div>";
 			}
 	 		
 	 		if ($this->shouldShowControls()) {
