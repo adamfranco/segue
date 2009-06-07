@@ -202,7 +202,9 @@ class EduMiddleburyDownloadPlugin
 	 		print "</div>";
 	 		
 	 		if ($this->getRawDescription()) {
-				print "\n<div style='margin-top: 10px;'>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getRawDescription())))."</div>";
+				print "\n<div style='margin-top: 10px;'>";
+				print $this->parseWikiText($this->cleanHTML($this->untokenizeLocalUrls($this->getRawDescription())));
+				print "</div>";
 			}
 	 		
 	 		if ($this->shouldShowControls()) {
