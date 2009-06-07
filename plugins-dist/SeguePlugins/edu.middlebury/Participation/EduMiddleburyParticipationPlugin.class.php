@@ -431,8 +431,8 @@ class EduMiddleburyParticipationPlugin
 			print "\n\t<input name='".$this->getFieldName('other_participants')."' value='true' type='checkbox' ";
 			if ($this->getOtherParticipantsDisplay() == "true")
 				print " checked";				
-			print ">"._("Other Participants");
-			print "<br/>("._("those who are NOT site members").")";
+			print ">"._("Show Other Participants");
+			print "<br/>("._("i.e. those who are NOT site members").")";
 			print "\n</div>";			
 			
 			print "\n<div class='participation_buttons'>\n\t<input type='submit' value='Update' name='".$this->getFieldName('submit')."'>\n";

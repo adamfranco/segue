@@ -112,7 +112,7 @@ class EduMiddleburyAudioPlayerPlugin
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) { 			
  			$this->setFileId($this->getFieldValue('file_id'));
- 			$this->setRawDescription($this->tokenizeLocalUrls($this->getFieldValue('description')));
+ 			$this->setRawDescription($this->tokenizeLocalUrls($this->cleanHTML($this->unapplyTextTemplates($this->getFieldValue('description'))))); 			
  			$this->setShowDownloadLink(($this->getFieldValue('show_download_link') == 'true')?true:false);
  			$this->logEvent('Modify Content', 'File for download updated');
  		}
@@ -213,7 +213,7 @@ class EduMiddleburyAudioPlayerPlugin
 	 		
 	 		if ($this->getRawDescription()) {
 // 				print "\n<hr/>";
-				print "\n<div style='margin-top: 10px;'>".$this->cleanHTML($this->parseWikiText($this->untokenizeLocalUrls($this->getRawDescription())))."</div>";
+				print "\n<div style='margin-top: 10px;'>".$this->parseWikiText($this->cleanHTML($this->untokenizeLocalUrls($this->getRawDescription())))."</div>";
 			}
 	 		
 	 		if ($this->shouldShowControls()) {
