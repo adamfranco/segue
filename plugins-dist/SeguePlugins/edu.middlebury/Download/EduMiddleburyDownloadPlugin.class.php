@@ -113,8 +113,7 @@ class EduMiddleburyDownloadPlugin
  	 */
  	function update ( $request ) {
  		if ($this->getFieldValue('submit')) { 			
- 			$this->setContent($this->getFieldValue('file_id'));
- 			$this->setRawDescription($this->tokenizeLocalUrls($this->getFieldValue('description')));
+ 			$this->setContent($this->getFieldValue('file_id')); 			$this->setRawDescription($this->tokenizeLocalUrls($this->cleanHTML($this->unapplyTextTemplates($this->getFieldValue('description')))));
  			$this->logEvent('Modify Content', 'File for download updated');
  		}
  	}
