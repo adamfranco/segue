@@ -2,6 +2,53 @@
 Segue Change Log
 
 
+v. 2.2.9.4 (2009-06-08)
+----------------------------------------------------
+This release of Segue includes refinements to the roles UI, participation plugin,
+and adds a number of new site templates. 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+		
+		
+	* Change: 
+		site-templates: Created new site-templates including a standard course
+		template in English, Arabic, Chinese, Japanese, French, Spanish, German and
+		Portuguese. 
+		(2009-06-07 - Alex Chapin)		
+		
+	* Change: 
+		Audio and File plugins: these plugins now process and display text-templates
+		in their captions.
+		(2009-06-07 - Alex Chapin)		
+		
+	* Change: 
+		Participation plugin: plugin now displays list of Site Administrators.
+		(2009-04-15 - Alex Chapin)
+		
+	* Change: 
+		Roles UI: Site members now listed in initial roles UI
+		(2009-04-15 - Alex Chapin)
+		
+	* Change: 
+		Participation plugin: added option to show or hide "other participants"
+		(i.e. those participants who are not site members.
+		(2009-04-15 - Alex Chapin)
+		
+	* Change: 
+		tags display: changed how tagged items are displayed so is more flexible and
+		works with various site layouts.
+		(2009-04-15 - Alex Chapin)
+		(reported by Bryan Carson of Middlebury College)	
+
+
+
 v. 2.2.9.3 (2009-03-20)
 ----------------------------------------------------
 This release of Segue updates the Segue v1 to v2 migration code to support the

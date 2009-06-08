@@ -10,9 +10,10 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.9.4" date="the future">
+	<version number="2.2.9.4" date="2009-06-08">
 		<releaseNotes>
-			This release of Segue includes refinements to the roles UI and ... 			
+			This release of Segue includes refinements to the roles UI, participation
+			plugin, and adds a number of new site templates.
 
 			----
 			
