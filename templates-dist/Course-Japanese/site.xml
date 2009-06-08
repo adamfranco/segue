@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<Segue2 export_date="2009-04-28T11:26:45-04:00" segue_version="2.2.9.0" segue_export_version="2.0">
-	<SiteNavBlock slot_name="course-japanese" id="53837" showDisplayNames="true" showHistory="false" sortMethod="custom" commentsEnabled="false" width="850px" showDates="none" showAttribution="none" create_date="2009-04-27T10:34:34-04:00" create_agent="3" modify_date="2009-04-27T14:00:46-04:00">
-		<displayName><![CDATA[Standard Course Site - Japanese]]></displayName>
-		<description></description>
+<Segue2 export_date="2009-06-08T15:27:41-04:00" segue_version="2.2.9.4" segue_export_version="2.0">
+	<SiteNavBlock slot_name="course-japanese" id="53837" showDisplayNames="true" showHistory="false" sortMethod="custom" commentsEnabled="false" width="850px" showDates="none" showAttribution="none" create_date="2009-04-27T10:34:34-04:00" create_agent="3" modify_date="2009-06-08T15:22:25-04:00">
+		<displayName><![CDATA[#SITE_NAME#]]></displayName>
+		<description><![CDATA[#SITE_DESCRIPTION#]]></description>
 		<roles>
 			<entry role="admin" agent_id="3"/>
 		</roles>
@@ -20,11 +20,11 @@
 										<keyword>TextBlock</keyword>
 									</type>
 									<displayName><![CDATA[Site Header]]></displayName>
-									<description><![CDATA[<span style="font-size: large;">Standard Course Site</span>]]></description>
+									<description><![CDATA[<span style="font-size: large;">#SITE_NAME#</span>]]></description>
 									<roles/>
 									<currentVersion>
 										<version>
-											<content><![CDATA[<span style="font-size: large;">Standard Course Site</span>]]></content>
+											<content><![CDATA[<span style="font-size: large;">#SITE_NAME#</span>]]></content>
 											<abstractLength>0</abstractLength>
 										</version>
 									</currentVersion>
@@ -743,17 +743,19 @@
 								</NavBlock>
 							</cell>
 							<cell>
-								<NavBlock id="54675" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-04-27T10:55:31-04:00" create_agent="3" modify_date="2009-04-27T14:07:15-04:00">
+								<NavBlock id="95291" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-08T15:04:49-04:00" create_agent="3" modify_date="2009-06-08T15:22:10-04:00">
 									<displayName><![CDATA[Blog ブログ]]></displayName>
 									<description></description>
-									<roles/>
-									<NavOrganizer id="54675----54679" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="2" direction="Left-Right/Top-Bottom">
+									<roles>
+										<entry role="editor" agent_id="3"/>
+									</roles>
+									<NavOrganizer id="95291----95295" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="2" direction="Left-Right/Top-Bottom">
 										<cell>
-											<FixedOrganizer id="54675----54714" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="2" cols="1" direction="Left-Right/Top-Bottom">
+											<FixedOrganizer id="95291----95337" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="2" cols="1" direction="Left-Right/Top-Bottom">
 												<cell>
-													<FlowOrganizer id="54675----54733" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+													<FlowOrganizer id="95291----95356" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" rows="1" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
 														<cell>
-															<Block id="54750" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-04-27T11:00:46-04:00" create_agent="3" modify_date="2009-04-27T13:14:44-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+															<Block id="95373" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-08T15:04:50-04:00" create_agent="3" modify_date="2009-06-08T15:21:32-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
 																<type>
 																	<domain>SeguePlugins</domain>
 																	<authority>edu.middlebury</authority>
@@ -777,9 +779,9 @@
 													</FlowOrganizer>
 												</cell>
 												<cell>
-													<FlowOrganizer id="54675----54775" showDisplayNames="default" showHistory="default" sortMethod="create_date_desc" commentsEnabled="true" width="" showDates="creation_date" showAttribution="creator" rows="10" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+													<FlowOrganizer id="95291----95398" showDisplayNames="default" showHistory="default" sortMethod="create_date_desc" commentsEnabled="true" width="" showDates="creation_date" showAttribution="creator" rows="10" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
 														<cell>
-															<Block id="54792" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-04-27T11:01:47-04:00" create_agent="3" modify_date="2009-04-27T13:14:44-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+															<Block id="95415" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-08T15:04:51-04:00" create_agent="3" modify_date="2009-06-08T15:21:32-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
 																<type>
 																	<domain>SeguePlugins</domain>
 																	<authority>edu.middlebury</authority>
@@ -805,24 +807,23 @@
 											</FixedOrganizer>
 										</cell>
 										<cell>
-											<FlowOrganizer id="54675----54817" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="175px" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
+											<FlowOrganizer id="95291----95440" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="175px" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
 												<cell>
-													<Block id="54834" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-04-27T10:58:19-04:00" create_agent="3" modify_date="2009-04-27T13:14:44-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+													<Block id="95457" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-08T15:04:52-04:00" create_agent="3" modify_date="2009-06-08T15:22:33-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
 														<type>
 															<domain>SeguePlugins</domain>
 															<authority>edu.middlebury</authority>
-															<keyword>Tags</keyword>
+															<keyword>RssFeed</keyword>
 														</type>
-														<displayName><![CDATA[Tags]]></displayName>
-														<description></description>
+														<displayName><![CDATA[Recent Posts]]></displayName>
+														<description><![CDATA[A display of an RSS feed: http://localhost/~achapin/segue2/index.php/rss/content/site/course-standard/node/95291]]></description>
 														<roles/>
 														<currentContent>
-															<content><![CDATA[<options>
-	<targetNodeId>50835</targetNodeId>
-	<defaultSortMethod>alpha</defaultSortMethod>
-	<defaultDisplayType>list</defaultDisplayType>
-	<defaultListLimit>0</defaultListLimit>
-</options>]]></content>
+															<content><![CDATA[<RssFeedPlugin>
+	<RssFeed showChannelTitles="false" showChannelDescriptions="false" showChannelDivider="false" showItemTitles="true" showItemDescriptions="false" showItemDivider="true" showAttribution="false" showDates="false" showCommentLinks="false" maxItems="5" extendedMaxItems="5">
+		<Url>[[localurl:module=rss&amp;amp;action=content&amp;amp;site=course-standard&amp;amp;node=95291]]</Url>
+	</RssFeed>
+</RssFeedPlugin>]]></content>
 															<rawDescription></rawDescription>
 														</currentContent>
 														<comments/>
@@ -831,7 +832,30 @@
 													</Block>
 												</cell>
 												<cell>
-													<Block id="54861" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-04-27T11:03:29-04:00" create_agent="3" modify_date="2009-04-27T13:14:44-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+													<Block id="95484" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-08T15:04:52-04:00" create_agent="3" modify_date="2009-06-08T15:22:33-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+														<type>
+															<domain>SeguePlugins</domain>
+															<authority>edu.middlebury</authority>
+															<keyword>RssFeed</keyword>
+														</type>
+														<displayName><![CDATA[Recent Discussion]]></displayName>
+														<description><![CDATA[A display of an RSS feed: http://localhost/~achapin/segue2/index.php/rss/comments/site/course-standard/node/95291]]></description>
+														<roles/>
+														<currentContent>
+															<content><![CDATA[<RssFeedPlugin>
+	<RssFeed showChannelTitles="false" showChannelDescriptions="false" showChannelDivider="false" showItemTitles="true" showItemDescriptions="false" showItemDivider="true" showAttribution="false" showDates="false" showCommentLinks="false" maxItems="5" extendedMaxItems="5">
+		<Url>[[localurl:module=rss&amp;amp;action=comments&amp;amp;site=course-standard&amp;amp;node=95291]]</Url>
+	</RssFeed>
+</RssFeedPlugin>]]></content>
+															<rawDescription></rawDescription>
+														</currentContent>
+														<comments/>
+														<attachedMedia/>
+														<tags/>
+													</Block>
+												</cell>
+												<cell>
+													<Block id="95511" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-08T15:04:53-04:00" create_agent="3" modify_date="2009-06-08T15:21:32-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
 														<type>
 															<domain>SeguePlugins</domain>
 															<authority>edu.middlebury</authority>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Segue2 export_date="2009-04-28T10:47:54-04:00" segue_version="2.2.9.0" segue_export_version="2.0">
+<Segue2 export_date="2009-06-08T15:01:25-04:00" segue_version="2.2.9.4" segue_export_version="2.0">
 	<SiteNavBlock slot_name="course-standard" id="48560" showDisplayNames="true" showHistory="false" sortMethod="custom" commentsEnabled="false" width="850px" showDates="none" showAttribution="none" create_date="2009-04-27T10:34:34-04:00" create_agent="3" modify_date="2009-04-27T11:04:17-04:00">
 		<displayName><![CDATA[#SITE_NAME#]]></displayName>
 		<description><![CDATA[#SITE_DESCRIPTION#]]></description>
@@ -408,7 +408,7 @@
 								</NavBlock>
 							</cell>
 							<cell>
-								<NavBlock id="50835" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-04-27T10:55:31-04:00" create_agent="3" modify_date="2009-04-27T12:51:36-04:00">
+								<NavBlock id="50835" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-04-27T10:55:31-04:00" create_agent="3" modify_date="2009-06-08T14:51:15-04:00">
 									<displayName><![CDATA[Blog]]></displayName>
 									<description></description>
 									<roles/>
@@ -472,22 +472,44 @@
 										<cell>
 											<FlowOrganizer id="50835----50846" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="175px" showDates="default" showAttribution="default" rows="0" cols="1" direction="Left-Right/Top-Bottom" overflowStyle="Paginate">
 												<cell>
-													<Block id="50860" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-04-27T10:58:19-04:00" create_agent="3" modify_date="2009-04-27T11:03:33-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+													<Block id="89381" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-08T14:35:54-04:00" create_agent="3" modify_date="2009-06-08T14:36:34-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
 														<type>
 															<domain>SeguePlugins</domain>
 															<authority>edu.middlebury</authority>
-															<keyword>Tags</keyword>
+															<keyword>RssFeed</keyword>
 														</type>
-														<displayName><![CDATA[Tags]]></displayName>
-														<description></description>
+														<displayName><![CDATA[Recent Posts]]></displayName>
+														<description><![CDATA[A display of an RSS feed: http://localhost/~achapin/segue2/index.php/rss/content/site/course-standard/node/50835]]></description>
 														<roles/>
 														<currentContent>
-															<content><![CDATA[<options>
-	<targetNodeId>50835</targetNodeId>
-	<defaultSortMethod>alpha</defaultSortMethod>
-	<defaultDisplayType>list</defaultDisplayType>
-	<defaultListLimit>0</defaultListLimit>
-</options>]]></content>
+															<content><![CDATA[<RssFeedPlugin>
+	<RssFeed showChannelTitles="false" showChannelDescriptions="false" showChannelDivider="false" showItemTitles="true" showItemDescriptions="false" showItemDivider="true" showAttribution="false" showDates="false" showCommentLinks="false" maxItems="5" extendedMaxItems="5">
+		<Url>[[localurl:module=rss&amp;amp;action=content&amp;amp;site=course-standard&amp;amp;node=50835]]</Url>
+	</RssFeed>
+</RssFeedPlugin>]]></content>
+															<rawDescription></rawDescription>
+														</currentContent>
+														<comments/>
+														<attachedMedia/>
+														<tags/>
+													</Block>
+												</cell>
+												<cell>
+													<Block id="89412" showDisplayNames="default" showHistory="default" sortMethod="default" commentsEnabled="default" width="" showDates="default" showAttribution="default" create_date="2009-06-08T14:37:09-04:00" create_agent="3" modify_date="2009-06-08T14:49:24-04:00" blockDisplayType="Block_Standard" headingDisplayType="Heading_3">
+														<type>
+															<domain>SeguePlugins</domain>
+															<authority>edu.middlebury</authority>
+															<keyword>RssFeed</keyword>
+														</type>
+														<displayName><![CDATA[Recent Discussion]]></displayName>
+														<description><![CDATA[A display of an RSS feed: http://localhost/~achapin/segue2/index.php/rss/comments/site/course-standard/node/50835]]></description>
+														<roles/>
+														<currentContent>
+															<content><![CDATA[<RssFeedPlugin>
+	<RssFeed showChannelTitles="false" showChannelDescriptions="false" showChannelDivider="false" showItemTitles="true" showItemDescriptions="false" showItemDivider="true" showAttribution="false" showDates="false" showCommentLinks="false" maxItems="5" extendedMaxItems="5">
+		<Url>[[localurl:module=rss&amp;amp;action=comments&amp;amp;site=course-standard&amp;amp;node=50835]]</Url>
+	</RssFeed>
+</RssFeedPlugin>]]></content>
 															<rawDescription></rawDescription>
 														</currentContent>
 														<comments/>
