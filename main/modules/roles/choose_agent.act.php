@@ -174,8 +174,8 @@ class choose_agentAction
 					print _("This is a custom group of users that are associated with this site. Users and groups can manually be made site-members or users can self-register using the 'Join Site' plugin if it is enabled.");
 					print "</span>";
 					
-					$getGroup = $this->getSite()->getMembersGroup();
-					$subGroups = $getGroup->getGroups(true);
+					$membersGroup = $this->getSite()->getMembersGroup();
+					$subGroups = $membersGroup->getGroups(true);
 
 					print "\n<table width='100%' class='search_results' cellspacing='0'>";
 					while ($subGroups->hasNext()) {
@@ -186,7 +186,7 @@ class choose_agentAction
 
 					}					
 										
-					$members = $getGroup->getMembers(false);
+					$members = $membersGroup->getMembers(false);
 					while ($members->hasNext()) {
 						print "\n\t<tr class='search_result_item'>";
 						print "\n\t\t<td>";
