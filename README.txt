@@ -1,5 +1,5 @@
 
-Segue v. 2.2.10.1 (2009-06-08)
+Segue v. 2.2.10.2 (2009-06-08)
 =================================
 
 What is Segue?
@@ -12,8 +12,7 @@ and journal.
 
 Current Version Notes
 ---------------------
-This release of Segue includes refinements to the roles UI, participation plugin,
-and adds a number of new site templates. 
+This release of Segue fixes a bug in the standard course template. 
 
 ----
 
@@ -62,6 +61,21 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.10.2 (2009-06-08)
+----------------------------------------------------
+This release of Segue fixes a bug in the standard course template. 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+
 
 
 v. 2.2.10.1 (2009-06-08)
