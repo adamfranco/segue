@@ -10,7 +10,7 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
-	<version number="2.2.9.4" date="2009-06-08">
+	<version number="2.2.10.1" date="2009-06-08">
 		<releaseNotes>
 			This release of Segue includes refinements to the roles UI, participation
 			plugin, and adds a number of new site templates.
@@ -45,7 +45,8 @@
 		<change author='alex' date='2009-04-15' reporter='bryan_carson'>
 			tags display: changed how tagged items are displayed so is more flexible and works
 			with various site layouts.
-		</change>	</version>	
+		</change>
+	</version>	
 	<version number="2.2.9.3" date="2009-03-20">
 		<releaseNotes>
 			This release of Segue updates the Segue v1 to v2 migration code to support

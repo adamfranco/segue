@@ -1,5 +1,5 @@
 
-Segue v. 2.2.9.4 (2009-06-08)
+Segue v. 2.2.10.1 (2009-06-08)
 =================================
 
 What is Segue?
@@ -64,7 +64,7 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 ===================================================================
 
 
-v. 2.2.9.4 (2009-06-08)
+v. 2.2.10.1 (2009-06-08)
 ----------------------------------------------------
 This release of Segue includes refinements to the roles UI, participation plugin,
 and adds a number of new site templates. 
