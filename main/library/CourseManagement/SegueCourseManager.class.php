@@ -43,7 +43,7 @@ class SegueCourseManager {
 	 * @static
 	 * @since 8/16/07
 	 */
-	public static $classGroupIdRegexp = '/^CN=.+,OU=[a-z0-9]+,OU=Classes,OU=Groups,DC=[a-z]+,DC=edu$/i';
+	public static $classGroupIdRegexp = '/^CN=[a-z]+[0-9]{4}-[a-z][0-9]+,OU=[a-z0-9]+,OU=Classes,OU=Groups,DC=[a-z]+,DC=edu$/i';
 
 /*********************************************************
  * Instance Creation
