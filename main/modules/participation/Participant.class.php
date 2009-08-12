@@ -125,8 +125,12 @@ class Participation_Participant {
 	 */
 	private function getAgent () {
 		if (!isset($this->_agent)) {
-			$agentManager = Services::getService("Agent");		
-			$this->_agent = $agentManager->getAgent ($this->_id);
+			$agentManager = Services::getService("Agent");
+			try {
+				$this->_agent = $agentManager->getAgent ($this->_id);
+			} catch (UnknownIdException $e) {
+				$this->_agent = $agentManager->getGroup ($this->_id);
+			}
 		}
 		
 		return $this->_agent;
