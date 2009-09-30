@@ -117,6 +117,18 @@ class Segue_Gui2_ThemeThumbnail
 	}
 	
 	/**
+	 * Answer any file-extension
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 9/24/09
+	 */
+	public function getExtension () {
+		$pathInfo = pathinfo($this->getBasename());
+		return $pathInfo['extension'];
+	}
+	
+	/**
 	 * Answer the size (bytes) of the file
 	 * 
 	 * @return int
