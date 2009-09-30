@@ -56,3 +56,5 @@ require_once(MYDIR.'/main/modules/view/SiteDispatcher.class.php');
 		
 		<link rel='stylesheet' type='text/css' href='".MYPATH."/images/SegueCommon.css' id='SegueCommon'/>
 ");
+
+// define('SEGUE_SITE_FOOTER', 'HELLO WORLD');

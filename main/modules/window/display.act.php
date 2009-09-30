@@ -171,6 +171,10 @@ class displayAction
 		$footer->add(new UnstyledBlock(self::getVersionText()), "50%", null, RIGHT, BOTTOM);
 		
 		$mainScreen->add($footer, "100%", null, RIGHT, BOTTOM);
+		
+		if (defined('SEGUE_SITE_FOOTER')) {
+			$mainScreen->add(new UnstyledBlock(SEGUE_SITE_FOOTER), "100%", null, CENTER, BOTTOM);
+		}
 
 		return $mainScreen;
 	}
