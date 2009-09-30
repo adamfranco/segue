@@ -1,5 +1,5 @@
 
-Segue v. 2.2.10.2 (2009-06-08)
+Segue v. 2.2.10.3 (2009-09-30)
 =================================
 
 What is Segue?
@@ -12,7 +12,7 @@ and journal.
 
 Current Version Notes
 ---------------------
-This release of Segue fixes a bug in the standard course template. 
+This release adds support for site-wide footers. 
 
 ----
 
@@ -21,7 +21,7 @@ located under Admin Tools --> Segue Updates.
 
 ----
 
- This Segue release uses Harmoni 1.9.5 and Polyphony 1.5.2.
+ This Segue release uses Harmoni 1.9.7 and Polyphony 1.5.2.
 
 
 Downloads
@@ -61,6 +61,21 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.10.3 (2009-09-30)
+----------------------------------------------------
+This release adds support for site-wide footers. 
+
+----
+
+ Upgrades from versions prior to 2.2.9.0 require running system updaters
+located under Admin Tools --> Segue Updates. 
+
+----
+
+ This Segue release uses Harmoni 1.9.7 and Polyphony 1.5.2.
+
 
 
 v. 2.2.10.2 (2009-06-08)

@@ -10,6 +10,32 @@
 <!DOCTYPE changelog SYSTEM "../dtds/changelog.dtd">
 
 <changelog name="Segue">
+	<version number="2.2.10.3" date="2009-09-30">
+		<releaseNotes>
+			This release adds support for site-wide footers.
+			
+			----
+			
+			Upgrades from versions prior to 2.2.9.0 require running system
+			updaters located under Admin Tools --&gt; Segue Updates.
+			
+			----
+			
+			This Segue release uses Harmoni 1.9.7 and Polyphony 1.5.2.
+		</releaseNotes>
+		<new author='adam' date='2009-09-30' ref='' reftype='fr'  reporter='achapin'>
+			Now can add a site-wide footer for tracking codes.
+		</new>
+		<fix author='adam' date='2009-09-30' ref='' reftype='bug'  reporter=''>
+			CourseManagement: Update to course format for Midd's new LDAP class-group structure.
+		</fix>
+		<fix author='adam' date='2009-09-30' ref='' reftype='bug'  reporter=''>
+			Participation: Now doesn't die when a group is an administrator.
+		</fix>
+		<fix author='adam' date='2009-09-30' ref='' reftype='bug'  reporter=''>
+			Themes: added getExtension() method to theme images in preparation for harmoni-1.10.0.
+		</fix>
+	</version>
 	<version number="2.2.10.2" date="2009-06-08">
 		<releaseNotes>
 			This release of Segue fixes a bug in the standard course template.
