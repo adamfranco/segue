@@ -33,6 +33,9 @@
 			Participation: Now doesn't die when a group is an administrator.
 		</fix>
 		<fix author='adam' date='2009-09-30' ref='' reftype='bug'  reporter=''>
+			Participation: now doesn't die if no display name is available.
+		</fix>
+		<fix author='adam' date='2009-09-30' ref='' reftype='bug'  reporter=''>
 			Themes: added getExtension() method to theme images in preparation for harmoni-1.10.0.
 		</fix>
 	</version>

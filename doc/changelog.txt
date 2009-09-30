@@ -31,6 +31,10 @@ located under Admin Tools --> Segue Updates.
 		(2009-09-30 - Adam Franco)
 		
 	* Bug Fix: 
+		Participation: now doesn't die if no display name is available.
+		(2009-09-30 - Adam Franco)
+		
+	* Bug Fix: 
 		Themes: added getExtension() method to theme images in preparation for
 		harmoni-1.10.0. 
 		(2009-09-30 - Adam Franco)

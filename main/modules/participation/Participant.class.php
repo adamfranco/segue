@@ -69,8 +69,12 @@ class Participation_Participant {
 	 * @access public
 	 * @since 1/23/09
 	 */
-	public function getDisplayName () {	
-		return $this->getAgent()->getDisplayName();
+	public function getDisplayName () {
+		try {
+			return $this->getAgent()->getDisplayName();
+		} catch (UnknownIdException $e) {
+			return $this->getId()->getIdString();
+		}
 	}
 
 	/**
