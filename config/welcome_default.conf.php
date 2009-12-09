@@ -19,3 +19,5 @@ print _("<strong>Segue</strong> is a collaborative learning tool developed at Mi
 print "</p>";
 
 define('SEGUE_WELCOME_MESSAGE', ob_get_clean());
+
+// define('SEGUE_SITE_FOOTER', 'HELLO WORLD');

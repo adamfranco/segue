@@ -185,6 +185,10 @@ class htmlAction
 		$this->addSiteContent($mainScreen);
 		$this->addFooterControls($allWrapper);
 		
+		if (defined('SEGUE_SITE_FOOTER')) {
+			$allWrapper->add(new UnstyledBlock(SEGUE_SITE_FOOTER), "100%", null, CENTER, BOTTOM);
+		}
+		
 		$this->mainScreen = $mainScreen;
 		return $allWrapper;
 	}
