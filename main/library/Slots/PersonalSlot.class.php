@@ -134,7 +134,13 @@ class PersonalSlot
 		$properties = $agent->getProperties();		
 		$email = null;
 		while ($properties->hasNext() && !$email) {
-			$email = $properties->next()->getProperty("email");
+			$propertySet = $properties->next();
+			$email = $propertySet->getProperty("email");
+			if (!$email)
+				$email = $propertySet->getProperty("EMail");
+			if (!$email)
+				$email = $propertySet->getProperty("EMAIL");
+				
 		}
 		
 		if (!$email)

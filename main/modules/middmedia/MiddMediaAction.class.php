@@ -107,7 +107,12 @@ abstract class MiddMediaAction
 			$properties = $agent->getProperties();		
 			$username = null;
 			while ($properties->hasNext() && !$username) {
-				$username = $properties->next()->getProperty("username");
+				$propertySet = $properties->next();
+				$username = $propertySet->getProperty("username");
+				if (!$username)
+					$username = $propertySet->getProperty("Login");
+				if (!$username)
+					$username = $propertySet->getProperty("login");
 			}
 		}
 		if (!$username)
