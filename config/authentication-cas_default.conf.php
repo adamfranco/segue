@@ -51,6 +51,7 @@ require_once(HARMONI."/oki2/authentication/CasTokenCollector.class.php");
 	$configuration->addProperty("ROOT_GROUPS", $rootGroups);
 	
 	$configuration->addProperty("CASDIRECTORY_CLASS_ROOT", "OU=Classes,OU=Groups,DC=middlebury,DC=edu");
+	$configuration->addProperty("CASDIRECTORY_GROUP_ID_REGEX", "/^(OU|CN)=.*,DC=[a-z]+$/i");
 
 	$authNMethod->assignConfiguration($configuration);
 
