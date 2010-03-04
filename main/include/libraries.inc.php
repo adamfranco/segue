@@ -59,6 +59,7 @@ require_once(HARMONI."UserData/UserData.class.php");
 require_once(MYDIR."/main/library/AccessLog.class.php");
 require_once(MYDIR."/main/modules/media/MediaLibrary.class.php");
 require_once(MYDIR."/main/modules/ui2/MembersButton.class.php");
+@include_once(MYDIR."/main/phpCAS/source/CAS.php");
 require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/CASAuthNMethod.class.php");
 require_once(HARMONI."/oki2/agentmanagement/AuthNMethods/CASGroup.class.php");	
 
