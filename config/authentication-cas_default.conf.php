@@ -79,7 +79,9 @@ function getCasLoginLink () {
 	$html = "<a href='".$harmoni->request->quickURL('auth', 'login_type', array('type' => $type->asString()))."'>Log In</a>";
 	$harmoni->request->endNamespace();
 	
-    $harmoni->history->markReturnURL("polyphony/login", $harmoni->request->mkURL());
+	if ($harmoni->request->getRequestedModule() != 'auth') {
+	    $harmoni->history->markReturnURL("polyphony/login");
+	}
 	
 	if ($visitorLogin = getVisitorLoginLink()) {
 		$html .= " &nbsp; | &nbsp; ".$visitorLogin;
