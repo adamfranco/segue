@@ -2,6 +2,39 @@
 Segue Change Log
 
 
+v. 2.2.11.0 (2010-03-04)
+----------------------------------------------------
+This release adds support for CAS single-sign-on authentication. 
+
+----
+
+ An updater located under Admin Tools --> Segue Updates can be used to mapp
+accounts from existing authentication systems to CAS. 
+
+----
+
+ This Segue release uses Harmoni 1.10.1 and Polyphony 1.5.5.
+		
+		
+	* New feature: 
+		Added updater for mapping existing user accounts to CAS user accounts.
+		(2010-03-04 - Adam Franco)
+		
+	* New feature: 
+		Added support for CAS authentication.
+		(2010-03-04 - Adam Franco)
+		
+	* New feature: 
+		Added configuration lines to work with polyphony 1.5.3.
+		(2010-03-04 - Adam Franco)
+		
+	* New feature: 
+		Added a footer to allow the addition of statistics tracking scripts.
+		(2010-03-04 - Adam Franco)
+	
+
+
+
 v. 2.2.10.3 (2009-09-30)
 ----------------------------------------------------
 This release adds support for site-wide footers. 

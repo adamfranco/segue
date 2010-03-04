@@ -1,5 +1,5 @@
 
-Segue v. 2.2.10.3 (2009-09-30)
+Segue v. 2.2.11.0 (2010-03-04)
 =================================
 
 What is Segue?
@@ -12,16 +12,16 @@ and journal.
 
 Current Version Notes
 ---------------------
-This release adds support for site-wide footers. 
+This release adds support for CAS single-sign-on authentication. 
 
 ----
 
- Upgrades from versions prior to 2.2.9.0 require running system updaters
-located under Admin Tools --> Segue Updates. 
+ An updater located under Admin Tools --> Segue Updates can be used to mapp
+accounts from existing authentication systems to CAS. 
 
 ----
 
- This Segue release uses Harmoni 1.9.7 and Polyphony 1.5.2.
+ This Segue release uses Harmoni 1.10.1 and Polyphony 1.5.5.
 
 
 Downloads
@@ -61,6 +61,21 @@ http://sourceforge.net/tracker/?group_id=82171&atid=565234
 | Prior Segue Release Notes
 | (See the Segue change log for more details)
 ===================================================================
+
+
+v. 2.2.11.0 (2010-03-04)
+----------------------------------------------------
+This release adds support for CAS single-sign-on authentication. 
+
+----
+
+ An updater located under Admin Tools --> Segue Updates can be used to mapp
+accounts from existing authentication systems to CAS. 
+
+----
+
+ This Segue release uses Harmoni 1.10.1 and Polyphony 1.5.5.
+
 
 
 v. 2.2.10.3 (2009-09-30)
