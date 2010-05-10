@@ -57,11 +57,32 @@ class SegueCourseSection {
  *********************************************************/
 	
 	/**
-	 * @var object Group $group;  
+	 * @var object Id $groupId;  
 	 * @access protected
 	 * @since 8/20/07
 	 */
-	protected $group;
+	private $groupId;
+	
+	/**
+	 * @var object Id $id;  
+	 * @access protected
+	 * @since 8/20/07
+	 */
+	private $id;
+	
+	/**
+	 * @var string $displayName;  
+	 * @access protected
+	 * @since 8/20/07
+	 */
+	private $displayName;
+	
+	/**
+	 * @var string $description;  
+	 * @access protected
+	 * @since 8/20/07
+	 */
+	private $description;
 	
 	/**
 	 * @var array $courseInfo;  
@@ -83,7 +104,11 @@ class SegueCourseSection {
  	 * @since 8/20/07
  	 */
  	public function __construct ( Group $group ) {
- 		$this->group = $group;
+ 		$this->groupId = $group->getId();
+ 		$idMgr = Services::getService("Id");
+		$this->id = $idMgr->getId($group->getDisplayName());
+		$this->displayName = $group->getDisplayName();
+ 		
  	}
 		
 	/**
@@ -95,8 +120,7 @@ class SegueCourseSection {
 	 * @since 8/20/07
 	 */
 	public function getId () {
-		$idMgr = Services::getService("Id");
-		return $idMgr->getId($this->group->getDisplayName());
+		return $this->id;
 	}
 	
 	/**
@@ -108,7 +132,7 @@ class SegueCourseSection {
 	 * @since 8/20/07
 	 */
 	public function getDisplayName () {
-		return $this->group->getDisplayName();
+		return $this->displayName;
 	}
 	
 	/**
@@ -119,7 +143,7 @@ class SegueCourseSection {
 	 * @since 8/20/07
 	 */
 	public function getDescription () {
-		return $this->group->getDescription();
+		return $this->description;
 	}
 	
 	/**
@@ -174,7 +198,7 @@ class SegueCourseSection {
 		// Also verify that the user is a member in our group.		
 		$agent = $agentManager->getAgent($agentId);
 		return (self::$isInstructor[$agentId->getIdString()] && 
-				$this->group->contains($agent, true));
+				$this->getGroup()->contains($agent, true));
 	}
 	
 	/**
@@ -205,7 +229,7 @@ class SegueCourseSection {
 		// Also verify that the user is a member in our group.
 		$agentManager = Services::getService("Agent");
 		$agent = $agentManager->getAgent($agentId);
-		return ($this->group->contains($agentId, true)
+		return ($this->getGroup()->contains($agentId, true)
 			&& !self::$isInstructor[$agentId->getIdString()]);
 	}
 	
@@ -234,7 +258,7 @@ class SegueCourseSection {
 	 */
 	public function getInstructors () {
 		$instructors = array();
-		$members = $this->group->getMembers(false);
+		$members = $this->getGroup()->getMembers(false);
 		
 		while ($members->hasNext()) {
 			$agentId = $members->next()->getId();
@@ -255,7 +279,7 @@ class SegueCourseSection {
 	 */
 	public function getStudents () {
 		$students = array();
-		$members = $this->group->getMembers(false);
+		$members = $this->getGroup()->getMembers(false);
 		
 		while ($members->hasNext()) {
 			$agentId = $members->next()->getId();
@@ -276,7 +300,19 @@ class SegueCourseSection {
 	 * @since 8/20/07
 	 */
 	public function getGroupId () {
-		return $this->group->getId();
+		return $this->groupId;
+	}
+	
+	/**
+	 * Answer the Groups associated with this course section
+	 * 
+	 * @return object Group
+	 * @access protected
+	 * @since 5/10/10
+	 */
+	protected function getGroup () {
+		$agentManager = Services::getService("Agent");
+		return $agentManager->getGroup($this->getGroupId());
 	}
 	
 	/**

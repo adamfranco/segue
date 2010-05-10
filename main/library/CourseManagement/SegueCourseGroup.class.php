@@ -36,6 +36,13 @@ class SegueCourseGroup
 	 */
 	private $sections = array();
 	
+	/**
+	 * @var object Id $id;  
+	 * @access protected
+	 * @since 8/20/07
+	 */
+	private $id;
+	
 /*********************************************************
  * Instance Methods
  *********************************************************/
@@ -49,12 +56,17 @@ class SegueCourseGroup
 	 * @since 8/20/07
 	 */
 	public function __construct ( Group $group ) {
-		$this->group = $group;
+		parent::__construct($group);
 		
-		$groups = $this->group->getGroups(false);
+		$groups = $group->getGroups(false);
 		while ($groups->hasNext()) {
 			$this->sections[] = new SegueCourseSection($groups->next());
 		}
+		
+		$propType = new Type ("segue", "edu.middlebury", "coursegroup");
+		$properties = $group->getPropertiesByType($propType);
+		$idMgr = Services::getService("Id");
+		$this->id = $idMgr->getId($properties->getProperty("CourseGroupId"));
 	}
 	
 	/**
@@ -66,7 +78,7 @@ class SegueCourseGroup
 	 * @since 8/20/07
 	 */
 	public function addSection ( SegueCourseSection $section ) {
-		$this->group->add($section->group);
+		$this->getGroup()->add($section->group);
 		$this->sections[] = $section;
 	}
 	
@@ -79,10 +91,7 @@ class SegueCourseGroup
 	 * @since 8/20/07
 	 */
 	public function getId () {
-		$propType = new Type ("segue", "edu.middlebury", "coursegroup");
-		$properties = $this->group->getPropertiesByType($propType);
-		$idMgr = Services::getService("Id");
-		return $idMgr->getId($properties->getProperty("CourseGroupId"));
+		return $this->id;
 	}
 	
 // 	/**
