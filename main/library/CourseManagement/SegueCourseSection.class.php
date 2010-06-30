@@ -262,8 +262,12 @@ class SegueCourseSection {
 		
 		while ($members->hasNext()) {
 			$agentId = $members->next()->getId();
-			if ($this->isInstructor($agentId)) {
-				$instructors[] = $agentId;
+			try {
+				if ($this->isInstructor($agentId)) {
+					$instructors[] = $agentId;
+				}
+			} catch (OperationFailedException $e) {
+				HarmoniErrorHandler::logException($e);
 			}
 		}
 		
@@ -283,8 +287,12 @@ class SegueCourseSection {
 		
 		while ($members->hasNext()) {
 			$agentId = $members->next()->getId();
-			if ($this->isStudent($agentId)) {
-				$students[] = $agentId;
+			try {
+				if ($this->isStudent($agentId)) {
+					$students[] = $agentId;
+				}
+			} catch (OperationFailedException $e) {
+				HarmoniErrorHandler::logException($e);
 			}
 		}
 		
