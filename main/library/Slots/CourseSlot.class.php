@@ -115,15 +115,20 @@ class CourseSlot
 		if (!$this->mergedWithExternal) {
 			$courseMgr = SegueCourseManager::instance();
 			$idMgr = Services::getService("Id");
-			$course = $courseMgr->getCourse($idMgr->getId($this->getShortname()));
-			$this->mergedWithExternal = true;
-			
-			foreach ($course->getInstructors() as $instructor) {
-				if (!$this->isOwner($instructor) && !$this->isRemovedOwner($instructor)) {
-					$this->populateOwnerId($instructor);
+			try {
+				$course = $courseMgr->getCourse($idMgr->getId($this->getShortname()));
+				$this->mergedWithExternal = true;
+				
+				foreach ($course->getInstructors() as $instructor) {
+					if (!$this->isOwner($instructor) && !$this->isRemovedOwner($instructor)) {
+						$this->populateOwnerId($instructor);
+					}
 				}
+			} catch (Exception $e) {
+				// If we can't find any external definition for the course,
+				// skip rather than dying.
+				HarmoniErrorHandler::logException($e);
 			}
-			
 		}
 	}
 	
