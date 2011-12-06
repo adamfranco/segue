@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * Collects all of the ids and names of all of the blocks below the initially visited 
