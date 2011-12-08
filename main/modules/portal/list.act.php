@@ -547,6 +547,17 @@ class listAction
 		print implode("\n\t\t | ", $controls);
 		print "\n\t</div>";
 		
+		// Export controls
+		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId))  {
+			print "\n\t<div class='portal_list_controls'>\n\t\t";
+			$controls = array();
+			
+			$controls[] = "<a href='".SiteDispatcher::quickURL('dataport', 'wordpress', array('node' => $assetId->getIdString()))."'>"._("export for wordpress")."</a>";
+			
+			print implode("\n\t\t | ", $controls);
+			print "\n\t</div>";
+		}
+		
 		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId)) {
 			$description = HtmlString::withValue($asset->getDescription());
 			$description->trim(25);
