@@ -161,12 +161,13 @@ class EduMiddleburyTextBlockPlugin
  	function getMarkup () {
  		ob_start();
  		
-		print $this->getJS();
  		 		
  		if ($this->editing && $this->canModify()) {
+			print $this->getJS();
 			$this->printEditForm();
  		} else if ($this->canView()) {
  			if ($this->shouldShowControls()) {
+				print $this->getJS();
 				print "\n<div onclick='if (shiftAndNotMetaOrControl(event)) { ".$this->locationSend(array('edit' => 'true'))."}'>";
  			}
  			
@@ -212,13 +213,13 @@ class EduMiddleburyTextBlockPlugin
  	 */
  	function getExtendedMarkup () {
  		ob_start();
- 		
- 		print $this->getJS();
- 		
+ 		 		
  		if ($this->editing && $this->canModify()) {
+			print $this->getJS();
 			$this->printEditForm();
  		} else if ($this->canView()) {
  			if ($this->shouldShowControls()) {
+				print $this->getJS();
 				print "\n<div onclick='if (shiftAndNotMetaOrControl(event)) { ".$this->locationSend(array('edit' => 'true'))." event.stopPropagation();}'>";
  			}
  			if ($this->hasContent()) {
