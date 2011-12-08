@@ -283,6 +283,25 @@ class CommentNode {
 	}
 	
 	/**
+	 * Answer the Content asset that a comment is attached to
+	 * 
+	 * @param object Id $commentId
+	 * @return object Asset
+	 * @access public
+	 * @static
+	 * @since 11/9/07
+	 */
+	public function getParentComment () {
+		$commentManager = CommentManager::instance();
+		$commentContainerType = new Type('segue', 'edu.middlebury', 'comment_container', 'A container for Segue Comments');
+		$parent = $this->_asset->getParents()->next();
+		if ($commentContainerType->isEqual($parent->getAssetType()))
+			return null;
+		else
+			return $commentManager->getComment($parent);
+	}
+	
+	/**
 	 * Flag the edit form to be displayed
 	 * 
 	 * @return void
