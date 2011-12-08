@@ -155,7 +155,7 @@ class displayAction
 		// Basket
 // 		$basket = Basket::instance();
 // 		$rightColumn->add($basket->getSmallBasketBlock(), "100%", null, LEFT, TOP);
-// 		if (ereg("^(collection|asset)\.browse$", $harmoni->getCurrentAction()))
+// 		if (preg_match("/^(collection|asset)\.browse$/", $harmoni->getCurrentAction()))
 // 			$rightColumn->add(AssetPrinter::getMultiEditOptionsBlock(), "100%", null, LEFT, TOP);
 		
 	// :: Footer ::

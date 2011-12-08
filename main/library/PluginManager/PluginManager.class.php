@@ -278,7 +278,7 @@ class PluginManager {
 			$domainPath = $plugPath."/".$domainDir;
 			
 			if (is_dir($domainPath) && !in_array($domainDir, $ignore)
-					&& ereg("^[a-zA-Z0-9_]+$", $domainDir)) {
+					&& preg_match("/^[a-zA-Z0-9_]+$/", $domainDir)) {
 				$domain = $domainDir;
 				
 				$dDirHandle = openDir($domainPath);
@@ -287,7 +287,7 @@ class PluginManager {
 					$authPath = $domainPath."/".$authDir;
 					
 					if (is_dir($authPath) && !in_array($authDir, $ignore)
-							&& ereg("^[a-zA-Z0-9\._]+$", $authDir)) {
+							&& preg_match("/^[a-zA-Z0-9\._]+$/", $authDir)) {
 						$authority = $authDir;
 						
 						$aDirHandle = openDir($authPath);
@@ -296,7 +296,7 @@ class PluginManager {
 							$keyPath = $authPath."/".$keyDir;
 							
 							if (is_dir($keyPath) && !in_array($keyDir, $ignore)
-									&& ereg("^[a-zA-Z0-9_]+$", $keyDir)) {
+									&& preg_match("/^[a-zA-Z0-9_]+$/", $keyDir)) {
 								$keyword = $keyDir;
 																
 								$type = new Type($domain, $authority, $keyword);

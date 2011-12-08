@@ -178,7 +178,7 @@ class SlotManager {
 	public function getSlotByShortname ($shortname) {
 		ArgumentValidator::validate($shortname, NonzeroLengthStringValidatorRule::getRule());
 		$shortname = strtolower($shortname);
-		ArgumentValidator::validate($shortname, RegexValidatorRule::getRule('^[a-z0-9\._-]+$'));
+		ArgumentValidator::validate($shortname, RegexValidatorRule::getRule('/^[a-z0-9\._-]+$/'));
 		
 		if (!isset($this->slots[$shortname])) {
 			$this->getSlots();
