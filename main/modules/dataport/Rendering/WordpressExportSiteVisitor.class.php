@@ -59,7 +59,25 @@ class WordpressExportSiteVisitor
 		$this->doc->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/' ,'xmlns:wp', 'http://wordpress.org/export/1.1/');
 		
 		$this->channel = $this->doc->documentElement->appendChild($this->doc->createElement('channel'));
-				
+		
+		// create some comment placeholders for organizing our elements
+		$this->channel->appendChild($this->doc->createComment("Begin - Meta"));
+		$this->endMeta = $this->channel->appendChild($this->doc->createComment("End - Meta"));
+		
+		$this->channel->appendChild($this->doc->createComment("Begin - Authors"));
+		$this->endAuthors = $this->channel->appendChild($this->doc->createComment("End - Authors"));
+		
+		$this->channel->appendChild($this->doc->createComment("Begin - Categories"));
+		$this->endCategories = $this->channel->appendChild($this->doc->createComment("End - Categories"));
+		
+		$this->channel->appendChild($this->doc->createComment("Begin - Tags"));
+		$this->endTags = $this->channel->appendChild($this->doc->createComment("End - Tags"));
+		
+		$this->channel->appendChild($this->doc->createComment("Begin - Files"));
+		$this->endFiles = $this->channel->appendChild($this->doc->createComment("End - Files"));
+		
+		$this->channel->insertBefore($this->getElement('generator', 'http://segue.middlebury.edu/'), $this->endMeta);
+		
 		$this->xpath = new DOMXPath($this->doc);
 		$this->xpath->registerNamespace('wp', 'http://wordpress.org/export/1.1/');
 	}
@@ -265,17 +283,15 @@ class WordpressExportSiteVisitor
 		if (!$this->isAuthorizedToExport($siteComponent))
 			throw new PermissionDeniedException();
 		
-		$this->channel->appendChild($this->getElement('title', $siteComponent->getDisplayName()));
-		$this->channel->appendChild($this->getElement('link', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())));
-		$this->channel->appendChild($this->getElement('description', $siteComponent->getDescription()));
-		$this->channel->appendChild($this->getElement('pubDate', date('r')));
-		$this->channel->appendChild($this->getElement('language', 'en'));
-		$this->channel->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:wxr_version', '1.1'));
-		$this->channel->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:base_site_url', MYURL));
-		$this->channel->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:base_blog_url', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())));
+		$this->channel->insertBefore($this->getElement('title', $siteComponent->getDisplayName()), $this->endMeta);
+		$this->channel->insertBefore($this->getElement('link', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())), $this->endMeta);
+		$this->channel->insertBefore($this->getElement('description', $siteComponent->getDescription()), $this->endMeta);
+		$this->channel->insertBefore($this->getElement('pubDate', date('r')), $this->endMeta);
+		$this->channel->insertBefore($this->getElement('language', 'en'), $this->endMeta);
+		$this->channel->insertBefore($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:wxr_version', '1.1'), $this->endMeta);
+		$this->channel->insertBefore($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:base_site_url', MYURL), $this->endMeta);
+		$this->channel->insertBefore($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:base_blog_url', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())), $this->endMeta);
 		
-		$this->generator = $this->channel->appendChild($this->getElement('generator', 'http://segue.middlebury.edu/'));
-
 		ob_start();
 		$siteComponent->getOrganizer()->acceptVisitor($this);
 		ob_end_clean();
@@ -370,7 +386,7 @@ class WordpressExportSiteVisitor
 				
 		$query = 'count(wp:author[wp:author_id = "'.$agentId->getIdString().'"])';
 		if (!$this->xpath->evaluate($query, $this->channel)) {
-			$element = $this->channel->insertBefore($this->doc->createElementNS('http://wordpress.org/export/1.1/', 'wp:author'), $this->generator);
+			$element = $this->channel->insertBefore($this->doc->createElementNS('http://wordpress.org/export/1.1/', 'wp:author'), $this->endAuthors);
 			$element->appendChild($this->getElementNS('http://wordpress.org/export/1.1/', 'wp:author_id', $agentId->getIdString()));
 			$element->appendChild($this->getElementNS('http://wordpress.org/export/1.1/', 'wp:author_login', $this->getAgentUID($agent)));
 			$element->appendChild($this->getElementNS('http://wordpress.org/export/1.1/', 'wp:author_email', $this->getAgentEmail($agent)));
