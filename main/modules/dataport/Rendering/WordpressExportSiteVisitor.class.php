@@ -158,7 +158,7 @@ class WordpressExportSiteVisitor
 			$this->recordAttachedMedia($siteComponent);
 			
  			// Tags
-
+// 			$this->recordTags($siteComponent);
 			
 			// Comments
 			$this->addComments($siteComponent, $element);
@@ -166,7 +166,8 @@ class WordpressExportSiteVisitor
 			
 		}
 		// Condense the blocks into a single page content.
-		else {
+		// Ignore top-level blocks
+		else if (!empty($this->currentPageElement)) {
 // 			var_dump($siteComponent->getDisplayType());
 			switch ($siteComponent->getHeadingDisplayType()) {
 				case 'Heading_1':
@@ -187,18 +188,16 @@ class WordpressExportSiteVisitor
 			$pluginManager = Services::getService('PluginManager');
 			$plugin = $pluginManager->getPlugin($siteComponent->getAsset());
 			print $plugin->executeAndGetMarkup(false, true);
-		}
 		
-		// Comments
-		if (!empty($this->currentPageElement)) {
+			// Comments
 			$this->addComments($siteComponent, $this->currentPageElement);
 		
 			// Files
 			$parentPage = end($this->parentNavBlocks);
 			$this->recordAttachedMedia($siteComponent, $parentPage->getId());
 	
-	// 		//tags
-	// 		$element->appendChild($this->getTags($siteComponent));
+			//tags
+// 			$this->recordTags($siteComponent, $parentPage->getId());
 		}
 	}
 	
@@ -269,7 +268,7 @@ class WordpressExportSiteVisitor
 		if (!is_null($nestedMenu)) 
 			$nestedMenu->acceptVisitor($this);
 		
-		array_pop($this->parentNavBlocks, $siteComponent);
+		array_pop($this->parentNavBlocks);
 		unset($this->currentPageElement);
 	}
 	
@@ -294,9 +293,7 @@ class WordpressExportSiteVisitor
 		$this->channel->insertBefore($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:base_site_url', MYURL), $this->endMeta);
 		$this->channel->insertBefore($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:base_blog_url', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())), $this->endMeta);
 		
-		ob_start();
 		$siteComponent->getOrganizer()->acceptVisitor($this);
-		ob_end_clean();
 	}
 	
 	/**
