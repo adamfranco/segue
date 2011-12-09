@@ -121,7 +121,7 @@ class WordpressExportSiteVisitor
 			$element = $this->channel->appendChild($this->doc->createElement('item'));
 			$element->appendChild($this->getElement('title', $siteComponent->getDisplayName()));
 			$element->appendChild($this->getElement('link', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())));
-			$element->appendChild($this->getElement('guid', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())));
+			$element->appendChild($this->getElement('guid', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())))->setAttribute('isPermaLink', 'false');
 // 			$element->appendChild($this->getElement('description', $siteComponent->getDescription()));
 			$element->appendChild($this->getElement('description', ''));
 			$element->appendChild($this->getElement('pubDate', $siteComponent->getModificationDate()->format('r')));
@@ -155,6 +155,7 @@ class WordpressExportSiteVisitor
 				$element->appendChild($this->getCDATAElementNS("http://purl.org/rss/1.0/modules/content/", 'excerpt:encoded', $longContent));
 			
 			// Files
+			$this->recordAttachedMedia($siteComponent);
 			
  			// Tags
 
@@ -191,13 +192,14 @@ class WordpressExportSiteVisitor
 		// Comments
 		if (!empty($this->currentPageElement)) {
 			$this->addComments($siteComponent, $this->currentPageElement);
-		}
 		
-// 		// Files
-// 		$element->appendChild($this->getAttachedMedia($siteComponent));
-// 		
-// 		//tags
-// 		$element->appendChild($this->getTags($siteComponent));
+			// Files
+			$parentPage = end($this->parentNavBlocks);
+			$this->recordAttachedMedia($siteComponent, $parentPage->getId());
+	
+	// 		//tags
+	// 		$element->appendChild($this->getTags($siteComponent));
+		}
 	}
 	
 	/**
@@ -227,7 +229,7 @@ class WordpressExportSiteVisitor
 		$element = $this->channel->appendChild($this->doc->createElement('item'));
 		$element->appendChild($this->getElement('title', $siteComponent->getDisplayName()));
 		$element->appendChild($this->getElement('link', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())));
-		$element->appendChild($this->getElement('guid', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())));
+		$element->appendChild($this->getElement('guid', SiteDispatcher::getSitesUrlForSiteId($siteComponent->getId())))->setAttribute('isPermaLink', 'false');
 		$element->appendChild($this->getElement('description', $siteComponent->getDescription()));
 		$element->appendChild($this->getElement('pubDate', $siteComponent->getModificationDate()->format('r')));
 		
@@ -455,43 +457,6 @@ class WordpressExportSiteVisitor
 	}
 	
 	/**
-	 * Record a file to our temporary directory.
-	 * 
-	 * @param object Asset $asset
-	 * @param object FileRecord $fileRecord
-	 * @return void
-	 * @access protected
-	 * @since 1/18/08
-	 */
-	protected function recordFile (Asset $asset, FileRecord $fileRecord) {
-// 		if (!file_exists($this->filePath."/media"))
-// 			mkdir($this->filePath."/media");
-// 			
-// 		$assetDir = "media/".preg_replace('/[^a-z0-9_-]/i', '_', $asset->getId()->getIdString());
-// 		if (!file_exists($this->filePath."/".$assetDir))
-// 			mkdir($this->filePath."/".$assetDir);
-// 		
-// 		$recordIdString = preg_replace('/[^a-z0-9_-]/i', '_', $fileRecord->getId()->getIdString());
-// 		$fileDir = $assetDir."/".$recordIdString;
-// 		if (!file_exists($this->filePath."/".$fileDir))
-// 			mkdir($this->filePath."/".$fileDir);
-// 		
-// 		$idMgr = Services::getService('Id');
-// 		
-// 		$parts = $fileRecord->getPartsByPartStructure($idMgr->getId("FILE_NAME"));
-// 		$part = $parts->next();
-// 		$fileName = preg_replace('/[^a-z0-9._-]/i', '_', $part->getValue());
-// 		if (!strlen(trim($fileName, '._')))
-// 			$fileName = $recordIdString;
-// 		
-// 		$parts = $fileRecord->getPartsByPartStructure($idMgr->getId("FILE_DATA"));
-// 		$part = $parts->next();
-// 		file_put_contents($this->filePath."/".$fileDir."/".$fileName, $part->getValue());
-// 		
-// 		return $fileDir."/".$fileName;
-	}
-	
-	/**
 	 * Answer an element with a text section
 	 * 
 	 * @param string $elementName
@@ -683,12 +648,11 @@ class WordpressExportSiteVisitor
 	 * Answer an XML representation of the files attached to a site component.
 	 * 
 	 * @param object BlockSiteComponent $siteComponent
-	 * @return DOMElement $element
 	 * @access protected
-	 * @since 1/18/08
 	 */
-	protected function getAttachedMedia (BlockSiteComponent $siteComponent) {
-		$element = $this->doc->createElement('attachedMedia');
+	protected function recordAttachedMedia (BlockSiteComponent $siteComponent, $pageId = null) {
+		if (is_null($pageId))
+			$pageId = $siteComponent->getId();
 		
 		$mediaAssetType = new Type ('segue', 'edu.middlebury', 'media_file',
 			'A file that is uploaded to Segue.');
@@ -697,111 +661,50 @@ class WordpressExportSiteVisitor
 			$child = $children->next();
 			if ($mediaAssetType->isEqual($child->getAssetType())) {
 				try {
-					$element->appendChild($this->getMediaAsset($child));
+					$this->recordMediaAsset($child, $pageId);
 				} catch (PermissionDeniedException $e) {
 				} catch (OperationFailedException $e) {
 				}
 			}
-		}
-		
-		return $element;
+		}		
 	}
 	
 	/**
 	 * Answer an XML representation of a media file.
 	 * 
 	 * @param object Asset $asset
-	 * @return DOMElement
+	 * @param string $parentId
 	 * @access protected
-	 * @since 1/18/08
 	 */
-	protected function getMediaAsset (Asset $asset) {
-		$element = $this->doc->createElement('mediaAsset');
+	protected function recordMediaAsset (Asset $asset, $parentId) {
+		$mediaAsset = MediaAsset::withAsset($asset);
+		$file = $mediaAsset->getFiles()->next();
 		
-		$element->setAttribute('id', $asset->getId()->getIdString());
+		$element = $this->channel->insertBefore($this->doc->createElement('item'), $this->endFiles);
+		$element->appendChild($this->getElement('title', $mediaAsset->getDisplayName()));
+		$element->appendChild($this->getElement('link', $file->getUrl()));
+		$element->appendChild($this->getElement('guid', $file->getUrl()))->setAttribute('isPermaLink', 'false');
+		$element->appendChild($this->getElement('description', $mediaAsset->getDescription()));
+		$element->appendChild($this->getElement('pubDate', $mediaAsset->getModificationDate()->format('r')));
 		
-		$element->setAttribute('create_date', $asset->getCreationDate()->asString());
-		if (!is_null($asset->getCreator()))
-			$element->setAttribute('create_agent', $asset->getCreator()->getIdString());
-		$element->setAttribute('modify_date', $asset->getModificationDate()->asString());
+		$agentUID = $this->recordAgent($asset->getCreator());
+		$element->appendChild($this->getElementNS("http://purl.org/dc/elements/1.1/", 'dc:creator', $agentUID));
 		
-		$element->appendChild($this->getCDATAElement('displayName', $asset->getDisplayName()));
-		$element->appendChild($this->getCDATAElement('description', $asset->getDescription()));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_id', $mediaAsset->getId()));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_date', $mediaAsset->getModificationDate()->format('Y-m-d H:i:s')));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_date_gmt', $mediaAsset->getModificationDate()->asUTC()->format('Y-m-d H:i:s')));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:comment_status', 'closed'));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:ping_status', 'closed'));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:status', 'publish'));
 		
-		// File Records
-		$idMgr = Services::getService("Id");
-		$fileRecords = $asset->getRecordsByRecordStructure($idMgr->getId('FILE'));
-		if (!$fileRecords->hasNext()) {
-			throw new OperationFailedException("No file records found. Incomplete media asset.");
-		}
-		while ($fileRecords->hasNext()) {
-			$fileRecord = $fileRecords->next();
-			$fileElement = $element->appendChild($this->doc->createElement('file'));
-			
-			$fileElement->setAttribute('id', $fileRecord->getId()->getIdString());
-			
-			$parts = $fileRecord->getPartsByPartStructure($idMgr->getId("FILE_NAME"));
-			$part = $parts->next();
-			$fileElement->appendChild($this->getCDATAElement('name', $part->getValue()));
-			
-			$recordedPath = $this->recordFile($asset, $fileRecord);
-			$fileElement->appendChild($this->getCDATAElement('path', $recordedPath));
-		}
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_parent', $parentId));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:menu_order', '0'));
 		
-		// Dublin Core Record
-		$records = $asset->getRecordsByRecordStructure($idMgr->getId('dc'));
-		if ($records->hasNext()) {
-			$record = $records->next();
-			
-			$dcElement = $element->appendChild($this->doc->createElement('dublinCore'));
-			
-			$dcElement->setAttribute('id', $record->getId()->getIdString());
-			
-			$parts = $record->getPartsByPartStructure($idMgr->getId("dc.title"));
-			if ($parts->hasNext()) {
-				$part = $parts->next();
-				$valueObj = $part->getValue();
-				$dcElement->appendChild($this->getCDATAElement('title', $valueObj->asString()));
-			}
-			
-			$parts = $record->getPartsByPartStructure($idMgr->getId("dc.description"));
-			if ($parts->hasNext()) {
-				$part = $parts->next();
-				$valueObj = $part->getValue();
-				$dcElement->appendChild($this->getCDATAElement('description', $valueObj->asString()));
-			}
-			
-			$parts = $record->getPartsByPartStructure($idMgr->getId("dc.creator"));
-			if ($parts->hasNext()) {
-				$part = $parts->next();
-				$valueObj = $part->getValue();
-				$dcElement->appendChild($this->getCDATAElement('creator', $valueObj->asString()));
-			}
-			
-			$parts = $record->getPartsByPartStructure($idMgr->getId("dc.source"));
-			if ($parts->hasNext()) {
-				$part = $parts->next();
-				$valueObj = $part->getValue();
-				$dcElement->appendChild($this->getCDATAElement('source', $valueObj->asString()));
-			}
-			
-			$parts = $record->getPartsByPartStructure($idMgr->getId("dc.publisher"));
-			if ($parts->hasNext()) {
-				$part = $parts->next();
-				$valueObj = $part->getValue();
-				$dcElement->appendChild($this->getCDATAElement('publisher', $valueObj->asString()));
-			}
-			
-			$parts = $record->getPartsByPartStructure($idMgr->getId("dc.date"));
-			if ($parts->hasNext()) {
-				$part = $parts->next();
-				$valueObj = $part->getValue();
-				$dcElement->appendChild($this->getCDATAElement('date', $valueObj->asString()));
-			}
-		}
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_type', 'attachment'));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_password', ''));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:is_sticky', '0'));
 		
-		
-		return $element;
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:attachment_url', $file->getUrl()));
 	}
 	
 	/**
