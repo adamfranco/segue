@@ -160,6 +160,11 @@ class WordpressExportSiteVisitor
  			// Tags
 			$this->recordTags($siteComponent, $element);
 			
+			// Categories
+			if ($this->blocksArePosts) {
+				$this->recordCategories($element, $this->parentNavBlocks);
+			}
+			
 			// Comments
 			$this->addComments($siteComponent, $element);
 			
@@ -652,6 +657,66 @@ class WordpressExportSiteVisitor
 			$element->appendChild($this->getElementNS('http://wordpress.org/export/1.1/', 'wp:tag_slug', $tagInfo->tag->getValue()));
 			$element->appendChild($this->getCDATAElementNS('http://wordpress.org/export/1.1/', 'wp:tag_name', $tagInfo->tag->getValue()));
 		}
+	}
+	
+	/**
+	 * Answer an element that represents the tags attached to a block.
+	 * 
+	 * @param DOMElement $element
+	 * @param array $parentNavBlocks
+	 * @access protected
+	 */
+	protected function recordCategories (DOMElement $element, array $parentNavBlocks) {
+		$parentId = 0;
+		foreach ($parentNavBlocks as $navBlock) {			
+			// Record the tag in the channel.
+			$this->recordCategory($navBlock, $parentId);
+			
+			$slug = $this->getUniqueSlug($navBlock);
+			
+			// Just add the tag once to our element
+			$query = 'count(category[@domain = "category" and @nicename = "'.$slug.'"])';
+			if (!$this->xpath->evaluate($query, $element)) {
+				$tagElement = $element->appendChild($this->getCDATAElement('category', $navBlock->getDisplayName()));
+				$tagElement->setAttribute('domain', 'category');
+				$tagElement->setAttribute('nicename', $slug);
+			}
+			
+			$parentId = $navBlock->getId();
+		}
+	}
+
+	/**
+	 * Answer an element that represents a single tag application for a block.
+	 * 
+	 * @param object NavBlockSiteComponent $siteComponent
+	 * @access protected
+	 * @since 1/17/08
+	 */
+	protected function recordCategory (NavBlockSiteComponent $siteComponent, $parentId = '') {
+		
+		$query = 'count(wp:category[wp:term_id = "'.$siteComponent->getId().'"])';
+		if (!$this->xpath->evaluate($query, $this->channel)) {
+			$element = $this->channel->insertBefore($this->doc->createElementNS('http://wordpress.org/export/1.1/', 'wp:category'), $this->endCategories);
+			$element->appendChild($this->getElementNS('http://wordpress.org/export/1.1/', 'wp:term_id', $siteComponent->getId()));			
+			$element->appendChild($this->getElementNS('http://wordpress.org/export/1.1/', 'wp:category_nicename', $this->getUniqueSlug($siteComponent)));
+			$element->appendChild($this->getCDATAElementNS('http://wordpress.org/export/1.1/', 'wp:cat_name', $siteComponent->getDisplayName()));
+			$element->appendChild($this->getElementNS('http://wordpress.org/export/1.1/', 'wp:category_parent', $parentId));
+		}
+	}
+	
+	/**
+	 * Answer a unique slug for the site component
+	 * 
+	 * @param BlockSiteComponent $siteComponent
+	 * @return string
+	 */
+	public function getUniqueSlug (BlockSiteComponent $siteComponent) {
+		// append the id for uniqueness.
+		$slug = strtolower($siteComponent->getDisplayName().' '.$siteComponent->getId());
+		$slug = preg_replace('/[^a-z0-9]/', '-', $slug);
+		$slug = preg_replace('/-+/', '-', $slug);
+		return $slug;
 	}
 	
 	/**
