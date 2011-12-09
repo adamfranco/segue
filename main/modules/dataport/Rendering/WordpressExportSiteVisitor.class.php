@@ -158,7 +158,7 @@ class WordpressExportSiteVisitor
 			$this->recordAttachedMedia($siteComponent);
 			
  			// Tags
-// 			$this->recordTags($siteComponent);
+			$this->recordTags($siteComponent, $element);
 			
 			// Comments
 			$this->addComments($siteComponent, $element);
@@ -197,7 +197,7 @@ class WordpressExportSiteVisitor
 			$this->recordAttachedMedia($siteComponent, $parentPage->getId());
 	
 			//tags
-// 			$this->recordTags($siteComponent, $parentPage->getId());
+			$this->recordTags($siteComponent, $this->currentPageElement, $parentPage->getId());
 		}
 	}
 	
@@ -606,21 +606,31 @@ class WordpressExportSiteVisitor
 	 * Answer an element that represents the tags attached to a block.
 	 * 
 	 * @param BlockSiteComponent $siteComponent
-	 * @return DOMElement
+	 * @param DOMElement $element
+	 * @param optional string $pageId
 	 * @access protected
-	 * @since 4/17/08
 	 */
-	protected function getTags (BlockSiteComponent $siteComponent) {
-		$element = $this->doc->createElement('tags');
-		if ($this->isAuthorizedToExport($siteComponent)) {
-			$tags = array();
-			$tagManager = Services::getService("Tagging");
-			$item = HarmoniNodeTaggedItem::forId($siteComponent->getId(), 'segue');
-			$tagInfoIterator = $tagManager->getTagInfoForItem($item);
-			while($tagInfoIterator->hasNext())
-				$element->appendChild($this->getTagApplication($tagInfoIterator->next()));
+	protected function recordTags (BlockSiteComponent $siteComponent, DOMElement $element, $pageId = null) {
+		if (is_null($pageId))
+			$pageId = $siteComponent->getId();
+		
+		$tagManager = Services::getService("Tagging");
+		$item = HarmoniNodeTaggedItem::forId($siteComponent->getId(), 'segue');
+		$tagInfoIterator = $tagManager->getTagInfoForItem($item);
+		while($tagInfoIterator->hasNext()) {
+			$tagInfo = $tagInfoIterator->next();
+			
+			// Record the tag in the channel.
+			$this->recordTag($tagInfo);
+			
+			// Just add the tag once to our element
+			$query = 'count(category[@domain = "post_tag" and @nicename = "'.$tagInfo->tag->getValue().'"])';
+			if (!$this->xpath->evaluate($query, $element)) {
+				$tagElement = $element->appendChild($this->getCDATAElement('category', $tagInfo->tag->getValue()));
+				$tagElement->setAttribute('domain', 'post_tag');
+				$tagElement->setAttribute('nicename', $tagInfo->tag->getValue());
+			}
 		}
-		return $element;
 	}
 
 	/**
@@ -631,14 +641,17 @@ class WordpressExportSiteVisitor
 	 * @access protected
 	 * @since 1/17/08
 	 */
-	protected function getTagApplication (TagInfo $tagInfo) {
-		$element = $this->doc->createElement('tag', $tagInfo->tag->getValue());
-		
-		$element->setAttribute('agent_id', $tagInfo->agentId->getIdString());
-		$this->recordAgent($tagInfo->agentId);
-		$element->setAttribute('create_date', $tagInfo->timestamp->asString());
-
-		return $element;
+	protected function recordTag (TagInfo $tagInfo) {
+		// Generate a synthetic id for the tag.
+		static $tagId = 100000000000;
+		$query = 'count(wp:tag[wp:tag_slug = "'.$tagInfo->tag->getValue().'"])';
+		if (!$this->xpath->evaluate($query, $this->channel)) {
+			$element = $this->channel->insertBefore($this->doc->createElementNS('http://wordpress.org/export/1.1/', 'wp:tag'), $this->endTags);
+			$element->appendChild($this->getElementNS('http://wordpress.org/export/1.1/', 'wp:term_id', $tagId));
+			$tagId++;
+			$element->appendChild($this->getElementNS('http://wordpress.org/export/1.1/', 'wp:tag_slug', $tagInfo->tag->getValue()));
+			$element->appendChild($this->getCDATAElementNS('http://wordpress.org/export/1.1/', 'wp:tag_name', $tagInfo->tag->getValue()));
+		}
 	}
 	
 	/**
