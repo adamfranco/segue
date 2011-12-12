@@ -136,9 +136,13 @@ class WordpressExportSiteVisitor
 			$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:ping_status', ($siteComponent->showComments()?'open':'closed')));
 			$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:status', 'publish'));
 			
-			$parent = end($this->parentNavBlocks);
-			$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_parent', $parent->getId()));
-// 			$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:menu_order', ));
+			if (!$this->blocksArePosts) {
+				$parent = end($this->parentNavBlocks);
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_parent', $parent->getId()));
+	// 			$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:menu_order', ));
+			} else {
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_parent', '0'));
+			}
 			
 			$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_type', $postType));
 			$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_password', ''));
@@ -265,8 +269,9 @@ class WordpressExportSiteVisitor
 		array_push($this->parentNavBlocks, $siteComponent);
 		$this->currentPageElement = $element;
 		ob_start();
-		$content = $siteComponent->getOrganizer()->acceptVisitor($this);
-		$element->appendChild($this->getCDATAElementNS("http://purl.org/rss/1.0/modules/content/", 'content:encoded', ob_get_clean()));
+		$siteComponent->getOrganizer()->acceptVisitor($this);
+		$pageContent = ob_get_clean();
+		$element->appendChild($this->getCDATAElementNS("http://purl.org/rss/1.0/modules/content/", 'content:encoded', $pageContent));
 		
 		// Nested Menus
 		$nestedMenu = $siteComponent->getNestedMenuOrganizer();
@@ -275,6 +280,14 @@ class WordpressExportSiteVisitor
 		
 		array_pop($this->parentNavBlocks);
 		unset($this->currentPageElement);
+		
+		// Remove this page if it isn't needed.
+		// It isn't needed if there are no sub-pages and it doesn't have any page content.
+		$query = 'count(item[wp:post_parent = "'.$siteComponent->getId().'"])';
+		$numSubpages = $this->xpath->evaluate($query, $this->channel);
+		if (!$numSubpages && empty($pageContent)) {
+			$element->parentNode->removeChild($element);
+		}
 	}
 	
 	/**
