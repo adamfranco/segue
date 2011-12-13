@@ -429,7 +429,7 @@ class AssetFixedOrganizerSiteComponent
 // 				printpre($children[$key]->getId());
 // 				printpre(get_class($children[$key]));
 // 			}
-			if (preg_match('/^.*FixedOrganizerSiteComponent$/i', get_class($children[$key]))) 
+			if (is_object($children[$key]) && preg_match('/^.*FixedOrganizerSiteComponent$/i', get_class($children[$key]))) 
 			{
 				$results[$children[$key]->getId()] = $children[$key];
 				
