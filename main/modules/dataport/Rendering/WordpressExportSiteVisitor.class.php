@@ -766,6 +766,9 @@ class WordpressExportSiteVisitor
 	 */
 	protected function recordMediaAsset (Asset $asset, $parentId) {
 		$mediaAsset = MediaAsset::withAsset($asset);
+		if (!$mediaAsset->getFiles()->hasNext())
+			return;
+		
 		$file = $mediaAsset->getFiles()->next();
 		
 		$element = $this->channel->insertBefore($this->doc->createElement('item'), $this->endFiles);

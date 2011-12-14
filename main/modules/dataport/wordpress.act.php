@@ -112,6 +112,9 @@ class wordpressAction
 		// Reconfigure video
 		WikiResolver::instance()->replaceTextTemplate('video', new Segue_TextTemplates_video());
 		$this->configureTextTemplate('video');
+		
+		// Reconfigure audio
+		WikiResolver::instance()->replaceTextTemplate('audio', new Segue_TextTemplates_WordpressAudio());
 	}
 	
 	/**
@@ -165,3 +168,44 @@ class Segue_TextTemplates_Video_MiddMediaWordpressService
 		return rawurlencode($params['dir']).' '.rawurlencode($parts['filename'].'.'.$parts['extension']);
 	}
 }
+
+require_once(MYDIR.'/text_templates-dist/audio.class.php');
+/**
+ * This template allows the embedding of mp3 audio in a page
+ * 
+ * @since 1/27/09
+ * @package segue.text_templates
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+class Segue_TextTemplates_WordpressAudio
+	extends Segue_TextTemplates_audio
+{
+	
+	/**
+	 * Generate HTML given a set of parameters.
+	 * 
+	 * @param array $paramList
+	 * @return string The HTML markup
+	 * @access public
+	 * @since 1/27/09
+	 */
+	public function generate (array $paramList) {
+		if (!isset($paramList['url']))
+			throw new InvalidArgumentException("url is required.");
+		
+		// Validate our options
+		if (!preg_match('/^https?:\/\/[a-z0-9_\.\/?&=,;:%+~\s-]+$/i', $paramList['url']))
+			throw new InvalidArgumentException("Invalid url.");
+		
+		if (preg_match('/^https?:\/\/middmedia\.middlebury\.edu\/media\/([^.]+)\/([^\/]+)$/i', $paramList['url'], $matches)) {
+			return '[middmedia 0 '.$matches[1].' '.str_replace(' ', '%20', $matches[2]).']';
+		}
+		return '[audio:'.str_replace(' ', '%20', $paramList['url']).']';
+	}
+}
+
+?>
