@@ -59,6 +59,8 @@ class wordpressAction
 		$slotMgr = SlotManager::instance();
 		$slot = $slotMgr->getSlotBySiteId($site->getId());
 		
+		$this->setupTextTemplates();
+		
 		try {
 			// Do the export
 			$visitor = new WordpressExportSiteVisitor();
@@ -97,6 +99,69 @@ class wordpressAction
 	function getNodeId () {
 		return SiteDispatcher::getCurrentNodeId();
 	}
+	
+	/**
+	 * Set up text templates to output for wordpress.
+	 * 
+	 * @return null
+	 */
+	protected function setupTextTemplates () {
+		// Initialize the text-templates
+		WikiResolver::instance()->getTextTemplate('video');
+		
+		// Reconfigure video
+		WikiResolver::instance()->replaceTextTemplate('video', new Segue_TextTemplates_video());
+		$this->configureTextTemplate('video');
+	}
+	
+	/**
+	 * Load any configuration files for the text-template
+	 * 
+	 * @param string $name
+	 * @return void
+	 * @access protected
+	 * @since 7/16/08
+	 */
+	protected function configureTextTemplate ($name) {
+		$name = strtolower($name);
+		
+		// Configure the template
+		if (file_exists(MYDIR.'/config/text_template-'.$name.'-wordpress.conf.php'))
+			require_once (MYDIR.'/config/text_template-'.$name.'-wordpress.conf.php');
+		else if (file_exists(MYDIR.'/config/text_template-'.$name.'-wordpress_default.conf.php'))
+			require_once (MYDIR.'/config/text_template-'.$name.'-wordpress_default.conf.php');
+	}
 }
 
-?>
+require_once(MYDIR.'/text_templates-dist/video.class.php');
+/**
+ * This is a custom service for MiddMedia that does the extra work to configure our parameters
+ * 
+ * @since 1/27/09
+ * @package segue.wiki
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+class Segue_TextTemplates_Video_MiddMediaWordpressService
+	extends Segue_TextTemplates_Video_MiddMediaService
+{
+		
+	/**
+	 * Based on the parameters listed, generate an identifier to use in the embed code.
+	 * 
+	 * @param array $params
+	 * @return string
+	 * @access public
+	 * @since 1/27/09
+	 */
+	public function generateId (array $params) {
+		$this->validateParam('id', $params['id']);
+		$this->validateParam('dir', $params['dir']);
+		
+		$parts = pathinfo($params['id']);
+		return rawurlencode($params['dir']).' '.rawurlencode($parts['filename'].'.'.$parts['extension']);
+	}
+}
