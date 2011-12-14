@@ -13,3 +13,6 @@
 [submodule "main/domit"]
 	path = main/domit
 	url = http://community.middlebury.edu/~afranco/git/external/domit.git/
+[submodule "main/phpCAS"]
+	path = main/phpCAS
+	url = git://github.com/Jasig/phpCAS.git
