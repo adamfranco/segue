@@ -36,6 +36,20 @@ if (!defined('DATAPORT_TMP_DIR'))
 // );
 
 
+/*********************************************************
+ * Define which export links are available and who they
+ * are available to.
+ *********************************************************/
+$GLOBALS['dataport_export_types'] = array(
+// 	'wordpress' => array(
+// 		'groups' => array(
+// 			'1', // Administrators
+// 			"CN=LIS Web Applications,OU=General,OU=Groups,DC=middlebury,DC=edu",
+// 			"CN=LIS Curricular Technology Team,OU=General,OU=Groups,DC=middlebury,DC=edu",
+// 			"CN=Digital Media Tutors,OU=General,OU=Groups,DC=middlebury,DC=edu",
+// 		),
+// 	),
+);
 
 /*********************************************************
  * If we are on the viewfile action and coming from a trusted 

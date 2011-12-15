@@ -552,7 +552,9 @@ class listAction
 			print "\n\t<div class='portal_list_controls'>\n\t\t";
 			$controls = array();
 			
-			$controls[] = "<a href='".SiteDispatcher::quickURL('dataport', 'wordpress', array('node' => $assetId->getIdString()))."'>"._("export for wordpress")."</a>";
+			if ($this->isExportEnabled('wordpress')) {
+				$controls[] = "<a href='".SiteDispatcher::quickURL('dataport', 'wordpress', array('node' => $assetId->getIdString()))."'>"._("export for wordpress")."</a>";
+			}
 			
 			print implode("\n\t\t | ", $controls);
 			print "\n\t</div>";
@@ -569,6 +571,50 @@ class listAction
 		$container->add($component, "100%", null, LEFT, TOP);
 		
 		return $container;
+	}
+	
+	/**
+	 * Answer true if export is enabled for the export type and current user.
+	 * 
+	 * @param string $exportType
+	 * @return boolean
+	 */
+	public function isExportEnabled ($exportType) {
+		static $exportEnabled = array();
+		if (isset($exportEnabled[$exportType]))
+			return $exportEnabled[$exportType];
+		
+		if (!isset($GLOBALS['dataport_export_types'][$exportType])) {
+			$exportEnabled[$exportType] = false;
+			return false;
+		}
+		
+		$settings = $GLOBALS['dataport_export_types'][$exportType];
+		if (!is_array($settings)) {
+			$exportEnabled[$exportType] = true;
+			return true;
+		}
+		
+		if (isset($settings['groups'])) {
+			$authN = Services::getService('AuthN');
+			$userId = $authN->getFirstUserId();
+			$agentMgr = Services::getService('Agent');
+			$agent = $agentMgr->getAgent($userId);
+			$idMgr = Services::getService('Id');
+			foreach ($settings['groups'] as $groupIdString) {
+				$groupId = $idMgr->getId($groupIdString);
+				$group = $agentMgr->getGroup($groupId);
+				if ($group->contains($agent, true)) {
+					$exportEnabled[$exportType] = true;
+					return true;
+				}
+			}
+			$exportEnabled[$exportType] = false;
+			return false;
+		}
+		
+		$exportEnabled[$exportType] = true;
+		return true;
 	}
 }
 
