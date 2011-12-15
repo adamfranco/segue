@@ -42,6 +42,7 @@ if (!defined('DATAPORT_TMP_DIR'))
  *********************************************************/
 $GLOBALS['dataport_export_types'] = array(
 // 	'wordpress' => array(
+// 		'help' => 'http://mediawiki.middlebury.edu/wiki/LIS/Migrate_From_Segue',
 // 		'groups' => array(
 // 			'1', // Administrators
 // 			"CN=LIS Web Applications,OU=General,OU=Groups,DC=middlebury,DC=edu",

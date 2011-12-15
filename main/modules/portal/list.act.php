@@ -553,7 +553,13 @@ class listAction
 			$controls = array();
 			
 			if ($this->isExportEnabled('wordpress')) {
-				$controls[] = "<a href='".SiteDispatcher::quickURL('dataport', 'wordpress', array('node' => $assetId->getIdString()))."'>"._("export for wordpress")."</a>";
+				$control = "<a href='".SiteDispatcher::quickURL('dataport', 'wordpress', array('node' => $assetId->getIdString()))."'>"._("export for wordpress")."</a>";
+				
+				if (!empty($GLOBALS['dataport_export_types']['wordpress']['help'])) {
+					$control .= " (<a href='".$GLOBALS['dataport_export_types']['wordpress']['help']."' target='_blank'>help</a>)";
+				}
+				
+				$controls[] = $control;
 			}
 			
 			print implode("\n\t\t | ", $controls);
