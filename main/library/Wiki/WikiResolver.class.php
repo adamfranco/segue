@@ -168,6 +168,18 @@ class WikiResolver {
 	}
 	
 	/**
+	 * Replace a text-template with an already configured Text template class.
+	 * This allows certain actions to change how the templates are output.
+	 * 
+	 * @param string $name
+	 * @param object Segue_Wiki_TextTemplate $template
+	 * @return null
+	 */
+	public function replaceTextTemplate ($name, Segue_Wiki_TextTemplate $template) {
+		$this->textTemplateResolver->replaceTextTemplate($name, $template);
+	}
+	
+	/**
 	 * Parse and replace any text-templates that are safe for use in an WYSIWYG editor 
 	 * with HTML markup. This can be used to allow WYSIWG editing of elements that
 	 * will later be converted back to text-templates using unapplyTextTemplates().

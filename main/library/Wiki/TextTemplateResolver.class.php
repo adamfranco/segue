@@ -115,6 +115,25 @@ class Segue_Wiki_TextTemplateResolver {
 	}
 	
 	/**
+	 * Replace a text-template with an already configured Text template class.
+	 * This allows certain actions to change how the templates are output.
+	 * 
+	 * @param string $name
+	 * @param object Segue_Wiki_TextTemplate $template
+	 * @return null
+	 */
+	public function replaceTextTemplate ($name, Segue_Wiki_TextTemplate $template) {
+		try {
+			$orig = $this->getTextTemplate($name);
+		} catch (UnknownIdException $e) {
+			if ($e->getCode() != 34563)
+				throw $e;
+		}
+		
+		$this->textTemplates[strtolower($name)] = $template;
+	}
+	
+	/**
 	 * Parse the wiki-text and replace wiki markup with HTML markup.
 	 * 
 	 * @param string $text

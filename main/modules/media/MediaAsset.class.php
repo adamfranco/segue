@@ -246,6 +246,7 @@ class MediaAsset {
 	 * @since 4/27/07
 	 */
 	function getFiles () {
+		$idManager = Services::getService('Id');
 		$records = new MultiIteratorIterator;
 		$records->addIterator(
 			$this->_asset->getRecordsByRecordStructure(

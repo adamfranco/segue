@@ -424,6 +424,31 @@ class PluginManager {
 		return $this->_pluginClasses[$type->asString()];
 	}
 	
+	/**
+	 * Set the Plugin class for a given type.
+	 *
+	 * This allows the application to swap plugin implementations dynamically, such
+	 * as to change behavior during export.
+	 *
+	 * The class must be included or otherwise made available before this method is
+	 * called.
+	 * 
+	 * @param object Type $type
+	 * @param string $class
+	 * @return string
+	 * @access public
+	 * @since 1/12/07
+	 */
+	function setPluginClass ( Type $type, $class ) {
+		if (!class_exists($class))
+			throw new OperationFailedException('Class '.$class.' is not defined.');
+		
+		if (!is_subclass_of($class, 'SeguePluginsAPI'))
+			throw new InvalidArgumentException('Class '.$class.' must implement SeguePluginsAPI.');
+		
+		$this->_pluginClasses[$type->asString()] = $class;
+	}
+	
 	
 	/**
 	 * Answer a plugin directory

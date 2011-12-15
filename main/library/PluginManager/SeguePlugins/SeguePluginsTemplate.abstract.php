@@ -10,6 +10,8 @@
  */ 
 
 require_once(dirname(__FILE__)."/SeguePluginsDriver.abstract.php");
+require_once(dirname(__FILE__)."/SeguePluginsAPI.interface.php");
+require_once(dirname(__FILE__)."/SeguePluginsDriverAPI.interface.php");
 
 /**
  * This class includes all of the methods that SeguePlugins can
@@ -29,6 +31,7 @@ require_once(dirname(__FILE__)."/SeguePluginsDriver.abstract.php");
  */
 abstract class SeguePluginsTemplate
 	extends SeguePluginsDriver
+	implements SeguePluginsAPI, SeguePluginsDriverAPI
 {
 	
 /*********************************************************

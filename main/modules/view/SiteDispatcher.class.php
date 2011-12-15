@@ -400,6 +400,8 @@ class SiteDispatcher {
 	public static function getBaseUrlForLocationCategory ($locationCategory) {
 		if (!in_array($locationCategory, SlotAbstract::getLocationCategories()))
 			throw new Exception("Invalid category, '$locationCategory'.");
+		if (!isset(self::$locationCategoryUrls[$locationCategory]))
+			return MYURL;
 		
 		return self::$locationCategoryUrls[$locationCategory];
 	}
