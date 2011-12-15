@@ -61,6 +61,12 @@ class wordpressAction
 		
 		$this->setupTextTemplates();
 		
+		$pluginManager = Services::getService('PluginManager');
+		$audioType = new Type ('SeguePlugins', 'edu.middlebury', 'AudioPlayer');
+		$pluginManager->_loadPlugins();  // Ensure that the original plugin is loaded.
+		require_once(MYDIR.'/plugins-dist/SeguePlugins/edu.middlebury/AudioPlayer/WordpressExportAudioPlayerPlugin.class.php');
+		$pluginManager->setPluginClass($audioType, 'WordpressExportAudioPlayerPlugin');
+		
 		try {
 			// Do the export
 			$visitor = new WordpressExportSiteVisitor();
@@ -207,5 +213,3 @@ class Segue_TextTemplates_WordpressAudio
 		return '[audio:'.str_replace(' ', '%20', $paramList['url']).']';
 	}
 }
-
-?>
