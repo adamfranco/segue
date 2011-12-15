@@ -73,6 +73,7 @@ $GLOBALS['dataport_export_types'] = array(
 // 		$idMgr = Services::getService("Id");
 // 		// Verify that the asset id, the record Id, and the file name match.
 // 		try {
+// 			$harmoni->request->update();
 // 			$harmoni->request->startNamespace("polyphony-repository");
 // 			$repositoryId =$idMgr->getId(RequestContext::value("repository_id"));
 // 			$assetId =$idMgr->getId(RequestContext::value("asset_id"));
