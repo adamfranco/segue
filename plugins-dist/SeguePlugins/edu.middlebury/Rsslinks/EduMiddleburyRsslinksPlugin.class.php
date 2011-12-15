@@ -10,6 +10,7 @@
  */ 
 
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
+require_once(MYDIR."/main/modules/rss/RssLinkPrinter.class.php");
 
 /**
  * A simple plugin for displaying links to a site's RSS feeds
