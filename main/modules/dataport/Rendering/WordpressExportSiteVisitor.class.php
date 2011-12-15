@@ -152,6 +152,7 @@ class WordpressExportSiteVisitor
 			// Content
 			$pluginManager = Services::getService('PluginManager');
 			$plugin = $pluginManager->getPlugin($siteComponent->getAsset());
+			$this->recordPluginExtras($siteComponent->getAsset());
 			$shortContent = $plugin->executeAndGetMarkup(false, false);
 			$longContent = $plugin->executeAndGetMarkup(false, true);
 			$element->appendChild($this->getCDATAElementNS("http://purl.org/rss/1.0/modules/content/", 'content:encoded', $longContent));
@@ -196,6 +197,7 @@ class WordpressExportSiteVisitor
 			
 			$pluginManager = Services::getService('PluginManager');
 			$plugin = $pluginManager->getPlugin($siteComponent->getAsset());
+			$this->recordPluginExtras($siteComponent->getAsset());
 			print $plugin->executeAndGetMarkup(false, true);
 		
 			// Comments
@@ -605,6 +607,7 @@ class WordpressExportSiteVisitor
 		$content = "<h3>".$comment->getSubject()."</h3>";
 		$pluginManager = Services::getService('PluginManager');
 		$plugin = $pluginManager->getPlugin($comment->getAsset());
+		$this->recordPluginExtras($comment->getAsset());
 		$content .= $plugin->executeAndGetMarkup(false, true);
 		$element->appendChild($this->getCDATAElementNS("http://wordpress.org/export/1.1/", 'wp:comment_content', $content));
 		
@@ -730,6 +733,49 @@ class WordpressExportSiteVisitor
 		$slug = preg_replace('/[^a-z0-9]/', '-', $slug);
 		$slug = preg_replace('/-+/', '-', $slug);
 		return $slug;
+	}
+	
+	/**
+	 * Record any extra files that are used by plugins
+	 * 
+	 * @param Asset $asset
+	 * @return void
+	 */
+	public function recordPluginExtras (Asset $asset) {
+		$audioType = new Type ('SeguePlugins', 'edu.middlebury', 'AudioPlayer');
+		$downloadType = $audioType = new Type ('SeguePlugins', 'edu.middlebury', 'Download');
+		if ($asset->getAssetType()->isEqual($audioType) || $asset->getAssetType()->isEqual($audioType)) {
+			
+			$query = 'count(item[wp:post_type = "attachment" and title = "downarrow.gif"])';
+			if (!$this->xpath->evaluate($query, $this->channel)) {
+				$url = MYPATH.'/images/downarrow.gif';
+				$element = $this->channel->insertBefore($this->doc->createElement('item'), $this->endFiles);
+				$element->appendChild($this->getElement('title', "downarrow.gif"));
+				$element->appendChild($this->getElement('link', $url));
+				$element->appendChild($this->getElement('guid', $url))->setAttribute('isPermaLink', 'false');
+				$element->appendChild($this->getElement('description', 'Download icon.'));
+				$element->appendChild($this->getElement('pubDate', date('r')));
+				
+				$agentUID = $this->recordAgent($asset->getCreator());
+				$element->appendChild($this->getElementNS("http://purl.org/dc/elements/1.1/", 'dc:creator', '0'));
+				
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_id', '0'));
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_date', date('Y-m-d H:i:s')));
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_date_gmt', date('Y-m-d H:i:s')));
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:comment_status', 'closed'));
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:ping_status', 'closed'));
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:status', 'publish'));
+				
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_parent', $asset->getId()->getIdString()));
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:menu_order', '0'));
+				
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_type', 'attachment'));
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_password', ''));
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:is_sticky', '0'));
+				
+				$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:attachment_url', $url));
+			}
+		}
 	}
 	
 	/**
