@@ -79,9 +79,9 @@ class wordpressAction
 // 			$tmp->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 // 			$visitor->doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			
-			header("Content-Type: text/plain");
-// 			header('Content-Disposition: attachment; filename="'
-// 								.basename($slot->getShortname().".xml").'"');
+			header("Content-Type: text/xml");
+			header('Content-Disposition: attachment; filename="'
+								.basename($slot->getShortname().".xml").'"');
 			print $visitor->doc->saveXMLWithWhitespace();		
 		} catch (PermissionDeniedException $e) {
 			return new Block(
