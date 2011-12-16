@@ -67,6 +67,9 @@ class wordpressAction
 		require_once(MYDIR.'/plugins-dist/SeguePlugins/edu.middlebury/AudioPlayer/WordpressExportAudioPlayerPlugin.class.php');
 		$pluginManager->setPluginClass($audioType, 'WordpressExportAudioPlayerPlugin');
 		
+		$textType = new Type ('SeguePlugins', 'edu.middlebury', 'TextBlock');		require_once(MYDIR.'/plugins-dist/SeguePlugins/edu.middlebury/TextBlock/WordpressExportTextBlockPlugin.class.php');
+		$pluginManager->setPluginClass($textType, 'WordpressExportTextBlockPlugin');
+		
 		try {
 			// Do the export
 			$visitor = new WordpressExportSiteVisitor();

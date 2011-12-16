@@ -54,7 +54,7 @@ class WordpressExportSiteVisitor
 		$this->doc->documentElement->setAttribute('version', "2.0");
 		$this->doc->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/' ,'xmlns:excerpt', 'http://wordpress.org/export/1.1/excerpt/');
 		$this->doc->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/' ,'xmlns:content', 'http://purl.org/rss/1.0/modules/content/');
-		$this->doc->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/' ,'xmlns:wfw', 'http://wordpress.org/export/1.1/excerpt/');
+		$this->doc->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/' ,'xmlns:wfw', 'http://wellformedweb.org/CommentAPI/');
 		$this->doc->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/' ,'xmlns:dc', 'http://purl.org/dc/elements/1.1/');
 		$this->doc->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/' ,'xmlns:wp', 'http://wordpress.org/export/1.1/');
 		
@@ -174,8 +174,8 @@ class WordpressExportSiteVisitor
 			$shortContent = $plugin->executeAndGetMarkup(false, false);
 			$longContent = $plugin->executeAndGetMarkup(false, true);
 			$element->appendChild($this->getCDATAElementNS("http://purl.org/rss/1.0/modules/content/", 'content:encoded', $longContent));
-			if ($shortContent != $longContent)
-				$element->appendChild($this->getCDATAElementNS("http://purl.org/rss/1.0/modules/content/", 'excerpt:encoded', $longContent));
+// 			if ($shortContent != $longContent)
+// 				$element->appendChild($this->getCDATAElementNS("http://wordpress.org/export/1.1/excerpt/", 'excerpt:encoded', $shortContent));
 			
 			// Files
 			$this->recordAttachedMedia($siteComponent);
