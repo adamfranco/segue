@@ -126,6 +126,9 @@ class WordpressExportSiteVisitor
 				return;
 		}
 		
+		// Rewrite any absolute file-URLs that didn't get localized properly
+		$this->rewriteNonlocalFileUrls($siteComponent);
+		
 		// make each block its own item.
 		if ($this->blocksArePosts || $this->outputBlocksAsPages) {
 			if ($this->blocksArePosts)
@@ -920,5 +923,55 @@ class WordpressExportSiteVisitor
 		$authZ = Services::getService("AuthZ");
 		$idMgr = Services::getService("Id");
 		return $authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view_comments'), $siteComponent->getQualifierId());
+	}
+	
+	/**
+	 * Rewrite file urls that weren't properly localized.
+	 * 
+	 * @param object BlockSiteComponent $siteComponent
+	 * @return void
+	 */
+	protected function rewriteNonlocalFileUrls (BlockSiteComponent $siteComponent) {
+		static $baseUrls;
+		if (empty($baseUrls)) {
+			$baseUrls = array(
+				'http://segue.middlebury.edu',
+				'https://segue.middlebury.edu',
+				'http://seguecommunity.middlebury.edu',
+				'https://seguecommunity.middlebury.edu',
+			);
+			foreach (SlotAbstract::getLocationCategories() as $locationCategory) {
+				$baseUrls[] = rtrim(SiteDispatcher::getBaseUrlForLocationCategory($locationCategory), '/');
+			}
+			$baseUrls = array_unique($baseUrls);
+		}
+		
+		$content = $siteComponent->getAsset()->getContent();
+		foreach ($baseUrls as $baseUrl) {
+			if (preg_match_all('#[\'"]'.$baseUrl.'/repository/(viewfile|viewfile_flash|viewthumbnail|viewthumbnail_flash)/polyphony-repository___repository_id/edu.middlebury.segue.sites_repository/polyphony-repository___asset_id/([0-9]+)/polyphony-repository___record_id/([0-9]+)(?:polyphony-repository___file_name/(.+))?[\'"]#', $content->asString(), $matches, PREG_SET_ORDER)) {
+				foreach ($matches as $m) {
+					$urlParts = array(
+						'module' => 'repository',
+						'action' => $m[1],
+						'polyphony-repository___repository_id' => 'edu.middlebury.segue.sites_repository',
+						'polyphony-repository___asset_id' => $m[2],
+						'polyphony-repository___record_id' => $m[3],
+					);
+					if (!empty($m[4])) {
+						$urlParts['polyphony-repository___file_name'] = $m[4];
+					}
+					// File URLs should have the filename appended.
+					else if ($m[1] == 'viewfile') {
+						try {
+							$file = MediaFile::withIdStrings('edu.middlebury.segue.sites_repository', $m[2], $m[3]);
+							$urlParts['polyphony-repository___file_name'] = $file->getFilename();
+						} catch (UnknownIdException $e) {
+						}
+					}
+					$url = http_build_query($urlParts, '', '&amp;');
+					$content->_setValue(str_replace($m[0], '"'.'[[localurl:'.$url.']]'.'"', $content->value()));
+				}
+			}
+		}
 	}
 }
