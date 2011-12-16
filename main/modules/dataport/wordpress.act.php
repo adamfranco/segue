@@ -79,9 +79,9 @@ class wordpressAction
 // 			$tmp->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 // 			$visitor->doc->schemaValidateWithException(MYDIR."/doc/raw/dtds/segue2-site.xsd");
 			
-			header("Content-Type: text/xml");
-			header('Content-Disposition: attachment; filename="'
-								.basename($slot->getShortname().".xml").'"');
+			header("Content-Type: text/plain");
+// 			header('Content-Disposition: attachment; filename="'
+// 								.basename($slot->getShortname().".xml").'"');
 			print $visitor->doc->saveXMLWithWhitespace();		
 		} catch (PermissionDeniedException $e) {
 			return new Block(
@@ -142,6 +142,7 @@ class wordpressAction
 	}
 }
 
+require_once(MYDIR.'/main/library/Wiki/TextTemplate.interface.php');
 require_once(MYDIR.'/text_templates-dist/video.class.php');
 /**
  * This is a custom service for MiddMedia that does the extra work to configure our parameters

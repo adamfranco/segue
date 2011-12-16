@@ -223,6 +223,17 @@ class MediaFile {
 	}
 	
 	/**
+	 * Answer the mimetype string
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/27/07
+	 */
+	function getThumbnailMimeType () {
+		return $this->_getPartValue('THUMBNAIL_MIME_TYPE');
+	}
+	
+	/**
 	 * Answer the contents of the file as a string.
 	 * 
 	 * @return string

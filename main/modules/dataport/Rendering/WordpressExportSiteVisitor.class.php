@@ -425,11 +425,11 @@ class WordpressExportSiteVisitor
 	 */
 	protected function getAgentUID (Agent $agent) {
 		if ($properties = $agent->getPropertiesByType(new HarmoniType("GroupProperties", "edu.middlebury", "CAS Properties")))
-			return $properties->getProperty('Id');
+			return strtolower($properties->getProperty('Id'));
 		else if ($properties = $agent->getPropertiesByType(new HarmoniType("Authentication", "edu.middlebury.harmoni", "Visitors")))
-			return $properties->getProperty('identifier');
+			return strtolower($properties->getProperty('identifier'));
 		else
-			return $agent->getDisplayName();
+			return strtolower($agent->getDisplayName());
 	}
 	
 	/**
@@ -842,6 +842,40 @@ class WordpressExportSiteVisitor
 		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:is_sticky', '0'));
 		
 		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:attachment_url', $file->getUrl()));
+		
+		// Thumbnail
+		$element = $this->channel->insertBefore($this->doc->createElement('item'), $this->endFiles);
+		if ($file->getThumbnailMimeType()) {
+			$mime = Services::getService("MIME");
+			$thumbExtension = $mime->getExtensionForMIMEType($file->getThumbnailMimeType());
+		} else {
+			$thumbExtension = 'png';
+		}
+		$thumbName = $mediaAsset->getDisplayName().'-thumbnail.'.$thumbExtension;
+		$element->appendChild($this->getElement('title', $thumbName));
+		$element->appendChild($this->getElement('link', $file->getThumbnailUrl()));
+		$element->appendChild($this->getElement('guid', $file->getThumbnailUrl()))->setAttribute('isPermaLink', 'false');
+		$element->appendChild($this->getElement('description', $mediaAsset->getDescription()));
+		$element->appendChild($this->getElement('pubDate', $mediaAsset->getModificationDate()->format('r')));
+		
+		$agentUID = $this->recordAgent($asset->getCreator());
+		$element->appendChild($this->getElementNS("http://purl.org/dc/elements/1.1/", 'dc:creator', $agentUID));
+		
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_id', $mediaAsset->getId()));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_date', $mediaAsset->getModificationDate()->format('Y-m-d H:i:s')));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_date_gmt', $mediaAsset->getModificationDate()->asUTC()->format('Y-m-d H:i:s')));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:comment_status', 'closed'));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:ping_status', 'closed'));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:status', 'publish'));
+		
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_parent', $parentId));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:menu_order', '0'));
+		
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_type', 'attachment'));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_password', ''));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:is_sticky', '0'));
+		
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:attachment_url', $file->getThumbnailUrl()));
 	}
 	
 	/**
