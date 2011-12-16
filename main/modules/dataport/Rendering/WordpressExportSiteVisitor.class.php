@@ -840,6 +840,7 @@ class WordpressExportSiteVisitor
 		$element->appendChild($this->getElement('link', $file->getUrl()));
 		$element->appendChild($this->getElement('guid', $file->getUrl()))->setAttribute('isPermaLink', 'false');
 		$element->appendChild($this->getElement('description', $mediaAsset->getDescription()));
+		$element->appendChild($this->getCDATAElementNS("http://wordpress.org/export/1.1/excerpt/", 'excerpt:encoded', $mediaAsset->getDescription()));
 		$element->appendChild($this->getElement('pubDate', $mediaAsset->getModificationDate()->format('r')));
 		
 		$agentUID = $this->recordAgent($asset->getCreator());
