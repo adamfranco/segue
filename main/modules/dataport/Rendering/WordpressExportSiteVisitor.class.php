@@ -111,6 +111,21 @@ class WordpressExportSiteVisitor
 	 * @since 8/31/07
 	 */
 	public function visitBlock ( BlockSiteComponent $siteComponent ) {
+		// Skip plugins that just don't translate.
+		$skippedTypes = array(
+			new Type ('SeguePlugins', 'edu.middlebury', 'JoinSite'),
+			new Type ('SeguePlugins', 'edu.middlebury', 'NextPrevious'),
+			new Type ('SeguePlugins', 'edu.middlebury', 'Participation'),
+			new Type ('SeguePlugins', 'edu.middlebury', 'RssFeed'),
+			new Type ('SeguePlugins', 'edu.middlebury', 'Rsslinks'),
+			new Type ('SeguePlugins', 'edu.middlebury', 'Tags'),
+		);
+		$assetType = $siteComponent->getAsset()->getAssetType();
+		foreach ($skippedTypes as $skippedType) {
+			if ($skippedType->isEqual($assetType))
+				return;
+		}
+		
 		// make each block its own item.
 		if ($this->blocksArePosts || $this->outputBlocksAsPages) {
 			if ($this->blocksArePosts)
