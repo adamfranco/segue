@@ -552,8 +552,13 @@ class listAction
 			print "\n\t<div class='portal_list_controls'>\n\t\t";
 			$controls = array();
 			
+			if (isset($sitesTrueSlot))
+				$params = array('site' => $sitesTrueSlot->getShortname());
+			else
+				$params = array('node' => $assetId->getIdString());
+				
 			if ($this->isExportEnabled('wordpress')) {
-				$control = "<a href='".SiteDispatcher::quickURL('dataport', 'wordpress', array('node' => $assetId->getIdString()))."'>"._("export for wordpress")."</a>";
+				$control = "<a href='".SiteDispatcher::quickURL('dataport', 'wordpress', $params)."'>"._("export for wordpress")."</a>";
 				
 				if (!empty($GLOBALS['dataport_export_types']['wordpress']['help'])) {
 					$control .= " (<a href='".$GLOBALS['dataport_export_types']['wordpress']['help']."' target='_blank'>help</a>)";
