@@ -112,12 +112,32 @@ class htmlAction
 				$message = str_replace('%2', "<a href='".$url."'>"._("main page of the site")."</a>", $message);
 				$errorPrinter->handExceptionWithRedirect($e, 404, $message);
 				exit;
-			} else {
+			}
+			else if (RequestContext::value('site')) {
+				$slotMgr = SlotManager::instance();
+				$slot = $slotMgr->getSlotByShortname(RequestContext::value('site'));
+				// Redirect to the new URL if this site has been migrated
+				if ($redirectUrl = $slot->getMigratedRedirectUrl()) {
+					header("HTTP/1.1 301 Moved Permanently");
+					header('Location: '.$redirectUrl);
+					exit;
+				}
+				throw $e;
+			}
+			else {
 				throw $e;
 			}
 		}
 		try {
 			$slot = $rootSiteComponent->getSlot();
+			
+			// Redirect to the new URL if this site has been migrated
+			if ($redirectUrl = $slot->getMigratedRedirectUrl()) {
+				header("HTTP/1.1 301 Moved Permanently");
+				header('Location: '.$redirectUrl);
+				exit;
+			}
+			
 			if (SiteDispatcher::getBaseUrlForSlot($slot) != MYURL) {
 				RequestContext::sendTo(SiteDispatcher::quickUrl());
 			} else {

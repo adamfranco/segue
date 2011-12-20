@@ -224,6 +224,7 @@ class listAction
  		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js'></script>
 		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/src/scriptaculous.js'></script>
 		<script type='text/javascript' src='".MYPATH."/javascript/AliasPanel.js'></script>
+		<script type='text/javascript' src='".MYPATH."/javascript/MigrationPanel.js'></script>
 		<script type='text/javascript' src='".POLYPHONY_PATH."javascript/CenteredPanel.js'></script>
 		
 		<style type='text/css'>
@@ -369,6 +370,8 @@ class listAction
 			
 			print "\n\t</div>";
 		}
+		
+		$this->printMigrationStatus($slot);
 		
 		return new Block(ob_get_clean(), STANDARD_BLOCK);
 	}
@@ -578,6 +581,8 @@ class listAction
 		}
 		print "\n\t<div style='clear: both;'></div>";
 		
+		$this->printMigrationStatus($otherSlot);
+		
 		$component = new UnstyledBlock(ob_get_clean());
 		$container->add($component, "100%", null, LEFT, TOP);
 		
@@ -626,6 +631,71 @@ class listAction
 		
 		$exportEnabled[$exportType] = true;
 		return true;
+	}
+	
+	/**
+	 * Answer an HTML block that describes the migration status of the slot
+	 * 
+	 * @param Slot $slot
+	 * @return null
+	 */
+	public function printMigrationStatus (Slot $slot) {
+		if (!defined('DATAPORT_ENABLE_EXPORT_REDIRECT') || !DATAPORT_ENABLE_EXPORT_REDIRECT)
+			return;
+		
+		// Just work with the primary slot if aliases are involved.
+		if ($slot->isAlias())
+			$slot = $slot->getAliasTarget();
+		
+		print "\n\t<div class='portal_list_migration_status'>\n\t\t";
+		print "Migration Status: ";
+		$status = $slot->getMigrationStatus();
+		print "<span class='status_line'>";
+		switch ($status['type']) {
+			case 'archived':
+				print '<span class="status status_archived">Archived</span>';
+				break;
+			case 'migrated':
+				print '<span class="status status_migrated">Migrated</span>';
+				if (!empty($status['url'])) {
+					print ' to <a href="'.htmlentities($status['url']).'">'.htmlentities($status['url']).'</a>';
+				}
+				break;
+			case 'unneeded':
+				if ($slot->siteExists())
+					print '<span class="status status_unneeded">No Longer Needed</span>';
+				else
+					print '<span class="status status_unneeded_empty">No Longer Needed</span>';
+				break;
+			default:
+				print '<span class="status status_incomplete">Incomplete</span>';
+		}
+		print " </span>";
+		if ($this->canChangeSlotStatus($slot)) {
+			print "<button onclick='MigrationPanel.run(\"".$slot->getShortname()."\", \"".$status['type']."\", \"".$status['url']."\", this); return false;' class='create_site_link'>"._("change")."</button>";
+		}
+		print "\n\t</div>";
+	}
+	
+	/**
+	 * AuthZ
+	 * 
+	 * @return boolean
+	 * @access public
+	 * @since 3/14/08
+	 */
+	protected function canChangeSlotStatus (Slot $slot) {
+		if (!$slot->siteExists()) {
+			return $slot->isUserOwner();
+		}
+		
+		// get siteRoot node and check that
+		$idMgr = Services::getService('Id');
+		$azMgr = Services::getService('AuthZ');
+		// Since view AZs cascade up, just check at the node.
+		return $azMgr->isUserAuthorized(
+			$idMgr->getId('edu.middlebury.authorization.view'),
+			$slot->getSiteId());
 	}
 }
 
