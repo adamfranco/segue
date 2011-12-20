@@ -646,7 +646,7 @@ class listAction
 		
 		print "\n\t<div class='portal_list_migration_status'>\n\t\t";
 		print "Migration Status: ";
-		$status = $this->getMigrationStatus($slot);
+		$status = $slot->getMigrationStatus();
 		print "<span class='status_line'>";
 		switch ($status['type']) {
 			case 'archived':
@@ -672,35 +672,6 @@ class listAction
 			print "<button onclick='MigrationPanel.run(\"".$slot->getShortname()."\", \"".$status['type']."\", \"".$status['url']."\", this); return false;' class='create_site_link'>"._("change")."</button>";
 		}
 		print "\n\t</div>";
-	}
-	
-	/**
-	 * Answer migration status info about a slot
-	 * 
-	 * @param Slot $slot
-	 * @return array
-	 */
-	public function getMigrationStatus (Slot $slot) {
-		$dbc = Services::getService('DBHandler');
-		$query = new SelectQuery;
-		$query->addTable('segue_slot_migration_status');
-		$query->addColumn('status');
-		$query->addColumn('redirect_url');
-		$query->addWhereEqual('shortname', $slot->getShortname());
-		$result = $dbc->query($query, IMPORTER_CONNECTION);
-		
-		if ($result->hasMoreRows()) {
-			return array(
-				'type' => $result->field('status'),
-				'url' => $result->field('redirect_url'),
-			);
-		}
-		
-		// Defaults
-		if ($slot->siteExists())
-			return array('type' => 'incomplete', 'url' => '');
-		else
-			return array('type' => 'unneeded', 'url' => '');
 	}
 	
 	/**

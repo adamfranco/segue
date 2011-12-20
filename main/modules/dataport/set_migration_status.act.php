@@ -62,62 +62,7 @@ class set_migration_statusAction
 		$slotMgr = SlotManager::instance();
 		$slot = $slotMgr->getSlotByShortname(RequestContext::value('slot'));
 		
-		// Validate the status and URL, then save.
-		$validStatus = array('incomplete', 'archived', 'migrated', 'unneeded');
-		if (!in_array(RequestContext::value('status'), $validStatus))
-			throw new InvalidArgumentException("Invalid status. Must be one of: ".implode(', ', $validStatus));
-		
-		if (RequestContext::value('status') == 'migrated') {
-			$url = filter_var(RequestContext::value('url'), FILTER_VALIDATE_URL);
-			if (!is_string($url) || !strlen($url))
-				throw new InvalidArgumentException("Invalid URL.");
-		} else {
-			$url = '';
-		}
-		
-		$dbc = Services::getService('DBHandler');
-		$authN = Services::getService('AuthN');
-		
-		$query = new InsertQuery;
-		$query->setTable('segue_slot_migration_status');
-		$query->addValue('shortname', $slot->getShortname());
-		$query->addValue('status', RequestContext::value('status'));
-		$query->addValue('redirect_url', $url);
-		$query->addValue('user_id', $authN->getFirstUserId()->getIdString());
-		
-		try {
-			$result = $dbc->query($query, IMPORTER_CONNECTION);
-		} catch (DuplicateKeyDatabaseException $e) {
-			$query = new UpdateQuery;
-			$query->setTable('segue_slot_migration_status');
-			$query->addValue('status', RequestContext::value('status'));
-			$query->addValue('redirect_url', $url);
-			$query->addValue('user_id', $authN->getFirstUserId()->getIdString());
-			$query->addWhereEqual('shortname', $slot->getShortname());
-			$result = $dbc->query($query, IMPORTER_CONNECTION);
-		}
-		
-		/*********************************************************
-		 * Log the success
-		 *********************************************************/
-		if (Services::serviceRunning("Logging")) {
-			$loggingManager = Services::getService("Logging");
-			$log = $loggingManager->getLogForWriting("Segue");
-			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
-							"A format in which the acting Agent[s] and the target nodes affected are specified.");
-			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
-							"Normal events.");
-			
-			$message = "'".$slot->getShortname()."' marked as ".RequestContext::value('status');
-			if ($url)
-				$message .= " to ".$url;
-			$item = new AgentNodeEntryItem("Set Slot Status", $message);
-			
-			if ($slot->siteExists())
-				$item->addNodeId($slot->getSiteId());
-			
-			$log->appendLogWithTypes($item,	$formatType, $priorityType);
-		}
+		$slot->setMigrationStatus(RequestContext::value('status'), RequestContext::value('url'));
 		
 		header("Content-Type: text/plain");
 		print "Success.";

@@ -603,6 +603,100 @@ abstract class SlotAbstract
 	}
 	
 	/**
+	 * Answer migration status info about this slot
+	 * 
+	 * @return array
+	 */
+	public function getMigrationStatus () {
+		$dbc = Services::getService('DBHandler');
+		$query = new SelectQuery;
+		$query->addTable('segue_slot_migration_status');
+		$query->addColumn('status');
+		$query->addColumn('redirect_url');
+		$query->addWhereEqual('shortname', $this->getShortname());
+		$result = $dbc->query($query, IMPORTER_CONNECTION);
+		
+		if ($result->hasMoreRows()) {
+			return array(
+				'type' => $result->field('status'),
+				'url' => $result->field('redirect_url'),
+			);
+		}
+		
+		// Defaults
+		if ($this->siteExists())
+			return array('type' => 'incomplete', 'url' => '');
+		else
+			return array('type' => 'unneeded', 'url' => '');
+	}
+	
+	/**
+	 * Set the migration status of this slot
+	 * 
+	 * @param string $status
+	 * @param string $url
+	 * @return null
+	 */
+	public function setMigrationStatus ($status, $url = '') {
+		// Validate the status and URL, then save.
+		$validStatus = array('incomplete', 'archived', 'migrated', 'unneeded');
+		if (!in_array($status, $validStatus))
+			throw new InvalidArgumentException("Invalid status. Must be one of: ".implode(', ', $validStatus));
+		
+		if ($status == 'migrated') {
+			$url = filter_var($url, FILTER_VALIDATE_URL);
+			if (!is_string($url) || !strlen($url))
+				throw new InvalidArgumentException("Invalid URL.");
+		} else {
+			$url = '';
+		}
+		
+		$dbc = Services::getService('DBHandler');
+		$authN = Services::getService('AuthN');
+		
+		$query = new InsertQuery;
+		$query->setTable('segue_slot_migration_status');
+		$query->addValue('shortname', $this->getShortname());
+		$query->addValue('status', $status);
+		$query->addValue('redirect_url', $url);
+		$query->addValue('user_id', $authN->getFirstUserId()->getIdString());
+		
+		try {
+			$result = $dbc->query($query, IMPORTER_CONNECTION);
+		} catch (DuplicateKeyDatabaseException $e) {
+			$query = new UpdateQuery;
+			$query->setTable('segue_slot_migration_status');
+			$query->addValue('status', $status);
+			$query->addValue('redirect_url', $url);
+			$query->addValue('user_id', $authN->getFirstUserId()->getIdString());
+			$query->addWhereEqual('shortname', $this->getShortname());
+			$result = $dbc->query($query, IMPORTER_CONNECTION);
+		}
+		
+		/*********************************************************
+		 * Log the success
+		 *********************************************************/
+		if (Services::serviceRunning("Logging")) {
+			$loggingManager = Services::getService("Logging");
+			$log = $loggingManager->getLogForWriting("Segue");
+			$formatType = new Type("logging", "edu.middlebury", "AgentsAndNodes",
+							"A format in which the acting Agent[s] and the target nodes affected are specified.");
+			$priorityType = new Type("logging", "edu.middlebury", "Event_Notice",
+							"Normal events.");
+			
+			$message = "'".$this->getShortname()."' marked as ".$status;
+			if ($url)
+				$message .= " to ".$url;
+			$item = new AgentNodeEntryItem("Set Slot Status", $message);
+			
+			if ($this->siteExists())
+				$item->addNodeId($this->getSiteId());
+			
+			$log->appendLogWithTypes($item,	$formatType, $priorityType);
+		}
+	}
+	
+	/**
 	 * Store a slot alias in this object, does not update the database.
 	 * This method is internal to this package and should not be used
 	 * by clients.
