@@ -371,8 +371,13 @@ class listAction
 			print "\n\t</div>";
 		}
 		
+		ob_start();
 		$this->printMigrationStatus($slot);
-		
+		$export = ob_get_clean();
+		if ($export) {
+			print "\n<div class='export_controls'>".$export."</div>";
+		}
+
 		return new Block(ob_get_clean(), STANDARD_BLOCK);
 	}
 	
@@ -550,9 +555,19 @@ class listAction
 		print implode("\n\t\t | ", $controls);
 		print "\n\t</div>";
 		
+		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId)) {
+			$description = HtmlString::withValue($asset->getDescription());
+			$description->trim(25);
+			print  "\n\t<div class='portal_list_site_description'>".$description->asString()."</div>";	
+		}
+		print "\n\t<div style='clear: both;'></div>";
+		
+		ob_start();
+		$this->printMigrationStatus($otherSlot);
+		
 		// Export controls
 		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId))  {
-			print "\n\t<div class='portal_list_controls'>\n\t\t";
+			print "\n\t<div class='portal_list_controls portal_list_export_controls'>\n\t\t";
 			$controls = array();
 			
 			if (isset($sitesTrueSlot))
@@ -573,15 +588,10 @@ class listAction
 			print implode("\n\t\t | ", $controls);
 			print "\n\t</div>";
 		}
-		
-		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.view'), $assetId)) {
-			$description = HtmlString::withValue($asset->getDescription());
-			$description->trim(25);
-			print  "\n\t<div class='portal_list_site_description'>".$description->asString()."</div>";	
+		$export = ob_get_clean();
+		if ($export) {
+			print "\n<div class='export_controls'>".$export."</div>";
 		}
-		print "\n\t<div style='clear: both;'></div>";
-		
-		$this->printMigrationStatus($otherSlot);
 		
 		$component = new UnstyledBlock(ob_get_clean());
 		$container->add($component, "100%", null, LEFT, TOP);

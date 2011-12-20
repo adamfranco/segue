@@ -439,6 +439,16 @@
 		font-size: smaller;
 	}
 	
+	.portal_list_export_controls {
+		float: right;
+		clear: none;
+	}
+	div.export_controls {
+		border-top: 1px solid #aaa;
+		padding-top: 5px;
+		margin-top: 5px;
+	}
+	
 	.search_status {
 		text-align: center;
 	}
@@ -633,7 +643,7 @@ div.autocomplete ul li {
  * Dataport Migration Status
  *********************************************************/
 	div.portal_list_migration_status {
-		margin-top: 10px;
+		float: left;
 	}
 	
 	span.status {
