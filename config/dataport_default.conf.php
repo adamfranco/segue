@@ -35,6 +35,11 @@ if (!defined('DATAPORT_TMP_DIR'))
 // 	new Type('Authentication', 'edu.middlebury.harmoni', 'LDAP')
 // );
 
+/*********************************************************
+ * Enable recording of where Segue sites have been migrated
+ * to. This will allow automatic redirection of migrated sites.
+ *********************************************************/
+// define('DATAPORT_ENABLE_EXPORT_REDIRECT', true);
 
 /*********************************************************
  * Define which export links are available and who they

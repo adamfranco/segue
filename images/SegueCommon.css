@@ -628,8 +628,37 @@ div.autocomplete ul li {
 		border: 1px solid #555;
 	}
 	
-	
 
+/*********************************************************
+ * Dataport Migration Status
+ *********************************************************/
+	div.portal_list_migration_status {
+		margin-top: 10px;
+	}
+	
+	span.status {
+		padding: 3px;
+		color: white;
+		font-weight: bold;
+	}
+	
+	span.status_archived, span.status_migrated, span.status_unneeded_empty {
+		background-color: green;
+	}
+	
+	span.status_unneeded {
+		background-color: orange;
+	}
+	
+	span.status_incomplete {
+		background-color: red;
+	}
+	
+	div.status_row {
+		margin-bottom: 10px;
+		line-height: 150%
+	}
+	
 /*********************************************************
  * Site Map Styles
  *********************************************************/
