@@ -85,12 +85,24 @@ function MigrationPanel ( slot, status, url, positionElement ) {
 		// Incomplete
 		var row = form.appendChild(document.createElement('div'));
 		row.className = 'status_row';
-		var input = document.createElement('input');
-		input.name = 'status';
-		input.type = 'radio';
-		input.value = 'incomplete';
-		if (status ==  'incomplete') {
-			input.checked = true;
+		
+		try {
+			// IE <= 7
+			if (status ==  'incomplete') {
+				var checked = 'checked="checked"';
+			} else {
+				var checked = '';
+			}
+			var input = document.createElement('<input type="radio" name="status" value="incomplete" '+ checked +' />');
+		} catch (e) {
+			// Other browsers
+			var input = document.createElement('input');
+			input.name = 'status';
+			input.type = 'radio';
+			if (status ==  'incomplete') {
+				input.checked = true;
+			}
+			input.value = 'incomplete';
 		}
 		row.appendChild(input);
 		
@@ -105,12 +117,22 @@ function MigrationPanel ( slot, status, url, positionElement ) {
 		// Archive
 		var row = form.appendChild(document.createElement('div'));
 		row.className = 'status_row';
-		var input = document.createElement('input');
-		input.name = 'status';
-		input.type = 'radio';
-		input.value = 'archived';
-		if (status == 'archived') {
-			input.checked = true;
+		try {
+			// IE <= 7
+			if (status ==  'archived') {
+				var checked = 'checked="checked"';
+			} else {
+				var checked = '';
+			}
+			var input = document.createElement('<input type="radio" name="status" value="archived" '+ checked +' />');
+		} catch (e) {
+			// Other browsers
+			var input = document.createElement('input');
+			input.name = 'status';
+			input.type = 'radio';
+			if (status ==  'archived') {
+				input.checked = true;
+			}
 		}
 		row.appendChild(input);
 
@@ -125,13 +147,24 @@ function MigrationPanel ( slot, status, url, positionElement ) {
 		// Migrated
 		var row = form.appendChild(document.createElement('div'));
 		row.className = 'status_row';
-		var input = document.createElement('input');
-		input.name = 'status';
-		input.type = 'radio';
-		input.value = 'migrated';
-		if (status == 'migrated') {
-			input.checked = true;
+		try {
+			// IE <= 7
+			if (status ==  'migrated') {
+				var checked = 'checked="checked"';
+			} else {
+				var checked = '';
+			}
+			var input = document.createElement('<input type="radio" name="status" value="migrated" '+ checked +' />');
+		} catch (e) {
+			// Other browsers
+			var input = document.createElement('input');
+			input.name = 'status';
+			input.type = 'radio';
+			if (status ==  'migrated') {
+				input.checked = true;
+			}
 		}
+		input.value = 'migrated';
 		row.appendChild(input);
 		
 		row.appendChild(document.createTextNode(' I have '));
@@ -155,13 +188,24 @@ function MigrationPanel ( slot, status, url, positionElement ) {
 		// Unneeded
 		var row = form.appendChild(document.createElement('div'));
 		row.className = 'status_row';
-		var input = document.createElement('input');
-		input.name = 'status';
-		input.type = 'radio';
-		input.value = 'unneeded';
-		if (status == 'unneeded') {
-			input.checked = true;
+		try {
+			// IE <= 7
+			if (status ==  'unneeded') {
+				var checked = 'checked="checked"';
+			} else {
+				var checked = '';
+			}
+			var input = document.createElement('<input type="radio" name="status" value="unneeded" '+ checked +' />');
+		} catch (e) {
+			// Other browsers
+			var input = document.createElement('input');
+			input.name = 'status';
+			input.type = 'radio';
+			if (status ==  'unneeded') {
+				input.checked = true;
+			}
 		}
+		input.value = 'unneeded';
 		row.appendChild(input);
 		
 		row.appendChild(document.createTextNode(' I '));
@@ -211,7 +255,13 @@ function MigrationPanel ( slot, status, url, positionElement ) {
 	}
 	
 	MigrationPanel.prototype.getStatusLine = function() {
-		var values = this.form.serialize(true);
+		try {
+			// Most browsers
+			var values = this.form.serialize(true);
+		} catch (e) {
+			// IE 7 version
+			var values = Form.Methods.serialize(this.form, true);
+		}
 		var string = '<span class="status status_' + values['status'] + '">';
 		switch (values['status']) {
 			case 'archived':
