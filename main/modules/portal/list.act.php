@@ -640,6 +640,9 @@ class listAction
 	 * @return null
 	 */
 	public function printMigrationStatus (Slot $slot) {
+		if (!defined('DATAPORT_ENABLE_EXPORT_REDIRECT') || !DATAPORT_ENABLE_EXPORT_REDIRECT)
+			return;
+		
 		// Just work with the primary slot if aliases are involved.
 		if ($slot->isAlias())
 			$slot = $slot->getAliasTarget();

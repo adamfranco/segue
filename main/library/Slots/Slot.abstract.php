@@ -603,6 +603,22 @@ abstract class SlotAbstract
 	}
 	
 	/**
+	 * Answer a URL that this slot has been migrated to or FALSE if none is available.
+	 * 
+	 * @return mixed string or FALSE
+	 */
+	public function getMigratedRedirectUrl () {
+		if (!defined('DATAPORT_ENABLE_EXPORT_REDIRECT') || !DATAPORT_ENABLE_EXPORT_REDIRECT)
+			return false;
+		
+		$status = $this->getMigrationStatus();
+		if ($status['type'] == 'migrated' && strlen($status['url'])) {
+			return filter_var($status['url'], FILTER_VALIDATE_URL);
+		}
+		return FALSE;
+	}
+	
+	/**
 	 * Answer migration status info about this slot
 	 * 
 	 * @return array
