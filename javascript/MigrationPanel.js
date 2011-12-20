@@ -58,17 +58,23 @@ function MigrationPanel ( slot, status, url, positionElement ) {
 	MigrationPanel.prototype.init = function ( slot, status, url, positionElement ) {
 		this.slot = slot;
 		
-		var helpUrl = Harmoni.quickUrl('help', 'browse_help', {topic: 'Site Aliases'});
-		var helpLink = " &nbsp; &nbsp; (<a href='#' onclick=\"var helpWindow = window.open('" + helpUrl + "', 'help', 'width=700,height=600,scrollbars=yes,resizable=yes'); helpWindow.focus(); return false;\">Help</a>)";
+		var helpUrl = 'http://mediawiki.middlebury.edu/wiki/LIS/Migrate_From_Segue';
+		var helpLink = "Please mark your site's status after you have successfully dealt with it. You will receive periodic automated reminders to deal with any sites marked as Incomplete. <br/>(<a href='" + helpUrl + "' target='_blank'>More Migration Help</a>)";
 		
 		MigrationPanel.superclass.init.call(this, 
 								"Migration status for '" + slot + "'",
 								10,
 								500,
 								positionElement,
-								'alias_panel');
+								'migration_panel');
 		
 		var migrationPanel = this;
+		
+		var helpDiv = document.createElement('div');
+		helpDiv.className = 'help';
+		helpDiv.innerHTML = helpLink;
+		this.contentElement.appendChild(helpDiv);
+
 		
 		// Build up the form
 		var form = document.createElement('form');

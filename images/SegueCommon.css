@@ -659,6 +659,10 @@ div.autocomplete ul li {
 		line-height: 150%
 	}
 	
+	div.migration_panel div.help {
+		margin-bottom: 1em;
+	}
+	
 /*********************************************************
  * Site Map Styles
  *********************************************************/
