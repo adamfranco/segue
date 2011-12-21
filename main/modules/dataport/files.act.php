@@ -7,12 +7,6 @@
  *
  */ 
 
-// Use a custom version of Archive/Tar if requested.
-if (defined('ARCHIVE_TAR_PATH'))
-	require_once(ARCHIVE_TAR_PATH);
-else
-	require_once("Archive/Tar.php");
-
 require_once(POLYPHONY."/main/library/AbstractActions/Action.class.php");
 require_once(dirname(__FILE__)."/Rendering/FileExportSiteVisitor.class.php");
 require_once(MYDIR."/main/modules/view/SiteDispatcher.class.php");
@@ -63,16 +57,24 @@ class filesAction
 		$slotMgr = SlotManager::instance();
 		$slot = $slotMgr->getSlotBySiteId($site->getId());
 		
-		$exportDir = DATAPORT_TMP_DIR."/".$slot->getShortname()."-files";
+		$exportDirname = $slot->getShortname()."-files";
+		$exportDir = DATAPORT_TMP_DIR."/".$exportDirname;
 		mkdir($exportDir);
-		
+		$archivePath = DATAPORT_TMP_DIR.'/'.$exportDirname.".zip";
+
 		try {
 			// Do the export
 			$visitor = new FileExportSiteVisitor($exportDir);
 			$component->acceptVisitor($visitor);
 			
-			$archive = new Archive_Tar($exportDir.".tar.gz");
-			$archive->createModify($exportDir, '', DATAPORT_TMP_DIR);
+			$archive = new ZipArchive();
+			if ($archive->open($archivePath, ZIPARCHIVE::CREATE) !== TRUE)
+				throw new Exception("Could not create zip archive.");
+			foreach (scandir($exportDir) as $file) {
+				if (!is_dir($exportDir.'/'.$file))
+					$archive->addFile($exportDir.'/'.$file, $exportDirname.'/'.$file);
+			}
+			$archive->close();
 			
 			// Remove the directory
 			$this->deleteRecursive($exportDir);
@@ -84,16 +86,16 @@ class filesAction
 			
 			header("Content-Type: application/x-gzip;");
 			header('Content-Disposition: attachment; filename="'
-								.basename($exportDir.".tar.gz").'"');
-			print file_get_contents($exportDir.".tar.gz");
+								.basename($archivePath).'"');
+			print file_get_contents($archivePath);
 			
 			// Clean up the archive
-			unlink($exportDir.".tar.gz");
+			unlink($archivePath);
 		} catch (PermissionDeniedException $e) {
 			$this->deleteRecursive($exportDir);
 			
-			if (file_exists($exportDir.".tar.gz"))
-				unlink($exportDir.".tar.gz");
+			if (file_exists($archivePath))
+				unlink($archivePath);
 			
 			return new Block(
 				_("You are not authorized to export this component."),
@@ -101,8 +103,8 @@ class filesAction
 		} catch (Exception $e) {
 			$this->deleteRecursive($exportDir);
 			
-			if (file_exists($exportDir.".tar.gz"))
-				unlink($exportDir.".tar.gz");
+			if (file_exists($archivePath))
+				unlink($archivePath);
 			
 			throw $e;
 		}
