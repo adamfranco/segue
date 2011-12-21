@@ -50,8 +50,8 @@
 									"tags.*",
 									"participation.*",
 									"roles.*",
-									"agent.*"
-									
+									"agent.*",
+									"dataport.html",
 								);
 	
 	$harmoni->setPostProcessAction("window.display", $postProcessIgnoreList);
