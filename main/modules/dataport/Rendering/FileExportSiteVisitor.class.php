@@ -58,7 +58,7 @@ class FileExportSiteVisitor
 			$fileName = $recordIdString;
 		
 		$fileParts = pathinfo($fileName);
-		$base = $fileParts['basename'];
+		$base = $fileParts['filename'];
 		$extension = $fileParts['extension'];
 		
 		$dataParts = $fileRecord->getPartsByPartStructure($idMgr->getId("FILE_DATA"));
@@ -66,7 +66,7 @@ class FileExportSiteVisitor
 		
 		$i = 1;
 		while (file_exists($this->filePath.'/'.$fileName)) {
-			$fileName = $base.'-'.$i.$extension;
+			$fileName = $base.'-'.$i.'.'.$extension;
 			$i++;
 		}
 		
