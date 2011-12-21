@@ -123,6 +123,8 @@ class htmlAction
 		$this->mainScreen = new Container(new YLayout, BLOCK, BACKGROUND_BLOCK);
 		$this->addHead($this->mainScreen);
 		
+		CommentManager::instance()->disableCommenting();
+		CommentManager::instance()->disableSorting();
 		$this->addSiteContent($this->mainScreen);
 		
 		return $this->mainScreen;

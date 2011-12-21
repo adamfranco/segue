@@ -208,6 +208,9 @@ class CommentNode {
 	 * @since 11/8/07
 	 */
 	public function canReply () {
+		if (!CommentManager::instance()->isCommentingEnabled())
+			return false;
+		
 		// Check Authorizations
 		$authZ = Services::getService('AuthZ');
 		$idManager = Services::getService("Id");

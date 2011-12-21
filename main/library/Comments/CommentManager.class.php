@@ -72,6 +72,46 @@ class CommentManager {
 		$this->_rootComments = array();
 	}
 	
+	private $_commentingEnabled = true;
+	
+	/**
+	 * Turn off commenting for all users during the rest of the page-load.
+	 * 
+	 * @return void
+	 */
+	public function disableCommenting () {
+		$this->_commentingEnabled = false;
+	}
+	
+	/**
+	 * Answer true if commenting is enabled.
+	 * 
+	 * @return boolean
+	 */
+	public function isCommentingEnabled () {
+		return $this->_commentingEnabled;
+	}
+	
+	private $_sortingEnabled = true;
+	
+	/**
+	 * Turn off Sorting for all users during the rest of the page-load.
+	 * 
+	 * @return void
+	 */
+	public function disableSorting () {
+		$this->_sortingEnabled = false;
+	}
+	
+	/**
+	 * Answer true if Sorting is enabled.
+	 * 
+	 * @return boolean
+	 */
+	public function isSortingEnabled () {
+		return $this->_sortingEnabled;
+	}
+	
 	/**
 	 * Check Authorizations
 	 * 
@@ -81,6 +121,9 @@ class CommentManager {
 	 * @since 11/8/07
 	 */
 	public function canComment (Id $assetId = null) {
+		if (!$this->isCommentingEnabled())
+			return false;
+		
 		// Check Authorizations
 		$authZ = Services::getService('AuthZ');
 		$idManager = Services::getService("Id");
@@ -566,30 +609,29 @@ class CommentManager {
 		
 		if ($this->canViewComments($asset->getId())) {
 			// print the ordering form
-			print "\n\n<form action='".SiteDispatcher::quickURL()."#".RequestContext::name('top')."' method='post'  style='float: right; text-align: right;'>";
-	
-			
-			print "\n\t\t<select name='".RequestContext::name('displayMode')."'>";
-			print "\n\t\t\t<option value='threaded'".(($this->getDisplayMode() == 'threaded')?" selected='selected'":"").">";
-			print _("Threaded")."</option>";
-			print "\n\t\t\t<option value='flat'".(($this->getDisplayMode() == 'flat')?" selected='selected'":"").">";
-			print _("Flat")."</option>";
-			print "\n\t\t</select>";
-			
-			print "\n\t\t<select name='".RequestContext::name('order')."'>";
-			print "\n\t\t\t<option value='".ASC."'".(($this->getDisplayOrder() == ASC)?" selected='selected'":"").">";
-			print _("Oldest First")."</option>";
-			print "\n\t\t\t<option value='".DESC."'".(($this->getDisplayOrder() == DESC)?" selected='selected'":"").">";
-			print _("Newest First")."</option>";
-			print "\n\t\t</select>";
-			
-			print "\n\t<input type='submit' value='"._("Change")."'/>";
-			
-			print "\n</form>";
-			
-			print "\n<div style='clear: both;'> &nbsp; </div>";
-			
-			
+			if ($this->isSortingEnabled()) {
+				print "\n\n<form action='".SiteDispatcher::quickURL()."#".RequestContext::name('top')."' method='post'  style='float: right; text-align: right;'>";
+		
+				print "\n\t\t<select name='".RequestContext::name('displayMode')."'>";
+				print "\n\t\t\t<option value='threaded'".(($this->getDisplayMode() == 'threaded')?" selected='selected'":"").">";
+				print _("Threaded")."</option>";
+				print "\n\t\t\t<option value='flat'".(($this->getDisplayMode() == 'flat')?" selected='selected'":"").">";
+				print _("Flat")."</option>";
+				print "\n\t\t</select>";
+				
+				print "\n\t\t<select name='".RequestContext::name('order')."'>";
+				print "\n\t\t\t<option value='".ASC."'".(($this->getDisplayOrder() == ASC)?" selected='selected'":"").">";
+				print _("Oldest First")."</option>";
+				print "\n\t\t\t<option value='".DESC."'".(($this->getDisplayOrder() == DESC)?" selected='selected'":"").">";
+				print _("Newest First")."</option>";
+				print "\n\t\t</select>";
+				
+				print "\n\t<input type='submit' value='"._("Change")."'/>";
+				
+				print "\n</form>";
+				
+				print "\n<div style='clear: both;'> &nbsp; </div>";
+			}
 			
 			// Print out the Comments
 			print "\n<div id='".RequestContext::name('comments')."'>";
