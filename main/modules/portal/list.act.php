@@ -585,6 +585,16 @@ class listAction
 				$controls[] = $control;
 			}
 			
+			if ($this->isExportEnabled('files')) {
+				$control = "<a href='".SiteDispatcher::quickURL('dataport', 'files', $params)."'>"._("export files")."</a>";
+				
+				if (!empty($GLOBALS['dataport_export_types']['files']['help'])) {
+					$control .= " (<a href='".$GLOBALS['dataport_export_types']['files']['help']."' target='_blank'>help</a>)";
+				}
+				
+				$controls[] = $control;
+			}
+			
 			print implode("\n\t\t | ", $controls);
 			print "\n\t</div>";
 		}

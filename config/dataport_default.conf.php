@@ -55,6 +55,15 @@ $GLOBALS['dataport_export_types'] = array(
 // 			"CN=Digital Media Tutors,OU=General,OU=Groups,DC=middlebury,DC=edu",
 // 		),
 // 	),
+// 	'files' => array(
+// 		'help' => 'http://mediawiki.middlebury.edu/wiki/LIS/Migrate_From_Segue',
+// 		'groups' => array(
+// 			'1', // Administrators
+// 			"CN=LIS Web Applications,OU=General,OU=Groups,DC=middlebury,DC=edu",
+// 			"CN=LIS Curricular Technology Team,OU=General,OU=Groups,DC=middlebury,DC=edu",
+// 			"CN=Digital Media Tutors,OU=General,OU=Groups,DC=middlebury,DC=edu",
+// 		),
+// 	),
 );
 
 /*********************************************************
