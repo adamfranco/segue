@@ -103,7 +103,7 @@ class FileExportSiteVisitor
 		if ($this->isAuthorizedToExportComments($siteComponent)) {
 			$commentMgr = CommentManager::instance();
 			$idMgr = Services::getService("Id");
-			$comments = $commentMgr->getRootComments($idMgr->getId($siteComponent->getId()));
+			$comments = $commentMgr->getAllComments($idMgr->getId($siteComponent->getId()));
 			while($comments->hasNext())
 				$this->addCommentAttachedMedia($comments->next());
 		}
