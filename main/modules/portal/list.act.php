@@ -574,7 +574,17 @@ class listAction
 				$params = array('site' => $sitesTrueSlot->getShortname());
 			else
 				$params = array('node' => $assetId->getIdString());
+			
+			if ($this->isExportEnabled('html')) {
+				$control = "<a href='".SiteDispatcher::quickURL('dataport', 'export_html', $params)."'>"._("export HTML archive")."</a>";
 				
+				if (!empty($GLOBALS['dataport_export_types']['html']['help'])) {
+					$control .= " (<a href='".$GLOBALS['dataport_export_types']['html']['help']."' target='_blank'>help</a>)";
+				}
+				
+				$controls[] = $control;
+			}
+			
 			if ($this->isExportEnabled('wordpress')) {
 				$control = "<a href='".SiteDispatcher::quickURL('dataport', 'wordpress', $params)."'>"._("export for wordpress")."</a>";
 				

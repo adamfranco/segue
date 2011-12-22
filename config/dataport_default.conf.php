@@ -49,6 +49,15 @@ if (!defined('DATAPORT_TMP_DIR'))
  * are available to.
  *********************************************************/
 $GLOBALS['dataport_export_types'] = array(
+// 	'html' => array(
+// 		'help' => 'http://mediawiki.middlebury.edu/wiki/LIS/Migrate_From_Segue',
+// 		'groups' => array(
+// 			'1', // Administrators
+// 			"CN=LIS Web Applications,OU=General,OU=Groups,DC=middlebury,DC=edu",
+// 			"CN=LIS Curricular Technology Team,OU=General,OU=Groups,DC=middlebury,DC=edu",
+// 			"CN=Digital Media Tutors,OU=General,OU=Groups,DC=middlebury,DC=edu",
+// 		),
+// 	),
 // 	'wordpress' => array(
 // 		'help' => 'http://mediawiki.middlebury.edu/wiki/LIS/Migrate_From_Segue',
 // 		'groups' => array(
