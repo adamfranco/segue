@@ -223,9 +223,10 @@ class listAction
 		print "\n
  		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/lib/prototype.js'></script>
 		<script type='text/javascript' src='".MYPATH."/javascript/scriptaculous-js/src/scriptaculous.js'></script>
+		<script type='text/javascript' src='".POLYPHONY_PATH."javascript/CenteredPanel.js'></script>
 		<script type='text/javascript' src='".MYPATH."/javascript/AliasPanel.js'></script>
 		<script type='text/javascript' src='".MYPATH."/javascript/MigrationPanel.js'></script>
-		<script type='text/javascript' src='".POLYPHONY_PATH."javascript/CenteredPanel.js'></script>
+		<script type='text/javascript' src='".MYPATH."/javascript/ArchiveStatus.js'></script>
 		
 		<style type='text/css'>
 			/* Other portal styles are in the static CSS file, images/SegueCommon.css */
@@ -574,7 +575,17 @@ class listAction
 				$params = array('site' => $sitesTrueSlot->getShortname());
 			else
 				$params = array('node' => $assetId->getIdString());
+			
+			if ($this->isExportEnabled('html')) {
+				$control = "<a href='".SiteDispatcher::quickURL('dataport', 'export_html', $params)."' onclick='new ArchiveStatus(this, \"".SiteDispatcher::quickURL('dataport', 'check_html_export', $params)."\");'>"._("export HTML archive")."</a>";
 				
+				if (!empty($GLOBALS['dataport_export_types']['html']['help'])) {
+					$control .= " (<a href='".$GLOBALS['dataport_export_types']['html']['help']."' target='_blank'>help</a>)";
+				}
+				
+				$controls[] = $control;
+			}
+			
 			if ($this->isExportEnabled('wordpress')) {
 				$control = "<a href='".SiteDispatcher::quickURL('dataport', 'wordpress', $params)."'>"._("export for wordpress")."</a>";
 				

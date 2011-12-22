@@ -48,7 +48,7 @@ class BreadCrumbsVisitor
 		$this->_separator = " &raquo; ";
 		$this->currentSiteComponent = $currentSiteComponent;
 		
-		$this->allowedModules = array('view', 'ui1', 'ui2');
+		$this->allowedModules = array('view', 'ui1', 'ui2', 'dataport');
 		$this->defaultModule = 'view';
 		$this->defaultAction = 'html';
 	}
