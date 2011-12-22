@@ -94,7 +94,7 @@ class export_htmlAction
 				$wget = WGET_PATH;
 			else
 				$wget = 'wget';
-			$command = $wget." -r --page-requisites --html-extension --convert-links --no-directories "
+			$command = $wget." -r --page-requisites --html-extension --convert-links --no-directories -e robots=off "
 				."--directory-prefix=".escapeshellarg($exportDir.'/content')." "
 				."--include=".escapeshellarg(implode(',', $include))." "
 				."--header=".escapeshellarg("Cookie: ".session_name()."=".session_id())." "
