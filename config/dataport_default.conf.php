@@ -15,6 +15,9 @@ if (!defined('DATAPORT_TMP_DIR'))
 // if (!defined('DATAPORT_BACKUP_DIR'))
 // 	define('DATAPORT_TMP_DIR', '/var/segue_backups');
 
+// if (!defined('WGET_PATH'))
+// 	define('WGET_PATH', '/usr/bin/wget');
+
 /*********************************************************
  * Configuration for importing from Segue1
  *********************************************************/
