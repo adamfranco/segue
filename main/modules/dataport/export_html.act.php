@@ -73,7 +73,7 @@ class export_htmlAction
 					$this->deleteRecursive($exportDir);
 				// If it is less than an hour old, leave it in place.
 				else
-					throw new AlreadyExportingException("Another export of this site is in progress (data written last on ".date('r', $changedTime).").  Please wait.");
+					throw new AlreadyExportingException("Another export of this site is in progress (data written last on ".date('r', $changedTime).").  Please wait. <br/><br/>The other export will be force-quit if it does not finish in ".round((3600 - (time() - $changedTime))/60)." minutes.");
 			}
 			mkdir($exportDir);
 
