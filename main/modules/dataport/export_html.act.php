@@ -98,7 +98,7 @@ class export_htmlAction
 				."--directory-prefix=".escapeshellarg($exportDir.'/content')." "
 				."--include=".escapeshellarg(implode(',', $include))." "
 				."--header=".escapeshellarg("Cookie: ".session_name()."=".session_id())." "
-				.escapeshellarg($harmoni->request->quickURL('dataport', 'html', array('site' => $slot->getShortname())));
+				.escapeshellarg(SiteDispatcher::quickURL('dataport', 'html', array('site' => $slot->getShortname())));
 			
 // 			throw new Exception($command);
 			
