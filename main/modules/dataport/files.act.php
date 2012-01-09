@@ -84,9 +84,10 @@ class filesAction
 				throw new Exeception("Errors occurred, output wasn't clean.");
 			}
 			
-			header("Content-Type: application/x-gzip;");
+			header("Content-Type: application/zip;");
 			header('Content-Disposition: attachment; filename="'
 								.basename($archivePath).'"');
+			header('Content-Length: '.filesize($archivePath));
 			print file_get_contents($archivePath);
 			
 			// Clean up the archive
