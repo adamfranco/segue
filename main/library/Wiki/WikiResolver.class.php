@@ -523,6 +523,15 @@ $		# Anchor for the end of the line
 			if (!isset($action))
 				$action = 'view';
 			
+			// Convert thumbnail urls
+			if ($module == 'repository' && $action == 'viewthumbnail' && !empty($args['polyphony-repository___repository_id']) && !empty($args['polyphony-repository___asset_id']) && !empty($args['polyphony-repository___record_id'])) {
+				$repositoryId = $args['polyphony-repository___repository_id'];
+				$assetId = $args['polyphony-repository___asset_id'];
+				$recordId = $args['polyphony-repository___record_id'];
+				$file = MediaFile::withIdStrings($repositoryId, $assetId, $recordId);
+				return $file->getThumbnailUrl();
+			}
+			
 			$harmoni = Harmoni::instance();
 			$harmoni->request->startNamespace(null);
 			$newUrl = $harmoni->request->mkURLWithoutContext($module, $action, $args);

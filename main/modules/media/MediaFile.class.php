@@ -212,6 +212,22 @@ class MediaFile {
 	}
 	
 	/**
+	 * Answer a file name string for a thumbnail
+	 * 
+	 * @return string
+	 * @access public
+	 * @since 4/27/07
+	 */
+	function getThumbnailFilename () {
+		$mime = Services::getService("MIME");
+		if ($this->getThumbnailMimeType())
+			$extension = $mime->getExtensionForMIMEType($this->getThumbnailMimeType());
+		else
+			$extension = 'png';
+		return pathinfo($this->getFilename(), PATHINFO_FILENAME).'-thumbnail.'.$extension;
+	}
+	
+	/**
 	 * Answer the mimetype string
 	 * 
 	 * @return string
@@ -312,7 +328,8 @@ class MediaFile {
 				array(
 					"repository_id" => $this->_getRepositoryIdString(),
 					"asset_id" => $this->_getAssetIdString(),
-					"record_id" => $this->_getRecordIdString()));
+					"record_id" => $this->_getRecordIdString(),
+					"file_name" => $this->getThumbnailFilename()));
 		$harmoni->request->endNamespace();
 		
 		return $url;
@@ -338,7 +355,8 @@ class MediaFile {
 				array(
 					"repository_id" => $this->_getRepositoryIdString(),
 					"asset_id" => $this->_getAssetIdString(),
-					"record_id" => $this->_getRecordIdString()));
+					"record_id" => $this->_getRecordIdString(),
+					"file_name" => $this->getThumbnailFilename()));
 		$harmoni->request->endNamespace();
 		
 		$url = $url->write();
