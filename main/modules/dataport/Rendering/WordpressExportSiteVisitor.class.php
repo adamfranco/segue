@@ -870,8 +870,7 @@ class WordpressExportSiteVisitor
 		} else {
 			$thumbExtension = 'png';
 		}
-		$thumbName = $mediaAsset->getDisplayName().'-thumbnail.'.$thumbExtension;
-		$element->appendChild($this->getElement('title', $thumbName));
+		$element->appendChild($this->getElement('title', $mediaAsset->getDisplayName().' - thumbnail'));
 		$element->appendChild($this->getElement('link', $file->getThumbnailUrl()));
 		$element->appendChild($this->getElement('guid', $file->getThumbnailUrl()))->setAttribute('isPermaLink', 'false');
 		$element->appendChild($this->getElement('description', $mediaAsset->getDescription()));
