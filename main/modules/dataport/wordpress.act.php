@@ -85,7 +85,9 @@ class wordpressAction
 			header("Content-Type: text/xml");
 			header('Content-Disposition: attachment; filename="'
 								.basename($slot->getShortname().".xml").'"');
-			print $visitor->doc->saveXMLWithWhitespace();		
+			$xml = $visitor->doc->saveXMLWithWhitespace();
+			header('Content-Length: '.strlen($xml));
+			print $xml;
 		} catch (PermissionDeniedException $e) {
 			return new Block(
 				_("You are not authorized to export this component."),
