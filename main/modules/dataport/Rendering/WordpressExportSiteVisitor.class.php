@@ -879,7 +879,7 @@ class WordpressExportSiteVisitor
 		$agentUID = $this->recordAgent($asset->getCreator());
 		$element->appendChild($this->getElementNS("http://purl.org/dc/elements/1.1/", 'dc:creator', $agentUID));
 		
-		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_id', $mediaAsset->getId() + 200000000000));
+		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_id', intval($mediaAsset->getId()->getIdString()) + 200000000000));
 		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_date', $mediaAsset->getModificationDate()->format('Y-m-d H:i:s')));
 		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:post_date_gmt', $mediaAsset->getModificationDate()->asUTC()->format('Y-m-d H:i:s')));
 		$element->appendChild($this->getElementNS("http://wordpress.org/export/1.1/", 'wp:comment_status', 'closed'));
