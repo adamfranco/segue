@@ -659,7 +659,7 @@ abstract class SlotAbstract
 		if (!in_array($status, $validStatus))
 			throw new InvalidArgumentException("Invalid status. Must be one of: ".implode(', ', $validStatus));
 		
-		if ($status == 'migrated') {
+		if ($status == 'migrated' && strlen($url)) {
 			$url = filter_var($url, FILTER_VALIDATE_URL);
 			if (!is_string($url) || !strlen($url))
 				throw new InvalidArgumentException("Invalid URL.");
