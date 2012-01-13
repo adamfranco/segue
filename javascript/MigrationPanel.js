@@ -108,8 +108,8 @@ function MigrationPanel ( slot, status, url, positionElement ) {
 			if (status ==  'incomplete') {
 				input.checked = true;
 			}
-			input.value = 'incomplete';
 		}
+		input.value = 'incomplete';
 		row.appendChild(input);
 		
 		row.appendChild(document.createTextNode(' Migration is '));
@@ -140,6 +140,7 @@ function MigrationPanel ( slot, status, url, positionElement ) {
 				input.checked = true;
 			}
 		}
+		input.value = 'archived';
 		row.appendChild(input);
 
 		row.appendChild(document.createTextNode(' I have '));
