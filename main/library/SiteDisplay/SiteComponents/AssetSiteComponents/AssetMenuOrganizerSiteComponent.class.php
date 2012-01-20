@@ -62,8 +62,24 @@ class AssetMenuOrganizerSiteComponent
 			$assetId = $this->_asset->getId();
 			return $assetId->getIdString()."----".$this->_element->getAttribute('target_id');
 		}
-
-		throw new Exception("No target_id available in ".$this->_element->ownerDocument->saveXML($this->_element));		
+		
+		// Look through the Fixed (layout) organizers for an empty cell which
+		// we can use as the target since one isn't set.
+		$destinations = $this->getVisibleDestinationsForPossibleAddition();
+		// Look for empty cells in which to use as our target.
+		foreach (array_reverse($destinations) as $organizer) {
+			$numCells = $organizer->getTotalNumberOfCells();
+			for ($i = 0; $i < $numCells; $i++) {
+				if (is_null($organizer->getSubcomponentForCell($i))) {
+					return $organizer->getId()."_cell:".$i;
+				}
+			}
+		}
+		
+		throw new Exception("No target_id available in ".$this->_element->ownerDocument->saveXML($this->_element)."
+		
+		----------------------------------------------------- 
+		Maybe one exists in: ".$this->_element->ownerDocument->saveXML());		
 	}
 
 	/**
