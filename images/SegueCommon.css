@@ -449,6 +449,21 @@
 		margin-top: 5px;
 	}
 	
+	div.site_export_controls div.export_controls {
+		margin: 2px;
+		padding: 3px;
+		border: 1px dotted;
+		text-align: left;
+	}
+	
+	div.site_export_controls div.portal_list_controls {
+		text-align: left;
+		float: none;
+	}
+	div.site_export_controls div.portal_list_migration_status {
+		float: none;
+	}
+	
 	.search_status {
 		text-align: center;
 	}

@@ -563,8 +563,31 @@ class listAction
 		}
 		print "\n\t<div style='clear: both;'></div>";
 		
+		print $this->getExportControls($assetId, $otherSlot, $sitesTrueSlot);
+		
+		$component = new UnstyledBlock(ob_get_clean());
+		$container->add($component, "100%", null, LEFT, TOP);
+		
+		return $container;
+	}
+	
+	/**
+	 * Answer an HTML block of export controls.
+	 * 
+	 * @param Id $assetId
+	 * @param optional Slot $slot
+	 * @return string
+	 */
+	public function getExportControls (Id $assetId, Slot $slot = null, Slot $sitesTrueSlot = null) {
+		if (!defined('DATAPORT_ENABLE_EXPORT_REDIRECT') || !DATAPORT_ENABLE_EXPORT_REDIRECT)
+			return '';
+		
+		$authZ = Services::getService('AuthZ');
+		$idMgr = Services::getService('Id');
+		
 		ob_start();
-		$this->printMigrationStatus($otherSlot);
+		if (!empty($slot))
+			$this->printMigrationStatus($slot);
 		
 		// Export controls
 		if ($authZ->isUserAuthorized($idMgr->getId('edu.middlebury.authorization.modify'), $assetId))  {
@@ -611,13 +634,10 @@ class listAction
 		}
 		$export = ob_get_clean();
 		if ($export) {
-			print "\n<div class='export_controls'>".$export."</div>";
+			return "\n<div class='export_controls'>".$export."</div>";
+		} else {
+			return '';
 		}
-		
-		$component = new UnstyledBlock(ob_get_clean());
-		$container->add($component, "100%", null, LEFT, TOP);
-		
-		return $container;
 	}
 	
 	/**

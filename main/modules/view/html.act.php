@@ -456,6 +456,8 @@ class htmlAction
 
 		print "</div>";
 		
+		print $this->getExportControls();
+		
 		$ret = new Component(ob_get_clean(), BLANK, 2);
 		return $ret;
 	}
@@ -556,6 +558,43 @@ class htmlAction
 		
 		$ret = new Component(ob_get_clean(), BLANK, 2);
 		return $ret;
+	}
+	
+	/**
+	 * Answer the export controls for the current site.
+	 * 
+	 * @param <##>
+	 * @return string
+	 */
+	protected function getExportControls () {
+		$harmoni = Harmoni::instance();
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		$authN = Services::getService("AuthN");
+		$userId = $authN->getFirstUserId();
+		
+		if (
+			!$userId->isEqual($idManager->getId('edu.middlebury.agents.anonymous')) 
+			&& $authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.view"),
+				SiteDispatcher::getCurrentRootNode()->getQualifierId())
+			)
+		{
+			// enter links in our head to load needed javascript libraries
+			$outputHandler = $harmoni->getOutputHandler();
+			$outputHandler->setHead(
+				$outputHandler->getHead()
+				."
+			<script type='text/javascript' src='".MYPATH."/javascript/MigrationPanel.js'></script>
+			<script type='text/javascript' src='".MYPATH."/javascript/ArchiveStatus.js'></script>
+			");
+			require_once(MYDIR."/main/modules/portal/list.act.php");
+			$rootSiteComponent = SiteDispatcher::getCurrentRootNode();
+			$listAction = new listAction();
+			return '<div class="site_export_controls">'.$listAction->getExportControls(SiteDispatcher::getCurrentRootNode()->getQualifierId(), $rootSiteComponent->getSlot())."</div>";
+		} else {
+			return '';
+		}
 	}
 }
 
