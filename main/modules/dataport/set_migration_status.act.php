@@ -44,7 +44,7 @@ class set_migration_statusAction
 		$azMgr = Services::getService('AuthZ');
 		// Since view AZs cascade up, just check at the node.
 		return $azMgr->isUserAuthorized(
-			$idMgr->getId('edu.middlebury.authorization.view'),
+			$idMgr->getId('edu.middlebury.authorization.modify'),
 			$slot->getSiteId());
 	}
 	
