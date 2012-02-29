@@ -64,6 +64,12 @@ class displayAction
 		
 		
 		$mainScreen = new Container($yLayout, BLANK, 1);
+		
+		if (defined('SEGUE_SITE_HEADER')) {
+			$this->siteMessage = $mainScreen->add(
+				new Component(str_replace('[[SITE_OWNER_MESSAGE]]', '', SEGUE_SITE_HEADER), BLANK, 1), 
+				"100%", null, CENTER, TOP);
+		}
 
 		// :: login, links and commands
 		$this->headRow = $mainScreen->add(

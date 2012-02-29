@@ -267,6 +267,11 @@ class htmlAction
 		
 		$allWrapper = new Container(new YLayout, BLANK, 1);
 		
+		if (defined('SEGUE_SITE_HEADER')) {
+			$this->siteMessage = $allWrapper->add(
+				new Component($this->getSegueSiteHeader(), BLANK, 1), 
+				"100%", null, CENTER, TOP);
+		}
 		
 		// :: login, links and commands
 		$this->headRow = $allWrapper->add(
@@ -595,6 +600,36 @@ class htmlAction
 		} else {
 			return '';
 		}
+	}
+	
+	/**
+	 * Answer the site-wide header customized for this site.
+	 * 
+	 * @return string
+	 */
+	public function getSegueSiteHeader () {
+		if (!defined('SITE_OWNER_MESSAGE') || !$this->isAuthorizedToExecute())
+			return str_replace('[[SITE_OWNER_MESSAGE]]', '', SEGUE_SITE_HEADER);
+		
+		// Build the owner list.
+		$admins = array();
+		$roleMgr = SegueRoleManager::instance();
+		$adminIds = $roleMgr->getAgentsWithExplicitRoleAtLeast($roleMgr->getRole('editor'), SiteDispatcher::getCurrentRootNode()->getQualifierId(), true);
+		$adminstratorsGroupId = new HarmoniId('1');
+		$agentMgr = Services::getService('Agent');
+		foreach ($adminIds as $adminId) {
+			if (!$adminId->isEqual($adminstratorsGroupId))
+				$admins[] = $agentMgr->getAgent($adminId)->getDisplayName();
+		}
+		
+		if (count($admins) <= 2) {
+			$adminString = implode(' and ', $admins);
+		} else {
+			$admins[count($admins) - 1] = 'and '.$admins[count($admins) - 1];
+			$adminString = implode(', ', $admins);
+		}
+		
+		return str_replace('[[SITE_OWNER_MESSAGE]]', str_replace('[[SITE_OWNERS]]', $adminString, SITE_OWNER_MESSAGE), SEGUE_SITE_HEADER);
 	}
 }
 
