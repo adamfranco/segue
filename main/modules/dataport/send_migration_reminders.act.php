@@ -36,7 +36,19 @@ class send_migration_remindersAction
 	 * @since 3/26/08
 	 */
 	public function isAuthorizedToExecute () {
-		return true;
+		// Only allow execution from the command line for anonymous
+		if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR']))
+			return true;
+		
+		// Allow execution through web for admins.
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");
+		if ($authZ->isUserAuthorized(
+				$idManager->getId("edu.middlebury.authorization.modify"),
+				$idManager->getId("edu.middlebury.authorization.root")))
+			return true;
+		
+		return false;
 	}
 	
 	/**
@@ -47,11 +59,42 @@ class send_migration_remindersAction
 	 * @since 3/26/08
 	 */
 	public function execute () {
+		if (!$this->isAuthorizedToExecute())
+			throw new PermissionDeniedException('This command can only be run by admins or from the command-line.');
+		
 		header("Content-Type: text/plain");
+		
+		if (RequestContext::value('help') || RequestContext::value('h') || RequestContext::value('?')) {
+			throw new HelpRequestedException(
+"Usage:
+	".$_SERVER['argv'][0]." [-h|--help] [-t|--test]
+	
+	-h,--help  Print out this help text.
+	-t,--test  Run in test mode. Equivalent to adding `define('MIGRATION_REMINDER_EMAIL_TEST_ONLY', true);` to the config.
+");
+		}
+		
+		if (RequestContext::value('t') || RequestContext::value('test')) {
+			if (defined('MIGRATION_REMINDER_EMAIL_TEST_ONLY') && !MIGRATION_REMINDER_EMAIL_TEST_ONLY)
+				throw new ConfigurationErrorException(
+"-t or --test was specified, but the configuration has set MIGRATION_REMINDER_EMAIL_TEST_ONLY to false.
+Do not specify a value for MIGRATION_REMINDER_EMAIL_TEST_ONLY in the configuration if  you wish to
+be able to switch between test mode and real mode with -t/--test.");
+			
+			define('MIGRATION_REMINDER_EMAIL_TEST_ONLY', true);
+		}
 		
 		while(ob_get_level())
 			ob_end_flush();
 		flush();
+		
+		if (!defined('MIGRATION_REMINDER_EMAIL_TEST_ONLY'))
+			define('MIGRATION_REMINDER_EMAIL_TEST_ONLY', false);
+		
+		if (MIGRATION_REMINDER_EMAIL_TEST_ONLY)
+			print "In test mode. Email will be sent to ".MIGRATION_REMINDER_EMAIL_TEST_RECIPIENT." rather than real recipients.\n";
+		else
+			print "Site reminders will be sent to real recipients.\n";
 		
 		$this->buildUserSiteList();
 		$this->emailUsers();
