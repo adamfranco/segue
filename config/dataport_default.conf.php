@@ -124,3 +124,40 @@ $GLOBALS['dataport_export_types'] = array(
 // 		$isAuthorizedCache->dirtyUser();
 // 	}
 // }
+
+/*********************************************************
+ * Migration Reminder Emails
+ *********************************************************/
+// define('MIGRATION_REMINDER_EMAIL_FROM_NAME', 'Middlebury College Webmaster');
+// define('MIGRATION_REMINDER_EMAIL_FROM_MAIL', 'webmaster@middlebury.edu');
+// define('MIGRATION_REMINDER_EMAIL_SUBJECT', 'Segue Migration Reminder for [[USER]]');
+// define('MIGRATION_REMINDER_EMAIL_MESSAGE', '<html>
+// <head>
+// 	<title>Segue Migration Reminder for [[USER]]</title>
+// </head>
+// <body>
+// 	<p>Greetings [[USER]],</p>
+// 	
+// 	<p>Segue will be shut down on August 31st, 2012. You are listed as an administrator
+// 	of the following Segue sites whose migration status is "Incomplete".</p>
+// 	
+// 	[[SITE_LIST]]
+// 	
+// 	<p>If you would like to preserve these sites please migrate or archive them.
+// 	<a href="http://mediawiki.middlebury.edu/wiki/LIS/Migrate_From_Segue">Instructions on 
+// 	migrating and archiving sites</a> can be found in the LIS Wiki. If you have 
+// 	questions about the migration process, please contact your LIS Liason
+// 	(<a href="http://go.middlebury.edu/liasons">go/liaisons</a>).</p>
+// 	
+// 	<p>After you have migrated or archived each site, please log into Segue and 
+// 	update its status to stop receiving these reminders for that site. If you 
+// 	simply no longer need a site you can log into Segue and mark it as 
+// 	"No Longer Needed" to stop receiving these reminders for that site.</p>
+// 		
+// 	
+// </body>
+// </html>');
+// 
+// define('MIGRATION_REMINDER_EMAIL_TEST_ONLY', true);
+// define('MIGRATION_REMINDER_EMAIL_TEST_MAX', 2);
+// define('MIGRATION_REMINDER_EMAIL_TEST_RECIPIENT', 'afranco@middlebury.edu');
