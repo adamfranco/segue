@@ -271,6 +271,8 @@ be able to switch between test mode and real mode with -t/--test.");
 		
 		// Additional headers
 		$headers .= 'From: ' . MIGRATION_REMINDER_EMAIL_FROM_NAME ." <" . MIGRATION_REMINDER_EMAIL_FROM_MAIL . ">\r\n";
+		$headers .= 'Reply-To: ' . MIGRATION_REMINDER_EMAIL_FROM_NAME ." <" . MIGRATION_REMINDER_EMAIL_FROM_MAIL . ">\r\n";
+		$headers .= 'Return-Path: ' . MIGRATION_REMINDER_EMAIL_FROM_MAIL . "\r\n";
 				
 		return $headers;
 	}
