@@ -239,7 +239,7 @@ class WordpressExportSiteVisitor
 	 * @since 8/31/07
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) {
-		return $this->visitBlock($siteComponent);
+		// Ignore content in menus since it doesn't translate.
 	}
 	
 	/**
@@ -402,7 +402,7 @@ class WordpressExportSiteVisitor
 		if (!$this->isAuthorizedToExport($siteComponent))
 			throw new PermissionDeniedException();
 		
-		return $this->visitOrganizerChildren($siteComponent);
+		return $this->visitOrganizerChildren($siteComponent, true);
 	}
 	
 /*********************************************************
@@ -564,13 +564,13 @@ class WordpressExportSiteVisitor
 	 * @access protected
 	 * @since 1/17/08
 	 */
-	protected function visitOrganizerChildren (OrganizerSiteComponent $siteComponent) {
+	protected function visitOrganizerChildren (OrganizerSiteComponent $siteComponent, $inMenu = false) {
 		$output = array();
 		for ($i = 0; $i < $siteComponent->getTotalNumberOfCells(); $i++) {
 			$child = $siteComponent->getSubComponentForCell($i);
 			if ($child) {
 				try {
-					$output[] = $child->acceptVisitor($this);
+					$output[] = $child->acceptVisitor($this, $inMenu);
 				} catch (PermissionDeniedException $e) {
 				}
 			}
