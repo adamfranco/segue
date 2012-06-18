@@ -181,6 +181,48 @@ class Segue_TextTemplates_Video_MiddMediaWordpressService
 	}
 }
 
+/**
+ * This is a custom service for MiddMedia that does the extra work to configure our parameters
+ * 
+ * @since 1/27/09
+ * @package segue.wiki
+ * 
+ * @copyright Copyright &copy; 2007, Middlebury College
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
+ *
+ * @version $Id$
+ */
+class Segue_TextTemplates_Video_MiddTubeWordpressService
+	extends Segue_TextTemplates_Video_MiddTubeService
+{
+		
+	/**
+	 * Based on the parameters listed, generate an identifier to use in the embed code.
+	 * 
+	 * @param array $params
+	 * @return string
+	 * @access public
+	 * @since 1/27/09
+	 */
+	public function generateId (array $params) {
+		$this->validateParam('id', $params['id']);
+		$this->validateParam('user', $params['user']);
+		
+		preg_match('/(?:(mp4|mp3)(?::|%3A))?(.+)/i', $params['id'], $matches);
+		
+		$filename = $matches[2];
+		$parts = pathinfo($filename);		
+		if (!isset($parts['extension'])) {
+			if (!$matches[1])
+				$parts['extension'] = 'flv';
+			else
+				$parts['extension'] = $matches[1];
+		}
+		
+		return rawurlencode($params['user']).' '.rawurlencode($parts['filename'].'.'.$parts['extension']);
+	}
+}
+
 require_once(MYDIR.'/text_templates-dist/audio.class.php');
 /**
  * This template allows the embedding of mp3 audio in a page

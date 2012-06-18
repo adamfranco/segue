@@ -119,7 +119,7 @@ $service->addParam('splash_image_url',
 /*********************************************************
  * Redirected Middtube
  *********************************************************/
-$service = $video->addService(new Segue_TextTemplates_Video_MiddMediaWordpressService(
+$service = $video->addService(new Segue_TextTemplates_Video_MiddTubeWordpressService(
 	'middtube', 
 	'[middmedia 0 ###GENERATED_ID### width:###WIDTH###  height:###HEIGHT### splashimage:###SPLASH_IMAGE_URL###]'
 ));
@@ -127,8 +127,8 @@ $service->setParamRegex('width', '/^[0-9]*$/');
 $service->setParamRegex('height', '/^[0-9]*$/');
 $service->setDefaultValue('width', '');
 $service->setDefaultValue('height', '');
-$service->setParamRegex('id', '/^[a-z0-9%\._\s-]+\.[a-z0-9]+$/i');
-$service->addParam('dir', '/^[a-z0-9\._-]+$/i', 'unknown_dir');
+$service->setParamRegex('id', '/^[a-z0-9:%\._\s-]+$/i');
+$service->addParam('user', '/^[a-z0-9\._-]+$/i', 'unknown_dir');
 $harmoni = Harmoni::instance();
 $service->addParam('splash_image_url', 
 '/^((https?:\/\/[a-z0-9\.\/_&=%+~-]*.jpg)|('.str_replace('.', '\.', str_replace('/', '\/', $harmoni->request->quickURL('repository', 'viewfile'))).'[a-z0-9\.\/_&=%+~-]*))?$/i', '', '%2CsplashImageFile%3A%27', '%27');
