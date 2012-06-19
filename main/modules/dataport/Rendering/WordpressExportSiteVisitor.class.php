@@ -761,9 +761,8 @@ class WordpressExportSiteVisitor
 	 */
 	public function recordPluginExtras (Asset $asset) {
 		$audioType = new Type ('SeguePlugins', 'edu.middlebury', 'AudioPlayer');
-		$downloadType = $audioType = new Type ('SeguePlugins', 'edu.middlebury', 'Download');
-		if ($asset->getAssetType()->isEqual($audioType) || $asset->getAssetType()->isEqual($audioType)) {
-			
+		$downloadType = new Type ('SeguePlugins', 'edu.middlebury', 'Download');
+		if ($asset->getAssetType()->isEqual($audioType) || $asset->getAssetType()->isEqual($downloadType)) {
 			$query = 'count(item[wp:post_type = "attachment" and title = "downarrow.gif"])';
 			if (!$this->xpath->evaluate($query, $this->channel)) {
 				$url = MYPATH.'/images/downarrow.gif';
