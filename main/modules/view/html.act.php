@@ -618,8 +618,13 @@ class htmlAction
 		$adminstratorsGroupId = new HarmoniId('1');
 		$agentMgr = Services::getService('Agent');
 		foreach ($adminIds as $adminId) {
-			if (!$adminId->isEqual($adminstratorsGroupId))
-				$admins[] = $agentMgr->getAgent($adminId)->getDisplayName();
+			if (!$adminId->isEqual($adminstratorsGroupId)) {
+				try {
+					$admins[] = $agentMgr->getAgent($adminId)->getDisplayName();
+				} catch (UnknownIdException $e) {
+					// Ignore missing agents.
+				}
+			}
 		}
 		
 		if (count($admins) <= 2) {
