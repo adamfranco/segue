@@ -17,7 +17,7 @@ require_once(dirname(__FILE__)."/Update.abstract.php");
  * @copyright Copyright &copy; 2012, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  */
-class Update025_ExportQueue
+class Update025_ExportQueueAction
 	extends Update
 {
 		
