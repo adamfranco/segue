@@ -72,9 +72,11 @@ class check_export_queueAction
 		if (!is_dir($outDir) || !is_writable($outDir))
 			throw new InvalidArgumentException("The output directory doesn't exist or is not writeable.\n\n".$this->usage);
 		
-		if (!defined('BULK_EXPORT_BASE_URL'))
-			throw new ConfigurationErrorException('BULK_EXPORT_BASE_URL is not defined.');
-				
+		foreach (SlotAbstract::getLocationCategories() as $category) {
+			$baseUrl = SiteDispatcher::getBaseUrlForLocationCategory($category);
+			if (!preg_match('/^https?:\/\/.+/', $baseUrl))
+				throw new ConfigurationErrorException('Please set a base URL for the \''.$category.'\' category with SiteDispatcher::setBaseUrlForLocationCategory($category, $url); in config/slots.conf.php');
+		}
 		while(ob_get_level())
 			ob_end_flush();
 		flush();
@@ -132,7 +134,10 @@ class check_export_queueAction
 		}
 		
 		$slot = $result->field('slot');
-		
+		$slotMgr = SlotManager::instance();
+		$slotObj = $slotMgr->getSlotByShortname($slot);
+		$baseUrl = SiteDispatcher::getBaseUrlForLocationCategory($slotObj->getLocationCategory());
+				
 		// Mark that we are running
 		$query = new UpdateQuery;
 		$query->setTable('site_export_queue');
@@ -167,7 +172,7 @@ class check_export_queueAction
 			session_write_close();
 			
 			// Do the export
-			$urlParts = parse_url(BULK_EXPORT_BASE_URL);
+			$urlParts = parse_url($baseUrl);
 			$urlPrefix = rtrim($urlParts['path'], '/');
 			$include = array(
 				$urlPrefix.'/gui2', 
@@ -187,7 +192,7 @@ class check_export_queueAction
 				."--directory-prefix=".escapeshellarg($exportDir.'/content')." "
 				."--include=".escapeshellarg(implode(',', $include))." "
 				."--header=".escapeshellarg("Cookie: ".session_name()."=".session_id())." "
-				.escapeshellarg(BULK_EXPORT_BASE_URL.'/dataport/html/site/'.$slot);
+				.escapeshellarg($baseUrl.'/dataport/html/site/'.$slot);
 			
 			print "Cookie: ".session_name()."=".session_id()."\n";
 // 			throw new Exception($command);

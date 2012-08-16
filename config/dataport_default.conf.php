@@ -161,9 +161,3 @@ $GLOBALS['dataport_export_types'] = array(
 // define('MIGRATION_REMINDER_EMAIL_TEST_ONLY', true);
 // define('MIGRATION_REMINDER_EMAIL_TEST_MAX', 2);
 // define('MIGRATION_REMINDER_EMAIL_TEST_RECIPIENT', 'afranco@middlebury.edu');
-
-
-/*********************************************************
- * Bulk export configuration
- *********************************************************/
-//  define('BULK_EXPORT_BASE_URL', 'http://chisel.middlebury.edu/~afranco/segue');
