@@ -241,7 +241,7 @@ class mapAction
 	 * @access protected
 	 * @since 3/17/08
 	 */
-	protected function printNodeInfo (SiteComponent $siteComponent) {
+	protected function printNodeInfo (SiteComponent $siteComponent, $inMenu = false) {
 		$harmoni = Harmoni::instance();
 		
 		print $this->getTabs()."\t";
@@ -254,15 +254,19 @@ class mapAction
 		print $this->getTabs()."\t\t";
 		print "<div class='title'>";
 		$nodeUrl = SiteDispatcher::quickURL('view', 'html', array('node' => $siteComponent->getId()));
-		print "<a href='".$nodeUrl."' ";
-		print ' onclick="';
-		print "if (window.opener) { ";
-		print 		"window.opener.location = this.href; ";
-		print 		"return false; ";
-		print '}" ';
-		print " title='"._("View this node")."'>";
+		if (!$inMenu) {
+			print "<a href='".$nodeUrl."' ";
+			print ' onclick="';
+			print "if (window.opener) { ";
+			print 		"window.opener.location = this.href; ";
+			print 		"return false; ";
+			print '}" ';
+			print " title='"._("View this node")."'>";
+		}
 		print $siteComponent->getDisplayName();
-		print "</a>";
+		if (!$inMenu) {
+			print "</a>";
+		}
 		print "</div>";
 		
 		$nodeDescription = HtmlString::withValue($siteComponent->getDescription());
@@ -318,7 +322,25 @@ class mapAction
 	 * @since 8/31/07
 	 */
 	public function visitBlockInMenu ( BlockSiteComponent $siteComponent ) {
-		$this->visitBlock($siteComponent);
+		$harmoni = Harmoni::instance();
+		
+		// check to see if user is authorized to view block
+		$authZ = Services::getService("AuthZ");
+		$idManager = Services::getService("Id");	
+		if (!$authZ->isUserAuthorized(
+			$idManager->getId("edu.middlebury.authorization.view"), 
+			$idManager->getId($siteComponent->getId())))
+		{
+			return;
+		}
+				
+		$this->printNodeStart($siteComponent);
+		print $this->getTabs()."\t";
+		print "<div class='expandSpacer'>";		
+		print "&nbsp;";
+		print "</div>";
+		$this->printNodeInfo($siteComponent, true);
+		$this->printNodeEnd($siteComponent);
 	}
 	
 	/**
@@ -470,7 +492,9 @@ class mapAction
 	 * @since 8/31/07
 	 */
 	public function visitMenuOrganizer ( MenuOrganizerSiteComponent $siteComponent ) {
-		$this->visitFlowOrganizer($siteComponent);
+		foreach ($siteComponent->getSortedSubcomponents() as $child) {
+			$child->acceptVisitor($this, true);
+		}
 	}	
 			
 	

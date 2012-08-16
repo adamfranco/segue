@@ -229,7 +229,7 @@ class ViewModeSiteVisitor
 	 * @access public
 	 * @since 5/23/07
 	 */
-	function getPluginContent ( $block ) {
+	function getPluginContent ( $block, $inMenu = false) {
 		ob_start();
 		$harmoni = Harmoni::instance();
 		$pluginManager = Services::getService('PluginManager');
@@ -239,7 +239,7 @@ class ViewModeSiteVisitor
 		print $plugin->executeAndGetMarkup($this->showPluginControls());
 		print "\n</div>";
 		
-		if ($block->showComments()) {
+		if ($block->showComments() && !$inMenu) {
 			$cm = CommentManager::instance();
 			print "\n<div class='comments'>";
 			print "\n\t<a href='".$this->getDetailUrl($block->getId())."#";
@@ -258,15 +258,17 @@ class ViewModeSiteVisitor
 			print $attributionDisplay;
 		}
 		
-		print "\n<div class='extended_content_link' id='extended_content_link:".$block->getId()."' ";
-		print " style='text-align: right;";
-		if (!$plugin->hasExtendedMarkup())
-			print " display: none;";
-		print "'>";
-		print "\n\t<a href='".$this->getDetailUrl($block->getId())."'>";
-		print $plugin->getExtendedLinkLabel();
-		print "</a>";
-		print "\n</div>";
+		if (!$inMenu) {
+			print "\n<div class='extended_content_link' id='extended_content_link:".$block->getId()."' ";
+			print " style='text-align: right;";
+			if (!$plugin->hasExtendedMarkup())
+				print " display: none;";
+			print "'>";
+			print "\n\t<a href='".$this->getDetailUrl($block->getId())."'>";
+			print $plugin->getExtendedLinkLabel();
+			print "</a>";
+			print "\n</div>";
+		}
 		
 		print $this->getHistoryLink($block, $plugin);
 		
@@ -426,7 +428,7 @@ class ViewModeSiteVisitor
 					."</div>";
 		}
 		
-		print "<div>".$this->getPluginContent($block)."</div>";
+		print "<div>".$this->getPluginContent($block, true)."</div>";
 		
 		$menuItem = new MenuItem(ob_get_clean(), 1);
 		return $menuItem;
