@@ -335,6 +335,7 @@ class htmlAction
 			$outputHandler->setHead(
 				preg_replace("/<title>[^<]*<\/title>/", $title, $outputHandler->getHead()));			
 		
+			header('HTTP/1.1 403 Forbidden');
 			$mainScreen->add(new Block($this->getUnauthorizedMessage(), ALERT_BLOCK),
 				"100%", null, CENTER, TOP);
 		}
