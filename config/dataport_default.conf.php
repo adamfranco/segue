@@ -161,3 +161,8 @@ $GLOBALS['dataport_export_types'] = array(
 // define('MIGRATION_REMINDER_EMAIL_TEST_ONLY', true);
 // define('MIGRATION_REMINDER_EMAIL_TEST_MAX', 2);
 // define('MIGRATION_REMINDER_EMAIL_TEST_RECIPIENT', 'afranco@middlebury.edu');
+
+
+
+// define('ARCHIVE_URL_CALLBACK', create_function('$slotname', '$salt = "MySalt"; $file = $slotname."-html.zip"; return "http://seguearchive.middlebury.edu/".md5($salt.$file)."/".$file;'));
+// define('USER_EXISTS_CALLBACK', create_function('$email', '$url = "https://login.middlebury.edu/directory/?action=search_users_by_attributes&EMail=".$email."&ADMIN_ACCESS=password"; $content = file_get_contents($url); return preg_match("/cas:entry/", $content);'));

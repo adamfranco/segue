@@ -46,7 +46,7 @@ class list_incomplete_migrationsAction
 			ob_end_flush();
 		flush();
 		
-		print "Preparing incomplete migration info...\n";
+		print "Preparing migration info...\n";
 		
 		$this->buildUserSiteList();
 		$this->printList();
