@@ -143,7 +143,7 @@ class archives_by_siteAction
 		print<<<END
 <html>
 	<head>
-		<title>Segue Archives by user</title>
+		<title>Segue Archives by site</title>
 		<style type='text/css'>
 			.email {
 				margin-bottom: 2px;
@@ -169,8 +169,8 @@ class archives_by_siteAction
 		</style>
 	</head>
 	<body>
-		<h1>Segue Archvies by user</h1>
-		<p>Each row contains a user who is an administrator of the site to the left. To see this list organized by user, see <a href='archives_by_user.html'>archives_by_site.html</a></p>
+		<h1>Segue Archives by site</h1>
+		<p>Each row contains a site and a list of the users that are administrators of the site. To see this list organized by user, see <a href='archives_by_user.html'>archives_by_user.html</a></p>
 		<p>Use your browser's search to find users or sites</p>
 		<table border='1'>
 			<thead>

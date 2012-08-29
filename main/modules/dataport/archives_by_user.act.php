@@ -123,7 +123,7 @@ class archives_by_userAction
 		</style>
 	</head>
 	<body>
-		<h1>Segue Archvies by user</h1>
+		<h1>Segue Archives by user</h1>
 		<p>Each row contains a user who is an administrator of the site to the right. To see this list organized by site, see <a href='archives_by_site.html'>archives_by_site.html</a></p>
 		<p>Use your browser's search to find users or sites</p>
 		<table border='1'>
