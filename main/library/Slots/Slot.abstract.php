@@ -626,13 +626,19 @@ abstract class SlotAbstract
 	public function getMigrationStatus () {
 		$dbc = Services::getService('DBHandler');
 		$query = new SelectQuery;
-		$query->addTable('segue_slot_migration_status');
+		$query->addTable('segue_slot_migration_status', NO_JOIN, '', 'm');
 		$query->addColumn('status');
 		$query->addColumn('redirect_url');
-		$query->addWhereEqual('shortname', $this->getShortname());
+		$query->addTable('segue_slot', LEFT_JOIN, 's.shortname = m.shortname', 's');
+		$query->addColumn('shortname', 'slot_exists', 's');
+		$query->addWhereEqual('m.shortname', $this->getShortname());
 		$result = $dbc->query($query, IMPORTER_CONNECTION);
 		
 		if ($result->hasMoreRows()) {
+			// If there is no site anymore and no valid migration status, mark as unneeded.
+			if (is_null($result->field('slot_exists')) && $result->field('status') == 'incomplete') {
+				return array('type' => 'unneeded', 'url' => '');
+			}				
 			return array(
 				'type' => $result->field('status'),
 				'url' => $result->field('redirect_url'),
